@@ -818,8 +818,8 @@
   parent: RMCBeltHolsterPistol
   id: RMCBeltHolsterPistolTSE
   name: pistol belt
-  description: A dark brown leather pistol belt commonly issued to TSEPA officers. Although designed for the L54 service pistol, it accommodates most sidearms along with spare magazines. Standard issue across TSE law enforcement, military, and security forces.
-  suffix: TSE
+  description: A dark brown leather pistol belt commonly issued to Neroid Sector Policing Authority officers. Although designed for the L54 service pistol, it accommodates most sidearms along with spare magazines. Standard issue across NSPA law enforcement, military, and security forces.
+  suffix: NSPA
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Belt/holster_pistol_tsepa.rsi
