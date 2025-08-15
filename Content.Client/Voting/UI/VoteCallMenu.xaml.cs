@@ -65,7 +65,6 @@ namespace Content.Client.Voting.UI
             _votingSystem = _entityManager.System<VotingSystem>();
 
             Stylesheet = IoCManager.Resolve<IStylesheetManager>().SheetSpace;
-            CloseButton.OnPressed += _ => Close();
             VoteNotTrustedLabel.Text = Loc.GetString("ui-vote-trusted-users-notice", ("timeReq", _cfg.GetCVar(CCVars.VotekickEligibleVoterDeathtime)));
 
             foreach (StandardVoteType voteType in Enum.GetValues<StandardVoteType>())
@@ -76,7 +75,6 @@ namespace Content.Client.Voting.UI
 
             _state.OnStateChanged += OnStateChanged;
             VoteTypeButton.OnItemSelected += VoteTypeSelected;
-            CreateButton.OnPressed += CreatePressed;
             FollowButton.OnPressed += FollowSelected;
         }
 
@@ -175,11 +173,9 @@ namespace Content.Client.Voting.UI
             var isAvailable = _voteManager.CanCallStandardVote(typeKey, out var timeout);
             if (typeKey == StandardVoteType.Votekick && !IsAllowedVotekick)
             {
-                CreateButton.Disabled = true;
             }
             else
             {
-                CreateButton.Disabled = !isAvailable;
             }
             VoteTypeTimeoutLabel.Visible = !isAvailable;
 

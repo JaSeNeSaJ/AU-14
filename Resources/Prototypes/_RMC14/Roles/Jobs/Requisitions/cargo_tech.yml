@@ -5,10 +5,7 @@
   description: cm-job-description-cargotech
   setPreference: false
   playTimeTracker: CMJobCargoTech
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMSquad
-    time: 18000 # 5 hours
+  requirements: []
   ranks:
     RMCRankLanceCorporal:
     - !type:RoleTimeRequirement

@@ -5,23 +5,14 @@
   description: cm-job-description-ordnance-tech
   setPreference: false
   playTimeTracker: CMJobOrdnanceTech
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMJobsEngineering
-    time: 3600 # 1 hour
+  requirements: []
   startingGear: CMGearOrdnanceTech
   icon: "CMJobIconOrdnanceTech"
   joinNotifyCrew: false
   supervisors: cm-job-supervisors-ce
   ranks:
-    RMCRankLanceCorporal:
-    - !type:RoleTimeRequirement
-      role: CMJobOrdnanceTech
-      time: 252000 # 70 hours
-    RMCRankPrivateFirstClass:
-    - !type:RoleTimeRequirement
-      role: CMJobOrdnanceTech
-      time: 36000 # 10 hours
+    RMCRankLanceCorporal: []
+    RMCRankPrivateFirstClass: []
     RMCRankPrivate: []
   accessGroups:
   - OT

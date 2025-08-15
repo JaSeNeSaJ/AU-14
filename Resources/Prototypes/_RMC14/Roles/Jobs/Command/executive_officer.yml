@@ -4,10 +4,7 @@
   name: cm-job-name-executive-officer
   description: cm-job-description-executive-officer
   playTimeTracker: CMJobExecutiveOfficer
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMCommand
-    time: 36000 # 10 hours
+  requirements: []
   ranks:
     RMCRankCaptain: []
   weight: 5

@@ -6,10 +6,7 @@
   setPreference: false
   playTimeTracker: CMJobHospitalCorpsman
   ranks:
-    RMCRankCorporal:
-    - !type:RoleTimeRequirement
-      role: CMJobHospitalCorpsman
-      time: 90000 # 25 hours
+    RMCRankCorporal: []
     RMCRankLanceCorporal: []
   startingGear: CMGearHospitalCorpsman
   dummyStartingGear: CMGearHospitalCorpsmanEquipped

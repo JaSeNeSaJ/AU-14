@@ -6,14 +6,8 @@
   setPreference: false
   playTimeTracker: CMJobSmartGunOperator
   ranks:
-    RMCRankCorporal:
-    - !type:RoleTimeRequirement
-      role: CMJobSmartGunOperator
-      time: 90000 # 25 hours
-    RMCRankLanceCorporal:
-    - !type:RoleTimeRequirement
-      role: CMJobSmartGunOperator
-      time: 36000 # 10 hours
+    RMCRankCorporal: []
+    RMCRankLanceCorporal: []
     RMCRankPrivateFirstClass: []
   startingGear: CMGearSmartGunOperator
   dummyStartingGear: CMGearSmartGunOperatorEquipped

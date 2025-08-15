@@ -12,10 +12,7 @@
   marineAuthorityLevel: 1
   supervisors: cm-job-supervisors-sl
   ranks:
-    RMCRankPrivateFirstClass:
-    - !type:RoleTimeRequirement
-      role: CMJobRifleman
-      time: 36000 # 10 hours
+    RMCRankPrivateFirstClass: []
     RMCRankPrivate: []
   accessGroups:
   - Rifleman
@@ -135,7 +132,4 @@
     raffle:
       settings: default
     job: CMRifleman
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobRifleman
-      time: 1
+
