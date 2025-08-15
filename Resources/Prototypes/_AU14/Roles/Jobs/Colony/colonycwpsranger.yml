@@ -9,11 +9,11 @@
   ranks:
     AU14RankCWPSSeniorRanger:
     - !type:RoleTimeRequirement
-      role: AU14JobCivilianCMBDeputy
+      role: AU14JobCivilianCWPSRanger
       time: 2400 # 20 hours
     AU14RankCWPSRanger:
     - !type:RoleTimeRequirement
-      role: AU14JobCivilianCMBDeputy
+      role: AU14JobCivilianCWPSRanger
       time: 240 # 4 hours
     AU14RankCWPSRangerTrainee: []
   startingGear: AU14GearCivilianCWPSRanger
