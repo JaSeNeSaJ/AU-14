@@ -39,7 +39,7 @@
         RMCSkillSurgery: 1
         RMCSkillVehicles: 1
     - type: JobPrefix
-      prefix: OPADJ
+      prefix: au14-job-prefix-AU14JobGOVFORPlatOpWYPMC
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi

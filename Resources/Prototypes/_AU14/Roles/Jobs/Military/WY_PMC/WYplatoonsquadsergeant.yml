@@ -35,7 +35,7 @@
         RMCSkillJtac: 3
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: SL
+      prefix: au14-job-prefix-AU14JobGOVFORSquadSergeantWYPMC
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi

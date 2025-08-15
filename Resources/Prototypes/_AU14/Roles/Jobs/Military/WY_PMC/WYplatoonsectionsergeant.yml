@@ -37,7 +37,7 @@
         RMCSkillVehicles: 1
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: PLDR
+      prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantWYPMC
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
