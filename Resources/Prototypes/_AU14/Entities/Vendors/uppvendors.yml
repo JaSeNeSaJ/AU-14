@@ -1,8 +1,8 @@
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYclothingequipmentvendor
-  name: WY PMC apparel vendor
-  description: An automated rack hooked up to a small storage of standard pmc apparel.
+  id: AU14UPPclothingapparelvendor
+  name: UPP apparel vendor
+  description: An automated rack hooked up to a small storage of standard UPP apparel.
   components:
   - type: AccessReader
     access:
@@ -13,13 +13,11 @@
     sections:
     - name: Fatigues
       entries:
-      - id: AU14WYPMCFatigues
+      - id: AU14UPPFatigues
         amount: 25
     - name: Footwear
       entries:
-      - id: RMCBootsPMCFilled
-        amount: 25
-      - id: RMCBootsCorporate
+      - id: RMCShoesJackbootsFilled
         amount: 25
     - name: Gloves
       entries:
@@ -41,9 +39,13 @@
         amount: 15
     - name: Headgear
       entries:
-      - id: AU14WYPMCHelmet
+      - id: AU14UPPNavalInfantryHelmet
         amount: 25
-      - id: AU14WYPMCBallCap
+      - id: AU14UPPPatrolCap
+        amount: 25
+      - id: AU14UPPBoonie
+        amount: 25
+      - id: AU14UPPUshanka
         amount: 25
     - name: Headsets
       entries:
@@ -57,36 +59,43 @@
         amount: 5
     - name: Armor
       entries:
-      - id: AU14WYPMCArmor
+      - id: AU14UPPArmor
         amount: 25
-      - id: AU14WYPMCArmorMin
+      - id: AU14UPPArmorMinimalistic
         amount: 25
-      - id: RMCOuterClothingExternalWebbingBlack
+      - id: AU14UPPArmorBulky
         amount: 25
     - name: Backpack
       entries:
-      - id: RMCSatchelLightpackBlack
-        amount: 25
-      - id: RMCBackpackWelderPMC
+      - id: RMCSatchelSPP
+        amount: 15
+      - id: CMBackpackMarine
+        amount: 15
+      - id: AU14IMPBackpackMarine
+        amount: 3
+      - id: RMCSatchelWelderChestrig
         amount: 2
       - id: RMCScabbardShotgun
-        amount: 1
+        amount: 2
       - id: RMCBackpackAmmo
         amount: 1
     - name: Belts
       entries:
       - id: CMBeltMarine
         amount: 25
-      - id: RMCBeltHolsterSMGPouch
-        amount: 12
       - id: RMCBeltGrenade
         amount: 2
       - id: RMCM276ShotgunShellLoadingRig
-        amount: 1
+        amount: 2
       - id: RMCBeltHolsterPistol
         amount: 15
-      - id: RMCBeltSecurityWeYa
+      - id: RMCBeltHolsterRevolver
         amount: 15
+#      - id: M276 Pattern M82F Holster Rig
+#        amount: 5
+      - id: CMBeltKnifeFilled
+        name: M276 Knife Rig (Full)
+        amount: 1
       - id: RMCBeltUtilityGeneral
         amount: 15
     - name: Pouches
@@ -163,16 +172,12 @@
         amount: 20
       - id: RMCGlassesTriMaxBronze
         amount: 20
-    - name: Helmet Garb
-      entries:
-      - id: AU14HelmetGarbRiotVisor
-        amount: 25
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYequipmentvendor
-  name: WY PMC equipment vendor
-  description: An automated rack hooked up to a small storage of standard Weyland-Yutani equipment.
+  id: AU14UPPequipmentvendor
+  name: UPP equipment vendor
+  description: An automated rack hooked up to a small storage of standard UPP equipment.
   components:
   - type: AccessReader
     access:
@@ -258,8 +263,8 @@
 #corpsman
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYcorpsmanvendor
-  name: WY PMC medical vendor
+  id: AU14UPPMedicalVendor
+  name: UPP medical vendor
   description: An automated rack hooked up to a small storage of medical supplies.
   components:
   - type: AccessReader
@@ -294,13 +299,9 @@
         amount: 2
     - name: Medical Storage
       entries:
-      - id: CMWebbingSurgicalBlue
-        amount: 1
       - id: CMBeltMedical
         amount: 1
-      - id: RMCBeltMedicBagPMC
-        amount: 1
-      - id: RMCSatchelPMCMedic
+      - id: CMBeltMedicBag
         amount: 1
       - id: AU14CorpsmanIMPBackpackMarine
         amount: 1
@@ -397,8 +398,8 @@
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYaircrewvendor
-  name: WY PMC aircrew vendor
+  id: AU14UPPaircrewvendor
+  name: UPP aircrew vendor
   description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
   components:
   - type: AccessReader
@@ -410,7 +411,9 @@
     sections:
     - name: Clothing
       entries:
-      - id: RMCBootsPMCFilled
+      - id: AU14UPPFatigues
+        amount: 2
+      - id: RMCShoesJackbootsFilled
         amount: 2
       - id: CMHandsBrown
         amount: 2
@@ -432,13 +435,17 @@
         amount: 1
     - name: Helmets and Hats
       entries:
-      - id: RMCArmorHelmetSecurity
-        amount: 2
-      - id: AU14WYPMCBallCap
-        amount: 2
+      - id: AU14UPPPatrolCap
+        amount: 25
+      - id: AU14UPPBoonie
+        amount: 25
+      - id: AU14UPPUshanka
+        amount: 25
     - name: Armor
       entries:
-      - id: RMCOuterClothingExternalWebbingBlack
+      - id: AU14ArmorPilotFlakJacket
+        amount: 2
+      - id: AU14ExternalWebbing
         amount: 2
     - name: Backpack
       entries:
@@ -594,9 +601,9 @@
 #director
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYdirectorequipmentvendor
-  name: WY PMC command vendor
-  description: An automated rack hooked up to a small storage of director apparel and equipment.
+  id: AU14UPPcommandvendor
+  name: UPP command vendor
+  description: An automated rack hooked up to a small storage of UPP command apparel and equipment.
   components:
   - type: AccessReader
     access:
@@ -607,7 +614,7 @@
     sections:
     - name: Fatigues
       entries:
-      - id: AU14WYPMCFatigues
+      - id: AU14UPPFatigues
         amount: 1
     - name: Footwear
       entries:
@@ -617,9 +624,9 @@
         amount: 2
     - name: Headgear
       entries:
-      - id: RMCHeadCapWestonYamadaDark
+      - id: CMHeadCapSPPBeret
         amount: 2
-      - id: AU14WYPMCBallCap
+      - id: CMHeadCapSPPUshankaCivilian
         amount: 2
     - name: Headsets
       entries:
@@ -640,9 +647,9 @@
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYSGequipmentvendor
-  name: WY PMC smartgunner equipment vendor
-  description: An automated rack hooked up to a small storage of smartgunner equipment.
+  id: AU14UPPgunnerequipment
+  name: UPP gunner equipment vendor
+  description: An automated rack hooked up to a small storage of gunner equipment.
   components:
   - type: AccessReader
     access:
@@ -653,40 +660,18 @@
     sections:
     - name: Essential Equipment
       entries:
-      - id: RMCSmartGunWhiteOut
+      - id: RMCWeaponLMGQYJ72
         amount: 1
-      - id: RMCScabbardMacheteSGFilled
-        amount: 1
-      - id: RMCGlassesSmartGunSight
-        amount: 1
-    - name: Smartgunner Clothing
+    - name: Gun Munitions
       entries:
-      - id: RMCJumpsuitVeteranPMCGunner
-        amount: 1
-      - id: CMArmorM4PMCSmartGunHarness
-        amount: 1
-      - id: ArmorHelmetPMCGunner
-        amount: 1
-    - name: Smartgun Equipment
-      entries:
-      - id: RMCBeltSmartGunOperatorPistolPMC
-        amount: 1
-      - id: RMCPouchDrumPMC
-        amount: 2
-    - name: Smartgun Munitions
-      entries:
-      - id: RMCMagazineSmartGun
+      - id: RMCMagazineLMGQYJ72
         amount: 10
-      - id: RMCMagazineSmartGunirradiated
-        amount: 1
-      - id: RMCPowerCellSmartgun
-        amount: 2
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYsupervisorequipmentvendor
-  name: WY PMC supervisor vendor
-  description: An automated rack hooked up to a small storage of apparel and equipment for the supervisor.
+  id: AU14UPPSectionLeaderVendor
+  name: UPP section leader vendor
+  description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
   components:
   - type: AccessReader
     access:
@@ -701,13 +686,7 @@
         amount: 1
     - name: Apparel
       entries:
-      - id: ArmorHelmetPMCOfficer
-        amount: 1
-      - id: RMCHeadCapWestonYamadaDark
-        amount: 1
-      - id: RMCHeadBeanie
-        amount: 1
-      - id: CMArmorM4PMCLeader
+      - id: CMHeadCapSPPBeret
         amount: 1
     - name: Miscellaneous
       entries:
@@ -722,8 +701,8 @@
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYWeaponsVendor
-  name: WY PMC weapons rack
+  id: AU14UPPWeaponsVendor
+  name: UPP weapons rack
   description: An automated rack hooked up to a small storage of weapons.
   components:
   - type: AccessReader
@@ -735,38 +714,38 @@
     sections:
     - name: Weapons
       entries:
-      - id: RMCWeaponSMGFP9000PMC
+      - id: RMCWeaponRifleType71
         amount: 6
-      - id: RMCWeaponSMGM63B2
+      - id: RMCWeaponRifleType71C
+        amount: 2
+      - id: RMCWeaponSMGType64
         amount: 2
     - name: Weapon Ammunition
       entries:
-      - id: RMCMagazineSMGFP9000
+      - id: RMCMagazineRifleType71
         amount: 42
-      - id: CMMagazineSMGM63
-        amount: 42
-      - id: CMMagazineSMGM63AP
+      - id: RMCMagazineRifleType71AP
         amount: 2
+      - id: RMCMagazineSMGType64
+        amount: 42
     - name: Handguns
       entries:
-      - id: RMCWeaponPistolM77Empty
+      - id: RMCWeaponPistolL54Empty
         amount: 6
+      - id: RMCWeaponPistolT74
+        amount: 1
     - name: Handgun Ammunition
       entries:
-      - id: CMMagazinePistolM77AP
-        amount: 20
+      - id: RMCMagazinePistolT73
+        amount: 22
     - name: Attachments
       entries:
       - id: RMCAttachmentRailFlashlight
         amount: 12
-      - id: RMCAttachmentS5RedDotSight
-        amount: 4
     - name: Explosives
       entries:
-      - id: RMCBoxHEDP
-        amount: 1
-      - id: RMCGrenadeBlastM12
-        amount: 4
+      - id: CMGrenadeFragOld
+        amount: 12
       - id: CMGrenadeSmoke
         amount: 6
       - id: RMCExplosivePlastic
@@ -776,8 +755,8 @@
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14WYSpecialWeaponsVendor
-  name: WY PMC special weapons rack
+  id: AU14UPPSpecialWeaponsVendor
+  name: UPP special weapons rack
   description: An automated rack hooked up to a small storage of special weapons.
   components:
   - type: AccessReader
@@ -787,33 +766,59 @@
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: M890 Shotgun
+    - name: Type 23 Riot Shotgun
       entries:
-      - id: WeaponShotgunM890
+      - id: RMCWeaponShotgunType23
         amount: 1
-      - id: RMCBoxShotgunBuckshot8g
-        amount: 4
-      - id: RMCBoxShotgunSlugs
-        amount: 4
-    - name: NSG 23 Assault Rifle
+      - id: RMCBoxShotgunHeavyBuckshot
+        amount: 2
+      - id: RMCBoxShotgunHeavyFlechette
+        amount: 2
+      - id: RMCBoxShotgunHeavySlugs
+        amount: 2
+    - name: HJRA-12 Anti-Tank RPG
       entries:
-      - id: WeaponRifleSSG45
+      - id: RMCWeaponLauncherHJRA12
         amount: 1
-      - id: RMCMagazineRifleSSG45
+      - id: RMCRocketHJRA12AT
+        amount: 2
+      - id: RMCRocketHJRA12HE
+        amount: 1
+      - id: RMCRocketHJRA12Incen
+        amount: 1
+    - name: Type 71-F Assault Rifle
+      entries:
+      - id: RMCWeaponRifleType71Flamer
+        amount: 1
+    - name: Type 88 DMR
+      entries:
+      - id: RMCType88SniperRifle
+        amount: 1
+      - id: RMCMagazineSniperType88
         amount: 12
-      - id: RMCMagazineRifleSSG45Extended
-        amount: 2
-      - id: RMCMagazineRifleSSG45AP
-        amount: 2
-      - id: RMCMagazineRifleSSG45Incend
-        amount: 1
-    - name: XM43E1 Anti-Material Rifle
+
+- type: entity
+  parent: ColMarTechBase
+  id: AU14UPPAirCrewWeaponsVendor
+  name: UPP aircrew weapons rack
+  description: An automated rack hooked up to a small storage of aircrew weapons.
+  components:
+  - type: AccessReader
+    access:
+    - [ "CMAccessMarinePrep" ]
+  - type: Sprite
+    sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
+  - type: CMAutomatedVendor
+    sections:
+    - name: Weapons
       entries:
-      - id: RMCXM43E1AntiMaterielRifle
-        amount: 1
-      - id: RMCMagazineSniperXM43E1AntiMateriel
-        amount: 6
-      - id: RMCScoutShoes
-        amount: 1
-      - id: ArmorHelmetPMCSniper
-        amount: 1
+      - id: RMCWeaponSMGType19
+        amount: 2
+      - id: RMCWeaponPistolT74
+        amount: 2
+    - name: Ammunition
+      entries:
+      - id: RMCMagazineSMGType19
+        amount: 12
+      - id: RMCMagazinePistolT73
+        amount: 12
