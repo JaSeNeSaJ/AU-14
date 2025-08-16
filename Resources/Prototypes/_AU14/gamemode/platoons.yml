@@ -38,7 +38,7 @@
 
 - type: platoon
   id: UPP
-  reqlist: UPPBasic
+  reqList: UPPBasic
   language: russian
   name: UPP Naval Infantry Platoon
   VendorToMarker:
