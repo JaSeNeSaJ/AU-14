@@ -20,6 +20,7 @@
     govforinship: true
     opforinship: true
     daycycleenabled: true
+    faction: ua
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -38,7 +39,7 @@
     - USCM
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: false
+    govforinship: true
     opforinship: true
     daycycleenabled: true
 
@@ -65,6 +66,7 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
+    faction: ua
 
 - type: entity
   id: AUPlanetLV624
@@ -86,5 +88,5 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-
+    faction: ua
 
