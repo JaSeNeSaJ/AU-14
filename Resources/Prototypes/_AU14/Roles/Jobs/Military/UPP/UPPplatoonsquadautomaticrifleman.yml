@@ -37,7 +37,7 @@
         RMCSkillPolice: 1
     - type: SquadArmorWearer
     - type: JobPrefix
-      prefix: MG
+      prefix: au14-job-prefix-AU14JobGOVFORSquadAutomaticRiflemanUPP
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi

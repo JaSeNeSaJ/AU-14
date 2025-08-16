@@ -38,7 +38,7 @@
         RMCSkillSurgery: 1
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: CRCHF
+      prefix: au14-job-prefix-AU14JobGOVFORDCCUPP
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi

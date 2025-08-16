@@ -1,19 +1,18 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobGOVFORPlatOpUPP
-  name: Political Commissar
-  description: au14-job-description-govforplatop
+  id: AU14JobGOVFORPlatCoCMBCIU
+  name: Platoon Commander
+  description: au14-job-description-govforplatco
   setPreference: false
   canBeAntag: false
-  playTimeTracker: AU14JobGOVFORPlatOpUPP
+  playTimeTracker: AU14JobGOVFORPlatCoCMBCIU
   ranks:
-    UPP_Commissar: []
-  startingGear: AU14GearGOVFORPlatOp
-  dummyStartingGear: AU14GearGOVFORPlatOpDummy
-  icon: "AU14JobIconOpsOfc"
-  requireAdminNotify: false
+    AU14RankCMBMarshal: []
+  startingGear: AU14GearGOVFORPlatCo
+  icon: "AU14JobIconPlatCo"
+  requireAdminNotify: true
   joinNotifyCrew: false
-  supervisors: au14-job-supervisors-govfor
+  supervisors: au14-job-supervisors-govforplatco
   accessGroups:
   - augovforcommand
   roleWeight: 0.25
@@ -39,7 +38,7 @@
         RMCSkillSurgery: 1
         RMCSkillVehicles: 1
     - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORPlatOpUPP
+      prefix: au14-job-prefix-AU14JobGOVFORPlatCoCMBCIU
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
@@ -47,5 +46,5 @@
   hidden: false
 
 - type: playTimeTracker
-  id: AU14JobGOVFORPlatOpUPP
+  id: AU14JobGOVFORPlatCoCMBCIU
   isHumanoid: true

@@ -14,7 +14,7 @@
     AU14RankCWPSRanger:
     - !type:RoleTimeRequirement
       role: AU14JobCivilianCWPSRanger
-      time: 240 # 4 hours
+      time: 120 # 2 hours
     AU14RankCWPSRangerTrainee: []
   startingGear: AU14GearCivilianCWPSRanger
   icon: "RMCJobIconBureauDeputy"

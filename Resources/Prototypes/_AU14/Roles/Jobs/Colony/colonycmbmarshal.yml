@@ -8,7 +8,7 @@
 
   playTimeTracker: AU14JobCivilianCMBMarshal
   ranks:
-    RMCRankCMBMarshal: []
+    AU14RankCMBMarshal: []
   startingGear: AU14GearCivilianCMBMarshal
   icon: "RMCJobIconBureauMarshal"
   requireAdminNotify: true

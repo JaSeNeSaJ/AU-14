@@ -50,7 +50,7 @@
         RMCSkillSurgery: 1
         RMCSkillVehicles: 1
     - type: JobPrefix
-      prefix: PLTCO
+      prefix: au14-job-prefix-AU14JobGOVFORPlatCoUPP
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi

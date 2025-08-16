@@ -244,6 +244,14 @@
         amount: 20
       - id: RMCHelmetGarbGasmaskDesert
         amount: 20
+    - name: Patches
+      entries:
+      - id: AU14PatchUAFlag
+        amount: 20
+      - id: AU14PatchUSFlag
+        amount: 20
+      - id: AU14PatchUSCM
+        amount: 20
 
 - type: entity
   parent: ColMarTechBase

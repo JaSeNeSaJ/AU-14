@@ -1,16 +1,20 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobGOVFORSquadRiflemanUPP
-  name: Rifleman
+  id: AU14JobGOVFORSquadRiflemanCMBCIU
+  name: Tactical Officer
   description: au14-job-description-govforsquadrifleman
   setPreference: false
-  playTimeTracker: AU14JobGOVFORSquadRiflemanUPP
+  playTimeTracker: AU14JobGOVFORSquadRiflemanCMBCIU
   ranks:
-    UPP_Yefreytor:
+    AU14RankCMBSrDeputy:
     - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSquadRiflemanUPP
+      role: AU14JobGOVFORSquadRiflemanCMBCIU
       time: 1800 # 30 hours
-    UPP_Ryadovoy: []
+    AU14RankCMBDeputy:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORSquadRiflemanCMBCIU
+      time: 120 # 2 hours
+    AU14RankCMBProbDeputy: []
   startingGear: AU14GearGOVFORSquadRifleman
   dummyStartingGear: AU14GearGOVFORRiflemanDummy
   icon: "AU14JobIconRFN"
@@ -34,7 +38,7 @@
         RMCSkillVehicles: 1
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanUPP
+      prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanCMBCIU
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
@@ -42,5 +46,5 @@
   hidden: false
 
 - type: playTimeTracker
-  id: AU14JobGOVFORSquadRiflemanUPP
+  id: AU14JobGOVFORSquadRiflemanCMBCIU
   isHumanoid: true

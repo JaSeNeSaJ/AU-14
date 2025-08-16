@@ -1,16 +1,12 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobGOVFORSectionSergeantUPP
-  name: Platoon Leader
+  id: AU14JobGOVFORSectionSergeantCMBCIU
+  name: Unit Leader
   description: au14-job-description-govforSSG
   setPreference: false
-  playTimeTracker: AU14JobGOVFORSectionSergeantUPP
+  playTimeTracker: AU14JobGOVFORSectionSergeantCMBCIU
   ranks:
-    UPP_Plutonowy:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSectionSergeantUPP
-      time: 1800 # 30 hours
-    UPP_StarschySerzhant: []
+    AU14RankCMBChiefDeputy: []
   startingGear: AU14GearGOVFORSectionSergeant
   dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy
   icon: "AU14JobIconPlatoonSarge"
@@ -41,7 +37,7 @@
         RMCSkillVehicles: 1
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantUPP
+      prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantCMBCIU
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
@@ -50,5 +46,5 @@
   hidden: false
 
 - type: playTimeTracker
-  id: AU14JobGOVFORSectionSergeantUPP
+  id: AU14JobGOVFORSectionSergeantCMBCIU
   isHumanoid: true

@@ -34,7 +34,7 @@
         RMCSkillJtac: 3
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: RTO
+      prefix: au14-job-prefix-AU14JobGOVFORRadioTelephoneOperatorUPP
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
