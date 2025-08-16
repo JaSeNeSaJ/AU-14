@@ -17,7 +17,7 @@
         amount: 25
     - name: Footwear
       entries:
-      - id: RMCShoesJackbootsFilled
+      - id: RMCBootsSPPFilled
         amount: 25
     - name: Gloves
       entries:
@@ -46,10 +46,6 @@
       - id: AU14UPPBoonie
         amount: 25
       - id: AU14UPPUshanka
-        amount: 25
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
         amount: 25
     - name: Heads Up Display
       entries:
@@ -171,6 +167,12 @@
       - id: AU14GlassesBiMexOrange
         amount: 20
       - id: RMCGlassesTriMaxBronze
+        amount: 20
+    - name: Patches
+      entries:
+      - id: AU14PatchUPP
+        amount: 20
+      - id: AU14PatchUPPNavalInfantry
         amount: 20
 
 - type: entity
@@ -413,15 +415,13 @@
       entries:
       - id: AU14UPPFatigues
         amount: 2
-      - id: RMCShoesJackbootsFilled
+      - id: RMCBootsSPPFilled
         amount: 2
       - id: CMHandsBrown
         amount: 2
       - id: AU14PVEHandsFingerlessBlackGloves
         amount: 2
       - id: AU14PVEHandsFingerlessBrownGloves
-        amount: 2
-      - id: AU14HeadsetSectionLeader
         amount: 2
     - name: Webbings
       entries:
@@ -624,13 +624,11 @@
         amount: 2
     - name: Headgear
       entries:
+      - id: CMHeadCapSPPPeaked
+        amount: 2
       - id: CMHeadCapSPPBeret
         amount: 2
       - id: CMHeadCapSPPUshankaCivilian
-        amount: 2
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
         amount: 2
     - name: Pouches
       entries:
@@ -680,10 +678,6 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
-        amount: 1
     - name: Apparel
       entries:
       - id: CMHeadCapSPPBeret
