@@ -42,3 +42,11 @@
   hostile:
   - RMCXeno
   - AUGoo
+
+- type: npcFaction
+  id: AUOpfor
+  hostile:
+  - RMCXeno
+  - AUCLF
+  - AUGovfor
+  - AUGoo

@@ -6,10 +6,7 @@
   setPreference: false
   playTimeTracker: CMJobSquadLeader
   ranks:
-    RMCRankGunnerySergeant:
-    - !type:RoleTimeRequirement
-      role: CMJobSquadLeader
-      time: 90000 # 25 hours
+    RMCRankGunnerySergeant: []
     RMCRankStaffSergeant: []
   startingGear: CMGearSquadLeader
   dummyStartingGear: CMGearSquadLeaderEquipped
