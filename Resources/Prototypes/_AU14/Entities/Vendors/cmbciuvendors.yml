@@ -37,6 +37,8 @@
         amount: 15
       - id: AU14WebbingDropPouch
         amount: 15
+      - id: RMCWebbingLegPouchBlack
+        amount: 15
     - name: Headgear
       entries:
       - id: RMCArmorHelmetM10CMB
