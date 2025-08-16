@@ -56,3 +56,31 @@ AU14JobGOVFORRadioTelephoneOperator = Radio Telephone Operator
 au14-job-name-radiotelephoneoperator = Radio Telephone Operator
 au14-job-description-radiotelephoneoperator = Operate long-range comms. You're the link between command and the boots. Don’t drop it.
 au14-job-prefix-radiotelephoneoperator = RTO
+
+au14-job-prefix-AU14JobGOVFORPlatCoWYPMC = OPDIR
+au14-job-prefix-AU14JobGOVFORPlatoonCorpsmanWYPMC = CLS
+au14-job-prefix-AU14JobGOVFORDCCWYPMC = DCC
+au14-job-prefix-AU14JobGOVFORPlatOpWYPMC = OPADJ
+au14-job-prefix-AU14JobGOVFORDSPilotWYPMC = PO
+au14-job-prefix-AU14JobGOVFORRadioTelephoneOperatorWYPMC = COMS
+au14-job-prefix-AU14JobGOVFORSectionSergeantWYPMC = PLDFR
+au14-job-prefix-AU14JobGOVFORSquadAutomaticRiflemanWYPMC = SG
+au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC = CNTR
+au14-job-prefix-AU14JobGOVFORSquadSergeantWYPMC = SL
+
+au14-job-prefix-AU14JobGOVFORPlatCoUPP = PLTCO
+au14-job-prefix-AU14JobGOVFORPlatoonCorpsmanUPP = FMDC
+au14-job-prefix-AU14JobGOVFORDCCUPP = DCC
+au14-job-prefix-AU14JobGOVFORPlatOpUPP = CMSR
+au14-job-prefix-AU14JobGOVFORDSPilotUPP = DP
+au14-job-prefix-AU14JobGOVFORRadioTelephoneOperatorUPP = RTO
+au14-job-prefix-AU14JobGOVFORSectionSergeantUPP = PLDR
+au14-job-prefix-AU14JobGOVFORSquadAutomaticRiflemanUPP = MG
+au14-job-prefix-AU14JobGOVFORSquadRiflemanUPP = RFN
+au14-job-prefix-AU14JobGOVFORSquadSergeantUPP = SL
+
+au14-job-prefix-AU14JobGOVFORPlatCoCMBCIU = MRSHL
+au14-job-prefix-AU14JobGOVFORPlatoonCorpsmanCMBCIU = TACMED
+au14-job-prefix-AU14JobGOVFORSectionSergeantCMBCIU = ULDR
+au14-job-prefix-AU14JobGOVFORSquadRiflemanCMBCIU = OFF
+au14-job-prefix-AU14JobGOVFORSquadSergeantCMBCIU = TLDR
