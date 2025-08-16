@@ -38,7 +38,6 @@
 
 - type: platoon
   id: UPP
-  name: UPP Platoon
   reqlist: UPPBasic
   language: russian
   name: UPP Naval Infantry Platoon
