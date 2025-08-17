@@ -9,7 +9,7 @@
 - type: npcFaction
   id: AUGoo
   hostile:
-  - AUGovfor
+  - GOVFOR
   - AUUpp
   - AUWeYu
   - AUColonist
@@ -24,7 +24,7 @@
 - type: npcFaction
   id: AUCLF
   hostile:
-  - AUGovfor
+  - GOVFOR
 
 - type: npcFaction
   id: AUWeYu

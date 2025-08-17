@@ -15,7 +15,7 @@
 
 - type: entity
   parent: CMEncryptionKey
-  id: AU14EncryptionKeyopforCommand
+  id: AU14EncryptionKeyopforcommand
   name: opfor command encryption key
   description: An encryption key used to communicate on all opfor channels.
   components:
