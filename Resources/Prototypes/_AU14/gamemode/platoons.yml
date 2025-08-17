@@ -33,9 +33,6 @@
     Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
-  jobClassOverride:
-      SquadRifleman: RMCSPPRifleman
-      DSPilot: RMCSPPPilot
   possibleships:
       - Riptide
 
@@ -110,14 +107,10 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Riptide
-  jobClassOverride:
-    SquadRifleman: RMCSPPRifleman
-    DSPilot: RMCSPPPilot
-    SquadAutomaticRifleman: AU14JobCivilianColonyAdministrator
   jobSlotOverride:
     SquadRifleman: 12
     PlatoonCorpsman: 1
-    PlatoonCommander: 1
+    Pltaco: 1
     DSPilot: 1
 
 # Add more platoons as needed
