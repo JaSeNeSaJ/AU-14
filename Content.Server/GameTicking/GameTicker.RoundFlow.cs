@@ -688,7 +688,7 @@ namespace Content.Server.GameTicking
                 if (_distressSignal.SelectedPlanetMapName is { } planet &&
                     _distressSignal.OperationName is { } operation)
                 {
-                    var mapName = _gameMapManager.GetSelectedMap()?.MapName;
+                    var mapName = _auRoundSystem.GetSelectedPlanet()?.VoteName;
                     mapName ??= Loc.GetString("discord-round-notifications-unknown-map");
                     content = Loc.GetString("rmc-discord-round-notifications-end",
                         ("id", RoundId),

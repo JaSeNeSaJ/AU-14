@@ -9,6 +9,8 @@
   hostile:
   - UNMC
   - SPP
+  - GOVFOR
+  - OPFOR
   - Halcyon
   - WeYa
   - Civilian
@@ -18,6 +20,8 @@
 - type: npcFaction
   id: RMCDumb
   hostile:
+  - GOVFOR
+  - OPFOR
   - UNMC
   - RMCXeno
   - SPP

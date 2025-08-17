@@ -24,6 +24,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
     - type: Skills
       skills:
         RMCSkillEndurance: 1
@@ -45,7 +48,7 @@
   id: AU14GearGOVFORSquadRifleman
   equipment:
     id: AU14IDCardSquadRifleman
-
+    ears: AU14HeadsetSectionMarine
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORSquadRifleman
@@ -67,3 +70,4 @@
     shoes: AU14BootsJungle
     head: AU14JungleM10Helmet
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionMarine

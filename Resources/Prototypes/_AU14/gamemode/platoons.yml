@@ -33,6 +33,9 @@
     Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
+  jobClassOverride:
+      SquadRifleman: RMCSPPRifleman
+      DSPilot: RMCSPPPilot
   possibleships:
       - Riptide
 
@@ -55,7 +58,8 @@
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Riptide
-
+  jobClassOverride:
+    SquadRifleman: RMCSPPRifleman
 - type: platoon
   id: WEYU
   name: Weyland-Yutani PMC Platoon

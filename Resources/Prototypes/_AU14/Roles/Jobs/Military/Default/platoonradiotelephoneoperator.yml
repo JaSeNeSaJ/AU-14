@@ -29,6 +29,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
     - type: Skills
       skills:
         RMCSkillConstruction: 2
@@ -50,7 +53,7 @@
   id: AU14GearGOVFORRadioTelephoneOperator
   equipment:
     id: AU14JobIDCardGOVFORRadioTelephoneOperator
-
+    ears: AU14HeadsetSectionMarine
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORRadioTelephoneOperator
@@ -72,3 +75,4 @@
     shoes: CMBootsBrown
     head: AU14JungleBoonieHat
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionMarine

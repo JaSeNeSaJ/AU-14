@@ -33,6 +33,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 1
@@ -58,7 +61,7 @@
   id: AU14GearGOVFORDCC
   equipment:
     id: AU14IDCardGOVFORDCC
-
+    ears: AU14HeadsetSectionMarine
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORDCC
@@ -80,3 +83,4 @@
     shoes: CMBootsBrown
     head: AU14USASFAirCrewHelmet
     jumpsuit: AU14USASFPilotJumpsuit
+    ears: AU14HeadsetSectionMarine

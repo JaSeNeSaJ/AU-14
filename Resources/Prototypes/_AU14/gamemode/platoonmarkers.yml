@@ -47,6 +47,26 @@
       class: Dcc
 
 - type: entity
+  name: Opfor Weapons marker
+  id: VMarkerOpforWeapons
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    opfor: true
+    govfor: false
+    class: Weapons
+- type: entity
+  name: Opfor Clothing marker
+  id: VMarkerOpforClothing
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    opfor: true
+    govfor: false
+    class: Weapons
+
+
+- type: entity
   name: Opfor operations officer marker
   id: VMarkerOpforoperationsOfficer
   parent: Vmarker
@@ -476,6 +496,14 @@
     - type: VendorMarker
       ship: true
       class: Pilot
+- type: entity
+  name: Ship pilot marker
+  id: VMarkerShipWeapons
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: Weapons
 
 - type: entity
   name: Ship locked command door marker
@@ -512,3 +540,32 @@
     - type: VendorMarker
       ship: true
       class: LockedNormalDoor
+- type: entity
+  name: Govfor Overwatch Console Marker
+  id: VMarkerGovforOverwatchConsole
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: OverwatchConsole
+
+- type: entity
+  name: Opfor Overwatch Console Marker
+  id: VMarkerOpforOverwatchConsole
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: false
+    opfor: true
+    class: OverwatchConsole
+
+- type: entity
+  name: Ship Overwatch Console Marker
+  id: VMarkerShipOverwatchConsole
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: OverwatchConsole
+

@@ -43,8 +43,8 @@
       - Timer
   - type: Explosive
     explosionType: RMC
-    totalIntensity: 2000
-    intensitySlope: 2
+    totalIntensity: 1400
+    intensitySlope: 1.5
     maxIntensity: 80
     canCreateVacuum: false
   - type: ExplodeOnTrigger

@@ -9,9 +9,8 @@ game-ticker-pause-start = Round start has been paused.
 game-ticker-pause-start-resumed = Round start countdown is now resumed.
 game-ticker-player-join-game-message = Welcome to RMC14! If this is your first time playing, be sure to read the game rules, and don't be afraid to ask for help in LOOC (local OOC) or OOC (usually available only between rounds).
 game-ticker-get-info-text = Hi and welcome to [color=white]RMC14![/color]
-                            The current round is: [color=white]#{$roundId}[/color]
-                            The current player count is: [color=white]{$playerCount}[/color]
-                            The current ship is: [color=white]{$mapName}[/color]
+                            The current Govfor ship is: [color=white]{$mapName}[/color]
+                            The current Opfor ship is: [color=white]{$mapName}[/color]
                             The current planet is: [color=white]{$planetName}[/color]
                             The current game mode is: [color=white]{$gmTitle}[/color]
                             >[color=yellow]{$desc}[/color]
@@ -21,7 +20,9 @@ game-ticker-get-info-preround-text = Hi and welcome to [color=white]Alien Univer
                                 [one] is
                                 *[other] are
                             } ready)
-                            The current map is: [color=white]{$mapName}[/color]
+                            The current player count is: [color=white]{$playerCount}[/color]
+                            The current Govfor ship is: [color=white]{$mapName}[/color]
+                            The current Opfor ship is: [color=white]{$mapName}[/color]
                             The current planet is: [color=white]{$planetName}[/color]
                             The current game mode is: [color=white]{$gmTitle}[/color]
                             >[color=yellow]{$desc}[/color]

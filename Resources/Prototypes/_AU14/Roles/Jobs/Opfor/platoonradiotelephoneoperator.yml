@@ -29,6 +29,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillConstruction: 2
@@ -50,6 +53,7 @@
   id: AU14GearopforRadioTelephoneOperator
   equipment:
     id: AU14JobIDCardopforRadioTelephoneOperator
+    ears: AU14HeadsetSectionMarine
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -72,3 +76,4 @@
     shoes: CMBootsBrown
     head: AU14JungleBoonieHat
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionOpfor

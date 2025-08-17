@@ -24,6 +24,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillEndurance: 1
@@ -45,6 +48,7 @@
   id: AU14GearopforSquadRifleman
   equipment:
     id: AU14IDCardopforSquadRifleman
+    ears: AU14HeadsetSectionMarine
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -67,3 +71,4 @@
     shoes: AU14BootsJungle
     head: AU14JungleM10Helmet
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionOpfor

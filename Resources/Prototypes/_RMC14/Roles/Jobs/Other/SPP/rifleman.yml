@@ -15,9 +15,6 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: NpcFactionMember
-      factions:
-      - SPP
     - type: Skills
       skills:
         RMCSkillFirearms: 1

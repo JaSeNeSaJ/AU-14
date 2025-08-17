@@ -332,3 +332,35 @@
     leaderIcon:
       sprite: _RMC14/Interface/cm_job_icons.rsi
       state: clf_sl
+
+- type: entity
+  parent: SquadBase
+  id: SquadGovfor
+  name: GOVFOR
+  components:
+  - type: SquadTeam
+    color: "#3C70FF"
+    radio: MarineAlpha
+    group: GOVFOR
+    minimapBackground:
+      sprite: _RMC14/Interface/map_blips.rsi
+      state: background_alpha
+    leaderIcon:
+      sprite: _RMC14/Interface/cm_job_icons.rsi
+      state: hudsquad_leader_a
+
+- type: entity
+  parent: SquadBase
+  id: SquadOpfor
+  name: OPFOR
+  components:
+  - type: SquadTeam
+    color: "#8c1002"
+    radio: opfor
+    group: OPFOR
+    minimapBackground:
+      sprite: _RMC14/Interface/map_blips.rsi
+      state: background_bravo
+    leaderIcon:
+      sprite: _RMC14/Interface/cm_job_icons.rsi
+      state: hudsquad_leader_a

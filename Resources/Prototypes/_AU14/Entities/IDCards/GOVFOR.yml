@@ -5,6 +5,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatCo
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
 - type: entity
   parent: CMIDCardBase
@@ -13,6 +15,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatOp
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
 - type: entity
   parent: CMIDCardBase
@@ -21,6 +25,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORDSPilot
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
 - type: entity
   parent: CMIDCardBase
@@ -29,6 +35,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORDCC
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
 - type: entity
   parent: CMIDCardBase
@@ -37,6 +45,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSectionSergeant
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
 - type: entity
   parent: CMIDCardBase
@@ -45,6 +55,9 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadSergeant
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
 
 - type: entity
   parent: CMIDCardBase
@@ -53,6 +66,9 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadRifleman
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
 
 - type: entity
   parent: CMIDCardBase
@@ -61,6 +77,9 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadAutomaticRifleman
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
 
 - type: entity
   parent: CMIDCardBase
@@ -69,6 +88,9 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatoonCorpsman
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
 
 - type: entity
   parent: CMIDCardBase
@@ -77,3 +99,45 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORRadioTelephoneOperator
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
+
+
+  #- type: ItemIFF
+  #  faction: FactionMarine
+
+- type: entity
+  id: FactionGOVFOR
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IFFFaction
+  - type: FactionFrequencies
+    channels:
+    - MarineCommand
+    - MarineMedical
+    - MarineEngineer
+    - MarineMilitaryPolice
+    - MarineAlpha
+    - MarineBravo
+    - MarineCharlie
+    - MarineDelta
+    - MarineEcho
+    - MarineFoxtrot
+    - MarineRequisition
+    - MarineJTAC
+    - MarineIntel
+    - WEYA
+
+
+
+- type: entity
+  id: FactionOPFOR
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IFFFaction
+  - type: FactionFrequencies
+    channels:
+    - opfor
+    - opforCommand
+    - opforjtac
