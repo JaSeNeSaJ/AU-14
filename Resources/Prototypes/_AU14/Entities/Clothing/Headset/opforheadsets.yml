@@ -19,11 +19,6 @@
   name: opfor command encryption key
   description: An encryption key used to communicate on all opfor channels.
   components:
-  - type: GrantSquadLeaderTracker
-    defaultMode: CommandingOfficer
-    trackerModes:
-    - SquadLeader
-    - FireteamLeader
   - type: EncryptionKey
     channels:
     - opfor
