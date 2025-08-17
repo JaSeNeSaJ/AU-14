@@ -187,6 +187,17 @@
       class: SWeapons
 
 - type: entity
+  name: Opfor special weapons marker
+  id: VMarkerOpforSWeapons
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: false
+    opfor: true
+    class: SWeapons
+
+
+- type: entity
   name: Gov Arifleman marker
   id: VMarkerGovforAutomaticRifleman
   parent: Vmarker
@@ -568,4 +579,14 @@
   - type: VendorMarker
     ship: true
     class: OverwatchConsole
+
+
+- type: entity
+  name: Ship Sweapons  Marker
+  id: VMarkerShipSweapons
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: SWeapons
 
