@@ -61,7 +61,7 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - AU14EncryptionKeyopforCommand
+      - AU14EncryptionKeyopforcommand
 
 - type: entity
   parent: CMEncryptionKey
