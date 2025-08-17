@@ -24,6 +24,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -54,7 +57,7 @@
   id: AU14GearGOVFORPlatCo
   equipment:
     id: AU14IDCardGOVFORPlatCo
-
+    ears: AU14HeadsetSectionLeader
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORPlatCo
@@ -75,3 +78,4 @@
     shoes: CMBootsBlack
     head: CMHeadCapPeakedFormal
     jumpsuit: CMJumpsuitXOFormal
+    ears: AU14HeadsetSectionLeader

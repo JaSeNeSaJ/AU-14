@@ -4,7 +4,7 @@
     - forceonforce
   name: Force on Force
   showInVote: true
-  description: Force on Force mode
+  description: Two units face each other in combat
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:

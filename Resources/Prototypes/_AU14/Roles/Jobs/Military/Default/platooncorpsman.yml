@@ -25,6 +25,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 1
@@ -47,7 +50,7 @@
   id: AU14GearGOVFORPlatoonCorpsman
   equipment:
     id: AU14JobIDCardGOVFORPlatoonCorpsman
-
+    ears: AU14HeadsetSectionMarine
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORPlatoonCorpsman
@@ -70,3 +73,4 @@
     shoes: CMBootsBlack
     head: AU14JungleM10CorpsmanHelmet
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionMarine

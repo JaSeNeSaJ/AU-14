@@ -21,6 +21,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillConstruction: 2
@@ -42,6 +45,7 @@
   id: AU14GearopforSquadSergeant
   equipment:
     id: AU14IDCardopforSquadSergeant
+    ears: AU14HeadsetSectionLeaderopfor
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -64,3 +68,4 @@
     shoes: CMBootsBrown
     head: AU14JungleBoonieHat
     jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetSectionLeaderopfor

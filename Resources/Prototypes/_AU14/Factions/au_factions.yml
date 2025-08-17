@@ -1,14 +1,15 @@
 ﻿- type: npcFaction
-  id: AUGovfor
+  id: GOVFOR
   hostile:
   - RMCXeno
   - AUCLF
   - AUGoo
+  - OPFOR
 
 - type: npcFaction
   id: AUGoo
   hostile:
-  - AUGovfor
+  - GOVFOR
   - AUUpp
   - AUWeYu
   - AUColonist
@@ -23,7 +24,7 @@
 - type: npcFaction
   id: AUCLF
   hostile:
-  - AUGovfor
+  - GOVFOR
 
 - type: npcFaction
   id: AUWeYu
@@ -44,9 +45,9 @@
   - AUGoo
 
 - type: npcFaction
-  id: AUOpfor
+  id: OPFOR
   hostile:
   - RMCXeno
   - AUCLF
-  - AUGovfor
+  - GOVFOR
   - AUGoo

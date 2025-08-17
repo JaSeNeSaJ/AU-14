@@ -18,8 +18,12 @@
   - Rifleman
   roleWeight: 0.25
   special:
+
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -50,6 +54,7 @@
   id: AU14GearopforPlatOp
   equipment:
     id: AU14IDCardopforPlatOp
+    ears: AU14HeadsetSectionLeaderopfor
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -71,3 +76,4 @@
     shoes: CMBootsBlack
     head: AU14JunglePatrolCap
     jumpsuit: CMJumpsuitXOFormal
+    ears: AU14HeadsetSectionLeaderopfor

@@ -5,7 +5,6 @@
   description: au14-job-description-opforplatco
   setPreference: true
   canBeAntag: false
-
   playTimeTracker: AU14JobOpforPlatCo
   ranks:
     RMCRankCaptain:
@@ -25,6 +24,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -55,6 +57,7 @@
   id: AU14GearopforPlatCo
   equipment:
     id: AU14IDCardopforPlatCo
+    ears: AU14HeadsetSectionLeaderopfor
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -76,3 +79,4 @@
     shoes: CMBootsBlack
     head: CMHeadCapPeakedFormal
     jumpsuit: CMJumpsuitXOFormal
+    ears: AU14HeadsetSectionLeaderopfor

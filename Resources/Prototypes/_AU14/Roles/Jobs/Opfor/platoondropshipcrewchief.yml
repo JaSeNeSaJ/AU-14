@@ -32,6 +32,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 1
@@ -57,6 +60,7 @@
   id: AU14GearopforDCC
   equipment:
     id: AU14IDCardopforDCC
+    ears: AU14HeadsetSectionLeaderopfor
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -79,3 +83,4 @@
     shoes: CMBootsBrown
     head: AU14USASFAirCrewHelmet
     jumpsuit: AU14USASFPilotJumpsuit
+    ears: AU14HeadsetSectionOpfor

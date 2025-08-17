@@ -59,3 +59,41 @@
   - type: Sprite
     overrideDir: South
     enableOverrideDir: false
+
+# Govfor
+- type: entity
+  parent: RMCOverwatchConsole
+  id: RMCOverwatchConsoleGovfor
+  suffix: Govfor
+  components:
+  - type: OverwatchConsole
+    canOrbitalBombardment: false
+    group: GOVFOR
+
+- type: entity
+  parent: RMCOverwatchConsoleGovfor
+  id: RMCOverwatchConsoleGovforRotating
+  suffix: Govfor, Rotating
+  components:
+  - type: Sprite
+    overrideDir: South
+    enableOverrideDir: false
+
+# Opfor
+- type: entity
+  parent: RMCOverwatchConsole
+  id: RMCOverwatchConsoleOpfor
+  suffix: Opfor
+  components:
+  - type: OverwatchConsole
+    canOrbitalBombardment: false
+    group: OPFOR
+
+- type: entity
+  parent: RMCOverwatchConsoleOpfor
+  id: RMCOverwatchConsoleOpforRotating
+  suffix: Opfor, Rotating
+  components:
+  - type: Sprite
+    overrideDir: South
+    enableOverrideDir: false

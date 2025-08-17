@@ -15,7 +15,7 @@
 
 - type: entity
   parent: CMEncryptionKey
-  id: AU14EncryptionKeyopforCommand
+  id: AU14EncryptionKeyopforcommand
   name: opfor command encryption key
   description: An encryption key used to communicate on all opfor channels.
   components:
@@ -33,6 +33,11 @@
   name: opfor section radio headset
   description: This is used by opfor personnel to communicate on the radio.
   components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: CommandingOfficer
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
   - type: Sprite
     state: generic_headset
   - type: ContainerFill
@@ -46,12 +51,17 @@
   name: opfor command radio headset
   description: This is used by opfor command members to communicate on the radio.
   components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: CommandingOfficer
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
   - type: Sprite
     state: generic_headset
   - type: ContainerFill
     containers:
       key_slots:
-      - AU14EncryptionKeyopforCommand
+      - AU14EncryptionKeyopforcommand
 
 - type: entity
   parent: CMEncryptionKey
@@ -59,6 +69,11 @@
   name: opfor JTAC encryption key
   description: An encryption key used to communicate on JTAC  channels.
   components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: CommandingOfficer
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
   - type: EncryptionKey
     channels:
     - opforjtac
