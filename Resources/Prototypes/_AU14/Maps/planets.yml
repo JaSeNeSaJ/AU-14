@@ -57,10 +57,10 @@
     platoonsOpfor:
     - UPP
     - WEYU
-    - LACN
     platoonsGovfor:
     - LACN
     - USCM
+    - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false

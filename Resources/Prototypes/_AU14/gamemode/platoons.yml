@@ -33,6 +33,7 @@
     Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
+
   possibleships:
       - Riptide
 
@@ -56,7 +57,19 @@
   possibleships:
       - Riptide
   jobClassOverride:
-    SquadRifleman: RMCSPPRifleman
+    SquadRifleman: Au14JobGOVFORSquadRiflemanUPP
+    SectionSergeant: AU14JobGOVFORSectionSergeantUPP
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanUPP
+    PlatCo: AU14JobGOVFORPlatCoUPP
+    SquadSergeant: AU14JobGOVFORSquadSergeantUPP
+    DSPilot: AU14JobGOVFORDSPilotUPP
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanUPP
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorUPP
+    PlatOp: AU14JobGOVFORPlatOpUPP
+    DCC: AU14JobGOVFORDCCUPP
+
+
+
 - type: platoon
   id: WEYU
   name: Weyland-Yutani PMC Platoon
@@ -72,6 +85,19 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14WYsupervisorequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
+    SectionSergeant: AU14JobGOVFORSectionSergeantWYPMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanWYPMC
+    PlatCo: AU14JobGOVFORPlatCoWYPMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantWYPMC
+    DSPilot: AU14JobGOVFORDSPilotWYPMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanWYPMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
+    PlatOp: AU14JobGOVFORPlatOpWYPMC
+    DCC: AU14JobGOVFORDCCWYPMC
+
+
   possibleships:
       - Riptide
 
@@ -90,6 +116,19 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14CMBCIUSectionLeader
     Pilot: AU14UPPAirCrewWeaponsVendor
+  jobClassOverride:
+    PlatCo: AU14JobGOVFORPlatCoCMBCIU
+    SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanCMBCIU
+    SquadSergeant: AU14JobGOVFORSectionSergeantCMBCIU
+    SectionSergeant: AU14JobGOVFORSectionSergeantCMBCIU
+  jobSlotOverride:
+    SquadRifleman: 14
+    PlatoonCorpsman: 2
+    SquadSergeant: 1
+    PlatCo: 1
+ #  DSPilot: 1
+    SectionSergeant: 1
   possibleships:
       - Riptide
 
