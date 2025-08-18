@@ -797,7 +797,7 @@
         amount: 4
     - name: NSG 23 Assault Rifle
       entries:
-      - id: WeaponRifleSSG45
+      - id: RMCWeaponRifleSSG45NoLock
         amount: 1
       - id: RMCMagazineRifleSSG45
         amount: 12

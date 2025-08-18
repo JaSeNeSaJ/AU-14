@@ -804,9 +804,9 @@
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: M79 grenade launcher
+    - name: M85A1 grenade launcher
       entries:
-      - id: CMWeaponLauncherM79
+      - id: RMCWeaponLauncherM85A1
         amount: 1
       - id: RMCPacketGrenadeM74AGMSHornetFilled
         amount: 4
