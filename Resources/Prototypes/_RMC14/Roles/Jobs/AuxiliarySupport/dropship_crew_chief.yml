@@ -6,7 +6,7 @@
   setPreference: false
   playTimeTracker: CMJobDropshipCrewChief
   ranks:
-    RMCRankChiefWarrantOfficer:
+    RMCRankWarrantOfficer:
     - !type:RoleTimeRequirement
       role: CMJobDropshipCrewChief
       time: 630000 # 175 hours
@@ -31,6 +31,7 @@
     components:
     - type: Skills
       skills:
+        RMCSkillEndurance: 1
         RMCSkillEngineer: 2
         RMCSkillFirearms: 1
         RMCSkillFireman: 1
@@ -48,10 +49,10 @@
       prefix: cm-job-prefix-dcc
     - type: TacticalMapIcon
       icon:
-        sprite: _RMC14/Interface/map_blips.rsi
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: dcc
       background:
-        sprite: _RMC14/Interface/map_blips.rsi
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_shipside
   hidden: false
 

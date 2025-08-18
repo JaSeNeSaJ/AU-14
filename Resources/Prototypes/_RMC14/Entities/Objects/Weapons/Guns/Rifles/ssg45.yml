@@ -1,8 +1,9 @@
 ﻿- type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
-  name: NSG 23 Assault Rifle
-  id: WeaponRifleSSG45
-  description: Developed by Weyland-Yutani as a modern successor to the aging M4 platform, the NeuSturmGewehr is engineered for precision mid-to-long range combat. Chambered in 7x62mm caseless rounds, it offers superior stopping power and ammunition efficiency compared to the M41A MK2, while maintaining comparable performance in close-quarters engagements. Weyland-Yutani’s PMC forces found the USCM’s M41A increasingly ill-suited to their operational demands, particularly in extended-range missions where precision and firepower were paramount. This dissatisfaction prompted Weyland-Yutani’s R&D division to design the SSG, tailoring it to meet the specific needs of their operatives.
+  id: RMCWeaponRifleSSG45NoLock
+  name: SSG-45 Assault Rifle
+  description: Developed by Weston-Yamada as a modern successor to the aging M5 platform, the SpezialSturmGewehr is engineered for precision mid-to-long range combat. The primary rifle of the Weston-Yamada PMCs.
+  suffix: No ID Lock
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Rifles/ssg45/ssg45_inhands.rsi
@@ -12,9 +13,6 @@
     - state: bolt-open
       sprite: _RMC14/Objects/Weapons/Guns/Rifles/ssg45/ssg45_icon.rsi
       map: [ "enum.GunVisualLayers.Base" ]
-    - sprite: _RMC14/Objects/Weapons/Guns/Attachments/barrel.rsi
-      state: d_ssg45_barrel
-      offset: 0.65, 0
     - state: mag-0
       sprite: _RMC14/Objects/Weapons/Guns/Rifles/ssg45/ssg45_icon.rsi
       map: [ "enum.GunVisualLayers.Mag" ]
@@ -59,7 +57,6 @@
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 1.5
     accuracyMultiplierUnwielded: 0.75
-  - type: GunIDLock
   - type: ItemSlots
     slots:
       gun_magazine:
@@ -95,12 +92,6 @@
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS84xTelescopicScope
           - RMCAttachmentS42xTelescopicMiniscope
-          - RMCAttachmentS42xAdvancedTelescopicMiniscope
-      rmc-aslot-stock:
-        locked: true
-        whitelist:
-          tags:
-          - RMCAttachmentSSG45Stock
       rmc-aslot-underbarrel:
         startingAttachable: RMCAttachmentMiniFlamethrower
         whitelist:
@@ -115,18 +106,69 @@
           - RMCAttachmentFlamer
   - type: AttachableHolderVisuals
     offsets:
-      rmc-aslot-barrel: 0.955, -0.03
-      rmc-aslot-rail: 0.085, 0.15
-      rmc-aslot-stock: -0.41, 0.00
-      rmc-aslot-underbarrel: 0.445, -0.365
+      rmc-aslot-barrel: 0.875, 0.095
+      rmc-aslot-rail: 0.185, 0.25
+      rmc-aslot-underbarrel: 0.32, -0.27
   - type: Tag
     tags:
     - RMCWeaponRifleSSG45
+  - type: RMCLoreExaminable
+    content: rmc-lore-examinable-ssg45
+
+- type: entity
+  parent: RMCWeaponRifleSSG45NoLock
+  id: RMCWeaponRifleSSG45
+  suffix: Has ID Lock
+  components:
+  - type: GunIDLock
+
+- type: entity
+  parent: RMCWeaponRifleSSG45NoLock
+  id: RMCWeaponRifleSSG45NoLockStripped
+  suffix: No ID Lock, Stripped
+  components:
+  - type: AttachableHolder
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        startingAttachable: null
+        whitelist:
+          tags:
+          - RMCAttachmentAngledGrip
+          - RMCAttachmentBipod
+          - RMCAttachmentFlashlightGrip
+          - RMCAttachmentGyroscopicStabilizer
+          - RMCAttachmentLaserSight
+          - RMCAttachmentVerticalGrip
+          - RMCAttachmentExtinguisher
+          - RMCAttachmentFlamer
+
+- type: entity
+  parent: RMCWeaponRifleSSG45NoLockStripped
+  id: RMCWeaponRifleSSG45Stripped
+  suffix: Has ID Lock, Stripped
+  components:
+  - type: GunIDLock
 
 - type: entity
   parent: CMMagazineRifleBase
   id: RMCMagazineRifleSSG45
-  name: "NSG 23 magazine (7x62mm)"
+  name: "SSG45 magazine (7x62mm)"
   components:
   - type: Tag
     tags:
@@ -153,7 +195,7 @@
 - type: entity
   parent: RMCMagazineRifleSSG45
   id: RMCMagazineRifleSSG45Extended
-  name: "NSG 23 extended magazine (7x62mm)"
+  name: "SSG45 extended magazine (7x62mm)"
   components:
   - type: Tag
     tags:
@@ -181,7 +223,7 @@
 - type: entity
   parent: RMCMagazineRifleSSG45
   id: RMCMagazineRifleSSG45AP
-  name: "NSG 23 AP magazine (7x62mm)"
+  name: "SSG45 AP magazine (7x62mm)"
   components:
   - type: Tag
     tags:
@@ -207,7 +249,7 @@
 - type: entity
   parent: RMCMagazineRifleSSG45
   id: RMCMagazineRifleSSG45HEAP
-  name: "NSG 23 HEAP magazine (7x62mm)"
+  name: "SSG45 HEAP magazine (7x62mm)"
   components:
   - type: Tag
     tags:
@@ -233,7 +275,7 @@
 - type: entity
   parent: RMCMagazineRifleSSG45
   id: RMCMagazineRifleSSG45Incend
-  name: "NSG 23 Incendiary magazine (7x62mm)"
+  name: "SSG45 Incendiary magazine (7x62mm)"
   components:
   - type: Tag
     tags:
