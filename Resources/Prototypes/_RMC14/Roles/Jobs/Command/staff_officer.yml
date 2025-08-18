@@ -26,6 +26,7 @@
     components:
     - type: Skills
       skills:
+        RMCSkillEndurance: 1
         RMCSkillConstruction: 2
         RMCSkillEngineer: 2
         RMCSkillFirearms: 1
@@ -49,10 +50,10 @@
     - type: CommandAccent
     - type: TacticalMapIcon
       icon:
-        sprite: _RMC14/Interface/map_blips.rsi
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: so
       background:
-        sprite: _RMC14/Interface/map_blips.rsi
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_command
 
 - type: startingGear

@@ -18,6 +18,7 @@
   requireAdminNotify: true
   hidden: false
   supervisors: nobody
+  jobPreviewEntity: RMCPlayerXenoQueenPreview
   accessGroups:
   - CMAccessXeno
   - CMAccessXenoQueen
@@ -25,3 +26,13 @@
 - type: playTimeTracker
   id: CMJobXenoQueen
   isXeno: true
+
+- type: entity
+  id: RMCPlayerXenoQueenPreview
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _RMC14/Mobs/Xenonids/Queen/queen.rsi
+    layers:
+    - state: alive
+      scale: 0.5, 0.5

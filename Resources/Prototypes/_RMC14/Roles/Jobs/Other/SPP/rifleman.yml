@@ -17,6 +17,7 @@
     components:
     - type: Skills
       skills:
+        RMCSkillEndurance: 1
         RMCSkillFirearms: 1
     - type: SquadArmorWearer
     - type: JobPrefix
