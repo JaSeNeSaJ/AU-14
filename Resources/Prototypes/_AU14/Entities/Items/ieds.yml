@@ -62,7 +62,7 @@
     - state: icon
       map: ["base"]
   - type: OnUseTimerTrigger
-    delay: 5
+    delay: 9
     delayOptions: [3, 4]
     initialBeepDelay: 2
     beepSound: /Audio/_AU14/IED/detonate.ogg
