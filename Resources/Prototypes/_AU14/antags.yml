@@ -113,6 +113,23 @@
   objective: roles-antag-fugitive-objective
   isCM: true
 
+- type: antag
+  id: ExpedTrailerRole
+  name: roles-antag-exped-traitor-name
+  antagonist: true
+  category: Prometheus Antags
+  setPreference: true
+  objective: roles-antag-exped-tratior-objective
+  isCM: true
+
+- type: antag
+  id: MonsterRole
+  name: monster-traitor-name
+  antagonist: true
+  category: Prometheus Antags
+  setPreference: true
+  objective: monster-traitor-objective
+  isCM: true
 
 - type: entity
   id: DrugDealer
