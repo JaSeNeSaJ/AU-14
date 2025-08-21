@@ -15,7 +15,7 @@
     objectivelevel: 1
     custompoints: 100
     final: false
-    maxrepeating: 3
+    maxrepeatable: 3
     ObjectiveDescription: "Acquire Steel Ore"
   - type: FetchObjective
     entitytospawn: SteelOre
