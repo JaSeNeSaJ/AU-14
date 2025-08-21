@@ -237,9 +237,9 @@
       - CMActionGhost
   - type: Destructible
     thresholds: [ ]
-#  - type: NpcFactionMember
-  #  factions:
- #   - UNMC
+  - type: NpcFactionMember
+    factions:
+    - AUColonist
   - type: RMCNightVisionVisible
   - type: CrashLandable
   - type: StunShakeable

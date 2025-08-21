@@ -55,7 +55,7 @@
   alias:
     - jailbreak
   name: Jailbreak
-  showInVote: false
+  showInVote: true
   description: Jailbreak mode
   rules:
     - AuVoteRule
@@ -65,7 +65,7 @@
   alias:
     - prometheus
   name: Prometheus
-  showInVote: false
+  showInVote: true
   description: Prometheus mode
   rules:
     - AuVoteRule
