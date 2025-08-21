@@ -8,7 +8,7 @@
   - AU14AccessOpforFTL
   - AU14AccessOpforMedical
   #- AU14AccessOpforEngineering
-  - AU14AccessOpforSmart
+  - AU14AccessOpforGunner
   - AU14AccessOpforPilot
 
 - type: accessGroup
