@@ -31,6 +31,19 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AU14\ObjectiveConsole\Systems\" />
     <Folder Include="AU14\Wanted\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="AU14\ObjectiveConsole\CriminalRecordsConsoleWindow.xaml.cs">
+      <DependentUpon>ObjectivesConsoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="AU14\Objectives\ObjectivesConsoleWindow.xaml.cs">
+      <DependentUpon>ObjectivesConsoleWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="AU14\Objectives\ObjectiveIntelWindow.xaml.cs">
+      <DependentUpon>ObjectiveIntelWindow.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
