@@ -19,7 +19,9 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
-  - augovforpilot
+  - AU14GovforPilot
+  - AU14GovforCorpsman
+  - AU14GovforSquad
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial

@@ -19,7 +19,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
-  - FTL
+  - AU14GovforFTL
   overwatchSortPriority: -5
   overwatchRoleName: Squad Sergeant
   roleWeight: 0.25

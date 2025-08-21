@@ -22,7 +22,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:
-  - FTL
+  - AU14OpforFTL
   overwatchSortPriority: -5
   overwatchRoleName: Radio Telephone Operator
   roleWeight: 0.25

@@ -19,7 +19,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opforplatco
   accessGroups:
-  - Rifleman
+  - AU14OpforCommand
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial
