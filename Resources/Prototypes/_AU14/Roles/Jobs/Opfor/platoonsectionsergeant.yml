@@ -23,7 +23,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:
-  - SquadLeader
+  - AU14OpforCommand
   overwatchSortPriority: -6
   overwatchShowName: true
   overwatchRoleName: Platoon Sergeant

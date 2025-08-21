@@ -18,7 +18,8 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
-  - HospitalCorpsman
+  - AU14GovforCorpsman
+  - AU14GovforSquad
   overwatchSortPriority: -2
   overwatchRoleName: Hospital Corpsmen
   roleWeight: 0.25

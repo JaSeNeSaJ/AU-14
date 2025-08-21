@@ -22,7 +22,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
-  - Rifleman
+  - AU14OpforSquad
   hasIcon: false
   roleWeight: 0.25
   special:

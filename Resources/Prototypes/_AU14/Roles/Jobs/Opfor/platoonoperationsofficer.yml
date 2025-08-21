@@ -15,7 +15,7 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:
-  - Rifleman
+  - AU14OpforCommand
   roleWeight: 0.25
   special:
 

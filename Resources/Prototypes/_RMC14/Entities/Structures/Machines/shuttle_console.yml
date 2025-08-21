@@ -22,7 +22,7 @@
   - type: ActivatableUI
     key: enum.DropshipNavigationUiKey.Key
   - type: AccessReader
-    access: [ ["CMAccessSquadLeaderPrep"], [ "CMAccessDropship" ] ]
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessGovforPilot" ] ]
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
@@ -30,6 +30,15 @@
         type: DropshipNavigationBui
       enum.DropshipHijackerUiKey.Key:
         type: DropshipHijackerBui
+
+- type: entity
+  parent: CMComputerDropshipNavigation
+  id: CMComputerDropshipNavigationOpfor
+  name: dropship navigation computer
+  suffix: Opfor
+  components:
+  - type: AccessReader
+    access: [ [ "AU14AccessOpforFTL" ], [ "AU14AccessOpforPilot" ] ]
 
 - type: entity
   parent: CMComputerDropshipNavigation
@@ -93,7 +102,7 @@
   - type: ActivatableUI
     key: enum.DropshipNavigationUiKey.Key
   - type: AccessReader
-    access: [ ["CMAccessSquadLeaderPrep"], [ "CMAccessDropship" ] ]
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessGovforPilot" ] ]
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
@@ -131,7 +140,8 @@
   - type: ActivatableUI
     key: enum.DropshipTerminalWeaponsUi.Key
   - type: AccessReader
-    access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    #access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessGovforPilot" ] ]
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
@@ -145,15 +155,17 @@
 - type: entity
   parent: CMComputerDropship
   id: CMComputerDropshipWeaponsGovfor
-  name: weapons controls (govfor)
+  name: weapons controls
   description: A computer to manage equipment, weapons and simulations installed on the govfor dropship.
+  suffix: Govfor
   components:
   - type: Sprite
     state: consoleright
   - type: ActivatableUI
     key: enum.DropshipTerminalWeaponsUi.Key
   - type: AccessReader
-    access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    #access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessGovforPilot" ] ]
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
@@ -167,15 +179,17 @@
 - type: entity
   parent: CMComputerDropship
   id: CMComputerDropshipWeaponsOpfor
-  name: weapons controls (opfor)
+  name: weapons controls
   description: A computer to manage equipment, weapons and simulations installed on the opfor dropship.
+  suffix: Opfor
   components:
   - type: Sprite
     state: consoleright
   - type: ActivatableUI
     key: enum.DropshipTerminalWeaponsUi.Key
   - type: AccessReader
-    access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    #access: [ [ "CMAccessPilot" ], [ "CMAccessSquadLeaderPrep" ], [ "RMCAccessWeYaFlight" ] ]
+    access: [ [ "AU14AccessOpforFTL" ], [ "AU14AccessOpforPilot" ] ]
   - type: ActivatableUIRequiresAccess
   - type: UserInterface
     interfaces:
