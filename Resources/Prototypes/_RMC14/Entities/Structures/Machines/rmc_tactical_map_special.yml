@@ -17,10 +17,8 @@
   description: Tactical map for GOVFOR command use only.
   suffix: Govfor
   components:
-  - type: TacticalMapComputer
-    group: GOVFOR
-  - type: AccessReader
-    access: [["RMCAccessGovfor"]]
+  #- type: TacticalMapComputer
+   # group: GOVFOR
 
 # Opfor Tactical Map
 - type: entity
@@ -30,7 +28,7 @@
   description: Tactical map for OPFOR command use only.
   suffix: Opfor
   components:
-  - type: TacticalMapComputer
-    group: OPFOR
-  - type: AccessReader
-    access: [["RMCAccessOpfor"]]
+ # - type: TacticalMapComputer
+ #   group: OPFOR
+  #- type: AccessReader
+    #access: [["RMCAccessOpfor"]]

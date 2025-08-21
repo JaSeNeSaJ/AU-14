@@ -41,8 +41,6 @@
     radius: 1.5
     energy: 1.6
     color: "#1f8c28"
-  - type: AccessReader
-    access: [["Security"], ["CMAccessColonyBrig"]]
 
 - type: entity
   parent: RMCCommunicationsConsoleBase
@@ -62,8 +60,6 @@
     radius: 1.5
     energy: 1.6
     color: "#1f6c8c"
-  - type: AccessReader
-    access: [["Research"]]
 
 - type: entity
   parent: RMCCommunicationsConsoleBase
@@ -83,8 +79,6 @@
     radius: 1.5
     energy: 1.6
     color: "#8c1f1f"
-  - type: AccessReader
-    access: [["CLF"]]
 
 - type: entity
   parent: RMCCommunicationsConsoleBase
@@ -104,5 +98,4 @@
     radius: 1.5
     energy: 1.6
     color: "#8c8c1f"
-  - type: AccessReader
-    access: [["OPFOR"]]
+

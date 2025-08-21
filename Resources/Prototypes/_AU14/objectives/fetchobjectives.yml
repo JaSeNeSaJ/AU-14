@@ -14,7 +14,6 @@
     repeating: true
     objectivelevel: 1
     custompoints: 100
-    final: false
     maxrepeatable: 3
     ObjectiveDescription: "Acquire Steel Ore"
   - type: FetchObjective
