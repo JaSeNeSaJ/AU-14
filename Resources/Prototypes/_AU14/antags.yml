@@ -119,7 +119,7 @@
   antagonist: true
   category: Prometheus Antags
   setPreference: true
-  objective: roles-antag-exped-tratior-objective
+  objective: roles-antag-exped-traitor-objective
   isCM: true
 
 - type: antag

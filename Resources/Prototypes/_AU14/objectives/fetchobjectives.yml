@@ -1,0 +1,87 @@
+- type: entity
+  name: Fetch BlackBox Objecive
+  parent: MarkerBase
+  id: fetchoreobjective
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    factioneutral: true
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    repeating: true
+    objectivelevel: 1
+    custompoints: 100
+    final: false
+    maxrepeating: 3
+    ObjectiveDescription: "Acquire Steel Ore"
+  - type: FetchObjective
+    entitytospawn: SteelOre
+    markerentity: fetchoreobjectivemarker
+    amounttospawn: 10
+    amounttofetch: 4
+    useanyentity: true
+
+- type: entity
+  name: Fetch BlackBox Objecive Spawn Marker
+  parent: MarkerBase
+  id: fetchblackboxobjectivemarker
+  components:
+  - type: Sprite
+    state: red
+  - type: FetchObjectiveMarker
+    fetchid: FetchBlackBoxObjectiveMarker
+
+
+
+
+- type: entity
+  name: Fetch Generic Return point Opfor
+  parent: MarkerBase
+  id: fetchreturnopfor
+  components:
+    - type: Sprite
+      state: red
+    - type: FetchObjectiveReturnPoint
+      returnpointfaction: opfor
+      generic: true
+
+- type: entity
+  name: Fetch Generic Return point Govfor
+  parent: MarkerBase
+  id: fetchreturngovfor
+  components:
+  - type: Sprite
+    state: red
+  - type: FetchObjectiveReturnPoint
+    returnpointfaction: govfor
+    generic: true
+
+
+
+- type: entity
+  name: Fetch crown Objecive
+  parent: MarkerBase
+  id: fetchcrownobjective
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    factioneutral: false
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    repeating: false
+    objectivelevel: 3
+    custompoints: 100
+    roundEndMessage: Finding the Crown
+    ObjectiveDescription: "Retrieve the Crown Artifact"
+  - type: FetchObjective
+    entitytospawn: ClothingHeadHatXmasCrown
+    markerentity: FetchBlackBoxObjectiveMarker
+    amounttospawn: 1
+    amounttofetch: 1
+
