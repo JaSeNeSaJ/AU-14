@@ -27,12 +27,12 @@
 - type: entity
   name: Fetch BlackBox Objecive Spawn Marker
   parent: MarkerBase
-  id: fetchblackboxobjectivemarker
+  id: fetchoreobjectivemarker
   components:
   - type: Sprite
     state: red
   - type: FetchObjectiveMarker
-    fetchid: FetchBlackBoxObjectiveMarker
+    fetchid: fetchoreobjectivemarker
 
 
 
