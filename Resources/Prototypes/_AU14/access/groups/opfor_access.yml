@@ -27,7 +27,7 @@
   name: Opfor Squad Sergeant
 
 - type: accessLevel
-  id: AU14AccessOpforSmart
+  id: AU14AccessOpforGunner
   name: Opfor Smart Gun Operator
 
 - type: accessLevel

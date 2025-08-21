@@ -260,7 +260,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessMedical" ]
+    - [ "AU14AccessGovforMedical" ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/medical_gear.rsi
   - type: CMAutomatedVendor
@@ -395,7 +395,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14GovforCommand" ]
+    - [ "AU14AccessGovforCommand" ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmcommandclothes.rsi
   - type: CMAutomatedVendor
@@ -465,7 +465,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14GovforFTL" ]
+    - [ "AU14AccessGovforFTL" ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor

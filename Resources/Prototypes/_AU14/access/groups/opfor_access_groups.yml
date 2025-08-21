@@ -25,11 +25,11 @@
   - AU14AccessOpforPilot
 
 - type: accessGroup
-  id: AU14OpforSmartGunOperator
+  id: AU14OpforGunner
   tags:
   - AU14AccessOpfor
   - AU14AccessOpforSquad
-  - AU14AccessOpforSmart
+  - AU14AccessOpforGunner
 
 - type: accessGroup
   id: AU14OpforCorpsman
