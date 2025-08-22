@@ -6,7 +6,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforSquad" ]
+    - [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmgearrack.rsi
   - type: CMAutomatedVendor
@@ -176,7 +176,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforSquad" ]
+    - [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/assortedequipment.rsi
   - type: CMAutomatedVendor
@@ -264,7 +264,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforMedical" ]
+    - [ [ "AU14AccessGovforMedical" ], [ "AU14AccessOpforMedical" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/medical_gear.rsi
   - type: CMAutomatedVendor
@@ -403,7 +403,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "CMAccessPilot" ]
+    - [ [ "AU14AccessGovforPilot" ], [ "AU14AccessOpforPilot" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
@@ -600,7 +600,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforCommand" ]
+    - [ [ "AU14AccessGovforCommand" ], [ "AU14AccessOpforCommand" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmcommandclothes.rsi
   - type: CMAutomatedVendor
@@ -646,7 +646,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforGunner" ]
+    - [ [ "AU14AccessGovforGunner" ], [ "AU14AccessOpforGunner" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
   - type: CMAutomatedVendor
@@ -690,7 +690,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforFTL" ]
+    - [ [ "AU14AccessGovforFTL" ], [ "AU14AccessOpforFTL" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
@@ -728,7 +728,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforSquad" ]
+    - [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
   - type: CMAutomatedVendor
@@ -782,7 +782,7 @@
   components:
   - type: AccessReader
     access:
-    - [ "AU14AccessGovforSquad" ]
+    - [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
