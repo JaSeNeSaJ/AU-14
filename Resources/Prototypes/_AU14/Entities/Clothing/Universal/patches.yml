@@ -146,4 +146,72 @@
       sprite: _RMC14/Objects/Clothing/Accessory/Patches/SPP/spp_naval_patch.rsi
       state: helmet
 
-# to do: us_army_armor_patch.rsi | us_army_sapper_patch.rsi | us_army_spook_patch.rsi
+- type: entity
+  parent: RMCPatchBase
+  id: AU14PatchBrazilFlag
+  name: Brazil flag patch
+  description: A patch bearing the flag of Brazil.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/brazil_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/brazil_patch.rsi
+      state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14PatchBrazilUACGPatch
+  name: Brazilian UACG patch
+  description: A patch bearing the logo of brazilian UACG units.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/brazilunit_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/brazilunit_patch.rsi
+      state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14Patch525thAIB
+  name: 525th army intelligence brigade patch
+  description: "A patch bearing the logo of the United States Army's 525th Army Intelligence Brigade"
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/us_army_spook_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/us_army_spook_patch.rsi
+      state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14PatchUSCMEngineers
+  name: USCM combat engineering patch
+  description: "A fire-resistant shoulder patch, worn by the men and women of the 4th Combat Engineering Battalion, part of the USCM 2nd Colonial Support Group"
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/marine_sapper_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/marine_sapper_patch.rsi
+      state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14Patch32ndAB
+  name: 32nd army armor brigade patch
+  description: "A fire-resistant shoulder patch, worn by the men and women of the 32nd Armor Brigade."
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/us_army_armor_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/us_army_armor_patch.rsi
+      state: patch
