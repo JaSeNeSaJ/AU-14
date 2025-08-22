@@ -16,4 +16,14 @@ public sealed partial class DropshipDestinationComponent : Component
     public string FactionController = String.Empty;
 
 
+    [DataField("destinationtype")]
+    public  DestinationType Destinationtype = DestinationType.Dropship;
+
+
+    public enum DestinationType
+    {
+        Figher,
+        Dropship,
+        Bigship
+    }
 }

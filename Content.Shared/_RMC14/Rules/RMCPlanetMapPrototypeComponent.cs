@@ -87,6 +87,19 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
 
     [DataField("faction")]
     public string? Faction  = String.Empty;
+
+    [DataField("govforfighters")]
+    public int govforfighters = 1;
+
+    [DataField("opforfighters")]
+    public int opforfighters = 1;
+
+    [DataField("govfordropships")]
+    public int govfordropships = 1;
+
+    [DataField("opfordropships")]
+    public int opfordropships = 1;
+
 }
 
 [DataDefinition]
