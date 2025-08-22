@@ -1,0 +1,25 @@
+
+- type: entity
+  name: Capture the UA Flag
+  parent: AU14WallFlagUA
+  id: captureuaflagobjective
+  description: "Capture the United Americas flag for your faction."
+  components:
+    - type: AuObjective
+      factioneutral: true
+      applicableModes:
+        - ForceOnForce
+      possiblefactions:
+        - govfor
+        - opfor
+        - clf
+      objectivelevel: 2
+      custompoints: 50
+      ObjectiveDescription: "Capture the United Americas flag for your faction."
+      roundEndMessage: "By capturing the UA flag"
+    - type: CaptureObjective
+      hoisttime: 8
+      maxholdtimes: 3
+      pointincrementtime: 10
+      visibleonmap: true
+      flaghealth: 100
