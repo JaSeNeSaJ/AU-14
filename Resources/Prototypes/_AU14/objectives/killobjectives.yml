@@ -85,10 +85,10 @@
     possiblefactions:
     - govfor
     repeating: false
+    maxrepeatable: 2
     objectivelevel: 2
     custompoints: 20
     ObjectiveDescription: "Kill Insurgents"
   - type: KillObjective
     factiontokill: clf
-    maxrepeatable: 2
     amounttokill: 3
