@@ -40,6 +40,7 @@
     objectivelevel: 3
     custompoints: 20
     ObjectiveDescription: "kill the platco"
+    roundEndMessage: "By assasinating the Commander"
   - type: KillObjective
     factiontokill: govfor
     amounttokill: 1
