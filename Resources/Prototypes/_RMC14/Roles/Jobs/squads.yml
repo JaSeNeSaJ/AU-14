@@ -351,7 +351,8 @@
     color: "#1E90FF"
     radio: OpforIntel
     accessLevels:
-    - OpforAccessIntel
+    - AU14AccessOpfor
+    - AU14AccessGovfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_intel
@@ -366,7 +367,8 @@
     color: "#00CED1"
     radio: OpforBravo
     accessLevels:
-    - OpforAccessBravo
+    - AU14AccessOpfor
+    - AU14AccessGovfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_bravo
@@ -381,7 +383,8 @@
     color: "#FFD700"
     radio: OpforCharlie
     accessLevels:
-    - OpforAccessCharlie
+    - AU14AccessOpfor
+    - AU14AccessGovfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_charlie
@@ -397,7 +400,8 @@
     color: "#228B22"
     radio: GovforIntel
     accessLevels:
-    - GovforAccessIntel
+    - AU14AccessGovforSquad
+    - AU14AccessOpfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_intel
@@ -412,7 +416,8 @@
     color: "#32CD32"
     radio: GovforBravo
     accessLevels:
-    - GovforAccessBravo
+    - AU14AccessGovforSquad
+    - AU14AccessOpfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_bravo
@@ -427,7 +432,8 @@
     color: "#ADFF2F"
     radio: GovforCharlie
     accessLevels:
-    - GovforAccessCharlie
+    - AU14AccessGovforSquad
+    - AU14AccessOpfor
     minimapBackground:
      sprite: /Textures/_RMC14/Interface/map_blips.rsi
      state: background_charlie

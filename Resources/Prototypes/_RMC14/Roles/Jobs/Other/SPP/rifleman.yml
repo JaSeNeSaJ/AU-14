@@ -63,7 +63,7 @@
       role: CMJobRifleman
       time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
-    squad: SquadSPP
+
 
 - type: randomHumanoidSettings
   parent: RMCSPPRifleman
@@ -78,7 +78,7 @@
     raffle:
       settings: short
   - type: GhostRoleApplySpecial
-    squad: SquadSPP
+
 
 - type: startingGear
   id: RMCGearSPPRifleman

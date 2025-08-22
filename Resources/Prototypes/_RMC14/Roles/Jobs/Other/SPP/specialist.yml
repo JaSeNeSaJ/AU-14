@@ -74,7 +74,7 @@
       role: CMJobWeaponsSpecialist
       time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
-    squad: SquadSPP
+
 
 - type: randomHumanoidSettings
   parent: RMCSPPSpecialist
@@ -89,7 +89,7 @@
     raffle:
       settings: short
   - type: GhostRoleApplySpecial
-    squad: SquadSPP
+
 
 - type: startingGear
   id: RMCGearSPPSpecialist
