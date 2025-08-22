@@ -72,9 +72,9 @@
 
 
 - type: entity
-  name: Kill the CLF Leader
+  name: Kill the Insurgents
   parent: MarkerBase
-  id: killcelleaderobjective
+  id: killinsurgentsobjective
   components:
   - type: Sprite
     state: red
