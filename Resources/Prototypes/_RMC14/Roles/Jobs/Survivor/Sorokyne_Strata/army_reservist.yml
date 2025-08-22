@@ -56,7 +56,6 @@
     gloves: RMCHandsVeteran
     belt: RMCBeltSPPBrownHalfFill
     back: RMCSatchelLightpack5Slot
-    ears: RMCHeadsetSPP
     id: RMCIDSPP
     pocket1: RMCPouchSurvivalBlackFilled
     pocket2: RMCPouchFirstAidSPPArmyFill
@@ -98,4 +97,3 @@
     - [ RMCArmorHelmetSPPArmy, RMCOuterClothingExternalWebbingBrown, RMCMaskBalaclava]
     - [ RMCArmorHelmetSPPArmy, RMCMaskGasSPP]
     - [ RMCHeadCapSPPBeretArmy, RMCMaskGasSPP]
-

@@ -20,7 +20,7 @@
     components:
     - type: NpcFactionMember
       factions:
-      - AUCLF
+      - CLF
     - type: Skills
       skills:
         RMCSkillEndurance: 1

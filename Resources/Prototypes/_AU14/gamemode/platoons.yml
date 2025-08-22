@@ -15,6 +15,7 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Riptide
+  #platoonflag: uaflag
 
 - type: platoon
   id: USCM
@@ -33,6 +34,7 @@
     Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
+  #platoonflag:  uaflag
 
   possibleships:
       - Riptide

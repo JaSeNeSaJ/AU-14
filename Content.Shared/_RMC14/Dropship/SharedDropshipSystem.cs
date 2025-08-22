@@ -544,4 +544,16 @@ public abstract class SharedDropshipSystem : EntitySystem
 
         return dropship.Comp.State == FTLState.Travelling || dropship.Comp.State == FTLState.Arriving;
     }
+
+    /// <summary>
+    /// Safely sets the FactionController for a DropshipDestinationComponent and networks the change.
+    /// </summary>
+    public void SetFactionController(EntityUid uid, string faction)
+    {
+        if (EntityManager.TryGetComponent<DropshipDestinationComponent>(uid, out var comp))
+        {
+            comp.FactionController = faction;
+            EntityManager.Dirty(uid, comp);
+        }
+    }
 }

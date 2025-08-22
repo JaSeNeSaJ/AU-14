@@ -11,4 +11,9 @@ public sealed partial class DropshipDestinationComponent : Component
 
     [DataField, AutoNetworkedField]
     public bool AutoRecall;
+
+    [DataField("FactionControlling", required: false), AutoNetworkedField]
+    public string FactionController = String.Empty;
+
+
 }

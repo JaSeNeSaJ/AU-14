@@ -404,8 +404,22 @@ public sealed class DropshipSystem : SharedDropshipSystem
             NetEntity? flyBy = null;
             var destinations = new List<Destination>();
             var query = EntityQueryEnumerator<DropshipDestinationComponent>();
+
+            string? whitelistedFaction = null;
+            if (TryComp(computer.Owner, out Content.Server.AU14.Round.WhitelistedShuttleComponent? whitelistComp) && !string.IsNullOrEmpty(whitelistComp.Faction))
+            {
+                whitelistedFaction = whitelistComp.Faction.ToLowerInvariant();
+            }
+
+
             while (query.MoveNext(out var uid, out var comp))
             {
+                if (!string.IsNullOrEmpty(comp.FactionController))
+                {
+                    if (string.IsNullOrEmpty(whitelistedFaction) || comp.FactionController.ToLowerInvariant() != whitelistedFaction)
+                        continue;
+                }
+
                 var netDestination = GetNetEntity(uid);
                 if (comp.Ship == grid)
                 {

@@ -13,7 +13,7 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 5
+        damage: 100000
       behaviors:
       - !type:PlaySoundBehavior
         sound:
@@ -26,7 +26,7 @@
             min: 1
             max: 1
         offset: 0
-        
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagUA
@@ -35,7 +35,7 @@
   components:
   - type: Sprite
     state: uaflag
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagUAWorn
@@ -44,7 +44,7 @@
   components:
   - type: Sprite
     state: uaflag_worn
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagCLF
@@ -53,7 +53,7 @@
   components:
   - type: Sprite
     state: clfflag
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagCLFWorn
@@ -62,7 +62,7 @@
   components:
   - type: Sprite
     state: clfflag_worn
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagUSCM
@@ -71,7 +71,7 @@
   components:
   - type: Sprite
     state: cmflag
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagUSCMWorn
@@ -80,7 +80,7 @@
   components:
   - type: Sprite
     state: cmflag_worn
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagTWE
@@ -89,7 +89,7 @@
   components:
   - type: Sprite
     state: tweflag
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagTWEWorn
@@ -107,7 +107,7 @@
   components:
   - type: Sprite
     state: uppflag
-    
+
 - type: entity
   parent: AU14WallFlagBase
   id: AU14WallFlagUPPWorn
