@@ -95,7 +95,6 @@
   id: RMCGearSPPSpecialist
   equipment:
     head: ArmorHelmetSPPHeavy
-    ears: RMCHeadsetSPP
     jumpsuit: CMJumpsuitSPP
     outerClothing: RMCArmorSPPHeavySpecialist
     gloves: RMCHandsVeteranSPP

@@ -106,8 +106,6 @@
   id: RMCGearSPPLeader
   equipment:
     head: CMHeadCapSPPBeret
-    ears: RMCHeadsetSPPCommand
-    ears2: RMCM5CameraGear
     jumpsuit: CMJumpsuitSPP
     outerClothing: RMCArmorSPPRifleman
     gloves: RMCHandsVeteranSPP

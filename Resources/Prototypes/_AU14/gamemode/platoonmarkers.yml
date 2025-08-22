@@ -599,4 +599,37 @@
   components:
   - type: VendorMarker
     ship: true
-    class: ReturnPointGeneric
+    class: DSPilot
+
+
+- type: entity
+  name: Dropship Shuttle VMarker
+  parent: MarkerBase
+  id: dropshipshuttlevmarker
+  components:
+  - type: VendorMarker
+    dropship: true
+    class: DSWeapons
+
+
+
+- type: entity
+  name: Dropship Ship destination ship VMarker
+  parent: MarkerBase
+  id: dropshsipshipdestmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: DropshipDestination
+
+
+- type: entity
+  name: Figher Ship destination ship VMarker
+  parent: MarkerBase
+  id: dropshipfighterdestmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: DropshipDestination
+
+

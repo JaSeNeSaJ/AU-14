@@ -84,7 +84,6 @@
   id: RMCGearSPPRifleman
   equipment:
     head: ArmorHelmetSPP
-    ears: RMCHeadsetSPP
     jumpsuit: CMJumpsuitSPP
     outerClothing: RMCArmorSPPRifleman
     gloves: RMCHandsVeteranSPP

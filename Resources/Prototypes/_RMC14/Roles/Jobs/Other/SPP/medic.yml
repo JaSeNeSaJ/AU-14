@@ -93,8 +93,6 @@
   id: RMCGearSPPMedic
   equipment:
     head: CMHeadCapSPP
-    ears: RMCHeadsetSPPMedic
-    ears2: RMCM5CameraGear
     eyes: RMCGlassesMedicalHUDGlasses
     jumpsuit: CMJumpsuitSPPMedic
     outerClothing: RMCArmorSPPSupport
