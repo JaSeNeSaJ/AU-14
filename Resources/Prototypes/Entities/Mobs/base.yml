@@ -5,6 +5,7 @@
   id: BaseMob
   abstract: true
   components:
+  - type: KillObjectiveTracker
   - type: Sprite
     noRot: true
     drawdepth: Mobs

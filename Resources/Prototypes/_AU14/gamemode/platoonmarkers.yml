@@ -551,25 +551,7 @@
     - type: VendorMarker
       ship: true
       class: LockedNormalDoor
-- type: entity
-  name: Govfor Overwatch Console Marker
-  id: VMarkerGovforOverwatchConsole
-  parent: Vmarker
-  components:
-  - type: VendorMarker
-    govfor: true
-    opfor: false
-    class: OverwatchConsole
 
-- type: entity
-  name: Opfor Overwatch Console Marker
-  id: VMarkerOpforOverwatchConsole
-  parent: Vmarker
-  components:
-  - type: VendorMarker
-    govfor: false
-    opfor: true
-    class: OverwatchConsole
 
 - type: entity
   name: Ship Overwatch Console Marker
@@ -590,3 +572,20 @@
     ship: true
     class: SWeapons
 
+- type: entity
+  name: Ship Objectives Console Marker
+  parent: MarkerBase
+  id: shipobjectivesconsolemarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: ObjectivesConsole
+
+- type: entity
+  name: Ship Generic Fetch Return Point Marker
+  parent: MarkerBase
+  id: shipfetchreturnmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: ReturnPointGeneric

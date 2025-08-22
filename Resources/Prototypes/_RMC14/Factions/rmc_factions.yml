@@ -8,6 +8,7 @@
   id: RMCXeno
   hostile:
   - UNMC
+  - NanoTrasen
   - SPP
   - GOVFOR
   - OPFOR

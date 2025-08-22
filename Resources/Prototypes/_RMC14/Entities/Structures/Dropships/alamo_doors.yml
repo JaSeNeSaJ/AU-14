@@ -86,8 +86,16 @@
     powerLoad: 0
     needsPower: false
   - type: AccessReader
-    access: [["CMAccessDropship"]]
+    access: [ [ "AU14AccessGovforPilot" ] ]
   - type: BlockTileFire
+
+- type: entity
+  parent: CMAlamoCockpit
+  id: CMAlamoCockpitOpfor
+  suffix: Alamo, Opfor
+  components:
+  - type: AccessReader
+    access: [ [ "AU14AccessOpforPilot" ] ]
 
 - type: entity
   parent: CMAlamoDoor
