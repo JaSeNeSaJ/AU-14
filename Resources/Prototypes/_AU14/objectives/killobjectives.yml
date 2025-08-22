@@ -1,0 +1,46 @@
+- type: entity
+  name: Kill 4 enemies Objective
+  parent: MarkerBase
+  id: killteamobjective
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    factioneutral: true
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    - govfor
+    repeating: false
+    objectivelevel: 1
+    custompoints: 100
+    maxrepeatable: 1
+    ObjectiveDescription: "kill the enemy"
+  - type: KillObjective
+    factiontokill: govfor
+    amounttokill: 2
+
+
+
+- type: entity
+  name: Kill Platoon Commander
+  parent: MarkerBase
+  id: killplatcoobjective
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    factioneutral: false
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    repeating: false
+    objectivelevel: 3
+    custompoints: 20
+    ObjectiveDescription: "kill the platco"
+  - type: KillObjective
+    factiontokill: govfor
+    amounttokill: 1
+    specificjob: AU14JobGOVFORPlatCo
