@@ -23,8 +23,9 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
 
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly RoundEnd.RoundEndSystem _roundEnd = default!;
+    [Dependency] private readonly Content.Server.AU14.Round.PlatoonSpawnRuleSystem _platoonSpawnRuleSystem = default!;
 
-    private readonly HashSet<string> _finalObjectiveGivenFactions = new();
+    private ObjectiveMasterComponent? _objectiveMaster = null;
 
     public (int govforMinor, int govforMajor, int opforMinor, int opforMajor, int clfMinor, int clfMajor, int
         scientistMinor, int scientistMajor) ObjectivesAmount()
@@ -55,8 +56,6 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
             def.ScientistMajorObjectives
         );
     }
-
-    private ObjectiveMasterComponent? _objectiveMaster = null;
 
     public override void Initialize()
     {
@@ -278,6 +277,17 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
         var factionLower = faction.ToLowerInvariant();
         var allObjectives = GetObjectives();
         var selected = new List<AuObjectiveComponent>();
+        string? selectedPlatoonId = null;
+        switch (factionLower)
+        {
+            case "govfor":
+                selectedPlatoonId = _platoonSpawnRuleSystem.SelectedGovforPlatoon?.ID;
+                break;
+            case "opfor":
+                selectedPlatoonId = _platoonSpawnRuleSystem.SelectedOpforPlatoon?.ID;
+                break;
+            // Add more cases if other factions can have platoons
+        }
         foreach (var objective in allObjectives)
         {
             bool modeMatch = objective.ApplicableModes.Any(m => m.ToLowerInvariant() == presetIdLower);
@@ -311,6 +321,12 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
             {
                 Logger.Info(
                     $"[OBJ SELECT DEBUG] Skipping '{objective.objectiveDescription}' - level mismatch: {objective.ObjectiveLevel} != {objectiveLevel}");
+                continue;
+            }
+
+            if (selectedPlatoonId != null && objective.BlacklistedPlatoons.Contains(selectedPlatoonId))
+            {
+                Logger.Info($"[OBJ SELECT DEBUG] Skipping '{objective.objectiveDescription}' - blacklisted for selected platoon: {selectedPlatoonId}");
                 continue;
             }
 
@@ -512,7 +528,7 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
                 break;
         }
 
-        if (!_finalObjectiveGivenFactions.Contains(factionKey) && newPoints >= requiredPoints)
+        if (!_objectiveMaster.FinalObjectiveGivenFactions.Contains(factionKey) && newPoints >= requiredPoints)
         {
             var finalObjectives = EntityManager.EntityQuery<AuObjectiveComponent>()
                 .Where(obj =>
@@ -527,7 +543,7 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
                 selected.Faction = factionKey;
                 Logger.Info(
                     $"[OBJ FINAL DEBUG] Activated final objective '{selected.objectiveDescription}' for faction '{factionKey}'");
-                _finalObjectiveGivenFactions.Add(factionKey);
+                _objectiveMaster.FinalObjectiveGivenFactions.Add(factionKey);
 
                 if (selected.Owner != EntityUid.Invalid && EntityManager.HasComponent<Content.Shared.AU14.Objectives.Fetch.FetchObjectiveComponent>(selected.Owner))
                 {
@@ -556,4 +572,3 @@ public sealed class AuObjectiveSystem : AuSharedObjectiveSystem
         }
     }
 }
-
