@@ -41,6 +41,8 @@
     access: [ [ "AU14AccessOpforFTL" ], [ "AU14AccessOpforPilot" ] ]
   - type: WhitelistedShuttle
     faction: opfor
+    ShuttleType: Dropship
+
 
 - type: entity
   parent: CMComputerDropshipNavigation
@@ -229,7 +231,7 @@
     state: green
   - type: FTLBeacon
   - type: DropshipDestination
-    FactionControlling: OPFOR
+    FactionControlling: opfor
   - type: FTLSmashImmune
   - type: NoFTL
 

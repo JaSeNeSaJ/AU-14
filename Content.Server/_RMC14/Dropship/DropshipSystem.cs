@@ -405,18 +405,34 @@ public sealed class DropshipSystem : SharedDropshipSystem
             var destinations = new List<Destination>();
             var query = EntityQueryEnumerator<DropshipDestinationComponent>();
 
+            // --- Determine shuttle type ---
+            var shuttleType = GetShuttleTypeForNavConsole(computer.Owner);
+
             string? whitelistedFaction = null;
             if (TryComp(computer.Owner, out Content.Server.AU14.Round.WhitelistedShuttleComponent? whitelistComp) && !string.IsNullOrEmpty(whitelistComp.Faction))
             {
                 whitelistedFaction = whitelistComp.Faction.ToLowerInvariant();
             }
 
-
             while (query.MoveNext(out var uid, out var comp))
             {
                 if (!string.IsNullOrEmpty(comp.FactionController))
                 {
                     if (string.IsNullOrEmpty(whitelistedFaction) || comp.FactionController.ToLowerInvariant() != whitelistedFaction)
+                        continue;
+                }
+
+                // --- Filter by destination type ---
+                if (shuttleType == DropshipDestinationComponent.DestinationType.Figher)
+                {
+                    // Fighters can select Figher and Dropship destinations
+                    if (comp.Destinationtype != DropshipDestinationComponent.DestinationType.Figher && comp.Destinationtype != DropshipDestinationComponent.DestinationType.Dropship)
+                        continue;
+                }
+                else // Dropship or default
+                {
+                    // Dropships can only select Dropship destinations
+                    if (comp.Destinationtype != DropshipDestinationComponent.DestinationType.Dropship)
                         continue;
                 }
 
@@ -460,6 +476,19 @@ public sealed class DropshipSystem : SharedDropshipSystem
 
         var travelState = new DropshipNavigationTravellingBuiState(ftl.State, ftl.StateTime, destinationName, departureName);
         _ui.SetUiState(computer.Owner, DropshipNavigationUiKey.Key, travelState);
+    }
+
+    /// <summary>
+    /// Determines the shuttle type for a navigation console. Defaults to Dropship if not set.
+    /// </summary>
+    private DropshipDestinationComponent.DestinationType GetShuttleTypeForNavConsole(EntityUid navConsole)
+    {
+        if (TryComp(navConsole, out Content.Server.AU14.Round.WhitelistedShuttleComponent? whitelistComp))
+        {
+            return whitelistComp.ShuttleType;
+        }
+        // Default to Dropship if not set
+        return DropshipDestinationComponent.DestinationType.Dropship;
     }
 
     protected override bool IsShuttle(EntityUid dropship)
