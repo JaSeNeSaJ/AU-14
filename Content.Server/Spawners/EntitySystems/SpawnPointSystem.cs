@@ -23,35 +23,75 @@ public sealed class SpawnPointSystem : EntitySystem
         if (args.SpawnResult != null)
             return;
 
-        // TODO: Cache all this if it ends up important.
-        var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
         var possiblePositions = new List<EntityCoordinates>();
+        var preferredPositions = new List<EntityCoordinates>();
 
-        while ( points.MoveNext(out var uid, out var spawnPoint, out var xform))
+        // --- AU14: Latejoin spawnpoint override for opfor/govfor, with JobClassOverride support ---
+        bool isLateJoin = _gameTicker.RunLevel == GameRunLevel.InRound;
+        string? jobId = args.Job?.ToString();
+        bool isOpfor = false;
+        bool isGovfor = false;
+        if (isLateJoin && !string.IsNullOrEmpty(jobId))
         {
-            if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
-                continue;
+            isOpfor = jobId.Contains("opfor", StringComparison.OrdinalIgnoreCase);
+            isGovfor = jobId.Contains("govfor", StringComparison.OrdinalIgnoreCase);
+        }
 
-            if (_gameTicker.RunLevel == GameRunLevel.InRound && spawnPoint.SpawnType == SpawnPointType.LateJoin)
+        // 1. Try opfor/govfor latejoin spawn points with matching job_id first if applicable
+        if (isLateJoin && (isOpfor || isGovfor))
+        {
+            var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
             {
-                possiblePositions.Add(xform.Coordinates);
-            }
-
-            if (_gameTicker.RunLevel != GameRunLevel.InRound &&
-                spawnPoint.SpawnType == SpawnPointType.Job &&
-                (args.Job == null || spawnPoint.Job == args.Job))
-            {
-                possiblePositions.Add(xform.Coordinates);
+                if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
+                    continue;
+                // Prefer spawn points with matching job_id (for JobClassOverride)
+                if (!string.IsNullOrEmpty(jobId) && spawnPoint.Job != null && string.Equals(spawnPoint.Job.ToString(), jobId, StringComparison.OrdinalIgnoreCase))
+                {
+                    preferredPositions.Add(xform.Coordinates);
+                }
+                // Otherwise, fallback to spawn type
+                else if (isOpfor && spawnPoint.SpawnType.ToString() == "LateJoinOpfor")
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                }
+                else if (isGovfor && spawnPoint.SpawnType.ToString() == "LateJoinGovfor")
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                }
             }
         }
 
-        if (possiblePositions.Count == 0)
+        // 2. If none found, or not opfor/govfor, fall back to normal latejoin (prefer job_id match)
+        if (preferredPositions.Count == 0 && possiblePositions.Count == 0)
         {
-            // Ok we've still not returned, but we need to put them /somewhere/.
-            // TODO: Refactor gameticker spawning code so we don't have to do this!
-            var points2 = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
+            {
+                if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
+                    continue;
+                if (!string.IsNullOrEmpty(jobId) && spawnPoint.Job != null && string.Equals(spawnPoint.Job.ToString(), jobId, StringComparison.OrdinalIgnoreCase))
+                {
+                    preferredPositions.Add(xform.Coordinates);
+                }
+                else if (isLateJoin && spawnPoint.SpawnType == SpawnPointType.LateJoin)
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                }
+                else if (!isLateJoin &&
+                    spawnPoint.SpawnType == SpawnPointType.Job &&
+                    (args.Job == null || spawnPoint.Job == args.Job))
+                {
+                    possiblePositions.Add(xform.Coordinates);
+                }
+            }
+        }
 
-            if (points2.MoveNext(out var spawnPoint, out var xform))
+        // 3. Fallback: any spawn point
+        if (preferredPositions.Count == 0 && possiblePositions.Count == 0)
+        {
+            var points2 = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            if (points2.MoveNext(out var _, out var _, out var xform))
             {
                 possiblePositions.Add(xform.Coordinates);
             }
@@ -62,7 +102,9 @@ public sealed class SpawnPointSystem : EntitySystem
             }
         }
 
-        var spawnLoc = _random.Pick(possiblePositions);
+        var spawnLoc = preferredPositions.Count > 0
+            ? _random.Pick(preferredPositions)
+            : _random.Pick(possiblePositions);
 
         args.SpawnResult = _stationSpawning.SpawnPlayerMob(
             spawnLoc,

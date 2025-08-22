@@ -5,8 +5,7 @@
   description: An automated rack hooked up to a small storage of standard CMB CIU apparel.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforSquad" ]
+    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmgearrack.rsi
   - type: CMAutomatedVendor
@@ -171,8 +170,7 @@
   description: An automated rack hooked up to a small storage of standard CMB CIU equipment.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforSquad" ]
+    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/assortedequipment.rsi
   - type: CMAutomatedVendor
@@ -259,8 +257,7 @@
   description: An automated rack hooked up to a small storage of medical supplies.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforMedical" ]
+    access: [ [ "AU14AccessGovforMedical" ], [ "AU14AccessOpforMedical" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/medical_gear.rsi
   - type: CMAutomatedVendor
@@ -394,8 +391,7 @@
   description: An automated rack hooked up to a small storage of CMB CIU command apparel and equipment.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforCommand" ]
+    access: [ [ "AU14AccessGovforCommand" ], [ "AU14AccessOpforCommand" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmcommandclothes.rsi
   - type: CMAutomatedVendor
@@ -442,8 +438,7 @@
   description: An automated rack hooked up to a small storage of gunner equipment.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforSquad" ]
+    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
   - type: CMAutomatedVendor
@@ -464,8 +459,7 @@
   description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforFTL" ]
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessOpforFTL" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
@@ -492,8 +486,7 @@
   description: An automated rack hooked up to a small storage of weapons.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforSquad" ]
+    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
   - type: CMAutomatedVendor
@@ -556,8 +549,7 @@
   description: An automated rack hooked up to a small storage of special weapons.
   components:
   - type: AccessReader
-    access:
-    - [ "AU14AccessGovforSquad" ]
+    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
   - type: Sprite
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
