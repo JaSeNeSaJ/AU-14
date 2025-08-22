@@ -2,7 +2,7 @@
   id: GOVFOR
   hostile:
   - RMCXeno
-  #- AUCLF
+  #- CLF
   - AUGoo
   - OPFOR
 
@@ -13,7 +13,7 @@
   - AUUpp
   - AUWeYu
   - AUColonist
-  - AUCLF
+  - CLF
 
 - type: npcFaction
   id: AUUpp
@@ -22,9 +22,10 @@
   - AUGoo
 
 - type: npcFaction
-  id: AUCLF
+  id: CLF
   hostile:
   - GOVFOR
+  - RMCXeno
 #hostile to govofr but not vice versa so turrets cant detect
 - type: npcFaction
   id: AUWeYu
@@ -48,6 +49,6 @@
   id: OPFOR
   hostile:
   - RMCXeno
-  - AUCLF
+  - CLF
   - GOVFOR
   - AUGoo

@@ -14,4 +14,6 @@ public sealed partial class DropshipDestinationComponent : Component
 
     [DataField("FactionControlling", required: false), AutoNetworkedField]
     public string FactionController = String.Empty;
+
+
 }

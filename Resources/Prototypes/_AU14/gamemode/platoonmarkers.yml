@@ -589,3 +589,14 @@
   - type: VendorMarker
     ship: true
     class: ReturnPointGeneric
+
+
+
+- type: entity
+  name: Dropship Weapons VMarker
+  parent: MarkerBase
+  id: dropshipweaponsvmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: ReturnPointGeneric

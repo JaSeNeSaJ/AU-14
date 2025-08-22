@@ -364,3 +364,95 @@
     leaderIcon:
       sprite: _RMC14/Interface/cm_job_icons.rsi
       state: hudsquad_leader_a
+
+# --- OPFOR Squads ---
+- type: entity
+  parent: SquadBase
+  id: SquadOpforIntel
+  name: Opfor Intel
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#1E90FF"
+    radio: OpforIntel
+    accessLevels:
+    - OpforAccessIntel
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_intel
+
+- type: entity
+  parent: SquadBase
+  id: SquadOpforBravo
+  name: Opfor Bravo
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#00CED1"
+    radio: OpforBravo
+    accessLevels:
+    - OpforAccessBravo
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_bravo
+
+- type: entity
+  parent: SquadBase
+  id: SquadOpforCharlie
+  name: Opfor Charlie
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#FFD700"
+    radio: OpforCharlie
+    accessLevels:
+    - OpforAccessCharlie
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_charlie
+
+# --- GOVFOR Squads ---
+- type: entity
+  parent: SquadBase
+  id: SquadGovforIntel
+  name: Govfor Intel
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#228B22"
+    radio: GovforIntel
+    accessLevels:
+    - GovforAccessIntel
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_intel
+
+- type: entity
+  parent: SquadBase
+  id: SquadGovforBravo
+  name: Govfor Bravo
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#32CD32"
+    radio: GovforBravo
+    accessLevels:
+    - GovforAccessBravo
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_bravo
+
+- type: entity
+  parent: SquadBase
+  id: SquadGovforCharlie
+  name: Govfor Charlie
+  components:
+  - type: SquadTeam
+    roundStart: true
+    color: "#ADFF2F"
+    radio: GovforCharlie
+    accessLevels:
+    - GovforAccessCharlie
+    minimapBackground:
+     sprite: /Textures/_RMC14/Interface/map_blips.rsi
+     state: background_charlie
