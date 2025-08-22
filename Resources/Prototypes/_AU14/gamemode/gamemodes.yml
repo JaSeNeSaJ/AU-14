@@ -28,6 +28,7 @@
     - AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
+    - AUPlanetStableGarrison
   rules:
   - AuVoteRule
   - PlatoonSpawn

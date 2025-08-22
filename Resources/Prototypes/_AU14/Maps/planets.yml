@@ -39,7 +39,7 @@
     - USCM
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: true
+    govforinship: false
     opforinship: true
     daycycleenabled: true
 
