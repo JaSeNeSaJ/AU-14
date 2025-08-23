@@ -39,7 +39,7 @@
     - USCM
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: true
+    govforinship: false
     opforinship: true
     daycycleenabled: true
 
@@ -60,7 +60,6 @@
     platoonsGovfor:
     - LACN
     - USCM
-    - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -78,15 +77,41 @@
     camouflage: Jungle
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
-    - LACN
+    - UPP
+    - WEYU
     platoonsGovfor:
     - LACN
-    - UPP
     - USCM
+    - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
     opforinship: true
     daycycleenabled: true
     faction: ua
+
+
+
+- type: entity
+  id: AUPlanetGixensCaverns
+  name: Gixens Caverns
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Gixens Caverns"
+    mapId: GixensCaverns
+    camouflage: Jungle
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsOpfor:
+    - UPP
+    - WEYU
+    platoonsGovfor:
+    - LACN
+    - CMBCIU
+    defaultgovfor: LACN
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: false
+    #faction: ua
+
 

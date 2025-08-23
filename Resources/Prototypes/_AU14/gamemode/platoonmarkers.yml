@@ -580,6 +580,8 @@
   - type: VendorMarker
     ship: true
     class: ObjectivesConsole
+  - type: Sprite
+    state: green
 
 - type: entity
   name: Ship Generic Fetch Return Point Marker
@@ -589,6 +591,8 @@
   - type: VendorMarker
     ship: true
     class: ReturnPointGeneric
+  - type: Sprite
+    state: green
 
 
 
@@ -600,6 +604,8 @@
   - type: VendorMarker
     ship: true
     class: DSPilot
+  - type: Sprite
+    state: green
 
 
 - type: entity
@@ -610,6 +616,8 @@
   - type: VendorMarker
     dropship: true
     class: DSWeapons
+  - type: Sprite
+    state: green
 
 
 
@@ -621,6 +629,8 @@
   - type: VendorMarker
     ship: true
     class: DropshipDestination
+  - type: Sprite
+    state: green
 
 
 
@@ -633,5 +643,5 @@
   - type: VendorMarker
     ship: true
     class: DropshipDestination
-
-
+  - type: Sprite
+    state: green
