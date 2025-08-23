@@ -23,6 +23,7 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Console;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Map;
+using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -100,6 +101,7 @@ namespace Content.Server.GameTicking
                 "Overflow role does not have the correct name!");
             InitializeGameRules();
             InitializeReplays();
+            SubscribeNetworkEvent<Content.Shared.GameTicking.TickerJoinLobbyEvent>(OnTickerJoinLobbyEvent);
             _initialized = true;
         }
 
@@ -135,6 +137,12 @@ namespace Content.Server.GameTicking
             base.Update(frameTime);
             UpdateRoundFlow(frameTime);
             UpdateGameRules();
+        }
+
+        private void OnTickerJoinLobbyEvent(Content.Shared.GameTicking.TickerJoinLobbyEvent ev, EntitySessionEventArgs args)
+        {
+            // Send the requesting player to the lobby
+            PlayerJoinLobby(args.SenderSession);
         }
     }
 }
