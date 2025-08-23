@@ -109,7 +109,7 @@
     - LACN
     - CMBCIU
     - HAZOPS
-    defaultgovfor: LACN
+    defaultgovfor: HAZOPS
     defaultopfor: UPP
     govforinship: true
     opforinship: true
