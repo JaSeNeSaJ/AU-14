@@ -46,10 +46,6 @@
         amount: 25
       - id: RMCM5CameraGear
         amount: 25
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
-        amount: 20
     - name: Armor
       entries:
       - id: AU14LACNArmorStandard
@@ -411,8 +407,6 @@
         amount: 2
       - id: AU14LACNGloves
         amount: 2
-      - id: AU14HeadsetSectionLeader
-        amount: 2
     - name: Webbings
       entries:
       - id: AU14WebbingMagazine
@@ -650,10 +644,6 @@
         name: Black Beret
       - id: AU14LACNNavyCap
         amount: 2
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
-        amount: 2
     - name: Backpack
       entries:
       - id: RMCBackpackRTO
@@ -714,10 +704,6 @@
         amount: 1
         name: Black Beret
       - id: AU14LACNNavyCap
-        amount: 1
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
         amount: 1
     - name: Armor and Rigs
       entries:

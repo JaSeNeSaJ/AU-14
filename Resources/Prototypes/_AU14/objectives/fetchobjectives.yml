@@ -1,5 +1,5 @@
 - type: entity
-  name: Fetch BlackBox Objecive
+  name: Fetch Ore Objecive
   parent: MarkerBase
   id: fetchoreobjective
   components:
@@ -88,11 +88,35 @@
 
 
 - type: entity
-  name: Fetch BlackBox Generic Spawnpoint
+  name: Fetch  Generic Spawnpoint
   parent: MarkerBase
-  id: fetchoreobjectivemarkergenericspwanpoint
+  id: fetchobjectivemarkergenericspawnpoint
   components:
   - type: Sprite
     state: red
   - type: FetchObjectiveMarker
     generic: true
+
+
+
+- type: entity
+  name: Fetch The Blackbox Objecive
+  parent: MarkerBase
+  id: FetchBlackObjecc
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    factioneutral: true
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    repeating: false
+    objectivelevel: 2
+    custompoints: 100
+    maxrepeatable: 3
+    ObjectiveDescription: "Acquire The Colony Blackbox Recorder"
+  - type: FetchObjective
+    entitytospawn: AU14BlackBoxRecorder
+    amounttofetch: 1

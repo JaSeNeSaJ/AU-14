@@ -167,6 +167,7 @@ public sealed class GhostUIController : UIController, IOnSystemChanged<GhostSyst
 
     private void LateJoinPressed()
     {
-        _consoleHost.ExecuteCommand("respawn");
+        // Send a network event to request joining the lobby (works for all players)
+        _net.SendSystemNetworkMessage(new Content.Shared.GameTicking.TickerJoinLobbyEvent());
     }
 }
