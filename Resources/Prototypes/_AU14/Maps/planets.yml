@@ -37,6 +37,7 @@
     platoonsGovfor:
     - LACN
     - USCM
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -107,6 +108,7 @@
     platoonsGovfor:
     - LACN
     - CMBCIU
+    - HAZOPS
     defaultgovfor: LACN
     defaultopfor: UPP
     govforinship: true
