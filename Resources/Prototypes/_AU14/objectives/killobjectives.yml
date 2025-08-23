@@ -97,7 +97,7 @@
 - type: entity
   name: Kill Platoon Commander UPP
   parent: MarkerBase
-  id: killplatcoobjective
+  id: killplatcoobjectiveupp
   components:
   - type: Sprite
     state: red
@@ -110,7 +110,7 @@
     repeating: false
     objectivelevel: 3
     WhitelistedPlatoons:
-    - UPP
+    - LACN
     custompoints: 20
     ObjectiveDescription: "Kill the Platoon Commander"
     roundEndMessage: "By Killing the Commander"
