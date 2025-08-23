@@ -223,7 +223,7 @@
   description: A patch bearing the emblem of the Hazardous Opeations Unit. Wearing it makes you want to forget about Freeman.
   components:
   - type: Sprite
-    sprite: _AU14/Clothing/Patches/hazopshecu_patch.rsi
+    sprite: _AU14/Clothing/Patches/hazops_patch.rsi
     state: icon
   - type: UniformAccessory
     playerSprite:
