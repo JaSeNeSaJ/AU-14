@@ -14,12 +14,42 @@
         - opfor
         - clf
       objectivelevel: 2
-      custompoints: 50
+      custompoints: 5
       ObjectiveDescription: "Capture the United Americas flag for your faction."
       roundEndMessage: "By capturing the UA flag"
     - type: CaptureObjective
       hoisttime: 8
-      maxholdtimes: 3
-      pointincrementtime: 10
+      maxholdtimes: 10
+      pointincrementtime: 360
       visibleonmap: true
       flaghealth: 100
+
+
+
+- type: entity
+  name: Capture the mine
+  parent: AU14WallFlagUA
+  id: capturemineobjective
+  description: "Capture the Mountain Top and hold the LZ"
+  components:
+  - type: NavMapBeacon
+    text: Mountain LZ
+  - type: AuObjective
+    factioneutral: true
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - govfor
+    - opfor
+    - clf
+    objectivelevel: 2
+    custompoints: 5
+    ObjectiveDescription: "Capture Mountain LZ for your faction."
+    roundEndMessage: "By capturing the UA flag"
+  - type: CaptureObjective
+    hoisttime: 8
+    maxholdtimes: 10
+    pointincrementtime: 420
+    airfield: Mountain LZ
+    visibleonmap: true
+    flaghealth: 250
