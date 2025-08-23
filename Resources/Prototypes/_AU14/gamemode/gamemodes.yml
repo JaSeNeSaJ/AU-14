@@ -8,8 +8,8 @@
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:
-    - AUPlanetLV747
-    - AUPlanetShepherdsPride
+  - AUPlanetGixensCaverns
+  - AUPlanetStableGarrison
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -25,10 +25,10 @@
   description: Insurgency mode
   requiresGovforVote: true
   supportedPlanets:
-    - AUPlanetLV747
+    #- AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
-    - AUPlanetStableGarrison
+   # - AUPlanetStableGarrison
   rules:
   - AuVoteRule
   - PlatoonSpawn
