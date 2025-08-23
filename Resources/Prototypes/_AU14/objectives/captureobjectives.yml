@@ -49,7 +49,7 @@
   - type: CaptureObjective
     hoisttime: 8
     maxholdtimes: 10
-    pointincrementtime: 360
+    pointincrementtime: 420
     airfield: Mountain LZ
     visibleonmap: true
     flaghealth: 250

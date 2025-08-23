@@ -1,0 +1,16 @@
+- type: gameMap
+  id: GixensCaverns
+  mapName: Gixens Caverns
+  mapPath: /Maps/_AU14/gixenscaverns.yml
+  minPlayers: 0
+  maxPlayers: 75
+  maxRandomOffset: 0
+  randomRotation: false
+  stations:
+    Gixens:
+      stationProto: StandardUNMCWarship
+      components:
+        - type: StationNameSetup
+          mapNameTemplate: 'Gixens'
+
+

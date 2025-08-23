@@ -98,7 +98,7 @@
   components:
   - type: RMCPlanetMapPrototype
     votename: "Gixens Caverns"
-    mapId: Gixens
+    mapId: GixensCaverns
     camouflage: Jungle
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
