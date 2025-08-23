@@ -227,5 +227,5 @@
     state: icon
   - type: UniformAccessory
     playerSprite:
-      sprite: _AU14/Clothing/Patches/hazopshecu_patch.rsi
+      sprite: _AU14/Clothing/Patches/hazops_patch.rsi
       state: patch
