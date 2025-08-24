@@ -166,6 +166,20 @@
       opfor: false
       class: Clothing
 
+
+- type: entity
+  name: Ship Clothing marker
+  id: VMarkershipClothing
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: Clothing
+    ship: true
+
+
+
 - type: entity
   name: Gov Weapons marker
   id: VMarkerGovforWeapons
@@ -508,7 +522,7 @@
       ship: true
       class: Pilot
 - type: entity
-  name: Ship pilot marker
+  name: Ship Weapons marker
   id: VMarkerShipWeapons
   parent: VmarkerShip
   components:
@@ -642,6 +656,6 @@
   components:
   - type: VendorMarker
     ship: true
-    class: DropshipDestination
+    class: FighterDestination
   - type: Sprite
     state: green

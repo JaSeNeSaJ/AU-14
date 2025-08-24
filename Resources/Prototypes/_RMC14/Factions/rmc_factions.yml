@@ -17,6 +17,7 @@
   - Civilian
   - CLF
   - TSE
+  - AUColonist
 
 - type: npcFaction
   id: RMCDumb
@@ -31,6 +32,8 @@
   - Civilian
   - CLF
   - TSE
+  - AUColonist
+
 
 - type: npcFaction
   id: SPP

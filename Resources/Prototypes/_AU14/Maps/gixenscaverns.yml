@@ -7,10 +7,9 @@
   maxRandomOffset: 0
   randomRotation: false
   stations:
-    Gixens:
+    GixensCaverns:
       stationProto: StandardUNMCWarship
       components:
-        - type: StationNameSetup
-          mapNameTemplate: 'Gixens'
-
+      - type: StationNameSetup
+        mapNameTemplate: 'GixensCaverns'
 

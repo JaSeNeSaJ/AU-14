@@ -48,10 +48,6 @@
         amount: 25
       - id: RMCHeadCapBureau
         amount: 25
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
-        amount: 25
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -464,10 +460,6 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
-        amount: 1
     - name: Miscellaneous
       entries:
       - id: RMCLaserDesignator

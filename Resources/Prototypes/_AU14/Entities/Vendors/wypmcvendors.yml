@@ -44,10 +44,6 @@
         amount: 25
       - id: AU14WYPMCBallCap
         amount: 25
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
-        amount: 25
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -414,8 +410,6 @@
         amount: 2
       - id: AU14PVEHandsFingerlessBrownGloves
         amount: 2
-      - id: AU14HeadsetSectionLeader
-        amount: 2
     - name: Webbings
       entries:
       - id: AU14WebbingUtility
@@ -616,10 +610,6 @@
         amount: 2
       - id: AU14WYPMCBallCap
         amount: 2
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
-        amount: 2
     - name: Pouches
       entries:
       - id: RMCPouchCommandFill
@@ -688,10 +678,6 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionLeader
-        amount: 1
     - name: Apparel
       entries:
       - id: ArmorHelmetPMCOfficer
