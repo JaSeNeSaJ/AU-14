@@ -6,7 +6,7 @@
   components:
   - type: Anchorable
   - type: Transform
-    anchored: true
+    anchored: false
   - type: Physics
     bodyType: Dynamic
   - type: InteractionOutline

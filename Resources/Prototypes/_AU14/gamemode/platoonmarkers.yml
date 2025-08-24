@@ -166,6 +166,20 @@
       opfor: false
       class: Clothing
 
+
+- type: entity
+  name: Ship Clothing marker
+  id: VMarkershipClothing
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: Clothing
+    ship: true
+
+
+
 - type: entity
   name: Gov Weapons marker
   id: VMarkerGovforWeapons
@@ -508,7 +522,7 @@
       ship: true
       class: Pilot
 - type: entity
-  name: Ship pilot marker
+  name: Ship Weapons marker
   id: VMarkerShipWeapons
   parent: VmarkerShip
   components:
@@ -580,6 +594,8 @@
   - type: VendorMarker
     ship: true
     class: ObjectivesConsole
+  - type: Sprite
+    state: green
 
 - type: entity
   name: Ship Generic Fetch Return Point Marker
@@ -589,5 +605,57 @@
   - type: VendorMarker
     ship: true
     class: ReturnPointGeneric
+  - type: Sprite
+    state: green
 
 
+
+- type: entity
+  name: Dropship Weapons VMarker
+  parent: MarkerBase
+  id: dropshipweaponsvmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: DSPilot
+  - type: Sprite
+    state: green
+
+
+- type: entity
+  name: Dropship Shuttle VMarker
+  parent: MarkerBase
+  id: dropshipshuttlevmarker
+  components:
+  - type: VendorMarker
+    dropship: true
+    class: DSWeapons
+  - type: Sprite
+    state: green
+
+
+
+- type: entity
+  name: Dropship Ship destination ship VMarker
+  parent: MarkerBase
+  id: dropshipdestshipmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: DropshipDestination
+  - type: Sprite
+    state: green
+
+
+
+
+- type: entity
+  name: Figher Ship destination ship VMarker
+  parent: MarkerBase
+  id: dropshipfighterdestmarker
+  components:
+  - type: VendorMarker
+    ship: true
+    class: FighterDestination
+  - type: Sprite
+    state: green

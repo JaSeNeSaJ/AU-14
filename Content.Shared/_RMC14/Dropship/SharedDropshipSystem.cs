@@ -556,4 +556,15 @@ public abstract class SharedDropshipSystem : EntitySystem
             EntityManager.Dirty(uid, comp);
         }
     }
+
+
+    public void SetDestinationType(EntityUid uid, string destinationtype)
+    {
+        if (EntityManager.TryGetComponent<DropshipDestinationComponent>(uid, out var comp))
+        {
+            if (Enum.TryParse<DropshipDestinationComponent.DestinationType>(destinationtype, out var parsed))
+                comp.Destinationtype = parsed;
+            EntityManager.Dirty(uid, comp);
+        }
+    }
 }
