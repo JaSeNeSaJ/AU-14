@@ -98,10 +98,8 @@
     RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
     PlatOp: AU14JobGOVFORPlatOpWYPMC
     DCC: AU14JobGOVFORDCCWYPMC
-
-
   possibleships:
-      - Riptide
+      - Daybreak
 
 - type: platoon
   id: CMBCIU
@@ -132,7 +130,7 @@
  #  DSPilot: 1
     SectionSergeant: 1
   possibleships:
-      - Riptide
+      - Daybreak
 
 - type: platoon
   id: exampleplatoon
