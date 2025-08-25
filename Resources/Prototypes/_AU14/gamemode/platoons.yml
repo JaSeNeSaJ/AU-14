@@ -108,7 +108,7 @@
   CompatibleDropships:
   - /Maps/_RMC14/alamo.yml
   possibleships:
-      - Riptide
+      - Daybreak
 
 - type: platoon
   id: CMBCIU
@@ -139,7 +139,7 @@
  #  DSPilot: 1
     SectionSergeant: 1
   possibleships:
-      - Riptide
+      - Daybreak
   CompatibleDropships:
   - /Maps/_RMC14/alamo.yml
 
