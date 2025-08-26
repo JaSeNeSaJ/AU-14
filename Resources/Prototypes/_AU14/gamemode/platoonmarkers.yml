@@ -173,7 +173,7 @@
   parent: Vmarker
   components:
   - type: VendorMarker
-    govfor: true
+    govfor: false
     opfor: false
     class: Clothing
     ship: true
@@ -448,6 +448,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
 
 # Ship markers (shared for all platoons, no govfor/opfor distinction)
 - type: entity
@@ -457,6 +459,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Corpsman
 
 - type: entity
@@ -466,6 +470,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Arifleman
 
 - type: entity
@@ -475,6 +481,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Rifleman
 
 - type: entity
@@ -484,6 +492,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Dcc
 
 - type: entity
@@ -493,6 +503,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: OperationsOfficer
 
 - type: entity
@@ -502,6 +514,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Rto
 
 - type: entity
@@ -511,6 +525,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: SectionSergeant
 
 - type: entity
@@ -520,6 +536,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: Pilot
 - type: entity
   name: Ship Weapons marker
@@ -528,6 +546,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: Weapons
 
 - type: entity
@@ -537,6 +557,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: LockedCommandDoor
 
 - type: entity
@@ -546,6 +568,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: LockedSecurityDoor
 
 - type: entity
@@ -555,6 +579,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: LockedGlassDoor
 
 - type: entity
@@ -564,6 +590,8 @@
   components:
     - type: VendorMarker
       ship: true
+      govfor: false
+      opfor: false
       class: LockedNormalDoor
 
 
@@ -574,6 +602,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: OverwatchConsole
 
 
@@ -584,6 +614,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: SWeapons
 
 - type: entity
@@ -593,6 +625,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: ObjectivesConsole
   - type: Sprite
     state: green
@@ -604,6 +638,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: ReturnPointGeneric
   - type: Sprite
     state: green
@@ -617,6 +653,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: DSPilot
   - type: Sprite
     state: green
@@ -629,6 +667,8 @@
   components:
   - type: VendorMarker
     dropship: true
+    govfor: false
+    opfor: false
     class: DSWeapons
   - type: Sprite
     state: green
@@ -642,6 +682,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: DropshipDestination
   - type: Sprite
     state: green
@@ -656,6 +698,8 @@
   components:
   - type: VendorMarker
     ship: true
+    govfor: false
+    opfor: false
     class: FighterDestination
   - type: Sprite
     state: green

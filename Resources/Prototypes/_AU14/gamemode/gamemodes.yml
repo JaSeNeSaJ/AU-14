@@ -10,6 +10,8 @@
   supportedPlanets:
   - AUPlanetGixensCaverns
   - AUPlanetStableGarrison
+  - AUPlanetShepherdsPride
+
   rules:
   - AuVoteRule
   - PlatoonSpawn
