@@ -58,6 +58,8 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - HAZOPS
+
     platoonsGovfor:
     - LACN
     - USCM

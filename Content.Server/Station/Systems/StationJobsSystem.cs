@@ -540,5 +540,7 @@ public sealed partial class StationJobsSystem : EntitySystem
         {
             stationJobs.SetupAvailableJobs[jobId][0] = amount;
         }
+
+        UpdateJobsAvailable();
     }
 }

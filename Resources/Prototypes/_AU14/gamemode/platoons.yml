@@ -1,6 +1,6 @@
 - type: platoon
   id: LACN
-  name: LACN Landing Forces Platoon
+  name: LACN Landing
   VendorToMarker:
     Rifleman: AU14LACNequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -21,7 +21,7 @@
 
 - type: platoon
   id: USCM
-  name: USCM Platoon
+  name: USCM
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14USCMclothingequipmentvendor
@@ -39,6 +39,9 @@
   #platoonflag:  uaflag
   CompatibleDropships:
   - /Maps/_RMC14/alamo.yml
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
 
   possibleships:
       - Riptide
@@ -47,7 +50,7 @@
   id: UPP
   reqList: UPPBasic
   language: russian
-  name: UPP Naval Infantry Platoon
+  name: UPP Infantry
   VendorToMarker:
     Rifleman: AU14UPPequipmentvendor
     Clothing: AU14UPPclothingapparelvendor
@@ -81,7 +84,7 @@
 
 - type: platoon
   id: WEYU
-  name: Weyland-Yutani PMC Platoon
+  name: WY PMC
   VendorToMarker:
     Rifleman: AU14WYequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
@@ -109,10 +112,13 @@
   - /Maps/_RMC14/alamo.yml
   possibleships:
       - Daybreak
+  compatibleFighters:
+  - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+  - /Maps/_AU14/ShuttlesDropships/ud_6.yml
 
 - type: platoon
   id: CMBCIU
-  name: CMB Crisis Intervention Unit
+  name: CMB Crisis Intervention
   VendorToMarker:
     Rifleman: AU14CMBCIUequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
@@ -142,6 +148,8 @@
       - Daybreak
   CompatibleDropships:
   - /Maps/_RMC14/alamo.yml
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/cmbsquadcar.yml
 
 - type: platoon
   id: exampleplatoon
@@ -165,7 +173,7 @@
 
 - type: platoon
   id: HAZOPS
-  name: USCMC MARSOC Hazardous Operations Unit
+  name: MARSOC HAZOPS
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14HAZOPSclothingequipmentvendor
@@ -181,6 +189,10 @@
   possibleships:
       - Riptide
   CompatibleDropships:
-  - /Maps/_RMC14/alamo.yml
+  - /Maps/_AU14/ShuttlesDropships/osprey.yml
+  compatibleFighters:
+  - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+  - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+
 
 # Add more platoons as needed
