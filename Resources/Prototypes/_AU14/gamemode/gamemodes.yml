@@ -10,7 +10,7 @@
   supportedPlanets:
   - AUPlanetGixensCaverns
   - AUPlanetStableGarrison
-  - AUPlanetShepherdsPride
+ # - AUPlanetShepherdsPride
 
   rules:
   - AuVoteRule
