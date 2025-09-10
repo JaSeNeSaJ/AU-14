@@ -22,8 +22,6 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
     [Dependency] private readonly SharedMapSystem _mapSystem = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
 
-    private static readonly ISawmill Sawmill = Logger.GetSawmill("platoonspawn");
-
     // Store selected platoons in the system
     public PlatoonPrototype? SelectedGovforPlatoon { get; set; }
     public PlatoonPrototype? SelectedOpforPlatoon { get; set; }
@@ -40,7 +38,6 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
         var planetComp = _auRoundSystem.GetSelectedPlanet();
         if (planetComp == null)
         {
-            Sawmill.Debug("[PlatoonSpawnRuleSystem] No selected planet found in AuRoundSystem.");
             return;
         }
 
@@ -64,17 +61,14 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
                 else
                     continue;
 
-                Sawmill.Debug($"Looking for ship vendor markers on ship {shipUid}");
                 var shipMarkers = _entityManager.EntityQuery<VendorMarkerComponent>(true)
                     .Where(m => m.Ship && _entityManager.GetComponent<TransformComponent>(m.Owner).ParentUid == shipUid)
                     .ToList();
-                Sawmill.Debug($"Found {shipMarkers.Count} ship vendor markers on ship {shipUid}");
                 foreach (var marker in shipMarkers)
                 {
                     var markerClass = marker.Class;
                     var markerUid = marker.Owner;
                     var transform = _entityManager.GetComponent<TransformComponent>(markerUid);
-                    Sawmill.Debug($"Processing ship marker {markerUid} (class {markerClass}) on ship {shipUid}");
 
                     // --- DOOR MARKER LOGIC ---
                     string? doorProtoId = null;
@@ -113,13 +107,11 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
                     {
                         if (_prototypeManager.TryIndex(doorProtoId, out _))
                         {
-                            Sawmill.Debug($"Spawning door {doorProtoId} at {transform.Coordinates}");
                             _entityManager.SpawnEntity(doorProtoId, transform.Coordinates);
-                            Sawmill.Debug($"Spawned door {doorProtoId} at {transform.Coordinates}");
                         }
                         else
                         {
-                            Sawmill.Debug($"Could not find door proto {doorProtoId}");
+                            continue;
                         }
                         continue;
                     }
@@ -199,32 +191,34 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
                         continue;
                     }
 
-                    // --- VENDOR MARKER LOGIC ---
-                    if (!shipPlatoon.VendorMarkersByClass.TryGetValue(markerClass, out var vendorProtoId))
+
+                    // --- VENDOR MARKER LOGIC (shipside) ---
+                    // Ignore marker.Govfor/Opfor, use shipPlatoon and markerClass
+                    if (shipPlatoon != null && shipPlatoon.VendorMarkersByClass.TryGetValue(markerClass, out var vendorProtoId))
                     {
-                        Sawmill.Debug($"No vendor proto for class {markerClass} in platoon {shipPlatoon.ID}");
-                        continue;
+                        if (_prototypeManager.TryIndex<EntityPrototype>(vendorProtoId, out var vendorProto))
+                        {
+                            _entityManager.SpawnEntity(vendorProto.ID, transform.Coordinates);
+                        }
                     }
-                    Sawmill.Debug($"Found vendor proto {vendorProtoId} for class {markerClass}");
-                    if (!_prototypeManager.TryIndex<EntityPrototype>(vendorProtoId, out var vendorProto))
-                    {
-                        Sawmill.Debug($"Could not find vendor proto {vendorProtoId}");
-                        continue;
-                    }
-                    Sawmill.Debug($"Spawning vendor {vendorProto.ID} at {transform.Coordinates}");
-                    _entityManager.SpawnEntity(vendorProto.ID, transform.Coordinates);
-                    Sawmill.Debug($"Spawned vendor {vendorProto.ID} at {transform.Coordinates}");
                 }
             }
         }
 
         // Find all vendor markers in the map
         var query = _entityManager.EntityQuery<VendorMarkerComponent>(true);
+        var usedMarkers = new HashSet<EntityUid>();
         foreach (var marker in query)
         {
             var markerClass = marker.Class;
             var markerUid = marker.Owner;
             var transform = _entityManager.GetComponent<TransformComponent>(markerUid);
+
+            // Skip markers that are both or neither
+            if ((marker.Govfor && marker.Opfor) || (!marker.Govfor && !marker.Opfor))
+                continue;
+            if (usedMarkers.Contains(markerUid))
+                continue;
 
             PlatoonPrototype? platoon = null;
             if (marker.Govfor && govPlatoon != null)
@@ -259,6 +253,7 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
                 {
                     _entityManager.SpawnEntity(overwatchConsoleProtoId, transform.Coordinates);
                 }
+                usedMarkers.Add(markerUid);
                 continue;
             }
 
@@ -270,37 +265,21 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
                     objectivesConsoleProtoId = "ComputerObjectivesGovfor";
                 else if (marker.Opfor)
                     objectivesConsoleProtoId = "ComputerObjectivesOpfor";
-                // Add more factions as needed
                 if (objectivesConsoleProtoId != null && _prototypeManager.TryIndex(objectivesConsoleProtoId, out _))
                 {
                     _entityManager.SpawnEntity(objectivesConsoleProtoId, transform.Coordinates);
                 }
+                usedMarkers.Add(markerUid);
                 continue;
             }
 
-            // --- GENERIC FETCH RETURN POINT MARKER LOGIC ---
-            if (markerClass == PlatoonMarkerClass.ReturnPointGeneric)
-            {
-                string? fetchReturnProtoId = null;
-                if (marker.Govfor)
-                    fetchReturnProtoId = "fetchreturngovfor";
-                else if (marker.Opfor)
-                    fetchReturnProtoId = "fetchreturnopfor";
-                // Add more factions as needed
-                if (fetchReturnProtoId != null && _prototypeManager.TryIndex(fetchReturnProtoId, out _))
-                {
-                    _entityManager.SpawnEntity(fetchReturnProtoId, transform.Coordinates);
-                }
-                continue;
-            }
-
+            // --- VENDOR MARKER LOGIC ---
             if (!platoon.VendorMarkersByClass.TryGetValue(markerClass, out var vendorProtoId))
                 continue;
-
             if (!_prototypeManager.TryIndex<EntityPrototype>(vendorProtoId, out var vendorProto))
                 continue;
-
             _entityManager.SpawnEntity(vendorProto.ID, transform.Coordinates);
+            usedMarkers.Add(markerUid);
         }
 
         // --- DROPSHIP & FIGHTER CONSOLE SPAWNING LOGIC ---
@@ -371,145 +350,123 @@ public sealed class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawnRuleComp
             whitelist.ShuttleType = type;
         }
 
-        // --- For each platoon, select and spawn dropship/fighter consoles ---
+
         void HandlePlatoonConsoles(PlatoonPrototype? platoon, string faction, int dropshipCount, int fighterCount)
         {
-            Sawmill.Debug($"[SPAWN] HandlePlatoonConsoles called for faction={faction}, dropshipCount={dropshipCount}, fighterCount={fighterCount}");
             if (platoon == null)
             {
-                Sawmill.Debug($"[SPAWN] Platoon is null for faction {faction}, skipping");
                 return;
             }
             var random = new Random();
-            Sawmill.Debug($"[SPAWN] CompatibleDropships: {string.Join(", ", platoon.CompatibleDropships)}");
-            Sawmill.Debug($"[SPAWN] CompatibleFighters: {string.Join(", ", platoon.CompatibleFighters)}");
-            // DROPSHIPS
             var dropships = platoon.CompatibleDropships.ToList();
             for (int i = 0; i < dropshipCount && dropships.Count > 0; i++)
             {
-                Sawmill.Debug($"[DROPSHIP] Iteration {i}, dropships left: {string.Join(", ", dropships)}");
                 var idx = random.Next(dropships.Count);
                 var mapId = dropships[idx];
-                Sawmill.Debug($"[DROPSHIP] Attempting to load map: {mapId}");
                 dropships.RemoveAt(idx);
                 if (!_mapLoader.TryLoadMap(mapId, out _, out var grids))
                 {
-                    Sawmill.Debug($"[DROPSHIP] Failed to load map: {mapId}");
                     continue;
                 }
-                Sawmill.Debug($"[DROPSHIP] Loaded map: {mapId}, grids: {string.Join(", ", grids)}");
                 foreach (var grid in grids)
                 {
-                    Sawmill.Debug($"[DROPSHIP] Processing grid {grid} for dropship spawn");
-                    // Initialize the map the shuttle is on before flying it
                     var gridMapId = _entityManager.GetComponent<TransformComponent>(grid).MapID;
                     _mapSystem.InitializeMap(gridMapId);
-                    // Find nav console marker and spawn nav console
                     var navMarkers = FindMarkersOnGrid(grid, "dropshipshuttlevmarker");
-                    Sawmill.Debug($"[DROPSHIP] Found {navMarkers.Count} nav markers on grid {grid}");
                     if (navMarkers.Count > 0)
                     {
-                        var navMarkerUid = navMarkers[random.Next(navMarkers.Count)];
                         var navProto = faction == "govfor" ? "CMComputerDropshipNavigation" : "CMComputerDropshipNavigationOpfor";
-                        Sawmill.Debug($"[DROPSHIP] Spawning nav console {navProto} at marker {navMarkerUid}");
-                        SpawnWeaponsConsole(navProto, navMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
+                        foreach (var navMarkerUid in navMarkers)
+                        {
+                            SpawnWeaponsConsole(navProto, navMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
+                        }
                     }
-                    // Find weapons console marker and spawn weapons console
                     var weaponsMarkers = FindMarkersOnGrid(grid, "dropshipweaponsvmarker");
-                    Sawmill.Debug($"[DROPSHIP] Found {weaponsMarkers.Count} weapons markers on grid {grid}");
                     if (weaponsMarkers.Count > 0)
                     {
-                        var weaponsMarkerUid = weaponsMarkers[random.Next(weaponsMarkers.Count)];
                         var weaponsProto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
-                        Sawmill.Debug($"[DROPSHIP] Spawning weapons console {weaponsProto} at marker {weaponsMarkerUid}");
-                        SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
+                        foreach (var weaponsMarkerUid in weaponsMarkers)
+                        {
+                            SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
+                        }
                     }
-                    // Fly to a destination
-                    var dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
-                    Sawmill.Debug($"[DROPSHIP] Found destination {dest} for faction {faction}");
+                    // Fly to a destination, prioritizing ship destinations if in ship
+                    EntityUid? dest = null;
+                    bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip) || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
+                    if (inShip)
+                    {
+                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship, grid);
+                        if (dest == null)
+                        {
+                            dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
+                        }
+                    }
+                    else
+                    {
+                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
+                    }
                     var navComputer = FindNavComputerOnGrid(grid);
-                    Sawmill.Debug($"[DROPSHIP] Found nav computer {navComputer} on grid {grid}");
                     if (dest != null && navComputer != null)
                     {
                         var navComp = _entityManager.GetComponent<DropshipNavigationComputerComponent>(navComputer.Value);
                         var navEntity = new Entity<DropshipNavigationComputerComponent>(navComputer.Value, navComp);
-                        Sawmill.Debug($"[DROPSHIP] Flying to destination {dest.Value} using nav computer {navComputer.Value}");
                         _sharedDropshipSystem.FlyTo(navEntity, dest.Value, null);
-                    }
-                    else
-                    {
-                        Sawmill.Debug($"[DROPSHIP] Could not fly: dest or navComputer is null (dest={dest}, navComputer={navComputer})");
                     }
                 }
             }
+
             // FIGHTERS
             var fighters = platoon.CompatibleFighters.ToList();
-            var allFighterMarkers = new List<EntityUid>();
             var loadedFighterGrids = new List<EntityUid>();
-            // First, load all fighter maps and collect all available markers
             foreach (var fighterMap in fighters.ToList())
             {
                 if (!_mapLoader.TryLoadMap(fighterMap, out _, out var grids))
                 {
-                    Sawmill.Debug($"[FIGHTER] Failed to load map: {fighterMap}");
                     continue;
                 }
-                Sawmill.Debug($"[FIGHTER] Loaded map: {fighterMap}, grids: {string.Join(", ", grids.Select(g => g.ToString()))}");
-                // Convert grids to EntityUid if needed
                 foreach (var grid in grids)
                 {
                     loadedFighterGrids.Add(grid);
-                    var markers = FindMarkersOnGrid(grid, "dropshipfighterdestmarker");
-                    Sawmill.Debug($"[FIGHTER] Found {markers.Count} fighter markers on grid {grid}");
-                    allFighterMarkers.AddRange(markers);
-                }
-            }
-            // Only spawn as many fighters as there are available markers
-            var fightersToSpawn = Math.Min(fighterCount, allFighterMarkers.Count);
-            Sawmill.Debug($"[FIGHTER] Spawning {fightersToSpawn} fighters (requested {fighterCount}, available markers {allFighterMarkers.Count})");
-            var usedFighterMarkers = new HashSet<EntityUid>();
-            for (int i = 0; i < fightersToSpawn; i++)
-            {
-                if (allFighterMarkers.Count == 0)
-                    break;
-                // Pick a random unused marker
-                var idx = random.Next(allFighterMarkers.Count);
-                var markerUid = allFighterMarkers[idx];
-                allFighterMarkers.RemoveAt(idx);
-                usedFighterMarkers.Add(markerUid);
-                var proto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
-                Sawmill.Debug($"[FIGHTER] Spawning weapons console {proto} at marker {markerUid}");
-                SpawnWeaponsConsole(proto, markerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
-                // Find the grid for this marker
-                var grid = _entityManager.GetComponent<TransformComponent>(markerUid).GridUid;
-                if (grid == null)
-                    continue;
-                // Initialize the map the shuttle is on before flying it
-                var gridMapId = _entityManager.GetComponent<TransformComponent>(grid.Value).MapID;
-                _mapSystem.InitializeMap(gridMapId);
-                // Fly to a destination
-                EntityUid? dest;
-                if ((faction == "govfor" && planetComp != null && !planetComp.GovforInShip) || (faction == "opfor" && planetComp != null && !planetComp.OpforInShip))
-                {
-                    dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher, grid.Value);
-                }
-                else
-                {
-                    dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
-                }
-                Sawmill.Debug($"[FIGHTER] Found destination {dest} for faction {faction}");
-                var navComputer = FindNavComputerOnGrid(grid.Value);
-                Sawmill.Debug($"[FIGHTER] Found nav computer {navComputer} on grid {grid}");
-                if (dest != null && navComputer != null)
-                {
-                    var navComp = _entityManager.GetComponent<DropshipNavigationComputerComponent>(navComputer.Value);
-                    var navEntity = new Entity<DropshipNavigationComputerComponent>(navComputer.Value, navComp);
-                    Sawmill.Debug($"[FIGHTER] Flying to destination {dest.Value} using nav computer {navComputer.Value}");
-                    _sharedDropshipSystem.FlyTo(navEntity, dest.Value, null);
-                }
-                else
-                {
-                    Sawmill.Debug($"[FIGHTER] Could not fly: dest or navComputer is null (dest={dest}, navComputer={navComputer})");
+                    var fighterMarkers = FindMarkersOnGrid(grid, "dropshipfighterdestmarker");
+                    if (fighterMarkers.Count > 0)
+                    {
+                        var proto = faction == "govfor" ? "CMComputerDropshipNavigation" : "CMComputerDropshipNavigationOpfor";
+                        foreach (var markerUid in fighterMarkers)
+                        {
+                            SpawnWeaponsConsole(proto, markerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
+                        }
+                    }
+                    var weaponsMarkers = FindMarkersOnGrid(grid, "dropshipweaponsvmarker");
+                    if (weaponsMarkers.Count > 0)
+                    {
+                        var weaponsProto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
+                        foreach (var weaponsMarkerUid in weaponsMarkers)
+                        {
+                            SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
+                        }
+                    }
+                    // Fly to a destination, prioritizing ship destinations if in ship
+                    EntityUid? dest = null;
+                    bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip) || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
+                    if (inShip)
+                    {
+                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher, grid);
+                        if (dest == null)
+                        {
+                            dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
+                        }
+                    }
+                    else
+                    {
+                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
+                    }
+                    var navComputer = FindNavComputerOnGrid(grid);
+                    if (dest != null && navComputer != null)
+                    {
+                        var navComp = _entityManager.GetComponent<DropshipNavigationComputerComponent>(navComputer.Value);
+                        var navEntity = new Entity<DropshipNavigationComputerComponent>(navComputer.Value, navComp);
+                        _sharedDropshipSystem.FlyTo(navEntity, dest.Value, null);
+                    }
                 }
             }
         }

@@ -52,18 +52,20 @@
   components:
   - type: RMCPlanetMapPrototype
     votename: "Stable Garrison"
-    mapId: au14garrisonmapthingtemp
+    mapId: stablegarrison
     camouflage: Jungle
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
     - UPP
     - WEYU
+    - HAZOPS
+
     platoonsGovfor:
     - LACN
     - USCM
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: true
+    govforinship: false
     opforinship: true
     daycycleenabled: true
     faction: ua
