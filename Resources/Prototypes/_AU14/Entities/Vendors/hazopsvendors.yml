@@ -246,7 +246,7 @@
       entries:
       - id: RMCWeaponSMGMP5Alt
         amount: 10
-      - id: RMCWeaponSMGMP5
+      - id: WeaponSMGMP5
         amount: 5
       - id: AU14WeaponRifleM16A2
         amount: 5
