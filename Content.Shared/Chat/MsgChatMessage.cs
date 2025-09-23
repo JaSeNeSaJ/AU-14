@@ -90,11 +90,26 @@ namespace Content.Shared.Chat
         public bool HidePopup;
         public string? SpeechStyleClass;
         public bool RepeatCheckSender;
+        public string? LanguageIcon; //RMC
 
         [NonSerialized]
         public bool Read;
 
-        public ChatMessage(ChatChannel channel, string message, string wrappedMessage, NetEntity source, int? senderKey, bool hideChat = false, Color? colorOverride = null, string? audioPath = null, float audioVolume = 0, bool hidePopup = false, string? speechStyleClass = null, bool repeatCheckSender = true, ChatDisplayMetadata? display = null)
+        public ChatMessage(
+            ChatChannel channel,
+            string message,
+            string wrappedMessage,
+            NetEntity source,
+            int? senderKey,
+            bool hideChat = false,
+            Color? colorOverride = null,
+            string? audioPath = null,
+            float audioVolume = 0,
+            bool hidePopup = false,
+            string? speechStyleClass = null,
+            bool repeatCheckSender = true,
+            ChatDisplayMetadata? display = null,
+            string? languageIcon = null) //RMC
         {
             Channel = channel;
             Message = message;
@@ -109,6 +124,7 @@ namespace Content.Shared.Chat
             SpeechStyleClass = speechStyleClass;
             RepeatCheckSender = repeatCheckSender;
             Display = display ?? CreateDefaultDisplay(channel);
+            LanguageIcon = languageIcon;
         }
 
         // CMU14
@@ -127,6 +143,7 @@ namespace Content.Shared.Chat
             HidePopup = copyFrom.HidePopup;
             SpeechStyleClass = copyFrom.SpeechStyleClass;
             RepeatCheckSender = copyFrom.RepeatCheckSender;
+            LanguageIcon = copyFrom.LanguageIcon;
             Read = copyFrom.Read;
         }
         // CMU14
