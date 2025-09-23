@@ -36,6 +36,7 @@
     - WEYU
     platoonsGovfor:
     - LACN
+    - CCAF
     - USCM
     - HAZOPS
     defaultgovfor: USCM
@@ -62,6 +63,7 @@
 
     platoonsGovfor:
     - LACN
+    - CCAF
     - USCM
     defaultgovfor: USCM
     defaultopfor: UPP
@@ -85,6 +87,7 @@
     platoonsGovfor:
     - LACN
     - USCM
+    - CCAF
     - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
