@@ -33,3 +33,7 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/LACN/PilotGear/uniform.rsi
+  - type: UniformAccessoryHolder
+    startingAccessories:
+    - AU14PatchUAFlag
+    - AU14PatchUSASF
