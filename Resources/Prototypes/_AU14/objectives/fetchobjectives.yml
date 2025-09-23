@@ -100,7 +100,7 @@
     - govfor
     repeating: false
     objectivelevel: 1
-    custompoints: 50
+    custompoints: 15
     roundEndMessage: Finding the AN/PRC-982
     ObjectiveDescription: "Retrieve the AN/PRC-982 portable radio transceiver box"
   - type: FetchObjective
@@ -125,7 +125,7 @@
     - govfor
     repeating: false
     objectivelevel: 1
-    custompoints: 50
+    custompoints: 15
     roundEndMessage: Finding the CIR-60 Blackbox
     ObjectiveDescription: "Retrieve the CIR-60 'blackbox' colony information recorder"
   - type: FetchObjective
@@ -150,7 +150,7 @@
     - govfor
     repeating: false
     objectivelevel: 1
-    custompoints: 50
+    custompoints: 15
     roundEndMessage: Finding the RCS-9 ARDSU
     ObjectiveDescription: "Retrieve the ARCS-9 atmospheric radar data storage unit"
   - type: FetchObjective
@@ -175,7 +175,7 @@
     - govfor
     repeating: false
     objectivelevel: 2
-    custompoints: 100
+    custompoints: 30
     roundEndMessage: Finding the WY laptop
     ObjectiveDescription: "Retrieve the Weyland-Yutani bioweapons division laptop"
   - type: FetchObjective
