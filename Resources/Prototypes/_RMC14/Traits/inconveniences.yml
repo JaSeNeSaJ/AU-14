@@ -23,3 +23,13 @@
   components:
     - type: Unrevivable
       cloneable: true
+
+- type: trait
+  id: Epilepsy
+  name: au14-trait-epilepsy-name
+  description: au14-trait-epilepsy-desc
+  category: Disabilities
+  components:
+    - type: Narcolepsy
+      timeBetweenIncidents: 3600, 4600
+      durationOfIncident: 3, 9
