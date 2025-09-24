@@ -60,7 +60,6 @@
   compatibleFighters:
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
-
   possibleships:
       - Riptide
 
@@ -212,5 +211,29 @@
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
 
-
+- type: platoon
+  id: CCAF
+  name: CCAF
+  VendorToMarker:
+    Rifleman: AU14USCMequipmentvendor
+    Clothing: AU14CCAFclothingequipmentvendor
+    Weapons: AU14CCAFWeaponsVendor
+    SWeapons: AU14CCAFSpecialWeaponsVendor
+    Corpsman: AU14LACNcorpsmanvendor
+    Arifleman: AU14USCMSGequipmentvendor
+    Dcc: AU14USCMaircrewvendor
+    OperationsOfficer: AU14CCAFcommandequipmentvendor
+    Rto: AU14RTOVendor
+    SectionSergeant: AU14CCAFsectionleaderequipmentvendor
+    Pilot: AU14AircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  #platoonflag:  uaflag
+  CompatibleDropships:
+  - /Maps/_RMC14/alamo.yml
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships:
+      - Riptide
 # Add more platoons as needed
