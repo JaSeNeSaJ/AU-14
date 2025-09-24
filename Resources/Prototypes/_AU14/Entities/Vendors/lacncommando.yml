@@ -282,17 +282,17 @@
     - name: Small Arms
       entries:
       - id: RMCWeaponSMGP90
-        amount: 2
-      - id: RMCWeaponRifleMAR30
         amount: 3
-      - id: RMCWeaponRifleMAR40
+      - id: RMCWeaponRifleMAR30
+        amount: 4
+      - id: WeaponRifleMAR40
         amount: 1
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineSMGP90
-        amount: 14
+        amount: 32
       - id: RMCMagazineRifleMAR40
-        amount: 28
+        amount: 42
     - name: Handguns
       entries:
       - id: AU14WeaponPistolTPR23B
