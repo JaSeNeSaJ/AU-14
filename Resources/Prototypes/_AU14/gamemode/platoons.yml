@@ -1,6 +1,6 @@
 - type: platoon
   id: LACN
-  name: LACN Landing
+  name: LACN Landing Forces
   VendorToMarker:
     Rifleman: AU14LACNequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -32,7 +32,7 @@
     Dcc: AU14LACNaircrewvendor
     OperationsOfficer: AU14LACNcommandocommandequipmentvendor
     Rto: AU14RTOVendor
-    SectionSergeant: AU14USCMcommandosectionleaderequipmentvendor
+    SectionSergeant: AU14LACNcommandosectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Riptide
