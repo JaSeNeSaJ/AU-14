@@ -1,6 +1,6 @@
 - type: platoon
   id: LACN
-  name: LACN Landing
+  name: LACN Landing Forces
   VendorToMarker:
     Rifleman: AU14LACNequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -18,6 +18,24 @@
   #platoonflag: uaflag
   CompatibleDropships:
   - /Maps/_RMC14/alamo.yml
+
+- type: platoon
+  id: LACNcommando
+  name: LACN Naval Commando Platoon
+  VendorToMarker:
+    Rifleman: AU14LACNequipmentvendor
+    Clothing: AU14LACNcommandoclothingequipmentvendor
+    Weapons: AU14LACNcommandoWeaponsVendor
+    SWeapons: AU14LACNcommandoSpecialWeaponsVendor
+    Corpsman: AU14LACNcorpsmanvendor
+    Arifleman: AU14LACNMGequipmentvendor
+    Dcc: AU14LACNaircrewvendor
+    OperationsOfficer: AU14LACNcommandocommandequipmentvendor
+    Rto: AU14RTOVendor
+    SectionSergeant: AU14LACNcommandosectionleaderequipmentvendor
+    Pilot: AU14AircrewWeaponsVendor
+  possibleships:
+    - Riptide
 
 - type: platoon
   id: USCM
