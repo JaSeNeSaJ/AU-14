@@ -17,7 +17,7 @@
     RMCRankPrivateFirstClass: []
   startingGear: AU14GearopforRadioTelephoneOperator
   dummyStartingGear: AU14GearopforRadioTelephoneOperatorDummy
-  icon: "AU14JobIconRTO"
+  icon: "AU14JobIconOPFORRTO"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
