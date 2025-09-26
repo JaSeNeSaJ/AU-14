@@ -1,16 +1,16 @@
 
-AU14 is a Multiplayer Sandbox game set in the Universe of the Xenomorph.
+CMU is a Multiplayer Sandbox game set in the Universe of the Xenomorph.
 
 
-AU14 is forked from RMC14  and uses assets from both them and the CM13 project, copyright in metadata files.
+CMU is forked from RMC14  and uses assets from both them and the CM13 project, copyright in metadata files.
 
 ## Links
 
-[AU14 Discord](https://discord.gg/AXwvzDw9CY/) 
+[CMU Discord]([https://discord.gg/AXwvzDw9CY](https://discord.gg/JcEZxEqeC2)/) 
 
 ## Contributing
 
-AU14 is happy to take contributions and has a list of things needing to be done! You can join our discord for further inquiry
+CMU is happy to take contributions and has a list of things needing to be done! You can join our discord for further inquiry
 
 ## License
 
