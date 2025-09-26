@@ -17,22 +17,13 @@
     sprite: _AU14/Clothing/UNISC/lightarmor.rsi
 
 - type: entity
-  parent: AU14BaseArmorLight
+  parent: AU14BaseArmor
   id: AU14ArmorM3UNISC
   name: light UNISC armor
   description: Armor.
   components:
   - type: Sprite
     sprite: _AU14/Clothing/UNISC/lightarmoralt.rsi
-
-- type: entity
-  parent: AU14BaseArmorLight
-  id: AU14ArmorBallisticVestUNISC
-  description: A light ballistic vest.
-  name: UNISC ballistic vest
-  components:
-  - type: Sprite
-    sprite: _AU14/Clothing/UNISC/ballisticvest.rsi
 
 - type: entity
   parent: [ RMCAllowSuitStorageClothingSmartgunner, AU14BaseArmor ]
