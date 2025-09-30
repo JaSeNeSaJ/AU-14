@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobXenoBase
   id: AU14JobThreatMember
-  name: au-job-name-threat-Member
+  name: au-job-name-threat-member
   setPreference: true
   playTimeTracker: AUJobThreatMember
   hidden: false
