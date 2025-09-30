@@ -45,7 +45,8 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-
+    threats:
+    - cultistThreat
 
 
 - type: entity
