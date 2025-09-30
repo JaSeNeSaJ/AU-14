@@ -29,7 +29,7 @@
   id: cultistParty
   leadersToSpawn:
     cultistJob: 2
-  scaleWithPop: true
+  scalewithpop: true
   spawnTogether: true
 
 

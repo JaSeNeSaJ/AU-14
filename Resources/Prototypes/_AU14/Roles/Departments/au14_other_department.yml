@@ -44,7 +44,7 @@
 - type: department
   parent: CMDepartmentBase
   id: AU14DepartmentThreat
-  name: au14-department-threat
+  name:  au-job-name-threat-Member
   description: au14-department-threat-description
   color: "#e3ce94"
   roles:

@@ -68,8 +68,9 @@ role-timer-xeno-tier-three = tier three castes
 
 
 au-job-name-threat-leader = Threat Leader
-aujobthreatleader = Threat leader
+au-job-name-threat-member = Threat Member
 
 
 au-job-name-third-party-leader = Third Party Leader
 au-job-name-third-party-member = Third Party Member
+
