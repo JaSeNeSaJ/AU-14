@@ -64,3 +64,12 @@ cm-job-supervisors-queen = the Queen
 role-timer-xeno-roles = Xenonid
 role-timer-xeno-drones = drone and drone evolutions
 role-timer-xeno-tier-three = tier three castes
+
+
+
+au-job-name-threat-leader = Threat Leader
+aujobthreatleader = Threat leader
+
+
+au-job-name-third-party-leader = Third Party Leader
+au-job-name-third-party-member = Third Party Member

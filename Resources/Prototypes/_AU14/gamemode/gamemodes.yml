@@ -39,6 +39,23 @@
   - ColonyAntags
 
 - type: gamePreset
+  id: DistressSignal
+  name: Distress Signal
+  showInVote: true
+  description: Distress Signal
+  requiresGovforVote: true
+  supportedPlanets:
+  #- AUPlanetLV747
+  - AUPlanetShepherdsPride
+  # - AUPlanetStableGarrison
+  rules:
+  - AuVoteRule
+  - PlatoonSpawn
+  - AddGovfor
+
+
+
+- type: gamePreset
   id: ColonyFall
   alias:
     - colonyfall
@@ -171,3 +188,5 @@
     - AUPlanetShepherdsPride
     - AUPlanetStableGarrison
     - AUPlanetLV624
+
+
