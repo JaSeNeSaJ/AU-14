@@ -155,8 +155,6 @@
     state: "9"
   - type: Icon
     state: "9"
-  - type: Occluder
-    enabled: false
 
 - type: entity
   parent: CMUBaseOspreyWall
@@ -260,7 +258,7 @@
 
 - type: entity
   parent: CMUBaseOspreyWall
-  id: CMUOspreyWall9
+  id: CMUOspreyWall19
   suffix: 19
   components:
   - type: Sprite
