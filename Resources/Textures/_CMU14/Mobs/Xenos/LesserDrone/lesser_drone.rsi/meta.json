@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "license": "CC-BY-SA-3.0",
+  "copyright": "Sprites by @aleksh and @.sigma_draconis. Parasites sprites recolor by VictorJob",
+  "size": {
+    "x": 32,
+    "y": 32
+  },
+  "states": [
+    {
+      "name": "sleeping"
+    },
+    {
+      "name": "alive",
+      "directions": 4
+    },
+    {
+      "name": "dead"
+    },
+    {
+      "name": "crit"
+    }
+  ]
+}

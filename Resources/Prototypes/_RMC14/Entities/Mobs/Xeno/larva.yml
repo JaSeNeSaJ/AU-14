@@ -11,7 +11,7 @@
   - type: GhostRole
     name: cm-job-name-xeno-larva
   - type: Sprite
-    sprite: _RMC14/Mobs/Xenonids/Larva/larva.rsi
+    sprite: _CMU14/Mobs/Xenos/Larva/larva.rsi # CMU14-Edit
   - type: MobState
     allowedStates:
     - Alive
