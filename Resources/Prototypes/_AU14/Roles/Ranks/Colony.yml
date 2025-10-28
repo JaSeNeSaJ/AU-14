@@ -21,7 +21,7 @@
 - type: rank
   id: AU14RankCMBMarshal
   name: CMB Marshal
-  prefix: Marshal
+  prefix: Mrshl.
 
 - type: rank
   id: AU14RankColonyAdministrator
