@@ -14,7 +14,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
-    - Riptide
+    - Daybreak
   #platoonflag: uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -35,7 +35,7 @@
     SectionSergeant: AU14LACNcommandosectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
-    - Riptide
+    - Daybreak
     - USSBush
 
 - type: platoon
@@ -62,7 +62,7 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Riptide
+      - Daybreak
       - USSBush
 
 - type: platoon
@@ -83,7 +83,7 @@
     SectionSergeant: AU14UPPSectionLeaderVendor
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
-      - Riptide
+      - Daybreak
       - USSBush
   jobClassOverride:
     SquadRifleman: Au14JobGOVFORSquadRiflemanUPP
@@ -184,7 +184,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
-    - Riptide
+    - USSBush
   jobSlotOverride:
     SquadRifleman: 12
     PlatoonCorpsman: 1
@@ -207,7 +207,6 @@
     SectionSergeant: AU14HAZOPSsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
-      - Riptide
       - Daybreak
       - USSBush
   CompatibleDropships:
@@ -240,7 +239,6 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Riptide
       - USSBush
 
 - type: platoon
