@@ -36,6 +36,7 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Riptide
+    - USSBush
 
 - type: platoon
   id: USCM
@@ -62,6 +63,7 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Riptide
+      - USSBush
 
 - type: platoon
   id: UPP
@@ -82,6 +84,7 @@
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Riptide
+      - USSBush
   jobClassOverride:
     SquadRifleman: Au14JobGOVFORSquadRiflemanUPP
     SectionSergeant: AU14JobGOVFORSectionSergeantUPP
@@ -205,6 +208,8 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
       - Riptide
+      - Daybreak
+      - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/osprey.yml
   compatibleFighters:
@@ -236,6 +241,7 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Riptide
+      - USSBush
 
 - type: platoon
   id: UNISC
@@ -266,6 +272,7 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
       - Daybreak
+      - USSBush
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
