@@ -22,6 +22,9 @@
     opforinship: true
     daycycleenabled: true
     faction: ua
+    threats:
+    - cultistThreat
+    - wendigoThreat
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -47,7 +50,9 @@
     daycycleenabled: true
     threats:
     - cultistThreat
-
+    - wendigoThreat
+    thirdparties:
+    - cultistThirdParty
 
 - type: entity
   id: AUPlanetStableGarrison
@@ -91,10 +96,13 @@
     - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: false
+    govforinship: true
     opforinship: true
     daycycleenabled: true
     faction: ua
+    threats:
+    - cultistThreat
+    - wendigoThreat
 
 
 

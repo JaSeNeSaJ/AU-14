@@ -9,7 +9,7 @@
   description: A large, menacing creature with a skull for head and sharp claws. Terrifying.
   components:
   - type: GhostRole
-    name: cm-job-name-xeno-warrior
+    name: Wendigo
   - type: Sprite
     sprite: _AU14/Mobs/MiscMob/wendigo.rsi
   - type: MobState
@@ -61,8 +61,8 @@
       groups:
         Brute: 60
   - type: MovementSpeedModifier
-    baseWalkSpeed: 3
-    baseSprintSpeed: 4
+    baseWalkSpeed: 6
+    baseSprintSpeed: 7
   - type: Tackle
     max: 4
   - type: SlowOnPull

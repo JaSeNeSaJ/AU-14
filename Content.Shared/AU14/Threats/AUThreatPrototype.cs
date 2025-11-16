@@ -36,7 +36,7 @@ public sealed partial class ThreatPrototype : IPrototype
     [DataField("roundstartspawns")]
     public ProtoId<PartySpawnPrototype> RoundStartSpawn { get; private set; } = new();
 
-    [DataField("Inserts")]
+    [DataField("possibleInserts")]
     public List<AuInsertPrototype> Inserts { get; private set; } = new();
 
 
@@ -49,7 +49,7 @@ public sealed partial class ThreatPrototype : IPrototype
 
     [DataField("thirdpartyratio")]
     public float ThirdPartyRatio { get; private set; } = 0.15f;
-
+    // for roundstart
 
     [DataField("blacklistedgamemodes")]
     public List<string> BlacklistedGamemodes { get; private set; } = new();
@@ -73,6 +73,8 @@ public sealed partial class ThreatPrototype : IPrototype
     [DataField("winmessage", required: false)]
     public string? WinMessage { get; private set; } = null;
 
+    [DataField("maxthirdParties")]
+    public int MaxThirdParties { get; private set; } = 4;
 
 
 
