@@ -48,7 +48,7 @@
   id: AU14GearopforPlatoonCorpsman
   equipment:
     id: AU14JobIDCardopforPlatoonCorpsman
-    ears: AU14HeadsetSectionMarine
+    ears: AU14HeadsetSectionOpfor
 
 - type: entity
   parent: CMSpawnPointJobBase
