@@ -184,7 +184,7 @@
     - govfor
     repeating: false
     objectivelevel: 2
-    custompoints: 30
+    custompoints: 15
     roundEndMessage: Finding the WY laptop
     ObjectiveDescription: "Retrieve the Weyland-Yutani bioweapons division laptop"
   - type: FetchObjective
