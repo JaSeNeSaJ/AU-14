@@ -65,13 +65,11 @@
       - id: AU14CMBHeadset
         amount: 2
     - name: Duty Weapons
+      choices: { CMUCMBDutyWeapons: 1 }
       entries:
       - id: RMCGunCasePistolM1984
-        amount: 1
       - id: RMCGunCasePistolM77
-        amount: 1
       - id: RMCGunCaseRevolverRSh9
-        amount: 1
     - name: Less Than Lethal Ammunition
       entries:
       - id: RMCMagazinePistolM1984Rubber
@@ -241,13 +239,10 @@
       - id: AU14CMBHeadset
         amount: 2
     - name: Duty Weapons
+      choices: { CMUNSPADutyWeapons: 1 }
       entries:
       - id: RMCGunCasePistolM1984
-        amount: 1
       - id: RMCGunCasePistolM77
-        amount: 1
-      - id: RMCGunCaseRevolverRSh9
-        amount: 1
     - name: Less Than Lethal Ammunition
       entries:
       - id: RMCMagazinePistolM1984Rubber
