@@ -3,7 +3,7 @@
   parent: ColMarTechBaseAnchorable
   id: CMVendorCassettes
   name: Rec-Vend
-  description: Contains recreational items, like Cassette Players and Cards.
+  description: Contains recreational items, like Cards.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/cassette_player.rsi
@@ -13,26 +13,6 @@
   - type: CMAutomatedVendor
     hackable: true
     sections:
-    - name: Cassette Players
-      entries:
-      - id: AU14CassettePlayerGray
-        amount: 10
-      - id: AU14CassettePlayerBlue
-        amount: 10
-      - id: AU14CassettePlayerGreen
-        amount: 10
-      - id: AU14CassettePlayerPink
-        amount: 10
-      - id: AU14CassettePlayerOrange
-        amount: 10
-      - id: AU14CassettePlayerRainbow
-        amount: 10
-      - id: AU14CassettePlayerNeon
-        amount: 10
-    - name: Cassettes
-      entries:
-      - id: RMCCassetteTapeCustom
-        amount: 70
     - name: Cards
       entries: []
     - name: Other
