@@ -36,7 +36,6 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Daybreak
-    - USSBush
 
 - type: platoon
   id: USCM
@@ -63,7 +62,6 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
-      - USSBush
 
 - type: platoon
   id: UPP
@@ -84,7 +82,6 @@
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Daybreak
-      - USSBush
   jobClassOverride:
     SquadRifleman: Au14JobGOVFORSquadRiflemanUPP
     SectionSergeant: AU14JobGOVFORSectionSergeantUPP
@@ -184,7 +181,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
-    - USSBush
+    - Daybreak
   jobSlotOverride:
     SquadRifleman: 12
     PlatoonCorpsman: 1
@@ -208,7 +205,6 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
       - Daybreak
-      - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/osprey.yml
   compatibleFighters:
@@ -239,7 +235,33 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - USSBush
+      - Daybreak
+
+- type: platoon
+  id: ProdigySF
+  name: Prodigy Security Forces
+  VendorToMarker:
+    Rifleman: AU14prodigyequipmentvendor
+    Clothing: AU14prodigyclothingequipmentvendor
+    Weapons: AU14prodigyWeaponsVendor
+    SWeapons: AU14prodigySpecialWeaponsVendor
+    Corpsman: AU14prodigycorpsmanvendor
+    Arifleman: AU14prodigySGequipmentvendor
+    Dcc: AU14prodigyaircrewvendor
+    OperationsOfficer: AU14prodigycommandequipmentvendor
+    Rto: AU14prodigyRTOVendor
+    SectionSergeant: AU14prodigysectionleaderequipmentvendor
+    Pilot: AU14prodigyAircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  #platoonflag:  uaflag
+  CompatibleDropships:
+  - /Maps/_CMU14/Shuttles/alamo.yml
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships:
+      - Daybreak
 
 - type: platoon
   id: UNISC
@@ -270,7 +292,6 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
       - Daybreak
-      - USSBush
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml

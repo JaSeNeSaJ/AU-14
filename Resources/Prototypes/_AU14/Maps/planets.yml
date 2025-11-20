@@ -38,9 +38,11 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - ProdigySF
     platoonsGovfor:
     - LACN
     - CCAF
+    - UNISC
     - USCM
     - HAZOPS
     defaultgovfor: USCM
@@ -51,8 +53,8 @@
     threats:
     - cultistThreat
     - wendigoThreat
-    thirdparties:
-    - cultistThirdParty
+#    thirdparties:
+#    - cultistThirdParty
 
 - type: entity
   id: AUPlanetStableGarrison
@@ -66,6 +68,7 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - ProdigySF
     platoonsGovfor:
     - LACN
     - CCAF
@@ -90,6 +93,7 @@
     - UPP
     - WEYU
     platoonsGovfor:
+    - ProdigySF
     - LACN
     - USCM
     - CCAF
@@ -120,6 +124,7 @@
     - WEYU
     platoonsGovfor:
     - LACN
+    - ProdigySF
     - CMBCIU
     - HAZOPS
     defaultgovfor: HAZOPS
