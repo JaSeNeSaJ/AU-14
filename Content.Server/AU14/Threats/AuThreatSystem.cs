@@ -66,10 +66,13 @@ public sealed class AuThreatSystem : EntitySystem
             while (query.MoveNext(out var uid, out var comp))
             {
                 if (comp.ThreatMarkerType == markerType && (comp.ID == markerId || (comp.ID == "" && markerId == "")))
-                    markers.Add(uid);
+                {
+                    if (_entityManager.GetComponent<TransformComponent>(uid).MapID == mapId)
+                        markers.Add(uid);
+                }
             }
             Logger.DebugS("au14.threat",
-                $"[DEBUG] GetMarkers({markerType}): Found {markers.Count} markers with markerId '{markerId}'");
+                $"[DEBUG] GetMarkers({markerType}): Found {markers.Count} markers with markerId '{markerId}' on map {mapId}");
             return markers;
         }
 
@@ -87,7 +90,10 @@ public sealed class AuThreatSystem : EntitySystem
             // Gather all markers of all types
             var allMarkers = new List<EntityUid>();
             foreach (ThreatMarkerType type in System.Enum.GetValues(typeof(ThreatMarkerType)))
+            {
                 allMarkers.AddRange(GetMarkers(type));
+            }
+
             if (allMarkers.Count > 0)
             {
                 centerMarker = allMarkers[_random.Next(allMarkers.Count)];

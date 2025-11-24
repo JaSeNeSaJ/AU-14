@@ -64,3 +64,13 @@
     - id: CMShellShotgunBuckshot
       amount: 5
 
+
+- type: auThirdParty
+  id: cultistThirdParty
+  partyspawn: cultistParty
+  enterbyshuttle: false
+  weight: 10
+  minplayers: 0
+  maxplayers: 100
+  GhostsNeeded: 1
+  roundstart: true

@@ -22,6 +22,9 @@
     opforinship: true
     daycycleenabled: true
     faction: ua
+    threats:
+    - cultistThreat
+    - wendigoThreat
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -35,9 +38,11 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - ProdigySF
     platoonsGovfor:
     - LACN
     - CCAF
+    - UNISC
     - USCM
     - HAZOPS
     defaultgovfor: USCM
@@ -47,7 +52,9 @@
     daycycleenabled: true
     threats:
     - cultistThreat
-
+    - wendigoThreat
+#    thirdparties:
+#    - cultistThirdParty
 
 - type: entity
   id: AUPlanetStableGarrison
@@ -61,6 +68,7 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - ProdigySF
     platoonsGovfor:
     - LACN
     - CCAF
@@ -85,16 +93,20 @@
     - UPP
     - WEYU
     platoonsGovfor:
+    - ProdigySF
     - LACN
     - USCM
     - CCAF
     - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: false
+    govforinship: true
     opforinship: true
     daycycleenabled: true
     faction: ua
+    threats:
+    - cultistThreat
+    - wendigoThreat
 
 
 
@@ -112,6 +124,7 @@
     - WEYU
     platoonsGovfor:
     - LACN
+    - ProdigySF
     - CMBCIU
     - HAZOPS
     defaultgovfor: HAZOPS
