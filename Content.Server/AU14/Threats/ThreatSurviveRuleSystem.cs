@@ -23,9 +23,9 @@ public sealed class ThreatSurviveRuleSystem : GameRuleSystem<ThreatSurviveRuleCo
         _endTime = _timing.CurTime + TimeSpan.FromMinutes(_minutes);
     }
 
-    public override void Update(float frameTime)
+    protected override void ActiveTick(EntityUid uid, ThreatSurviveRuleComponent component, GameRuleComponent gameRule, float frameTime)
     {
-        base.Update(frameTime);
+        base.ActiveTick(uid, component, gameRule, frameTime);
         if (_endTime != null && _timing.CurTime >= _endTime)
         {
             var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
