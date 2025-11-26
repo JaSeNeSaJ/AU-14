@@ -5,43 +5,14 @@
   suffix: Empty
   description: A spray bottle with an unscrewable top.
   components:
-  - type: Drink
-    solution: spray
-    ignoreEmpty: true
-    useSound:
-      path: /Audio/Effects/spray3.ogg
-    transferAmount: 10
   - type: Tag
     tags:
-    - Spray
     - Trash
   - type: Sprite
     sprite: Objects/Specific/Janitorial/janitorial.rsi
     state: cleaner
   - type: Item
     sprite: Objects/Specific/Janitorial/janitorial.rsi
-  - type: SolutionContainerManager
-    solutions:
-      spray:
-        maxVol: 100
-  - type: RefillableSolution
-    solution: spray
-  - type: DrainableSolution
-    solution: spray
-  - type: SolutionTransfer
-    canChangeTransferAmount: true
-  - type: SolutionItemStatus
-    solution: spray
-  - type: UseDelay
-  - type: Spray
-    transferAmount: 10
-    sprayVelocity: 2
-    spraySound:
-      path: /Audio/Effects/spray2.ogg
-  - type: TrashOnSolutionEmpty
-    solution: spray
-  - type: ExaminableSolution
-    solution: spray
 
 - type: entity
   name: mega spray bottle
