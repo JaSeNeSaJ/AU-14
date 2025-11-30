@@ -22,6 +22,10 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
     {
+        // Only run this logic when the KillAllGovfor rule is active
+        if (!_gameTicker.IsGameRuleActive<KillAllGovforRuleComponent>())
+            return;
+
         // Only care about dead mobs
         if (ev.NewMobState != MobState.Dead)
             return;

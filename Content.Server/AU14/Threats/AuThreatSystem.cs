@@ -38,8 +38,24 @@ public sealed class AuThreatSystem : EntitySystem
         MapId mapId,
         Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
     {
+        if (threat == null)
+        {
+            Logger.Error("[AuThreatSystem] SpawnThreatAtRoundStart called with null threat prototype. Aborting spawn.");
+            return;
+        }
+
         var partySpawn = threat.RoundStartSpawn;
+        if (string.IsNullOrWhiteSpace(partySpawn))
+        {
+            Logger.DebugS("au14.threat", $"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
+            return;
+        }
         var newpartySpawn = _prototypeManager.TryIndex(partySpawn, out var spawn) ? spawn : null;
+        if (newpartySpawn == null)
+        {
+            Logger.ErrorS("au14.threat", $"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
+            return;
+        }
 
         // Helper to get marker entity Uids by marker type
         List<EntityUid> GetMarkers(ThreatMarkerType markerType)
