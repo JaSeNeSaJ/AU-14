@@ -716,7 +716,7 @@
       - id: RMCGrenadeBlastM12
         amount: 6
       - id: RMCGrenadeCustomMetalFoam
-        amount: 6
+        amount: 1
       - id: RMCExplosivePlastic
         amount: 4
       - id: RMCExplosiveBreachingCharge
