@@ -114,6 +114,7 @@
 - type: entity
   parent: CMLightReplacer
   id: RMCSprayBottleSpaceCleaner
+  name: light replacer
   suffix: Empty
   components:
   - type: LightReplacer
