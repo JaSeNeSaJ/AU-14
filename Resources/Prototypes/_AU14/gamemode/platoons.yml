@@ -296,4 +296,29 @@
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
 
+- type: platoon
+  id: VAIPO
+  name: VAIPO
+  VendorToMarker:
+    Rifleman: AU14VAIPOequipmentvendor
+    Clothing: AU14VAIPOclothingequipmentvendor
+    Weapons: AU14VAIPOWeaponsVendor
+    SWeapons: AU14VAIPOSpecialWeaponsVendor
+    Corpsman: AU14VAIPOcorpsmanvendor
+    Arifleman: AU14VAIPOSGequipmentvendor
+    Dcc: AU14VAIPOaircrewvendor
+    OperationsOfficer: AU14VAIPOcommandequipmentvendor
+    Rto: AU14VAIPORTOVendor
+    SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
+    Pilot: AU14VAIPOAircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  CompatibleDropships:
+  - /Maps/_CMU14/Shuttles/alamo.yml
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships:
+      - Daybreak
+
 # Add more platoons as needed

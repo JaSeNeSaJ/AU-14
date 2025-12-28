@@ -16,6 +16,7 @@
     - LACN
     - USCM
     - UNISC
+    - VAIPO
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -73,6 +74,7 @@
     - LACN
     - CCAF
     - USCM
+    - VAIPO
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -98,6 +100,7 @@
     - USCM
     - CCAF
     - CMBCIU
+    - VAIPO
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -127,6 +130,7 @@
     - ProdigySF
     - CMBCIU
     - HAZOPS
+    - VAIPO
     defaultgovfor: HAZOPS
     defaultopfor: UPP
     govforinship: true
