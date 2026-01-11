@@ -10,6 +10,7 @@
   startingGear: RMCGearSurvivorDoctor
   accessGroups:
   - ColonistMedical
+  basePlaytimeTracker: true
   special:
   - !type:AddComponentSpecial
     components:
@@ -59,6 +60,7 @@
 
 - type: playTimeTracker
   id: CMJobSurvivorDoctor
+  name: rmc-playtime-tracker-job-name-survivor-doctor
   isHumanoid: true
 
 - type: entity

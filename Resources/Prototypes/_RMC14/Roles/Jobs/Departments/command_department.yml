@@ -8,4 +8,5 @@
   - CMCommandingOfficer
   - CMExecutiveOfficer
   - CMStaffOfficer
+  - CMPVEPlatoonCommander
   primary: false
