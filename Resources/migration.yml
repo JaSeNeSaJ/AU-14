@@ -1363,7 +1363,7 @@ BoxSyringe: RMCBoxSyringe
 WeaponRifleSSG45: RMCWeaponRifleSSG45
 
 # 2025-08-06
-RMCSmartGun: RMCSmartGunUNMC
+RMCSmartGun: RMCSmartGun
 
 # 2025-08-07
 RMCAttachmentM42A2WoodenStock: RMCAttachmentM42A2CollapsibleStock
@@ -1441,8 +1441,8 @@ SignNoSmoking: CMPosterNoSmoking
 SignSmoking: CMPosterNoSmoking2
 
 # 2025-10-12
-CMLightReplacerEmpty: RMCLightReplacerEmpty
-CMLightReplacer: RMCLightReplacer
+RMCLightReplacerEmpty: RMCLightReplacerEmpty
+RMCLightReplacer: RMCLightReplacer
 CMLightFixture: RMCLightFixture
 CMLightFixtureSmall:  RMCLightFixtureSmall
 CMLightFixtureAlwaysPowered: RMCLightFixtureAlwaysPowered

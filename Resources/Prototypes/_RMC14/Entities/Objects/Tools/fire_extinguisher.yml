@@ -2,7 +2,7 @@
   id: CMFireExtinguisherPortable
 
 - type: entity
-  parent: CMLightReplacer
+  parent: RMCLightReplacer
   id: CMFireExtinguisher
   suffix: Empty
   components:
@@ -12,7 +12,7 @@
       amount: 0
 
 - type: entity
-  parent: CMLightReplacer
+  parent: RMCLightReplacer
   id: CMFireExtinguisherPortable
   suffix: Empty
   components:

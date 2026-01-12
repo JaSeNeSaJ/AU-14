@@ -189,6 +189,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private float _queenBoostSpeedMultiplier;
     private float _queenBoostRemoteRange;
 
+    public EntityUid TheHive;
 
     private readonly List<MapId> _almayerMaps = [];
     private readonly List<EntityUid> _marineList = [];
@@ -235,7 +236,6 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
         SubscribeLocalEvent<XenoComponent, MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<XenoComponent, ComponentRemove>(OnCompRemove);
-
         SubscribeLocalEvent<XenoEvolutionGranterComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<XenoComponent, ComponentInit>(OnXenoComponentInit);
         SubscribeLocalEvent<HiveMemberComponent, HiveChangedEvent>(OnHiveChanged);
@@ -264,6 +264,8 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
         ReloadPrototypes();
     }
+
+
     private void OnPrototypesReloaded(PrototypesReloadedEventArgs ev)
     {
         if (ev.WasModified<EntityPrototype>())
@@ -298,8 +300,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
             }
 
             _intel.RunSpawners();
-
-            SetFriendlyHives(comp.Hive);
+            SetFriendlyHives(TheHive);
 
             if (comp.XenoMap != null)
                 UnpowerFaxes(_transform.GetMapId(comp.XenoMap.Value));
@@ -371,7 +372,6 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                     comp.SurvivorJobs = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobs, notNullableOverride: true);
 
                 comp.SurvivorJobInserts = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobInserts);
-                comp.SurvivorJobOverrides = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobOverrides);
                 var activeScenarioSurvivors = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobScenarios);
                 if (activeScenarioSurvivors != null && ActiveNightmareScenario != null)
                 {
@@ -381,8 +381,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
             var possibleSurvivorJobs = new List<ProtoId<JobPrototype>>();
             possibleSurvivorJobs.AddRange(comp.SurvivorJobs.Select(x => x.Job));
-            if (comp.SurvivorJobOverrides != null)
-                possibleSurvivorJobs.AddRange(comp.SurvivorJobOverrides.Values);
+
             if (comp.SurvivorJobInserts != null)
                 possibleSurvivorJobs.AddRange(comp.SurvivorJobInserts.Values.SelectMany(x => x).Select(x => x.Insert));
             if (comp.SurvivorJobScenarios != null)
@@ -940,6 +939,8 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
     private void OnPlayerSpawning(PlayerSpawningEvent ev)
     {
+        TheHive = _hive.CreateHive("xenonid hive", "CMXenoHive");
+
         if (ev.Job is not { } jobId ||
             !_prototypes.TryIndex(jobId, out var job) ||
             !job.IsCM)
@@ -2140,8 +2141,11 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
     private void OnXenoComponentInit(Entity<XenoComponent> ent, ref ComponentInit args)
     {
+        _hive.SetHive(ent.Owner, TheHive);
+        SetFriendlyHives(TheHive);
         if (!_queenBuildingBoostEnabled)
             return;
+
 
         var query = QueryActiveRules();
         while (query.MoveNext(out var uid, out _, out var comp, out var gameRule))
@@ -2149,9 +2153,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
             if (!GameTicker.IsGameRuleAdded(uid, gameRule))
                 continue;
 
-            if (!TryComp<MetaDataComponent>(ent.Owner, out var metaData) ||
-                metaData.EntityPrototype?.ID != comp.QueenEnt.Id)
-                continue;
+
 
             var withinBoostPeriod = comp.StartTime == null ||
                                 (Timing.CurTime - comp.StartTime < _queenBoostDuration);

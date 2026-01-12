@@ -19,6 +19,7 @@ using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Announce;
 using Content.Shared.Administration.Logs;
+using Content.Shared.AU14.Round;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.Doors.Components;
@@ -416,7 +417,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
             var shuttleType = GetShuttleTypeForNavConsole(computer.Owner);
 
             string? whitelistedFaction = null;
-            if (TryComp(computer.Owner, out Content.Server.AU14.Round.WhitelistedShuttleComponent? whitelistComp) && !string.IsNullOrEmpty(whitelistComp.Faction))
+            if (TryComp(computer.Owner, out WhitelistedShuttleComponent? whitelistComp) && !string.IsNullOrEmpty(whitelistComp.Faction))
             {
                 whitelistedFaction = whitelistComp.Faction.ToLowerInvariant();
             }
@@ -490,7 +491,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
     /// </summary>
     private DropshipDestinationComponent.DestinationType GetShuttleTypeForNavConsole(EntityUid navConsole)
     {
-        if (TryComp(navConsole, out Content.Server.AU14.Round.WhitelistedShuttleComponent? whitelistComp))
+        if (TryComp(navConsole, out WhitelistedShuttleComponent? whitelistComp))
         {
             return whitelistComp.ShuttleType;
         }

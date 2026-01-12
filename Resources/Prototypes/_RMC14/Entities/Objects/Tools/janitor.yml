@@ -115,7 +115,7 @@
       amount: 0
 
 - type: entity
-  parent: CMLightReplacer
+  parent: RMCLightReplacer
   id: RMCSprayBottleSpaceCleaner
   name: light replacer
   suffix: Empty

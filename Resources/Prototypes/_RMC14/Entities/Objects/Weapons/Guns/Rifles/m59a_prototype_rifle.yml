@@ -1,7 +1,7 @@
 ﻿- type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   name: M46A prototype rifle
-  id: WeaponRifleM59A
+  id: RMCWeaponRifleM59A
   description: A prototype M46A, an experimental rifle platform built to outperform the standard M41A. Back issue only. Uses standard MK1 & MK2 rifle magazines.
   components:
   - type: Sprite
