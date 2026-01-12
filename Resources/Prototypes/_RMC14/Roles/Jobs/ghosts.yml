@@ -148,4 +148,3 @@
   id: RMCUnassignedBase
   components:
   - type: GhostRoleApplySpecial
-    squad: SquadUnassigned

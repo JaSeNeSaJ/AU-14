@@ -23,9 +23,7 @@
       - id: CMHandsBlackMarine
         name: SPP Combat Gloves
         amount: 15
-      - id: RMCHeadsetSPP
-        name: SPP Radio Headset
-        amount: 15
+
       - id: RMCM5CameraGear #todo, spp cam headsets
         name: M5 Pattern Camera Headset
         amount: 15

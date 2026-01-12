@@ -629,7 +629,7 @@
     sections:
     - name: Essential Equipment
       entries:
-      - id: WeaponRifleM54CE2
+      - id: RMCWeaponRifleM54CE2
         amount: 2
       - id: RMCAttachmentBipod
     - name: Belts

@@ -122,5 +122,5 @@
   components:
   - type: LightReplacer
     contents:
-    - id: CMLightTube
+    - id: RMCLightTube
       amount: 0

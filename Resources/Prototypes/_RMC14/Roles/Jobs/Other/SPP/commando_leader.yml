@@ -70,14 +70,12 @@
       time: 18000 # 5 Hours
     raffle:
       settings: short
-  - type: GhostRoleApplySpecial
-    squad: SquadSPP
+
 
 - type: startingGear
   id: RMCGearSPPCommandoLeader
   equipment:
     head: CMHeadCapSPPBeret
-    ears: RMCHeadsetSPPCommando
     ears2: RMCM5CameraGear
     jumpsuit: CMJumpsuitSPP
     outerClothing: RMCArmorSPPCommando
