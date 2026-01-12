@@ -15,6 +15,11 @@ namespace Content.Shared._RMC14.Synth;
 [Access(typeof(SharedSynthSystem))]
 public sealed partial class SynthComponent : Component
 {
+    [DataField]
+    public EntProtoId AddComponents = "RMCSynthAddComponents";
+
+    [DataField]
+    public EntProtoId RemoveComponents = "RMCSynthRemoveComponents";
 
     /// <summary>
     /// The final stun duration (after endurance skill) is divided by this number.
