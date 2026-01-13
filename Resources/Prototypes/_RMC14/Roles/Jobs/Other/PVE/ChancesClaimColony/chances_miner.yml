@@ -32,7 +32,6 @@
   id: RMCGearSurvivorChancesMiner
   equipment:
     head: RMCHardhatOrange
-    ears: CMHeadsetColony
     gloves: RMCHandsBlack
     back: CMSatchelEngineerMinerSurvivorFill
     shoes: RMCShoesJackboots

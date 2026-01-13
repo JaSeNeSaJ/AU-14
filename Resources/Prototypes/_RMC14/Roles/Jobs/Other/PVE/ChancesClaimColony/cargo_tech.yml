@@ -33,7 +33,6 @@
     head: RMCHeadCapFlippable
     shoes: RMCShoesBlack
     id: CMIDCardColonistEngineer
-    ears: CMHeadsetColony
     pocket1: RMCPouchSurvivalFill
     pocket2: RMCPouchToolsFill
     jumpsuit: RMCJumpsuitKhakiWorkwearJacketless
