@@ -3,7 +3,6 @@
   id: CMSurvivorSecurity
   name: cm-job-name-survivor-security
   description: cm-job-description-survivor
-  setPreference: false
   playTimeTracker: CMJobSurvivorSecurity
   ranks:
     RMCRankCivilianSeniorOfficer:
@@ -19,7 +18,7 @@
   - !type:AddComponentSpecial
     components:
     - type: Skills
-      preset: SurvivorMarshal
+      preset: RMCSkillPresetSurvivorMarshal
     - type: EquipSurvivorPreset
       preset: RMCSurvivorPresetSecurity
     - type: RMCSurvivor
@@ -42,7 +41,6 @@
     shoes: RMCShoesJackboots
     id: CMIDCardColonistSecurity
     back: CMSatchelSecuritySurvivorFill
-
     pocket1: RMCPouchSurvivalFill
     pocket2: RMCPouchMagazine
 

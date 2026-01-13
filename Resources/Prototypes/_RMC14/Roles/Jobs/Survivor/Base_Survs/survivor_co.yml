@@ -3,7 +3,6 @@
   id: RMCSurvivorCommandingOfficer
   name: rmc-job-name-survivor-co
   description: rmc-job-description-survivor-co
-  setPreference: false
   playTimeTracker: RMCJobSurvivorCO
   startingGear: CMGearCommandingOfficer
   joinNotifyCrew: false

@@ -1,7 +1,6 @@
 - type: job
   parent: RMCJobSyntheticColony
   id: RMCSyntheticColonyHybrisaCivilian
-  playTimeTracker: RMCJobSyntheticColonyHybrisaCivilian
   startingGear: RMCGearSyntheticColonistHybrisaCivilian
   spawnMenuRoleName: Civilian Synth (Hybrisa Survivor)
   special:
@@ -57,17 +56,13 @@
       preset: RMCSurvivorPresetHybrisaSynthCivilian
     - type: Synth
       generation: rmc-species-synth-generation-second
-
+  useLoadoutOfJob: RMCJobSyntheticColony # for inheritance
 
 - type: startingGear
   parent: RMCGearSyntheticColonistBase
   id: RMCGearSyntheticColonistHybrisaCivilian
   inhand:
     - RMCFireAxe # todo maintenance jack
-
-- type: playTimeTracker
-  id: RMCJobSyntheticColonyHybrisaCivilian
-  isHumanoid: true
 
 - type: entity
   id: RMCSurvivorPresetHybrisaSynthCivilian

@@ -10,7 +10,7 @@
   - !type:AddComponentSpecial
     components:
     - type: Skills
-      preset: SurvivorTrucker
+      preset: RMCSkillPresetSurvivorTrucker
     - type: RMCSurvivor
     - type: MotionDetectorTracked
     - type: NpcFactionMember
@@ -31,7 +31,6 @@
     shoes: RMCShoesJackboots
     gloves: CMHandsBrown
     id: CMIDCardColonistEngineer
-
     pocket1: RMCPouchSurvivalFill
     pocket2: RMCPouchToolsFill
 # TODO RMC Meson Goggles

@@ -3,7 +3,6 @@
   id: CMSurvivor
   name: cm-job-name-survivor
   description: cm-job-description-survivor
-  setPreference: false
   playTimeTracker: CMJobSurvivor
   requirements:
   - !type:DepartmentTimeRequirement
@@ -53,7 +52,6 @@
   id: RMCGearSurvivorBaseNoBackpack
   equipment:
     id: CMIDCardColonist
-
     pocket1: RMCPouchSurvivalFill
 
 - type: startingGear

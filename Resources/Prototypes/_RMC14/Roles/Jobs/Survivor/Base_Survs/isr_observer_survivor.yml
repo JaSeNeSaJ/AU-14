@@ -36,7 +36,6 @@
   parent: RMCGearSurvivorBaseNoBackpack
   id: RMCGearSurvivorISR
   equipment:
-    ears: CMHeadsetColony
     jumpsuit: CMJumpsuitLiaisonBrown
     shoes: RMCShoesLaceupBrown
     back: CMSatchelFillSurvivor
