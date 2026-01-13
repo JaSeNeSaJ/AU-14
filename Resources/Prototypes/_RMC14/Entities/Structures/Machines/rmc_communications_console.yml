@@ -122,14 +122,6 @@
   - type: TacticalMapComputer
   - type: SupplyDropComputer
 
-- type: entity
-  parent: RMCOverwatchConsole
-  id: RMCOverwatchConsoleRotating
-  suffix: Rotating
-  components:
-  - type: Sprite
-    overrideDir: South
-    enableOverrideDir: false
 
 - type: entity
   parent: RMCCommunicationsConsoleBase
