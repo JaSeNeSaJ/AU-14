@@ -38,6 +38,7 @@
   id: RMCGearSurvivorMoHDoctor
   equipment:
     head: RMCHeadCapSPPCivilianPlantWorker
+    ears: RMCHeadsetDistressSPP
 
 - type: entity
   parent: CMSpawnPointJobBase

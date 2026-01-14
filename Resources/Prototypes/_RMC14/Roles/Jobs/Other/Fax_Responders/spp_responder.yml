@@ -45,6 +45,7 @@
     shoes: RMCBootsSPP
     head: CMHeadCapSPPUshanka
     id: RMCIDCardSPPResponder
+    ears: RMCHeadsetSPPCommand
     eyes: RMCGlassesMedicalHUDGlasses
     back: CMSatchelFilledFaxResponder
     belt: CMClipboard
@@ -70,3 +71,5 @@
 
 - type: playTimeTracker
   id: CMJobSPPResponder
+
+

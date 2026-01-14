@@ -41,6 +41,7 @@
     head: RMCHardhatOrange
     outerClothing: RMCHazardVest
     gloves: CMHandsInsulated
+    ears: RMCHeadsetDistressSPP
     pocket2: RMCWelderIndustrial
   storage:
     back:

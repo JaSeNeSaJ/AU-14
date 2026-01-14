@@ -9,3 +9,6 @@
   - CMDoctor
   - CMResearcher
   - CMNurse
+  departmentRadio: MarineMedical
+  headOfDepartment: CMCMO
+  hidden: true

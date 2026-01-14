@@ -69,6 +69,7 @@
   id: RMCSPPPlatCoPVEGear
   equipment:
     id: RMCIDSPP
+    ears: RMCHeadsetSPP
     jumpsuit: CMJumpsuitSPPOfficer
     outerClothing: RMCCoatSPP
     head: CMHeadCapSPPBeret

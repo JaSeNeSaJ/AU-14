@@ -57,6 +57,7 @@
   id: RMCJobSPPRiflemanPVEGear
   equipment:
     id: RMCIDSPP
+    ears: RMCHeadsetSPP
     jumpsuit: CMJumpsuitSPP
     shoes: CMBootsBlackFilled
 

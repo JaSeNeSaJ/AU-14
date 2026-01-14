@@ -85,7 +85,7 @@
     raffle:
       settings: short
   - type: GhostRoleApplySpecial
-
+    squad: SquadSPP
 
 - type: randomHumanoidSettings
   parent: RMCSPPLeader
@@ -100,12 +100,14 @@
     raffle:
       settings: short
   - type: GhostRoleApplySpecial
-
+    squad: SquadSPP
 
 - type: startingGear
   id: RMCGearSPPLeader
   equipment:
     head: CMHeadCapSPPBeret
+    ears: RMCHeadsetSPPCommand
+    ears2: RMCM5CameraGear
     jumpsuit: CMJumpsuitSPP
     outerClothing: RMCArmorSPPRifleman
     gloves: RMCHandsVeteranSPP
