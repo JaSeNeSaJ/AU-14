@@ -39,7 +39,6 @@
     back: RMCSatchelLightpack
     head: RMCArmorHelmetSPPFirefighter
     outerClothing: RMCArmorSPPFirefighter
-    ears: RMCHeadsetDistressSPP
   storage:
     back:
     - RMCAttachmentUnderbarrelExtinguisher
