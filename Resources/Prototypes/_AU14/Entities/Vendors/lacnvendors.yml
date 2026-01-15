@@ -697,30 +697,29 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Rifles
+    - name: Weapons
+      choices: { CMUPrimaryWeapon: 1 }
       entries:
       - id: AU14WeaponRifleKramerAR
-        amount: 6
     - name: Rifle Ammunition
       entries:
       - id: AU14WeaponRifleKramerMagazineStandard
-        amount: 42
+        amount: 120
       - id: AU14WeaponRifleKramerMagazineAP
         amount: 2
     - name: Handguns
+      choices: { CMUHandgunsWeapon: 1 }
       entries:
       - id: AU14WeaponPistolTPR23B
-        amount: 6
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 42
+        amount: 120
     - name: Attachments
+      choices: { CMUAttachmentsVendor: 1 }
       entries:
       - id: RMCAttachmentRailFlashlight
-        amount: 12
       - id: AU14AttachmentTwoPointSling
-        amount: 6
     - name: Explosives
       entries:
       - id: CMGrenadeFragOld
