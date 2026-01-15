@@ -27,10 +27,7 @@
       factions:
       - WeYa
       - Civilian
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadPMC
+
     - type: JobPrefix
       prefix: rmc-job-prefix-pmc-medic
   useLoadoutOfJob: CMSurvivorDoctor # for inheritance

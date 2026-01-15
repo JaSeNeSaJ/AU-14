@@ -55,10 +55,7 @@
         types:
           Blunt: 35
     - type: Synth
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadPMC
+
   hidden: true
 
 - type: startingGear

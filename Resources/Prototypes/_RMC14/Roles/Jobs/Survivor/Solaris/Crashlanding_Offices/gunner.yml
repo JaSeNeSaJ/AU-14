@@ -29,10 +29,7 @@
       factions:
       - WeYa
       - Civilian
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadPMC
+
   useLoadoutOfJob: CMSurvivor # for inheritance
 
 - type: startingGear
