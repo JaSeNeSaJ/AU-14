@@ -17,6 +17,8 @@
   - PlatoonSpawn
   - AddGovfor
   - AddOpfor
+  - RemoveAllJobs
+
 
 - type: gamePreset
   id: Insurgency
@@ -54,6 +56,7 @@
   - AuVoteRule
   - PlatoonSpawn
   - AddGovfor
+  - RemoveAllJobs
 
 
 
@@ -184,6 +187,17 @@
 
 
 
+- type: entity
+  id: RemoveAllJobs
+  parent: BaseGameRule
+  name: Remove All Jobs
+  description: Removes all jobs on the planet's main station prior to round start. Optionally removes jobs on ship stations.
+  components:
+  - type: RemoveJobsRule
+    removeFromShips: false
+    shipFaction: ""
+
+
 - type: GamePlanetPool
   id: ColonyPlanetPool
   planets:
@@ -192,5 +206,4 @@
     - AUPlanetStableGarrison
     - AUPlanetLV624
     - AUPlanetFlight
-
 
