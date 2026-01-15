@@ -47,6 +47,7 @@
   supportedPlanets:
   - AUPlanetShepherdsPride
   - AUPlanetLV747
+  - AUPlanetFlight
 
   # - AUPlanetStableGarrison
   rules:
@@ -70,6 +71,7 @@
     - AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
+    - AUPlanetFlight
 
 - type: gamePreset
   id: Jailbreak
@@ -189,5 +191,6 @@
     - AUPlanetShepherdsPride
     - AUPlanetStableGarrison
     - AUPlanetLV624
+    - AUPlanetFlight
 
 
