@@ -29,6 +29,7 @@
   parent: RMCGearSurvivorSecurity
   id: RMCGearSurvivorLV624SecurityGuard
   equipment:
+    head: RMCArmorHelmetPMCDark
     jumpsuit: RMCJumsuitWhiteService
     outerClothing: RMCArmorVestWeYa
     ears: RMCHeadsetDistressWeYa

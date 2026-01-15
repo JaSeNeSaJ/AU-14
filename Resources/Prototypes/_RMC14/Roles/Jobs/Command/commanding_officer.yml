@@ -32,7 +32,7 @@
   - !type:AddComponentSpecial
     components:
     - type: Skills
-      preset: Commander
+      preset: RMCSkillPresetCommander
     - type: MarineOrders
     - type: CMVendorUser
       id: CMCommandingOfficer

@@ -116,3 +116,13 @@
   - type: FaxMachine
     name: "Colony Administrator"
     notifyAdmins: true
+
+- type: entity
+  parent: CMFax
+  id: RMCFaxLiaison
+  suffix: Corporate Liaison
+  components:
+  - type: FaxMachine
+    name: "Corporate Liaison"
+  - type: SpecialFax
+    faxId: Liaison

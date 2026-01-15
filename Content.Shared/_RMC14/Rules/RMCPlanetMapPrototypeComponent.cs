@@ -2,6 +2,7 @@ using Content.Shared._RMC14.Item;
 using Content.Shared.AU14;
 using Content.Shared.AU14.Threats;
 using Content.Shared.AU14.util;
+using Content.Shared.Paper;
 using Content.Shared.Roles;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -70,6 +71,13 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
 
     [DataField, AutoNetworkedField]
     public bool InRotation = true;
+
+    /// <summary>
+    /// Special faxes that should be sent roundstart.
+    /// The dictionary is the fax ID and then the entity to be faxed.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public Dictionary<string, EntProtoId<PaperComponent>>? SpecialFaxes;
 
     [DataField, AutoNetworkedField]
     public List<ProtoId<PlatoonPrototype>> PlatoonsGovfor = new();

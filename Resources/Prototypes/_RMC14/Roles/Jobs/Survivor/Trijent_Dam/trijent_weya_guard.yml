@@ -29,6 +29,7 @@
   parent: RMCGearSurvivorSecurity
   id: RMCGearSurvivorTrijentGoon
   equipment:
+    head: RMCArmorHelmetPMCDark
     jumpsuit: CMJumpsuitLiaisonBlueKutjevoGoon
     ears: RMCHeadsetDistressWeYa
     shoes: RMCBootsCorporate

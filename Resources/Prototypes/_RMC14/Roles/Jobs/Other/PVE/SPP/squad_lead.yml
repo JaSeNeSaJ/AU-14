@@ -64,8 +64,5 @@
   equipment:
     id: RMCIDSPP
 
-    jumpsuit: CMJumpsuitSPP
-    shoes: CMBootsBlackFilled
-
 - type: playTimeTracker
   id: RMCJobSPPSquadLeadPVE
