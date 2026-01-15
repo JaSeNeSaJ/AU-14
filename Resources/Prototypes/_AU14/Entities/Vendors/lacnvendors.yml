@@ -640,15 +640,16 @@
   - type: CMAutomatedVendor
     sections:
     - name: Essential Equipment
+      takeAll: CMUAREssentialEquipment
       entries:
-      - id: AU14LACNAmmoBackpack
-        amount: 1
-      - id: CMBeltMarine
-        amount: 1
       - id: AU14WeaponRifleKramerLSW
-        amount: 1
+      - id: AU14LACNAmmoBackpack
+      - id: CMBeltMarine
+      - id: RMCPouchMagazineLarge
+    - name: Munitions
+      entries:
       - id: AU14WeaponRifleKramerMagazineLSWStandard
-        amount: 7
+        amount: 40
 
 - type: entity
   parent: ColMarTechBase
@@ -674,10 +675,6 @@
     - name: Armor and Rigs
       entries:
       - id: AU14LACNArmorSL
-        amount: 1
-    - name: Backpack
-      entries:
-      - id: RMCBackpackRTO
         amount: 1
     - name: Miscellaneous
       entries:
@@ -777,8 +774,6 @@
         amount: 6
       - id: CMMagazineSniperM96SFlak
         amount: 2
-      - id: CMMagazineSniperM96SIncendiary
-        amount: 1
       - id: RMCScoutShoes
         amount: 1
     - name: MOU53 break action shotgun
