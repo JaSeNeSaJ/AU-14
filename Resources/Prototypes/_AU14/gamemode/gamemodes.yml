@@ -10,7 +10,7 @@
   supportedPlanets:
   #- AUPlanetGixensCaverns Rout of rotation till fixed - eg
   - AUPlanetStableGarrison
- # - AUPlanetShepherdsPride
+  - AUPlanetShepherdsPride
 
   rules:
   - AuVoteRule
