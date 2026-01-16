@@ -32,10 +32,6 @@
       - CMSynthGraft
       - PillPacket
       - Hypospray
-      - AU14Tourniquet
-      - AU14HemostaticGauzePackete
-      - AU14HemostaticGauze
-      - AU14HemostaticGauzePacketTrash
       components:
       - Hypospray
   - type: FixedItemSizeStorage
