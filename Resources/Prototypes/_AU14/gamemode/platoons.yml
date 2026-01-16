@@ -15,6 +15,7 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Daybreak
+    - USSBush
   #platoonflag: uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -36,6 +37,7 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
     - Daybreak
+    - USSBush
 
 - type: platoon
   id: USCM
@@ -62,6 +64,7 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
+      - USSBush
 
 - type: platoon
   id: UPP
@@ -82,8 +85,9 @@
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Daybreak
+      - USSBush
   jobClassOverride:
-    SquadRifleman: Au14JobGOVFORSquadRiflemanUPP
+    SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
     SectionSergeant: AU14JobGOVFORSectionSergeantUPP
     PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanUPP
     PlatCo: AU14JobGOVFORPlatCoUPP
@@ -205,6 +209,7 @@
     Pilot: AU14AircrewWeaponsVendor
   possibleships:
       - Daybreak
+      - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/osprey.yml
   compatibleFighters:
@@ -236,7 +241,7 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
-
+      - USSBush
 - type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
@@ -292,6 +297,7 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
       - Daybreak
+      - USSBush
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
@@ -320,5 +326,6 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
+      - USSBush
 
 # Add more platoons as needed

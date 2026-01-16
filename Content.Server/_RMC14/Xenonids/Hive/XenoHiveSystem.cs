@@ -221,19 +221,22 @@ public sealed class XenoHiveSystem : SharedXenoHiveSystem
 
             if (HasComp<XenoComponent>(recipient))
                 continue;
-            if (!_auRoundSystem._selectedthreat.hiveevolution == false)
+            if (_auRoundSystem._selectedthreat.hiveevolution)
+            {
+                var popupText = Loc.GetString(HasComp<SynthComponent>(recipient)
+                    ? "rmc-hive-supports-castes-synth"
+                    : "rmc-hive-supports-castes-human");
 
-                continue;
+                popupText = $"[bold][font size=24][color=red]\n{popupText}\n[/color][/font][/bold]";
+
+                _audio.PlayEntity(hive.MarineAnnounceSound, recipient, recipient);
+                _rmcChat.ChatMessageToOne(ChatChannel.Radio, popupText, popupText, default, false, session.Channel);
+
+            }
 
 
-            var popupText = Loc.GetString(HasComp<SynthComponent>(recipient)
-                ? "rmc-hive-supports-castes-synth"
-                : "rmc-hive-supports-castes-human");
 
-            popupText = $"[bold][font size=24][color=red]\n{popupText}\n[/color][/font][/bold]";
 
-            _audio.PlayEntity(hive.MarineAnnounceSound, recipient, recipient);
-            _rmcChat.ChatMessageToOne(ChatChannel.Radio, popupText, popupText, default, false, session.Channel);
         }
     }
 }

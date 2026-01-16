@@ -25,7 +25,7 @@
     faction: ua
     threats:
     - cultistThreat
-    - wendigoThreat
+    - XenoThreat
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -53,9 +53,11 @@
     daycycleenabled: true
     threats:
     - cultistThreat
-    - wendigoThreat
-#    thirdparties:
-#    - cultistThirdParty
+    - XenoThreat
+    thirdparties:
+    - UPPSpecOps
+    - CMBCIUSMALL
+  
 
 - type: entity
   id: AUPlanetStableGarrison
@@ -109,7 +111,7 @@
     faction: ua
     threats:
     - cultistThreat
-    - wendigoThreat
+    - XenoThreat
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -161,5 +163,4 @@
     opforinship: true
     daycycleenabled: true
     threats:
-    - cultistThreat
-    - wendigoThreat
+    - XenoThreat
