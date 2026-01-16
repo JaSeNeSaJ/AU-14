@@ -2,7 +2,7 @@
   id: LACN
   name: LACN Landing Forces
   VendorToMarker:
-    Rifleman: AU14LACNequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
     Weapons: AU14LACNWeaponsVendor
     SWeapons: AU14LACNSpecialWeaponsVendor
@@ -23,7 +23,7 @@
   id: LACNcommando
   name: LACN Naval Commando Platoon
   VendorToMarker:
-    Rifleman: AU14LACNequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNcommandoclothingequipmentvendor
     Weapons: AU14LACNcommandoWeaponsVendor
     SWeapons: AU14LACNcommandoSpecialWeaponsVendor
@@ -69,7 +69,7 @@
   language: russian
   name: UPP Infantry
   VendorToMarker:
-    Rifleman: AU14UPPequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UPPclothingapparelvendor
     Weapons: AU14UPPWeaponsVendor
     SWeapons: AU14UPPSpecialWeaponsVendor
@@ -103,7 +103,7 @@
   id: WEYU
   name: WY PMC
   VendorToMarker:
-    Rifleman: AU14WYequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
     Weapons: AU14WYWeaponsVendor
     SWeapons: AU14WYSpecialWeaponsVendor
@@ -137,7 +137,7 @@
   id: CMBCIU
   name: CMB Crisis Intervention
   VendorToMarker:
-    Rifleman: AU14CMBCIUequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
     Weapons: AU14CMBCIUWeaponsVendor
     SWeapons: AU14CMBCIUSpecialWeaponsVendor
@@ -241,7 +241,7 @@
   id: ProdigySF
   name: Prodigy Security Forces
   VendorToMarker:
-    Rifleman: AU14prodigyequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
     Weapons: AU14prodigyWeaponsVendor
     SWeapons: AU14prodigySpecialWeaponsVendor
@@ -267,7 +267,7 @@
   id: UNISC
   name: UNISC Peacekeepers
   VendorToMarker:
-    Rifleman: AU14UNISCequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UNISCclothingequipmentvendor
     Weapons: AU14UNISCWeaponsVendor
     SWeapons: AU14UNISCWeaponsVendor
@@ -300,7 +300,7 @@
   id: VAIPO
   name: VAIPO
   VendorToMarker:
-    Rifleman: AU14VAIPOequipmentvendor
+    Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
     Weapons: AU14VAIPOWeaponsVendor
     SWeapons: AU14VAIPOSpecialWeaponsVendor
