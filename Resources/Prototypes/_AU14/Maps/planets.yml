@@ -54,10 +54,10 @@
     threats:
     - cultistThreat
     - XenoThreat
-    thirdparties:
-    - UPPSpecOps
-    - CMBCIUSMALL
-  
+   # thirdparties:
+    #- UPPSpecOps
+    #- CMBCIUSMALL
+
 
 - type: entity
   id: AUPlanetStableGarrison
