@@ -3,7 +3,7 @@
   id: AU14JobMobGoon
   name: au14-job-name-mobgoon
   description: au14-job-description-mobgoon
-  setPreference: true
+  setPreference: false
   playTimeTracker: AU14JobMobGoon
   startingGear: AU14GearMobGoon
   icon: "CMJobIconEmpty"
