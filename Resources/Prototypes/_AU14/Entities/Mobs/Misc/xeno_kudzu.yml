@@ -35,6 +35,8 @@
     - XenoWeedsSource
     rarePrototypes:
     - CMUSentryXenoKudzu
+  - type: UserIFF
+    faction: FactionXeno
 
 - type: entity
   id: CMUXenoKudzuSource
@@ -140,7 +142,7 @@
     factions:
     - RMCXeno
   - type: UserIFF
-    faction: RMCXeno
+    faction: FactionXeno
   - type: RandomSpawner
     deleteSpawnerAfterSpawn: false
     chance: 1
@@ -207,3 +209,9 @@
     sprite: _AU14/Weapons/Guns/Projectiles/xeno_toxic_big.rsi
     layers:
     - state: xeno_toxic_big
+
+- type: entity
+  id: FactionXeno
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IFFFaction
