@@ -24,7 +24,6 @@
     govforinship: true
     opforinship: true
     daycycleenabled: true
-    maxplayers: 150
     faction: ua
     threats:
     - cultistThreat
@@ -54,7 +53,6 @@
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
-    maxplayers: 65
     opforinship: true
     daycycleenabled: true
     threats:
@@ -115,7 +113,6 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    maxplayers: 70
     faction: ua
     threats:
     - cultistThreat

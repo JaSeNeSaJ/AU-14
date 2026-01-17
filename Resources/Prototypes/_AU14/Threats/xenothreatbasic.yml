@@ -15,7 +15,7 @@
     CMXenoLarva: 8
   scalewithpop: true
   spawnTogether: true
-  hiveevolution: true
+  #hiveevolution: true
 
 
 - type: threat
