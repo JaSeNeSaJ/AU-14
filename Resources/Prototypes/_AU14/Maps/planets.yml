@@ -24,10 +24,12 @@
     govforinship: true
     opforinship: true
     daycycleenabled: true
+    maxplayers: 150
     faction: ua
     threats:
     - cultistThreat
     - XenoThreat
+    - XenoThreatCF
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -52,6 +54,7 @@
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
+    maxplayers: 65
     opforinship: true
     daycycleenabled: true
     threats:
@@ -109,13 +112,15 @@
     - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: true
+    govforinship: false
     opforinship: true
     daycycleenabled: true
+    maxplayers: 70
     faction: ua
     threats:
     - cultistThreat
     - XenoThreat
+
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -168,3 +173,5 @@
     daycycleenabled: true
     threats:
     - XenoThreat
+   # thirdparties:
+   # - cultistThirdParty
