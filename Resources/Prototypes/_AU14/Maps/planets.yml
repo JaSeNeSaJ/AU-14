@@ -12,11 +12,13 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - VAIPO
+    - ProdigySF
     platoonsGovfor:
     - LACN
-    - USCM
     - UNISC
-    - VAIPO
+    - USCM
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -34,11 +36,12 @@
   - type: RMCPlanetMapPrototype
     votename: "Shepherds Pride"
     mapId: Sheperds
-    camouflage: Jungle
+    camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
     - UPP
     - WEYU
+    - VAIPO
     - ProdigySF
     platoonsGovfor:
     - LACN
@@ -66,17 +69,18 @@
   - type: RMCPlanetMapPrototype
     votename: "Stable Garrison"
     mapId: stablegarrison
-    camouflage: Jungle
+    camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
     - UPP
     - WEYU
+    - VAIPO
     - ProdigySF
     platoonsGovfor:
     - LACN
+    - CMBCIU
     - CCAF
     - USCM
-    - VAIPO
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -91,18 +95,18 @@
   - type: RMCPlanetMapPrototype
     votename: "LV624 Green Hell"
     mapId: LV624
-    camouflage: Jungle
+    camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
     - UPP
     - WEYU
-    platoonsGovfor:
     - ProdigySF
+    - VAIPO
+    platoonsGovfor:
     - LACN
     - USCM
     - CCAF
     - CMBCIU
-    - VAIPO
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -120,7 +124,7 @@
   - type: RMCPlanetMapPrototype
     votename: "Gixens Caverns"
     mapId: GixensCaverns
-    camouflage: Jungle
+    camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
     - UPP
@@ -150,13 +154,13 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - VAIPO
     - ProdigySF
     platoonsGovfor:
     - LACN
     - CCAF
-    - UNISC
+    - CMBCIU
     - USCM
-    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
