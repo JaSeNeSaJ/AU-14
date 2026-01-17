@@ -28,6 +28,7 @@
     threats:
     - cultistThreat
     - XenoThreat
+    - XenoThreatCF
 
 - type: entity
   id: AUPlanetShepherdsPride
@@ -109,13 +110,14 @@
     - CMBCIU
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: true
+    govforinship: false
     opforinship: true
     daycycleenabled: true
     faction: ua
     threats:
     - cultistThreat
     - XenoThreat
+
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -168,3 +170,5 @@
     daycycleenabled: true
     threats:
     - XenoThreat
+   # thirdparties:
+   # - cultistThirdParty
