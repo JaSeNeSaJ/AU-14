@@ -396,8 +396,8 @@
     contents:
     - id: RMCMotionDetector
     - id: RMCMotionDetector
-    - id: RMCMotionDetector
-    - id: RMCMotionDetector
+    - id: RMCMotionDetectorCompact
+    - id: RMCMotionDetectorCompact
   - type: ItemMapper
     mapLayers:
       ammo_1:

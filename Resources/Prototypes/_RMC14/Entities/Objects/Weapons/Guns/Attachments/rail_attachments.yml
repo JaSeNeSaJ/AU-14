@@ -420,9 +420,9 @@
     modifiers: []
 
 - type: entity
-  parent: RMCAttachmentS42xTelescopicMiniscope
+  parent: RMCAttachmentS84xTelescopicScope
   id: RMCAttachmentMiniscopeHunting
-  name: 2x hunting mini-scope
+  name: 4x hunting mini-scope
   description: This civilian-grade scope is a common sight on hunting rifles due to its cheap price and great optics. Fixed at a modest 2x zoom.
   components:
   - type: Sprite
