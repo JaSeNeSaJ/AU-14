@@ -361,6 +361,8 @@
       - id: CMHealthAnalyzer
       - id: RMCFlashlightPen
       - id: RMCFireAxe
+      - id: CMFireExtinguisher
+      - id: CMFireExtinguisherPortable
       - id: RMCRadioHandheldColonyOff
 
 - type: entity
@@ -449,5 +451,7 @@
       - id: RMCSynthBreachingHammer
       - id: CMRollerBedSpawnFolded
       - id: RMCRadioHandheldColonyOff
+      - id: CMFireExtinguisher
+      - id: CMFireExtinguisherPortable
       - id: RMCFlashlightPen
       - id: RMCSynthResetKey

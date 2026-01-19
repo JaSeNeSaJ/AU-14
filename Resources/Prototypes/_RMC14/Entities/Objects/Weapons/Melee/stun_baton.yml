@@ -34,7 +34,7 @@
   - type: Stunbaton
     energyPerUse: 50
   - type: RMCStaminaDamageOnHit
-    damage: 100
+    damage: 25
     jitterDuration: 2
   - type: MeleeRequiresSkill
     skills:

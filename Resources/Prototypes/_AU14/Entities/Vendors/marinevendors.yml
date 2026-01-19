@@ -281,9 +281,9 @@
       - id: CMOintment10
         amount: 40
       - id: CMPacketPillsTricordrazine
-        amount: 12
+        amount: 40
       - id: AU14NaloxoneAutoInjector
-        amount: 2
+        amount: 5
     - name: Tools
       entries:
       - id: CMEntrenchingTool
@@ -296,21 +296,27 @@
       - id: RMCScabbardMacheteFilled
         name: machete scabbard (Full)
         amount: 5
+      - id: CMFireExtinguisher
+        amount: 10
+      - id: CMFireExtinguisherPortable
+        amount: 5
+      - id: RMCLightReplacer
+        amount: 10
       - id: CMScrewdriver
-        amount: 5
+        amount: 10
       - id: CMWirecutter
-        amount: 5
+        amount: 10
       - id: CMCrowbar
-        amount: 5
+        amount: 10
       - id: CMWrench
-        amount: 5
+        amount: 10
       - id: CMMultitool
-        amount: 5
+        amount: 10
       - id: CMWelderSmall
-        amount: 3
+        amount: 10
       - id: RMCWelderPVE
-        amount: 2
-    - name: Construction Supplies
+        amount: 5
+    - name: Engineering Supplies
       entries:
       - id: CMSandbagEmpty25
         recommended: true
@@ -321,8 +327,19 @@
         amount: 2
       - id: CMSheetPlasteel50
         amount: 1
-      - id: RMCTentUNMCBigFolded
-        name: folded tent
+      - id: RMCBoxMagazinePowerCellsHighFilled
+        amount: 2
+      - id: RMCPowerCellHigh
+        amount: 5
+      - id: RMCCableCoil
+        amount: 15
+    - name: Tents
+      entries:
+      - id: RMCTentUNMCStandardFolded
+        amount: 1
+      - id: RMCTentUNMCExtendedFolded
+        amount: 1
+      - id: RMCTentUNMCStandardMedicalFolded
         amount: 1
     - name: Flares and lights
       entries:
@@ -330,6 +347,8 @@
         amount: 5
       - id: RMCFlashlight
         amount: 5
+      - id: RMCWeaponPistolM82F
+        amount: 2
       - id: RMCBoxPackFlare
         amount: 5
       - id: CMPackFlare
@@ -338,26 +357,27 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 2
+    - name: Optics
+      entries:
+      - id: RMCLaserDesignatorPVE
+        amount: 3
+      - id: RMCBinocularsPVE
+        amount: 4
     - name: Miscellaneous
       entries:
       - id: RMCZipties
+        recommended: true
         amount: 60
       - id: RMCPVECaseMotionDetector
         amount: 1
       #- id: CMMap
       #  amount: 5
       - id: CMRollerBedSpawnFolded
-        amount: 1
-      - id: RMCLaserDesignatorPVE
-        amount: 3
-      - id: RMCBinocularsPVE
         amount: 4
       #- id: CMFoldingBarricadesMB6x3
       #  amount: 2
       #- id: CMSparePDTLBattleBuddyKit
       #  amount: 3
-      - id: RMCPowerCellHigh
-        amount: 5
       - id: BedrollFolded
         amount: 20
 

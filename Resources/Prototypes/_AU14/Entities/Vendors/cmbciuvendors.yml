@@ -40,8 +40,6 @@
         amount: 15
     - name: Headgear
       entries:
-      - id: RMCArmorHelmetM10CMB
-        amount: 25
       - id: AU14CMBCIUHelmet
         amount: 25
       - id: AU14HelmetGarbRiotVisor
@@ -535,9 +533,9 @@
         amount: 1
       - id: RMCMagazineShotgunXM51
         amount: 5
-    - name: M81 Riot Grenade Launcher
+    - name: M85A1 Grenade Launcher
       entries:
-      - id: RMCWeaponLauncherM81
+      - id: RMCWeaponLauncherM85A1
         amount: 1
-      - id: RMCGrenadeFlashBang
+      - id: CMPacketGrenadeFragFilled
         amount: 5
