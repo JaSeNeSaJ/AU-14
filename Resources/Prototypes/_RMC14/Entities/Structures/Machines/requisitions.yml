@@ -230,3 +230,35 @@
       map: [ "enum.RequisitionsGearLayers.Base" ]
   - type: RequisitionsGear
   - type: CargoSellBlacklist
+
+- type: entity
+  parent: [ CMASRSConsole ]
+  id: CMASRSConsoleGovfor
+  name: ASRS console (Govfor)
+  components:
+  - type: RequisitionsComputer
+    faction: govfor
+
+- type: entity
+  parent: [ CMASRSConsole ]
+  id: CMASRSConsoleOpfor
+  name: ASRS console (Opfor)
+  components:
+  - type: RequisitionsComputer
+    faction: opfor
+
+- type: entity
+  parent: CMCargoElevator
+  id: CMCargoElevatorGovfor
+  name: cargo elevator (Govfor)
+  components:
+  - type: RequisitionsElevator
+    faction: govfor
+
+- type: entity
+  parent: CMCargoElevator
+  id: CMCargoElevatorOpfor
+  name: cargo elevator (Opfor)
+  components:
+  - type: RequisitionsElevator
+    faction: opfor

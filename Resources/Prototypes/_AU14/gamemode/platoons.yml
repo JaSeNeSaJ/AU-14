@@ -42,6 +42,7 @@
 - type: platoon
   id: USCM
   name: USCM
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14USCMclothingequipmentvendor
@@ -68,7 +69,7 @@
 
 - type: platoon
   id: UPP
-  reqList: UPPBasic
+  reqlist: UPPBasic
   language: russian
   name: UPP Infantry
   VendorToMarker:
