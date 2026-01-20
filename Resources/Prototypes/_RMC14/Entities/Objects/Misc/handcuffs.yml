@@ -15,12 +15,6 @@
     quickEquip: false
     slots:
     - suitstorage
-  - type: RequiresSkill
-    skills:
-      RMCSkillPolice: 1
-  - type: MeleeRequiresSkill
-    skills:
-      RMCSkillPolice: 1
 
 - type: entity
   parent: RMCHandcuffs

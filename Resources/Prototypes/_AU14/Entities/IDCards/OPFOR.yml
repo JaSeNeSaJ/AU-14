@@ -97,3 +97,13 @@
     job: AU14JobOpforRadioTelephoneOperator
   - type: ItemIFF
     faction: FactionOPFOR
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardOPFORAuxSupportSynth
+  name: support synthetic ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobOPFORAuxSupportSynth
+  - type: ItemIFF
+    faction: FactionOPFOR
