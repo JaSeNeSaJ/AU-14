@@ -703,3 +703,24 @@
     class: FighterDestination
   - type: Sprite
     state: green
+
+
+- type: entity
+  name: Ship Requisitions Console Marker
+  id: VMarkerShipRequisitionsConsole
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+
+    class: RequisitionsConsole
+
+- type: entity
+  name: Ship Requisitions Lift Marker
+  id: VMarkerShipRequisitionsLift
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: RequisitionsLift
+

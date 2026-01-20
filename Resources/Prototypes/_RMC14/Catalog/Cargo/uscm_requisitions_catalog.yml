@@ -1,0 +1,34 @@
+- type: entity
+  abstract: false
+  id: USCMCargoCatalog
+  components:
+  - type: RequisitionsComputer
+    categories:
+    - name: Engineering
+      entries:
+      - cost: 300
+        crate: RMCCrateSandbagsConstructionKit
+      - cost: 150
+        crate: RMCCrateElectricalMaintenance
+      - cost: 100
+        crate: RMCCrateMechanicalMaintenance
+    - name: Supplies
+      entries:
+      - cost: 200
+        crate: RMCCrateSupplyInternals
+      - cost: 80
+        crate: RMCCrateSuppliesBoxes
+      - cost: 120
+        crate: RMCCrateEmptySandbags
+    - name: Weapons
+      entries:
+      - cost: 1000
+        crate: AU14CrateBoxAR10
+      - cost: 900
+        crate: AU14CrateBoxM4A3
+    - name: Medical
+      entries:
+      - cost: 250
+        crate: RMCCrateMedicalFirstAid
+      - cost: 400
+        crate: RMCCrateMedicalSurgery
