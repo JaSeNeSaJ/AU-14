@@ -1,0 +1,113 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobGOVFORAuxSupportSynth
+  name: au14-job-name-govforauxsupportsynth
+  description: au14-job-description-govforauxsupportsynth
+  setPreference: true
+  canBeAntag: false
+  playTimeTracker: AU14JobGOVFORAuxSupportSynth
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 7200 # 2 hours
+  ranks:
+    RMCRankFirstSergeant:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORAuxSupportSynth
+      time: 180000 # 50 hours
+    RMCRankMasterSergeant: []
+  startingGear: AU14GearGOVFORAuxSupportSynth
+  dummyStartingGear: AU14GearGOVFORAuxSupportSynthDummy
+  icon: "AU14JobIconGovSynth"
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-govforplatco
+  accessGroups:
+  - AU14GovforCommand
+  - CMCargoTech
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
+    - type: Skills
+      skills:
+        RMCSkillCqc: 5
+        RMCSkillEndurance: 1
+        RMCSkillEngineer: 4
+        RMCSkillConstruction: 3
+        RMCSkillFirearms: 2
+        RMCSkillOverwatch: 1
+        RMCSkillMedical: 4
+        RMCSkillSurgery: 3
+        RMCSkillResearch: 1
+        RMCSkillMeleeWeapons: 2
+        RMCSkillPilot: 2
+        RMCSkillPolice: 2
+        RMCSkillFireman: 5
+        RMCSkillPowerLoader: 2
+        RMCSkillVehicles: 2
+        RMCSkillJtac: 3
+        RMCSkillIntel: 2
+        RMCSkillDomestics: 2
+        RMCSkillNavigations: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-govforauxsupportsynth
+    - type: TacticalMapIcon
+      icon:
+        sprite: _RMC14/Interface/map_blips.rsi
+        state: synth
+    - type: MeleeWeapon
+      soundHit:
+        path: /Audio/_RMC14/Weapons/synthpunch1.ogg
+        params:
+          variation: 0.15
+          volume: -1
+      angle: 30
+      animation: WeaponArcFist
+      attackRate: 1
+      damage:
+        types:
+          Blunt: 35
+    - type: Synth
+  hidden: false
+
+- type: startingGear
+  id: AU14GearGOVFORAuxSupportSynth
+  equipment:
+    id: AU14IDCardGOVFORAuxSupportSynth
+    ears: AU14HeadsetSectionLeader
+    gloves: CMHandsInsulated
+    shoes: CMBootsBlackFilled
+    jumpsuit: AU14CivilianBoilerSuitDarkBlueSynth
+    belt: CMUBeltMedicBagSupportSynth
+    head: AU14CivBallCapBlack
+    back: AU14SmartpackBlackFilled
+    pocket1: AU14PouchToolsFilledSupportSynthetic
+    pocket2: AU14PouchPoliceEquipmentSupportSynth
+    outerClothing: AU14CMDefibrillator
+
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointGOVFORAuxSupportSynth
+  name: Spawn Point GOVFOR Support Synth
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobGOVFORAuxSupportSynth
+  - type: Sprite
+    state: syn_spawn
+
+- type: playTimeTracker
+  id: AU14JobGOVFORAuxSupportSynth
+  isHumanoid: true
+
+- type: startingGear
+  id: AU14GearGOVFORAuxSupportSynthDummy
+  equipment:
+    gloves: CMHandsInsulated
+    shoes: CMBootsBlackFilled
+    jumpsuit: AU14CivilianBoilerSuitDarkBlueSynth
+    belt: CMUBeltMedicBagSupportSynth
+    head: AU14CivBallCapBlack
+    back: AU14SmartpackBlackFilled

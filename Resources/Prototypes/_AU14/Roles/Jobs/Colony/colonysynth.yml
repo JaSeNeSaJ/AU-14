@@ -6,11 +6,13 @@
   setPreference: true
   canBeAntag: false
   playTimeTracker: AU14JobCivilianColonySynthetic
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 7200 # 2 hours
   ranks:
     RMCRankSyntheticColonist: []
   startingGear: AU14GearCivilianColonySynthetic
-  icon: "RMCJobIconSynth"
-  requireAdminNotify: true
+  icon: "AU14JobIconColonySynth"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
   accessGroups:
