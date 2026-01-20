@@ -5,14 +5,17 @@
   description: au14-job-description-civiliancolonyadministrator
   setPreference: true
   playTimeTracker: AU14JobCivilianColonyAdministrator
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   ranks:
     AU14RankColonySeniorAdministrator:
     - !type:RoleTimeRequirement
       role: AU14JobCivilianColonyAdministrator
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankColonyAdministrator: []
   startingGear: AU14GearCivilianColonyAdministrator
-  icon: "CMJobIconEmpty"
+  icon: "AU14JobIconColonyAdmin"
   requireAdminNotify: true
   joinNotifyCrew: false
   canBeAntag: false

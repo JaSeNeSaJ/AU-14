@@ -67,3 +67,17 @@
   icon:
     sprite: _AU14/Interface/au14opforjobicons.rsi
     state: rto
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconOPFORAdvisor
+  icon:
+    sprite: _AU14/Interface/au14opforjobicons.rsi
+    state: advisor
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconOPFORSynth
+  icon:
+    sprite: _AU14/Interface/au14opforjobicons.rsi
+    state: synth

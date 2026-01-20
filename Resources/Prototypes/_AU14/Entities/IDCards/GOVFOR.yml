@@ -102,7 +102,15 @@
   - type: ItemIFF
     faction: FactionGOVFOR
 
-
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardGOVFORAuxSupportSynth
+  name: support synthetic ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobGOVFORAuxSupportSynth
+  - type: ItemIFF
+    faction: FactionGOVFOR
 
   #- type: ItemIFF
   #  faction: FactionMarine

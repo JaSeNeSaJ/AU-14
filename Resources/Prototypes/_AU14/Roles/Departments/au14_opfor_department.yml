@@ -15,6 +15,7 @@
   - AU14JobOpforRadioTelephoneOperator
   - AU14JobOpforSquadAutomaticRifleman
   - AU14JobOpforPlatoonCorpsman
+  - AU14JobOPFORAuxSupportSynth
   departmentRadio: null
   headOfDepartment: null
   faction: opfor
