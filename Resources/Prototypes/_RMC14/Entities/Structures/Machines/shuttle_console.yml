@@ -231,7 +231,7 @@
     state: green
   - type: FTLBeacon
   - type: DropshipDestination
-    home: True
+  # NOT YET IMPLEMENTED  home: True
   - type: FTLSmashImmune
   - type: NoFTL
 
