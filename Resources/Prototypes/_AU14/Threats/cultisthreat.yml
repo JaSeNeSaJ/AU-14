@@ -22,6 +22,16 @@
   - type: NpcFactionMember
     factions:
     - RMCXeno
+  - type: RemoveComponents
+    components:
+    - type: Infectable
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hivemind
+  - type: ActiveRadio
+    channels:
+    - Hivemind
 
 
 - type: threat

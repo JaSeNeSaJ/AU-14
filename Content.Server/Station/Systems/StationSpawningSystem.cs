@@ -7,6 +7,7 @@ using Content.Server.Jobs;
 using Content.Server.Mind.Commands;
 using Content.Server.PDA;
 using Content.Server.Station.Components;
+using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Marines.Squads;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared.Access;
