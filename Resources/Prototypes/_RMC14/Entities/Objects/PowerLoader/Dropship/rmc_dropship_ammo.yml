@@ -5,9 +5,6 @@
   components:
   - type: Sprite
     sprite: _RMC14/Objects/dropship_ammo.rsi
-  - type: DropshipFabricatorPrintable
-    category: Ammo
-    cost: 275
   - type: DropshipAmmo
     rounds: 400
     maxRounds: 400
@@ -30,9 +27,6 @@
     layers:
     - state: 30mm_crate_10
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    category: Ammo
-    cost: 275
   - type: DropshipAmmo
     ammoType: 30mm_crate
     rounds: 400
@@ -62,8 +56,6 @@
     layers:
     - state: 30mm_crate_hv_10
       map: [ "enum.DropshipAmmoVisuals.Fill" ]
-  - type: DropshipFabricatorPrintable
-    cost: 325
   - type: DropshipAmmo
     ammoType: 30mm_crate_hv
     bulletSpread: 4
@@ -95,6 +87,27 @@
     randomRotation: true
 
 - type: entity
+  id: AU14EffectExplosionParticleJDAM
+  name: explosion
+  components:
+  - type: Transform
+    anchored: true
+  - type: Sprite
+    sprite: _RMC14/Effects/effects.rsi
+    state: explosion_particle
+  - type: TimedDespawn
+    lifetime: 0.5
+  - type: EffectAlphaAnimation
+  - type: PointLight
+    enabled: true
+    radius: 1
+  - type: RMCScorchEffectOnSpawn
+    probability: 0.9
+    tileLimit: 10
+    scatter: true
+    randomRotation: true
+
+- type: entity
   abstract: true
   parent: RMCDropshipAttachmentAmmo
   id: RMCDropshipAttachmentAmmoRocket
@@ -117,8 +130,6 @@
         - MachineMask
         layer:
         - MachineLayer
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     rounds: 1
     maxRounds: 1
@@ -137,9 +148,49 @@
   name: AIM-224B 'Widowmaker'
   description: The AIM-224B missile is a retrofit of the latest in air-to-air missile technology. Earning the nickname of 'Widowmaker' from various dropship pilots after improvements to its guidance warhead prevents it from being jammed leading to its high kill rate. Not well suited for ground bombardment but its high velocity makes it reach its target quickly. This one has been modified to be a free-fall bomb as a result of dropship ammo shortages. Can be loaded into the LAU-444 Guided Missile Launcher.
   components:
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
+    travelTime: 3
+    explosion:
+      total: 3000
+      slope: 5.5
+      max: 55
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoRocketWidowmakerDouble
+  name: AIM-224A 'Double Widow'
+  description: The AIM-224A missile is a retrofit of the latest in air-to-air missile technology. Earning the nickname of 'Double Widow' due to it being two Widow Makers stacked on top of each other. Both rockets are fired at the same time and are highly unpredictable. Not well suited for ground bombardment but its high velocity makes it reach its target quickly. This one has been modified to be a two round free-fall bomb as a result of dropship ammo shortages. Can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: double
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    rounds: 2
+    maxRounds: 2
+    roundsPerShot: 2
+    bulletSpread: 9
+    travelTime: 3
+    explosion:
+      total: 3000
+      slope: 5.5
+      max: 55
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoRocketWidowmakerDoubleADMIN
+  name: "AIM-224A 'Octuple Widow' (DO NOT MAP)"
+  description: The AIM-224A missile is a retrofit of the latest in air-to-air missile technology. Earning the nickname of 'Double Widow' due to it being two Widow Makers stacked on top of each other. Both rockets are fired at the same time and are highly unpredictable. Not well suited for ground bombardment but its high velocity makes it reach its target quickly. This one has been modified to be a two round free-fall bomb as a result of dropship ammo shortages. Can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: double
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    rounds: 8
+    maxRounds: 8
+    roundsPerShot: 8
+    bulletSpread: 30
     travelTime: 3
     explosion:
       total: 3000
@@ -156,14 +207,78 @@
     layers:
     - state: paveway
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     travelTime: 2
     explosion:
       total: 905
       slope: 15
       max: 45
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoMk102JDAM
+  name: GBU-89B 'Postman'
+  description: The GBU-89B Joint Direct Attack Munition is an old but reliable large guided munition. It has an excessively long travel time, but can level entire buildings. It can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: jdam
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    travelTime: 12
+    explosion:
+      total: 10000
+      slope: 4.5
+      max: 100000000
+    impactEffects:
+    - AU14EffectExplosionParticleJDAM
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoGBU89I
+  name: GBU-89C NT 'Burning Postman'
+  description: The GBU-89B Napalm-Thermite Joint Direct Attack Munition is an old but reliable large guided munition. It has an excessively long travel time, but can level and set alight entire buildings. It can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: jdami
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    travelTime: 11
+    explosion:
+      total: 10000
+      slope: 4.5
+      max: 100000000
+    fire:
+      type: RMCTileFireNapalm
+      range: 3
+      cardinalRange: 5
+    impactEffects:
+    - AU14EffectExplosionParticleJDAM
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoCBU250
+  name: CBU-250 'Dinner Spread'
+  description: The CBU-250 'Dinner Spread' is a cluster munition designed for use against lightly armored vehicles and enemy infantry. Upon deployment, the munition separates into twelve low-yield bomblets, dispersing them unevenly across a wide area. It can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: cluster
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    travelTime: 6
+    rounds: 12
+    maxRounds: 12
+    roundsPerShot: 12
+    bulletSpread: 17
+    explosion:
+      total: 110
+      slope: 4
+      max: 8
+    impactEffects:
+    - RMCEffectExplosionParticle
+    - RMCSmokeExplosionProofSmall
 
 - type: entity
   parent: RMCDropshipAttachmentAmmoRocket
@@ -175,8 +290,6 @@
     layers:
     - state: napalm
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    cost: 500
   - type: DropshipAmmo # TODO RMC14 not usable in fire mission, only direct bombardment
     travelTime: 6
     explosion:
@@ -198,8 +311,6 @@
     layers:
     - state: harpoon
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    cost: 200
   - type: DropshipAmmo
     travelTime: 5
     explosion:
@@ -217,8 +328,6 @@
     layers:
     - state: fatty
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     travelTime: 5
     implosion:
@@ -243,8 +352,6 @@
     layers:
     - state: banshee
       map: [ "enum.DropshipAmmoVisuals.Fill"]
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     travelTime: 6
     explosion:
@@ -266,8 +373,6 @@
     layers:
     - state: minirocket_6
       map: [ "enum.DropshipAmmoVisuals.Fill" ]
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     rounds: 6
     maxRounds: 6
@@ -285,8 +390,6 @@
   name: AGR-59 'Mini-Mike'
   description: The AGR-59 'Mini-Mike' minirocket is a cheap and efficient means of putting hate down range. Though rockets lack a guidance package, it makes up for it in ammunition count. Can be loaded into the LAU-229 Rocket Pod.
   components:
-  - type: DropshipFabricatorPrintable
-    cost: 300
   - type: DropshipAmmo
     ammoType: minirocket
     explosion:
@@ -307,8 +410,6 @@
     layers:
     - state: minirocket_inc_6
       map: [ "enum.DropshipAmmoVisuals.Fill" ]
-  - type: DropshipFabricatorPrintable
-    cost: 500
   - type: DropshipAmmo
     ammoType: minirocket_inc
     fire:

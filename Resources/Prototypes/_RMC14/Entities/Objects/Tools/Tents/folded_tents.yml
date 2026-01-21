@@ -230,8 +230,8 @@
 - type: entity
   parent: BaseItem
   id: RMCTentUNMCExtendedMessFolded
-  name: folded UNMC Mess Tent
-  description: A standard UNMC Mess Tent. This one comes equipped with a kitchen and dining utilities. Unfold in a suitable location to maximize meal handouts. ENTRANCE TO THE SOUTH.
+  name: folded mess tent
+  description: A standard Mess Tent. This one comes equipped with a kitchen and dining utilities. Unfold in a suitable location to maximize meal handouts. ENTRANCE TO THE SOUTH.
   components:
     - type: Item
       size: Huge

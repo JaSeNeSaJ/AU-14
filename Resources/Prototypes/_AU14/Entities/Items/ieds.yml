@@ -100,7 +100,7 @@
     equipDelay: 10
     unequipDelay: 6
   - type: OnUseTimerTrigger
-    delay: 3
+    delay: 0.5
     delayOptions: [3, 4]
     initialBeepDelay: 0
     beepSound: /Audio/_AU14/IED/vestbeep.ogg
@@ -112,9 +112,9 @@
       - Timer
   - type: Explosive
     explosionType: RMC
-    totalIntensity: 800
-    intensitySlope: 1.6
-    maxIntensity: 79
+    totalIntensity: 900
+    intensitySlope: 5
+    maxIntensity: 100
     canCreateVacuum: false
   - type: ExplodeOnTrigger
 
