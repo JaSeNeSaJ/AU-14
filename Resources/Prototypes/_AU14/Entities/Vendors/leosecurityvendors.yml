@@ -9,79 +9,53 @@
   - type: CMAutomatedVendor
     sections:
     - name: Clothes
+      takeAll: CMUCMBEssentialEquipmentClothes
       entries:
       - id: AU14CMBUniform
-        amount: 2
       - id: AU14CMBDeputyWindbreaker
-        amount: 1
-      - id: AU14CMBMarshalWindbreaker
-        amount: 1
+      - id: RMCCoatSnowSurvivorCMBDeputy
       - id: RMCHeadCapBureau
-        amount: 2
       - id: RMCBootsPMCFilled
-        amount: 2
-    - name: Glasses
-      entries:
       - id: CMGlassesSecurity
-        amount: 2
-    - name: Storage
+    - name: Belt
+      takeAll: CMUCMBEssentialEquipmentBelt
       entries:
       - id: CMBeltSecurityMarshalFilled
-        amount: 2
       - id: RMCBeltHolsterPistolTSE
-        amount: 2
-      - id: CMWebbingHolster
-        amount: 2
+    - name: Bag
+      choices: { CMUCMBDutyStorageBag: 1 }
+      entries:
       - id: CMSatchelSecurity
-        amount: 2
       - id: AU14SlingSatchelBlack
-        amount: 2
       - id: RMCSatchelTSEPA
-        amount: 2
+    - name: Webbing
+      choices: { CMUCMBDutyStorageWebbing: 1 }
+      entries:
+      - id: CMWebbingHolster
+      - id: RMCWebbingHolsterBlack
+      - id: RMCWebbingLegPouchBlack
     - name: Pouches
+      choices: { CMUCMBDutyPouches: 2 }
       entries:
       - id: RMCPouchFirstAidSplintsGauzeOintment
-        amount: 2
       - id: RMCPouchRadio
-        amount: 2
       - id: RMCPouchGeneralMedium
-        amount: 2
       - id: RMCPouchPistol
-        amount: 2
       - id: RMCPouchMagazinePistol
-        amount: 2
+      - id: AU14PouchIFAKFill
     - name: Equipment
+      takeAll: CMUCMBEssentialEquipment
       entries:
       - id: RMCRadioHandheldColonyOff
-        amount: 2
       - id: RMCGrenadeFlashBang
-        amount: 2
       - id: RMCHandcuffs
-        amount: 4
-      - id: Zipties
-        amount: 20
-    - name: Headsets
-      entries:
-      - id: AU14CMBHeadset
-        amount: 2
+      - id: RMCHandcuffs
+      - id: RMCHandcuffs
     - name: Duty Weapons
       choices: { CMUCMBDutyWeapons: 1 }
       entries:
       - id: RMCGunCasePistolM1984
-      - id: RMCGunCasePistolM77
-      - id: RMCGunCaseRevolverRSh9
-    - name: Less Than Lethal Ammunition
-      entries:
-      - id: RMCMagazinePistolM1984Rubber
-        amount: 2
-      - id: RMCMagazinePistolM77Rubber
-        amount: 2
-    - name: Medical Supplies
-      entries:
-      - id: AU14HemostaticGauzePacket
-        amount: 4
-      - id: AU14Tourniquet
-        amount: 2
+      - id: AU14GunCasePistolHG45
     - name: Inmate Clothing
       entries:
       - id: AU14CivilianPrisonJumpsuit
@@ -100,67 +74,56 @@
   - type: CMAutomatedVendor
     sections:
     - name: Clothes
+      takeAll: CMUCMBEssentialEquipmentClothes
       entries:
       - id: AU14CWPSUniform
-        amount: 1
       - id: AU14CWPSBomber
-        amount: 1
       - id: AU14CWPSCampaignHat
-        amount: 1
       - id: AU14CWPSCap
-        amount: 1
       - id: RMCBootsPMCFilled
-        amount: 1
-    - name: Storage
+    - name: Belt
+      takeAll: CMUCMBEssentialEquipmentBelt
       entries:
       - id: CMBeltSecurityMarshalFilled
-        amount: 1
       - id: RMCBeltHolsterPistolTSE
-        amount: 1
-      - id: CMWebbingHolster
-        amount: 1
-      - id: CMSatchelSecurity
-        amount: 1
-      - id: AU14SlingSatchelBlack
-        amount: 1
-      - id: RMCSatchelTSEPA
-        amount: 1
-    - name: Pouches
+    - name: Bag
+      choices: { CMUCMBDutyStorageBag: 1 }
       entries:
+      - id: CMSatchelSecurity
+      - id: AU14SlingSatchelBlack
+      - id: RMCSatchelTSEPA
+    - name: Webbing
+      choices: { CMUCMBDutyStorageWebbing: 1 }
+      entries:
+      - id: CMWebbingHolster
+      - id: RMCWebbingHolsterBlack
+      - id: RMCWebbingLegPouchBlack
+    - name: Pouches
+      choices: { CMUCMBDutyPouches: 2 }
+      entries:
+      - id: RMCPouchFirstAidSplintsGauzeOintment
       - id: RMCPouchRadio
-        amount: 1
       - id: RMCPouchGeneralMedium
-        amount: 1
       - id: RMCPouchPistol
-        amount: 1
       - id: RMCPouchMagazinePistol
-        amount: 1
+      - id: AU14PouchIFAKFill
     - name: Equipment
+      takeAll: CMUCMBEssentialEquipment
       entries:
       - id: RMCRadioHandheldColonyOff
-        amount: 1
       - id: RMCHandcuffs
-        amount: 4
-      - id: Zipties
-        amount: 20
-    - name: Headsets
-      entries:
-      - id: AU14CMBHeadset
-        amount: 1
+      - id: RMCBinocularsCivPVE
     - name: Duty Weapons
+      choices: { CMUCMBDutyWeapons: 1 }
       entries:
+      - id: AU14GunCasePistolHG45
       - id: RMCGunCasePistolM1984
-        amount: 1
-      - id: AU14WeaponRifleAR10
-        amount: 1
-      - id: RMCMagazineRifleM16
-        amount: 4
-    - name: Medical Supplies
+    - name: Inmate Clothing
       entries:
-      - id: AU14HemostaticGauzePacket
-        amount: 2
-      - id: AU14Tourniquet
-        amount: 1
+      - id: AU14CivilianPrisonJumpsuit
+        amount: 10
+      - id: RMCShoesBlack
+        amount: 10
 
 - type: entity
   parent: ColMarTechBase
@@ -173,88 +136,70 @@
   - type: CMAutomatedVendor
     sections:
     - name: Clothes
+      takeAll: CMUCMBEssentialEquipmentClothes
       entries:
       - id: RMCJumpsuitTSEPA
-        amount: 2
-      - id: RMCArmorVestTSEPA
-        amount: 2
-      - id: RMCCoatTSEPA
-        amount: 2
-      - id: RMCCoatTSEPAHighVis
-        amount: 2
-      - id: RMCCoatTSEPAHighVisVest
-        amount: 2
-      - id: RMCHeadCapTSEPA
-        amount: 2
-      - id: RMCHeadBeretTSE
-        amount: 2
-      - id: RMCHeadBeretTSEPA
-        amount: 2
-      - id: RMCHeadCapTSEPAPeaked
-        amount: 2
       - id: RMCBootsPMCFilled
-        amount: 2
-    - name: Glasses
-      entries:
       - id: CMGlassesSecurity
-        amount: 2
-    - name: Storage
+    - name: Headgear
+      choices: { CMUCMBDutyHeadgear: 2 }
+      entries:
+      - id: RMCHeadCapTSEPA
+      - id: RMCHeadBeretTSE
+        name: NSPA beret (red)
+      - id: RMCHeadBeretTSEPA
+        name: NSPA beret (black)
+      - id: RMCHeadCapTSEPAPeaked
+        name: peaked NSPA cap (red and silver)
+      - id: RMCHeadCapTSEPAPeakedGoldSilver
+        name: peaked NSPA cap (gold and silver)
+      - id: RMCHeadCapTSEPAPeaked
+        name: peaked NSPA cap (red and gold)
+    - name: Outerwear
+      choices: { CMUCMBDutyJacket: 2 }
+      entries:
+      - id: RMCArmorVestTSEPA
+      - id: RMCCoatTSEPA
+      - id: RMCCoatTSEPAHighVis
+      - id: RMCCoatTSEPAHighVisVest
+    - name: Belt
+      takeAll: CMUCMBEssentialEquipmentBelt
       entries:
       - id: CMBeltSecurityMarshalFilled
-        amount: 2
       - id: RMCBeltHolsterPistolTSE
-        amount: 2
-      - id: CMWebbingHolster
-        amount: 2
+    - name: Bag
+      choices: { CMUCMBDutyStorageBag: 1 }
+      entries:
       - id: CMSatchelSecurity
-        amount: 2
       - id: AU14SlingSatchelBlack
-        amount: 2
       - id: RMCSatchelTSEPA
-        amount: 2
+    - name: Webbing
+      choices: { CMUCMBDutyStorageWebbing: 1 }
+      entries:
+      - id: CMWebbingHolster
+      - id: RMCWebbingHolsterBlack
+      - id: RMCWebbingLegPouchBlack
     - name: Pouches
+      choices: { CMUCMBDutyPouches: 2 }
       entries:
       - id: RMCPouchFirstAidSplintsGauzeOintment
-        amount: 2
       - id: RMCPouchRadio
-        amount: 2
       - id: RMCPouchGeneralMedium
-        amount: 2
       - id: RMCPouchPistol
-        amount: 2
       - id: RMCPouchMagazinePistol
-        amount: 2
+      - id: AU14PouchIFAKFill
     - name: Equipment
+      takeAll: CMUCMBEssentialEquipment
       entries:
       - id: RMCRadioHandheldColonyOff
-        amount: 2
       - id: RMCGrenadeFlashBang
-        amount: 2
       - id: RMCHandcuffs
-        amount: 4
-      - id: Zipties
-        amount: 20
-    - name: Headsets
-      entries:
-      - id: AU14CMBHeadset
-        amount: 2
+      - id: RMCHandcuffs
+      - id: RMCHandcuffs
     - name: Duty Weapons
-      choices: { CMUNSPADutyWeapons: 1 }
+      choices: { CMUCMBDutyWeapons: 1 }
       entries:
-      - id: RMCGunCasePistolM1984
-      - id: RMCGunCasePistolM77
-    - name: Less Than Lethal Ammunition
-      entries:
-      - id: RMCMagazinePistolM1984Rubber
-        amount: 2
-      - id: RMCMagazinePistolM77Rubber
-        amount: 2
-    - name: Medical Supplies
-      entries:
-      - id: AU14HemostaticGauzePacket
-        amount: 4
-      - id: AU14Tourniquet
-        amount: 2
+      - id: AU14GunCasePistolL45
     - name: Inmate Clothing
       entries:
       - id: AU14CivilianPrisonJumpsuit

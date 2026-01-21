@@ -238,7 +238,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateBoxMagazineSentry
-  name: UN 571-C sentry ammunition (x2)
+  name: 571-C sentry ammunition (x2)
   components:
   - type: StorageFill
     contents:
@@ -248,7 +248,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateBoxMagazineSentryShotgun
-  name: UN 12-G sentry shotgun ammunition (x2)
+  name: 12-G sentry shotgun ammunition (x2)
   components:
   - type: StorageFill
     contents:
@@ -258,7 +258,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateBoxMagazineSentryFire
-  name: UN 42-FM sentry flamer ammunition (x2)
+  name: 42-FM sentry flamer ammunition (x2)
   components:
   - type: StorageFill
     contents:
@@ -268,7 +268,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateBoxMagazineSentryFireBlue
-  name: UN 55-FA sentry flamer ammunition (x2)
+  name: 55-FA sentry flamer ammunition (x2)
   components:
   - type: StorageFill
     contents:
@@ -278,7 +278,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateBoxMagazineSentryFireSmoke
-  name: UN 60-FP sentry flamer ammunition (x2)
+  name: 60-FP sentry flamer ammunition (x2)
   components:
   - type: StorageFill
     contents:
