@@ -31,8 +31,6 @@
       - GOVFOR
     - type: Marine
       Faction: govfor
-    - type: Marine
-      Faction: govfor
     - type: Skills
       skills:
         RMCSkillFirearms: 2
