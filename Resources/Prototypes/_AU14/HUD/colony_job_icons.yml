@@ -1,0 +1,20 @@
+﻿- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyAdmin
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: admin
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyAdvisor
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: advisor
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonySynth
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: synth

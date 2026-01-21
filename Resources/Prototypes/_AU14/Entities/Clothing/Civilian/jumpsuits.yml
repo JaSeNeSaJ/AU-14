@@ -57,6 +57,17 @@
 
 - type: entity
   parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14CivilianBoilerSuitDarkBlueSynth
+  name: Support Synthetic Uniform
+  description: Rugged waterproof clothes for the hardworking synth.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Civilian/Uniforms/darkblueboilersuit.rsi
+  - type: WebbingClothing
+    startingWebbing: CMWebbingSurgicalBlue
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
   id: AU14CivilianBoilerSuitGray
   name: Gray Boilersuit
   description: Rugged waterproof clothes for the hardworking man.

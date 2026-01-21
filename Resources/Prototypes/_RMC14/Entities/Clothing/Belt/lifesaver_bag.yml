@@ -15,22 +15,38 @@
     whitelist:
       tags:
       - DiscreteHealthAnalyzer
-      - BodyBag
+      - Dropper
+      - GlassBeaker
       - Bottle
       - PillCanister
       - Syringe
-      - CMAutoInjector
+      - CMSurgicalLine
+      - CMSynthGraft
       - Brutepack
+      - CMBloodPack
       - Gauze
       - Ointment
       - CMOintment
       - CMTraumaKit
       - CMBurnKit
       #      - # TODO RMC14 splints
+      - CMAutoInjector
+      - CMRollerItem
+      - BodyBag
       - RMCGlovesLatex
+      - SterileMask
+      - Hypospray
+      - CigPack
+      - RMCPenlight
+      - Flare
+      #      - # TODO RMC14 minitank (needs full implementation and a tag to fit it in here, but the item exists as CMMiniTank)
+      #      - # TODO RMC14 reagent analyzer
+      #      - # TODO RMC14 plant analyzer
       components:
+      - Hypospray
       - Defibrillator
       - Pill
+      - RMCLighter
   - type: FixedItemSizeStorage
   - type: IgnoreContentsSize
     items:

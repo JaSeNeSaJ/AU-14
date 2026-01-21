@@ -6,6 +6,9 @@
   setPreference: true
   canBeAntag: false
   playTimeTracker: AU14JobOpforPlatCo
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   ranks:
     RMCRankCaptain:
     - !type:RoleTimeRequirement

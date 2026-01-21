@@ -2,8 +2,8 @@
 - type: entity
   parent: BaseItem
   id: RMCTentUNMCStandardFolded
-  name: folded UNMC Field Tent
-  description: A standard UNMC Field Tent. This one is just a general purpose version. Unfold in a suitable location for micro-FOB vibes. ComTech not included. ENTRANCE TO THE SOUTH.
+  name: folded field tent
+  description: A standard Field Tent. This one is just a general purpose version. Unfold in a suitable location for micro-FOB vibes. ENTRANCE TO THE SOUTH.
   components:
     - type: Item
       size: Huge
@@ -32,8 +32,8 @@
 - type: entity
   parent: RMCTentUNMCStandardFolded
   id: RMCTentUNMCBigFolded
-  name: folded UNMC Big Tent
-  description: A standard UNMC Field Tent. This one is just a general purpose, large version. Unfold in a suitable location for micro-FOB vibes. ComTech not included. ENTRANCE TO THE SOUTH.
+  name: folded big tent
+  description: A standard Field Tent. This one is just a general purpose, large version. Unfold in a suitable location for micro-FOB vibes. ENTRANCE TO THE SOUTH.
   components:
     - type: RMCDeployable
       deployTime: 10
@@ -55,8 +55,8 @@
 - type: entity
   parent: BaseItem
   id: RMCTentUNMCStandardCommandFolded
-  name: folded UNMC Command Tent
-  description: A standard UNMC Command Tent. This one comes equipped with a self-powered Overwatch Console and a Telephone. Unfold in a suitable location to maximize usefulness. Staff Officer not included. ENTRANCE TO THE SOUTH.
+  name: folded command tent
+  description: A standard Command Tent. This one comes equipped with a self-powered Overwatch Console and a Telephone. Unfold in a suitable location to maximize usefulness. Staff Officer not included. ENTRANCE TO THE SOUTH.
   components:
     - type: Item
       size: Huge
@@ -122,8 +122,8 @@
 - type: entity
   parent: BaseItem
   id: RMCTentUNMCStandardMedicalFolded # TODO RMC14: Bonus to speed up operations and reduce pain
-  name: folded UNMC Medical Tent
-  description: A standard UNMC Medical Tent. This one comes equipped with advanced field surgery facilities. Unfold in a suitable location to maximize health gains. Surgical Tray not included. ENTRANCE TO THE SOUTH.
+  name: folded medical tent
+  description: A standard medical tent. This one comes equipped with advanced field surgery facilities. Unfold in a suitable location to maximize health gains. Surgical Tray not included. ENTRANCE TO THE SOUTH.
   components:
     - type: Item
       size: Huge
@@ -157,8 +157,8 @@
 - type: entity
   parent: BaseItem
   id: RMCTentUNMCExtendedFolded
-  name: folded UNMC Extended Field Tent
-  description: A standard UNMC Tent. This one is just an extended general purpose version. Unfold in a suitable location for mega FOB vibes. Mess Tech not included. ENTRANCE TO THE SOUTH.
+  name: folded extended field tent
+  description: A standard field Tent. This one is just an extended general purpose version. Unfold in a suitable location for mega FOB vibes. ENTRANCE TO THE SOUTH.
   components:
     - type: Item
       size: Huge

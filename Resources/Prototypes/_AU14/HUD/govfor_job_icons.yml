@@ -67,3 +67,17 @@
   icon:
     sprite: _AU14/Interface/au14govforjobicons.rsi
     state: govfor_rto
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconGovAdvisor
+  icon:
+    sprite: _AU14/Interface/au14govforjobicons.rsi
+    state: govfor_advisor
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconGovSynth
+  icon:
+    sprite: _AU14/Interface/au14govforjobicons.rsi
+    state: govfor_syn
