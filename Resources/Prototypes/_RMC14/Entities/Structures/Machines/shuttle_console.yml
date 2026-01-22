@@ -221,6 +221,22 @@
 
 - type: entity
   parent: MarkerBase
+  id: CMDropshipDestinationHome
+  name: dropship destination(home)
+  description: Defines a valid location for the dropships to FTL to when piloted. (home)
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    state: green
+  - type: FTLBeacon
+  - type: DropshipDestination
+  # NOT YET IMPLEMENTED  home: True
+  - type: FTLSmashImmune
+  - type: NoFTL
+
+- type: entity
+  parent: MarkerBase
   id: CMDropshipDestinationOpforWhitelist
   name: dropship destination
   description: Defines a valid location for the dropships to FTL to when piloted.

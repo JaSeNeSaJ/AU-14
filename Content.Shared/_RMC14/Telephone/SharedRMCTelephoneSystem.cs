@@ -31,6 +31,7 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
+    [Dependency] private readonly IEntityManager _entManager = default!;
 
     private static readonly SoundSpecifier RemotePickupSound = new SoundPathSpecifier("/Audio/_RMC14/Phone/remote_pickup.ogg");
     private static readonly SoundSpecifier RemoteHangupSound = new SoundPathSpecifier("/Audio/_RMC14/Phone/remote_hangup.ogg");
@@ -53,6 +54,10 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
 
         SubscribeLocalEvent<RotaryPhoneBackpackComponent, GetItemActionsEvent>(OnBackpackGetItemActions);
         SubscribeLocalEvent<RotaryPhoneBackpackComponent, RMCTelephoneActionEvent>(OnBackpackTelephoneAction);
+        // Update backpack phone faction based on who is holding/wearing it
+        SubscribeLocalEvent<RotaryPhoneBackpackComponent, ComponentStartup>(OnBackpackStartup);
+        SubscribeLocalEvent<RotaryPhoneBackpackComponent, EntInsertedIntoContainerMessage>(OnBackpackContainerModified);
+        SubscribeLocalEvent<RotaryPhoneBackpackComponent, EntRemovedFromContainerMessage>(OnBackpackContainerModified);
 
         Subs.BuiEvents<RotaryPhoneComponent>(RMCTelephoneUiKey.Key,
             subs =>
@@ -60,6 +65,39 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
                 subs.Event<RMCTelephoneCallBuiMsg>(OnTelephoneCallMsg);
                 subs.Event<RMCTelephoneDndBuiMsg>(OnTelephoneDndMsg);
             });
+    }
+
+    private void OnBackpackStartup(Entity<RotaryPhoneBackpackComponent> ent, ref ComponentStartup args)
+    {
+        UpdateBackpackFaction(ent.Owner);
+    }
+
+    private void OnBackpackContainerModified(EntityUid uid, RotaryPhoneBackpackComponent component, ContainerModifiedMessage args)
+    {
+        UpdateBackpackFaction(uid);
+    }
+
+    private void UpdateBackpackFaction(EntityUid phone)
+    {
+        // Ensure this entity actually has a rotary phone component
+        if (!TryComp<RotaryPhoneComponent>(phone, out var rotary))
+            return;
+
+        // If the phone is in a holder (worn/held), try to derive faction from the holder
+        if (TryGetPhoneBackpackHolder(phone, out var holder) && holder != default)
+        {
+            // Prefer MarineComponent faction if present
+            if (TryComp<MarineComponent>(holder, out var marine) && !string.IsNullOrEmpty(marine.Faction))
+            {
+                rotary.Faction = marine.Faction;
+                Dirty(phone, rotary);
+                return;
+            }
+        }
+
+        // Fallback to neutral
+        rotary.Faction = string.Empty;
+        Dirty(phone, rotary);
     }
 
     private void OnRotaryPhoneMapInit(Entity<RotaryPhoneComponent> ent, ref MapInitEvent args)
@@ -178,8 +216,12 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
         if (HasComp<RotaryPhoneBackpackComponent>(target) &&
             !TryGetPhoneBackpackHolder(target, out _))
         {
-            _popup.PopupEntity("No transmitters could be located to call!", user, user, PopupType.MediumCaution);
-            return;
+            // Allow calls to neutral (empty-faction) phones even if they're not held/worn.
+            if (!TryComp<RotaryPhoneComponent>(target, out var targetRotary) || !string.IsNullOrEmpty(targetRotary.Faction))
+            {
+                _popup.PopupEntity("No transmitters could be located to call!", user, user, PopupType.MediumCaution);
+                return;
+            }
         }
 
         // Emit the popup on a successful call.
@@ -400,14 +442,30 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
             return;
 
         var phones = new List<RMCPhone>();
+        // Determine the calling phone's faction once
+        _entManager.TryGetComponent<RotaryPhoneComponent>(phone, out var callingComp);
+        var callingFaction = callingComp?.Faction ?? string.Empty;
+
         var phonesQuery = EntityQueryEnumerator<RotaryPhoneComponent>();
         while (phonesQuery.MoveNext(out var otherId, out var otherComp))
         {
             if (otherId == phone)
                 continue;
 
-            var name = GetPhoneName((otherId, otherComp));
-            phones.Add(new RMCPhone(GetNetEntity(otherId), otherComp.Category, name));
+            // Neutral phones (empty faction) are callable by anyone — always include them
+            if (string.IsNullOrEmpty(otherComp.Faction))
+            {
+                var name = GetPhoneName((otherId, otherComp));
+                phones.Add(new RMCPhone(GetNetEntity(otherId), otherComp.Category, name));
+                continue;
+            }
+
+            // Non-neutral phones are only visible to callers of the same (non-empty) faction
+            if (!string.IsNullOrEmpty(callingFaction) && otherComp.Faction == callingFaction)
+            {
+                var name = GetPhoneName((otherId, otherComp));
+                phones.Add(new RMCPhone(GetNetEntity(otherId), otherComp.Category, name));
+            }
         }
         var canDnd = Comp<RotaryPhoneComponent>(phone).CanDnd;
         var dnd = HasComp<RotaryPhoneDndComponent>(phone);
@@ -611,3 +669,4 @@ public abstract class SharedRMCTelephoneSystem : EntitySystem
         }
     }
 }
+

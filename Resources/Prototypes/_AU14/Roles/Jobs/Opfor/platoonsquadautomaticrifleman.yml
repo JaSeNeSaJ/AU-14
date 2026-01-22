@@ -36,7 +36,9 @@
     components:
     - type: NpcFactionMember
       factions:
-      - OPFOR
+       - OPFOR
+    - type: Marine
+      Faction: opfor
     - type: Skills
       skills:
         RMCSkillFirearms: 2

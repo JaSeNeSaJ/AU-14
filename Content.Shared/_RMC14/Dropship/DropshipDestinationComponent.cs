@@ -19,7 +19,8 @@ public sealed partial class DropshipDestinationComponent : Component
     [DataField("destinationtype")]
     public  DestinationType Destinationtype = DestinationType.Dropship;
 
-
+    [DataField("Home")]
+    public bool Home = false;
     public enum DestinationType
     {
         Figher,

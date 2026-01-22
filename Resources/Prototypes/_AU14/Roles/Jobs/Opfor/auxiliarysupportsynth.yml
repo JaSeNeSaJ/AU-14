@@ -31,6 +31,8 @@
     - type: NpcFactionMember
       factions:
       - OPFOR
+    - type: Marine
+      Faction: govfor
     - type: Skills
       skills:
         RMCSkillCqc: 5

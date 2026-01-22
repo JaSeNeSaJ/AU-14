@@ -33,6 +33,8 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
+    - type: Marine
+      Faction: govfor
     - type: Skills
       skills:
         RMCSkillFirearms: 2
