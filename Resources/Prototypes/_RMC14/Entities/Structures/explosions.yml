@@ -383,25 +383,6 @@
 - type: entity
   parent: RMCDropshipMissileExplosionBase
   id: RMCDropshipMissileExplosionBansheeHorde
-  name: AIM-207 'Cutlass' Rack explosion
-  components:
-  - type: DropshipAmmo
-    rounds: 4
-    maxRounds: 4
-    roundsPerShot: 4
-    bulletSpread: 5
-    travelTime: 6
-    explosion:
-      total: 190
-      slope: 11
-      max: 78
-    impactEffects:
-    - RMCEffectExplosionParticle
-    - RMCSmokeExplosionProofSmall
-
-- type: entity
-  parent: RMCDropshipMissileExplosionBase
-  id: RMCDropshipMissileExplosionBansheeHorde
   name: CBU-607 'Skeet Shooter' Rack explosion
   components:
   - type: DropshipAmmo
