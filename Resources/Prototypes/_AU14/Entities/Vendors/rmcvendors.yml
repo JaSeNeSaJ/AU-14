@@ -68,8 +68,6 @@
         amount: 25
       - id: AU14RMCHeadBeret
         amount: 25
-      - id: ClothingHeadBase
-        amount: 25
       - id: RMCM5CameraGear
         amount: 25
     - name: Heads Up Display
@@ -244,7 +242,7 @@
   parent: ColMarTechBase
   id: AU14RMCequipmentvendor
   name: Royal Marines equipment vendor
-  description: An automated rack hooked up to a small storage of standard TWE Royal Marines Commando equipment.
+  description: An automated rack hooked up to a small storage of standard Three World Empire Royal Marines Commando equipment.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -377,7 +375,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCcorpsmanvendor
-  name: TWE Royal Marines corpsman medical vendor
+  name: Royal Marines corpsman medical vendor
   description: An automated rack hooked up to a small storage of medical supplies.
   components:
   - type: AccessReader
@@ -479,8 +477,8 @@
 
 - type: entity #TODO: RMC specific aircrew clothes
   parent: ColMarTechBase
-  id: AU14TWEaircrewvendor
-  name: TWEASF aircrew vendor
+  id: AU14RMCaircrewvendor
+  name: Royal Marine ASF aircrew vendor
   description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
   components:
   - type: AccessReader
@@ -637,7 +635,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCcommandequipmentvendor
-  name: TWE Royal Marines command vendor
+  name: Royal Marines command vendor
   description: An automated rack hooked up to a small storage of command apparel and equipment.
   components:
   - type: AccessReader
@@ -699,7 +697,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCSGequipmentvendor
-  name: TWE Royal Marines smartgunner equipment vendor
+  name: Royal Marines smartgunner equipment vendor
   description: An automated rack hooked up to a small storage of smartgunner equipment.
   components:
   - type: AccessReader
@@ -733,7 +731,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCsectionleaderequipmentvendor
-  name: TWE Royal Marines section leader vendor
+  name: Royal Marines section leader vendor
   description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
   components:
   - type: AccessReader
@@ -750,7 +748,7 @@
         amount: 1
       - id: AU14RMCHeadBeretLead
         amount: 1
-        name: Black Beret
+        name: Sergeant Beret
       - id: AU14JunglePatrolCap
         amount: 1
       - id: AU14DesertPatrolCap
@@ -767,7 +765,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCWeaponsVendor
-  name: TWE Royal Marines weapons rack
+  name: Royal Marines weapons rack
   description: An automated rack hooked up to a small storage of weapons.
   components:
   - type: AccessReader
@@ -824,7 +822,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCSpecialWeaponsVendor
-  name: TWE Royal Marines special weapons rack
+  name: Royal Marines special weapons rack
   description: An automated rack hooked up to a small storage of special weapons.
   components:
   - type: AccessReader

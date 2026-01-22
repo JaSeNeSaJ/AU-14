@@ -345,21 +345,20 @@
     SWeapons: AU14RMCSpecialWeaponsVendor
     Corpsman: AU14RMCcorpsmanvendor
     Arifleman: AU14RMCSGequipmentvendor
-    Dcc: AU14TWEaircrewvendor
+    Dcc: AU14RMCaircrewvendor
     OperationsOfficer: AU14RMCcommandequipmentvendor
-    Rto: AU14RMCRTOVendor
+    Rto: AU14RTOVendor # TODO: RMC RTO's
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
-  #platoonflag:  twe flag
   CompatibleDropships:
-  - /Maps/_CMU14/Shuttles/alamo.yml #TODO
-  compatibleFighters:
-    - /Maps/_AU14/ShuttlesDropships/f84owl.yml #TODO
-    - /Maps/_AU14/ShuttlesDropships/ud_6.yml #TODO
-  possibleships:
-      - Daybreak #TODO
-      - USSBush #TODO
+  - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
+  compatibleFighters: #TODO: RMC Fighters
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships: #TODO: RMC Ship
+      - Daybreak 
+      - USSBush
 
 # Add more platoons as needed
