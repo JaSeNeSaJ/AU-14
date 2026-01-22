@@ -1,0 +1,64 @@
+- type: entity
+  parent: AU14BaseArmor
+  id: AU14RMCArmor
+  name: kestrel armoured vest
+  description: A customizable personal armor system used by the Royal Crown Marines.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/armor/armor.rsi
+
+- type: entity
+  parent: AU14BaseArmorLight
+  id: AU14RMCArmorLight
+  name: kestrel light armoured vest
+  description: A customizable personal armor system used by the Royal Crown Marines.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/armor/armor.rsi
+
+- type: entity
+  parent: AU14BaseArmor
+  id: AU14RMCArmorPadded
+  name: kestrel armoured carry vest
+  description: A customizable personal armor system used by the Royal Crown Marines.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/armor/padded.rsi
+
+- type: entity
+  parent: [ RMCAllowSuitStorageClothingSmartgunner, AU14BaseArmor ]
+  id: AU14RMCArmorSmartGunDesertCombatHarness
+  name: kestrel armoured smart gun harness
+  description: Kestel smart gun harness specially made for Smartgunners.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/armor/padded.rsi
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,3,1 # 2 slots
+  - type: RMCArmorSpeedTier
+    speedTier: light
+  - type: ClothingSpeedModifier
+    walkModifier: .725
+    sprintModifier: .725
+  - type: ClothingBlockBackpack
+  - type: SmartGunArmor
+
+- type: entity
+  parent: AU14BaseArmor
+  id: AU14RMCArmorRoyalPointman
+  name: kestrel pointman armour
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/armor/pointman.rsi
+  - type: CMArmor
+    melee: 30 # CLOTHING_ARMOR_HIGH
+    bullet: 35 # CLOTHING_ARMOR_HIGHPLUS (bullet)
+    explosionArmor: 35 # CLOTHING_ARMOR_HIGHPLUS
+    bio: 20 # CLOTHING_ARMOR_MEDIUM
+  - type: RMCArmorSpeedTier
+    speedTier: heavy
+  - type: ClothingSpeedModifier # SLOWDOWN_ARMOR_LOWHEAVY
+    walkModifier: 0.64
+    sprintModifier: 0.64

@@ -1,0 +1,38 @@
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14RMCFatigues
+  name: royal marines fatigues
+  description: Standart-issue Three World Empire Royal Marines Commando fatigues.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/jumpsuits/standard.rsi
+  - type: UniformAccessoryHolder
+    startingAccessories:
+    - AU14PatchUSCM
+    - AU14HAZOPShecuPatch
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14RMCFatiguesSergeant
+  name: royal marines sergeant fatigues
+  description: Standart-issue Three World Empire Royal Marines Commando fatigues. Usually worn by sergeants.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/jumpsuits/team_lead.rsi
+  - type: UniformAccessoryHolder
+    startingAccessories:
+    - AU14PatchUSCM
+    - AU14HAZOPShecuPatch
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14RMCFatiguesOfficer
+  name: royal marines officer fatigues
+  description: Standart-issue Three World Empire Royal Marines Commando fatigues. Usually worn by officers.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/jumpsuits/team_lead.rsi
+  - type: UniformAccessoryHolder
+    startingAccessories:
+    - AU14PatchUSCM
+    - AU14HAZOPShecuPatch

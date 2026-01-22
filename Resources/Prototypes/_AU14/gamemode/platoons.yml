@@ -334,4 +334,32 @@
       - Daybreak
       - USSBush
 
+- type: platoon
+  id: RMC
+  name: RMC
+  reqlist: USCMCargoCatalog #TODO
+  VendorToMarker:
+    Rifleman: AU14RMCequipmentvendor
+    Clothing: AU14RMCclothingequipmentvendor
+    Weapons: AU14RMCWeaponsVendor
+    SWeapons: AU14RMCSpecialWeaponsVendor
+    Corpsman: AU14RMCcorpsmanvendor
+    Arifleman: AU14RMCSGequipmentvendor
+    Dcc: AU14TWEaircrewvendor
+    OperationsOfficer: AU14RMCcommandequipmentvendor
+    Rto: AU14RMCRTOVendor
+    SectionSergeant: AU14RMCsectionleaderequipmentvendor
+    Pilot: AU14RMCAircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  #platoonflag:  twe flag
+  CompatibleDropships:
+  - /Maps/_CMU14/Shuttles/alamo.yml #TODO
+  compatibleFighters:
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml #TODO
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml #TODO
+  possibleships:
+      - Daybreak #TODO
+      - USSBush #TODO
+
 # Add more platoons as needed
