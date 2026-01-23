@@ -134,6 +134,9 @@
       sprite: _RMC14/Structures/Walls/Barricades/brute_barricade_cracks.rsi
   - type: RMCConstructionUpgradeTarget
     upgrades: null
+  - type: BarricadeBlock
+    bidirectional: true
+    blocking: 55
 
 - type: entity
   parent: RMCBarricadePlasteel
@@ -160,6 +163,9 @@
     damage:
       types:
         Heat: 1.875
+  - type: BarricadeBlock
+    bidirectional: true
+    blocking: 55
 
 - type: entity
   parent: CMBarricadeMetalDoor

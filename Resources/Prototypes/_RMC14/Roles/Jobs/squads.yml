@@ -112,7 +112,7 @@
 - type: entity
   parent: SquadBase
   id: SquadIntel
-  name: Intel
+  name: Auxiliary
   components:
   - type: SquadTeam
     color: "#053818"
@@ -311,10 +311,10 @@
 - type: entity
   parent: SquadBase
   id: SquadGovfor
-  name: GOVFOR
+  name: Alpha
   components:
   - type: SquadTeam
-    color: "#3C70FF"
+    color: "#E61D02"
     radio: MarineAlpha
     group: GOVFOR
     minimapBackground:
@@ -327,10 +327,10 @@
 - type: entity
   parent: SquadBase
   id: SquadOpfor
-  name: OPFOR
+  name: Alpha
   components:
   - type: SquadTeam
-    color: "#8c1002"
+    color: "#E61D02"
     radio: opfor
     group: OPFOR
     minimapBackground:
@@ -361,11 +361,11 @@
 - type: entity
   parent: SquadBase
   id: SquadOpforBravo
-  name: Opfor Bravo
+  name: Bravo
   components:
   - type: SquadTeam
     roundStart: true
-    color: "#00CED1"
+    color: "#E6E202"
     group: OPFOR
 
     radio: OpforBravo
@@ -379,11 +379,11 @@
 - type: entity
   parent: SquadBase
   id: SquadOpforCharlie
-  name: Opfor Charlie
+  name:  Charlie
   components:
   - type: SquadTeam
     roundStart: true
-    color: "#FFD700"
+    color: "#41004A"
     radio: OpforCharlie
     group: OPFOR
 
@@ -398,7 +398,7 @@
 - type: entity
   parent: SquadBase
   id: SquadGovforIntel
-  name: Govfor Intel
+  name: Auxiliary
   components:
   - type: SquadTeam
     roundStart: true
@@ -414,11 +414,11 @@
 - type: entity
   parent: SquadBase
   id: SquadGovforBravo
-  name: Govfor Bravo
+  name: Bravo
   components:
   - type: SquadTeam
     roundStart: true
-    color: "#32CD32"
+    color: "#E6E202"
     group: GOVFOR
     radio: GovforBravo
     accessLevels:
@@ -431,7 +431,7 @@
 - type: entity
   parent: SquadBase
   id: SquadGovforCharlie
-  name: Govfor Charlie
+  name: Charlie
   components:
   - type: SquadTeam
     roundStart: true

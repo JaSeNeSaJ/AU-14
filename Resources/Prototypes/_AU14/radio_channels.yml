@@ -55,7 +55,7 @@
   name: chat-radio-opforbravo
   keycode: "s"
   frequency: 1603
-  color: "#00CED1"
+  color: "#E6E202"
   longRange: true
 
 - type: radioChannel
@@ -63,7 +63,7 @@
   name: chat-radio-opforcharlie
   keycode: "x"
   frequency: 1604
-  color: "#FFD700"
+  color: "#41004A"
   longRange: true
 
 - type: radioChannel
@@ -79,7 +79,7 @@
   name: chat-radio-govforbravo
   keycode: "z"
   frequency: 1606
-  color: "#32CD32"
+  color: "#E6E202"
   longRange: true
 
 - type: radioChannel
@@ -87,5 +87,5 @@
   name: chat-radio-govforcharlie
   keycode: "0"
   frequency: 1607
-  color: "#ADFF2F"
+  color: "#41004A"
   longRange: true

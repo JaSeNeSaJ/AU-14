@@ -41,6 +41,8 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
+
+
 - type: partySpawn
   id: cultistParty
   leadersToSpawn:

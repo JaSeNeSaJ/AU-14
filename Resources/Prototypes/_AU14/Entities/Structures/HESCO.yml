@@ -17,13 +17,13 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 16000
+        damage: 4500
       behaviors:
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
     - trigger:
         !type:DamageTrigger
-        damage: 16000
+        damage: 4500
       behaviors:
       - !type:EmptyAllContainersBehaviour
       - !type:DoActsBehavior
@@ -43,4 +43,4 @@
         - WallLayer
   - type: BarricadeBlock
     bidirectional: true
-    blocking: 85
+    blocking: 70

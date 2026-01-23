@@ -3,7 +3,7 @@
   id: XenoThreat
   roundstartspawns: XenoThreatSpawns
   blacklistedgamemodes:
-  - ColonyFall
+   - ColonyFall
   whitelistedgamemodes:
       - DistressSignal
 
@@ -12,7 +12,7 @@
   leadersToSpawn:
     CMXenoQueen: 1
   gruntsToSpawn:
-    CMXenoLarva: 8
+    CMXenoLarva: 3
   scalewithpop: true
   spawnTogether: true
   #hiveevolution: true
