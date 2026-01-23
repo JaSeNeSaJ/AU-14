@@ -1,25 +1,8 @@
 - type: entity
-  parent: RMCAttachableBase
-  id: AU14AttachmentF9030A1Stock
-  name: F9030A1 solid stock
-  description: Integrated into the F9030A1. You shouldn't have this.
-  components:
-  - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Attachments/rmc_stock.rsi
-    state: L83A3
-  - type: AttachableVisuals
-    suffix: ""
-  - type: Tag
-    tags:
-    - RMCAttachmentStock
-    - AU14AttachmentF9030A1Stock
-
-- type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleL83A3
   name: F9030A1 rifle
   description: The F9030A1 Battle Rifle, found commonly in Three World Empire's armories.
-  suffix: Filled
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/F9030A1.rsi
@@ -93,12 +76,6 @@
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS84xTelescopicScope
           - RMCAttachmentS42xTelescopicMiniscope
-      rmc-aslot-stock:
-        locked: true
-        startingAttachable: AU14AttachmentF9030A1Stock
-        whitelist:
-          tags:
-          - AU14AttachmentF9030A1Stock
       rmc-aslot-underbarrel:
         whitelist:
           tags:
@@ -116,10 +93,22 @@
           - RMCAttachmentM203GrenadeLauncher
   - type: AttachableHolderVisuals
     offsets:
-      rmc-aslot-barrel: 0.81, 0.03
-      rmc-aslot-rail: -0.15, 0.215
-      rmc-aslot-stock: -0.87, 0.03
+      rmc-aslot-barrel: 0.81, -0.0305
+      rmc-aslot-rail: 0.1, 0.12
       rmc-aslot-underbarrel: 0.3, -0.30
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A1
+  name: Cartridge (5.56x45)
+  description: A 5.56x45 rifle cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A1
+  - type: CartridgeAmmo
+    proto: BulletRifle556x45mm
 
 - type: entity
   parent: CMMagazineRifleBase
@@ -146,6 +135,31 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A1AP
+  name: AP Cartridge (5.56x45)
+  description: A 5.56x45 AP rifle cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A1AP
+  - type: CartridgeAmmo
+    proto: AU14BulletRifle556x45mmAP
+
+- type: entity
+  parent: BulletRifle10x24mm
+  id: AU14BulletRifle556x45mmAP
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 30
+  - type: CMArmorPiercing
+    amount: 40
 
 - type: entity
   parent: AU14MagazineRifleF9030A1
@@ -306,30 +320,6 @@
           Piercing: 30
   - type: IgniteOnProjectileHit
 
-- type: Tag
-  id: AU14AttachmentF9030A1Stock
-
-- type: Tag
-  id: AU14MagazineRifleF9030A1
-
-- type: Tag
-  id: AU14MagazineRifleF9030A1AP
-
-- type: Tag
-  id: AU14MagazineRifleF9030A1extended
-
-- type: Tag
-  id: AU14MagazineRifleF9030A1HEAP
-
-- type: Tag
-  id: AU14MagazineRifleF9030A1Incendiary
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1HEAP
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1Incendiary
-
 # Breacher Variant
 
 - type: entity
@@ -337,7 +327,6 @@
   id: AU14WeaponRifleF9030A1B
   name: F9030A1/B 'Breacher' rifle
   description: A variant of the Breacher with a heavily modified firing mechanism, giving it a burst-fire option. Comes with built-in underbarell shotgun.
-  suffix: Filled
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/F9030A1B.rsi
@@ -421,32 +410,92 @@
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS84xTelescopicScope
           - RMCAttachmentS42xTelescopicMiniscope
-      rmc-aslot-stock:
-        locked: true
-        startingAttachable: AU14AttachmentF9030A1Stock
-        whitelist:
-          tags:
-          - AU14AttachmentF9030A1Stock
       rmc-aslot-underbarrel:
         locked: true
-        startingAttachable: RMCAttachmentU7UnderbarrelShotgun
+        startingAttachable: RMCAttachmentF9030A1BUnderbarrelShotgun
         whitelist:
           tags:
-          - RMCAttachmentU7UnderbarrelShotgun
+          - RMCAttachmentF9030A1BUnderbarrelShotgun
   - type: AttachableHolderVisuals
     offsets:
-      rmc-aslot-barrel: 0.81, 0.03
+      rmc-aslot-barrel: 0.81, -0.0305
       rmc-aslot-rail: -0.15, 0.215
-      rmc-aslot-stock: -0.87, 0.03
-      rmc-aslot-underbarrel: 0.3, -0.30
+      rmc-aslot-underbarrel: 0.375, -0.335
 
+- type: entity
+  parent: RMCAttachmentS84xTelescopicScope
+  id: AU14AttachmentF9030A1MScope
+  name: 4x telescopic scope
+  description: F9030A1 Marksman 4x telescopic eye piece. Fixed at 4x zoom.
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Guns/Attachments/commando_4xscope.rsi
+    state: staticscope
+  - type: AttachableVisuals
+    suffix: ""
+  - type: Tag
+    tags:
+    - RMCAttachmentRail
+    - AU14AttachmentF9030A1MScope
+  - type: AttachableToggleable
+    icon:
+      sprite: _AU14/Weapons/Guns/Attachments/commando_4xscope.rsi
+      state: staticscope
+    actionName: Look through the 4x Telescopic Scope
+    actionDesc: Price, have wind speed and Coriolis effect in mind. Fixed at 4x zoom.
+
+- type: entity
+  parent: RMCAttachmentU7UnderbarrelShotgun
+  id: RMCAttachmentF9030A1BUnderbarrelShotgun
+  name: underbarrel shotgun
+  description: Tactical shotgun. Attaches to the underbarrel of most weapons. Only capable of loading up to five buckshot shells. Specialized for breaching into buildings.
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
+    state: masterkey
+  - type: Tag
+    tags:
+    - RMCAttachmentUnderbarrel
+    - RMCAttachmentF9030A1BUnderbarrelShotgun
+    actionName: Switch to the underbarrel shotgun
+    actionDesc: Switch to using the underbarrel shotgun.
+    icon:
+      sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
+      state: masterkey
+    iconActive:
+      sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
+      state: masterkey-on
+
+- type: entity
+  parent: RMCAttachmentVerticalGrip
+  id: AU14AttachmentF9030A1MVerticalGrip # verticalgrip
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
+    state: verticalgrip
+  - type: Tag
+    tags:
+    - RMCAttachmentUnderbarrel
+    - AU14AttachmentF9030A1MVerticalGrip
+  - type: AttachableWeaponRangedMods
+    modifiers:
+    - conditions:
+        wieldedOnly: true
+      accuracyAddMult: 0.15
+      recoilFlat: -1
+      scatterFlat: -2
+      burstScatterAddMult: -2
+    - conditions:
+        unwieldedOnly: true
+      accuracyAddMult: 0
+      scatterFlat: 2
+  
 # Marksman F9030A1 Variant
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleF9030A1M
   name: F9030A1 Marksman rifle
   description: The F9030A1 Marksman rifle. This particular version of the weapon has been given a custom stock, a variable zoom scope and a longer barrel. Reliable and deadly.
-  suffix: Filled
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/F9030A1M.rsi
@@ -511,31 +560,55 @@
           - RMCAttachmentExtendedBarrel
       rmc-aslot-rail:
         locked: true
-        startingAttachable: RMCAttachmentS84xTelescopicScope
+        startingAttachable: AU14AttachmentF9030A1MScope
         whitelist:
           tags:
-          - RMCAttachmentS84xTelescopicScope
-      rmc-aslot-stock:
-        locked: true
-        startingAttachable: AU14AttachmentF9030A1Stock
-        whitelist:
-          tags:
-          - AU14AttachmentF9030A1Stock
+          - AU14AttachmentF9030A1MScope0
       rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: AU14AttachmentF9030A1MVerticalGrip
         whitelist:
           tags:
-          - RMCAttachmentGyroscopicStabilizer
-          - RMCAttachmentBipod
-          - RMCAttachmentBurstFireAssembly
-          - RMCAttachmentExtinguisher
-          - RMCAttachmentFlamer
-          - RMCAttachmentU1GrenadeLauncher
-          - RMCAttachmentU7UnderbarrelShotgun
-          - RMCAttachmentLaserSight
-          - RMCAttachmentM203GrenadeLauncher
+          - AU14AttachmentF9030A1MVerticalGrip
   - type: AttachableHolderVisuals
     offsets:
-      rmc-aslot-barrel: 0.81, 0.03
-      rmc-aslot-rail: -0.15, 0.215
-      rmc-aslot-stock: -0.87, 0.03
-      rmc-aslot-underbarrel: 0.3, -0.30
+      rmc-aslot-barrel: 0.81, -0.0305
+      rmc-aslot-rail: 0.06, 0.055
+      rmc-aslot-underbarrel: 0.4, -0.28
+
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1AP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1extended
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1HEAP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1Incendiary
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1AP
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1HEAP
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1Incendiary
+
+- type: Tag
+  id: AU14AttachmentF9030A1MScope
+
+- type: Tag
+  id: AU14AttachmentF9030A1MVerticalGrip
+
+- type: Tag
+  id: RMCAttachmentF9030A1BUnderbarrelShotgun

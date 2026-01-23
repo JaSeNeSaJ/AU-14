@@ -45,13 +45,13 @@
     - WEYU
     - VAIPO
     - ProdigySF
-    - RMC
     platoonsGovfor:
     - LACN
     - CCAF
     - UNISC
     - USCM
     - HAZOPS
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false

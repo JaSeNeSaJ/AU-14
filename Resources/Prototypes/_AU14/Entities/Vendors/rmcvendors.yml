@@ -862,3 +862,38 @@
         amount: 6
       - id: RMCBoxShotgunFlechette
         amount: 6
+
+- type: entity
+  parent: ColMarTechBase
+  id: AU14RMCAircrewWeaponsVendor
+  name: aircrew weapons rack
+  description: An automated rack hooked up to a small storage of weapons.
+  components:
+  - type: AccessReader
+    access: [ [ "AU14AccessGovforPilot" ], [ "AU14AccessOpforPilot" ] ]
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
+  - type: CMAutomatedVendor
+    sections:
+    - name: Submachine Guns
+      entries:
+      - id: WeaponSMGM63
+        amount: 2
+    - name: Submachine Gun Ammunition
+      entries:
+      - id: CMMagazineSMGM63
+        amount: 20
+    - name: Handguns
+      entries:
+      - id: RMCWeaponPistolM77Empty
+        amount: 2
+    - name: Handgun Ammunition
+      entries:
+      - id: CMMagazinePistolM77AP
+        amount: 20
+    - name: Attachments
+      entries:
+      - id: RMCAttachmentS6ReflexSight
+        amount: 2
+      - id: RMCAttachmentFlashlightGrip
+        amount: 2
