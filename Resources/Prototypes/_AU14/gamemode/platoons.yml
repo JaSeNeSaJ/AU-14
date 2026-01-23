@@ -1,6 +1,7 @@
 - type: platoon
   id: LACN
   name: LACN Landing Forces
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -23,6 +24,7 @@
 - type: platoon
   id: LACNcommando
   name: LACN Naval Commando Platoon
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNcommandoclothingequipmentvendor
@@ -72,6 +74,7 @@
   reqlist: UPPBasic
   language: russian
   name: UPP Infantry
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UPPclothingapparelvendor
@@ -107,6 +110,7 @@
 - type: platoon
   id: WEYU
   name: WY PMC
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
@@ -143,6 +147,7 @@
 - type: platoon
   id: CMBCIU
   name: CMB Crisis Intervention
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
@@ -179,6 +184,7 @@
 - type: platoon
   id: exampleplatoon
   name: exampleplatoon
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Corpsman: AU14USCMcorpsmanvendor
@@ -200,6 +206,7 @@
 - type: platoon
   id: HAZOPS
   name: MARSOC HAZOPS
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14HAZOPSclothingequipmentvendor
@@ -224,6 +231,7 @@
 - type: platoon
   id: CCAF
   name: CCAF
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CCAFclothingequipmentvendor
@@ -250,6 +258,7 @@
 - type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
@@ -277,6 +286,7 @@
 - type: platoon
   id: UNISC
   name: UNISC Peacekeepers
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UNISCclothingequipmentvendor
@@ -311,6 +321,7 @@
 - type: platoon
   id: VAIPO
   name: VAIPO
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
