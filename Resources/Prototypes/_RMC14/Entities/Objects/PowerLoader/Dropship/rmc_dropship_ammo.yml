@@ -133,6 +133,28 @@
       total: 3000
       slope: 5.5
       max: 55
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoRocketWidowmakerDouble
+  name: AIM-224A 'Double Widow'
+  description: The AIM-224A missile is a retrofit of the latest in air-to-air missile technology. Earning the nickname of 'Double Widow' due to it being two Widow Makers stacked on top of each other. Both rockets are fired at the same time and are highly unpredictable. Not well suited for ground bombardment but its high velocity makes it reach its target quickly. This one has been modified to be a two round free-fall bomb as a result of dropship ammo shortages. Can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: double
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    rounds: 2
+    maxRounds: 2
+    roundsPerShot: 2
+    bulletSpread: 9
+    travelTime: 3
+    explosion:
+      total: 3000
+      slope: 5.5
+      max: 55
+
 - type: entity
   parent: RMCDropshipAttachmentAmmoRocket
   id: AU14DropshipAttachmentAmmoRocketWidowmakerDoubleADMIN
@@ -444,6 +466,27 @@
     maxRounds: 2
     roundsPerShot: 2
     bulletSpread: 9
+    travelTime: 3
+    explosion:
+      total: 3000
+      slope: 5.5
+      max: 55
+
+- type: entity
+  parent: RMCDropshipAttachmentAmmoRocket
+  id: AU14DropshipAttachmentAmmoRocketWidowmakerDoubleADMIN
+  name: "AIM-224A 'Octuple Widow' (DO NOT MAP)"
+  description: The AIM-224A missile is a retrofit of the latest in air-to-air missile technology. Earning the nickname of 'Double Widow' due to it being two Widow Makers stacked on top of each other. Both rockets are fired at the same time and are highly unpredictable. Not well suited for ground bombardment but its high velocity makes it reach its target quickly. This one has been modified to be a two round free-fall bomb as a result of dropship ammo shortages. Can be loaded into the LAU-444 Guided Missile Launcher.
+  components:
+  - type: Sprite
+    layers:
+    - state: double
+      map: [ "enum.DropshipAmmoVisuals.Fill"]
+  - type: DropshipAmmo
+    rounds: 8
+    maxRounds: 8
+    roundsPerShot: 8
+    bulletSpread: 30
     travelTime: 3
     explosion:
       total: 3000
