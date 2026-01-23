@@ -34,6 +34,8 @@
     - type: NpcFactionMember
       factions:
       - OPFOR
+    - type: Marine
+      Faction: opfor
     - type: Skills
       skills:
         RMCSkillFirearms: 2

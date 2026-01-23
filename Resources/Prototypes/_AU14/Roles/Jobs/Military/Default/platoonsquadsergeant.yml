@@ -25,6 +25,8 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
+    - type: Marine
+      Faction: govfor
     - type: Skills
       skills:
         RMCSkillConstruction: 2
