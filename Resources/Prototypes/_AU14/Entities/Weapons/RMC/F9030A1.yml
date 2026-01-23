@@ -22,14 +22,14 @@
   suffix: Filled
   components:
   - type: Sprite
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-0
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1.rsi
   - type: Gun
     selectedMode: SemiAuto
     availableModes:
@@ -269,7 +269,7 @@
     - Cartridge
     - AU14CartridgeRifleF9030A1HEAP
   - type: CartridgeAmmo
-    proto: BulletRifle556x45mmHEAP
+    proto: AU14BulletRifle556x45mmHEAP
 
 
 - type: entity
@@ -283,11 +283,11 @@
     - Cartridge
     - AU14CartridgeRifleF9030A1Incendiary
   - type: CartridgeAmmo
-    proto: BulletRifle556x45mmIncendiary
+    proto: AU14BulletRifle556x45mmIncendiary
 
 - type: entity
   parent: BulletRifle10x24mm
-  id: BulletRifle556x45mmHEAP
+  id: AU14BulletRifle556x45mmHEAP
   components:
   - type: Projectile
     damage:
@@ -298,7 +298,7 @@
 
 - type: entity
   parent: BulletRifle10x24mm
-  id: BulletRifle556x45mmIncendiary
+  id: AU14BulletRifle556x45mmIncendiary
   components:
   - type: Projectile
     damage:
@@ -340,14 +340,14 @@
   suffix: Filled
   components:
   - type: Sprite
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1B.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1B.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-0
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1B.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1B.rsi
   - type: Gun
     shotsPerBurst: 3
     selectedMode: SemiAuto
@@ -449,14 +449,14 @@
   suffix: Filled
   components:
   - type: Sprite
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1M.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1M.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-0
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
-    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1M.rsi
+    sprite: _AU14/Weapons/Guns/RMC/F9030A1M.rsi
   - type: Gun
     selectedMode: SemiAuto
     availableModes:
@@ -488,7 +488,7 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: AU14MagazineRifleF9030A1MAP
+        startingItem: AU14MagazineRifleF9030A1AP
         insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
         ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
         priority: 2

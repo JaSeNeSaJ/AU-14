@@ -348,7 +348,7 @@
 - type: platoon
   id: RMC
   name: RMC
-  reqlist: USCMCargoCatalog #TODO
+  reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
     Clothing: AU14RMCclothingequipmentvendor
