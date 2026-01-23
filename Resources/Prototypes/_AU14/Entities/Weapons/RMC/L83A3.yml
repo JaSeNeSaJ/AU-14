@@ -1,0 +1,541 @@
+- type: entity
+  parent: RMCAttachableBase
+  id: AU14AttachmentF9030A1Stock
+  name: F9030A1 solid stock
+  description: Integrated into the F9030A1. You shouldn't have this.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Attachments/rmc_stock.rsi
+    state: L83A3
+  - type: AttachableVisuals
+    suffix: ""
+  - type: Tag
+    tags:
+    - RMCAttachmentStock
+    - AU14AttachmentF9030A1Stock
+
+- type: entity
+  parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
+  id: AU14WeaponRifleL83A3
+  name: F9030A1 rifle
+  description: The F9030A1 Battle Rifle, found commonly in Three World Empire's armories.
+  suffix: Filled
+  components:
+  - type: Sprite
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-0
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Clothing
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1.rsi
+  - type: Gun
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+  - type: RMCSelectiveFire
+    baseFireModes:
+    - SemiAuto
+    recoilWielded: 3.5
+    recoilUnwielded: 4
+    scatterWielded: 6
+    scatterUnwielded: 20
+    baseFireRate: 2.85
+    modifiers:
+      FullAuto:
+        fireDelay: 0
+        maxScatterModifier: 13
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 4
+  - type: RMCWeaponAccuracy
+    accuracyMultiplier: 1.3
+    accuracyMultiplierUnwielded: 0.75
+  - type: MagazineAmmoProvider
+    autoEject: false
+    soundAutoEject: null
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleF9030A1
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleF9030A1
+          - AU14MagazineRifleF9030A1AP
+          - AU14MagazineRifleF9030A1HEAP
+          - AU14MagazineRifleF9030A1Incendiary
+          - AU14MagazineRifleF9030A1extended
+  - type: GunDamageModifier
+    multiplier: 1.7
+  - type: AttachableHolder
+    randomAttachmentChance: 0.42
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-stock:
+        locked: true
+        startingAttachable: AU14AttachmentF9030A1Stock
+        whitelist:
+          tags:
+          - AU14AttachmentF9030A1Stock
+      rmc-aslot-underbarrel:
+        whitelist:
+          tags:
+          - RMCAttachmentAngledGrip
+          - RMCAttachmentVerticalGrip
+          - RMCAttachmentFlashlightGrip
+          - RMCAttachmentGyroscopicStabilizer
+          - RMCAttachmentBipod
+          - RMCAttachmentBurstFireAssembly
+          - RMCAttachmentExtinguisher
+          - RMCAttachmentFlamer
+          - RMCAttachmentU1GrenadeLauncher
+          - RMCAttachmentU7UnderbarrelShotgun
+          - RMCAttachmentLaserSight
+          - RMCAttachmentM203GrenadeLauncher
+  - type: AttachableHolderVisuals
+    offsets:
+      rmc-aslot-barrel: 0.81, 0.03
+      rmc-aslot-rail: -0.15, 0.215
+      rmc-aslot-stock: -0.87, 0.03
+      rmc-aslot-underbarrel: 0.3, -0.30
+
+- type: entity
+  parent: CMMagazineRifleBase
+  id: AU14MagazineRifleF9030A1
+  name: F9030A1 Magazine (5.56x45mm)
+  description: "A magazine of 5.56x45mm rounds for use in the F9030A1 rifle."
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1
+  - type: BallisticAmmoProvider
+    mayTransfer: True
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1
+    proto: AU14CartridgeRifleF9030A1
+    capacity: 25
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1
+  id: AU14MagazineRifleF9030A1AP
+  description: "A magazine of armor-piercing 5.56x45mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 AP Magazine (5.56x45mm)
+  suffix: AP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1
+    - AU14MagazineRifleF9030A1AP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1AP
+    proto: AU14CartridgeRifleF9030A1AP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#1F951F"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1
+  id: AU14MagazineRifleF9030A1extended
+  description: "An extended magazine for the F9030A1 rifle."
+  name: L83A3 Extended Magazine (5.56x45mm)
+  suffix: Extended
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1
+    - AU14MagazineRifleF9030A1extended
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1
+    proto: AU14CartridgeRifleF9030A1
+    capacity: 40
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1
+  id: AU14MagazineRifleF9030A1HEAP
+  description: "A magazine of HEAP 5.56x45mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 HEAP Magazine (5.56x45mm)
+  suffix: HEAP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1
+    - AU14MagazineRifleF9030A1HEAP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1HEAP
+    proto: AU14CartridgeRifleF9030A1HEAP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#9C9A19"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1
+  id: AU14MagazineRifleF9030A1Incendiary
+  description: "A magazine of incendiary 5.56x45mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 Incendiary Magazine (5.56x45mm)
+  suffix: Incendiary
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1
+    - AU14MagazineRifleF9030A1Incendiary
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1Incendiary
+    proto: AU14CartridgeRifleF9030A1Incendiary
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#771A10"
+  - type: Appearance
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A1HEAP
+  name: HEAP Cartridge (5.56x45)
+  description: A 5.56x45 HEAP rifle cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A1HEAP
+  - type: CartridgeAmmo
+    proto: BulletRifle556x45mmHEAP
+
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A1Incendiary
+  name: Incendiary Cartridge (5.56x45)
+  description: A 5.56x45 incendiary rifle cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A1Incendiary
+  - type: CartridgeAmmo
+    proto: BulletRifle556x45mmIncendiary
+
+- type: entity
+  parent: BulletRifle10x24mm
+  id: BulletRifle556x45mmHEAP
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 65
+  - type: CMArmorPiercing
+    amount: 50
+
+- type: entity
+  parent: BulletRifle10x24mm
+  id: BulletRifle556x45mmIncendiary
+  components:
+  - type: Projectile
+    damage:
+       types:
+          Piercing: 30
+  - type: IgniteOnProjectileHit
+
+- type: Tag
+  id: AU14AttachmentF9030A1Stock
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1AP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1extended
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1HEAP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1Incendiary
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1HEAP
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A1Incendiary
+
+# Breacher Variant
+
+- type: entity
+  parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
+  id: AU14WeaponRifleF9030A1B
+  name: F9030A1/B 'Breacher' rifle
+  description: A variant of the Breacher with a heavily modified firing mechanism, giving it a burst-fire option. Comes with built-in underbarell shotgun.
+  suffix: Filled
+  components:
+  - type: Sprite
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1B.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-0
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Clothing
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1B.rsi
+  - type: Gun
+    shotsPerBurst: 3
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    - Burst
+    soundGunshot:
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+  - type: RMCSelectiveFire
+    baseFireModes:
+    - SemiAuto
+    - Burst
+    recoilWielded: 3.5
+    recoilUnwielded: 4
+    scatterWielded: 2
+    scatterUnwielded: 20
+    baseFireRate: 2.85
+    burstScatterMult: 1.17
+    modifiers:
+      Burst:
+        fireDelay: 0.1665
+        maxScatterModifier: 10
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 6
+      FullAuto:
+        fireDelay: 0
+        maxScatterModifier: 13
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 4
+  - type: RMCWeaponAccuracy
+    accuracyMultiplier: 1.3
+    accuracyMultiplierUnwielded: 0.75
+  - type: MagazineAmmoProvider
+    autoEject: false
+    soundAutoEject: null
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleF9030A1
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleF9030A1
+          - AU14MagazineRifleF9030A1AP
+          - AU14MagazineRifleF9030A1HEAP
+          - AU14MagazineRifleF9030A1Incendiary
+          - AU14MagazineRifleF9030A1extended
+  - type: GunDamageModifier
+    multiplier: 1.5
+  - type: AttachableHolder
+    randomAttachmentChance: 0.42
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-stock:
+        locked: true
+        startingAttachable: AU14AttachmentF9030A1Stock
+        whitelist:
+          tags:
+          - AU14AttachmentF9030A1Stock
+      rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: RMCAttachmentU7UnderbarrelShotgun
+        whitelist:
+          tags:
+          - RMCAttachmentU7UnderbarrelShotgun
+  - type: AttachableHolderVisuals
+    offsets:
+      rmc-aslot-barrel: 0.81, 0.03
+      rmc-aslot-rail: -0.15, 0.215
+      rmc-aslot-stock: -0.87, 0.03
+      rmc-aslot-underbarrel: 0.3, -0.30
+
+# Marksman F9030A1 Variant
+- type: entity
+  parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
+  id: AU14WeaponRifleF9030A1M
+  name: F9030A1 Marksman rifle
+  description: The F9030A1 Marksman rifle. This particular version of the weapon has been given a custom stock, a variable zoom scope and a longer barrel. Reliable and deadly.
+  suffix: Filled
+  components:
+  - type: Sprite
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1M.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-0
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Clothing
+    sprite: _AU14/Objects/Weapons/Guns/RMC/F9030A1M.rsi
+  - type: Gun
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
+    soundGunshot:
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+  - type: RMCSelectiveFire
+    baseFireModes:
+    - SemiAuto
+    recoilWielded: 3.5
+    recoilUnwielded: 4
+    scatterWielded: 6
+    scatterUnwielded: 20
+    baseFireRate: 4
+    modifiers:
+      FullAuto:
+        fireDelay: 0
+        maxScatterModifier: 13
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 4
+  - type: RMCWeaponAccuracy
+    accuracyMultiplier: 1.3
+    accuracyMultiplierUnwielded: 0.75
+  - type: MagazineAmmoProvider
+    autoEject: false
+    soundAutoEject: null
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleF9030A1MAP
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleF9030A1
+          - AU14MagazineRifleF9030A1AP
+          - AU14MagazineRifleF9030A1HEAP
+          - AU14MagazineRifleF9030A1Incendiary
+          - AU14MagazineRifleF9030A1extended
+  - type: GunDamageModifier
+    multiplier: 1.7
+  - type: AttachableHolder
+    slots:
+      rmc-aslot-barrel:
+        locked: true
+        startingAttachable: RMCAttachmentExtendedBarrel
+        whitelist:
+          tags:
+          - RMCAttachmentExtendedBarrel
+      rmc-aslot-rail:
+        locked: true
+        startingAttachable: RMCAttachmentS84xTelescopicScope
+        whitelist:
+          tags:
+          - RMCAttachmentS84xTelescopicScope
+      rmc-aslot-stock:
+        locked: true
+        startingAttachable: AU14AttachmentF9030A1Stock
+        whitelist:
+          tags:
+          - AU14AttachmentF9030A1Stock
+      rmc-aslot-underbarrel:
+        whitelist:
+          tags:
+          - RMCAttachmentGyroscopicStabilizer
+          - RMCAttachmentBipod
+          - RMCAttachmentBurstFireAssembly
+          - RMCAttachmentExtinguisher
+          - RMCAttachmentFlamer
+          - RMCAttachmentU1GrenadeLauncher
+          - RMCAttachmentU7UnderbarrelShotgun
+          - RMCAttachmentLaserSight
+          - RMCAttachmentM203GrenadeLauncher
+  - type: AttachableHolderVisuals
+    offsets:
+      rmc-aslot-barrel: 0.81, 0.03
+      rmc-aslot-rail: -0.15, 0.215
+      rmc-aslot-stock: -0.87, 0.03
+      rmc-aslot-underbarrel: 0.3, -0.30
