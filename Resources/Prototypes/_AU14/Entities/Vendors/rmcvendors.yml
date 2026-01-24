@@ -12,7 +12,9 @@
     sections:
     - name: Fatigues
       entries:
-      - id: AU14RMCFatigues
+      - id: AU14RMCFatiguesDesert
+        amount: 30
+      - id: AU14RMCFatiguesBlack
         amount: 30
     - name: Footwear
       entries:
@@ -646,9 +648,11 @@
     sections:
     - name: Fatigues
       entries:
-      - id: CMJumpsuitXOFormal # TODO: Proper formal RMC officer texture
+      - id: AU14RMCFatiguesService
         amount: 2
-      - id: AU14RMCFatiguesOfficer  # TODO: Proper officer texture
+      - id: AU14RMCFatiguesDesertTeamlead
+        amount: 2
+      - id: AU14RMCFatiguesBlackTeamlead
         amount: 2
     - name: Footwear
       entries:
@@ -753,6 +757,12 @@
         amount: 1
       - id: AU14DesertPatrolCap
         amount: 1
+    - name: Fatigues
+      entries:
+        id: AU14RMCFatiguesDesertTeamlead
+        amount: 1
+        id: AU14RMCFatiguesBlackTeamlead
+        amount: 1
     - name: Miscellaneous
       entries:
       - id: RMCLaserDesignator
@@ -777,26 +787,21 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: RMCWeaponRifleL24
-      - id: RMCWeaponRifleL24B
-      - id: WeaponRifleL83A3
+      - id: AU14WeaponRifleF9030A1
     - name: Rifle Ammunition
       entries:
-      - id: RMCMagazineRifleL24
+      - id: AU14CartridgeRifleF9030A1
         amount: 240
-      - id: RMCMagazineRifleL24AP
+      - id: AU14CartridgeRifleF9030A1AP
         amount: 4
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: CMWeaponPistolM1984Empty
-      - id: RMCWeaponPistolM77Empty
+      - id: RMCWeaponPistolL54
     - name: Handgun Ammunition
       entries:
-      - id: CMMagazinePistolM1984
-        amount: 120
-      - id: CMMagazinePistolM77AP
-        amount: 120
+      - id: RMCMagazinePistolL54
+        amount: 240
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:
@@ -840,33 +845,29 @@
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
         amount: 1
-    - name: M5RA battle rifle
+    - name: F9030A1M Marksman rifle
       entries:
-      - id: RMCPVECaseM5SPR
+      - id: AU14WeaponRifleF9030A1M
         amount: 1
-      - id: RMCAttachmentB8SmartScope
-        amount: 1
-      - id: RMCAttachmentBipod
-        amount: 1
-      - id: RMCAttachmentExtendedBarrel
-        amount: 1
-      - id: CMMagazineRifleM4SPR
+      - id: AU14MagazineRifleF9030A1M 
         amount: 12
-    - name: MK221 tactical shotgun
+      - id: AU14MagazineRifleF9030A1AP
+        amount: 2
+      - id: AU14MagazineRifleF9030A1extended
+        amount: 4
+    - name: F9030A1/B 'Breacher' rifle
       entries:
-      - id: WeaponShotgunM890
+      - id: AU14WeaponRifleF9030A1B
         amount: 1
-      - id: RMCBoxShotgunBuckshot
-        amount: 8
-      - id: RMCBoxShotgunSlugs
-        amount: 6
-      - id: RMCBoxShotgunFlechette
-        amount: 6
+      - id: AU14MagazineRifleF9030A1extended
+        amount: 5
+      - id: AU14MagazineRifleF9030A1AP
+        amount: 2
 
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCAircrewWeaponsVendor
-  name: aircrew weapons rack
+  name: Royal Marines aircrew weapons rack
   description: An automated rack hooked up to a small storage of weapons.
   components:
   - type: AccessReader
@@ -875,25 +876,23 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Submachine Guns
+    - name: Personal Defense Weapons
       entries:
-      - id: WeaponSMGM63
+      - id: AU14WeaponRifleF9030A2
         amount: 2
-    - name: Submachine Gun Ammunition
+    - name: PDW Ammunition
       entries:
-      - id: CMMagazineSMGM63
+      - id: AU14MagazineRifleF9030A2
         amount: 20
     - name: Handguns
       entries:
-      - id: RMCWeaponPistolM77Empty
+      - id: AU14WeaponPistolL54
         amount: 2
     - name: Handgun Ammunition
       entries:
-      - id: CMMagazinePistolM77AP
+      - id: RMCMagazinePistolL54
         amount: 20
     - name: Attachments
       entries:
       - id: RMCAttachmentS6ReflexSight
-        amount: 2
-      - id: RMCAttachmentFlashlightGrip
         amount: 2

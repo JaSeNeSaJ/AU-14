@@ -1,6 +1,6 @@
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
-  id: AU14WeaponRifleL83A3
+  id: AU14WeaponRifleF9030A1
   name: F9030A1 rifle
   description: The F9030A1 Battle Rifle, found commonly in Three World Empire's armories.
   components:
@@ -44,7 +44,6 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: AU14MagazineRifleF9030A1
         insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
         ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
         priority: 2
@@ -193,7 +192,7 @@
   parent: AU14MagazineRifleF9030A1
   id: AU14MagazineRifleF9030A1extended
   description: "An extended magazine for the F9030A1 rifle."
-  name: L83A3 Extended Magazine (5.56x45mm)
+  name: F9030A1 Extended Magazine (5.56x45mm)
   suffix: Extended
   components:
   - type: Tag
@@ -378,7 +377,6 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: AU14MagazineRifleF9030A1
         insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
         ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
         priority: 2
@@ -427,6 +425,7 @@
   id: AU14AttachmentF9030A1MScope
   name: 4x telescopic scope
   description: F9030A1 Marksman 4x telescopic eye piece. Fixed at 4x zoom.
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/Attachments/commando_4xscope.rsi
@@ -449,6 +448,7 @@
   id: RMCAttachmentF9030A1BUnderbarrelShotgun
   name: underbarrel shotgun
   description: Tactical shotgun. Attaches to the underbarrel of most weapons. Only capable of loading up to five buckshot shells. Specialized for breaching into buildings.
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
@@ -468,7 +468,8 @@
 
 - type: entity
   parent: RMCAttachmentVerticalGrip
-  id: AU14AttachmentF9030A1MVerticalGrip # verticalgrip
+  id: AU14AttachmentF9030A1MVerticalGrip
+  categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/Attachments/commando_under.rsi
@@ -494,8 +495,8 @@
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleF9030A1M
-  name: F9030A1 Marksman rifle
-  description: The F9030A1 Marksman rifle. This particular version of the weapon has been given a custom stock, a variable zoom scope and a longer barrel. Reliable and deadly.
+  name: F9030A1M Marksman rifle
+  description: The F9030A1M Marksman rifle. This particular version of the weapon has been given a custom stock, a variable zoom scope and a longer barrel. Reliable and deadly.
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/F9030A1M.rsi
@@ -537,17 +538,16 @@
     slots:
       gun_magazine:
         name: Magazine
-        startingItem: AU14MagazineRifleF9030A1AP
         insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
         ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
         priority: 2
         whitelist:
           tags:
-          - AU14MagazineRifleF9030A1
-          - AU14MagazineRifleF9030A1AP
-          - AU14MagazineRifleF9030A1HEAP
-          - AU14MagazineRifleF9030A1Incendiary
-          - AU14MagazineRifleF9030A1extended
+          - AU14MagazineRifleF9030A1M
+          - AU14MagazineRifleF9030A1MAP
+          - AU14MagazineRifleF9030A1MHEAP
+          - AU14MagazineRifleF9030A1MIncendiary
+          - AU14MagazineRifleF9030A1Mextended
   - type: GunDamageModifier
     multiplier: 1.7
   - type: AttachableHolder
@@ -576,6 +576,466 @@
       rmc-aslot-rail: 0.06, 0.055
       rmc-aslot-underbarrel: 0.4, -0.28
 
+- type: entity
+  parent: CMMagazineRifleBase
+  id: AU14MagazineRifleF9030A1M
+  name: F9030A1M Magazine (5.56x45mm)
+  description: "A magazine of 5.56x45mm rounds for use in the F9030A1M rifle."
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1M
+  - type: BallisticAmmoProvider
+    mayTransfer: True
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1
+    proto: AU14CartridgeRifleF9030A1
+    capacity: 15
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1M
+  id: AU14MagazineRifleF9030A1MAP
+  description: "A magazine of armor-piercing 5.56x45mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M AP Magazine (5.56x45mm)
+  suffix: AP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1M
+    - AU14MagazineRifleF9030A1MAP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1AP
+    proto: AU14CartridgeRifleF9030A1AP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#1F951F"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1M
+  id: AU14MagazineRifleF9030A1Mextended
+  description: "An extended magazine for the F9030A1M rifle."
+  name: F9030A1M Extended Magazine (5.56x45mm)
+  suffix: Extended
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1M
+    - AU14MagazineRifleF9030A1Mextended
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1
+    proto: AU14CartridgeRifleF9030A1
+    capacity: 40
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1M
+  id: AU14MagazineRifleF9030A1MHEAP
+  description: "A magazine of HEAP 5.56x45mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M HEAP Magazine (5.56x45mm)
+  suffix: HEAP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1M
+    - AU14MagazineRifleF9030A1MHEAP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1HEAP
+    proto: AU14CartridgeRifleF9030A1HEAP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#9C9A19"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1M
+  id: AU14MagazineRifleF9030A1MIncendiary
+  description: "A magazine of incendiary 5.56x45mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M Incendiary Magazine (5.56x45mm)
+  suffix: Incendiary
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A1M
+    - AU14MagazineRifleF9030A1MIncendiary
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A1Incendiary
+    proto: AU14CartridgeRifleF9030A1Incendiary
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#771A10"
+  - type: Appearance
+
+# Commando/ Shortened barrel version
+
+- type: entity
+  parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
+  id: AU14WeaponRifleF9030A2
+  name: F9030A2 'Commando' PDW
+  description: The F9030A2 personal defense weapon, found commonly in Three World Empire's armories. This version has shortened barrel and modified fire mechanism, allowing full-auto and burst fire. Chambered in 9mm Parabellum.
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Guns/RMC/F9030A2.rsi
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-0
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Clothing
+    sprite: _AU14/Weapons/Guns/RMC/F9030A2.rsi
+  - type: Gun
+    selectedMode: FullAuto
+    availableModes:
+    - SemiAuto
+    - Burst
+    - FullAuto
+    soundGunshot:
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+  - type: RMCSelectiveFire
+    baseFireModes:
+    - SemiAuto
+    - Burst
+    - FullAuto
+    recoilWielded: 3.75
+    recoilUnwielded: 4.5
+    scatterWielded: 6.5
+    scatterUnwielded: 24
+    baseFireRate: 3.667
+    burstScatterMult: 4
+    modifiers:
+      Burst:
+        fireDelay: 0.0999
+        maxScatterModifier: 10
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 4
+      FullAuto:
+        maxScatterModifier: 3
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 4
+  - type: RMCWeaponAccuracy
+    accuracyMultiplier: 1.7
+    accuracyMultiplierUnwielded: 0.75
+  - type: MagazineAmmoProvider
+    autoEject: false
+    soundAutoEject: null
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleF9030A2
+          - AU14MagazineRifleF9030A2AP
+          - AU14MagazineRifleF9030A2HEAP
+          - AU14MagazineRifleF9030A2Incendiary
+          - AU14MagazineRifleF9030A2extended
+  - type: GunDamageModifier
+    multiplier: 1.2
+  - type: AttachableHolder
+    randomAttachmentChance: 0.42
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: AU14AttachmentF9030A1MVerticalGrip
+        whitelist:
+          tags:
+          - AU14AttachmentF9030A1MVerticalGrip
+  - type: AttachableHolderVisuals
+    offsets:
+      rmc-aslot-barrel: 0.81, -0.0305
+      rmc-aslot-rail: 0.1, 0.08
+      rmc-aslot-underbarrel: 0.34, -0.28
+
+- type: entity
+  parent: CMCartridge10x20mm
+  id: AU14CartridgeRifleF9030A2
+  name: Cartridge (9mm)
+  description: A 9mm cartridge for F9030A2 PDW.
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A2
+  - type: CartridgeAmmo
+    proto: CMBullet9mmSMG
+
+- type: entity
+  parent: CMMagazineRifleBase
+  id: AU14MagazineRifleF9030A2
+  name: F9030A2 Magazine (9mm)
+  description: "A magazine of 9mm rounds for use in the F9030A2 PDW."
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineSmg
+    - AU14MagazineRifleF9030A2
+  - type: BallisticAmmoProvider
+    mayTransfer: True
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A2
+    proto: AU14CartridgeRifleF9030A2
+    capacity: 30
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: Appearance
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A2AP
+  name: AP Cartridge (9 mm)
+  description: A 9mm AP cartridge for F9030A2 PDW.
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A2AP
+  - type: CartridgeAmmo
+    proto: AU14BulletRifle9mmAP
+
+- type: entity
+  parent: CMBullet9mmSMG
+  id: AU14BulletRifle9mmAP
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 30
+  - type: CMArmorPiercing
+    amount: 40
+
+- type: entity
+  parent: AU14MagazineRifleF9030A2
+  id: AU14MagazineRifleF9030A2AP
+  description: "A magazine of armor-piercing 9mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 AP Magazine (9mm)
+  suffix: AP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A2
+    - AU14MagazineRifleF9030A2AP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A2AP
+    proto: AU14CartridgeRifleF9030A2AP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#1F951F"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A2
+  id: AU14MagazineRifleF9030A2extended
+  description: "An extended magazine for the F9030A2 PDW."
+  name: F9030A2 Extended Magazine (9mm)
+  suffix: Extended
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A2
+    - AU14MagazineRifleF9030A2extended
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A2
+    proto: AU14CartridgeRifleF9030A2
+    capacity: 40
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A2
+  id: AU14MagazineRifleF9030A2HEAP
+  description: "A magazine of HEAP 9mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 HEAP Magazine (9mm)
+  suffix: HEAP
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A2
+    - AU14MagazineRifleF9030A2HEAP
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A2HEAP
+    proto: AU14CartridgeRifleF9030A2HEAP
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#9C9A19"
+  - type: Appearance
+
+- type: entity
+  parent: AU14MagazineRifleF9030A1
+  id: AU14MagazineRifleF9030A2Incendiary
+  description: "A magazine of incendiary 9mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 Incendiary Magazine (9mm)
+  suffix: Incendiary
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineRifle
+    - AU14MagazineRifleF9030A2
+    - AU14MagazineRifleF9030A2Incendiary
+  - type: BallisticAmmoProvider
+    whitelist:
+      tags:
+      - AU14CartridgeRifleF9030A2Incendiary
+    proto: AU14CartridgeRifleF9030A2Incendiary
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    layers:
+    - state: base
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-1
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - state: ammo_band
+      color: "#771A10"
+  - type: Appearance
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A2HEAP
+  name: HEAP Cartridge (9mm)
+  description: A 9mm HEAP SMG cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A2HEAP
+  - type: CartridgeAmmo
+    proto: AU14BulletRifle9mmHEAP
+
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleF9030A1Incendiary
+  name: Incendiary Cartridge (9mm)
+  description: A 9mm incendiary rifle cartridge.
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleF9030A1Incendiary
+  - type: CartridgeAmmo
+    proto: AU14BulletRifle9mmIncendiary
+
+- type: entity
+  parent: CMBullet9mmSMG
+  id: AU14BulletRifle9mmHEAP
+  components:
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 65
+  - type: CMArmorPiercing
+    amount: 50
+
+- type: entity
+  parent: CMBullet9mmSMG
+  id: AU14BulletRifle9mmIncendiary
+  components:
+  - type: Projectile
+    damage:
+       types:
+          Piercing: 30
+  - type: IgniteOnProjectileHit
 
 - type: Tag
   id: AU14MagazineRifleF9030A1
@@ -612,3 +1072,45 @@
 
 - type: Tag
   id: RMCAttachmentF9030A1BUnderbarrelShotgun
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1M
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1MAP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1Mextended
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1MHEAP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A1MIncendiary
+
+- type: Tag
+  id: AU14MagazineRifleF9030A2
+
+- type: Tag
+  id: AU14MagazineRifleF9030A2AP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A2extended
+
+- type: Tag
+  id: AU14MagazineRifleF9030A2HEAP
+
+- type: Tag
+  id: AU14MagazineRifleF9030A2Incendiary
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A2
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A2AP
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A2HEAP
+
+- type: Tag
+  id: AU14CartridgeRifleF9030A2Incendiary

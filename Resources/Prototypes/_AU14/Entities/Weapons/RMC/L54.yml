@@ -1,0 +1,5 @@
+- type: entity
+  parent: RMCWeaponPistolL54Empty
+  id: AU14WeaponPistolL54
+  name: L54 service pistol
+  description: Standard issue semi-automatic service pistol of the TWE security forces. Chambered in 9mm, it is comparable to the popular M1984 pistol utilized by the USCM.
