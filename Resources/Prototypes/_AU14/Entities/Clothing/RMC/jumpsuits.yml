@@ -1,37 +1,53 @@
 - type: entity
   parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
-  id: AU14RMCFatigues
-  name: royal marines fatigues
+  id: AU14RMCFatiguesDesert
+  name: desert royal marines fatigues
   description: Standart-issue Three World Empire Royal Marines Commando fatigues.
   components:
   - type: Sprite
-    sprite: _AU14/Clothing/RMC/jumpsuits/standard.rsi
+    sprite: _AU14/Clothing/RMC/jumpsuits/desert.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
     - AU14PatchUSCM
     - AU14HAZOPShecuPatch
 
 - type: entity
-  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
-  id: AU14RMCFatiguesSergeant
-  name: royal marines sergeant fatigues
-  description: Standart-issue Three World Empire Royal Marines Commando fatigues. Usually worn by sergeants.
+  parent: AU14RMCFatiguesDesert
+  id: AU14RMCFatiguesBlack
+  name: royal marines fatigues
   components:
   - type: Sprite
-    sprite: _AU14/Clothing/RMC/jumpsuits/team_lead.rsi
+    sprite: _AU14/Clothing/RMC/jumpsuits/black.rsi
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14RMCFatiguesDesertTeamlead
+  name: desert royal marines team leader fatigues
+  description: Standart-issue Three World Empire Royal Marines Commando fatigues. Usually worn by sergeants or officers.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/jumpsuits/desert_team_lead.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
     - AU14PatchUSCM
     - AU14HAZOPShecuPatch
 
 - type: entity
-  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
-  id: AU14RMCFatiguesOfficer
-  name: royal marines officer fatigues
-  description: Standart-issue Three World Empire Royal Marines Commando fatigues. Usually worn by officers.
+  parent: AU14RMCFatiguesDesertTeamlead
+  id: AU14RMCFatiguesBlackTeamlead
+  name: black royal marines team leader fatigues
   components:
   - type: Sprite
-    sprite: _AU14/Clothing/RMC/jumpsuits/team_lead.rsi
+    sprite: _AU14/Clothing/RMC/jumpsuits/black_team_lead.rsi
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14RMCFatiguesService
+  name: royal marines service uniform
+  description: Standart-issue Three World Empire Royal Marines Commando service uniform. Usually worn by officers.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/jumpsuits/desert_team_lead.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
     - AU14PatchUSCM
