@@ -82,6 +82,8 @@
       entries:
       - id: AU14RMCArmor
         amount: 75
+      - id: AU14RMCArmorPadded
+        amount: 75
       - id: AU14RMCArmorLight
         amount: 75
     - name: Armor Components
@@ -855,8 +857,10 @@
         amount: 2
       - id: AU14MagazineRifleF9030A1extended
         amount: 4
-    - name: F9030A1/B 'Breacher' rifle
+    - name: Pointman kit
       entries:
+      - id: AU14RMCArmorRoyalPointman
+        amount: 1
       - id: AU14WeaponRifleF9030A1B
         amount: 1
       - id: AU14MagazineRifleF9030A1extended

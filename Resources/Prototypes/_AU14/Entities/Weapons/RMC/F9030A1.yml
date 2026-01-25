@@ -97,23 +97,10 @@
       rmc-aslot-underbarrel: 0.3, -0.30
 
 - type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A1
-  name: Cartridge (5.56x45)
-  description: A 5.56x45 rifle cartridge
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A1
-  - type: CartridgeAmmo
-    proto: BulletRifle556x45mm
-
-- type: entity
   parent: CMMagazineRifleBase
   id: AU14MagazineRifleF9030A1
-  name: F9030A1 Magazine (5.56x45mm)
-  description: "A magazine of 5.56x45mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 Magazine (10x24mm)
+  description: "A magazine of 10x24mm rounds for use in the F9030A1 rifle."
   components:
   - type: Tag
     tags:
@@ -123,8 +110,8 @@
     mayTransfer: True
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1
-    proto: AU14CartridgeRifleF9030A1
+      - CMCartridgeRifle10x24mm
+    proto: CMCartridgeRifle10x24mm
     capacity: 25
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
@@ -136,35 +123,10 @@
   - type: Appearance
 
 - type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A1AP
-  name: AP Cartridge (5.56x45)
-  description: A 5.56x45 AP rifle cartridge
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A1AP
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle556x45mmAP
-
-- type: entity
-  parent: BulletRifle10x24mm
-  id: AU14BulletRifle556x45mmAP
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Projectile
-    damage:
-      types:
-        Piercing: 30
-  - type: CMArmorPiercing
-    amount: 40
-
-- type: entity
   parent: AU14MagazineRifleF9030A1
   id: AU14MagazineRifleF9030A1AP
-  description: "A magazine of armor-piercing 5.56x45mm rounds for use in the F9030A1 rifle."
-  name: F9030A1 AP Magazine (5.56x45mm)
+  description: "A magazine of armor-piercing 10x24mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 AP Magazine (10x24mm)
   suffix: AP
   components:
   - type: Tag
@@ -175,8 +137,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1AP
-    proto: AU14CartridgeRifleF9030A1AP
+      - CMCartridgeRifle10x24mmAP
+    proto: CMCartridgeRifle10x24mmAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
     layers:
@@ -192,7 +154,7 @@
   parent: AU14MagazineRifleF9030A1
   id: AU14MagazineRifleF9030A1extended
   description: "An extended magazine for the F9030A1 rifle."
-  name: F9030A1 Extended Magazine (5.56x45mm)
+  name: F9030A1 Extended Magazine (10x24mm)
   suffix: Extended
   components:
   - type: Tag
@@ -203,8 +165,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1
-    proto: AU14CartridgeRifleF9030A1
+      - CMCartridgeRifle10x24mm
+    proto: CMCartridgeRifle10x24mm
     capacity: 40
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
@@ -218,8 +180,8 @@
 - type: entity
   parent: AU14MagazineRifleF9030A1
   id: AU14MagazineRifleF9030A1HEAP
-  description: "A magazine of HEAP 5.56x45mm rounds for use in the F9030A1 rifle."
-  name: F9030A1 HEAP Magazine (5.56x45mm)
+  description: "A magazine of HEAP 10x24mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 HEAP Magazine (10x24mm)
   suffix: HEAP
   components:
   - type: Tag
@@ -230,8 +192,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1HEAP
-    proto: AU14CartridgeRifleF9030A1HEAP
+      - RMCCartridgeRifle10x24mmHEAP
+    proto: RMCCartridgeRifle10x24mmHEAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -246,8 +208,8 @@
 - type: entity
   parent: AU14MagazineRifleF9030A1
   id: AU14MagazineRifleF9030A1Incendiary
-  description: "A magazine of incendiary 5.56x45mm rounds for use in the F9030A1 rifle."
-  name: F9030A1 Incendiary Magazine (5.56x45mm)
+  description: "A magazine of incendiary 10x24mm rounds for use in the F9030A1 rifle."
+  name: F9030A1 Incendiary Magazine (10x24mm)
   suffix: Incendiary
   components:
   - type: Tag
@@ -258,8 +220,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1Incendiary
-    proto: AU14CartridgeRifleF9030A1Incendiary
+      - RMCCartridgeRifle10x24mmIncendiary
+    proto: RMCCartridgeRifle10x24mmIncendiary
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -270,54 +232,6 @@
     - state: ammo_band
       color: "#771A10"
   - type: Appearance
-
-- type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A1HEAP
-  name: HEAP Cartridge (5.56x45)
-  description: A 5.56x45 HEAP rifle cartridge
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A1HEAP
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle556x45mmHEAP
-
-
-- type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A1Incendiary
-  name: Incendiary Cartridge (5.56x45)
-  description: A 5.56x45 incendiary rifle cartridge
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A1Incendiary
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle556x45mmIncendiary
-
-- type: entity
-  parent: BulletRifle10x24mm
-  id: AU14BulletRifle556x45mmHEAP
-  components:
-  - type: Projectile
-    damage:
-      types:
-        Piercing: 65
-  - type: CMArmorPiercing
-    amount: 50
-
-- type: entity
-  parent: BulletRifle10x24mm
-  id: AU14BulletRifle556x45mmIncendiary
-  components:
-  - type: Projectile
-    damage:
-       types:
-          Piercing: 30
-  - type: IgniteOnProjectileHit
 
 # Breacher Variant
 
@@ -579,8 +493,8 @@
 - type: entity
   parent: CMMagazineRifleBase
   id: AU14MagazineRifleF9030A1M
-  name: F9030A1M Magazine (5.56x45mm)
-  description: "A magazine of 5.56x45mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M Magazine (10x24mm)
+  description: "A magazine of 10x24mm rounds for use in the F9030A1M rifle."
   components:
   - type: Tag
     tags:
@@ -590,8 +504,8 @@
     mayTransfer: True
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1
-    proto: AU14CartridgeRifleF9030A1
+      - CMCartridgeRifle10x24mm
+    proto: CMCartridgeRifle10x24mm
     capacity: 15
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
@@ -605,8 +519,8 @@
 - type: entity
   parent: AU14MagazineRifleF9030A1M
   id: AU14MagazineRifleF9030A1MAP
-  description: "A magazine of armor-piercing 5.56x45mm rounds for use in the F9030A1M rifle."
-  name: F9030A1M AP Magazine (5.56x45mm)
+  description: "A magazine of armor-piercing 10x24mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M AP Magazine (10x24mm)
   suffix: AP
   components:
   - type: Tag
@@ -617,8 +531,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1AP
-    proto: AU14CartridgeRifleF9030A1AP
+      - CMCartridgeRifle10x24mmAP
+    proto: CMCartridgeRifle10x24mmAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
     layers:
@@ -634,7 +548,7 @@
   parent: AU14MagazineRifleF9030A1M
   id: AU14MagazineRifleF9030A1Mextended
   description: "An extended magazine for the F9030A1M rifle."
-  name: F9030A1M Extended Magazine (5.56x45mm)
+  name: F9030A1M Extended Magazine (10x24mm)
   suffix: Extended
   components:
   - type: Tag
@@ -645,9 +559,9 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1
-    proto: AU14CartridgeRifleF9030A1
-    capacity: 40
+      - CMCartridgeRifle10x24mm
+    proto: CMCartridgeRifle10x24mm
+    capacity: 25
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
     layers:
@@ -660,8 +574,8 @@
 - type: entity
   parent: AU14MagazineRifleF9030A1M
   id: AU14MagazineRifleF9030A1MHEAP
-  description: "A magazine of HEAP 5.56x45mm rounds for use in the F9030A1M rifle."
-  name: F9030A1M HEAP Magazine (5.56x45mm)
+  description: "A magazine of HEAP 10x24mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M HEAP Magazine (10x24mm)
   suffix: HEAP
   components:
   - type: Tag
@@ -672,8 +586,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1HEAP
-    proto: AU14CartridgeRifleF9030A1HEAP
+      - RMCCartridgeRifle10x24mmHEAP
+    proto: RMCCartridgeRifle10x24mmHEAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -688,8 +602,8 @@
 - type: entity
   parent: AU14MagazineRifleF9030A1M
   id: AU14MagazineRifleF9030A1MIncendiary
-  description: "A magazine of incendiary 5.56x45mm rounds for use in the F9030A1M rifle."
-  name: F9030A1M Incendiary Magazine (5.56x45mm)
+  description: "A magazine of incendiary 10x24mm rounds for use in the F9030A1M rifle."
+  name: F9030A1M Incendiary Magazine (10x24mm)
   suffix: Incendiary
   components:
   - type: Tag
@@ -700,8 +614,8 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A1Incendiary
-    proto: AU14CartridgeRifleF9030A1Incendiary
+      - RMCCartridgeRifle10x24mmIncendiary
+    proto: RMCCartridgeRifle10x24mmIncendiary
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -717,9 +631,9 @@
 
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
-  id: AU14WeaponRifleF9030A2
+  id: AU14WeaponSMGF9030A2
   name: F9030A2 'Commando' PDW
-  description: The F9030A2 personal defense weapon, found commonly in Three World Empire's armories. This version has shortened barrel and modified fire mechanism, allowing full-auto and burst fire. Chambered in 9mm Parabellum.
+  description: The F9030A2 personal defense weapon, found commonly in Three World Empire's armories. This version has shortened barrel and modified fire mechanism, allowing full-auto and burst fire. Chambered in 10x20mm Parabellum.
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/F9030A2.rsi
@@ -776,11 +690,11 @@
         priority: 2
         whitelist:
           tags:
-          - AU14MagazineRifleF9030A2
-          - AU14MagazineRifleF9030A2AP
-          - AU14MagazineRifleF9030A2HEAP
-          - AU14MagazineRifleF9030A2Incendiary
-          - AU14MagazineRifleF9030A2extended
+          - AU14MagazineSMGF9030A2
+          - AU14MagazineSMGF9030A2AP
+          - AU14MagazineSMGF9030A2HEAP
+          - AU14MagazineSMGF9030A2Incendiary
+          - AU14MagazineSMGF9030A2extended
   - type: GunDamageModifier
     multiplier: 1.2
   - type: AttachableHolder
@@ -815,35 +729,22 @@
       rmc-aslot-underbarrel: 0.34, -0.28
 
 - type: entity
-  parent: CMCartridge10x20mm
-  id: AU14CartridgeRifleF9030A2
-  name: Cartridge (9mm)
-  description: A 9mm cartridge for F9030A2 PDW.
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A2
-  - type: CartridgeAmmo
-    proto: CMBullet9mmSMG
-
-- type: entity
   parent: CMMagazineRifleBase
-  id: AU14MagazineRifleF9030A2
-  name: F9030A2 Magazine (9mm)
-  description: "A magazine of 9mm rounds for use in the F9030A2 PDW."
+  id: AU14MagazineSMGF9030A2
+  name: F9030A2 Magazine (10x20mm)
+  description: "A magazine of 10x20mm rounds for use in the F9030A2 PDW."
   components:
   - type: Tag
     tags:
     - CMMagazineSmg
-    - AU14MagazineRifleF9030A2
+    - AU14MagazineSMGF9030A2
   - type: BallisticAmmoProvider
     mayTransfer: True
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A2
-    proto: AU14CartridgeRifleF9030A2
-    capacity: 30
+      - CMCartridge10x20mm
+    proto: CMCartridge10x20mm
+    capacity: 40
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -854,47 +755,22 @@
   - type: Appearance
 
 - type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A2AP
-  name: AP Cartridge (9 mm)
-  description: A 9mm AP cartridge for F9030A2 PDW.
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A2AP
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle9mmAP
-
-- type: entity
-  parent: CMBullet9mmSMG
-  id: AU14BulletRifle9mmAP
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Projectile
-    damage:
-      types:
-        Piercing: 30
-  - type: CMArmorPiercing
-    amount: 40
-
-- type: entity
-  parent: AU14MagazineRifleF9030A2
-  id: AU14MagazineRifleF9030A2AP
-  description: "A magazine of armor-piercing 9mm rounds for use in the F9030A2 PDW."
-  name: F9030A2 AP Magazine (9mm)
+  parent: AU14MagazineSMGF9030A2
+  id: AU14MagazineSMGF9030A2AP
+  description: "A magazine of armor-piercing 10x20mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 AP Magazine (10x20mm)
   suffix: AP
   components:
   - type: Tag
     tags:
     - CMMagazineRifle
-    - AU14MagazineRifleF9030A2
-    - AU14MagazineRifleF9030A2AP
+    - AU14MagazineSMGF9030A2
+    - AU14MagazineSMGF9030A2AP
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A2AP
-    proto: AU14CartridgeRifleF9030A2AP
+      - CMCartridge10x20mmAP
+    proto: CMCartridge10x20mmAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
     layers:
@@ -907,22 +783,22 @@
   - type: Appearance
 
 - type: entity
-  parent: AU14MagazineRifleF9030A2
-  id: AU14MagazineRifleF9030A2extended
+  parent: AU14MagazineSMGF9030A2
+  id: AU14MagazineSMGF9030A2extended
   description: "An extended magazine for the F9030A2 PDW."
-  name: F9030A2 Extended Magazine (9mm)
+  name: F9030A2 Extended Magazine (10x20mm)
   suffix: Extended
   components:
   - type: Tag
     tags:
     - CMMagazineRifle
-    - AU14MagazineRifleF9030A2
-    - AU14MagazineRifleF9030A2extended
+    - AU14MagazineSMGF9030A2
+    - AU14MagazineSMGF9030A2extended
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A2
-    proto: AU14CartridgeRifleF9030A2
+      - CMCartridge10x20mm
+    proto: CMCartridge10x20mm
     capacity: 40
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
@@ -934,22 +810,22 @@
   - type: Appearance
 
 - type: entity
-  parent: AU14MagazineRifleF9030A2
-  id: AU14MagazineRifleF9030A2HEAP
-  description: "A magazine of HEAP 9mm rounds for use in the F9030A2 PDW."
-  name: F9030A2 HEAP Magazine (9mm)
+  parent: AU14MagazineSMGF9030A2
+  id: AU14MagazineSMGF9030A2HEAP
+  description: "A magazine of HEAP 10x20mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 HEAP Magazine (10x20mm)
   suffix: HEAP
   components:
   - type: Tag
     tags:
     - CMMagazineRifle
-    - AU14MagazineRifleF9030A2
-    - AU14MagazineRifleF9030A2HEAP
+    - AU14MagazineSMGF9030A2
+    - AU14MagazineSMGF9030A2HEAP
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A2HEAP
-    proto: AU14CartridgeRifleF9030A2HEAP
+      - RMCCartridge10x20mmHEAP
+    proto: RMCCartridge10x20mmHEAP
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -962,22 +838,22 @@
   - type: Appearance
 
 - type: entity
-  parent: AU14MagazineRifleF9030A1
-  id: AU14MagazineRifleF9030A2Incendiary
-  description: "A magazine of incendiary 9mm rounds for use in the F9030A2 PDW."
-  name: F9030A2 Incendiary Magazine (9mm)
+  parent: AU14MagazineSMGF9030A2
+  id: AU14MagazineSMGF9030A2Incendiary
+  description: "A magazine of incendiary 10x20mm rounds for use in the F9030A2 PDW."
+  name: F9030A2 Incendiary Magazine (10x20mm)
   suffix: Incendiary
   components:
   - type: Tag
     tags:
     - CMMagazineRifle
-    - AU14MagazineRifleF9030A2
-    - AU14MagazineRifleF9030A2Incendiary
+    - AU14MagazineSMGF9030A2
+    - AU14MagazineSMGF9030A2Incendiary
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - AU14CartridgeRifleF9030A2Incendiary
-    proto: AU14CartridgeRifleF9030A2Incendiary
+      - RMCCartridge10x20mmIncendiary
+    proto: RMCCartridge10x20mmIncendiary
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -988,54 +864,6 @@
     - state: ammo_band
       color: "#771A10"
   - type: Appearance
-
-- type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A2HEAP
-  name: HEAP Cartridge (9mm)
-  description: A 9mm HEAP SMG cartridge
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A2HEAP
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle9mmHEAP
-
-
-- type: entity
-  parent: CMBaseCartridgeRifle
-  id: AU14CartridgeRifleF9030A1Incendiary
-  name: Incendiary Cartridge (9mm)
-  description: A 9mm incendiary rifle cartridge.
-  components:
-  - type: Tag
-    tags:
-    - Cartridge
-    - AU14CartridgeRifleF9030A1Incendiary
-  - type: CartridgeAmmo
-    proto: AU14BulletRifle9mmIncendiary
-
-- type: entity
-  parent: CMBullet9mmSMG
-  id: AU14BulletRifle9mmHEAP
-  components:
-  - type: Projectile
-    damage:
-      types:
-        Piercing: 65
-  - type: CMArmorPiercing
-    amount: 50
-
-- type: entity
-  parent: CMBullet9mmSMG
-  id: AU14BulletRifle9mmIncendiary
-  components:
-  - type: Projectile
-    damage:
-       types:
-          Piercing: 30
-  - type: IgniteOnProjectileHit
 
 - type: Tag
   id: AU14MagazineRifleF9030A1
@@ -1051,18 +879,6 @@
 
 - type: Tag
   id: AU14MagazineRifleF9030A1Incendiary
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1AP
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1HEAP
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A1Incendiary
 
 - type: Tag
   id: AU14AttachmentF9030A1MScope
@@ -1089,28 +905,16 @@
   id: AU14MagazineRifleF9030A1MIncendiary
 
 - type: Tag
-  id: AU14MagazineRifleF9030A2
+  id: AU14MagazineSMGF9030A2
 
 - type: Tag
-  id: AU14MagazineRifleF9030A2AP
+  id: AU14MagazineSMGF9030A2AP
 
 - type: Tag
-  id: AU14MagazineRifleF9030A2extended
+  id: AU14MagazineSMGF9030A2extended
 
 - type: Tag
-  id: AU14MagazineRifleF9030A2HEAP
+  id: AU14MagazineSMGF9030A2HEAP
 
 - type: Tag
-  id: AU14MagazineRifleF9030A2Incendiary
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A2
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A2AP
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A2HEAP
-
-- type: Tag
-  id: AU14CartridgeRifleF9030A2Incendiary
+  id: AU14MagazineSMGF9030A2Incendiary
