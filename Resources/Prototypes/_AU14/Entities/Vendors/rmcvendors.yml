@@ -485,7 +485,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RCMaircrewvendor
-  name: Royal Marine aircrew vendor
+  name: Royal Marines aircrew vendor
   description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
   components:
   - type: AccessReader
@@ -885,6 +885,10 @@
         amount: 12
     - name: Breacher kit
       entries:
+      - id: AU14RMCHeadHelmetHeavy
+        amount: 1
+      - id: AU14RMCArmorRoyalPointman
+        amount: 1
       - id: AU14WeaponRifleF9030A1B
         amount: 1
       - id: RMCBoxShotgunBuckshot

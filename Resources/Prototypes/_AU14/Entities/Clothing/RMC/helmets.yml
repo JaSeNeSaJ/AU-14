@@ -27,7 +27,7 @@
   id: AU14RMCHeadHelmetHeavy
   name: royal L6 heavy helmet
   suffix: AU14
-  description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners as part of the kestrel armour system.
+  description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners and breachers as part of the kestrel armour system.
   components:
   - type: Sprite
     sprite: _AU14/Clothing/RMC/helmets/heavy.rsi
