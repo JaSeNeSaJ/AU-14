@@ -118,13 +118,13 @@
         amount: 1
     - name: Belts
       entries:
-      - id: CMBeltMarine
+      - id: AU14RMCBeltMarine
         amount: 25
       - id: RMCBeltGrenade
         amount: 2
       - id: RMCM276ShotgunShellLoadingRig
         amount: 2
-      - id: RMCBeltHolsterPistol
+      - id: AU14RMCBeltHolsterPistol
         amount: 15
       - id: RMCBeltHolsterRevolver
         amount: 15
@@ -133,7 +133,7 @@
       - id: CMBeltKnifeFilled
         name: M276 Knife Rig (Full)
         amount: 1
-      - id: RMCBeltUtilityGeneral
+      - id: AU14RMCBeltUtilityGeneral
         amount: 15
     - name: Pouches
       entries:
@@ -414,7 +414,7 @@
     - name: Medical Storage
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
-      - id: CMBeltMedical
+      - id: AU14RMCBeltMedical
       - id: CMBeltMedicBag
     - name: General Medical Supplies
       entries:

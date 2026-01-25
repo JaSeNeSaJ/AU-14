@@ -1,0 +1,111 @@
+- type: entity
+  parent: CMBeltMarine
+  id: AU14RMCBeltMarine
+  name: royal marine ammo load rig
+  description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This is the standard variant, designed for bulk ammunition-carrying operations.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+      Snow: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+      Desert: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+      Urban: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+      Classic: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+
+- type: entity
+  parent: CMBeltBaseStorage
+  id: AU14RMCBeltUtilityGeneral
+  name: royal marine general utility pouch
+  description: A small, lightweight pouch that can be clipped onto kestrel armour to provide additional storage. The newer model, while uncomfortable, can also be clipped around the waist.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/belt/general.rsi
+  - type: Clothing
+    slots:
+    - suitStorage
+    - belt
+    sprite: _AU14/Clothing/RMC/belt/general.rsi
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/RMC/belt/general.rsi
+      Snow: _AU14/Clothing/RMC/belt/general.rsi
+      Desert: _AU14/Clothing/RMC/belt/general.rsi
+      Urban: _AU14/Clothing/RMC/belt/general.rsi
+      Classic: _AU14/Clothing/RMC/belt/general.rsi
+
+- type: entity
+  parent: CMBeltMedical
+  id: AU14RMCBeltMedical
+  name: royal marine medical storage rig
+  description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This version is a less common configuration, designed to transport bulkier medical supplies.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/belt/medical.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/belt/medical.rsi
+
+- type: entity
+  parent: RMCBeltHolsterPistol
+  id: AU14RMCBeltHolsterPistol
+  name: royale marine general pistol holster rig
+  description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This version has a holster assembly that allows one to carry the most common pistols. It also contains side pouches that can store most pistol magazines.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/belt/holster.rsi
+    layers:
+    - state: icon
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: _m77
+      map: [ "_m77_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: m1984
+      map: [ "m1984_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: mk80
+      map: [ "mk80_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: b92fs
+      map: [ "b92fs_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: m13
+      map: [ "m13_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: highpower
+      map: [ "mk45_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: tt
+      map: [ "t73_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: l54
+      map: [ "l54_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: deagle
+      map: [ "handcannon_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: g_deagle
+      map: [ "g_handcannon_fill" ]
+    - sprite: _RMC14/Objects/Weapons/Guns/gun_underlays.rsi
+      state: c_deagle
+      map: [ "co_handcannon_fill" ]
+    - state: icon-front
+      map: [ "holstered" ]
+    - state: half
+      map: [ "openLayer" ]
+    - state: full
+      map: [ "closedLayer" ]
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/belt/holster.rsi
+    slots:
+    - suitStorage
+    - belt
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/RMC/belt/holster.rsi
+      Desert: _AU14/Clothing/RMC/belt/holster.rsi
+      Snow: _AU14/Clothing/RMC/belt/holster.rsi
+      Classic: _AU14/Clothing/RMC/belt/holster.rsi
+      Urban: _AU14/Clothing/RMC/belt/holster.rsi
