@@ -16,7 +16,7 @@
     description: Your squad was separated from your platoon whilst on a short range patrol from your FOB, when extreme weather had veered you off course. Relink with Government Forces with those who remain.
     raffle:
       settings: short
-    rules: au14-uacglostthreat-rules
+    rules: You are a Government Forces Third Party! You are friendly to GOVFOR forces and neutral to civilians. This third party asks for a slightly higher level of roleplay than others! Please keep this in mind.
   - type: NpcFactionMember
     factions:
     - GOVFOR
@@ -47,7 +47,7 @@
     description: You were separated from your platoon whilst on a short range patrol from your FOB, when extreme weather had veered you off course. Relink with Government Forces at the guidance of your squad leader.
     raffle:
       settings: short
-    rules: au14-uacglostthreat-rules
+    rules: You are a Government Forces Third Party! You are friendly to GOVFOR forces and neutral to civilians. This third party asks for a slightly higher level of roleplay than others! Please keep this in mind.
   - type: NpcFactionMember
     factions:
     - GOVFOR
@@ -76,7 +76,7 @@
     description: You were separated from your platoon whilst on a short range patrol from your FOB, when extreme weather had veered you off course. Relink with Government Forces at the guidance of your squad leader.
     raffle:
       settings: short
-    rules: au14-uacglostthreat-rules
+    rules: You are a Government Forces Third Party! You are friendly to GOVFOR forces and neutral to civilians. This third party asks for a slightly higher level of roleplay than others! Please keep this in mind.
   - type: NpcFactionMember
     factions:
     - GOVFOR
@@ -136,6 +136,8 @@
     - id: CMCigarettePackLuckySlothsMini
       amount: 1
     - id: CMMatchBook
+      amount: 1
+    - id: CMShellShotgunBuckshot
       amount: 1
 
 - type: entity

@@ -156,7 +156,7 @@
   partyspawn: cultistParty
   enterbyshuttle: false
   weight: 10
-  minplayers: 0
+  minplayers: 35
   maxplayers: 100
   GhostsNeeded: 1
   roundstart: true
