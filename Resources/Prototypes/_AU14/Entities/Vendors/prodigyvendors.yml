@@ -634,6 +634,10 @@
         amount: 120
       - id: CMMagazineSMGM63
         amount: 120
+    - name: Underbarrel Ammunition
+      entries:
+      - id: RMCBoxShotgunBuckshot
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
