@@ -159,6 +159,7 @@
   - type: Tag
     tags:
     - RMCAttachmentUnderbarrel
+    - AU14AttachmentM20AUnderbarrelShotgun
   - type: Item
     size: Normal
   - type: Gun
@@ -218,3 +219,6 @@
     rsi:
       sprite: _RMC14/Interface/MousePointer/shotgun_mouse.rsi
       state: all
+
+- type: Tag
+  id: AU14AttachmentM20AUnderbarrelShotgun
