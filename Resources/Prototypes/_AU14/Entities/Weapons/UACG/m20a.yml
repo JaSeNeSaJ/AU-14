@@ -159,7 +159,7 @@
   - type: Tag
     tags:
     - RMCAttachmentUnderbarrel
-    - RMCAttachmentU7UnderbarrelShotgun
+    - AU14AttachmentM20AUnderbarrelShotgun
   - type: Item
     size: Normal
   - type: Gun

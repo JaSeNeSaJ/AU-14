@@ -2,8 +2,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: AU14JobUACGLostSquadLeader
   name: Lost Colonial Guard Squad Leader
-  ranks:
-    RMCRankCorporal: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
@@ -35,8 +33,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: AU14JobUACGLostAmmobearer
   name: Lost Colonial Guard Ammo Bearer
-  ranks:
-    RMCRankPrivateFirstClass: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
@@ -66,8 +62,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: AU14JobUACGLostRifleman
   name: Lost Colonial Guard Rifleman
-  ranks:
-    RMCRankPrivate: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

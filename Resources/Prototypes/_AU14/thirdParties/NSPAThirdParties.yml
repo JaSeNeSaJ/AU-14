@@ -2,8 +2,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: NSPAInvestigationPartyJobDeputy
   name: NSPA Constable
-  ranks:
-    RMCRankTSEPAConstable: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
@@ -33,8 +31,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: NSPAInvestigationPartyJobDeputyShotgun
   name: NSPA Constable SMG
-  ranks:
-    RMCRankTSEPAConstable: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
@@ -64,8 +60,6 @@
   parent: RMCBaseMobSpeciesOrganic
   id: NSPAInvestigationPartyJobMarshal
   name: NSPA Inspector
-  ranks:
-    RMCRankTSEPAInspector: []
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
