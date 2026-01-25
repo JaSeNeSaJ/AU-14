@@ -56,6 +56,8 @@
         amount: 25
       - id: AU14RMCHeadTurban
         amount: 25
+      - id: RMCHeadRoyalBeanie
+        amount: 25
       - id: AU14RMCHeadBeret
         amount: 25
       - id: AU14DesertBoonieHat
@@ -283,8 +285,10 @@
       - id: CMEntrenchingTool
         recommended: true
         amount: 30
-      - id: RMCM5Bayonet
-        amount: 30
+      - id: AU14TantoA
+        amount: 15
+      - id: AU14TantoB
+        amount: 15
       - id: CMM11Knife
         amount: 15
       - id: RMCScabbardMacheteFilled
@@ -708,6 +712,10 @@
       - id: RMCGlassesSmartGunSight
       - id: RMCPowerCellSmartgun
       - id: RMCPouchDrumPMC
+    - name: Helmet
+      choices: { SmartgunHelmet: 1 }
+      entries:
+      - id: AU14RMCHeadHelmetHeavy
     - name: Smartgun Harness
       choices: { SmartgunHarness: 1 }
       entries:
@@ -863,8 +871,10 @@
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
         amount: 1
-    - name: F9030A1M Marksman rifle
+    - name: Marksman kit
       entries:
+      - id: AU14RMCHeadHelmetSniper
+        amount: 1
       - id: AU14WeaponRifleF9030A1M
         amount: 1
       - id: AU14MagazineRifleF9030A1Mextended

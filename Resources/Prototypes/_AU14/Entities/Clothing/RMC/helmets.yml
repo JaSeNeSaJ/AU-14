@@ -12,6 +12,30 @@
 
 - type: entity
   parent: RMCMarineHelmetBase
+  id: AU14RMCHeadHelmetSniper
+  name: royal L5A2-S sniper helmet
+  suffix: AU14
+  description: A High-cut ballistic helmet. Designed to be used by Royal Crown Marines snipers and marksmen as part of the kestrel armour system.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/helmets/sniper.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/helmets/sniper.rsi
+
+- type: entity
+  parent: RMCMarineHelmetBase
+  id: AU14RMCHeadHelmetHeavy
+  name: royal L6 heavy helmet
+  suffix: AU14
+  description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners as part of the kestrel armour system.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/helmets/heavy.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/helmets/heavy.rsi
+
+- type: entity
+  parent: RMCMarineHelmetBase
   id: AU14RMCHeadHelmetBallistic
   name: royal L5A3 ballistic helmet
   suffix: AU14
