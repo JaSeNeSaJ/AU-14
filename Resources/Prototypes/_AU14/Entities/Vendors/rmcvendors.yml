@@ -116,7 +116,7 @@
         amount: 25
       - id: RMCBeltGrenade
         amount: 2
-      - id: RMCM276ShotgunShellLoadingRig
+      - id: AU14RMCShotgunShellLoadingRig
         amount: 2
       - id: AU14RMCBeltHolsterPistol
         amount: 15
@@ -132,7 +132,7 @@
       - id: RMCPouchBayonet
         name: Bayonet Sheath
         amount: 15
-      - id: RMCPouchFlareFilled
+      - id: AU14RMCPouchFlareFilled
         name: Flare Pouch (Full)
         amount: 15
       - id: RMCPouchDocumentSmall
@@ -163,7 +163,7 @@
 #        amount: 1
     - name: Mask
       entries:
-      - id: CMMaskGas
+      - id: AU14RMCMaskGas
         amount: 20
       - id: CMMaskCoif
         amount: 10
@@ -335,9 +335,9 @@
         amount: 5
       - id: RMCWeaponPistolM82F
         amount: 2
-      - id: RMCBoxPackFlare
+      - id: AU14RMCBoxPackFlare
         amount: 5
-      - id: CMPackFlare
+      - id: AU14RMCPackFlare
         amount: 5
       - id: RMCBoxPackFlareCAS
         amount: 1
@@ -407,7 +407,7 @@
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
       - id: AU14RMCBeltMedical
-      - id: CMBeltMedicBag
+      - id: AU14RMCBeltMedicBag
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -518,24 +518,23 @@
       - id: AU14WebbingMagazine
       - id: AU14WebbingUtility
       - id: AU14WebbingDumpPouch
-      - id: AU14WebbingAdminPouch
-      - id: AU14WebbingDropPouch
+      - id: AU14RMCWebbingAdminPouch
+      - id: AU14RMCWebbingDropPouch
     - name: Backpack
       choices: { CMUPlatoonAirCrewBackpack: 1 }
       entries:
-      - id: CMSatchelMarine
+      - id: AU14RMCSmallBackpack
     - name: Belts
       choices: { CMUPlatoonAirCrewBelts: 1 }
       entries:
       - id: AU14RMCBeltHolsterPistol
-      - id: RMCBeltHolsterRevolver
       - id: AU14RMCBeltUtilityGeneral
     - name: Pouches
       choices: { CMUPlatoonAirCrewPouches: 2 }
       entries:
       - id: RMCPouchBayonet
         name: Bayonet Sheath
-      - id: RMCPouchFlareFilled
+      - id: AU14RMCPouchFlareFilled
         name: Flare Pouch (Full)
       - id: RMCPouchDocumentSmall
       - id: RMCPouchMagazine
@@ -572,8 +571,8 @@
     - name: Medical Storage
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
-      - id: CMBeltMedical
-      - id: CMBeltMedicBag
+      - id: AU14RMCBeltMedical
+      - id: AU14RMCBeltMedicBag
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -646,11 +645,9 @@
         amount: 2
     - name: Footwear
       entries:
-      - id: CMBootsBlack
+      - id: AU14RMCBootsRoyal
         amount: 2
-      - id: CMBootsBrown
-        amount: 2
-      - id: AU14BootsJungle
+      - id: RMCShoesLaceup
         amount: 2
     - name: Headgear
       entries:
@@ -695,7 +692,7 @@
     - name: Essential Equipment
       takeAll: CMUAREssentialEquipment
       entries:
-      - id: RMCSmartGun
+      - id: RMCSmartGunRoyal
       - id: RMCScabbardMacheteSGFilled
       - id: RMCGlassesSmartGunSight
       - id: RMCPowerCellSmartgun
@@ -795,22 +792,18 @@
       - id: AU14AttachmentTwoPointSling
     - name: Explosives
       entries:
-      - id: RMCBoxHEDP
+      - id: AU14RMCBoxHEDP
         amount: 1
-      - id: CMGrenadeSmoke
-        amount: 6
-      - id: RMCPacketGrenadeM74AGMFFilled
-        amount: 4
-      - id: RMCPacketGrenadeM74AGMSHornetFilled
+      - id: AU14RMCPacketGrenadeSmokeFilled
         amount: 2
-      - id: RMCPacketGrenadeM74AGMSFilled
+      - id: AU14RMCPacketGrenadeIncendiary
         amount: 2
       - id: RMCExplosivePlastic
         amount: 2
       - id: RMCExplosiveBreachingCharge
         amount: 2
 
-- type: entity
+- type: entity #todo proper RMC RTOs
   parent: ColMarTechBase
   id: AU14RMCRTOVendor
   name: Royal Marines radio telephone operator rack

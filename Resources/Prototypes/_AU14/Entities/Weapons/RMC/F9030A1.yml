@@ -94,7 +94,7 @@
     offsets:
       rmc-aslot-barrel: 0.81, -0.0305
       rmc-aslot-rail: 0.1, 0.12
-      rmc-aslot-underbarrel: 0.3, -0.30
+      rmc-aslot-underbarrel: 0.42, -0.31
 
 - type: entity
   parent: CMMagazineRifleBase

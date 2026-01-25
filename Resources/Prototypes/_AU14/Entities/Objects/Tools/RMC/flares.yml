@@ -27,13 +27,14 @@
   parent: BaseItem
   id: AU14RMCPackFlareBase
   name: L96 marking flare pack
+  suffix: Alt
   description: A packet of eight M94 Marking Flares. Carried by Marine soldiers to light dark areas that cannot be reached with the usual TNR Shoulder Lamp.
   components:
   - type: Item
     size: Normal
   - type: Tag
     tags:
-    - AU14RMCFlarePack
+    - CMFlarePack
   - type: CMItemSlots
     count: 8
     slot:
@@ -66,9 +67,9 @@
           Full: { visible: false }
 
 - type: entity
-  parent: CMPackFlareBase
+  parent: AU14RMCPackFlareBase
   id: AU14RMCPackFlare
-  suffix: Filled
+  suffix: Filled, Alt
   components:
   - type: CMItemSlots
     startingItem: AU14RMCFlare
@@ -112,13 +113,10 @@
 - type: entity
   parent: AU14RMCBoxPackFlareEmpty
   id: AU14RMCBoxPackFlare
-  suffix: Filled
+  suffix: Filled, Alt
   components:
   - type: CMItemSlots
     startingItem: AU14RMCPackFlare
 
 - type: Tag
   id: AU14RMCFlare
-
-- type: Tag
-  id: AU14RMCFlarePack

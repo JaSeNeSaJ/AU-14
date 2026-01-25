@@ -47,13 +47,13 @@
     - name: Explosives
       entries:
       - cost: 3000
-        crate: RMCCrateGrenadesHighExplosive
+        crate: AU14RMCCrateGrenadesHighExplosive
       - cost: 4000
-        crate: RMCCrateGrenadesIncendiary
+        crate: AU14RMCCrateGrenadesIncendiary
       - cost: 3000
-        crate: RMCCrateGrenadesFrag
+        crate: RMCCrateGrenadesFrag # TODO proper RMC HEFA
       - cost: 1000
-        crate: RMCCrateGrenadesSmoke
+        crate: AU14RMCCrateGrenadesSmoke
       - cost: 4000
         crate: RMCCrateGrenadesFragOld
       - cost: 3000
@@ -61,9 +61,9 @@
       - cost: 4000
         crate: RMCCrateBreachingCharges
       - cost: 10000
-        crate: RMCCrateGrenadesHighExplosiveBox
+        crate: AU14RMCCrateGrenadesHighExplosiveBox
       - cost: 10000
-        crate: RMCCrateGrenadesBoxHEFA
+        crate: RMCCrateGrenadesBoxHEFA # TODO proper RMC HEFA
       - cost: 10000
         crate: RMCCrateGrenadesAirburstFragBox
       - cost: 10000
@@ -83,7 +83,7 @@
     - name: Food
       entries:
       - cost: 500
-        crate: RMCCrateFoodMRE
+        crate: AU14RMCCrateFoodMRE
       - cost: 500
         crate: RMCCrateFoodIngredients
     - name: Gear
@@ -93,7 +93,7 @@
       - cost: 4000
         crate: AU14CrateTacticalMonocularDesignator
       - cost: 1500
-        crate: RMCCrateGearPackFlare
+        crate: AU14RMCCrateGearPackFlare
       - cost: 4000
         crate: AU14CrateMotionDetectors
       - cost: 3000
