@@ -18,22 +18,14 @@
         amount: 60
     - name: Footwear
       entries:
-      - id: CMBootsBlack
-        amount: 40
-      - id: CMBootsBrown
-        amount: 40
-      - id: AU14BootsJungle
-        amount: 40
+      - id: AU14RMCBootsRoyal
+        amount: 120
     - name: Gloves
       entries:
-      - id: CMHandsBrown
-        amount: 20
-      - id: AU14PVEHandsInsulatedBlackMarine
-        amount: 20
-      - id: AU14PVEHandsFingerlessBlackGloves
-        amount: 20
-      - id: AU14PVEHandsFingerlessBrownGloves
-        amount: 20
+      - id: AU14RMCHands
+        amount: 40
+      - id: AU14RMCHandsSilver
+        amount: 40
     - name: Webbings
       entries:
       - id: AU14WebbingMagazine
@@ -42,9 +34,9 @@
         amount: 25
       - id: AU14WebbingDumpPouch
         amount: 25
-      - id: AU14WebbingAdminPouch
+      - id: AU14RMCWebbingAdminPouch
         amount: 15
-      - id: AU14WebbingDropPouch
+      - id: AU14RMCWebbingDropPouch
         amount: 15
       - id: AU14WebbingKnivesFilled
         amount: 1
@@ -90,29 +82,29 @@
         amount: 75
     - name: Armor Components
       entries:
-      - id: AU14KitJungleArmor
+      - id: AU14RMCArmorGarbShinGuards
         amount: 25
-      - id: AU14KitDesertArmor
+      - id: AU14RMCArmorGarbShoulderPads
         amount: 25
-      - id: AU14ArmorGarbShotgunShellHolder
+      - id: AU14RMCArmorGarbMagazineWebbing
         amount: 2
-      - id: AU14ArmorGarbJunglePoncho
-        amount: 25
+      - id: AU14RMCArmorGarbSmallWebbing
+        amount: 2
       - id: AU14ArmorGarbDesertPoncho
         amount: 25
     - name: Backpack
       entries:
-      - id: CMBackpackMarine
+      - id: AU14RMCBackpack
         amount: 15
-      - id: AU14IMPBackpackMarine
+      - id: AU14RMCFrameBackpack
         amount: 3
-      - id: AU14TechBackpackMarine
+      - id: AU14RMCLargeBackpack
         amount: 3
-      - id: CMSatchelMarine
+      - id: AU14RMCSmallBackpack
         amount: 15
 #      - id: Marine Chestrig
 #        amount: 15
-      - id: RMCSatchelWelderChestrig
+      - id: AU14RMCWelderBackpack
         amount: 2
       - id: RMCScabbardShotgun
         amount: 2
@@ -127,8 +119,6 @@
       - id: RMCM276ShotgunShellLoadingRig
         amount: 2
       - id: AU14RMCBeltHolsterPistol
-        amount: 15
-      - id: RMCBeltHolsterRevolver
         amount: 15
 #      - id: M276 Pattern M82F Holster Rig
 #        amount: 5
@@ -161,7 +151,7 @@
         amount: 15
       - id: RMCPouchMagazinePistolLarge
         amount: 2
-      - id: RMCPouchPistol
+      - id: AU14PouchPistolAlt
         amount: 15
       - id: RMCPouchConstruction
         amount: 1
@@ -237,11 +227,9 @@
         amount: 20
     - name: Patches
       entries:
-      - id: AU14PatchUAFlag
+      - id: AU14RMCPatch
         amount: 20
-      - id: AU14PatchUSFlag
-        amount: 20
-      - id: AU14PatchUSCM
+      - id: AU14TWEPatch
         amount: 20
 
 - type: entity
@@ -552,7 +540,7 @@
       - id: RMCPouchDocumentSmall
       - id: RMCPouchMagazine
       - id: RMCPouchGeneralMedium
-      - id: RMCPouchPistol
+      - id: AU14PouchPistolAlt
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
@@ -883,7 +871,7 @@
         amount: 2
       - id: AU14MagazineRifleF9030A1M
         amount: 12
-    - name: Breacher kit
+    - name: Pointman kit
       entries:
       - id: AU14RMCHeadHelmetHeavy
         amount: 1
@@ -897,6 +885,10 @@
         amount: 5
       - id: AU14MagazineRifleF9030A1AP
         amount: 2
+    - name: Ballistic shields
+      entries:
+      - id: AU14RMCBallisticShield
+        amount: 1
 
 - type: entity
   parent: ColMarTechBase

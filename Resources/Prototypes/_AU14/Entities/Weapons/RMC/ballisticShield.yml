@@ -1,0 +1,60 @@
+- type: entity
+  name: royal marine ballistic shield
+  parent: [ BaseShield, BaseSecurityContraband ]
+  id: AU14RMCBallisticShield
+  description: A large tower shield. Good for close combat environments.
+  components:
+    - type: ItemToggle
+    - type: ComponentToggler
+      components:
+      - type: DisarmMalus
+        malus: 0.6
+    - type: Sprite
+      sprite: _AU14/Weapons/Melee/RMC/ballistic_shield.rsi
+      state: rmc-ballistic-icon
+    - type: Item
+      sprite: _AU14/Weapons/Melee/RMC/ballistic_shield.rsi
+      size: Ginormous
+      heldPrefix: rmc-ballistic
+    - type: StaticPrice
+      price: 90
+    - type: Blocking
+      passiveBlockModifier:
+        coefficients:
+          Blunt: 0.7
+          Slash: 0.7
+          Piercing: 0.7
+      activeBlockModifier:
+        coefficients:
+          Blunt: 0.5
+          Slash: 0.5
+          Piercing: 0.5
+        flatReductions:
+          Blunt: 1
+          Slash: 1
+          Piercing: 1
+    - type: Destructible
+      thresholds:
+        - trigger:
+            !type:DamageTrigger
+            damage: 1300
+          behaviors:
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+        - trigger:
+            !type:DamageTrigger
+            damage: 1260
+          behaviors:
+            - !type:DoActsBehavior
+              acts: [ "Destruction" ]
+            - !type:PlaySoundBehavior
+              sound:
+                collection: MetalBreak
+            - !type:SpawnEntitiesBehavior
+              spawn:
+                CMSheetMetal:
+                  min: 2
+                  max: 2
+                CMSheetGlass:
+                  min: 2
+                  max: 2
