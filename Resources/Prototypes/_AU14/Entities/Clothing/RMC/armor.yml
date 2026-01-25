@@ -2,6 +2,7 @@
   parent: AU14BaseArmor
   id: AU14RMCArmor
   name: kestrel armoured vest
+  suffix: AU14
   description: A customizable personal armor system used by the Royal Crown Marines.
   components:
   - type: Sprite
@@ -11,6 +12,7 @@
   parent: AU14BaseArmorLight
   id: AU14RMCArmorLight
   name: kestrel light armoured vest
+  suffix: AU14
   description: A customizable personal armor system used by the Royal Crown Marines.
   components:
   - type: Sprite
@@ -20,6 +22,7 @@
   parent: AU14BaseArmor
   id: AU14RMCArmorPadded
   name: kestrel armoured carry vest
+  suffix: AU14
   description: A customizable personal armor system used by the Royal Crown Marines.
   components:
   - type: Sprite
@@ -29,6 +32,7 @@
   parent: [ RMCAllowSuitStorageClothingSmartgunner, AU14BaseArmor ]
   id: AU14RMCArmorSmartGunDesertCombatHarness
   name: kestrel armoured smart gun harness
+  suffix: AU14
   description: Kestel smart gun harness specially made for Smartgunners.
   components:
   - type: Sprite
@@ -49,6 +53,7 @@
   parent: AU14BaseArmor
   id: AU14RMCArmorRoyalPointman
   name: kestrel pointman armour
+  suffix: AU14
   components:
   - type: Sprite
     sprite: _AU14/Clothing/RMC/armor/pointman.rsi

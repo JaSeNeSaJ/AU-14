@@ -2,6 +2,7 @@
   parent: RMCMarineHelmetBase
   id: AU14RMCHeadHelmet
   name: royal L5A2 ballistic helmet
+  suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Crown Marines as part of the kestrel armour system.
   components:
   - type: Sprite
@@ -13,6 +14,7 @@
   parent: RMCMarineHelmetBase
   id: AU14RMCHeadHelmetBallistic
   name: royal L5A3 ballistic helmet
+  suffix: AU14
   description: A High-cut ballistic helmet featuring an attached mandible. Designed to be used by Royal Marines Commando as part of the kestrel armour system.
   components:
   - type: Sprite
@@ -24,6 +26,7 @@
   parent: RMCMarineHelmetBase
   id: AU14RMCHeadHelmetMedic
   name: royal L5A2 medic helmet
+  suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by medic marines.
   components:
   - type: Sprite
@@ -45,6 +48,7 @@
   parent: RMCMarineHelmetBase
   id: AU14RMCHeadHelmetAircrew
   name: royal L5A4 aircrew helmet
+  suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by aircrews.
   components:
   - type: Sprite
@@ -65,6 +69,7 @@
 - type: entity
   parent: AU14RMCHeadHelmetAircrew
   id: AU14RMCHeadHelmetAircrewAlt
+  suffix: AU14
   components:
   - type: Sprite
     sprite: _AU14/Clothing/RMC/helmets/pilot_alt.rsi
