@@ -17,8 +17,6 @@
     raffle:
       settings: short
     rules: au14-nspainvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau
@@ -48,8 +46,6 @@
     raffle:
       settings: short
     rules: au14-nspainvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau
@@ -79,8 +75,6 @@
     raffle:
       settings: short
     rules: au14-nspainvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau
@@ -110,17 +104,6 @@
   maxplayers: 400
   GhostsNeeded: 0
   roundstart: false
-
-- type: entity
-  parent: RMCBeltHolsterPistolTSE
-  id: AU14BeltHolsterPistolNSPAHG45
-  suffix: NSPA, Filled, HG45
-  components:
-  - type: StorageFill
-    contents:
-    - id: RMCMagazinePistolMK45
-      amount: 6
-    - id: RMCWeaponPistolHG45Marina
 
 - type: startingGear
   id: AU14GearNSPADeputyInvestigation

@@ -17,8 +17,6 @@
     raffle:
       settings: short
     rules: au14-cmbinvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau
@@ -48,8 +46,6 @@
     raffle:
       settings: short
     rules: au14-cmbinvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau
@@ -79,8 +75,6 @@
     raffle:
       settings: short
     rules: au14-cmbinvestigate-rules
-  - type: UserIFF
-    faction: AUBureau
   - type: NpcFactionMember
     factions:
     - AUBureau

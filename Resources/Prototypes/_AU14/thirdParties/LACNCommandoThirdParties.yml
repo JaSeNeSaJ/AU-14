@@ -17,8 +17,6 @@
     raffle:
       settings: short
     rules: au14-lacncommandosniper-rules
-  - type: UserIFF
-    faction: GOVFOR
   - type: NpcFactionMember
     factions:
     - GOVFOR
@@ -52,8 +50,6 @@
     raffle:
       settings: short
     rules: au14-lacncommandosniper-rules
-  - type: UserIFF
-    faction: GOVFOR
   - type: NpcFactionMember
     factions:
     - GOVFOR
