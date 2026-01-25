@@ -477,7 +477,7 @@
         startingAttachable: AU14AttachmentF9030A1MScope
         whitelist:
           tags:
-          - AU14AttachmentF9030A1MScope0
+          - AU14AttachmentF9030A1MScope
       rmc-aslot-underbarrel:
         locked: true
         startingAttachable: AU14AttachmentF9030A1MVerticalGrip

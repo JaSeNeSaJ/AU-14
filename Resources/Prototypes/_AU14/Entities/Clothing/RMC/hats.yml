@@ -41,3 +41,14 @@
     sprite: _AU14/Clothing/RMC/hats/beret_tl.rsi
   - type: Clothing
     sprite: _AU14/Clothing/RMC/hats/beret_tl.rsi
+
+- type: entity
+  parent: ClothingHeadBase
+  id: AU14RMCHeadCapOfficer
+  name: royal marine officer peaked cap
+  description: Charcoal peaked cap belonging to the Three World Empire Royal Marines Commando officer. Shown to show your men who's the boss.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/RMC/hats/co_peaked.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/RMC/hats/co_peaked.rsi

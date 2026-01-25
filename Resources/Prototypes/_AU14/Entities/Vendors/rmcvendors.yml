@@ -467,8 +467,7 @@
     - name: Medical Helmets
       choices: { CMUPlatoonMedicalHelmet: 1 }
       entries:
-      - id: AU14DesertM10CorpsmanHelmet
-      - id: AU14JungleM10CorpsmanHelmet
+      - id: AU14RMCHeadHelmetMedic
     - name: Medical Gloves
       choices: { CMUPlatoonMedicalGloves: 1 }
       entries:
@@ -481,8 +480,8 @@
 
 - type: entity
   parent: ColMarTechBase
-  id: AU14USCMaircrewvendor
-  name: USASF aircrew vendor
+  id: AU14RCMaircrewvendor
+  name: Royal Marine aircrew vendor
   description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
   components:
   - type: AccessReader
@@ -511,7 +510,8 @@
     - name: Headgear
       choices: { CMUPlatoonAirCrewHeadgear: 1 }
       entries:
-      - id: AU14USASFAirCrewHelmet
+      - id: AU14RMCHeadHelmetAircrew
+      - id: AU14RMCHeadHelmetAircrewAlt
       - id: AU14USASFCap
     - name: Flight Visor
       choices: { CMUPlatoonAirCrewFlightVisor: 1 }
@@ -520,10 +520,6 @@
       - id: AU14GogglesLACNLAH99VisorClear
       - id: AU14GogglesLACNLAH99Visor
       - id: AU14GogglesLACNLAH99VisorMirror
-    - name: Flight Mask
-      choices: { CMUPlatoonAirCrewFlightMask: 1 }
-      entries:
-      - id: AU14MaskUSASFPilotOxygen
     - name: Webbings
       choices: { CMUPlatoonAirCrewWebbings: 1 }
       entries:
@@ -539,9 +535,9 @@
     - name: Belts
       choices: { CMUPlatoonAirCrewBelts: 1 }
       entries:
-      - id: RMCBeltHolsterPistol
+      - id: AU14RMCBeltHolsterPistol
       - id: RMCBeltHolsterRevolver
-      - id: RMCBeltUtilityGeneral
+      - id: AU14RMCBeltUtilityGeneral
     - name: Pouches
       choices: { CMUPlatoonAirCrewPouches: 2 }
       entries:
@@ -670,9 +666,7 @@
         amount: 2
       - id: AU14RMCHeadHelmetBallistic
         amount: 2
-      - id: CMHeadCapPeakedFormal
-        amount: 2
-      - id: CMHeadCapPeakedService
+      - id: AU14RMCHeadCapOfficer
         amount: 2
       - id: AU14RMCHeadBeretOfficer
         amount: 2
