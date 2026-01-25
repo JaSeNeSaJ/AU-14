@@ -1,0 +1,23 @@
+- type: entity
+  parent: CMGrenadeHighExplosive
+  id: AU14RMCGrenadeHighExplosive
+  suffix: Alt
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Grenades/RMC/HEDP.rsi
+
+- type: entity
+  parent: CMGrenadeSmoke
+  id: AU14RMCGrenadeSmoke
+  suffix: Alt
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Grenades/RMC/HSDP.rsi
+
+- type: entity
+  parent: RMCGrenadeIncendiary
+  id: AU14RMCGrenadeIncendiary
+  suffix: Alt
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Grenades/RMC/HIDP.rsi
