@@ -246,9 +246,9 @@
     Arifleman: AU14prodigySGequipmentvendor
     Dcc: AU14prodigyaircrewvendor
     OperationsOfficer: AU14prodigycommandequipmentvendor
-    Rto: AU14prodigyRTOVendor
+    Rto: AU14RTOVendor
     SectionSergeant: AU14prodigysectionleaderequipmentvendor
-    Pilot: AU14prodigyAircrewWeaponsVendor
+    Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -309,9 +309,9 @@
     Arifleman: AU14VAIPOSGequipmentvendor
     Dcc: AU14VAIPOaircrewvendor
     OperationsOfficer: AU14VAIPOcommandequipmentvendor
-    Rto: AU14VAIPORTOVendor
+    Rto: AU14RTOVendor
     SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
-    Pilot: AU14VAIPOAircrewWeaponsVendor
+    Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   CompatibleDropships:
