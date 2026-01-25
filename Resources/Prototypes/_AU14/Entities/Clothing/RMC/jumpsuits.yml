@@ -8,8 +8,8 @@
     sprite: _AU14/Clothing/RMC/jumpsuits/desert.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
-    - AU14PatchUSCM
-    - AU14HAZOPShecuPatch
+    - AU14RMCPatch
+    - AU14TWEPatch
 
 - type: entity
   parent: AU14RMCFatiguesDesert
@@ -29,8 +29,8 @@
     sprite: _AU14/Clothing/RMC/jumpsuits/desert_team_lead.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
-    - AU14PatchUSCM
-    - AU14HAZOPShecuPatch
+    - AU14RMCPatch
+    - AU14TWEPatch
 
 - type: entity
   parent: AU14RMCFatiguesDesertTeamlead
@@ -50,5 +50,5 @@
     sprite: _AU14/Clothing/RMC/jumpsuits/service.rsi
   - type: UniformAccessoryHolder
     startingAccessories:
-    - AU14PatchUSCM
-    - AU14HAZOPShecuPatch
+    - AU14RMCPatch
+    - AU14TWEPatch
