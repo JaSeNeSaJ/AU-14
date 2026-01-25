@@ -799,7 +799,7 @@
       tags:
       - CMCartridge10x20mm
     proto: CMCartridge10x20mm
-    capacity: 40
+    capacity: 66
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
     layers:

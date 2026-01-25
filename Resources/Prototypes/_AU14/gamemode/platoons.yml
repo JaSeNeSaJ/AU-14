@@ -336,7 +336,7 @@
     Arifleman: AU14RMCSGequipmentvendor
     Dcc: AU14RMCaircrewvendor
     OperationsOfficer: AU14RMCcommandequipmentvendor
-    Rto: AU14RTOVendor # TODO: RMC RTO's
+    Rto: AU14RMCRTOVendor # TODO: RMC RTO's
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5

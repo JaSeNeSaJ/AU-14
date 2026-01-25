@@ -2,7 +2,7 @@
   parent: ColMarTechBase
   id: AU14RMCclothingequipmentvendor
   name: Royal Marines apparel vendor
-  description: An automated rack hooked up to a small storage of standard Three World Empire Royal Marines Commando apparel.
+  description: An automated rack hooked up to a small storage of standard marine apparel.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -13,17 +13,17 @@
     - name: Fatigues
       entries:
       - id: AU14RMCFatiguesDesert
-        amount: 30
+        amount: 60
       - id: AU14RMCFatiguesBlack
-        amount: 30
+        amount: 60
     - name: Footwear
       entries:
       - id: CMBootsBlack
-        amount: 20
+        amount: 40
       - id: CMBootsBrown
-        amount: 20
+        amount: 40
       - id: AU14BootsJungle
-        amount: 20
+        amount: 40
     - name: Gloves
       entries:
       - id: CMHandsBrown
@@ -54,6 +54,10 @@
         amount: 25
       - id: AU14RMCHeadHelmetBallistic
         amount: 25
+      - id: AU14RMCHeadTurban
+        amount: 25
+      - id: AU14RMCHeadBeret
+        amount: 25
       - id: AU14DesertBoonieHat
         amount: 25
       - id: AU14JungleBoonieHat
@@ -65,10 +69,6 @@
       - id: AU14JungleFlapCap
         amount: 25
       - id: AU14DesertFlapCap
-        amount: 25
-      - id: AU14RMCHeadTurban
-        amount: 25
-      - id: AU14RMCHeadBeret
         amount: 25
       - id: RMCM5CameraGear
         amount: 25
@@ -82,9 +82,9 @@
       entries:
       - id: AU14RMCArmor
         amount: 75
-      - id: AU14RMCArmorPadded
-        amount: 75
       - id: AU14RMCArmorLight
+        amount: 75
+      - id: AU14RMCArmorPadded
         amount: 75
     - name: Armor Components
       entries:
@@ -246,7 +246,7 @@
   parent: ColMarTechBase
   id: AU14RMCequipmentvendor
   name: Royal Marines equipment vendor
-  description: An automated rack hooked up to a small storage of standard Three World Empire Royal Marines Commando equipment.
+  description: An automated rack hooked up to a small storage of standard marine equipment.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -467,8 +467,8 @@
     - name: Medical Helmets
       choices: { CMUPlatoonMedicalHelmet: 1 }
       entries:
-      - id: AU14RMCHeadHelmet # TODO: RMC Corpman's helmet
-      - id: AU14RMCHeadHelmetBallistic # TODO: RMC Corpman's helmet
+      - id: AU14DesertM10CorpsmanHelmet
+      - id: AU14JungleM10CorpsmanHelmet
     - name: Medical Gloves
       choices: { CMUPlatoonMedicalGloves: 1 }
       entries:
@@ -479,10 +479,10 @@
       entries:
       - id: CMMaskSterile
 
-- type: entity #TODO: RMC specific aircrew clothes
+- type: entity
   parent: ColMarTechBase
-  id: AU14RMCaircrewvendor
-  name: Royal Marine ASF aircrew vendor
+  id: AU14USCMaircrewvendor
+  name: USASF aircrew vendor
   description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
   components:
   - type: AccessReader
@@ -652,9 +652,9 @@
       entries:
       - id: AU14RMCFatiguesService
         amount: 2
-      - id: AU14RMCFatiguesDesertTeamlead
-        amount: 2
       - id: AU14RMCFatiguesBlackTeamlead
+        amount: 2
+      - id: AU14RMCFatiguesDesertTeamlead
         amount: 2
     - name: Footwear
       entries:
@@ -666,23 +666,17 @@
         amount: 2
     - name: Headgear
       entries:
-      - id: AU14RMCHeadHelmet # TODO: Proper officer texture
+      - id: AU14RMCHeadHelmet
         amount: 2
-      - id: AU14RMCHeadHelmetBallistic # TODO: Proper officer texture
+      - id: AU14RMCHeadHelmetBallistic
         amount: 2
       - id: CMHeadCapPeakedFormal
         amount: 2
       - id: CMHeadCapPeakedService
         amount: 2
-      - id: AU14RMCHeadBeret
-        amount: 2
-        name: Royal Beret
-      - id: AU14RMCHeadBeretOfficer # TODO: Proper officer texture
+      - id: AU14RMCHeadBeretOfficer
         amount: 2
         name: Officer Beret
-      - id: AU14RMCHeadTurban
-        amount: 2
-        name: Royal Turban
       - id: AU14JunglePatrolCap
         amount: 2
       - id: AU14DesertPatrolCap
@@ -715,7 +709,7 @@
     - name: Essential Equipment
       takeAll: CMUAREssentialEquipment
       entries:
-      - id: RMCSmartGunRoyal
+      - id: RMCSmartGun
       - id: RMCScabbardMacheteSGFilled
       - id: RMCGlassesSmartGunSight
       - id: RMCPowerCellSmartgun
@@ -748,9 +742,9 @@
     sections:
     - name: Helmets and Hats
       entries:
-      - id: AU14RMCHeadHelmet # TODO: Proper lead helmet
+      - id: AU14RMCHeadHelmet
         amount: 1
-      - id: AU14RMCHeadHelmetBallistic # TODO: Proper lead helmet
+      - id: AU14RMCHeadHelmetBallistic
         amount: 1
       - id: AU14RMCHeadBeretLead
         amount: 1
@@ -759,11 +753,11 @@
         amount: 1
       - id: AU14DesertPatrolCap
         amount: 1
-    - name: Fatigues
+    - name: Uniforms
       entries:
-        id: AU14RMCFatiguesDesertTeamlead
+      - id: AU14RMCFatiguesBlackTeamlead
         amount: 1
-        id: AU14RMCFatiguesBlackTeamlead
+      - id: AU14RMCFatiguesDesertTeamlead
         amount: 1
     - name: Miscellaneous
       entries:
@@ -792,14 +786,14 @@
       - id: AU14WeaponRifleF9030A1
     - name: Rifle Ammunition
       entries:
-      - id: AU14CartridgeRifleF9030A1
-        amount: 240
-      - id: AU14CartridgeRifleF9030A1AP
-        amount: 4
+      - id: AU14MagazineRifleF9030A1
+        amount: 450
+      - id: AU14MagazineRifleF9030A1AP
+        amount: 8
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: RMCWeaponPistolL54
+      - id: AU14WeaponPistolL54
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolL54
@@ -828,6 +822,34 @@
 
 - type: entity
   parent: ColMarTechBase
+  id: AU14RMCRTOVendor
+  name: Royal Marines radio telephone operator rack
+  description: An automated rack hooked up to a small storage of radio equipment.
+  components:
+  - type: AccessReader
+    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessOpforFTL" ] ]
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
+  - type: CMAutomatedVendor
+    sections:
+    - name: RTO Backpack
+      choices: { RTOBackpack: 1 }
+      entries:
+      - id: AU14BackpackRTOPackJungle
+      - id: AU14BackpackRTOPackDesert
+      - id: AU14BackpackRTOPackGray
+      - id: AU14BackpackRTOPackBlack
+    - name: Equipment
+      entries:
+      - id: RMCLaserDesignator
+        amount: 1
+      - id: RMCWhistle
+        amount: 1
+      - id: RMCPackFlareCAS
+        amount: 2
+
+- type: entity
+  parent: ColMarTechBase
   id: AU14RMCSpecialWeaponsVendor
   name: Royal Marines special weapons rack
   description: An automated rack hooked up to a small storage of special weapons.
@@ -851,18 +873,18 @@
       entries:
       - id: AU14WeaponRifleF9030A1M
         amount: 1
-      - id: AU14MagazineRifleF9030A1M 
-        amount: 12
-      - id: AU14MagazineRifleF9030A1AP
-        amount: 2
-      - id: AU14MagazineRifleF9030A1extended
+      - id: AU14MagazineRifleF9030A1Mextended
         amount: 4
-    - name: Pointman kit
+      - id: AU14MagazineRifleF9030A1MAP
+        amount: 2
+      - id: AU14MagazineRifleF9030A1M
+        amount: 12
+    - name: Breacher kit
       entries:
-      - id: AU14RMCArmorRoyalPointman
-        amount: 1
       - id: AU14WeaponRifleF9030A1B
         amount: 1
+      - id: RMCBoxShotgunBuckshot
+        amount: 8
       - id: AU14MagazineRifleF9030A1extended
         amount: 5
       - id: AU14MagazineRifleF9030A1AP
@@ -880,13 +902,13 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Personal Defense Weapons
+    - name: Personal defense weapons
       entries:
-      - id: AU14WeaponRifleF9030A2
+      - id: AU14WeaponSMGF9030A2
         amount: 2
     - name: PDW Ammunition
       entries:
-      - id: AU14MagazineRifleF9030A2
+      - id: AU14MagazineSMGF9030A2
         amount: 20
     - name: Handguns
       entries:
