@@ -5,16 +5,16 @@
   description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This is the standard variant, designed for bulk ammunition-carrying operations.
   components:
   - type: Sprite
-    sprite: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+    sprite: _AU14/Clothing/RMC/belt/ammo.rsi
   - type: Clothing
-    sprite: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+    sprite: _AU14/Clothing/RMC/belt/ammo.rsi
   - type: ItemCamouflage
     camouflageVariations:
-      Jungle: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
-      Snow: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
-      Desert: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
-      Urban: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
-      Classic: _AU14/Clothing/RMC/belt/ammo.rsi.rsi
+      Jungle: _AU14/Clothing/RMC/belt/ammo.rsi
+      Snow: _AU14/Clothing/RMC/belt/ammo.rsi
+      Desert: _AU14/Clothing/RMC/belt/ammo.rsi
+      Urban: _AU14/Clothing/RMC/belt/ammo.rsi
+      Classic: _AU14/Clothing/RMC/belt/ammo.rsi
 
 - type: entity
   parent: CMBeltBaseStorage
