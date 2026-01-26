@@ -1,7 +1,7 @@
 - type: entity
   parent: CMBeltMarine
   id: AU14RMCBeltMarine
-  name: royal marine ammo load rig
+  name: royal marine L295 pattern ammo load rig
   description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This is the standard variant, designed for bulk ammunition-carrying operations.
   components:
   - type: Sprite

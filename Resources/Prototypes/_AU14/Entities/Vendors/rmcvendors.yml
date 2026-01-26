@@ -485,11 +485,11 @@
     - name: Fatigues
       choices: { CMUPlatoonAirCrewFatigues: 1 }
       entries:
-      - id: AU14USASFPilotJumpsuit
+      - id: AU14RMCPilotJumpsuit
     - name: Body Armor
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
-      - id: AU14USASFICPS2
+      - id: AU14RMCICPS2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -504,7 +504,6 @@
       entries:
       - id: AU14RMCHeadHelmetAircrew
       - id: AU14RMCHeadHelmetAircrewAlt
-      - id: AU14USASFCap
     - name: Flight Visor
       choices: { CMUPlatoonAirCrewFlightVisor: 1 }
       entries:

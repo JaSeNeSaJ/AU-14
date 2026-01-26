@@ -2,7 +2,7 @@
   parent: RMCCrateAmmo
   id: AU14RMCCrateGearPackFlare
   name: flare packs crate (x20)
-  suffix: Alt
+  suffix: RM
   components:
   - type: StorageFill
     contents:

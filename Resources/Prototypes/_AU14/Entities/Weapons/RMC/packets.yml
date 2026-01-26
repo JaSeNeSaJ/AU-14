@@ -2,7 +2,7 @@
   abstract: true
   parent: CMPacketBase
   id: AU14RMCPacketBase
-  suffix: Alt
+  suffix: RM
   name: packet
   components:
   - type: Sprite
@@ -13,7 +13,7 @@
   parent: AU14RMCPacketBase
   id: AU14RMCPacketGrenadeHighExplosive
   name: HEDP grenade packet
-  suffix: Alt
+  suffix: RM
   description: It contains three HEDP high explosive grenades.
   components:
   - type: Sprite
@@ -26,7 +26,7 @@
 - type: entity
   parent: AU14RMCPacketGrenadeHighExplosive
   id: AU14RMCPacketGrenadeHighExplosiveFilled
-  suffix: Filled, Alt
+  suffix: Filled, RM
   components:
   - type: StorageFill
     contents:
@@ -36,7 +36,7 @@
 - type: entity
   parent: RMCBoxBase
   id: AU14RMCBoxHEDP
-  suffix: Alt
+  suffix: RM
   name: 30mm HEDP grenade box
   description: A secure box holding 25 30mm High-Explosive Dual-Purpose grenades. High explosive, don't store near the flamer fuel.
   components:
@@ -61,7 +61,7 @@
   parent: AU14RMCPacketBase
   id: AU14RMCPacketGrenadeSmoke
   name: HSDP grenade packet
-  suffix: Alt
+  suffix: RM
   description: It contains three HSDP smoke grenades.
   components:
   - type: Sprite
@@ -74,7 +74,7 @@
 - type: entity
   parent: AU14RMCPacketGrenadeSmoke
   id: AU14RMCPacketGrenadeSmokeFilled
-  suffix: Filled, Alt
+  suffix: Filled, RM
   components:
   - type: StorageFill
     contents:
@@ -85,7 +85,7 @@
   parent: AU14RMCPacketBase
   id: AU14RMCPacketGrenadeIncendiary
   name: HIDP grenade packet
-  suffix: Alt
+  suffix: RM
   description: It contains three HIDP incendiary grenades.
   components:
   - type: Sprite
@@ -98,7 +98,7 @@
 - type: entity
   parent: AU14RMCPacketGrenadeIncendiary
   id: AU14RMCPacketGrenadeIncendiaryFilled
-  suffix: Filled, Alt
+  suffix: Filled, RM
   components:
   - type: StorageFill
     contents:

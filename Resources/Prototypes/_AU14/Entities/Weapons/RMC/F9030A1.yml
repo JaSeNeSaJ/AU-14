@@ -2,6 +2,7 @@
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleF9030A1
   name: F9030A1 rifle
+  suffix: RM
   description: The F9030A1 Battle Rifle, found commonly in Three World Empire's armories.
   components:
   - type: Sprite

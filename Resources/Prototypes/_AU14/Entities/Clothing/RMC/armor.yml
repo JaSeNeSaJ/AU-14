@@ -67,3 +67,20 @@
   - type: ClothingSpeedModifier # SLOWDOWN_ARMOR_LOWHEAVY
     walkModifier: 0.64
     sprintModifier: 0.64
+
+- type: entity
+  parent: [RMCAllowSuitStorageClothingArmorVest, RMCBaseArmor]
+  id: AU14RMCICPS2
+  name: royal marine ICPS-2 Aircrew Armor
+  suffix: RM
+  description: A set of ballistic armor used by RMC aircrew.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/USASFSecurityForces/USASFPilot/armor.rsi
+  - type: RMCArmorSpeedTier
+    speedTier: light
+  - type: CMArmor
+    bullet: 10
+    bio: 10
+    explosionArmor: 10
+  - type: CMHardArmor

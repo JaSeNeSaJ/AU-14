@@ -2,6 +2,7 @@
   name: royal marine ballistic shield
   parent: [ BaseShield, BaseSecurityContraband ]
   id: AU14RMCBallisticShield
+  suffix: RM
   description: A large tower shield. Good for close combat environments.
   components:
     - type: ItemToggle
