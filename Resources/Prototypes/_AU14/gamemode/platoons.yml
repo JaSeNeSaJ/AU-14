@@ -341,6 +341,17 @@
     Pilot: AU14RMCAircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
+    SectionSergeant: AU14JobGOVFORSectionSergeantRMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanRMC
+    PlatCo: AU14JobGOVFORPlatCoRMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantRMC
+    DSPilot: AU14JobGOVFORDSPilotRMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanRMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
+    PlatOp: AU14JobGOVFORPlatOpRMC
+    DCC: AU14JobGOVFORDCCRMC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
   compatibleFighters: #TODO: RMC Fighters

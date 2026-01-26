@@ -1,0 +1,60 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobGOVFORSectionSergeantRMC
+  name: au14-job-name-govforSSG
+  suffix: RM
+  description: au14-job-description-govforSSG
+  setPreference: true
+  playTimeTracker: AU14JobGOVFORSectionSergeantRMC
+  ranks:
+    RMC_Sergeant:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORSquadSergeant
+      time: 900 # 15 hours
+    RMC_Corporal: []
+  startingGear: AU14GearGOVFORSectionSergeant
+  dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy
+  icon: "AU14JobIconPlatoonSarge"
+  requireAdminNotify: true
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-govfor
+  accessGroups:
+  - AU14GovforCommand
+  overwatchSortPriority: -6
+  overwatchShowName: true
+  overwatchRoleName: Platoon Sergeant
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
+    - type: Marine
+      Faction: govfor
+    - type: Skills
+      skills:
+        RMCSkillConstruction: 2
+        RMCSkillCqc: 1
+        RMCSkillEndurance: 2
+        RMCSkillEngineer: 3
+        RMCSkillFirearms: 2
+        RMCSkillFireman: 1
+        RMCSkillIntel: 1
+        RMCSkillJtac: 2
+        RMCSkillLeadership: 1
+        RMCSkillMedical: 1
+        RMCSkillVehicles: 1
+        RMCSkillPolice: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-govforSSG
+    - type: TacticalMapIcon
+      icon:
+        sprite: _RMC14/Interface/map_blips.rsi
+        state: synth
+    - type: MarineOrders
+  hidden: false
+
+- type: playTimeTracker
+  id: AU14JobGOVFORSectionSergeantRMC
+  isHumanoid: true
