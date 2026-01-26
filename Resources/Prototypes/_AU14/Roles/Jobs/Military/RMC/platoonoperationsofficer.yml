@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobGOVFORPlatOpRMC
-  name: au14-job-name-govforplatop
+  name: au14-job-name-govforplatopRMC
   suffix: RM
   description: au14-job-description-govforplatop
   setPreference: true
@@ -51,7 +51,7 @@
         sprite: _RMC14/Interface/map_blips.rsi
         state: synth
   hidden: false
-  
+
 - type: playTimeTracker
   id: AU14JobGOVFORPlatOpRMC
   isHumanoid: true

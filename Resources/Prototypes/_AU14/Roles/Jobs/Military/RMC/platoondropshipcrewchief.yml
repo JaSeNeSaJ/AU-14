@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobGOVFORDCCRMC
-  name: au14-job-name-govfordcc
+  name: au14-job-name-govfordccRMC
   suffix: RM
   description: au14-job-description-govfordcc
   setPreference: true
@@ -60,7 +60,7 @@
         sprite: _RMC14/Interface/map_blips.rsi
         state: synth
   hidden: false
-  
+
 - type: playTimeTracker
   id: AU14JobGOVFORDCCRMC
   isHumanoid: true

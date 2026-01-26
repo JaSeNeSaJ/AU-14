@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobGOVFORPlatoonCorpsmanRMC
-  name: au14-job-name-govforplatooncorpsman
+  name: au14-job-name-govforplatooncorpsmanRMC
   suffix: RM
   description: au14-job-description-govforplatooncorpsman
   setPreference: true
@@ -49,7 +49,7 @@
         sprite: _RMC14/Interface/map_blips.rsi
         state: synth
   hidden: false
-  
+
 - type: playTimeTracker
   id: AU14JobGOVFORPlatoonCorpsmanRMC
   isHumanoid: true

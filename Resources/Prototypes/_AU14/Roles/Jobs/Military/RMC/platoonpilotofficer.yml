@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobGOVFORDSPilotRMC
-  name: au14-job-name-govfordspilot
+  name: au14-job-name-govfordspilotRMC
   suffix: RM
   description: au14-job-description-govfordspilot
   setPreference: true
@@ -50,7 +50,7 @@
         RMCSkillSurgery: 1
         RMCSkillPolice: 1
     - type: JobPrefix
-      prefix: au14-job-prefix-govfordspilot
+      prefix: au14-job-prefix-govfordspilotRMC
     - type: TacticalMapIcon
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
