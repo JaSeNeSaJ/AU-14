@@ -8,11 +8,11 @@
   canBeAntag: false
   playTimeTracker: AU14JobGOVFORSquadSergeantRMC
   ranks:
-    RMC_ColourSergeant:
+    RMC_Sergeant:
     - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSectionSergeant
-      time: 3600 # 60 hours
-    RMC_Sergeant: []
+      role: AU14JobGOVFORSquadSergeant
+      time: 900 # 15 hours
+    RMC_Corporal: []
   startingGear: AU14GearGOVFORSquadSergeant
   dummyStartingGear: AU14GearGOVFORSquadSergantDummy
   icon: "AU14JobIconSarge"
@@ -50,5 +50,5 @@
   hidden: false
 
 - type: playTimeTracker
-  id: AU14JobGOVFORSquadSergeant
+  id: AU14JobGOVFORSquadSergeantRMC
   isHumanoid: true
