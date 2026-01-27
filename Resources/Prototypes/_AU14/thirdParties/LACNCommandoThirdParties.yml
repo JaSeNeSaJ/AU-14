@@ -77,7 +77,7 @@
 - type: auThirdParty
   id: LACNSniperteam
   partyspawn: LACNSniperteamSpawn
-  enterbyshuttle: true
+  enterbyshuttle: false
   weight: 20
   minplayers: 0
   maxplayers: 400
