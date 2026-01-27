@@ -88,7 +88,6 @@
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Daybreak
-      - USSBush
   jobClassOverride:
     SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
     SectionSergeant: AU14JobGOVFORSectionSergeantUPP
@@ -137,7 +136,6 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
       - Daybreak
-      - USSBush
 
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
@@ -281,7 +279,6 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
-      - USSBush
 
 - type: platoon
   id: UNISC
@@ -343,7 +340,6 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
-      - USSBush
 
 - type: platoon
   id: RMC
