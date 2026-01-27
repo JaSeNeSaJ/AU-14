@@ -1,0 +1,10 @@
+- type: entity
+  id: AU14RMCCrateFoodMRE
+  parent: RMCCratePlastic
+  suffix: RM
+  name: TWE MRE crate
+  components:
+  - type: StorageFill
+    contents:
+      - id: AU14RMCMRETWE
+        amount: 2

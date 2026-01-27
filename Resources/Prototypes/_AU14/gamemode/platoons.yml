@@ -323,4 +323,42 @@
       - Daybreak
       - USSBush
 
+- type: platoon
+  id: RMC
+  name: RMC
+  reqlist: RMCCargoCatalog
+  VendorToMarker:
+    Rifleman: AU14RMCequipmentvendor
+    Clothing: AU14RMCclothingequipmentvendor
+    Weapons: AU14RMCWeaponsVendor
+    SWeapons: AU14RMCSpecialWeaponsVendor
+    Corpsman: AU14RMCcorpsmanvendor
+    Arifleman: AU14RMCSGequipmentvendor
+    Dcc: AU14RMCaircrewvendor
+    OperationsOfficer: AU14RMCcommandequipmentvendor
+    Rto: AU14RMCRTOVendor # TODO: RMC RTO's
+    SectionSergeant: AU14RMCsectionleaderequipmentvendor
+    Pilot: AU14RMCAircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
+    SectionSergeant: AU14JobGOVFORSectionSergeantRMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanRMC
+    PlatCo: AU14JobGOVFORPlatCoRMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantRMC
+    DSPilot: AU14JobGOVFORDSPilotRMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanRMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
+    PlatOp: AU14JobGOVFORPlatOpRMC
+    DCC: AU14JobGOVFORDCCRMC
+  CompatibleDropships:
+  - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
+  compatibleFighters: #TODO: RMC Fighters
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships: #TODO: RMC Ship
+      - Daybreak 
+      - USSBush
+
 # Add more platoons as needed
