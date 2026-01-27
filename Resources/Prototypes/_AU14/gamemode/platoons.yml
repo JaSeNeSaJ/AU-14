@@ -181,6 +181,28 @@
     - /Maps/_AU14/ShuttlesDropships/cmbsquadcar.yml
 
 - type: platoon
+  id: exampleplatoon
+  name: exampleplatoon
+  reqlist: USCMCargoCatalog
+  VendorToMarker:
+    Rifleman: AU14USCMequipmentvendor
+    Corpsman: AU14USCMcorpsmanvendor
+    Arifleman: AU14USCMequipmentvendor
+    Dcc: AU14AircrewWeaponsVendor
+    OperationsOfficer: AU14USCMsectionleaderequipmentvendor
+    Rto: AU14RTOVendor
+    SectionSergeant: AU14USCMsectionleaderequipmentvendor
+    Pilot: AU14AircrewWeaponsVendor
+  possibleships:
+    - Daybreak
+    - USSBush
+  jobSlotOverride:
+    SquadRifleman: 12
+    PlatoonCorpsman: 1
+    PlatCo: 1
+    DSPilot: 1
+
+- type: platoon
   id: HAZOPS
   name: MARSOC HAZOPS
   reqlist: HAZOPSCargoCatalog
@@ -358,7 +380,7 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships: #TODO: RMC Ship
-      - Daybreak 
+      - Daybreak
       - USSBush
 
 # Add more platoons as needed

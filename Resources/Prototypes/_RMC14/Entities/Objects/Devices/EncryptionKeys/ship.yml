@@ -29,9 +29,6 @@
   name: public radio encryption key
   components:
   - type: EncryptionKey
-    channels:
-    - MarineCommon
-    defaultChannel: MarineCommon
   - type: Sprite
     state: stripped_key
 

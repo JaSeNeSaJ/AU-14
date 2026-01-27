@@ -47,7 +47,6 @@
     - ProdigySF
     platoonsGovfor:
     - LACN
-    - CCAF
     - UNISC
     - USCM
     - HAZOPS
@@ -82,7 +81,6 @@
     platoonsGovfor:
     - LACN
     - CMBCIU
-    - CCAF
     - USCM
     - RMC
     defaultgovfor: USCM
@@ -109,7 +107,6 @@
     platoonsGovfor:
     - LACN
     - USCM
-    - CCAF
     - CMBCIU
     - RMC
     defaultgovfor: USCM
@@ -165,7 +162,6 @@
     - ProdigySF
     platoonsGovfor:
     - LACN
-    - CCAF
     - CMBCIU
     - USCM
     - RMC

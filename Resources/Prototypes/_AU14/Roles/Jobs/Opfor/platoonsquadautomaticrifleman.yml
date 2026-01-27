@@ -61,7 +61,7 @@
   id: AU14GearopforSquadAutomaticRifleman
   equipment:
     id: AU14IDCardopforSquadAutomaticRifleman
-    ear: AU14HeadsetSectionOpfor
+    ears: AU14HeadsetSectionOpfor
 
 - type: entity
   parent: CMSpawnPointJobBase
