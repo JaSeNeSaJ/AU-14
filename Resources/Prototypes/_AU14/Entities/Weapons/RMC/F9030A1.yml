@@ -372,6 +372,17 @@
     tags:
     - RMCAttachmentUnderbarrel
     - RMCAttachmentF9030A1BUnderbarrelShotgun
+  - type: AttachableToggleable
+    userOnly: true
+    attachedOnly: true
+    supercedeHolder: true
+    wieldedUseOnly: true
+    activatePopupText: attachable-popup-switch-to-generic
+    deactivatePopupText: attachable-popup-switch-from-generic
+    activateSound:
+      path: /Audio/_RMC14/Attachable/gun_u7_activate.ogg
+      params:
+        volume: -2
     actionName: Switch to the underbarrel shotgun
     actionDesc: Switch to using the underbarrel shotgun.
     icon:
