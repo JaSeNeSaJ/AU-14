@@ -1,7 +1,7 @@
 - type: platoon
   id: LACN
   name: LACN Landing Forces
-  reqlist: USCMCargoCatalog
+  reqlist: LACNCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -24,7 +24,7 @@
 - type: platoon
   id: LACNcommando
   name: LACN Naval Commando Platoon
-  reqlist: USCMCargoCatalog
+  reqlist: LACNCommandosCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNcommandoclothingequipmentvendor
@@ -73,7 +73,7 @@
   id: UPP
   language: russian
   name: UPP Infantry
-  reqlist: USCMCargoCatalog
+  reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UPPclothingapparelvendor
@@ -109,7 +109,7 @@
 - type: platoon
   id: WEYU
   name: WY PMC
-  reqlist: USCMCargoCatalog
+  reqlist: WYPMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
@@ -146,7 +146,7 @@
 - type: platoon
   id: CMBCIU
   name: CMB Crisis Intervention
-  reqlist: USCMCargoCatalog
+  reqlist: CMBCIUCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
@@ -205,7 +205,7 @@
 - type: platoon
   id: HAZOPS
   name: MARSOC HAZOPS
-  reqlist: USCMCargoCatalog
+  reqlist: HAZOPSCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14HAZOPSclothingequipmentvendor
@@ -230,7 +230,7 @@
 - type: platoon
   id: CCAF
   name: CCAF
-  reqlist: USCMCargoCatalog
+  reqlist: CCAFCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CCAFclothingequipmentvendor
@@ -255,11 +255,10 @@
       - Daybreak
       - USSBush
 
-
 - type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
-  reqlist: USCMCargoCatalog
+  reqlist: ProdigyCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
@@ -269,9 +268,9 @@
     Arifleman: AU14prodigySGequipmentvendor
     Dcc: AU14prodigyaircrewvendor
     OperationsOfficer: AU14prodigycommandequipmentvendor
-    Rto: AU14prodigyRTOVendor
+    Rto: AU14RTOVendor
     SectionSergeant: AU14prodigysectionleaderequipmentvendor
-    Pilot: AU14prodigyAircrewWeaponsVendor
+    Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -287,7 +286,7 @@
 - type: platoon
   id: UNISC
   name: UNISC Peacekeepers
-  reqlist: USCMCargoCatalog
+  reqlist: UNISCCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UNISCclothingequipmentvendor
@@ -322,7 +321,7 @@
 - type: platoon
   id: VAIPO
   name: VAIPO
-  reqlist: USCMCargoCatalog
+  reqlist: VAIPOCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
@@ -332,9 +331,9 @@
     Arifleman: AU14VAIPOSGequipmentvendor
     Dcc: AU14VAIPOaircrewvendor
     OperationsOfficer: AU14VAIPOcommandequipmentvendor
-    Rto: AU14VAIPORTOVendor
+    Rto: AU14RTOVendor
     SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
-    Pilot: AU14VAIPOAircrewWeaponsVendor
+    Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   CompatibleDropships:
@@ -343,6 +342,44 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
+      - Daybreak
+      - USSBush
+
+- type: platoon
+  id: RMC
+  name: RMC
+  reqlist: RMCCargoCatalog
+  VendorToMarker:
+    Rifleman: AU14RMCequipmentvendor
+    Clothing: AU14RMCclothingequipmentvendor
+    Weapons: AU14RMCWeaponsVendor
+    SWeapons: AU14RMCSpecialWeaponsVendor
+    Corpsman: AU14RMCcorpsmanvendor
+    Arifleman: AU14RMCSGequipmentvendor
+    Dcc: AU14RMCaircrewvendor
+    OperationsOfficer: AU14RMCcommandequipmentvendor
+    Rto: AU14RMCRTOVendor # TODO: RMC RTO's
+    SectionSergeant: AU14RMCsectionleaderequipmentvendor
+    Pilot: AU14RMCAircrewWeaponsVendor
+    ExtraVendor1: VMarkerOpforDeco5
+    Deco1: VMarkerOpforDeco5
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
+    SectionSergeant: AU14JobGOVFORSectionSergeantRMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanRMC
+    PlatCo: AU14JobGOVFORPlatCoRMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantRMC
+    DSPilot: AU14JobGOVFORDSPilotRMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanRMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
+    PlatOp: AU14JobGOVFORPlatOpRMC
+    DCC: AU14JobGOVFORDCCRMC
+  CompatibleDropships:
+  - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
+  compatibleFighters: #TODO: RMC Fighters
+    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
+    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  possibleships: #TODO: RMC Ship
       - Daybreak
       - USSBush
 

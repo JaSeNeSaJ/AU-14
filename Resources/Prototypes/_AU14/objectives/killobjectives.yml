@@ -124,5 +124,28 @@
     amounttokill: 1
     specificjob: AU14JobGOVFORPlatCoUPP
 
-
-
+- type: entity
+  name: Kill Royal Marines Platoon Commander
+  parent: MarkerBase
+  id: killplatcoobjectivermc
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    id: killplatcormcobj
+    factioneutral: false
+    applicableModes:
+    - ForceOnForce
+    possiblefactions:
+    - opfor
+    repeating: false
+    objectivelevel: 3
+    WhitelistedPlatoons:
+    - UPP
+    custompoints: 20
+    ObjectiveDescription: "Kill the Platoon Commander"
+    roundEndMessage: "By Killing the Commander"
+  - type: KillObjective
+    factiontokill: govfor
+    amounttokill: 1
+    specificjob: AU14JobGOVFORPlatCoRMC
