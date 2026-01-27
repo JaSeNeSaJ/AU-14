@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORPlatoonCorpsmanRMC
   name: au14-job-name-govforplatooncorpsmanRMC
-  suffix: RM
   description: au14-job-description-govforplatooncorpsman
   setPreference: true
   playTimeTracker: AU14JobGOVFORPlatoonCorpsmanRMC

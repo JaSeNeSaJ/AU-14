@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORAuxSupportSynthRMC
   name: au14-job-name-govforauxsupportsynthRMC
-  suffix: RM
   description: au14-job-description-govforauxsupportsynth
   setPreference: true
   canBeAntag: false

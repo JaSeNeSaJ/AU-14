@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORDCCRMC
   name: au14-job-name-govfordccRMC
-  suffix: RM
   description: au14-job-description-govfordcc
   setPreference: true
   canBeAntag: false

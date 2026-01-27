@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORRadioTelephoneOperatorRMC
   name: au14-job-name-radiotelephoneoperatorRMC
-  suffix: RM
   description: au14-job-description-radiotelephoneooerator
   setPreference: true
   playTimeTracker: AU14JobGOVFORRadioTelephoneOperatorRMC

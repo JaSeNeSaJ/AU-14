@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORPlatOpRMC
   name: au14-job-name-govforplatopRMC
-  suffix: RM
   description: au14-job-description-govforplatop
   setPreference: true
   canBeAntag: false

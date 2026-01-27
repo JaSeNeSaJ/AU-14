@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORSquadSergeantRMC
   name: au14-job-name-govforsquadsergeantRMC
-  suffix: RM
   description: au14-job-description-govforsquadsergeant
   setPreference: true
   canBeAntag: false

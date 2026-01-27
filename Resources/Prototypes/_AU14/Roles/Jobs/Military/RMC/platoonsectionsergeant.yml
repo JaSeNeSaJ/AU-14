@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORSectionSergeantRMC
   name: au14-job-name-govforSSGRMC
-  suffix: RM
   description: au14-job-description-govforSSG
   setPreference: true
   playTimeTracker: AU14JobGOVFORSectionSergeantRMC

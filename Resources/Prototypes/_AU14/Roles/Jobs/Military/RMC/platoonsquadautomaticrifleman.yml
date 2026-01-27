@@ -2,7 +2,6 @@
   parent: CMJobBase
   id: AU14JobGOVFORSquadAutomaticRiflemanRMC
   name: au14-job-name-govforsquadautomaticriflemanRMC
-  suffix: RM
   description: au14-job-description-govforsquadautomaticrifleman
   setPreference: true
   playTimeTracker: AU14JobGOVFORSquadAutomaticRiflemanRMC
