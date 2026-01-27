@@ -10,11 +10,11 @@
   - !type:OverallPlaytimeRequirement
     time: 7200 # 2 hours
   ranks:
-    RMCRankFirstSergeant:
+    RMCRankChiefWarrantOfficer:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORAuxSupportSynth
       time: 180000 # 50 hours
-    RMCRankMasterSergeant: []
+    RMCRankWarrantOfficer: []
   startingGear: AU14GearGOVFORAuxSupportSynth
   dummyStartingGear: AU14GearGOVFORAuxSupportSynthDummy
   icon: "AU14JobIconGovSynth"
