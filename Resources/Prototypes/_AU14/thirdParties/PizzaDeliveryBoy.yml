@@ -1,0 +1,71 @@
+- type: entity
+  parent: RMCBaseMobSpeciesOrganic
+  id: AU14JobPizzaDeliveryBoy
+  name: Pizza Delivery Boy
+  components:
+  - type: Threat
+  - type: GhostTakeoverAvailable
+  - type: Loadout
+    prototypes: [ AU14GearPizzaDeliveryBoy ]
+  - type: RandomHumanoidAppearance
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: Pizza Delivery Boy
+    description: You are a Pizza Galaxy deliveryman sent with an assortment of refreshing beverages and a choice of pizza to sell to anyone you may encounter.
+    raffle:
+      settings: short
+    rules: You are a Pizza Galaxy deliveryman sent with an assortment of refreshing beverages and a choice of pizza to sell to anyone you may encounter.
+  - type: NpcFactionMember
+    factions:
+    - GOVFOR
+  - type: Skills
+    skills:
+       RMCSkillCqc: 1
+       RMCSkillFireman: 1
+       RMCSkillDomestics: 1
+       RMCSkillVehicles: 1
+
+- type: partySpawn
+  id: PizzaDeliveryBoySpawn
+  leadersToSpawn:
+    AU14JobPizzaDeliveryBoy: 1
+  scalewithpop: false
+  spawnTogether: true
+
+- type: auThirdParty
+  id: PizzaDeliveryBoyThirdParty
+  partyspawn: PizzaDeliveryBoySpawn
+  enterbyshuttle: false
+  weight: 2
+  minplayers: 0
+  maxplayers: 400
+  GhostsNeeded: 2
+  roundstart: false
+
+- type: startingGear
+  id: AU14GearPizzaDeliveryBoy
+  equipment:
+    jumpsuit: RMCJumpsuitPizzaGalaxy
+    shoes: ClothingShoesColorRed
+    head: RMCHeadCapPizzaGalaxy
+    pocket1: RMCFlashlight
+    pocket2: CMDrinkCanDrGibb
+    back: AU14SlingSatchelBlueFilledPizza
+  inhand:
+  - RMCBoxPizzaGalaxyMystery
+
+- type: entity
+  parent: AU14SlingSatchelBlue
+  id: AU14SlingSatchelBlueFilledPizza
+  suffix: Pizza Boy, Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCWeaponPistolHoldout
+    - id: RMCBoxPizzaGalaxyMystery
+    - id: RMCBoxPizzaGalaxyMystery
+    - id: RMCBoxPizzaGalaxyMystery
+    - id: CMDrinkCanDrGibb
+    - id: CMDrinkCanDrGibb
