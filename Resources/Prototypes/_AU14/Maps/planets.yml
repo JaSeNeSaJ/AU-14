@@ -30,7 +30,15 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-
+    thirdparties:
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationPartyArmored
+    - LACNSniperteam
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
 - type: entity
   id: AUPlanetShepherdsPride
   name: Shepherd's Pride
@@ -56,6 +64,15 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
+    thirdparties:
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationPartyArmored
+    - LACNSniperteam
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
     threats:
     - cultistThreat
     - XenoThreat
@@ -89,6 +106,15 @@
     opforinship: true
     daycycleenabled: true
     faction: ua
+    thirdparties:
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationPartyArmored
+    - LACNSniperteam
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
 
 - type: entity
   id: AUPlanetLV624
@@ -115,6 +141,15 @@
     opforinship: true
     daycycleenabled: true
     faction: ua
+    thirdparties:
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationPartyArmored
+    - LACNSniperteam
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
     threats:
     - cultistThreat
     - XenoThreat
@@ -132,13 +167,14 @@
     platoonsOpfor:
     - UPP
     - WEYU
+    - RMC
+
     platoonsGovfor:
     - LACN
     - ProdigySF
     - CMBCIU
     - HAZOPS
     - VAIPO
-    - RMC
     defaultgovfor: HAZOPS
     defaultopfor: UPP
     govforinship: true
