@@ -1,0 +1,106 @@
+- type: entity
+  abstract: true
+  parent: CMPacketBase
+  id: AU14RMCPacketBase
+  suffix: RM
+  name: packet
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Throwable/RMC/packets.rsi
+    state: general_packet
+
+- type: entity
+  parent: AU14RMCPacketBase
+  id: AU14RMCPacketGrenadeHighExplosive
+  name: HEDP grenade packet
+  suffix: RM
+  description: It contains three HEDP high explosive grenades.
+  components:
+  - type: Sprite
+    layers:
+    - state: hedp_packet
+      map: [ "closedLayer" ]
+    - state: hedp_packet_e
+      map: [ "openLayer", "emptyLayer" ]
+
+- type: entity
+  parent: AU14RMCPacketGrenadeHighExplosive
+  id: AU14RMCPacketGrenadeHighExplosiveFilled
+  suffix: Filled, RM
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14RMCGrenadeHighExplosive
+      amount: 3
+
+- type: entity
+  parent: RMCBoxBase
+  id: AU14RMCBoxHEDP
+  suffix: RM
+  name: 30mm HEDP grenade box
+  description: A secure box holding 25 30mm High-Explosive Dual-Purpose grenades. High explosive, don't store near the flamer fuel.
+  components:
+  - type: Sprite
+    layers:
+    - state: d_nade_placeholder
+      map: [ "closedLayer" ]
+    - state: model_m40
+    - state: hedp
+    - state: d_nade_placeholder_e
+      map: [ "openLayer", "emptyLayer" ]
+  - type: Storage
+    whitelist:
+      tags:
+      - RMCGrenadeHEDP
+  - type: StorageFill
+    contents:
+    - id: AU14RMCGrenadeHighExplosive
+      amount: 25
+
+- type: entity
+  parent: AU14RMCPacketBase
+  id: AU14RMCPacketGrenadeSmoke
+  name: HSDP grenade packet
+  suffix: RM
+  description: It contains three HSDP smoke grenades.
+  components:
+  - type: Sprite
+    layers:
+    - state: hsdp_packet
+      map: [ "closedLayer" ]
+    - state: hsdp_packet_e
+      map: [ "openLayer", "emptyLayer"]
+
+- type: entity
+  parent: AU14RMCPacketGrenadeSmoke
+  id: AU14RMCPacketGrenadeSmokeFilled
+  suffix: Filled, RM
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14RMCGrenadeSmoke
+      amount: 3
+
+- type: entity
+  parent: AU14RMCPacketBase
+  id: AU14RMCPacketGrenadeIncendiary
+  name: HIDP grenade packet
+  suffix: RM
+  description: It contains three HIDP incendiary grenades.
+  components:
+  - type: Sprite
+    layers:
+    - state: hidp_packet
+      map: [ "closedLayer" ]
+    - state: hidp_packet_e
+      map: [ "openLayer", "emptyLayer"]
+
+- type: entity
+  parent: AU14RMCPacketGrenadeIncendiary
+  id: AU14RMCPacketGrenadeIncendiaryFilled
+  suffix: Filled, RM
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14RMCGrenadeIncendiary
+      amount: 3

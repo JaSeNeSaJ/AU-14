@@ -12,9 +12,6 @@
     - SquadLeader
     - FireteamLeader
   - type: EncryptionKey
-    channels:
-    - MarineDelta
-    defaultChannel: MarineDelta
   - type: Sprite
     state: we_ya_key
 
@@ -34,7 +31,66 @@
     - MarineDelta
     - MarineCommand
     - MarineJTAC
+    - MarineAlpha
+    - GovforCharlie
+    - GovforBravo
+    - GovforIntel
+
     defaultChannel: MarineDelta
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyGOVFORBravo
+  name: GOVFOR Bravo encryption key
+  description: An encryption key used to communicate on the GOVFOR Bravo channel.
+  components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: SquadLeader
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
+  - type: EncryptionKey
+    channels:
+    - GovforBravo
+    defaultChannel: GovforBravo
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyGOVFORCharlie
+  name: GOVFOR Charlie encryption key
+  description: An encryption key used to communicate on the GOVFOR Charlie channel.
+  components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: SquadLeader
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
+  - type: EncryptionKey
+    channels:
+    - GovforCharlie
+    defaultChannel: GovforCharlie
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyGOVFORIntel
+  name: GOVFOR Intel encryption key
+  description: An encryption key used to communicate on the GOVFOR Intel channel.
+  components:
+  - type: GrantSquadLeaderTracker
+    defaultMode: SquadLeader
+    trackerModes:
+    - SquadLeader
+    - FireteamLeader
+  - type: EncryptionKey
+    channels:
+    - GovforIntel
+    defaultChannel: GovforIntel
   - type: Sprite
     state: we_ya_key
 
@@ -56,7 +112,7 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - AU14EncryptionKeyGOVFOR
+      - CMEncryptionKeyCommon
 
 - type: entity
   parent: RMCHeadsetShip
@@ -75,3 +131,8 @@
     containers:
       key_slots:
       - AU14EncryptionKeyGOVFORCommand
+      - AU14EncryptionKeyGOVFOR
+      - AU14EncryptionKeyGOVFORBravo
+      - AU14EncryptionKeyGOVFORCharlie
+      - AU14EncryptionKeyGOVFORIntel
+

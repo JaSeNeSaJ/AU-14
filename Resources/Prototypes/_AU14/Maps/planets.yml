@@ -19,6 +19,7 @@
     - UNISC
     - USCM
     - HAZOPS
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -46,10 +47,10 @@
     - ProdigySF
     platoonsGovfor:
     - LACN
-    - CCAF
     - UNISC
     - USCM
     - HAZOPS
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -80,8 +81,8 @@
     platoonsGovfor:
     - LACN
     - CMBCIU
-    - CCAF
     - USCM
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -106,8 +107,8 @@
     platoonsGovfor:
     - LACN
     - USCM
-    - CCAF
     - CMBCIU
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -137,6 +138,7 @@
     - CMBCIU
     - HAZOPS
     - VAIPO
+    - RMC
     defaultgovfor: HAZOPS
     defaultopfor: UPP
     govforinship: true
@@ -160,9 +162,9 @@
     - ProdigySF
     platoonsGovfor:
     - LACN
-    - CCAF
     - CMBCIU
     - USCM
+    - RMC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true

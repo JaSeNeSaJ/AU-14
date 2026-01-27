@@ -1,0 +1,61 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobGOVFORDSPilotRMC
+  name: au14-job-name-govfordspilotRMC
+  description: au14-job-description-govfordspilot
+  setPreference: true
+  canBeAntag: false
+  playTimeTracker: AU14JobGOVFORDSPilotRMC
+  ranks:
+    RMC_Lieutenant:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORDSPilot
+      time: 7200 # 120 hours
+    RMC_2Lieutenant:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORDSPilot
+      time: 3600 # 60 hours
+    RMC_WarrantOfficer1: []
+  startingGear: AU14GearGOVFORDSPilot
+  dummyStartingGear: AU14GearGOVFORDSPilotDummy
+  icon: "AU14JobIconPilotOfficer"
+  requireAdminNotify: true
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-govfor
+  accessGroups:
+  - AU14GovforPilot
+  - AU14GovforCorpsman
+  - AU14GovforSquad
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - GOVFOR
+    - type: Marine
+      Faction: govfor
+    - type: Skills
+      skills:
+        RMCSkillFirearms: 2
+        RMCSkillFireman: 1
+        RMCSkillIntel: 1
+        RMCSkillJtac: 2
+        RMCSkillLeadership: 1
+        RMCSkillMedical: 2
+        RMCSkillOverwatch: 1
+        RMCSkillPilot: 2
+        RMCSkillPowerLoader: 2
+        RMCSkillSurgery: 1
+        RMCSkillPolice: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-govfordspilotRMC
+    - type: TacticalMapIcon
+      icon:
+        sprite: _RMC14/Interface/map_blips.rsi
+        state: synth
+  hidden: false
+
+- type: playTimeTracker
+  id: AU14JobGOVFORDSPilotRMC
+  isHumanoid: true

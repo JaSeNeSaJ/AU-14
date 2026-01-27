@@ -32,6 +32,10 @@ using Robust.Shared.Utility;
 using Content.Shared.AU14.util;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
+using Content.Server.PDA;
+using Content.Shared._RMC14.Marines;
+using Content.Shared._RMC14.Marines.Squads;
+using Content.Shared._RMC14.Weapons.Ranged.IFF;
 
 namespace Content.Server.Station.Systems;
 
@@ -54,6 +58,12 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private readonly PlatoonSpawnRuleSystem _platoonSpawnRuleSystem = default!;
     [Dependency] private readonly SquadSystem _squadSystem = default!;
     [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
+
+    // Round-robin rotation indices for squads per side
+    private readonly string[] _govforSquads = { "SquadGovfor", "SquadGovforBravo", "SquadGovforCharlie" };
+    private readonly string[] _opforSquads = { "SquadOpfor", "SquadOpforBravo", "SquadOpforCharlie" };
+    private int _govforNextSquadIndex;
+    private int _opforNextSquadIndex;
 
     /// <summary>
     /// Attempts to spawn a player character onto the given station.
@@ -199,84 +209,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
 
         entity ??= Spawn(species.Prototype, coordinates);
 
-        // --- GOVFOR/OPFOR squad and team assignment ---
-        string? team = null;
-        bool assignToSquad = false;
-        // Use the original jobId (before override) for team/faction logic
-        string? teamCheckJobId = originalJob?.ToString();
-        // hardcoding until I fix overwatch - EG
-        if (!string.IsNullOrEmpty(teamCheckJobId))
-        {
-            if (teamCheckJobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase))
-            {
-                team = "govfor";
-                if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
-                {
-                    assignToSquad = true;
-                }
-            }
-            else if (teamCheckJobId.Contains("Opfor", StringComparison.OrdinalIgnoreCase))
-            {
-                team = "opfor";
-                if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
-                {
-                    assignToSquad = true;
-                }
-            }
-        }
 
-        // --- Ensure player has NpcFactionMemberComponent and is in correct faction ---
-        // Moved faction assignment to after player is spawned
-        // --- END GOVFOR/OPFOR faction ensure ---
-
-        // Assign to squad if eligible
-        if (assignToSquad && team != null)
-        {
-            var protoId = team == "govfor" ? "SquadGovfor" : "SquadOpfor";
-            Entity<SquadTeamComponent> squad;
-            if (!_squadSystem.TryEnsureSquad(protoId, out squad))
-            {
-                // Fallback: spawn a new entity with SquadTeamComponent
-                var squadEnt = EntityManager.SpawnEntity(protoId, coordinates);
-                var squadComp = EnsureComp<SquadTeamComponent>(squadEnt);
-                squad = (squadEnt, squadComp);
-            }
-            _squadSystem.AssignSquad(entity.Value, (squad.Owner, (SquadTeamComponent?)squad.Comp), job);
-
-            // If this is the sergeant, set as squad leader
-            if (jobId != null && jobId.ToLowerInvariant().Contains("sergeant"))
-            {
-                var memberComp = EnsureComp<SquadMemberComponent>(entity.Value);
-                var leaderIcon = squad.Comp.LeaderIcon;
-                _squadSystem.PromoteSquadLeader((entity.Value, memberComp), entity.Value, leaderIcon);
-            }
-        }
-
-        // --- Add opfor/govfor faction after player is spawned ---
-        if (team == "govfor" || team == "opfor")
-        {
-            var faction = team.ToUpperInvariant(); // GOVFOR or OPFOR
-            if (!HasComp<NpcFactionMemberComponent>(entity.Value))
-                EnsureComp<NpcFactionMemberComponent>(entity.Value);
-            _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), faction);
-            // Add additional factions from platoon if present
-            PlatoonPrototype? selectedPlatoon = null;
-            if (team == "govfor")
-                selectedPlatoon = _platoonSpawnRuleSystem.SelectedGovforPlatoon;
-            else if (team == "opfor")
-                selectedPlatoon = _platoonSpawnRuleSystem.SelectedOpforPlatoon;
-            if (selectedPlatoon != null)
-            {
-                foreach (var addFaction in selectedPlatoon.Factions)
-                {
-                    _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), addFaction);
-                }
-            }
-        }
 
         if (profile != null)
         {
@@ -303,7 +236,7 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (!Equals(job, originalJob) && originalPrototype?.StartingGear != null)
         {
             var origGear = _prototypeManager.Index<StartingGearPrototype>(originalPrototype.StartingGear);
-            var newGear = prototype?.StartingGear != null ? _prototypeManager.Index<StartingGearPrototype>(prototype.StartingGear) : null;
+            // var newGear intentionally unused
             // Remove current headset (if any)
             if (InventorySystem.TryGetSlotEntity(entity.Value, "ears", out var currentHeadset))
             {
@@ -385,7 +318,203 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         _identity.QueueIdentityUpdate(entity.Value);
 
 
+ string? team = null;
+                     bool assignToSquad = false;
+                     string? teamCheckJobId = originalJob?.ToString();
+                     // hardcoding until I fix overwatch - EG
+                     if (!string.IsNullOrEmpty(teamCheckJobId))
+                     {
+                         if (teamCheckJobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase))
+                         {
+                             team = "govfor";
+                             if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
+                                 !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
+                                 !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
+                             {
+                                 assignToSquad = true;
+                             }
+                         }
+                         else if (teamCheckJobId.Contains("Opfor", StringComparison.OrdinalIgnoreCase))
+                         {
+                             team = "opfor";
+                             if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
+                                 !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
+                                 !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
+                             {
+                                 assignToSquad = true;
+                             }
+                         }
+                     }
 
+
+                     if (assignToSquad && team != null)
+                     {
+                         Entity<SquadTeamComponent> ensured;
+                         string protoId;
+                         var jobIdLower = jobId?.ToLowerInvariant() ?? string.Empty;
+
+                         // Roles that should go into the intel/auxiliary squad
+                         if (jobIdLower.Contains("officer") || jobIdLower.Contains("synth") || jobIdLower.Contains("pilot") || jobIdLower.Contains("dcc"))
+                         {
+                             protoId = team == "govfor" ? "SquadGovforIntel" : "SquadOpforIntel";
+                         }
+                         else
+                         {
+                             var candidates = team == "govfor" ? _govforSquads : _opforSquads;
+
+                             // New: prioritize distributing Sergeants, Automatic Riflemen, and Radio Telephone Operators
+                             var isSergeant = jobIdLower.Contains("sergeant");
+                             var isAutomaticRifleman = jobIdLower.Contains("automaticrifleman") || jobIdLower.Contains("autora") || jobIdLower.Contains("auto") || jobIdLower.Contains("afn") || jobIdLower.EndsWith("squadautomaticrifleman", StringComparison.OrdinalIgnoreCase);
+                             var isRadioTelephone = jobIdLower.Contains("radiotelephoneoperator") || jobIdLower.Contains("radio") || jobIdLower.Contains("rto") || jobIdLower.EndsWith("radiotelephoneoperator", StringComparison.OrdinalIgnoreCase);
+
+                             // Sergeants: try to place into a squad without a leader where possible (existing behavior)
+                             if (isSergeant)
+                             {
+                                 string? chosen = null;
+                                 foreach (var cand in candidates)
+                                 {
+                                     if (_squadSystem.TryEnsureSquad(cand, out var s) && !_squadSystem.TryGetSquadLeader(s, out _))
+                                     {
+                                         chosen = cand;
+                                         break;
+                                     }
+                                 }
+
+                                 if (chosen != null)
+                                 {
+                                     protoId = chosen;
+                                 }
+                                 else
+                                 {
+                                     // all squads already have leaders, fall back to round-robin
+                                     if (team == "govfor")
+                                     {
+                                         protoId = candidates[_govforNextSquadIndex % candidates.Length];
+                                         _govforNextSquadIndex = (_govforNextSquadIndex + 1) % candidates.Length;
+                                     }
+                                     else
+                                     {
+                                         protoId = candidates[_opforNextSquadIndex % candidates.Length];
+                                         _opforNextSquadIndex = (_opforNextSquadIndex + 1) % candidates.Length;
+                                     }
+                                 }
+                             }
+                             // Automatic riflemen and radio telephone operators: try to evenly distribute so each squad gets one of each
+                             else if (isAutomaticRifleman || isRadioTelephone)
+                             {
+                                 string? chosen = null;
+                                 // Prefer squads that exist and don't yet have this role
+                                 foreach (var cand in candidates)
+                                 {
+                                     if (_squadSystem.TryEnsureSquad(cand, out var s))
+                                     {
+                                         // If job is available as a ProtoId, check the role count in the squad.
+                                         if (job != null)
+                                         {
+                                             s.Comp.Roles.TryGetValue(job.Value, out var existingCount);
+                                             if (existingCount == 0)
+                                             {
+                                                 chosen = cand;
+                                                 break;
+                                             }
+                                         }
+                                         else
+                                         {
+                                             // If we don't have a proto id for the job for whatever reason,
+                                             // prefer squads that exist but currently have fewer members (heuristic)
+                                             if (_squadSystem.GetSquadMembersAlive(s) == 0)
+                                             {
+                                                 chosen = cand;
+                                                 break;
+                                             }
+                                         }
+                                     }
+                                     else
+                                     {
+                                         // Squad doesn't exist yet, so it definitely has none of the role
+                                         chosen = cand;
+                                         break;
+                                     }
+                                 }
+
+                                 if (chosen != null)
+                                 {
+                                     protoId = chosen;
+                                 }
+                                 else
+                                 {
+                                     // Fallback to round-robin distribution when every squad already has the role
+                                     if (team == "govfor")
+                                     {
+                                         protoId = candidates[_govforNextSquadIndex % candidates.Length];
+                                         _govforNextSquadIndex = (_govforNextSquadIndex + 1) % candidates.Length;
+                                     }
+                                     else
+                                     {
+                                         protoId = candidates[_opforNextSquadIndex % candidates.Length];
+                                         _opforNextSquadIndex = (_opforNextSquadIndex + 1) % candidates.Length;
+                                     }
+                                 }
+                             }
+                             else
+                             {
+                                 // Default distribution (round-robin)
+                                 // Sergeants already handled above; everyone else falls through here.
+                                 if (team == "govfor")
+                                 {
+                                     protoId = candidates[_govforNextSquadIndex % candidates.Length];
+                                     _govforNextSquadIndex = (_govforNextSquadIndex + 1) % candidates.Length;
+                                 }
+                                 else
+                                 {
+                                     protoId = candidates[_opforNextSquadIndex % candidates.Length];
+                                     _opforNextSquadIndex = (_opforNextSquadIndex + 1) % candidates.Length;
+                                 }
+                             }
+                         }
+
+                         if (!_squadSystem.TryEnsureSquad(protoId, out ensured))
+                         {
+                             // Fallback: spawn a new entity with SquadTeamComponent
+                             var squadEnt = EntityManager.SpawnEntity(protoId, coordinates);
+                             var squadComp = EnsureComp<SquadTeamComponent>(squadEnt);
+                             ensured = (squadEnt, squadComp);
+                         }
+
+                         _squadSystem.AssignSquad(entity.Value, (ensured.Owner, (SquadTeamComponent?)ensured.Comp), job);
+
+
+
+                         // If this is the sergeant, set as squad leader
+                         if (jobId != null && jobId.ToLowerInvariant().Contains("sergeant"))
+                         {
+                             var memberComp = EnsureComp<SquadMemberComponent>(entity.Value);
+                             var leaderIcon = ensured.Comp.LeaderIcon;
+                             _squadSystem.PromoteSquadLeader((entity.Value, memberComp), entity.Value, leaderIcon);
+                         }
+        }
+
+        // --- Add opfor/govfor faction after player is spawned ---
+        if (team == "govfor" || team == "opfor")
+        {
+            var faction = team.ToUpperInvariant(); // GOVFOR or OPFOR
+            if (!HasComp<NpcFactionMemberComponent>(entity.Value))
+                EnsureComp<NpcFactionMemberComponent>(entity.Value);
+            _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), faction);
+            // Add additional factions from platoon if present
+            PlatoonPrototype? selectedPlatoon = null;
+            if (team == "govfor")
+                selectedPlatoon = _platoonSpawnRuleSystem.SelectedGovforPlatoon;
+            else if (team == "opfor")
+                selectedPlatoon = _platoonSpawnRuleSystem.SelectedOpforPlatoon;
+            if (selectedPlatoon != null)
+            {
+                foreach (var addFaction in selectedPlatoon.Factions)
+                {
+                    _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), addFaction);
+                }
+            }
+        }
         return entity.Value;
     }
 

@@ -7,9 +7,6 @@
   description: An encryption key used to communicate on the opfor channel.
   components:
   - type: EncryptionKey
-    channels:
-    - opfor
-    defaultChannel: opfor
   - type: Sprite
     state: we_ya_key
 
@@ -23,6 +20,11 @@
     channels:
     - opfor
     - opforcommand
+    - OpforCharlie
+    - OpforBravo
+    - OpforIntel
+    - opforjtac
+
     defaultChannel: opfor
   - type: Sprite
     state: we_ya_key
@@ -43,7 +45,7 @@
   - type: ContainerFill
     containers:
       key_slots:
-      - AU14EncryptionKeyopfor
+      - CMEncryptionKeyCommon
 
 - type: entity
   parent: RMCHeadsetShip
@@ -62,6 +64,11 @@
     containers:
       key_slots:
       - AU14EncryptionKeyopforcommand
+      - AU14EncryptionKeyopfor
+      - AU14EncryptionKeyopforBravo
+      - AU14EncryptionKeyopforCharlie
+      - AU14EncryptionKeyopforIntel
+      - AU14EncryptionKeyopforjtac
 
 - type: entity
   parent: CMEncryptionKey
@@ -78,5 +85,45 @@
     channels:
     - opforjtac
     defaultChannel: opforjtac
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyopforBravo
+  name: opfor Bravo encryption key
+  description: An encryption key used to communicate on the opfor Bravo channel.
+  components:
+  - type: EncryptionKey
+    channels:
+    - OpforBravo
+    defaultChannel: OpforBravo
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyopforCharlie
+  name: opfor Charlie encryption key
+  description: An encryption key used to communicate on the opfor Charlie channel.
+  components:
+  - type: EncryptionKey
+    channels:
+    - OpforCharlie
+    defaultChannel: OpforCharlie
+  - type: Sprite
+    state: we_ya_key
+
+# OPFOR Intel key
+- type: entity
+  parent: CMEncryptionKey
+  id: AU14EncryptionKeyopforIntel
+  name: opfor Intel encryption key
+  description: An encryption key used to communicate on the opfor Intel channel.
+  components:
+  - type: EncryptionKey
+    channels:
+    - OpforIntel
+    defaultChannel: OpforIntel
   - type: Sprite
     state: we_ya_key

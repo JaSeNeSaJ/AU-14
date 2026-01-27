@@ -243,3 +243,31 @@
     playerSprite:
       sprite: _AU14/Clothing/UNISC/armband.rsi
       state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14RMCPatch
+  name: RMC Patch
+  description: A fire-resistant shoulder patch, worn by the men and women of the Royal Marine Commandos.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/rmc_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/rmc_patch.rsi
+      state: patch
+
+- type: entity
+  parent: RMCPatchBase
+  id: AU14TWEPatch
+  name: TWE Patch
+  description: A patch bearing the flag of Three World Empire.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Patches/twe_patch.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _AU14/Clothing/Patches/twe_patch.rsi
+      state: patch
