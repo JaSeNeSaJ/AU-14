@@ -7,7 +7,12 @@
   - type: GhostTakeoverAvailable
   - type: Loadout
     prototypes: [ AU14GearCMBDeputyInvestigation ]
-  - type: RandomHumanoidAppearance
+  #- type: RandomHumanoidAppearance
+  - type: RandomHumanoidAppearanceWhitelisted
+    allowedHairStyles: [ "HumanHairCrewcut2" ]
+    allowedHairColorsHex: [ "#000000" ]
+    allowedEyeColorsHex: [ "#000000" ]
+    beardChance: 0.0
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -34,9 +39,15 @@
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
-  - type: Loadout
-    prototypes: [ AU14GearCMBDeputyInvestigationShotgun ]
+  #- type: Loadout
+  #  prototypes: [ AU14GearCMBDeputyInvestigationShotgun ]
+  - type: RandomHumanoidAppearanceWhitelisted
+    allowedHairStyles: [ "RMCHumanHairCrew" ]
+    allowedHairColorsHex: [ "#000000" ]
+    allowedEyeColorsHex: [ "#000000" ]
+    beardChance: -1
   - type: RandomHumanoidAppearance
+
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -66,6 +77,11 @@
   - type: Loadout
     prototypes: [ AU14GearCMBMarshalInvestigation ]
   - type: RandomHumanoidAppearance
+  - type: RandomHumanoidAppearanceWhitelisted
+    allowedHairStyles: [ "HumanHairCrewcut2" ]
+    allowedHairColorsHex: [ "#000000" ]
+    allowedEyeColorsHex: [ "#000000" ]
+    beardChance: 0.0
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -95,6 +111,11 @@
   - type: Loadout
     prototypes: [ AU14GearCMBInvestigationRightsObserver ]
   - type: RandomHumanoidAppearance
+  - type: RandomHumanoidAppearanceWhitelisted
+    allowedHairStyles: [ "HumanHairCurls" ]
+    allowedHairColorsHex: [ "#000000" ]
+    allowedEyeColorsHex: [ "#000000" ]
+    beardChance: 1.0
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -240,3 +261,4 @@
     - id: CMShellShotgunBuckshot
     - id: CMShellShotgunBuckshot
     - id: CMShellShotgunBuckshot
+
