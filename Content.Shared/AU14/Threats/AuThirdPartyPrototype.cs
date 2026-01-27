@@ -27,7 +27,7 @@ public sealed partial class AuThirdPartyPrototype : IPrototype
     public bool Enterbyshuttle { get; private set; } =  false;
 
     [DataField("dropshippath", required: false)]
-    public ResPath dropshippath { get; private set; } = new ResPath( "/Maps/_RMC14/alamo.yml");
+    public ResPath dropshippath { get; private set; } = new ResPath( "/Maps/_AU14/ShuttlesDropships/genericthirdpartyshuttle.yml");
     // used if enterbyshuttle is true
 
     [DataField("blacklistedgamemodes")]
