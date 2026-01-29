@@ -243,3 +243,36 @@
     - id: AU14WeaponPistolL54
     - id: AU14RMCPatch
     - id: AU14TWEPatch
+
+# Command kits
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitUNISCCommandRMC
+  name: UNISC Royal Marines Command Equipment Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,0
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+    - id: AU14RMCHeadTurban
+    - id: AU14RMCHeadBeretOfficer
+    - id: AU14RMCHeadCapOfficer
+    - id: RMCHeadRoyalBeanie
+    - id: AU14RMCHands
+    - id: AU14RMCFatiguesService
+    - id: AU14RMCFatiguesBlackTeamlead
+    - id: AU14RMCFatiguesDesertTeamlead
+    - id: AU14RMCBootsRoyal
+    - id: AU14TantoA
+    - id: AU14WeaponPistolL54
+    - id: AU14RMCPatch
+    - id: AU14TWEPatch
