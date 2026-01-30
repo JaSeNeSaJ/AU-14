@@ -137,6 +137,7 @@
       AU14JobGOVFORSectionSergeant: 1
       AU14JobGOVFORSquadSergeant: 3
       AU14JobGOVFORSquadAutomaticRifleman: 3
+      AU14JobGOVFORSquadCombatTech: 6
       AU14JobGOVFORSquadRifleman: 100
       AU14JobGOVFORAuxSupportSynth: 2
 
@@ -158,6 +159,7 @@
       AU14JobOpforSectionSergeant: 1
       AU14JobOpforSquadSergeant: 3
       AU14JobOpforSquadAutomaticRifleman: 3
+      AU14JobOPFORSquadCombatTech: 6
       AU14JobOpforSquadRifleman: 100
       AU14JobOPFORAuxSupportSynth: 2
 

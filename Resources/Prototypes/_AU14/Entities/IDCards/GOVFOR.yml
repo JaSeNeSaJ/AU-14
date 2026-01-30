@@ -112,6 +112,16 @@
   - type: ItemIFF
     faction: FactionGOVFOR
 
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardSquadCombatTech
+  name: combat technician ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobGOVFORSquadCombatTech
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
   #- type: ItemIFF
   #  faction: FactionMarine
 

@@ -498,8 +498,8 @@
 - type: entity
   parent: CMSatchel
   id: RMCSatchelWelder
-  name: USCM technician welder-satchel
-  description: A specialized satchel worn by USCM technicians and engineers. It carries two small fuel tanks for quick welder refueling and use.
+  name: technician welder-satchel
+  description: A specialized satchel worn by technicians and engineers. It carries two small fuel tanks for quick welder refueling and use.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Back/Satchels/Marines/welder.rsi

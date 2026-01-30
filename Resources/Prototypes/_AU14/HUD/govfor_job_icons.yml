@@ -81,3 +81,10 @@
   icon:
     sprite: _AU14/Interface/au14govforjobicons.rsi
     state: govfor_syn
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconGovCT
+  icon:
+    sprite: _AU14/Interface/au14govforjobicons.rsi
+    state: govfor_ct

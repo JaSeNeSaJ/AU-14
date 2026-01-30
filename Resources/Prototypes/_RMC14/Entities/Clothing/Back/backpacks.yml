@@ -163,8 +163,8 @@
 - type: entity
   parent: CMBackpackMarine
   id: CMBackpackMarineTech
-  name: USCM technician backpack
-  description: A standard-issue backpack worn by USCM technicians.
+  name: technician backpack
+  description: A standard-issue backpack worn by technicians.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Back/Backpacks/Marines/tech/jungle-desert-classic.rsi
@@ -204,8 +204,8 @@
 - type: entity
   parent: CMBackpack
   id: CMBackpackWelder
-  name: USCM technician welderpack
-  description: A specialized backpack worn by USCM technicians. It carries a fueltank for quick welder refueling and use.
+  name: technician welderpack
+  description: A specialized backpack worn by technicians. It carries a fueltank for quick welder refueling and use.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Back/Backpacks/Marines/welder/jungle-desert-classic.rsi

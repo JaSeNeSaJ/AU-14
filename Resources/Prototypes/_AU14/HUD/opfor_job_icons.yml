@@ -81,3 +81,10 @@
   icon:
     sprite: _AU14/Interface/au14opforjobicons.rsi
     state: synth
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconOPFORCT
+  icon:
+    sprite: _AU14/Interface/au14opforjobicons.rsi
+    state: ct

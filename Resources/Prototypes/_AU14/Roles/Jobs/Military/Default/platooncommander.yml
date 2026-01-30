@@ -12,8 +12,8 @@
   ranks:
     RMCRankCaptain:
     - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatCo
-      time: 7200 # 120 hours
+      role: AU14JobOpforPlatCo
+      time: 432000 # 120 hours
     RMCRankFirstLT: []
   startingGear: AU14GearGOVFORPlatCo
   dummyStartingGear: AU14GearGOVFORPlatCoDummy
@@ -33,23 +33,7 @@
     - type: Marine
       Faction: govfor
     - type: Skills
-      skills:
-        RMCSkillCqc: 2
-        RMCSkillConstruction: 2
-        RMCSkillEndurance: 2
-        RMCSkillEngineer: 2
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 2
-        RMCSkillIntel: 2
-        RMCSkillJtac: 4
-        RMCSkillLeadership: 3
-        RMCSkillMedical: 3
-        RMCSkillNavigations: 1
-        RMCSkillOverwatch: 1
-        RMCSkillPolice: 2
-        RMCSkillPowerLoader: 2
-        RMCSkillSurgery: 1
-        RMCSkillVehicles: 1
+      preset: AU14SkillPresetPlatoonCommander
     - type: JobPrefix
       prefix: au14-job-prefix-govforplatco
     - type: TacticalMapIcon

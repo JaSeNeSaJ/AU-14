@@ -9,11 +9,11 @@
     RMCRankCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadAutomaticRifleman
-      time: 3600 # 60 hours
+      time: 216000 # 60 hours
     RMCRankLanceCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadAutomaticRifleman
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     RMCRankPrivateFirstClass: []
   startingGear: AU14GearGOVFORRadioTelephoneOperator
   dummyStartingGear: AU14GearGOVFORRadioTelephoneOperatorDummy
@@ -35,13 +35,7 @@
     - type: Marine
       Faction: govfor
     - type: Skills
-      skills:
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillJtac: 3
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonRTO
     - type: JobPrefix
       prefix: au14-job-prefix-radiotelephoneoperator
     - type: TacticalMapIcon
