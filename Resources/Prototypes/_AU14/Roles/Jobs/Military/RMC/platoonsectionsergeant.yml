@@ -9,7 +9,7 @@
     RMC_ColourSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSectionSergeant
-      time: 3600 # 60 hours
+      time: 216000 # 60 hours
     RMC_Sergeant: []
   startingGear: AU14GearGOVFORSectionSergeant
   dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy

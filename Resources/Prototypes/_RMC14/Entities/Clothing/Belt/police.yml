@@ -49,7 +49,7 @@
   parent: CMBeltSecurity
   id: RMCBeltSecurityWeYa
   name: M276-C corporate security rig
-  description: A Weston-Yamada adaptation of the M276 load-bearing equipment, designed for corporate security forces. This modular black rig features multiple pouches for carrying restraints, ammunition, and a mix of lethal and non-lethal equipment for maintaining order.
+  description: A Weyland-Yutani adaptation of the M276 load-bearing equipment, designed for corporate security forces. This modular black rig features multiple pouches for carrying restraints, ammunition, and a mix of lethal and non-lethal equipment for maintaining order.
 
 - type: entity
   parent: CMBeltSecurityMP

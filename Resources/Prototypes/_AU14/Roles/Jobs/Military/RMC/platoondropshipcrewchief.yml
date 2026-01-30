@@ -10,15 +10,15 @@
     RMC_WarrantOfficer1:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 7200 # 120 hours
+      time: 432000 # 120 hours
     RMC_WarrantOfficer2:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 3600 # 60 hours
+      time: 216000 # 60 hours
     RMC_ColourSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 720 # 12 hours
+      time: 43200 # 12 hours
     RMC_Sergeant: []
   startingGear: AU14GearGOVFORDCC
   dummyStartingGear: AU14GearGOVFORDCCDummy

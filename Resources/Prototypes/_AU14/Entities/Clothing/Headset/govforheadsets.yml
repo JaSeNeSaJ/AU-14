@@ -28,15 +28,13 @@
     - FireteamLeader
   - type: EncryptionKey
     channels:
-    - MarineDelta
     - MarineCommand
     - MarineJTAC
     - MarineAlpha
     - GovforCharlie
     - GovforBravo
     - GovforIntel
-
-    defaultChannel: MarineDelta
+    defaultChannel: MarineCommand
   - type: Sprite
     state: we_ya_key
 
