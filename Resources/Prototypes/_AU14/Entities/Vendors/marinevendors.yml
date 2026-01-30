@@ -941,7 +941,8 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/combat_technician_gear.rsi
   - type: CMAutomatedVendor
     jobs:
-    - AU14PointsComTech
+    - AU14JobGOVFORSquadCombatTech
+    - AU14JobOPFORSquadCombatTech
     sections:
     - name: Engineer Set
       takeAll: CMEngineerSet

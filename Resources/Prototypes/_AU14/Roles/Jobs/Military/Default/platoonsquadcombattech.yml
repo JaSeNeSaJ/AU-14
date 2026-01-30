@@ -46,7 +46,7 @@
         sprite: _RMC14/Interface/map_blips.rsi
         state: synth
     - type: CMVendorUser
-      id: AU14PointsComTech
+      id: AU14JobGOVFORSquadCombatTech
       points: 50
   hidden: false
 
