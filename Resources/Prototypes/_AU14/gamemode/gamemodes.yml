@@ -141,6 +141,7 @@
       AU14JobGOVFORSquadCombatTech: 6
       AU14JobGOVFORSquadRifleman: 100
       AU14JobGOVFORAuxSupportSynth: 2
+      AU14JobGOVFORadvisor: 1
 
 
 - type: entity
@@ -163,6 +164,7 @@
       AU14JobOPFORSquadCombatTech: 6
       AU14JobOpforSquadRifleman: 100
       AU14JobOPFORAuxSupportSynth: 2
+      AU14JobOPFORadvisor: 1
 
 - type: entity
   id: AddClf
