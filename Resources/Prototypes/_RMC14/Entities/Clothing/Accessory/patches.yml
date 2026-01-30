@@ -303,8 +303,8 @@
 - type: entity
   parent: RMCPatchBase
   id: RMCPatchWeYa
-  name: Weston-Yamada patch
-  description: A fire-resistant white shoulder patch featuring the Weston-Yamada logo. A symbol of loyalty to the corporation, or perhaps ironic mockery, depending on your viewpoint.
+  name: Weyland-Yutani patch
+  description: A fire-resistant white shoulder patch featuring the Weyland-Yutani logo. A symbol of loyalty to the corporation, or perhaps ironic mockery, depending on your viewpoint.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Accessory/Patches/WeYa/weya_patch.rsi
@@ -317,7 +317,7 @@
 - type: entity
   parent: RMCPatchWeYa
   id: RMCPatchWeYaBlack
-  description: A fire-resistant black shoulder patch featuring the Weston-Yamada logo. A symbol of loyalty to the corporation, or perhaps ironic mockery, depending on your viewpoint.
+  description: A fire-resistant black shoulder patch featuring the Weyland-Yutani logo. A symbol of loyalty to the corporation, or perhaps ironic mockery, depending on your viewpoint.
   suffix: Black
   components:
   - type: Sprite

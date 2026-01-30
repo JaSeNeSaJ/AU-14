@@ -107,3 +107,23 @@
     job: AU14JobOPFORAuxSupportSynth
   - type: ItemIFF
     faction: FactionOPFOR
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardOPFORCT
+  name: combat technician ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobOPFORSquadCombatTech
+  - type: ItemIFF
+    faction: FactionOPFOR
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardOPFORAdvisor
+  name: advisor ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobOPFORadvisor
+  - type: ItemIFF
+    faction: FactionOPFOR

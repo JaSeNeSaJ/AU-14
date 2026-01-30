@@ -25,6 +25,19 @@
       cloneable: true
 
 - type: trait
+  id: SocialAnxietyHeavy
+  name: trait-socialanxietyheavy-name
+  description: trait-socialanxietyheavy-desc
+  category: SpeechTraits
+  cost: 1
+  components:
+  - type: StutteringAccent
+    matchRandomProb: 0.1
+    fourRandomProb: 0.02
+    threeRandomProb: 0.04
+    cutRandomProb: 0.01
+
+- type: trait
   id: Epilepsy
   name: au14-trait-epilepsy-name
   description: au14-trait-epilepsy-desc

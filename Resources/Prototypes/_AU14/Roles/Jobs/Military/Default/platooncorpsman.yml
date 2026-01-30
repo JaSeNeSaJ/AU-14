@@ -9,7 +9,7 @@
     RMCRankCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatoonCorpsman
-      time: 1200 # 20 hours
+      time: 4320000 # 20 hours
     RMCRankLanceCorporal: []
   startingGear: AU14GearGOVFORPlatoonCorpsman
   dummyStartingGear: AU14GearGOVFORCorpsmanDummy
@@ -32,15 +32,7 @@
     - type: Marine
       Faction: govfor
     - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillJtac: 1
-        RMCSkillMedical: 2
-        RMCSkillSurgery: 1
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: JobPrefix
       prefix: au14-job-prefix-govforplatooncorpsman
     - type: TacticalMapIcon

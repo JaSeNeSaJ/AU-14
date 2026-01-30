@@ -9,7 +9,7 @@
     RMCRankPrivateFirstClass:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadRifleman
-      time: 900 # 15 hours
+      time: 54000 # 15 hours
     RMCRankPrivate: []
   startingGear: AU14GearGOVFORSquadRifleman
   dummyStartingGear: AU14GearGOVFORRiflemanDummy
@@ -30,14 +30,7 @@
     - type: Marine
       Faction: govfor
     - type: Skills
-      skills:
-        RMCSkillEndurance: 1
-        RMCSkillFirearms: 2
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFireman: 1
-        RMCSkillVehicles: 1
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonRifleman
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadrifleman
     - type: TacticalMapIcon

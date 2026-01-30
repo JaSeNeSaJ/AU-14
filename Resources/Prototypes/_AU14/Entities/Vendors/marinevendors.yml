@@ -928,3 +928,106 @@
         amount: 2
       - id: RMCAttachmentFlashlightGrip
         amount: 2
+
+- type: entity
+  parent: ColMarTechBase
+  id: AU14ComtechGearVendor
+  name: combat technicians gear rack
+  description: An automated gear rack for combat technicians.
+  components:
+  - type: AccessReader
+    access: [ [ "AU14AccessGovforEngineering" ], [ "AU14AccessOpforEngineering" ] ]
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/combat_technician_gear.rsi
+  - type: CMAutomatedVendor
+    jobs:
+    - AU14JobGOVFORSquadCombatTech
+    - AU14JobOPFORSquadCombatTech
+    sections:
+    - name: Engineer Set
+      takeAll: CMEngineerSet
+      entries:
+      - id: AU14VendorBundleCombatTechnicianEssentials
+    - name: Automated Sentry Gun
+      choices:  { CMHandheldDefense : 1 }
+      entries:
+      - id: AU14CaseSentry
+      - id: AU14CaseSentryMini
+      - id: AU14CaseSentrySniper
+    - name: Tool Storage
+      choices: { CMUCTToolStorage: 1 }
+      entries:
+      - id: AU14BeltUtilityCombatFilled
+        name: M276 pattern combat toolbelt rig (filled)
+        recommended: true
+      - id: AU14PouchToolsFilledComtech
+        name: tactical tools pouch (filled)
+      - id: AU14BeltUtilityFilled
+        name: M276 pattern toolbelt rig (filled)
+    - name: Engineering Storage Bag
+      choices: { CMUPouchesCTBag: 1 }
+      entries:
+      - id: CMBackpackWelder
+        recommended: true
+      - id: RMCSatchelWelderChestrig
+      - id: RMCSatchelWelder
+    - name: Engineering Storage Pouch
+      choices: { CMUPouchesCT: 1 }
+      entries:
+      - id: RMCPouchConstruction
+        recommended: true
+      - id: RMCPouchElectronics
+    - name: Engineering Supplies
+      entries:
+      - id: CMSheetMetal50
+        name: metal x50
+        points: 8
+        recommended: true
+      - id: CMSheetPlasteel50
+        name: plasteel x50
+        points: 10
+        recommended: true
+      - id: CMAPCElectronics
+        points: 2
+      - id: DoorElectronics
+        points: 2
+      - id: RMCPowerCellHigh
+        points: 3
+      - id: RMCPowerCellSuper
+        points: 8
+      - id: RMCMagazineSMGNailgun
+        points: 5
+    #- id: CMES11MobileFuelCanister
+    #  points: 4
+    - name: Explosives
+      entries:
+      - id: RMCExplosivePlastic
+        points: 5
+      - id: RMCExplosiveBreachingCharge
+        points: 8
+        recommended: true
+    - name: Utilities
+      entries:
+      - id: RMCSynthResetKey
+        points: 5
+
+- type: entity
+  parent: CMVendorBundleRiflemanApparel
+  id: AU14VendorBundleCombatTechnicianEssentials
+  name: essential engineer set
+  description: Contains 50 metal, 40 plasteel, 25 sandbags, a high-capacity power cell, a light replacer, a welding visor, and a nailgun.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Tools/wrench.rsi
+    state: icon
+  - type: CMVendorBundle
+    bundle:
+    - RMCExplosivePlastic
+    - CMSandbagEmpty25
+    - CMSheetMetal50
+    - CMSheetPlasteel40
+    - RMCPowerCellHigh
+    - RMCLightReplacer
+    - CMAPCElectronics
+    - RMCNailgunTactical
+    - RMCVisorWelding
