@@ -9,7 +9,7 @@
     RMC_Corporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatoonCorpsman
-      time: 1200 # 20 hours
+      time: 72000 # 20 hours
     RMC_LanceCorporal: []
   startingGear: AU14GearGOVFORPlatoonCorpsman
   dummyStartingGear: AU14GearGOVFORCorpsmanDummy

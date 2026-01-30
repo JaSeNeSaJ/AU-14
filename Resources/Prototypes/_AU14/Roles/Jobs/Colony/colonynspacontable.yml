@@ -10,11 +10,11 @@
     AU14RankNSPAInspector:
     - !type:RoleTimeRequirement
       role: AU14JobCiviliannspaConstable
-      time: 1500 # 25 hours
+      time: 90000 # 25 hours
     AU14RankNSPASeniorConstable:
     - !type:RoleTimeRequirement
       role: AU14JobCiviliannspaConstable
-      time: 600 # 10 hours
+      time: 36000 # 10 hours
     AU14RankNSPAConstable: []
   startingGear: AU14GearCiviliannspaConstable
   icon: "RMCJobIconBureauDeputy"

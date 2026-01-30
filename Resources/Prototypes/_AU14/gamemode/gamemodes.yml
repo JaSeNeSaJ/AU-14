@@ -12,6 +12,7 @@
   - AUPlanetStableGarrison
   #- AUPlanetShepherdsPride
   - AUPlanetFlight
+  - AUPlanetLV759
 
   rules:
   - AuVoteRule
@@ -30,10 +31,10 @@
   description: Insurgency mode
   requiresGovforVote: true
   supportedPlanets:
-    #- AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV747
+    - AUPlanetLV759
 
    # - AUPlanetStableGarrison
   rules:

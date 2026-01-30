@@ -122,6 +122,16 @@
   - type: ItemIFF
     faction: FactionGOVFOR
 
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardSquadAdvisor
+  name: advisor ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobGOVFORadvisor
+  - type: ItemIFF
+    faction: FactionGOVFOR
+
   #- type: ItemIFF
   #  faction: FactionMarine
 

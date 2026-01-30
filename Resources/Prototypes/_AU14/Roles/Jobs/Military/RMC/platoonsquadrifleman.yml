@@ -9,7 +9,7 @@
     RMC_LanceCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadRifleman
-      time: 900 # 15 hours
+      time: 54000 # 15 hours
     RMC_Marine: []
   startingGear: AU14GearGOVFORSquadRifleman
   dummyStartingGear: AU14GearGOVFORRiflemanDummy

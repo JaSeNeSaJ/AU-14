@@ -9,6 +9,16 @@
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
+  - !type:AgeRequirement
+    requiredAge: 25
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxiety
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   ranks:
     RMCRankCaptain:
     - !type:RoleTimeRequirement
