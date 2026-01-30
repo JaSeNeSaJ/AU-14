@@ -18,6 +18,7 @@
       - id: AU14KitUNISCRiflemanUSArmy
       - id: AU14KitUNISCRiflemanUPP
       - id: AU14KitUNISCRiflemanUSCM
+      - id: AU14KitUNISCRiflemanRMC
     - name: Footwear
       entries:
       - id: CMBootsBlack
@@ -395,6 +396,7 @@
       entries:
       - id: AU14KitUNISCAircrewLACN
       - id: AU14KitUNISCAircrewUSASF
+      - id: AU14KitUNISCAircrewRMC
     - name: Body Armor
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
@@ -544,6 +546,7 @@
       - id: AU14KitUNISCRiflemanUSArmy
       - id: AU14KitUNISCRiflemanUPP
       - id: AU14KitUNISCRiflemanUSCM
+      - id: AU14KitUNISCCommandRMC
     - name: Fatigues
       entries:
       - id: CMJumpsuitXOFormal
@@ -623,6 +626,8 @@
         amount: 120
       - id: AU14WeaponRifleKramerMagazineStandard
         amount: 120
+      - id: AU14MagazineRifleF9030A1
+        amount: 120
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM77AP
@@ -630,6 +635,8 @@
       - id: CMMagazinePistolM1984
         amount: 120
       - id: RMCMagazinePistolT73
+        amount: 120
+      - id: RMCMagazinePistolL54
         amount: 120
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
