@@ -7,7 +7,7 @@
   whitelistedgamemodes:
       - DistressSignal
   winconditions:
-  - KillAllColonist
+  - KillAllColonistRule
 
 - type: partySpawn
   id: XenoThreatSpawns
@@ -38,7 +38,7 @@
   scalewithpop: true
   spawnTogether: true
   winconditions:
-  - KillAllColonist
+  - KillAllColonistRule
   Markers:
     Member: xenocf
     Leader: xenocf
