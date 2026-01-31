@@ -27,6 +27,16 @@
       class: Arifleman
 
 - type: entity
+  name: Opfor combat technician marker
+  id: VMarkerOpforComtech
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    opfor: true
+    govfor: false
+    class: combattech
+
+- type: entity
   name: Opfor rifleman marker
   id: VMarkerOpforRifleman
   parent: Vmarker
@@ -230,6 +240,16 @@
       govfor: true
       opfor: false
       class: Rifleman
+
+- type: entity
+  name: Gov combat technician marker
+  id: VMarkerGovforCombatTech
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: combattech
 
 - type: entity
   name: Gov dcc marker
@@ -462,6 +482,17 @@
       govfor: false
       opfor: false
       class: Corpsman
+
+- type: entity
+  name: Ship combat technician marker
+  id: VMarkerShipComtech
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    govfor: false
+    opfor: false
+    class: combattech
 
 - type: entity
   name: Ship Arifleman marker

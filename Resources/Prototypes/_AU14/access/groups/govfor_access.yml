@@ -18,9 +18,9 @@
   id: AU14AccessGovforMedical
   name: Govfor Medical
 
-#- type: accessLevel
-#  id: AU14AccessGovforEngineering
-#  name: Govfor Engineering
+- type: accessLevel
+  id: AU14AccessGovforEngineering
+  name: Govfor Engineering
 
 - type: accessLevel
   id: AU14AccessGovforFTL

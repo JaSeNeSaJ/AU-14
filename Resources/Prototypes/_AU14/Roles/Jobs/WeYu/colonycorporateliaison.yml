@@ -9,15 +9,15 @@
     RMCRankWeYaExecutiveSpecialist:
     - !type:RoleTimeRequirement
       role: CMJobLiaison
-      time: 630000 # 175 hours
+      time: 180000 # 50 hours
     RMCRankWeYaSeniorExecutive:
     - !type:RoleTimeRequirement
       role: CMJobLiaison
-      time: 252000 # 70 hours
+      time: 90000 # 25 hours
     RMCRankWeYaExecutive:
     - !type:RoleTimeRequirement
       role: CMJobLiaison
-      time: 90000 # 25 hours
+      time: 36000 # 10 hours
     RMCRankWeYaJuniorExecutive: []
   startingGear: AU14GearCivilianCorporateLiaison
   icon: "CMJobIconEmpty"
@@ -26,6 +26,8 @@
   supervisors: au14-job-supervisors-colonycivilian
   accessGroups:
   - Colonist
+  - auadmin
+  - AUPrisonStaff
   - auwy
   roleWeight: 0.25
   special:

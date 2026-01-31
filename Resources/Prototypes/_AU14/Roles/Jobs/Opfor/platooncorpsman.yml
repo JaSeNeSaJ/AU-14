@@ -9,7 +9,7 @@
     RMCRankCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobOpforPlatoonCorpsman
-      time: 1200 # 20 hours
+      time: 4320000 # 20 hours
     RMCRankLanceCorporal: []
   startingGear: AU14GearopforPlatoonCorpsman
   dummyStartingGear: AU14GearopforCorpsmanDummy
@@ -27,15 +27,7 @@
   - !type:AddComponentSpecial
     components:
     - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillJtac: 1
-        RMCSkillMedical: 2
-        RMCSkillSurgery: 1
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: JobPrefix
       prefix: au14-job-prefix-opforplatooncorpsman
     - type: TacticalMapIcon

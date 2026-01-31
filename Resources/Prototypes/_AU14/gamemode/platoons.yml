@@ -14,6 +14,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
   possibleships:
     - Daybreak
     - USSBush
@@ -23,7 +24,7 @@
 
 - type: platoon
   id: LACNcommando
-  name: LACN Naval Commando Platoon
+  name: LACN Naval Commandos
   reqlist: LACNCommandosCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -37,6 +38,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14LACNcommandosectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
   possibleships:
     - Daybreak
     - USSBush
@@ -57,6 +59,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -84,21 +87,22 @@
     Dcc: AU14UPPaircrewvendor
     OperationsOfficer: AU14UPPcommandvendor
     Rto: AU14RTOVendor
+    combattech: AU14ComtechGearVendor
     SectionSergeant: AU14UPPSectionLeaderVendor
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
       - Daybreak
-  jobClassOverride:
-    SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
-    SectionSergeant: AU14JobGOVFORSectionSergeantUPP
-    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanUPP
-    PlatCo: AU14JobGOVFORPlatCoUPP
-    SquadSergeant: AU14JobGOVFORSquadSergeantUPP
-    DSPilot: AU14JobGOVFORDSPilotUPP
-    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanUPP
-    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorUPP
-    PlatOp: AU14JobGOVFORPlatOpUPP
-    DCC: AU14JobGOVFORDCCUPP
+#  jobClassOverride:
+#    SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
+#    SectionSergeant: AU14JobGOVFORSectionSergeantUPP
+#    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanUPP
+#    PlatCo: AU14JobGOVFORPlatCoUPP
+#    SquadSergeant: AU14JobGOVFORSquadSergeantUPP
+#    DSPilot: AU14JobGOVFORDSPilotUPP
+#    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanUPP
+#    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorUPP
+#    PlatOp: AU14JobGOVFORPlatOpUPP
+#    DCC: AU14JobGOVFORDCCUPP
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
 
@@ -121,17 +125,18 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14WYsupervisorequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
-  jobClassOverride:
-    SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
-    SectionSergeant: AU14JobGOVFORSectionSergeantWYPMC
-    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanWYPMC
-    PlatCo: AU14JobGOVFORPlatCoWYPMC
-    SquadSergeant: AU14JobGOVFORSquadSergeantWYPMC
-    DSPilot: AU14JobGOVFORDSPilotWYPMC
-    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanWYPMC
-    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
-    PlatOp: AU14JobGOVFORPlatOpWYPMC
-    DCC: AU14JobGOVFORDCCWYPMC
+    combattech: AU14ComtechGearVendor
+#  jobClassOverride:
+#    SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
+#    SectionSergeant: AU14JobGOVFORSectionSergeantWYPMC
+#    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanWYPMC
+#    PlatCo: AU14JobGOVFORPlatCoWYPMC
+#    SquadSergeant: AU14JobGOVFORSquadSergeantWYPMC
+#    DSPilot: AU14JobGOVFORDSPilotWYPMC
+#    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanWYPMC
+#    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
+#    PlatOp: AU14JobGOVFORPlatOpWYPMC
+#    DCC: AU14JobGOVFORDCCWYPMC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
@@ -157,19 +162,20 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14CMBCIUSectionLeader
     Pilot: AU14UPPAirCrewWeaponsVendor
-  jobClassOverride:
-    PlatCo: AU14JobGOVFORPlatCoCMBCIU
-    SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
-    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanCMBCIU
-    SquadSergeant: AU14JobGOVFORSectionSergeantCMBCIU
-    SectionSergeant: AU14JobGOVFORSectionSergeantCMBCIU
-  jobSlotOverride:
-    SquadRifleman: 14
-    PlatoonCorpsman: 2
-    SquadSergeant: 1
-    PlatCo: 1
- #  DSPilot: 1
-    SectionSergeant: 1
+    combattech: AU14ComtechGearVendor
+#  jobClassOverride:
+#    PlatCo: AU14JobGOVFORPlatCoCMBCIU
+#    SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
+#    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanCMBCIU
+#    SquadSergeant: AU14JobGOVFORSectionSergeantCMBCIU
+#    SectionSergeant: AU14JobGOVFORSectionSergeantCMBCIU
+#  jobSlotOverride:
+#    SquadRifleman: 14
+#    PlatoonCorpsman: 2
+#    SquadSergeant: 1
+#    PlatCo: 1
+#  DSPilot: 1
+#    SectionSergeant: 1
   possibleships:
       - Daybreak
       - USSBush
@@ -191,6 +197,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
   possibleships:
     - Daybreak
     - USSBush
@@ -216,6 +223,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14HAZOPSsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
   possibleships:
       - Daybreak
       - USSBush
@@ -240,6 +248,7 @@
     OperationsOfficer: AU14CCAFcommandequipmentvendor
     Rto: AU14RTOVendor
     SectionSergeant: AU14CCAFsectionleaderequipmentvendor
+    combattech: AU14ComtechGearVendor
     Pilot: AU14AircrewWeaponsVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
@@ -269,6 +278,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14prodigysectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -296,16 +306,17 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14UNISCsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
-  jobClassOverride:
-    SquadRifleman: AU14JobGOVFORSquadRifleman
-    SectionSergeant: AU14JobGOVFORSectionSergeant
-    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsman
-    PlatCo: AU14JobGOVFORPlatCo
-    SquadSergeant: AU14JobGOVFORSquadSergeant
-    DSPilot: AU14JobGOVFORDSPilot
-    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperator
-    PlatOp: AU14JobGOVFORPlatOp
-    DCC: AU14JobGOVFORDCC
+    combattech: AU14ComtechGearVendor
+#  jobClassOverride:
+#    SquadRifleman: AU14JobGOVFORSquadRifleman
+#    SectionSergeant: AU14JobGOVFORSectionSergeant
+#    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsman
+#    PlatCo: AU14JobGOVFORPlatCo
+#    SquadSergeant: AU14JobGOVFORSquadSergeant
+#    DSPilot: AU14JobGOVFORDSPilot
+#    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperator
+#    PlatOp: AU14JobGOVFORPlatOp
+#    DCC: AU14JobGOVFORDCC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   possibleships:
@@ -331,6 +342,7 @@
     Rto: AU14RTOVendor
     SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   CompatibleDropships:
@@ -343,7 +355,7 @@
 
 - type: platoon
   id: RMC
-  name: RMC
+  name: TWE RMC
   reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
@@ -357,6 +369,7 @@
     Rto: AU14RMCRTOVendor # TODO: RMC RTO's
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
+    combattech: AU14ComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   jobClassOverride:

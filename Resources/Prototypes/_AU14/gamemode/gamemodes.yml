@@ -12,6 +12,7 @@
   - AUPlanetStableGarrison
   #- AUPlanetShepherdsPride
   - AUPlanetFlight
+  - AUPlanetLV759
 
   rules:
   - AuVoteRule
@@ -30,10 +31,10 @@
   description: Insurgency mode
   requiresGovforVote: true
   supportedPlanets:
-    #- AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV747
+    - AUPlanetLV759
 
    # - AUPlanetStableGarrison
   rules:
@@ -137,8 +138,10 @@
       AU14JobGOVFORSectionSergeant: 1
       AU14JobGOVFORSquadSergeant: 3
       AU14JobGOVFORSquadAutomaticRifleman: 3
+      AU14JobGOVFORSquadCombatTech: 6
       AU14JobGOVFORSquadRifleman: 100
       AU14JobGOVFORAuxSupportSynth: 2
+      AU14JobGOVFORadvisor: 1
 
 
 - type: entity
@@ -158,8 +161,10 @@
       AU14JobOpforSectionSergeant: 1
       AU14JobOpforSquadSergeant: 3
       AU14JobOpforSquadAutomaticRifleman: 3
+      AU14JobOPFORSquadCombatTech: 6
       AU14JobOpforSquadRifleman: 100
       AU14JobOPFORAuxSupportSynth: 2
+      AU14JobOPFORadvisor: 1
 
 - type: entity
   id: AddClf

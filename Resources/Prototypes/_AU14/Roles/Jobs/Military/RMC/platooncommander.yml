@@ -9,11 +9,21 @@
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
+  - !type:AgeRequirement
+    requiredAge: 25
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxiety
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   ranks:
     RMC_Captain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatCo
-      time: 7200 # 120 hours
+      time: 432000 # 120 hours
     RMC_Lieutenant: []
   startingGear: AU14GearGOVFORPlatCo
   dummyStartingGear: AU14GearGOVFORPlatCoDummy

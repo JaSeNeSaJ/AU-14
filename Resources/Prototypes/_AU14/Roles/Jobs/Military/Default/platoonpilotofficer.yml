@@ -10,11 +10,11 @@
     RMCRankCaptain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 7200 # 120 hours
+      time: 432000 # 120 hours
     RMCRankFirstLT:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 3600 # 60 hours
+      time: 216000 # 60 hours
     RMCRankSecondLT: []
   startingGear: AU14GearGOVFORDSPilot
   dummyStartingGear: AU14GearGOVFORDSPilotDummy
@@ -36,18 +36,7 @@
     - type: Marine
       Faction: govfor
     - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillIntel: 1
-        RMCSkillJtac: 2
-        RMCSkillLeadership: 1
-        RMCSkillMedical: 2
-        RMCSkillOverwatch: 1
-        RMCSkillPilot: 2
-        RMCSkillPowerLoader: 2
-        RMCSkillSurgery: 1
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonDP
     - type: JobPrefix
       prefix: au14-job-prefix-govfordspilot
     - type: TacticalMapIcon

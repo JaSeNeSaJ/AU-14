@@ -7,7 +7,7 @@
   - AU14AccessOpforSecurity
   - AU14AccessOpforFTL
   - AU14AccessOpforMedical
-  #- AU14AccessOpforEngineering
+  - AU14AccessOpforEngineering
   - AU14AccessOpforGunner
   - AU14AccessOpforPilot
 
@@ -42,6 +42,13 @@
   tags:
   - AU14AccessOpfor
   - AU14AccessOpforSquad
+
+- type: accessGroup
+  id: AU14OpforEngineering
+  tags:
+  - AU14AccessOpfor
+  - AU14AccessOpforSquad
+  - AU14AccessOpforEngineering
 
 - type: accessGroup
   id: AU14Opfor
