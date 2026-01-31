@@ -6,6 +6,8 @@
    - ColonyFall
   whitelistedgamemodes:
       - DistressSignal
+  winconditions:
+  - KillAllColonist
 
 - type: partySpawn
   id: XenoThreatSpawns
@@ -32,9 +34,11 @@
   leadersToSpawn:
     CMXenoQueen: 1
   gruntsToSpawn:
-    CMXenoLarva: 2
+    CMXenoLarva: 1
   scalewithpop: true
   spawnTogether: true
+  winconditions:
+  - KillAllColonist
   Markers:
     Member: xenocf
     Leader: xenocf

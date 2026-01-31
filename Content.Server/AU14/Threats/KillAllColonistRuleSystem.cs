@@ -1,9 +1,11 @@
+using System;
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
+using Content.Shared.GameTicking.Components;
 
 namespace Content.Server.AU14.Threats;
 
@@ -29,26 +31,41 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
         if (ev.NewMobState != MobState.Dead)
             return;
 
-        // Check if any AUColonist mobs remain
-        var anyColonist = false;
+        // Get the active rule entity and its component to read Percent
+        var queryRule = EntityQueryEnumerator<KillAllColonistRuleComponent, GameRuleComponent>();
+        if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
+            return;
+
+        var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
+
+        // Count total and dead AUColonist mobs
+        var total = 0;
+        var dead = 0;
+
         var query = _entityManager.EntityQueryEnumerator<MobStateComponent, NpcFactionMemberComponent>();
-        while (query.MoveNext(out var uid, out var mobState, out var faction))
+        while (query.MoveNext(out var _, out var mobState, out var faction))
         {
-            if (mobState.CurrentState != MobState.Dead && faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "aucolonist"))
+            if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "aucolonist"))
             {
-                anyColonist = true;
-                break;
+                total++;
+                if (mobState.CurrentState == MobState.Dead)
+                    dead++;
             }
         }
 
-        if (!anyColonist)
+        if (total == 0)
+            return; // nothing to count
+
+        var percentDead = (int) ((double)dead / total * 100.0);
+
+        if (percentDead >= requiredPercent)
         {
             // End round, threat wins
-            var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+            var winMessage = _auRoundSystem._selectedthreat.WinMessage;
             if (!string.IsNullOrEmpty(winMessage))
                 _gameTicker.EndRound(winMessage);
             else
-                _gameTicker.EndRound("Threat victory: All AUColonists eliminated.");
+                _gameTicker.EndRound("Threat victory: Required percentage of AUColonists eliminated.");
         }
     }
 }

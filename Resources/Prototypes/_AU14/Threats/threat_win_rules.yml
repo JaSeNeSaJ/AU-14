@@ -2,10 +2,11 @@
   id: KillAllGovforRule
   parent: BaseGameRule
   name: Kill All Govfor
-  description: Threat wins when all Govfor are dead.
+  description: Threat wins when all Govfor are dead (or when specified percent are dead).
   components:
     - type: GameRule
     - type: KillAllGovforRule
+      percent: 100
 
 - type: entity
   id: ThreatSurviveRule
@@ -21,7 +22,8 @@
   id: KillAllColonistRule
   parent: BaseGameRule
   name: Kill All Colonists
-  description: Threat wins when all AUColonists are dead.
+  description: Threat wins when all AUColonists are dead (or when specified percent are dead).
   components:
     - type: GameRule
     - type: KillAllColonistRule
+      percent: 95
