@@ -34,11 +34,13 @@
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
-    - NSPAInvestigationPartyArmored
+    - NSPAInvestigationParty
+    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - cultistThirdParty
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
+
 - type: entity
   id: AUPlanetShepherdsPride
   name: Shepherd's Pride
@@ -68,7 +70,8 @@
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
-    - NSPAInvestigationPartyArmored
+    - NSPAInvestigationParty
+    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - cultistThirdParty
     - CMBInvestigationParty
@@ -109,8 +112,9 @@
     thirdparties:
     - ICRCReliefParty
     - TimeSharesSalesman
-    - UACGLostTeam
     - NSPAInvestigationPartyArmored
+    - NSPAInvestigationParty
+    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - cultistThirdParty
     - CMBInvestigationParty
@@ -145,7 +149,8 @@
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
-    - NSPAInvestigationPartyArmored
+    - NSPAInvestigationParty
+    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - cultistThirdParty
     - CMBInvestigationParty
@@ -210,3 +215,37 @@
     - XenoThreat
    # thirdparties:
    # - cultistThirdParty
+
+- type: entity
+  id: AUPlanetLV759
+  name: Hybrisa Metropolitan
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Hybrisa Metropolitan"
+    mapId: hybrisametro
+    camouflage: Urban
+    announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
+    platoonsOpfor:
+    - WEYU
+    - VAIPO
+    - RMC
+    platoonsGovfor:
+    - USCM
+    - ProdigySF
+    - UPP
+    defaultgovfor: USCM
+    defaultopfor: RMC
+    govforinship: false
+    opforinship: true
+    daycycleenabled: false
+    faction: ua
+    threats:
+    - XenoThreat
+    - XenoThreatCF
+    thirdparties:
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - NSPAInvestigationPartyArmored
+    - NSPAInvestigationParty
+    - NSPAInvestigationPartyAlt
+    - LACNSniperteam

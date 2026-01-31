@@ -9,7 +9,7 @@
     RMCRankCivilianSeniorOfficer:
     - !type:RoleTimeRequirement
       role: AU14JobCivilianEmergencyResponseOfficer
-      time: 1200 # 20 hours
+      time: 72000 # 20 hours
     RMCRankCivilianOfficer: []
   startingGear: AU14GearCivilianEmergencyResponseOfficer
   icon: "CMJobIconEmpty"

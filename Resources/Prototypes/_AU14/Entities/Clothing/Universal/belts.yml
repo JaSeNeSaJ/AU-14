@@ -26,3 +26,50 @@
     - id: CMHealthAnalyzer
     - id: CMHandsLatex
 
+- type: entity
+  parent: CMBeltUtility
+  id: AU14BeltUtilityFilled
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMScrewdriver
+    - id: CMWrench
+    - id: RMCWelderPVE
+    - id: CMCrowbar
+    - id: CMWirecutter
+    - id: RMCCableCoil30
+    - id: CMMultitool
+    - id: CMEntrenchingTool
+
+- type: entity
+  parent: CMBeltUtilityCombat
+  id: AU14BeltUtilityCombatFilled
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMScrewdriver
+    - id: CMWrench
+    - id: RMCWelderPVE
+    - id: CMCrowbar
+    - id: CMWirecutter
+    - id: RMCCableCoil30
+    - id: CMMultitool
+    - id: CMEntrenchingTool
+
+- type: entity
+  parent: RMCPouchToolsSoc
+  id: AU14PouchToolsFilledComtech
+  suffix: Filled, Comtech
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMScrewdriver
+    - id: CMWrench
+    - id: RMCWelderPVE
+    - id: CMCrowbar
+    - id: CMWirecutter
+    - id: RMCCableCoil30
+    - id: CMMultitool
+    - id: CMEntrenchingTool

@@ -18,9 +18,9 @@
   id: AU14AccessOpforMedical
   name: Opfor Medical
 
-#- type: accessLevel
-#  id: AU14AccessOpforEngineering
-#  name: Opfor Engineering
+- type: accessLevel
+  id: AU14AccessOpforEngineering
+  name: Opfor Engineering
 
 - type: accessLevel
   id: AU14AccessOpforFTL

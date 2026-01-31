@@ -1,3 +1,5 @@
+# Infantry kits
+
 - type: entity
   parent: RMCKitBase
   id: AU14KitUNISCRiflemanUPP
@@ -132,6 +134,38 @@
 
 - type: entity
   parent: RMCKitBase
+  id: AU14KitUNISCRiflemanRMC
+  name: UNISC Royal Marines Equipment Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,0
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+    - id: AU14RMCHeadTurban
+    - id: AU14RMCHeadBeret
+    - id: RMCHeadRoyalBeanie
+    - id: AU14RMCHands
+    - id: AU14RMCFatiguesDesert
+    - id: AU14RMCFatiguesBlack
+    - id: AU14RMCBootsRoyal
+    - id: AU14TantoA
+    - id: AU14WeaponRifleF9030A1
+    - id: AU14WeaponPistolL54
+    - id: AU14RMCPatch
+    - id: AU14TWEPatch
+  
+# Aircrew kits
+
+- type: entity
+  parent: RMCKitBase
   id: AU14KitUNISCAircrewUSASF
   name: UNISC USASF Aircrew Equipment Kit
   components:
@@ -182,3 +216,63 @@
     - id: AU14WeaponPistolTPR23BEmpty
     - id: AU14PatchUAFlag
     - id: AU14PatchBrazilFlag
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitUNISCAircrewRMC
+  name: UNISC Royal Marines Aircrew Equipment Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,0
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+    - id: AU14RMCHeadHelmetAircrew
+    - id: AU14RMCHeadHelmetAircrew
+    - id: AU14RMCHands
+    - id: AU14RMCPilotJumpsuit
+    - id: AU14RMCBootsRoyal
+    - id: AU14TantoA
+    - id: AU14WeaponPistolL54
+    - id: AU14RMCPatch
+    - id: AU14TWEPatch
+
+# Command kits
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitUNISCCommandRMC
+  name: UNISC Royal Marines Command Equipment Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,0
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+    - id: AU14RMCHeadTurban
+    - id: AU14RMCHeadBeretOfficer
+    - id: AU14RMCHeadCapOfficer
+    - id: RMCHeadRoyalBeanie
+    - id: AU14RMCHands
+    - id: AU14RMCFatiguesService
+    - id: AU14RMCFatiguesBlackTeamlead
+    - id: AU14RMCFatiguesDesertTeamlead
+    - id: AU14RMCBootsRoyal
+    - id: AU14TantoA
+    - id: AU14WeaponPistolL54
+    - id: AU14RMCPatch
+    - id: AU14TWEPatch

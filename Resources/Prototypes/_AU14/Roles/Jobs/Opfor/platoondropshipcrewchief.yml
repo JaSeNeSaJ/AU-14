@@ -9,15 +9,15 @@
     AU14RankUSASFCMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobOpforDCC
-      time: 7200 # 120 hours
+      time: 432000 # 120 hours
     AU14RankUSASFSMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobOpforDCC
-      time: 3600 # 60 hours
+      time: 216000 # 60 hours
     AU14RankUSASFMasterSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobOpforDCC
-      time: 720 # 12 hours
+      time: 43200 # 12 hours
     AU14RankUSASFTechnicalSergeant: []
   startingGear: AU14GearopforDCC
   dummyStartingGear: AU14GearopforDCCDummy
@@ -39,18 +39,7 @@
     - type: Marine
       Faction: opfor
     - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillIntel: 1
-        RMCSkillJtac: 2
-        RMCSkillLeadership: 1
-        RMCSkillMedical: 2
-        RMCSkillOverwatch: 1
-        RMCSkillPilot: 2
-        RMCSkillPowerLoader: 2
-        RMCSkillSurgery: 1
-        RMCSkillPolice: 1
+      preset: AU14SkillPresetPlatoonDCC
     - type: JobPrefix
       prefix: au14-job-prefix-opfordcc
     - type: TacticalMapIcon
