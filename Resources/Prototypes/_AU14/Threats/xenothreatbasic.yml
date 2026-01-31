@@ -14,7 +14,7 @@
   leadersToSpawn:
     CMXenoQueen: 1
   gruntsToSpawn:
-    CMXenoLarva: 3
+    CMXenoLarva: 4
   scalewithpop: true
   spawnTogether: true
   #hiveevolution: true
@@ -27,7 +27,8 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
-
+  winconditions:
+  - KillAllColonistRule
 
 - type: partySpawn
   id: XenoThreatSpawnsCF
@@ -37,8 +38,6 @@
     CMXenoLarva: 1
   scalewithpop: true
   spawnTogether: true
-  winconditions:
-  - KillAllColonistRule
   Markers:
     Member: xenocf
     Leader: xenocf

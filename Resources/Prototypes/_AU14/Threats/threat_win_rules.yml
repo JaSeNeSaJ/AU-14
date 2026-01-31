@@ -4,7 +4,6 @@
   name: Kill All Govfor
   description: Threat wins when all Govfor are dead (or when specified percent are dead).
   components:
-    - type: GameRule
     - type: KillAllGovforRule
       percent: 100
 
@@ -14,7 +13,6 @@
   name: Threat Survive Timer
   description: Threat wins if they survive X minutes after round start.
   components:
-    - type: GameRule
     - type: ThreatSurviveRule
       minutes: 120 # Set this to the desired number of minutes
 
@@ -24,6 +22,5 @@
   name: Kill All Colonists
   description: Threat wins when all AUColonists are dead (or when specified percent are dead).
   components:
-    - type: GameRule
     - type: KillAllColonistRule
       percent: 95
