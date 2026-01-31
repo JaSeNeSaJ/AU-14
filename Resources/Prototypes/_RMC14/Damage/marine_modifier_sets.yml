@@ -34,7 +34,7 @@
     Shock: 1.15
     Cold: 1.15
     Caustic: 1.15
-    Slash: 8.0
+    Slash: 17.0
 
 - type: damageModifierSet
   id: CMBloodlossHuman

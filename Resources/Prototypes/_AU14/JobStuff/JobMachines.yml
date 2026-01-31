@@ -71,6 +71,20 @@
           tags:
           - AUwood
 
+
+- type: entity
+  parent: AUSubmissionPointBase
+  id: AUSubmissionPointVegetables
+  name: Submission Point (Vegetables)
+  description: A place to submit  resources for shipping.
+  components:
+  - type: ItemSlots
+    slots:
+      ItemCabinet:
+        whitelist:
+          tags:
+          - Vegetable
+
 - type: Tag
   id: SteelOre
 
