@@ -345,7 +345,7 @@
   components:
   - type: NpcFactionMember
     factions:
-    - opfor
+    - OPFOR
 
 - type: entity
   parent: AU14MobK9Bag
@@ -354,7 +354,7 @@
   components:
   - type: NpcFactionMember
     factions:
-    - opfor
+    - OPFOR
 
 - type: entity
   parent: AU14MobK9MP
@@ -363,7 +363,7 @@
   components:
   - type: NpcFactionMember
     factions:
-    - opfor
+    - OPFOR
 
 - type: entity
   parent: AU14MobK9
@@ -372,4 +372,4 @@
   components:
   - type: NpcFactionMember
     factions:
-    - opfor
+    - OPFOR
