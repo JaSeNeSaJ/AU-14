@@ -5,6 +5,12 @@
   description: au14-job-description-govforsquadautomaticrifleman
   setPreference: true
   playTimeTracker: AU14JobGOVFORSquadAutomaticRifleman
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
+    - NonResuscitable
   ranks:
     RMCRankCorporal:
     - !type:RoleTimeRequirement

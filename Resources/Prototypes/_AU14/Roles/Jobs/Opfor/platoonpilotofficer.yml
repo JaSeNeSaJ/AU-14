@@ -5,7 +5,16 @@
   description: au14-job-description-opfordspilot
   setPreference: true
   canBeAntag: false
-
+  requirements:
+  - !type:AgeRequirement
+    requiredAge: 25
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   playTimeTracker: AU14JobOpforDSPilot
   ranks:
     RMCRankCaptain:

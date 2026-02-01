@@ -4,6 +4,12 @@
   name: au14-job-name-opforsquadcombattech
   description: au14-job-description-opforsquadcombattech
   setPreference: true
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
+    - NonResuscitable
   playTimeTracker: AU14JobOPFORSquadCombatTech
   ranks:
     RMCRankCorporal:

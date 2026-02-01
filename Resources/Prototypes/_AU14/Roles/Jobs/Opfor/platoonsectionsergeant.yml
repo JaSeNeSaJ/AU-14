@@ -6,6 +6,14 @@
   setPreference: true
   canBeAntag: false
   playTimeTracker: AU14JobOpforSectionSergeant
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   ranks:
     RMCRankMasterSergeant:
     - !type:RoleTimeRequirement

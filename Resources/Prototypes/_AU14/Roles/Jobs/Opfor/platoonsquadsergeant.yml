@@ -4,6 +4,14 @@
   name: au14-job-name-opforsquadsergeant
   description: au14-job-description-opforsquadsergeant
   setPreference: true
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   playTimeTracker: AU14JobOpforSquadSergeant
   ranks:
     RMCRankSergeant: []

@@ -5,6 +5,12 @@
   description: au14-job-description-govfordcc
   setPreference: true
   canBeAntag: false
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
+    - NonResuscitable
   playTimeTracker: AU14JobGOVFORDCCRMC
   ranks:
     RMC_WarrantOfficer1:
