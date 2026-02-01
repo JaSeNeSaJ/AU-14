@@ -1,6 +1,6 @@
 - type: entity
   parent: CMBaseMask
-  id: AU14RMCMaskGas
+  id: AU14MaskGasRMC
   name: royal marine gasmask
   description: The standard issue gasmask utilized by the TWE Royal Marines Commandos and IASF.
   components:

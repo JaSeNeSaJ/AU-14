@@ -626,7 +626,7 @@
         amount: 120
       - id: AU14WeaponRifleKramerMagazineStandard
         amount: 120
-      - id: AU14MagazineRifleF9030A1
+      - id: AU14MagazineRifleL90
         amount: 120
     - name: Handgun Ammunition
       entries:

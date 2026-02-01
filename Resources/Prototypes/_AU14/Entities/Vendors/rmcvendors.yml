@@ -12,19 +12,19 @@
     sections:
     - name: Fatigues
       entries:
-      - id: AU14RMCFatiguesDesert
+      - id: AU14FatiguesDesertRMC
         amount: 60
-      - id: AU14RMCFatiguesBlack
+      - id: AU14FatiguesBlackRMC
         amount: 60
     - name: Footwear
       entries:
-      - id: AU14RMCBootsRoyal
+      - id: RMCBootsRoyal
         amount: 120
     - name: Gloves
       entries:
-      - id: AU14RMCHands
+      - id: AU14HandsRMC
         amount: 40
-      - id: AU14RMCHandsSilver
+      - id: AU14HandsSilverRMC
         amount: 40
     - name: Webbings
       entries:
@@ -34,23 +34,23 @@
         amount: 25
       - id: AU14WebbingDumpPouch
         amount: 25
-      - id: AU14RMCWebbingAdminPouch
+      - id: AU14WebbingAdminPouchRMC
         amount: 15
-      - id: AU14RMCWebbingDropPouch
+      - id: AU14WebbingDropPouchRMC
         amount: 15
       - id: AU14WebbingKnivesFilled
         amount: 1
     - name: Headgear
       entries:
-      - id: AU14RMCHeadHelmet
+      - id: AU14HeadHelmetRMC
         amount: 25
-      - id: AU14RMCHeadHelmetBallistic
+      - id: AU14HeadHelmetRMCBallistic
         amount: 25
-      - id: AU14RMCHeadTurban
+      - id: AU14HeadTurbanRMC
         amount: 25
       - id: RMCHeadRoyalBeanie
         amount: 25
-      - id: AU14RMCHeadBeret
+      - id: AU14HeadBeretRMC
         amount: 25
       - id: AU14DesertBoonieHat
         amount: 25
@@ -74,37 +74,37 @@
         amount: 5
     - name: Armor
       entries:
-      - id: AU14RMCArmor
+      - id: AU14ArmorRMC
         amount: 75
-      - id: AU14RMCArmorLight
+      - id: AU14ArmorLightRMC
         amount: 75
-      - id: AU14RMCArmorPadded
+      - id: AU14ArmorPaddedRMC
         amount: 75
     - name: Armor Components
       entries:
-      - id: AU14RMCArmorGarbShinGuards
+      - id: AU14ArmorGarbShinGuardsRMC
         amount: 25
-      - id: AU14RMCArmorGarbShoulderPads
+      - id: AU14ArmorGarbShoulderPadsRMC
         amount: 25
-      - id: AU14RMCArmorGarbMagazineWebbing
+      - id: AU14ArmorGarbMagazineWebbingRMC
         amount: 2
-      - id: AU14RMCArmorGarbSmallWebbing
+      - id: AU14ArmorGarbSmallWebbingRMC
         amount: 2
       - id: AU14ArmorGarbDesertPoncho
         amount: 25
     - name: Backpack
       entries:
-      - id: AU14RMCBackpack
+      - id: AU14BackpackRMC
         amount: 15
-      - id: AU14RMCFrameBackpack
+      - id: AU14FrameBackpackRMC
         amount: 3
-      - id: AU14RMCLargeBackpack
+      - id: AU14LargeBackpackRMC
         amount: 3
-      - id: AU14RMCSmallBackpack
+      - id: AU14SmallBackpackRMC
         amount: 15
 #      - id: Marine Chestrig
 #        amount: 15
-      - id: AU14RMCWelderBackpack
+      - id: AU14WelderBackpackRMC
         amount: 2
       - id: RMCScabbardShotgun
         amount: 2
@@ -112,27 +112,27 @@
         amount: 1
     - name: Belts
       entries:
-      - id: AU14RMCBeltMarine
+      - id: AU14BeltMarineRMC
         amount: 25
       - id: RMCBeltGrenade
         amount: 2
-      - id: AU14RMCShotgunShellLoadingRig
+      - id: AU14ShotgunShellLoadingRigRMC
         amount: 2
-      - id: AU14RMCBeltHolsterPistol
+      - id: AU14BeltHolsterPistolRMC
         amount: 15
 #      - id: M276 Pattern M82F Holster Rig
 #        amount: 5
       - id: CMBeltKnifeFilled
         name: M276 Knife Rig (Full)
         amount: 1
-      - id: AU14RMCBeltUtilityGeneral
+      - id: AU14BeltUtilityGeneralRMC
         amount: 15
     - name: Pouches
       entries:
       - id: RMCPouchBayonet
         name: Bayonet Sheath
         amount: 15
-      - id: AU14RMCPouchFlareFilled
+      - id: AU14PouchFlareFilledRMC
         name: Flare Pouch (Full)
         amount: 15
       - id: RMCPouchDocumentSmall
@@ -163,7 +163,7 @@
 #        amount: 1
     - name: Mask
       entries:
-      - id: AU14RMCMaskGas
+      - id: AU14MaskGasRMC
         amount: 20
       - id: CMMaskCoif
         amount: 10
@@ -273,9 +273,9 @@
       - id: CMEntrenchingTool
         recommended: true
         amount: 30
-      - id: AU14TantoA
+      - id: RMCTantoA
         amount: 15
-      - id: AU14TantoB
+      - id: RMCTantoB
         amount: 15
       - id: CMM11Knife
         amount: 15
@@ -335,9 +335,9 @@
         amount: 5
       - id: RMCWeaponPistolM82F
         amount: 2
-      - id: AU14RMCBoxPackFlare
+      - id: AU14BoxPackFlareRMC
         amount: 5
-      - id: AU14RMCPackFlare
+      - id: AU14PackFlareRMC
         amount: 5
       - id: RMCBoxPackFlareCAS
         amount: 1
@@ -406,8 +406,12 @@
     - name: Medical Storage
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
-      - id: AU14RMCBeltMedical
-      - id: AU14RMCBeltMedicBag
+      - id: AU14BeltMedicalRMC
+      - id: AU14BeltMedicBagRMC
+    - name: Medical Backpacks
+      entries:
+      - id: AU14CorpsmanBackpackRMC
+        amount: 5
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -459,7 +463,7 @@
     - name: Medical Helmets
       choices: { CMUPlatoonMedicalHelmet: 1 }
       entries:
-      - id: AU14RMCHeadHelmetMedic
+      - id: AU14HeadHelmetRMCMedic
     - name: Medical Gloves
       choices: { CMUPlatoonMedicalGloves: 1 }
       entries:
@@ -485,11 +489,11 @@
     - name: Fatigues
       choices: { CMUPlatoonAirCrewFatigues: 1 }
       entries:
-      - id: AU14RMCPilotJumpsuit
+      - id: AU14PilotJumpsuitRMC
     - name: Body Armor
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
-      - id: AU14RMCICPS2
+      - id: AU14ICPS2RMC
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -502,8 +506,8 @@
     - name: Headgear
       choices: { CMUPlatoonAirCrewHeadgear: 1 }
       entries:
-      - id: AU14RMCHeadHelmetAircrew
-      - id: AU14RMCHeadHelmetAircrewAlt
+      - id: AU14HeadHelmetRMCAircrew
+      - id: AU14HeadHelmetRMCAircrewAlt
     - name: Flight Visor
       choices: { CMUPlatoonAirCrewFlightVisor: 1 }
       entries:
@@ -517,23 +521,23 @@
       - id: AU14WebbingMagazine
       - id: AU14WebbingUtility
       - id: AU14WebbingDumpPouch
-      - id: AU14RMCWebbingAdminPouch
-      - id: AU14RMCWebbingDropPouch
+      - id: AU14WebbingAdminPouchRMC
+      - id: AU14WebbingDropPouchRMC
     - name: Backpack
       choices: { CMUPlatoonAirCrewBackpack: 1 }
       entries:
-      - id: AU14RMCSmallBackpack
+      - id: AU14SmallBackpackRMC
     - name: Belts
       choices: { CMUPlatoonAirCrewBelts: 1 }
       entries:
-      - id: AU14RMCBeltHolsterPistol
-      - id: AU14RMCBeltUtilityGeneral
+      - id: AU14BeltHolsterPistolRMC
+      - id: AU14BeltUtilityGeneralRMC
     - name: Pouches
       choices: { CMUPlatoonAirCrewPouches: 2 }
       entries:
       - id: RMCPouchBayonet
         name: Bayonet Sheath
-      - id: AU14RMCPouchFlareFilled
+      - id: AU14PouchFlareFilledRMC
         name: Flare Pouch (Full)
       - id: RMCPouchDocumentSmall
       - id: RMCPouchMagazine
@@ -570,8 +574,8 @@
     - name: Medical Storage
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
-      - id: AU14RMCBeltMedical
-      - id: AU14RMCBeltMedicBag
+      - id: AU14BeltMedicalRMC
+      - id: AU14BeltMedicBagRMC
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -636,27 +640,27 @@
     sections:
     - name: Fatigues
       entries:
-      - id: AU14RMCFatiguesService
+      - id: AU14FatiguesServiceRMC
         amount: 2
-      - id: AU14RMCFatiguesBlackTeamlead
+      - id: AU14FatiguesBlackRMCTeamlead
         amount: 2
-      - id: AU14RMCFatiguesDesertTeamlead
+      - id: AU14FatiguesDesertRMCTeamlead
         amount: 2
     - name: Footwear
       entries:
-      - id: AU14RMCBootsRoyal
+      - id: RMCBootsRoyal
         amount: 2
       - id: RMCShoesLaceup
         amount: 2
     - name: Headgear
       entries:
-      - id: AU14RMCHeadHelmet
+      - id: AU14HeadHelmetRMC
         amount: 2
-      - id: AU14RMCHeadHelmetBallistic
+      - id: AU14HeadHelmetRMCBallistic
         amount: 2
-      - id: AU14RMCHeadCapOfficer
+      - id: AU14HeadCapOfficerRMC
         amount: 2
-      - id: AU14RMCHeadBeretOfficer
+      - id: AU14HeadBeretRMCOfficer
         amount: 2
         name: Officer Beret
       - id: AU14JunglePatrolCap
@@ -699,11 +703,11 @@
     - name: Helmet
       choices: { SmartgunHelmet: 1 }
       entries:
-      - id: AU14RMCHeadHelmetHeavy
+      - id: AU14HeadHelmetRMCHeavy
     - name: Smartgun Harness
       choices: { SmartgunHarness: 1 }
       entries:
-      - id: AU14RMCArmorSmartGunDesertCombatHarness
+      - id: AU14ArmorSmartGunDesertCombatHarnessRMC
     - name: Smartgun Belts
       choices: { SmartgunBelts: 1 }
       entries:
@@ -728,11 +732,11 @@
     sections:
     - name: Helmets and Hats
       entries:
-      - id: AU14RMCHeadHelmet
+      - id: AU14HeadHelmetRMC
         amount: 1
-      - id: AU14RMCHeadHelmetBallistic
+      - id: AU14HeadHelmetRMCBallistic
         amount: 1
-      - id: AU14RMCHeadBeretLead
+      - id: AU14HeadBeretRMCLead
         amount: 1
         name: Sergeant Beret
       - id: AU14JunglePatrolCap
@@ -741,9 +745,9 @@
         amount: 1
     - name: Uniforms
       entries:
-      - id: AU14RMCFatiguesBlackTeamlead
+      - id: AU14FatiguesBlackRMCTeamlead
         amount: 1
-      - id: AU14RMCFatiguesDesertTeamlead
+      - id: AU14FatiguesDesertRMCTeamlead
         amount: 1
     - name: Miscellaneous
       entries:
@@ -769,17 +773,17 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponRifleF9030A1
+      - id: AU14WeaponRifleL90
     - name: Rifle Ammunition
       entries:
-      - id: AU14MagazineRifleF9030A1
+      - id: AU14MagazineRifleL90
         amount: 450
-      - id: AU14MagazineRifleF9030A1AP
+      - id: AU14MagazineRifleL90AP
         amount: 8
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: AU14WeaponPistolL54
+      - id: RMCWeaponPistolL54Empty
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolL54
@@ -791,11 +795,11 @@
       - id: AU14AttachmentTwoPointSling
     - name: Explosives
       entries:
-      - id: AU14RMCBoxHEDP
+      - id: AU14BoxHEDPRMC
         amount: 1
-      - id: AU14RMCPacketGrenadeSmokeFilled
+      - id: AU14PacketGrenadeSmokeRMCFilled
         amount: 2
-      - id: AU14RMCPacketGrenadeIncendiary
+      - id: AU14PacketGrenadeIncendiaryRMC
         amount: 2
       - id: RMCExplosivePlastic
         amount: 2
@@ -853,33 +857,33 @@
         amount: 1
     - name: Marksman kit
       entries:
-      - id: AU14RMCHeadHelmetSniper
+      - id: AU14HeadHelmetRMCSniper
         amount: 1
-      - id: AU14WeaponRifleF9030A1M
+      - id: AU14WeaponRifleL90M
         amount: 1
-      - id: AU14MagazineRifleF9030A1Mextended
+      - id: AU14MagazineRifleL90Mextended
         amount: 4
-      - id: AU14MagazineRifleF9030A1MAP
+      - id: AU14MagazineRifleL90MAP
         amount: 2
-      - id: AU14MagazineRifleF9030A1M
+      - id: AU14MagazineRifleL90M
         amount: 12
     - name: Pointman kit
       entries:
-      - id: AU14RMCHeadHelmetHeavy
+      - id: AU14HeadHelmetRMCHeavy
         amount: 1
-      - id: AU14RMCArmorRoyalPointman
+      - id: AU14ArmorPointmanRMC
         amount: 1
-      - id: AU14WeaponRifleF9030A1B
+      - id: AU14WeaponRifleL90B
         amount: 1
       - id: RMCBoxShotgunBuckshot
         amount: 8
-      - id: AU14MagazineRifleF9030A1extended
+      - id: AU14MagazineRifleL90extended
         amount: 5
-      - id: AU14MagazineRifleF9030A1AP
+      - id: AU14MagazineRifleL90AP
         amount: 2
     - name: Ballistic shields
       entries:
-      - id: AU14RMCBallisticShield
+      - id: AU14BallisticShieldRMC
         amount: 1
 
 - type: entity
@@ -896,15 +900,15 @@
     sections:
     - name: Personal defense weapons
       entries:
-      - id: AU14WeaponSMGF9030A2
+      - id: AU14WeaponSMGL90A2
         amount: 2
     - name: PDW Ammunition
       entries:
-      - id: AU14MagazineSMGF9030A2
+      - id: AU14MagazineSMGL90A2
         amount: 20
     - name: Handguns
       entries:
-      - id: AU14WeaponPistolL54
+      - id: RMCWeaponPistolL54Empty
         amount: 2
     - name: Handgun Ammunition
       entries:

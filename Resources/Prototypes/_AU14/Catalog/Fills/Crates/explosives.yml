@@ -1,42 +1,42 @@
 - type: entity
   parent: RMCCrateExplosives
-  id: AU14RMCCrateGrenadesHighExplosive
+  id: AU14CrateGrenadesHighExplosiveRMC
   name: 30mm HEDP blast grenades crate (x6)
   suffix: RM
   components:
   - type: StorageFill
     contents:
-    - id: AU14RMCPacketGrenadeHighExplosiveFilled
+    - id: AU14PacketGrenadeHighExplosiveRMCFilled
       amount: 2
 
 - type: entity
   parent: RMCCrateExplosives
-  id: AU14RMCCrateGrenadesIncendiary
+  id: AU14CrateGrenadesIncendiaryRMC
   name: 30mm HIDP incendiary grenades crate (x6)
   suffix: RM
   components:
   - type: StorageFill
     contents:
-    - id: AU14RMCPacketGrenadeIncendiaryFilled
+    - id: AU14PacketGrenadeIncendiaryFilledRMC
       amount: 2
 
 - type: entity
   parent: RMCCrateExplosives
-  id: AU14RMCCrateGrenadesSmoke
+  id: AU14CrateGrenadesSmokeRMC
   name: 30mm HSDP smoke grenades crate (x6)
   suffix: RM
   components:
   - type: StorageFill
     contents:
-    - id: AU14RMCPacketGrenadeSmokeFilled
+    - id: AU14PacketGrenadeSmokeRMCFilled
       amount: 2
 
 - type: entity
   parent: RMCCrateExplosives
-  id: AU14RMCCrateGrenadesHighExplosiveBox
+  id: AU14CrateGrenadesHighExplosiveBoxRMC
   suffix: RM
   name: 30mm HEDP blast grenade box crate (x25)
   components:
   - type: StorageFill
     contents:
-    - id: AU14RMCBoxHEDP
+    - id: AU14BoxHEDPRMC

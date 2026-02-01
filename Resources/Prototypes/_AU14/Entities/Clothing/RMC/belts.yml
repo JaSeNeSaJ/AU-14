@@ -1,7 +1,7 @@
 - type: entity
   parent: CMBeltMarine
-  id: AU14RMCBeltMarine
-  name: royal marine L295 pattern ammo load rig
+  id: AU14BeltMarineRMC
+  name: royal marine pattern ammo load rig
   description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This is the standard variant, designed for bulk ammunition-carrying operations.
   components:
   - type: Sprite
@@ -13,7 +13,7 @@
 
 - type: entity
   parent: CMBeltBaseStorage
-  id: AU14RMCBeltUtilityGeneral
+  id: AU14BeltUtilityGeneralRMC
   name: royal marine general utility pouch
   description: A small, lightweight pouch that can be clipped onto kestrel armour to provide additional storage. The newer model, while uncomfortable, can also be clipped around the waist.
   components:
@@ -29,7 +29,7 @@
 
 - type: entity
   parent: CMBeltMedical
-  id: AU14RMCBeltMedical
+  id: AU14BeltMedicalRMC
   name: royal marine medical storage rig
   description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This version is a less common configuration, designed to transport bulkier medical supplies.
   components:
@@ -40,7 +40,7 @@
 
 - type: entity
   parent: RMCBeltHolsterPistol
-  id: AU14RMCBeltHolsterPistol
+  id: AU14BeltHolsterPistolRMC
   name: royal marine general pistol holster rig
   description: Standart-issue Royal Marines Commando rig. It consists of a modular belt with various clips. This version has a holster assembly that allows one to carry the most common pistols. It also contains side pouches that can store most pistol magazines.
   components:
@@ -102,7 +102,7 @@
 
 - type: entity
   parent: CMBeltUtilityCombat
-  id: AU14RMCBeltUtilityCombat
+  id: AU14BeltUtilityCombatRMC
   name: royal marine combat toolbelt rig
   description: Standart-issue Royal Marines Commando rig of the RMC for engineers conducting repairs within combat zones. It consists of a modular belt with various clips and pouches for tools along with a holster for a sidearm. Due to the bulk of the sidearm, it is unable to hold as many tools as its standard counterpart.
   components:
@@ -126,7 +126,7 @@
 
 - type: entity
   parent: CMBeltMedicBag
-  id: AU14RMCBeltMedicBag
+  id: AU14BeltMedicBagRMC
   name: royal marine lifesaver bag
   description: Standart-issue Royal Marines Commando rig. This configuration mounts a duffel bag filled with a range of injectors and light medical supplies, and is common among medics.
   components:
@@ -139,7 +139,7 @@
 
 - type: entity
   parent: RMCM276ShotgunShellLoadingRig
-  id: AU14RMCShotgunShellLoadingRig
+  id: AU14ShotgunShellLoadingRigRMC
   name: royal marine shotgun shell loading rig
   description: An ammunition belt designed to hold shotgun shells. # or individual bullets. TODO RMC14
   components:

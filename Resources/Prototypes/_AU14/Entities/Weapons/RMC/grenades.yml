@@ -1,6 +1,6 @@
 - type: entity
   parent: CMGrenadeHighExplosive
-  id: AU14RMCGrenadeHighExplosive
+  id: AU14GrenadeHighExplosiveRMC
   suffix: RM
   components:
   - type: Sprite
@@ -8,7 +8,7 @@
 
 - type: entity
   parent: CMGrenadeSmoke
-  id: AU14RMCGrenadeSmoke
+  id: AU14GrenadeSmokeRMC
   suffix: RM
   components:
   - type: Sprite
@@ -16,7 +16,7 @@
 
 - type: entity
   parent: RMCGrenadeIncendiary
-  id: AU14RMCGrenadeIncendiary
+  id: AU14GrenadeIncendiaryRMC
   suffix: RM
   components:
   - type: Sprite

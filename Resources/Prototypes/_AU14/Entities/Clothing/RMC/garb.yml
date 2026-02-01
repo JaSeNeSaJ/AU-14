@@ -4,7 +4,7 @@
 
 - type: entity
   parent: BaseItem
-  id: AU14RMCArmorGarbShinGuards
+  id: AU14ArmorGarbShinGuardsRMC
   name: kestrel shin guards
   description: An armor piece made to be used in combination with kestrel pattern armor.
   components:
@@ -20,7 +20,7 @@
 
 - type: entity
   parent: BaseItem
-  id: AU14RMCArmorGarbShoulderPads
+  id: AU14ArmorGarbShoulderPadsRMC
   name: kestrel shoulder pads
   description: An armor piece made to be used in combination with kestrel pattern armor.
   components:
@@ -38,7 +38,7 @@
 
 - type: entity
   parent: BaseItem
-  id: AU14RMCArmorGarbMagazineWebbing
+  id: AU14ArmorGarbMagazineWebbingRMC
   name: kestrel magazine webbing
   description: A magazine webbing made to be attached to the outside of kestrel pattern armor.
   components:
@@ -54,7 +54,7 @@
 
 - type: entity
   parent: BaseItem
-  id: AU14RMCArmorGarbSmallWebbing
+  id: AU14ArmorGarbSmallWebbingRMC
   name: kestrel small webbing
   description: A small webbing made to be attached to the outside of kestrel pattern armor.
   components:
