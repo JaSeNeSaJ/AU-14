@@ -125,6 +125,22 @@
     sprite: _AU14/Clothing/RMC/belt/combat_utility.rsi
 
 - type: entity
+  parent: AU14BeltUtilityCombatRMC
+  id: AU14BeltUtilityCombatRMCFilled
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMScrewdriver
+    - id: CMWrench
+    - id: RMCWelderPVE
+    - id: CMCrowbar
+    - id: CMWirecutter
+    - id: RMCCableCoil30
+    - id: CMMultitool
+    - id: CMEntrenchingTool
+
+- type: entity
   parent: CMBeltMedicBag
   id: AU14BeltMedicBagRMC
   name: royal marine lifesaver bag

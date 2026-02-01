@@ -369,7 +369,7 @@
     Rto: AU14RMCRTOVendor # TODO: RMC RTO's
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
+    combattech: AU14RMCComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   jobClassOverride:

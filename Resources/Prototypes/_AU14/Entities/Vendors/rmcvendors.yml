@@ -411,7 +411,7 @@
     - name: Medical Backpacks
       entries:
       - id: AU14CorpsmanBackpackRMC
-        amount: 5
+        amount: 9
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -922,7 +922,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14RMCComtechGearVendor
-  name: combat technicians gear rack
+  name: Royal Marines combat technicians gear rack
   description: An automated gear rack for combat technicians.
   components:
   - type: AccessReader
@@ -947,8 +947,8 @@
     - name: Tool Storage
       choices: { CMUCTToolStorage: 1 }
       entries:
-      - id: AU14BeltUtilityCombatFilled
-        name: M276 pattern combat toolbelt rig (filled)
+      - id: AU14BeltUtilityCombatRMCFilled
+        name: royal marine combat toolbelt rig (filled)
         recommended: true
       - id: AU14PouchToolsFilledComtech
         name: tactical tools pouch (filled)
@@ -957,10 +957,8 @@
     - name: Engineering Storage Bag
       choices: { CMUPouchesCTBag: 1 }
       entries:
-      - id: CMBackpackWelder
+      - id: AU14WelderBackpackRMC
         recommended: true
-      - id: RMCSatchelWelderChestrig
-      - id: RMCSatchelWelder
     - name: Engineering Storage Pouch
       choices: { CMUPouchesCT: 1 }
       entries:
