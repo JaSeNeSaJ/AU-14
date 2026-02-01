@@ -5,6 +5,12 @@
   description: au14-job-description-radiotelephoneooerator
   setPreference: true
   playTimeTracker: AU14JobGOVFORRadioTelephoneOperatorRMC
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
+    - NonResuscitable
   ranks:
     RMC_Corporal:
     - !type:RoleTimeRequirement

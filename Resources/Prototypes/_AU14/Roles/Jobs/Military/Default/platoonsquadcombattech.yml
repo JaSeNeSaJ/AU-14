@@ -5,6 +5,12 @@
   description: au14-job-description-govforsquadcombattech
   setPreference: true
   playTimeTracker: AU14JobGOVFORSquadCombatTech
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
+    - NonResuscitable
   ranks:
     RMCRankCorporal:
     - !type:RoleTimeRequirement

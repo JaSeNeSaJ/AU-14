@@ -11,6 +11,10 @@
     time: 3600 # Set to 72000 once we are fully launched AU14 todo
   - !type:AgeRequirement
     requiredAge: 21
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - Epilepsy
   ranks:
     RMCRankFirstSergeant: []
   startingGear: AU14GearGOVFORadvisor
