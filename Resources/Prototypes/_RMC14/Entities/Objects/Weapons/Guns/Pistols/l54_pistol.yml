@@ -28,7 +28,7 @@
         startingItem: RMCMagazinePistolL54
 
 - type: entity
-  parent: RMCWeaponPistolT73
+  parent: RMCMagazinePistolL54
   id: RMCWeaponPistolL54Empty
   suffix: Empty
   components:
@@ -41,7 +41,7 @@
         priority: 2
         whitelist:
           tags:
-          - RMCMagazinePistolT73
+          - RMCMagazinePistolL54
 
 - type: entity
   parent: CMBaseMagazinePistol
