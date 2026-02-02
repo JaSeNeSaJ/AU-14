@@ -24,6 +24,7 @@
     RMC_WarrantOfficer2: []
   startingGear: AU14GearGOVFORAuxSupportSynthRMC
   dummyStartingGear: AU14GearGOVFORAuxSupportSynthDummyRMC
+  icon: "AU14JobIconGovSynth"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govforplatco

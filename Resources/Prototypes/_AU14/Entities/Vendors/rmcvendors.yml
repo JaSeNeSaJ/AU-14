@@ -881,10 +881,9 @@
         amount: 5
       - id: AU14MagazineRifleL90AP
         amount: 2
-    - name: Ballistic shields
-      entries:
       - id: AU14BallisticShieldRMC
         amount: 1
+
 
 - type: entity
   parent: ColMarTechBase

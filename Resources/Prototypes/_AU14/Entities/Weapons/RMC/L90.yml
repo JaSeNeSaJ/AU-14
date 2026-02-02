@@ -1,7 +1,7 @@
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleL90
-  name: L90 rifle
+  name: L90 assault rifle # F9030A1 in CM13
   description: The L90 Rifle, found commonly in Three World Empire's armories.
   components:
   - type: Sprite
@@ -13,31 +13,45 @@
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
     sprite: _AU14/Weapons/Guns/RMC/L90.rsi
+  - type: ContainerContainer
+    containers:
+      gun_magazine: !type:ContainerSlot
+      gun_chamber: !type:ContainerSlot
   - type: Gun
     selectedMode: FullAuto
     availableModes:
     - SemiAuto
+    - FullAuto
+    - Burst
     soundGunshot:
-      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+      collection: AU14M41FireSound
+    shotsPerBurst: 3
   - type: RMCSelectiveFire
     baseFireModes:
     - SemiAuto
     - FullAuto
-    recoilWielded: 3.5
+    - Burst
     recoilUnwielded: 4
-    scatterWielded: 6
+    scatterWielded: 5
     scatterUnwielded: 20
-    baseFireRate: 2.85
+    baseFireRate: 4
+    burstScatterMult: 1
     modifiers:
       FullAuto:
         fireDelay: 0
-        maxScatterModifier: 2
+        maxScatterModifier: 7
         useBurstScatterMult: true
         unwieldedScatterMultiplier: 2
         shotsToMaxScatter: 5
+      Burst:
+        fireDelay: 0.1665
+        maxScatterModifier: 10
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 3
   - type: RMCWeaponAccuracy
-    accuracyMultiplier: 1.3
-    accuracyMultiplierUnwielded: 0.75
+    accuracyMultiplier: 1.4
+    accuracyMultiplierUnwielded: 0.65
   - type: MagazineAmmoProvider
     autoEject: false
     soundAutoEject: null
@@ -56,7 +70,7 @@
           - AU14MagazineRifleL90Incendiary
           - AU14MagazineRifleL90extended
   - type: GunDamageModifier
-    multiplier: 1.7
+    multiplier: 1.1
   - type: AttachableHolder
     slots:
       rmc-aslot-barrel:
@@ -112,7 +126,7 @@
       tags:
       - CMCartridgeRifle10x24mm
     proto: CMCartridgeRifle10x24mm
-    capacity: 45
+    capacity: 40
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -121,6 +135,8 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifle
 
 - type: entity
   parent: AU14MagazineRifleL90
@@ -149,6 +165,8 @@
     - state: ammo_band
       color: "#1F951F"
   - type: Appearance
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifleAP
 
 - type: entity
   parent: AU14MagazineRifleL90
@@ -176,6 +194,8 @@
     - state: mag-1
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Appearance
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifle
 
 - type: entity
   parent: AU14MagazineRifleL90
@@ -204,6 +224,8 @@
     - state: ammo_band
       color: "#9C9A19"
   - type: Appearance
+  - type: RefillableByBulletBox # i guess no ammo box? same stuff on the mk1 rifle
+    bulletType: null
 
 - type: entity
   parent: AU14MagazineRifleL90
@@ -232,6 +254,7 @@
     - state: ammo_band
       color: "#771A10"
   - type: Appearance
+  # no ammo box for now
 
 # Breacher Variant
 
@@ -258,31 +281,30 @@
     - Burst
     - SemiAuto
     soundGunshot:
-      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_m16.ogg
+      collection: AU14M41FireSound
   - type: RMCSelectiveFire
     baseFireModes:
     - FullAuto
     - Burst
     - SemiAuto
-    recoilWielded: 3.5
-    recoilUnwielded: 4
-    scatterWielded: 2
-    scatterUnwielded: 20
-    baseFireRate: 2.85
-    burstScatterMult: 1.17
+    recoilUnwielded: 0.1
+    scatterWielded: 5
+    scatterUnwielded: 7
+    baseFireRate: 4
+    burstScatterMult: 1
     modifiers:
-      Burst:
-        fireDelay: 0.0999
-        maxScatterModifier: 10
-        useBurstScatterMult: true
-        unwieldedScatterMultiplier: 2
-        shotsToMaxScatter: 6
       FullAuto:
         fireDelay: 0
-        maxScatterModifier: 2
+        maxScatterModifier: 7
         useBurstScatterMult: true
         unwieldedScatterMultiplier: 2
         shotsToMaxScatter: 5
+      Burst:
+        fireDelay: 0.1665
+        maxScatterModifier: 10
+        useBurstScatterMult: true
+        unwieldedScatterMultiplier: 2
+        shotsToMaxScatter: 3
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 1.3
     accuracyMultiplierUnwielded: 0.75
@@ -518,7 +540,7 @@
       tags:
       - CMCartridgeRifle10x24mm
     proto: CMCartridgeRifle10x24mm
-    capacity: 15
+    capacity: 20
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
     layers:
@@ -573,7 +595,7 @@
       tags:
       - CMCartridgeRifle10x24mm
     proto: CMCartridgeRifle10x24mm
-    capacity: 25
+    capacity: 30
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
     layers:
