@@ -383,6 +383,7 @@
     RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
     PlatOp: AU14JobGOVFORPlatOpRMC
     DCC: AU14JobGOVFORDCCRMC
+    SupportSynth: AU14JobGOVFORAuxSupportSynthRMC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
   compatibleFighters: #TODO: RMC Fighters
