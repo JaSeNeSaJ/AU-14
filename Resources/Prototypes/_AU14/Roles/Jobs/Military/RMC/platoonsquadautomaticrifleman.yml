@@ -4,7 +4,7 @@
   name: au14-job-name-govforsquadautomaticriflemanRMC
   description: au14-job-description-govforsquadautomaticrifleman
   setPreference: true
-  playTimeTracker: AU14JobGOVFORSquadAutomaticRiflemanRMC
+  playTimeTracker: AU14JobGOVFORSquadAutomaticRifleman
   requirements:
   - !type:TraitsRequirement
     inverted: true
@@ -57,8 +57,4 @@
       icon:
         sprite: _RMC14/Interface/map_blips.rsi
         state: smartgunner
-  hidden: false
-
-- type: playTimeTracker
-  id: AU14JobGOVFORSquadAutomaticRiflemanRMC
-  isHumanoid: true
+  hidden: falses
