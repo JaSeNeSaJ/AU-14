@@ -50,7 +50,7 @@
         unwieldedScatterMultiplier: 2
         shotsToMaxScatter: 3
   - type: RMCWeaponAccuracy
-    accuracyMultiplier: 1.4
+    accuracyMultiplier: 1.25
     accuracyMultiplierUnwielded: 0.65
   - type: MagazineAmmoProvider
     autoEject: false
@@ -261,7 +261,7 @@
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14WeaponRifleL90B
-  name: L90/B 'Breacher' rifle
+  name: L90/B 'Breacher' assault rifle
   description: A variant of the Breacher with a heavily modified firing mechanism, giving it a burst-fire option. Comes with built-in underbarell shotgun.
   components:
   - type: Sprite
