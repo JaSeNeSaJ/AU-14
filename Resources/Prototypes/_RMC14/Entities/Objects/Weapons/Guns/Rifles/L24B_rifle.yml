@@ -1,8 +1,8 @@
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: RMCWeaponRifleL24B
-  name: L24B rifle
-  description: A rare sight, this rifle is most commonly seen in the hands of the Three Suns Empire Royal Crown Marine units. This particular model was modified to facilitate RCM operations in tight quarters.
+  name: L23B 'Breacher' assault rifle
+  description: A rare sight, this rifle is most commonly seen in the hands of the Three World Empire Royal Marines Commandos units. This particular model was modified to facilitate RMC operations in tight quarters.
   suffix: Filled
   components:
   - type: Sprite
@@ -33,18 +33,18 @@
     - Burst
     - FullAuto
     recoilWielded: 2
-    recoilUnwielded: 2
+    recoilUnwielded: 0.5
     scatterWielded: 3
     scatterUnwielded: 10
     baseFireRate: 2.75
     burstScatterMult: 1
     modifiers:
       Burst:
-        fireDelay: 0.225
+        fireDelay: 0.08
         maxScatterModifier: 6
         useBurstScatterMult: true
         unwieldedScatterMultiplier: 2
-        shotsToMaxScatter: 6
+        shotsToMaxScatter: 3
       FullAuto:
         fireDelay: 0
         maxScatterModifier: 6
@@ -75,14 +75,11 @@
   - type: GunDamageModifier
     multiplier: 1
   - type: AttachableHolder
-    randomAttachmentChance: 1
     slots:
       rmc-aslot-barrel:
         whitelist:
           tags:
           - RMCM5Bayonet
-        random:
-        - RMCM5Bayonet
       rmc-aslot-rail:
         whitelist:
           tags:
@@ -90,8 +87,6 @@
           - RMCAttachmentS5RedDotSight
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS42xTelescopicMiniscope
-        random:
-        - RMCAttachmentS6ReflexSight
       rmc-aslot-stock:
         locked: true
         startingAttachable: RMCAttachmentL24BStock

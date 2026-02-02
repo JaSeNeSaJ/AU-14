@@ -774,12 +774,17 @@
       choices: { CMUPrimaryWeapon: 1 }
       entries:
       - id: AU14WeaponRifleL90
+      - id: RMCWeaponRifleL24
     - name: Rifle Ammunition
       entries:
       - id: AU14MagazineRifleL90
         amount: 450
+      - id: RMCMagazineRifleL24
+        amount: 320
       - id: AU14MagazineRifleL90AP
-        amount: 8
+        amount: 3
+      - id: RMCMagazineRifleL24AP
+        amount: 3
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -857,32 +862,20 @@
         amount: 1
     - name: Marksman kit
       entries:
-      - id: AU14HeadHelmetRMCSniper
+      - id: AU14KitRMCMarksmanL90M
         amount: 1
-      - id: AU14WeaponRifleL90M
-        amount: 1
-      - id: AU14MagazineRifleL90Mextended
-        amount: 4
-      - id: AU14MagazineRifleL90MAP
-        amount: 2
-      - id: AU14MagazineRifleL90M
-        amount: 12
+        giveSquadRoleName: Marksman
+        givePrefix: MRN
+        isAppendPrefix: true
+        isAppendSquadRoleName: true
     - name: Pointman kit
       entries:
-      - id: AU14HeadHelmetRMCHeavy
+      - id: AU14KitRMCPointman
         amount: 1
-      - id: AU14ArmorPointmanRMC
-        amount: 1
-      - id: AU14WeaponRifleL90B
-        amount: 1
-      - id: RMCBoxShotgunBuckshot
-        amount: 8
-      - id: AU14MagazineRifleL90extended
-        amount: 5
-      - id: AU14MagazineRifleL90AP
-        amount: 2
-      - id: AU14BallisticShieldRMC
-        amount: 1
+        giveSquadRoleName: Pointman
+        givePrefix: PNM
+        isAppendPrefix: true
+        isAppendSquadRoleName: true
 
 
 - type: entity

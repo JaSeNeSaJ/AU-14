@@ -1,0 +1,102 @@
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitRMCPointmanL90B
+  name: RMC L90/B Pointman Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,5
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+      - id: AU14HeadHelmetRMCHeavy
+      - id: AU14ArmorPointmanRMC
+      - id: AU14WeaponRifleL90B
+      - id: AU14MagazineRifleL90extended
+        amount: 4
+      - id: AU14MagazineRifleL90AP
+        amount: 2
+      - id: AU14BallisticShieldRMC
+      - id: RMCBoxShotgunBuckshot
+        amount: 8
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitRMCPointmanL23B
+  name: RMC L23B Pointman Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,5
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+      - id: AU14HeadHelmetRMCHeavy
+      - id: AU14ArmorPointmanRMC
+      - id: RMCWeaponRifleL24B
+      - id: RMCMagazineRifleL24Extended
+        amount: 5
+      - id: RMCMagazineRifleL24AP
+        amount: 3
+      - id: AU14BallisticShieldRMC
+      - id: RMCBoxShotgunBuckshot
+        amount: 8
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitRMCMarksmanL90M
+  name: RMC L90M Marksman Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,5
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+      - id: AU14HeadHelmetRMCSniper
+        amount: 1
+      - id: AU14WeaponRifleL90M
+        amount: 1
+      - id: AU14MagazineRifleL90Mextended
+        amount: 4
+      - id: AU14MagazineRifleL90MAP
+        amount: 2
+      - id: AU14MagazineRifleL90M
+        amount: 12
+
+- type: entity
+  parent: BaseItem
+  id: AU14KitRMCPointman
+  name: RMC Sealed Pointman Kit
+  description: A sealed kit containing Pointman equipment. The label is unreadable. Contains either L90B or L23B Pointman Kit.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+    state: closed
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+    state: closed
+  - type: SpawnItemsOnUse
+    items:
+      - id: AU14KitRMCPointmanL90B
+        orGroup: GiftPool
+      - id: AU14KitRMCPointmanL23B
+        orGroup: GiftPool

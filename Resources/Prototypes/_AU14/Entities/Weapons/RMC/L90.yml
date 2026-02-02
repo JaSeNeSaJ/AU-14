@@ -287,7 +287,7 @@
     - FullAuto
     - Burst
     - SemiAuto
-    recoilUnwielded: 0.1
+    recoilUnwielded: 0.5
     scatterWielded: 5
     scatterUnwielded: 7
     baseFireRate: 4
@@ -300,7 +300,7 @@
         unwieldedScatterMultiplier: 2
         shotsToMaxScatter: 5
       Burst:
-        fireDelay: 0.1665
+        fireDelay: 0.08
         maxScatterModifier: 10
         useBurstScatterMult: true
         unwieldedScatterMultiplier: 2
