@@ -810,6 +810,12 @@
         amount: 2
       - id: RMCExplosiveBreachingCharge
         amount: 2
+      - id: RMCPacketGrenadeM74AGMFFilled
+        amount: 2
+      - id: RMCPacketGrenadeM74AGMSHornetFilled
+        amount: 2
+      - id: RMCPacketGrenadeM74AGMSFilled
+        amount: 2
 
 - type: entity #todo proper RMC RTOs
   parent: ColMarTechBase
