@@ -2,7 +2,7 @@
   parent: CMFlare
   id: AU14FlareRMC
   suffix: Alt
-  description: A purple Royal Marine issued flare. There are instructions on the side, it reads 'pull cord, make light'.
+  description: An RMC issued flare that burns in both the visual and ultraviolet spectrum. There are instructions on the side, it reads 'pull cord, make light'.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Misc/flares.rsi

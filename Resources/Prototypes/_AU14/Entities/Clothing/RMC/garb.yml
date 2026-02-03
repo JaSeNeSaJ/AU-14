@@ -39,7 +39,7 @@
 - type: entity
   parent: BaseItem
   id: AU14ArmorGarbMagazineWebbingRMC
-  name: kestrel magazine webbing
+  name: 82 pattern magazine webbing
   description: A magazine webbing made to be attached to the outside of kestrel pattern armor.
   components:
   - type: Sprite
@@ -55,7 +55,7 @@
 - type: entity
   parent: BaseItem
   id: AU14ArmorGarbSmallWebbingRMC
-  name: kestrel small webbing
+  name: 67 pattern small webbing
   description: A small webbing made to be attached to the outside of kestrel pattern armor.
   components:
   - type: Sprite

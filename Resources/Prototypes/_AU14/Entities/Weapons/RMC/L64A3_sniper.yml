@@ -1,0 +1,122 @@
+﻿- type: entity
+  parent: RMCBaseWeaponSniperRifle
+  id: AU14L64A3SniperRifle
+  name: L64A3 designated marksman rifle
+  description: "A lightweight designated marksman rifle developed by Howatomo Precision Machining for the Royal Marines. Designed to provide commandos with responsive long range reach past what the old F903 could manage. A continuous-charge HESH payload removes the requirement for traditional armor piercing steel core ammunition, and improves damage retention at extended range. Faster cycle rate of the breech and a light trigger gives fast and precise followup shots even at thousand meter distances."
+  components:
+  - type: Sprite
+    sprite: _AU14/Weapons/Guns/RMC/L64A3.rsi
+    layers:
+    - state: bolt-open
+      map: [ "enum.GunVisualLayers.Base" ]
+    - state: mag-0
+      map: [ "enum.GunVisualLayers.Mag" ]
+    - sprite: _AU14/Weapons/Guns/Attachments/rmc_dmr_stock.rsi
+      state: rmcstock
+      offset: -0.56, 0.025
+  - type: Item
+    size: Large
+  - type: Clothing
+    sprite: _AU14/Weapons/Guns/RMC/L64A3.rsi
+  - type: Tag
+    tags:
+    - AU14L64A3SniperRifle
+  - type: MeleeWeapon
+    damage:
+      types:
+        Blunt: 12
+  - type: Gun
+    shotsPerBurst: 1
+    soundGunshot:
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_sniper.ogg
+  - type: RMCSelectiveFire
+    recoilWielded: 1
+    scatterWielded: 0
+    baseFireRate: 0.667
+  - type: RMCWeaponAccuracy
+    accuracyMultiplier: 3
+  - type: WieldDelay
+    baseDelay: 1.2
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineSniperL64A3
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/gun_mar40_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/gun_mar40_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineSniperL64A3
+  - type: GunRequiresWield
+  - type: Corrodible
+    isCorrodible: false
+  - type: GunIFF
+    enabled: true
+  - type: RMCNameItemOnVend
+    item: PrimaryGun
+  - type: AttachableHolder
+    slots:
+      rmc-aslot-rail:
+        locked: true
+        startingAttachable: RMCM96SIntegratedScope
+        whitelist:
+          tags:
+          - RMCM96SIntegratedScope
+      rmc-aslot-underbarrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBipod
+  - type: AttachableHolderVisuals
+    offsets:
+      rmc-aslot-underbarrel: 0.21875, -0.343
+      rmc-aslot-rail: 0.5, 0.5
+  - type: ItemCamouflage
+    camouflageVariations: {}
+  - type: RMCGunChamber
+    enabled: false
+
+- type: entity
+  parent: BaseItem
+  id: AU14MagazineSniperL64A3
+  name: "L64A3 marksman magazine (10x28mm)"
+  description: A magazine of sniper rifle ammo. An aimed shot with it will deal significant damage.
+  components:
+  - type: Tag
+    tags:
+    - CMMagazineSniper
+    - AU14MagazineSniperL64A3
+  - type: BallisticAmmoProvider
+    mayTransfer: True
+    whitelist:
+      tags:
+      - CMCartridgeSniper10x28mm
+    proto: CMCartridgeSniper10x28mm
+    capacity: 15
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/m42c.rsi
+    layers:
+    - state: mag-0
+      map: ["enum.GunVisualLayers.Base"]
+    - state: mag-1
+      map: ["enum.GunVisualLayers.Mag"]
+  - type: MagazineVisuals
+    magState: mag
+    steps: 2
+    zeroVisible: false
+    zeroOnlyOnEmpty: true
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+  - type: Appearance
+  - type: Clothing
+    slots:
+    - suitStorage
+
+- type: Tag
+  id: AU14L64A3SniperRifle
+
+- type: Tag
+  id: AU14MagazineSniperL64A3

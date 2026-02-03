@@ -1,7 +1,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMC
-  name: royal L5A2 ballistic helmet
+  name: Mk16 pattern ballistic helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Crown Marines as part of the kestrel armour system.
   components:
@@ -13,7 +13,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCSniper
-  name: royal L7 sniper helmet
+  name: Mk12 pattern sniper helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Crown Marines snipers and marksmen as part of the kestrel armour system.
   components:
@@ -25,7 +25,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCHeavy
-  name: royal L6 heavy helmet
+  name: L6 pattern heavy helmet
   suffix: AU14
   description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners and pointmen as part of the kestrel armour system.
   components:
@@ -37,7 +37,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCBallistic
-  name: royal L5A3 ballistic helmet
+  name: L5A3 pattern ballistic helmet
   suffix: AU14
   description: A High-cut ballistic helmet featuring an attached mandible. Designed to be used by Royal Marines Commando as part of the kestrel armour system.
   components:
@@ -49,7 +49,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCMedic
-  name: royal L5A2 corpsman helmet
+  name: L5A2 pattern corpsman helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by medic marines.
   components:
@@ -71,7 +71,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCAircrew
-  name: royal L5A4 aircrew helmet
+  name: L5A4 pattern aircrew helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by aircrews.
   components:
