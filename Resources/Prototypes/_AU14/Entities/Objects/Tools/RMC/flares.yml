@@ -11,12 +11,12 @@
         state: flare
       - map: [ "enum.ExpendableLightVisualLayers.Glow" ]
         state: flare_flame
-        color: "#ee7aff"
+        color: "#d79be5"
         visible: false
       - map: [ "enum.ExpendableLightVisualLayers.Overlay" ]
         state: overlay
   - type: PointLight
-    color: "#ee7aff"
+    color: "#d79be5"
   - type: Tag
     tags:
     - AU14FlareRMC

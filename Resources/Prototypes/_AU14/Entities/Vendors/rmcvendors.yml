@@ -68,7 +68,7 @@
         amount: 25
     - name: Heads Up Display
       entries:
-      - id: RMCVisorSquad
+      - id: AU14VisorSquadRMC
         amount: 25
       - id: RMCVisorWelding
         amount: 5
@@ -354,7 +354,7 @@
       - id: RMCZipties
         recommended: true
         amount: 60
-      - id: RMCPVECaseMotionDetector
+      - id: AU14CaseMotionDetectorRMC
         amount: 1
       #- id: CMMap
       #  amount: 5
@@ -383,7 +383,7 @@
     - name: Essential Equipment
       takeAll: CMUEssentialEquipment
       entries:
-      - id: RMCVisorMedical
+      - id: AU14VisorMedicalRMC
       - id: AU14CMDefibrillator
       - id: CMHealthAnalyzer
       - id: RMCFlashlightPen
@@ -556,7 +556,7 @@
     - name: Essential Medical Equipment
       takeAll: CMUEssentialEquipment
       entries:
-      - id: RMCVisorMedical
+      - id: AU14VisorMedicalRMC
       - id: AU14CMDefibrillator
       - id: CMHealthAnalyzer
       - id: RMCFlashlightPen
@@ -784,10 +784,13 @@
       choices: { CMUHandgunsWeapon: 1 }
       entries:
       - id: RMCWeaponPistolL54Empty
+      - id: AU14L165A1
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolL54
-        amount: 240
+        amount: 40
+      - id: AU14MagazinePistolL165A1
+        amount: 160
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:
@@ -797,7 +800,7 @@
       entries:
       - id: AU14BoxHEDPRMC
         amount: 1
-      - id: AU14PacketGrenadeSmokeRMCFilled
+      - id: RMCPacketGrenadeSmokeFilled
         amount: 2
       - id: AU14PacketGrenadeIncendiaryRMC
         amount: 2
@@ -900,12 +903,15 @@
       - id: AU14MagazineSMGL90A2
         amount: 20
     - name: Handguns
+      choices: { CMUHandgunsWeapon: 1 }
       entries:
       - id: RMCWeaponPistolL54Empty
-        amount: 2
+      - id: AU14L165A1
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolL54
+        amount: 20
+      - id: AU14MagazinePistolL165A1
         amount: 20
     - name: Attachments
       entries:

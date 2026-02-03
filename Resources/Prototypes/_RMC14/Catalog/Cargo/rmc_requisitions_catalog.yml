@@ -63,23 +63,23 @@
       - cost: 10000
         crate: AU14CrateGrenadesHighExplosiveBoxRMC
       - cost: 10000
-        crate: RMCCrateGrenadesBoxHEFA # TODO proper RMC HEFA
+        crate: AU14CrateGrenadesIncendiaryBoxRMC
       - cost: 10000
-        crate: RMCCrateGrenadesAirburstFragBox
+        crate: AU14Crate20MMGrenadesHESHDoubleRMC
+      - cost: 10000
+        crate: AU14Crate20MMGrenadesFragDoubleRMC
       - cost: 10000
         crate: RMCCrateBoxAGMI
       - cost: 4000
-        crate: RMCCrateGrenadesAirburstFrag
+        crate: AU14Crate20MMGrenadesFragRMC
       - cost: 4000
-        crate: RMCCrateGrenadesAirburstIncendiary
+        crate: AU14Crate20MMGrenadesIncendiaryRMC
       - cost: 1200
-        crate: RMCCrateGrenadesAirburstSmoke
+        crate: AU14Crate20MMGrenadesHERMC
       - cost: 4000
-        crate: RMCCrateGrenadesAirburstHornet
+        crate: AU14Crate20MMGrenadesHoloRMC
       - cost: 4000
         crate: RMCCrateGrenadesAirburstStarShell
-      - cost: 1000
-        crate: RMCCrateGrenadesBatonSlug
     - name: Food
       entries:
       - cost: 500
@@ -147,7 +147,7 @@
     - name: Weapons
       entries:
       - cost: 3000
-        crate: RMCCrateMK80
+        crate: AU14CrateL165A1
       - cost: 4000
         crate: RMCCrateXM88
       - cost: 3000
@@ -163,7 +163,7 @@
     - name: Ammo
       entries:
       - cost: 2500
-        crate: RMCCrateBoxMagazinePistolMK80
+        crate: AU14CrateBoxMagazinePistolL165A1
       - cost: 4000
         crate: RMCCrateBoxAmmo458
       - cost: 4000

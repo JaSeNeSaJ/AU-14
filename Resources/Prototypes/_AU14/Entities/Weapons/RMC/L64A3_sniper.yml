@@ -97,8 +97,8 @@
 - type: entity
   parent: BaseItem
   id: AU14MagazineSniperL64A3
-  name: "L64A3 marksman magazine (10x28mm)"
-  description: A magazine of sniper rifle ammo.
+  name: "L64A3 squash-head magazine (8.88x51mm)"
+  description: A magazine of L10A7 squash-head match-grade 8.88x51mm ammo.
   components:
   - type: Tag
     tags:
@@ -108,9 +108,9 @@
     mayTransfer: True
     whitelist:
       tags:
-      - CMCartridgeSniper10x28mm
-    proto: CMCartridgeSniper10x28mm
-    capacity: 15
+      - BulletRifle888x51mmSquashhead
+    proto: BulletRifle888x51mmSquashhead
+    capacity: 25
   - type: Item
     size: Normal
   - type: Sprite
@@ -134,6 +134,34 @@
   - type: Clothing
     slots:
     - suitStorage
+
+- type: entity
+  parent: CMBaseCartridgeRifle
+  id: AU14CartridgeRifleL64A3Squashhead
+  name: L10A7 Squash-head Cartridge (8.88x51mm)
+  description: A 8.88x51mm Squash-head rifle cartridge
+  components:
+  - type: Tag
+    tags:
+    - Cartridge
+    - AU14CartridgeRifleL64A3Squashhead
+  - type: CartridgeAmmo
+    proto: BulletRifle888x51mmSquashhead
+
+- type: entity
+  parent: BulletRifle10x24mm
+  id: AU14CartridgeRifleL64A3Squashhead
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Projectile
+    damage:
+       types:
+         Piercing: 73
+  - type: CMArmorPiercing
+    amount: 10
+
+- type: Tag
+  id: AU14CartridgeRifleL64A3Squashhead
 
 - type: Tag
   id: AU14L64A3SniperRifle

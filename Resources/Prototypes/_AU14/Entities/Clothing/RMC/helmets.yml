@@ -37,7 +37,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCBallistic
-  name: L5A3 pattern ballistic helmet
+  name: Mk17 pattern ballistic helmet
   suffix: AU14
   description: A High-cut ballistic helmet featuring an attached mandible. Designed to be used by Royal Marines Commando as part of the kestrel armour system.
   components:
@@ -49,7 +49,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCMedic
-  name: L5A2 pattern corpsman helmet
+  name: Mk16 pattern corpsman helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by medic marines.
   components:
@@ -65,13 +65,13 @@
   - type: IntegratedVisors
     startToggled: true
     visorsToAdd:
-    - RMCVisorMedicalAdvancedIntegrated
-    - RMCVisorSquadIntegrated
+    - AU14VisorMedicalAdvancedIntegratedRMC
+    - AU14VisorSquadIntegratedRMC
 
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCAircrew
-  name: L5A4 pattern aircrew helmet
+  name: Mk30 pattern aircrew helmet
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by aircrews.
   components:
@@ -86,8 +86,8 @@
     - rmc_visor_three
   - type: IntegratedVisors
     visorsToAdd:
-    - RMCVisorMedicalAdvancedIntegrated
-    - RMCVisorSquadIntegrated
+    - AU14VisorMedicalAdvancedIntegratedRMC
+    - AU14VisorSquadIntegratedRMC
     - RMCVisorPilotBlack
 
 - type: entity
