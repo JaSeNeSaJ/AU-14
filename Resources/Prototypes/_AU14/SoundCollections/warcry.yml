@@ -38,6 +38,12 @@
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Classic/Warcry/warcry_male_35.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Classic/Warcry/warcry_male_36.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Classic/Warcry/malewarcry.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry1.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry2.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry3.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry4.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry5.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Warcry/Warcry6.ogg
 
 - type: soundCollection
   id: AU14FemaleWarcry
