@@ -10,7 +10,6 @@
     sprite: _AU14/Clothing/RMC/mask/gasmask.rsi
   - type: HideLayerClothing
     slots:
-    - Hair
     - HeadTop
     - HeadSide
     - Snout
