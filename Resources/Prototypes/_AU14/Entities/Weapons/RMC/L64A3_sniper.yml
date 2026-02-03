@@ -120,6 +120,8 @@
       map: ["enum.GunVisualLayers.Base"]
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
+    - state: band_e
+      color: "#9c7aff"
   - type: MagazineVisuals
     magState: mag
     steps: 2

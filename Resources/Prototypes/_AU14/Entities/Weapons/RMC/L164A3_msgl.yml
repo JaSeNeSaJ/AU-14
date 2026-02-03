@@ -26,9 +26,9 @@
   - type: BallisticAmmoProvider
     whitelist:
       tags:
-      - LauncherCompatibleGrenade
-    capacity: 8
-    proto: CMGrenadeHighExplosive
+      - AU14LauncherCompatibleGrenadeRMC
+    capacity: 1
+    proto: AU1420MMGrenadeL103A1
   - type: Corrodible
     isCorrodible: false
   - type: ExplosionResistance

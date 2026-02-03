@@ -1,0 +1,177 @@
+#SHELLS
+- type: entity
+  abstract: true
+  parent: BaseItem
+  id: AU14BaseAirBurstGrenadeRMC
+  name: 20-mm air burst grenade
+  components:
+  - type: Appearance
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Explosives/grenade_launcher.rsi
+    layers:
+    - state: grenade_m74_airburst_f
+  - type: Item
+    size: Small
+  - type: Clothing
+    slots:
+    - suitStorage
+  - type: Destructible
+    thresholds: []
+  - type: IgnorePredictionHide
+  - type: Ammo
+
+- type: entity
+  abstract: true
+  id: AU14L103A1Tags
+  components:
+  - type: Tag
+    tags:
+    - AU14LauncherCompatibleGrenadeRMC
+    - AU14GrenadeL103A1
+
+- type: entity
+  parent:
+  - CMGrenadeBase
+  - AU14L103A1Tags
+  id: AU1420MMGrenadeL103A1
+  name: L103A1 20mm HE grenade
+  description: High-Explosive Dual-Purpose. A small, but deceptively strong blast grenade that has been phasing out the M15 HE grenades alongside the 30mm HEFA. Capable of being loaded in grenade launchers, or thrown by hand.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Grenades/m40hedp.rsi
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    maxIntensity: 14 # max 100 brute, 100 burn
+    intensitySlope: 6
+    totalIntensity: 200
+    canCreateVacuum: false
+  - type: Ammo
+  - type: CMExplosionEffect
+  - type: RMCScorchEffect
+  - type: Tag
+    tags:
+    - Grenade
+    - AU14LauncherCompatibleGrenadeRMC
+
+- type: entity
+  parent: RMCBaseAirBurstGrenade
+  id: AU1420MMGrenadeL104A1
+  name: L104A1 20mm fragmentation grenade
+  description: M74 - Airburst Grenade Munition - Fragmentation. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperses jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. Dispersion pattern is optimized against large target. Suffers from overpenetration on a direct hit.
+  components:
+  - type: Tag
+    tags:
+    - Grenade
+    - AU14LauncherCompatibleGrenadeRMC
+    - RMCAirburstGrenade
+    - AU14GrenadeL104A1
+  - type: ContainerContainer
+    containers:
+      cluster-payload: !type:Container
+  - type: CartridgeAmmo
+    deleteOnSpawn: true
+    proto: AU14AirBurstProjectileFragRMC
+
+- type: entity
+  parent: AU1420MMGrenadeL104A1
+  id: AU1420MMGrenadeL103A1I
+  name: L103A1/I 20mm incendiary grenade
+  description: M74 - Airburst Grenade Munition - Incendiary. This grenade must be launched with a grenade launcher, and detonates once it reaches its destination. It disperses jagged shrapnel in a cone in front of itself, tearing through sinews and armor alike. Dispersion pattern is optimized against large target. Suffers from overpenetration on a direct hit.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Explosives/grenade_launcher.rsi
+    layers:
+    - state: grenade_m74_airburst_i
+  - type: CartridgeAmmo
+    deleteOnSpawn: true
+    proto: RMCAirBurstProjectileIncendiary
+  - type: Tag
+    tags:
+    - Grenade
+    - AU14LauncherCompatibleGrenadeRMC
+    - RMCAirburstGrenade
+    - AU14GrenadeL103A1I
+
+- type: entity
+  parent: AU1420MMGrenadeL104A1
+  id: AU14HornetShellL104A1H
+  name: L104A1/H 20mm holo-targetting shell
+  description: Functions identically to the standard AGM-F 40mm grenade, except instead of exploding into shrapnel, the hornet shell shoots off holo-targeting .22lr rounds. The equivalent to buckshot at-range.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Explosives/grenade_launcher.rsi
+    layers:
+    - state: grenade_hornet
+  - type: CartridgeAmmo
+    deleteOnSpawn: true
+    proto: RMCAirBurstProjectileHornet
+
+#PROJECTILES
+
+- type: entity
+  parent: RMCBaseAirBurstProjectile
+  id: AU14AirBurstProjectileFragRMC
+  name: L104A1 20mm fragmentation grenade
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: ProjectileGrenade
+    evenSpread: true
+    minVelocity: 0.5
+    maxVelocity: 1.5
+    fillPrototype: RMCShrapnelJagged
+    rebounds: true
+    capacity: 6
+    spreadAngle: 15
+  - type: ClusterLimitHits
+    limit: 2
+
+- type: entity
+  parent: RMCBaseAirBurstProjectile
+  id: AU14AirBurstProjectileIncendiaryRMC
+  name: L103A1/I 20mm incendiary grenade
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Explosives/grenade_launcher.rsi
+    layers:
+    - state: grenade_m74_airburst_i_active
+  - type: ProjectileGrenade
+    evenSpread: true
+    minVelocity: 0.5
+    maxVelocity: 1.5
+    fillPrototype: RMCShrapnelIncendiary
+    rebounds: true
+    capacity: 2
+    spreadAngle: 40
+  - type: DirectionalTileFireOnTrigger
+    range: 3
+    spawn: RMCTileFire
+
+- type: entity
+  parent: RMCBaseAirBurstProjectile
+  id: RMCAirBurstProjectileHornet
+  name: M74 AGM-H 40mm hornet shell
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Explosives/grenade_launcher.rsi
+    layers:
+    - state: grenade_hornet_active
+  - type: ProjectileGrenade
+    evenSpread: true
+    minVelocity: 0.5
+    maxVelocity: 1.5
+    rebounds: true
+    fillPrototype: RMCHornetRound
+    capacity: 10
+    spreadAngle: 15
+
+
+- type: Tag
+  id: AU14GrenadeL104A1
+
+- type: Tag
+  id: AU14GrenadeL103A1I
+
+- type: Tag
+  id: AU14GrenadeL103A1
