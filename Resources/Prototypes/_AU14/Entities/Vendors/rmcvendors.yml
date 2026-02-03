@@ -773,16 +773,11 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponRifleL90
       - id: RMCWeaponRifleL24
     - name: Rifle Ammunition
       entries:
-      - id: AU14MagazineRifleL90
-        amount: 450
       - id: RMCMagazineRifleL24
         amount: 320
-      - id: AU14MagazineRifleL90AP
-        amount: 3
       - id: RMCMagazineRifleL24AP
         amount: 3
     - name: Handguns
@@ -876,7 +871,7 @@
         isAppendSquadRoleName: true
     - name: Pointman kit
       entries:
-      - id: AU14KitRMCPointman
+      - id: AU14KitRMCPointmanL23B
         amount: 1
         giveSquadRoleName: Pointman
         givePrefix: PNM
