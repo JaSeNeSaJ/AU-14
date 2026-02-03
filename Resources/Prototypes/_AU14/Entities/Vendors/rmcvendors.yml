@@ -863,7 +863,7 @@
         amount: 1
     - name: Marksman kit
       entries:
-      - id: AU14KitRMCMarksmanL90M
+      - id: AU14KitRMCMarksmanL64A3
         amount: 1
         giveSquadRoleName: Marksman
         givePrefix: MRN

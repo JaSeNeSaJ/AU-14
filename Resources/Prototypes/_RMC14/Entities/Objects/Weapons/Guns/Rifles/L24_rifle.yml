@@ -6,18 +6,14 @@
   suffix: Filled
   components:
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Rifles/L24/inhand.rsi
+    sprite: _AU14/Weapons/Guns/RMC/L23.rsi
     layers:
     - state: base
-      sprite: _RMC14/Objects/Weapons/Guns/Rifles/L24/L24_Icon.rsi
-    - state: bolt-open
-      sprite: _RMC14/Objects/Weapons/Guns/Rifles/L24/L24_Icon.rsi
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-0
-      sprite: _RMC14/Objects/Weapons/Guns/Rifles/L24/L24_Icon.rsi
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
-    sprite: _RMC14/Objects/Weapons/Guns/Rifles/L24/inhand.rsi
+    sprite: _AU14/Weapons/Guns/RMC/L23.rsi
   - type: Gun
     shotsPerBurst: 3
     selectedMode: FullAuto
@@ -118,15 +114,15 @@
           - RMCAttachmentU1GrenadeLauncher
   - type: AttachableHolderVisuals
     offsets:
-      rmc-aslot-barrel: 0.906, 0.03125
+      rmc-aslot-barrel: 0.8, -0.03
       rmc-aslot-rail: -0.0175, 0.19
-      rmc-aslot-stock: -0.5, 0.01
+      rmc-aslot-stock: -0.5, -0.1
       rmc-aslot-underbarrel: 0.3125, -0.315
 
 - type: entity
   parent: CMMagazineRifleBase
   id: RMCMagazineRifleL24
-  name: L24 Magazine (8.88x51mm)
+  name: L23 Magazine (8.88x51mm)
   description: "A magazine of 8.88x51mm rounds for use in the L24 rifle."
   components:
   - type: Tag
@@ -153,7 +149,7 @@
   parent: RMCMagazineRifleL24
   id: RMCMagazineRifleL24AP
   description: "A magazine of armor-piercing 8.88x51mm rounds for use in the L24 rifle."
-  name: L24 AP Magazine (8.88x51mm)
+  name: L23 AP Magazine (8.88x51mm)
   suffix: AP
   components:
   - type: Tag
@@ -181,7 +177,7 @@
   parent: RMCMagazineRifleL24
   id: RMCMagazineRifleL24HEAP
   description: "A magazine of high-explosive armor-piercing 8.88x51mm rounds for use in the L24 rifle."
-  name: L24 HEAP Magazine (8.88x51mm)
+  name: L23 HEAP Magazine (8.88x51mm)
   suffix: HEAP
   components:
     - type: Tag
@@ -209,7 +205,7 @@
   parent: RMCMagazineRifleL24
   id: RMCMagazineRifleL24Incendiary
   description: "A magazine of incendiary 8.88x51mm rounds for use in the L24 rifle."
-  name: L24 Incendiary Magazine (8.88x51mm)
+  name: L23 Incendiary Magazine (8.88x51mm)
   suffix: Incendiary
   components:
     - type: Tag
@@ -237,7 +233,7 @@
   parent: RMCMagazineRifleL24
   id: RMCMagazineRifleL24Extended
   description: "An extended magazine of 8.88x51mm rounds for use in the L24 rifle."
-  name: L24 Extended Magazine (8.88x51mm)
+  name: L23 Extended Magazine (8.88x51mm)
   suffix: Extended
   components:
     - type: Tag

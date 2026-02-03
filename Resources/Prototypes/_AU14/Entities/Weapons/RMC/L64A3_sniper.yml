@@ -2,7 +2,7 @@
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14L64A3SniperRifle
   name: L64A3 designated marksman rifle
-  description: "A lightweight designated marksman rifle developed by Howatomo Precision Machining for the Royal Marines. Designed to provide commandos with responsive long range reach past what the old F903 could manage. A continuous-charge HESH payload removes the requirement for traditional armor piercing steel core ammunition, and improves damage retention at extended range. Faster cycle rate of the breech and a light trigger gives fast and precise followup shots even at thousand meter distances."
+  description: "A lightweight designated marksman rifle developed by Howatomo Precision Machining for the Royal Marines. Designed to provide commandos with responsive long range reach past what the old L90 could manage. A continuous-charge HESH payload removes the requirement for traditional armor piercing steel core ammunition, and improves damage retention at extended range. Faster cycle rate of the breech and a light trigger gives fast and precise followup shots even at thousand meter distances."
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/RMC/L64A3.rsi
@@ -11,9 +11,12 @@
       map: [ "enum.GunVisualLayers.Base" ]
     - state: mag-0
       map: [ "enum.GunVisualLayers.Mag" ]
-    - sprite: _AU14/Weapons/Guns/Attachments/rmc_dmr_stock.rsi
-      state: rmcstock
+    - sprite: _AU14/Weapons/Guns/Attachments/royal_stock.rsi
+      state: rmc_dmr_stock
       offset: -0.56, 0.025
+    - sprite: _RMC14/Objects/Weapons/Guns/Attachments/rail.rsi
+      state: sniperscope_a
+      offset: -0.1, 0.1
   - type: Item
     size: Large
   - type: Clothing
@@ -31,11 +34,11 @@
     - SemiAuto
     shotsPerBurst: 1
     soundGunshot:
-      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_sniper.ogg
+      path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_type88.ogg
   - type: RMCSelectiveFire
     recoilWielded: 1
     scatterWielded: 0
-    baseFireRate: 0.667
+    baseFireRate: 0.955
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 3
   - type: WieldableSpeedModifiers
@@ -95,7 +98,7 @@
   parent: BaseItem
   id: AU14MagazineSniperL64A3
   name: "L64A3 marksman magazine (10x28mm)"
-  description: A magazine of sniper rifle ammo. An aimed shot with it will deal significant damage.
+  description: A magazine of sniper rifle ammo.
   components:
   - type: Tag
     tags:
@@ -111,7 +114,7 @@
   - type: Item
     size: Normal
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/m42c.rsi
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L64A3.rsi
     layers:
     - state: mag-0
       map: ["enum.GunVisualLayers.Base"]

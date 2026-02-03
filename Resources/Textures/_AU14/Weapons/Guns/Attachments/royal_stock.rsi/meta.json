@@ -8,10 +8,16 @@
   },
   "states": [
     {
-      "name": "rmcstock"
+      "name": "rmc_dmr_stock"
     },
     {
-      "name": "rmcstock_a"
+      "name": "rmc_dmr_stock_a"
+    },
+    {
+      "name": "rmc_nsg_stock"
+    },
+    {
+      "name": "rmc_nsg_stock_a"
     }
   ]
 }

@@ -128,7 +128,7 @@
     proto: CMCartridgeRifle10x24mm
     capacity: 40
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90.rsi
     layers:
     - state: base
       map: ["enum.GunVisualLayers.Base"]
@@ -156,7 +156,7 @@
       - CMCartridgeRifle10x24mmAP
     proto: CMCartridgeRifle10x24mmAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -187,7 +187,7 @@
     proto: CMCartridgeRifle10x24mm
     capacity: 60
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90extended.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -215,7 +215,7 @@
       - RMCCartridgeRifle10x24mmHEAP
     proto: RMCCartridgeRifle10x24mmHEAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -245,7 +245,7 @@
       - RMCCartridgeRifle10x24mmIncendiary
     proto: RMCCartridgeRifle10x24mmIncendiary
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -542,7 +542,7 @@
     proto: CMCartridgeRifle10x24mm
     capacity: 20
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90M.rsi
     layers:
     - state: base
       map: ["enum.GunVisualLayers.Base"]
@@ -568,7 +568,7 @@
       - CMCartridgeRifle10x24mmAP
     proto: CMCartridgeRifle10x24mmAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90M.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -597,7 +597,7 @@
     proto: CMCartridgeRifle10x24mm
     capacity: 30
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90Mextended.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -623,7 +623,7 @@
       - RMCCartridgeRifle10x24mmHEAP
     proto: RMCCartridgeRifle10x24mmHEAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90M.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -651,7 +651,7 @@
       - RMCCartridgeRifle10x24mmIncendiary
     proto: RMCCartridgeRifle10x24mmIncendiary
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90M.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -780,7 +780,7 @@
     proto: CMCartridge10x20mm
     capacity: 40
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90A2.rsi
     layers:
     - state: base
       map: ["enum.GunVisualLayers.Base"]
@@ -806,7 +806,7 @@
       - CMCartridge10x20mmAP
     proto: CMCartridge10x20mmAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi # TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90A2.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -835,7 +835,7 @@
     proto: CMCartridge10x20mm
     capacity: 66
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3extended.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90A2extended.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -861,7 +861,7 @@
       - RMCCartridge10x20mmHEAP
     proto: RMCCartridge10x20mmHEAP
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90A2.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
@@ -889,7 +889,7 @@
       - RMCCartridge10x20mmIncendiary
     proto: RMCCartridge10x20mmIncendiary
   - type: Sprite
-    sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/L83A3.rsi #TODO
+    sprite: _AU14/Weapons/Guns/Ammo/Magazines/L90A2.rsi
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]
