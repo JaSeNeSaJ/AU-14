@@ -11,14 +11,13 @@
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
     - UPP
-    - WEYU
     - VAIPO
+    - HAZOPS
     - ProdigySF
     platoonsGovfor:
     - LACN
-    - UNISC
     - USCM
-    - HAZOPS
+    - WEYU
     - RMC
     defaultgovfor: USCM
     defaultopfor: UPP

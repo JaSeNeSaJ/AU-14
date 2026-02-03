@@ -45,7 +45,7 @@
 
 - type: platoon
   id: USCM
-  name: USCM
+  name: US Colonial Marines
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -75,7 +75,7 @@
 - type: platoon
   id: UPP
   language: russian
-  name: UPP Infantry
+  name: UPP Naval Infantry
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -328,7 +328,7 @@
 
 - type: platoon
   id: VAIPO
-  name: VAIPO
+  name: VAI Primary Operations
   reqlist: VAIPOCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -355,7 +355,7 @@
 
 - type: platoon
   id: RMC
-  name: TWE RMC
+  name: TWE Royal Marine Commandos
   reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
