@@ -175,7 +175,7 @@
     maxVelocity: 1.5
     fillPrototype: RMCShrapnelJagged
     rebounds: true
-    capacity: 1
+    capacity: 16
     spreadAngle: 40
   - type: ClusterLimitHits
     limit: 5
