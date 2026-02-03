@@ -1,5 +1,5 @@
 ﻿- type: entity
-  parent: RMCBaseWeaponSniperRifle
+  parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
   id: AU14L64A3SniperRifle
   name: L64A3 designated marksman rifle
   description: "A lightweight designated marksman rifle developed by Howatomo Precision Machining for the Royal Marines. Designed to provide commandos with responsive long range reach past what the old F903 could manage. A continuous-charge HESH payload removes the requirement for traditional armor piercing steel core ammunition, and improves damage retention at extended range. Faster cycle rate of the breech and a light trigger gives fast and precise followup shots even at thousand meter distances."
@@ -26,6 +26,9 @@
       types:
         Blunt: 12
   - type: Gun
+    selectedMode: SemiAuto
+    availableModes:
+    - SemiAuto
     shotsPerBurst: 1
     soundGunshot:
       path: /Audio/_RMC14/Weapons/Guns/Gunshots/gun_sniper.ogg
@@ -35,8 +38,20 @@
     baseFireRate: 0.667
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 3
+  - type: WieldableSpeedModifiers
+    base: 0.5
+    light: 0.69
+    medium: 0.75
+    heavy: 0.806
   - type: WieldDelay
     baseDelay: 1.2
+  - type: GunDualWielding
+    weaponGroup: Rifle
+  - type: GunPointBlank
+  - type: WieldedCrosshair
+    rsi:
+      sprite: _RMC14/Interface/MousePointer/sniper_mouse.rsi
+      state: all
   - type: ItemSlots
     slots:
       gun_magazine:
@@ -52,7 +67,7 @@
   - type: Corrodible
     isCorrodible: false
   - type: GunIFF
-    enabled: true
+    enabled: false
   - type: RMCNameItemOnVend
     item: PrimaryGun
   - type: AttachableHolder
