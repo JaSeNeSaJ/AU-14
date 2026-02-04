@@ -108,8 +108,8 @@
     mayTransfer: True
     whitelist:
       tags:
-      - BulletRifle888x51mmSquashhead
-    proto: BulletRifle888x51mmSquashhead
+      - AU14CartridgeRifleL64A3Squashhead
+    proto: AU14CartridgeRifleL64A3Squashhead
     capacity: 25
   - type: Item
     size: Normal

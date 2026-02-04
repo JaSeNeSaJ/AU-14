@@ -862,24 +862,24 @@
       entries:
       - id: AU14KitRMCMarksmanL64A3
         amount: 1
-        giveSquadRoleName: Marksman
-        givePrefix: MRN
+        giveSquadRoleName: au14-job-name-govforspecialist-marksmanRMC
+        givePrefix: au14-job-prefix-govforspecialist-marksmanRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
     - name: Pointman kit
       entries:
       - id: AU14KitRMCPointmanL23B
         amount: 1
-        giveSquadRoleName: Pointman
-        givePrefix: PNM
+        giveSquadRoleName: au14-job-name-govforspecialist-pointmanRMC
+        givePrefix: au14-job-prefix-govforspecialist-pointmanRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
     - name: Sapper kit
       entries:
       - id: AU14KitRMCMarksmanL164A3
         amount: 1
-        giveSquadRoleName: Sapper
-        givePrefix: SPR
+        giveSquadRoleName: au14-job-name-govforspecialist-grenadierRMC
+        givePrefix: au14-job-prefix-govforspecialist-grenadierRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
 

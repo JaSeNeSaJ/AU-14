@@ -72,7 +72,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTCommander
-  name: RMC RRT Commander
+  name: au-14-job-name-rmcrrt-commander
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTCommander
   ranks:
@@ -108,7 +108,7 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: RMC RRT Commander
+    name: au-14-job-name-rmcrrt-commander
     description: au14-rmcert-rules
     reregister: false
     job: AU14RMCRRTCommander
@@ -137,7 +137,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTRifleman
-  name: RMC RRT Rifleman
+  name: au-14-job-name-rmcrrt-rifleman
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTRifleman
   ranks:
@@ -146,7 +146,7 @@
   startingGear: AU14GearRMCRRTRifleman
   icon: "RMCJobIconRoyalCommando"
   joinNotifyCrew: false
-  supervisors: RMC RRT Commander
+  supervisors: au-14-job-name-rmcrrt-commander
   accessGroups:
   - AU14GovforSquad
   special:
@@ -158,7 +158,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT RFN
+      prefix: au-14-job-prefix-rmcrrt-rifleman
   hidden: false
 
 - type: entity
@@ -190,7 +190,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTBreacher
-  name: RMC RRT Breacher
+  name: au-14-job-name-rmcrrt-pointman
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTBreacher
   ranks:
@@ -199,7 +199,7 @@
   startingGear: AU14GearRMCRRTBreacher
   icon: "RMCJobIconRoyalBreacher"
   joinNotifyCrew: false
-  supervisors: RMC RRT Commander
+  supervisors: au-14-job-name-rmcrrt-commander
   accessGroups:
   - AU14GovforSquad
   special:
@@ -211,7 +211,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT BRCH
+      prefix: au-14-job-prefix-rmcrrt-pointman
   hidden: false
 
 - type: entity
@@ -243,7 +243,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTMarksman
-  name: RMC RRT Marksman
+  name: au-14-job-name-rmcrrt-marksman
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTMarksman
   ranks:
@@ -252,7 +252,7 @@
   startingGear: AU14GearRMCRRTMarksman
   icon: "RMCJobIconRoyalMarinesMarksman"
   joinNotifyCrew: false
-  supervisors: RMC RRT Commander
+  supervisors: au-14-job-name-rmcrrt-commander
   accessGroups:
   - AU14GovforSquad
   special:
@@ -264,7 +264,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT MRKN
+      prefix: au-14-job-prefix-rmcrrt-marksman
   hidden: false
 
 - type: entity
@@ -296,7 +296,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTSmartgunner
-  name: RMC RRT Machinegunner
+  name: au-14-job-name-rmcrrt-smartgunner
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTSmartgunner
   ranks:
@@ -305,7 +305,7 @@
   startingGear: AU14GearRMCRRTSmartgunner
   icon: "RMCJobIconRoyalSmartGunOperator"
   joinNotifyCrew: false
-  supervisors: RMC RRT Commander
+  supervisors: au-14-job-name-rmcrrt-commander
   accessGroups:
   - AU14GovforSquad
   special:
@@ -317,7 +317,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT MG
+      prefix: au-14-job-prefix-rmcrrt-smartgunner
   hidden: false
 
 - type: entity
@@ -342,7 +342,7 @@
 - type: job
   parent: CMJobBase
   id: AU14RMCRRTCorpsman
-  name: RMC RRT Corpsman
+  name: au-14-job-name-rmcrrt-corpsman
   job: AU14RMCRRTCorpsman
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTCorpsman
@@ -352,7 +352,7 @@
   startingGear: AU14GearRMCRRTCorpsman
   icon: "RMCJobIconRoyalMedic"
   joinNotifyCrew: false
-  supervisors: RMC RRT Commander
+  supervisors: au-14-job-name-rmcrrt-commander
   accessGroups:
   - AU14GovforSquad
   special:
@@ -364,7 +364,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT HC
+      prefix: au-14-job-prefix-rmcrrt-corpsman
   hidden: false
 
 - type: entity
@@ -677,7 +677,7 @@
     faction: FactionGOVFOR
 
 - type: playTimeTracker
-  id: AU14JobRMCRTTCommander
+  id: AU14JobRMCRRTCommander
 
 - type: playTimeTracker
   id: AU14JobRMCRRTRifleman

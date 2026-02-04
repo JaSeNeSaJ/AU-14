@@ -19,7 +19,7 @@
   components:
   - type: StorageFill
     contents:
-    - id: AU14PacketGrenadeIncendiaryFilledRMC
+    - id: AU14PacketGrenadeIncendiaryRMCFilled
       amount: 2
 
 - type: entity
