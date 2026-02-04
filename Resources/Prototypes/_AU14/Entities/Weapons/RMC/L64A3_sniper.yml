@@ -146,11 +146,11 @@
     - Cartridge
     - AU14CartridgeRifleL64A3Squashhead
   - type: CartridgeAmmo
-    proto: BulletRifle888x51mmSquashhead
+    proto: AU14BulletRifle888x51Squashhead
 
 - type: entity
   parent: BulletRifle10x24mm
-  id: AU14CartridgeRifleL64A3Squashhead
+  id: AU14BulletRifle888x51Squashhead
   categories: [ HideSpawnMenu ]
   components:
   - type: Projectile

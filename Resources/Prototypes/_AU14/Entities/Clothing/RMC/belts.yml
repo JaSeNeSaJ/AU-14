@@ -12,6 +12,19 @@
     camouflageVariations: {}
 
 - type: entity
+  parent: AU14BeltMarineRMC
+  id: AU14BeltMarineRMCFullL90
+  suffix: Full, L90
+  components: 
+  - type: StorageFill
+    contents:
+    - id: AU14MagazineRifleL90extended
+    - id: AU14MagazineRifleL90extended
+    - id: AU14MagazineRifleL90
+    - id: AU14MagazineRifleL90
+    - id: AU14MagazineRifleL90
+
+- type: entity
   parent: CMBeltBaseStorage
   id: AU14BeltUtilityGeneralRMC
   name: L26 general utility pouch
@@ -93,12 +106,18 @@
     - suitStorage
     - belt
   - type: ItemCamouflage
-    camouflageVariations:
-      Jungle: _AU14/Clothing/RMC/belt/holster.rsi
-      Desert: _AU14/Clothing/RMC/belt/holster.rsi
-      Snow: _AU14/Clothing/RMC/belt/holster.rsi
-      Classic: _AU14/Clothing/RMC/belt/holster.rsi
-      Urban: _AU14/Clothing/RMC/belt/holster.rsi
+    camouflageVariations: {}
+
+- type: entity
+  parent: AU14BeltHolsterPistolRMC
+  id: AU14BeltHolsterPistolRMCFullL165A1
+  suffix: Full, L165A1
+  components: 
+  - type: StorageFill
+    contents:
+    - id: AU14L165A1Filled
+    - id: AU14MagazinePistolL165A1
+      amount: 6
 
 - type: entity
   parent: CMBeltUtilityCombat
@@ -179,6 +198,16 @@
     sprite: _AU14/Clothing/RMC/belt/shotgun.rsi
   - type: ItemCamouflage
     camouflageVariations: {}
+
+- type: entity
+  parent: AU14ShotgunShellLoadingRigRMC
+  id: AU14ShotgunShellLoadingRigRMCFullBuckshot
+  suffix: Full, Buckshot
+  components: 
+  - type: StorageFill
+    contents:
+    - id: CMShellShotgunBuckshot
+      amount: 14
 
 - type: entity
   parent: CMBeltBaseStorage

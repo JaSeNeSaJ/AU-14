@@ -111,6 +111,60 @@
       rmc-aslot-underbarrel: 0.42, -0.31
 
 - type: entity
+  parent: AU14WeaponRifleL90
+  id: AU14WeaponRifleL90Full
+  components:
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleL90
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleL90
+          - AU14MagazineRifleL90AP
+          - AU14MagazineRifleL90HEAP
+          - AU14MagazineRifleL90Incendiary
+          - AU14MagazineRifleL90extended
+  - type: AttachableHolder
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        startingAttachable: AU14AttachmentTwoPointSling
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        whitelist:
+          tags:
+          - RMCAttachmentAngledGrip
+          - RMCAttachmentVerticalGrip
+          - RMCAttachmentFlashlightGrip
+          - RMCAttachmentGyroscopicStabilizer
+          - RMCAttachmentBipod
+          - RMCAttachmentBurstFireAssembly
+          - RMCAttachmentExtinguisher
+          - RMCAttachmentFlamer
+          - RMCAttachmentU1GrenadeLauncher
+          - RMCAttachmentU7UnderbarrelShotgun
+          - RMCAttachmentLaserSight
+          - RMCAttachmentM203GrenadeLauncher
+
+- type: entity
   parent: CMMagazineRifleBase
   id: AU14MagazineRifleL90
   name: L90 Magazine (10x24mm)
@@ -358,6 +412,51 @@
       rmc-aslot-underbarrel: 0.375, -0.335
 
 - type: entity
+  parent: AU14WeaponRifleL90B
+  id: AU14WeaponRifleL90BFull
+  components:
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleL90
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleL90
+          - AU14MagazineRifleL90AP
+          - AU14MagazineRifleL90HEAP
+          - AU14MagazineRifleL90Incendiary
+          - AU14MagazineRifleL90extended
+  - type: AttachableHolder
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        startingAttachable: AU14AttachmentTwoPointSling
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: RMCAttachmentL90BUnderbarrelShotgun
+        whitelist:
+          tags:
+          - RMCAttachmentL90BUnderbarrelShotgun
+
+- type: entity
   parent: RMCAttachmentS84xTelescopicScope
   id: AU14AttachmentL90MScope
   name: 4x telescopic scope
@@ -523,6 +622,26 @@
       rmc-aslot-barrel: 0.81, -0.0305
       rmc-aslot-rail: 0.06, 0.055
       rmc-aslot-underbarrel: 0.4, -0.28
+
+- type: entity
+  parent: AU14WeaponRifleL90M
+  id: AU14WeaponRifleL90MFull
+  components:
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineRifleL90M
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineRifleL90M
+          - AU14MagazineRifleL90MAP
+          - AU14MagazineRifleL90MHEAP
+          - AU14MagazineRifleL90MIncendiary
+          - AU14MagazineRifleL90Mextended
 
 - type: entity
   parent: CMMagazineRifleBase
@@ -775,6 +894,47 @@
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Clothing
     sprite: _AU14/Weapons/Guns/RMC/L90A2old.rsi
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineSMGL90A2extended
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineSMGL90A2
+          - AU14MagazineSMGL90A2AP
+          - AU14MagazineSMGL90A2HEAP
+          - AU14MagazineSMGL90A2Incendiary
+          - AU14MagazineSMGL90A2extended
+  - type: AttachableHolder
+    randomAttachmentChance: 0.42
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
+        startingAttachable: AU14AttachmentTwoPointSling
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: AU14AttachmentL90MVerticalGrip
+        whitelist:
+          tags:
+          - AU14AttachmentL90MVerticalGrip
 
 - type: entity
   parent: CMMagazineRifleBase

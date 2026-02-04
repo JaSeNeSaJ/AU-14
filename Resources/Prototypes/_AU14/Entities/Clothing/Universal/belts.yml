@@ -27,7 +27,7 @@
     - id: CMHandsLatex
 
 - type: entity
-  parent: CMBeltMedicBag
+  parent: CMUBeltMedicBagSupportSynth
   id: CMUBeltMedicBagSupportSynthRMC
   components:
   - type: Sprite

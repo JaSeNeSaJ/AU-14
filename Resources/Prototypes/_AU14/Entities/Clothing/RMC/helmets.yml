@@ -25,7 +25,7 @@
 - type: entity
   parent: RMCMarineHelmetBase
   id: AU14HeadHelmetRMCHeavy
-  name: L6 pattern heavy helmet
+  name: Mk20 pattern heavy helmet
   suffix: AU14
   description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners and pointmen as part of the kestrel armour system.
   components:
