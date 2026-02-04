@@ -414,7 +414,7 @@
   weight: 20
   minplayers: 0
   maxplayers: 400
-  GhostsNeeded: 0
+  GhostsNeeded: 7
   roundstart: false
 
 # RRT Equipment

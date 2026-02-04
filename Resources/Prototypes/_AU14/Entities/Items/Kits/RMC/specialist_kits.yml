@@ -107,6 +107,38 @@
         amount: 15
 
 - type: entity
+  parent: RMCKitBase
+  id: AU14KitRMCMarksmanL164A3
+  name: RMC L164A3 Grenade Launcher Kit
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,13,5
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+      - id: AU14WeaponLauncherL164A3
+        amount: 1
+      - id: AU14BeltMortarGrenadierRMC
+        amount: 1
+      - id: AU14Packet20MMGrenadeHERMCFilled
+        amount: 2
+      - id: AU14Packet20MMGrenadeFragRMCFilled
+        amount: 2
+      - id: AU14Packet20MMGrenadeIncendiaryRMCFilled
+        amount: 1
+      - id: AU14Packet20MMGrenadeHoloRMCFilled
+        amount: 2
+      - id: AU14Packet20MMGrenadeHESHRMCFilled
+        amount: 1
+
+- type: entity
   parent: BaseItem
   id: AU14KitRMCPointman
   name: RMC Sealed Pointman Kit

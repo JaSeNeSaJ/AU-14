@@ -874,7 +874,14 @@
         givePrefix: PNM
         isAppendPrefix: true
         isAppendSquadRoleName: true
-
+    - name: Sapper kit
+      entries:
+      - id: AU14KitRMCMarksmanL164A3
+        amount: 1
+        giveSquadRoleName: Sapper
+        givePrefix: SPR
+        isAppendPrefix: true
+        isAppendSquadRoleName: true
 
 - type: entity
   parent: ColMarTechBase
