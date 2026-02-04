@@ -343,7 +343,6 @@
   parent: CMJobBase
   id: AU14RMCRRTCorpsman
   name: au-14-job-name-rmcrrt-corpsman
-  job: AU14RMCRRTCorpsman
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTCorpsman
   ranks:
