@@ -45,6 +45,16 @@
 
 - type: entity
   parent: RMCCrateExplosives
+  id: AU14CrateGrenadesIncendiaryBoxRMC
+  suffix: RM
+  name: 30mm R2175/B HIDP incendiary grenade box crate (x18)
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14BoxHIDPRMC
+
+- type: entity
+  parent: RMCCrateExplosives
   id: AU14Crate20MMGrenadesFragRMC
   suffix: RM
   name: 20mm L104A1 20mm fragmentation grenades crate (x8)
