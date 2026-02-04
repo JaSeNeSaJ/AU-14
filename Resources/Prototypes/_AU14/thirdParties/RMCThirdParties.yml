@@ -93,7 +93,7 @@
     - type: Marine
       Faction: govfor
     - type: JobPrefix
-      prefix: RRT CMD
+      prefix: au-14-job-prefix-rmcrrt-commander
   hidden: false
 
 - type: entity
@@ -408,7 +408,7 @@
 
 - type: auThirdParty
   id: RMCRRT
-  partyspawn: RMCERTSpawn
+  partyspawn: RMCRRTSpawn
   enterbyshuttle: True
   weight: 20
   minplayers: 0
