@@ -41,3 +41,30 @@
     - id: CMPaper
       amount: 4
     - id: RMCCPRDummy
+
+- type: entity
+  parent: CMBackpack
+  id: AU14BackpackMarineBlack
+  name: lightweight IMP backpack
+  suffix: Black, AU14
+  description: A standard-issue pack. Designed to lug gear into the battlefield.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Back/Backpacks/Marines/standard/snow-urban.rsi
+  - type: ItemCamouflage
+    camouflageVariations: { }
+
+- type: entity
+  parent: CMSatchelMarine
+  id: AU14SatchelMarineIntelBlack
+  name: lightweight expedition pack
+  suffix: Black, AU14
+  description: A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Back/Satchels/Marines/big/snow-urban.rsi
+  - type: Storage
+    grid:
+    - 0,0,19,1 # 20
+  - type: ItemCamouflage
+    camouflageVariations: { }
