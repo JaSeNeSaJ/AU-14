@@ -74,7 +74,7 @@
         crate: AU14Crate20MMGrenadesFragRMC
       - cost: 4000
         crate: AU14Crate20MMGrenadesIncendiaryRMC
-      - cost: 1200
+      - cost: 6000
         crate: AU14Crate20MMGrenadesHERMC
       - cost: 4000
         crate: AU14Crate20MMGrenadesHoloRMC
