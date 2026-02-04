@@ -357,8 +357,8 @@
 - type: entity
   parent: CMSatchelMarine
   id: CMSatchelMarineIntel
-  name: USCM lightweight expedition pack
-  description: A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand. Usually issued to Marine intelligence officers.
+  name: lightweight expedition pack
+  description: A heavy-duty IMP based backpack that can be slung around the front or to the side, and can quickly be accessed with only one hand.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Back/Satchels/Marines/big/jungle-desert-classic.rsi

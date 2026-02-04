@@ -93,19 +93,14 @@
       rmc-aslot-rail: 0.225, 0.125
       rmc-aslot-underbarrel: 0.62, -0.31
   - type: ItemCamouflage
-    camouflageVariations:
-      Jungle: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/jungle.rsi
-      Desert: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/desert.rsi
-      Snow: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/snow.rsi
-      Classic: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/classic.rsi
-      Urban: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/urban.rsi
+    camouflageVariations: { }
     layers:
       barrel:
-        Jungle: m4spr_barrel
+        Jungle: d_m4spr_barrel
         Desert: d_m4spr_barrel
-        Snow: s_m4spr_barrel
-        Classic: c_m4spr_barrel
-        Urban: u_m4spr_barrel
+        Snow: d_m4spr_barrel
+        Classic: d_m4spr_barrel
+        Urban: d_m4spr_barrel
   - type: Tag
     tags:
     - RMCWeaponRifleM4SPR
@@ -169,19 +164,14 @@
           - RMCMagazineRifleM5SPRHVP
           - RMCMagazineRifleM5SPRHVHIP
   - type: ItemCamouflage
-    camouflageVariations:
-      Jungle: _RMC14/Objects/Weapons/Guns/Rifles/m4spr_custom/jungle.rsi
-      Desert: _RMC14/Objects/Weapons/Guns/Rifles/m4spr_custom/desert.rsi
-      Snow: _RMC14/Objects/Weapons/Guns/Rifles/m4spr_custom/snow.rsi
-      Classic: _RMC14/Objects/Weapons/Guns/Rifles/m4spr_custom/classic.rsi
-      Urban: _RMC14/Objects/Weapons/Guns/Rifles/m4spr_custom/urban.rsi
+    camouflageVariations: { }
     layers:
       barrel:
-        Jungle: m4spr_custom_barrel
+        Jungle: d_m4spr_custom_barrel
         Desert: d_m4spr_custom_barrel
-        Snow: s_m4spr_custom_barrel
-        Classic: c_m4spr_custom_barrel
-        Urban: u_m4spr_custom_barrel
+        Snow: d_m4spr_custom_barrel
+        Classic: d_m4spr_custom_barrel
+        Urban: d_m4spr_custom_barrel
   - type: Tag
     tags:
     - RMCWeaponRifleM5SPR
@@ -256,13 +246,6 @@
           - RMCMagazineRifleM4SPRWP
           - RMCMagazineRifleM4SPRIncendiary
           - RMCMagazineRifleM4SPRHEAP
-  - type: ItemCamouflage
-    camouflageVariations:
-      Jungle: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/jungle.rsi
-      Desert: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/desert.rsi
-      Snow: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/snow.rsi
-      Classic: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/classic.rsi
-      Urban: _RMC14/Objects/Weapons/Guns/Rifles/m4spr/urban.rsi
 
 - type: entity
   parent: CMMagazineRifleBase

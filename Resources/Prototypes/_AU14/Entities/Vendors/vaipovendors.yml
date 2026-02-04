@@ -20,13 +20,19 @@
         amount: 50
     - name: Footwear
       entries:
-      - id: CMBootsBlack
+      - id: CMBootsBlackFilled
+        amount: 50
+      - id: CMBootsBrownFilled
         amount: 50
     - name: Gloves
       entries:
       - id: AU14PVEHandsInsulatedBlackMarine
         amount: 50
+      - id: CMHandsBrown
+        amount: 50
       - id: AU14PVEHandsFingerlessBlackGloves
+        amount: 50
+      - id: AU14PVEHandsFingerlessBrownGloves
         amount: 50
     - name: Webbings
       entries:
@@ -691,9 +697,9 @@
         amount: 12
       - id: RMCBoxShotgunFlechette
         amount: 12
-    - name: M39 Submachine Gun
+    - name: M39B/2 Submachine Gun
       entries:
-        - id: WeaponSMGM63
+        - id: RMCWeaponSMGM63B2
           amount: 1
         - id: CMMagazineSMGM63Ext
           amount: 2
