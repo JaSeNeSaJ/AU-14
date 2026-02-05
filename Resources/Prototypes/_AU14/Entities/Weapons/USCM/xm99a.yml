@@ -29,7 +29,6 @@
   - type: BatterySelfRecharger
     autoRecharge: true
     autoRechargeRate: 150
-    zeroVisible: true
   - type: Appearance
   - type: Item
     size: Large
