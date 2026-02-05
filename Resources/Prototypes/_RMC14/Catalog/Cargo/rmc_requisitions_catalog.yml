@@ -184,6 +184,8 @@
         crate: AU14CrateM7SLAWMixedRocket
       - cost: 2000
         crate: AU14CrateM7SLAWHERocket
+      - cost: 3000
+        crate: AU14CrateMagazineL64A3
     - name: Dropship Parts
       entries:
       - cost: 100
