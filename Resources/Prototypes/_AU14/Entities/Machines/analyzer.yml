@@ -43,24 +43,4 @@
   - type: Sprite
     sprite: _AU14/Structures/analyzermachine.rsi
     state: analyzer_idle
-  - type: Damageable
-    damageContainer: StructuralInorganic
-    damageModifierSet: StructuralMetallic
-  - type: Destructible
-    thresholds:
-    - trigger:
-        !type:DamageTrigger
-        damage: 2000
-      behaviors:
-        - !type:DoActsBehavior
-          acts: [ "Destruction" ]qxq
-    - trigger:
-        !type:DamageTrigger
-        damage: 1000
-      behaviors:
-      - !type:DoActsBehavior
-        acts: ["Destruction"]
-      - !type:PlaySoundBehavior
-        sound:
-          collection: MetalBreak
 # EG, when you get around to using this make sure you add the analyzer_off and analyzer_working sprites. Nzzy worked extremely hard on those states.
