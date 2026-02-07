@@ -645,13 +645,9 @@
       - id: AU14AttachmentTwoPointSling
     - name: Explosives
       entries:
-      - id: RMCBoxHEDP
+      - id: CMPacketGrenadeFragOldFilled
         amount: 1
-      - id: CMGrenadeSmoke
-        amount: 12
-      - id: RMCPacketGrenadeM74AGMFFilled
-        amount: 4
-      - id: RMCPacketGrenadeM74AGMSFilled
+      - id: RMCPacketGrenadeSmokeFilled
         amount: 4
       - id: RMCExplosiveBreachingCharge
-        amount: 4
+        amount: 6
