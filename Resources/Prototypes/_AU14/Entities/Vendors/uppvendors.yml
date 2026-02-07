@@ -68,7 +68,7 @@
         amount: 15
       - id: AU14IMPBackpackMarine
         amount: 3
-      - id: RMCSatchelWelderChestrig
+      - id: RMCSatchelSPPWelder
         amount: 2
       - id: RMCScabbardShotgun
         amount: 2
@@ -129,6 +129,8 @@
 #        amount: 1
     - name: Mask
       entries:
+      - id: RMCMaskGasSPP
+        amount: 20
       - id: CMMaskCoif
         amount: 10
       - id: RMCMaskScarfBlack
