@@ -796,18 +796,6 @@
       entries:
       - id: RMCAttachmentRailFlashlight
       - id: AU14AttachmentTwoPointSling
-    - name: Explosives
-      entries:
-      - id: AU14BoxHEDPRMC
-        amount: 1
-      - id: RMCPacketGrenadeSmokeFilled
-        amount: 2
-      - id: AU14PacketGrenadeIncendiaryRMC
-        amount: 2
-      - id: RMCExplosivePlastic
-        amount: 2
-      - id: RMCExplosiveBreachingCharge
-        amount: 2
 
 - type: entity #todo proper RMC RTOs
   parent: ColMarTechBase
@@ -882,6 +870,18 @@
         givePrefix: au14-job-prefix-govforspecialist-grenadierRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
+    - name: Explosives
+      entries:
+      - id: AU14BoxHEDPRMC
+        amount: 2
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 4
+      - id: AU14PacketGrenadeIncendiaryRMC
+        amount: 4
+      - id: RMCExplosivePlastic
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 6
 
 - type: entity
   parent: ColMarTechBase

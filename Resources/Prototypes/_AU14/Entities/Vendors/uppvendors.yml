@@ -647,16 +647,6 @@
       entries:
       - id: RMCAttachmentTwoPointSling
       - id: RMCAttachmentRailFlashlight
-    - name: Explosives
-      entries:
-      - id: CMGrenadeFragOld
-        amount: 12
-      - id: CMGrenadeSmoke
-        amount: 6
-      - id: RMCExplosivePlastic
-        amount: 4
-      - id: RMCExplosiveBreachingCharge
-        amount: 4
 
 - type: entity
   parent: ColMarTechBase
@@ -700,6 +690,16 @@
         amount: 1
       - id: RMCMagazineSniperType88
         amount: 8
+    - name: Explosives
+      entries:
+      - id: CMPacketGrenadeFragOldFilled
+        amount: 10
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 4
+      - id: RMCExplosivePlastic
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 6
 
 - type: entity
   parent: ColMarTechBase
