@@ -369,7 +369,7 @@
     Rto: AU14RMCRTOVendor # TODO: RMC RTO's
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
+    combattech: AU14RMCComtechGearVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   jobClassOverride:
@@ -383,6 +383,7 @@
     RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
     PlatOp: AU14JobGOVFORPlatOpRMC
     DCC: AU14JobGOVFORDCCRMC
+    SupportSynth: AU14JobGOVFORAuxSupportSynthRMC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml #TODO: RMC Shuttles
   compatibleFighters: #TODO: RMC Fighters
