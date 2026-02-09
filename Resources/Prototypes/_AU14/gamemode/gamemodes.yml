@@ -13,7 +13,7 @@
   #- AUPlanetShepherdsPride
   - AUPlanetFlight
   - AUPlanetLV759
-
+  - AUPlanetLV327
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -54,7 +54,7 @@
   #- AUPlanetShepherdsPride for playtest - eg
   - AUPlanetLV747
   - AUPlanetFlight
-
+  - AUPlanetLV327
   # - AUPlanetStableGarrison
   rules:
   - AuVoteRule
@@ -78,6 +78,7 @@
     - AUPlanetLV747
     - AUPlanetShepherdsPride
     - AUPlanetLV624
+    - AUPlanetLV327
 
 - type: gamePreset
   id: Jailbreak
