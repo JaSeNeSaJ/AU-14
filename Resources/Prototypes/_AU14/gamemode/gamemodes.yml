@@ -14,6 +14,7 @@
   - AUPlanetFlight
   - AUPlanetLV759
   - AUPlanetLV327
+  - AUPlanetCorsatStation
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -55,6 +56,7 @@
   - AUPlanetLV747
   - AUPlanetFlight
   - AUPlanetLV327
+  - AUPlanetCorsatStation
   # - AUPlanetStableGarrison
   rules:
   - AuVoteRule
