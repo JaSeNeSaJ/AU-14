@@ -95,7 +95,6 @@
         layer:
         - MidImpassable
         - LowImpassable
-    fixedRotation: True
   - type: ObjectivesConsole
     faction: CLF
   - type: UserInterface

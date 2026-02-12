@@ -197,7 +197,7 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: z
+  id: LACNSniperteam
   partyspawn: LACNSniperteamSpawn
   entrymethod: shuttle
   weight:  20
