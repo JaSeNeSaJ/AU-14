@@ -71,6 +71,7 @@
   possibleships:
       - Daybreak
       - USSBush
+  techTree: RMCIntelTechTree
 
 - type: platoon
   id: UPP

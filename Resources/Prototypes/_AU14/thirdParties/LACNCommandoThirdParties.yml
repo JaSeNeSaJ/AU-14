@@ -197,10 +197,10 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: LACNSniperteam
+  id: z
   partyspawn: LACNSniperteamSpawn
-  enterbyshuttle: false
-  weight: 20
+  entrymethod: shuttle
+  weight:  20
   minplayers: 0
   maxplayers: 400
   GhostsNeeded: 0

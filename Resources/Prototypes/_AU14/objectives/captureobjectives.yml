@@ -47,6 +47,11 @@
     custompoints: 5
     ObjectiveDescription: "Capture the supermarket  for your faction."
     roundEndMessage: "By capturing the UA flag"
+    intelTiers:
+    - supermarkettier0
+    - supermarkettier1
+    - supermarkettier2
+
   - type: CaptureObjective
     hoisttime: 8
     maxholdtimes: 10
@@ -56,7 +61,18 @@
   - type: NavMapBeacon
     text: Super market
 
-
+- type: objectiveIntelTier
+  id: supermarkettier0
+  title: "Supermarket: Exterior Overview"
+  description: "Basic information about the supermarket exterior, entrances, and patrol routes."
+- type: objectiveIntelTier
+  id: supermarkettier1
+  title: "Supermarket: Interior Layout"
+  description: "Detailed layout of aisles, storeroom access, and high-value locations."
+- type: objectiveIntelTier
+  id: supermarkettier2
+  title: "Supermarket: Security Systems"
+  description: "Locations of cameras, alarm panels, and guard schedules."
 
 - type: entity
   name: Capture the Tunnel

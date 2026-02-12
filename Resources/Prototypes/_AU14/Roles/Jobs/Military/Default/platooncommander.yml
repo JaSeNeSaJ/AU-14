@@ -37,6 +37,7 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: CommendationGiver
     - type: NpcFactionMember
       factions:
       - GOVFOR
@@ -57,6 +58,8 @@
   equipment:
     id: AU14IDCardGOVFORPlatCo
     ears: AU14HeadsetSectionLeader
+  inhand:
+    -  RMCTabletGovfor
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORPlatCo

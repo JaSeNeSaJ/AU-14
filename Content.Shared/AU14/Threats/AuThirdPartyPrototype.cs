@@ -23,12 +23,13 @@ public sealed partial class AuThirdPartyPrototype : IPrototype
     [DataField("whitelistedThreats")]
     public List<string> WhitelistedThreats { get; private set; } = new();
 
-    [DataField("enterbyshuttle")]
-    public bool Enterbyshuttle { get; private set; } =  false;
+    // The preferred field is the string 'entrymethod' (values: "ground", "shuttle", "parachute").
+    [DataField("entrymethod", required: false)]
+    public string? EntryMethod { get; private set; } = null;
 
     [DataField("dropshippath", required: false)]
     public ResPath dropshippath { get; private set; } = new ResPath( "/Maps/_AU14/ShuttlesDropships/genericthirdpartyshuttle.yml");
-    // used if enterbyshuttle is true
+    // used if entrymethod == "shuttle"
 
     [DataField("blacklistedgamemodes")]
     public List<string> BlacklistedGamemodes { get; private set; } = new();

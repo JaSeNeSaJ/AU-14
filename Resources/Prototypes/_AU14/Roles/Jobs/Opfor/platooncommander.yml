@@ -37,6 +37,7 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: CommendationGiver
     - type: NpcFactionMember
       factions:
       - OPFOR
@@ -57,7 +58,8 @@
   equipment:
     id: AU14IDCardopforPlatCo
     ears: AU14HeadsetSectionLeaderopfor
-
+  inhand:
+   -  RMCTabletOpfor
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointopforPlatCo

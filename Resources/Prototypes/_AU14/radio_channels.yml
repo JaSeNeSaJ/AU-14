@@ -18,13 +18,14 @@
 
 
 
-- type: radioChannel #UNMC High Command, for events and such, basically CentComm channel
+- type: radioChannel
   id: opfor
   name: chat-radio-opfor
   keycode: "i"
   frequency: 1601
   color: "#8c1002"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: opforcommand
@@ -33,6 +34,7 @@
   frequency: 1479
   color: "#8c1002"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: opforjtac
@@ -41,6 +43,7 @@
   frequency: 1474
   color: "#d08000"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: OpforIntel
@@ -49,6 +52,7 @@
   frequency: 1602
   color: "#1E90FF"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: OpforBravo
@@ -57,6 +61,7 @@
   frequency: 1603
   color: "#E6E202"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: OpforCharlie
@@ -65,6 +70,7 @@
   frequency: 1604
   color: "#41004A"
   longRange: true
+  faction: "opfor"
 
 - type: radioChannel
   id: GovforIntel
@@ -73,6 +79,7 @@
   frequency: 1605
   color: "#228B22"
   longRange: true
+  faction: "govfor"
 
 - type: radioChannel
   id: GovforBravo
@@ -81,6 +88,7 @@
   frequency: 1606
   color: "#E6E202"
   longRange: true
+  faction: "govfor"
 
 - type: radioChannel
   id: GovforCharlie
@@ -89,3 +97,4 @@
   frequency: 1607
   color: "#41004A"
   longRange: true
+  faction: "govfor"
