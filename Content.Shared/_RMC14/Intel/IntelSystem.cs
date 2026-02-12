@@ -76,7 +76,7 @@ public sealed class IntelSystem : EntitySystem
     private static readonly EntProtoId<IntelTechTreeComponent> TechTreeProtoGovfor = "RMCIntelTechTree_govfor";
     private static readonly EntProtoId<IntelTechTreeComponent> TechTreeProtoOpfor = "RMCIntelTechTree_opfor";
     private static readonly EntProtoId<IntelTechTreeComponent> TechTreeProtoClf = "RMCIntelTechTree_clf";
-    private static readonly EntProtoId<IntelTechTreeComponent> TechTreeProtoScientist = "RMCIntelTechTree_scientist";
+    private static readonly EntProtoId<IntelTechTreeComponent> TechTreeProtoScientist = "RMCIntelTechTree_clf";
 
     private static readonly EntProtoId PaperScrapProto = "RMCIntelPaperScrap";
     private static readonly EntProtoId ProgressReportProto = "RMCIntelProgressReport";
