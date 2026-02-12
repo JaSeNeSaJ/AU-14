@@ -15,6 +15,7 @@
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
+  - AUPlanetSorokyne
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -36,6 +37,7 @@
     - AUPlanetLV624
     - AUPlanetLV747
     - AUPlanetLV759
+    - AUPlanetSorokyne
 
    # - AUPlanetStableGarrison
   rules:
@@ -56,6 +58,7 @@
   - AUPlanetLV747
   - AUPlanetFlight
   - AUPlanetLV327
+  - AUPlanetSorokyne
   - AUPlanetCorsatStation
   # - AUPlanetStableGarrison
   rules:
@@ -81,6 +84,7 @@
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV327
+    - AUPlanetSorokyne
 
 - type: gamePreset
   id: Jailbreak

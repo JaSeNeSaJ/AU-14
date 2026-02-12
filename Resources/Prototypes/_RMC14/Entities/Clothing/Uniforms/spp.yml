@@ -11,7 +11,7 @@
     foldVerbText: rmc-sleeves-verb-fold
   - type: UniformAccessoryHolder
     startingAccessories:
-    - RMCPatchSPP
+    - AU14PatchUPP
   - type: Tag
     tags:
     - RMCUniformSPP

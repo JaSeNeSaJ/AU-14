@@ -259,7 +259,7 @@
   name: Port Neroid
   components:
   - type: RMCPlanetMapPrototype
-    votename: "LV-327 Port Neroid"
+    votename: "Port Neroid"
     mapId: portneroid
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
@@ -325,3 +325,32 @@
     - TimeSharesSalesman
     - NSPAInvestigationParty
     - NSPAInvestigationPartyAlt
+
+- type: entity
+  id: AUPlanetSorokyne
+  name: au14sorokyne
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Sorokyne Strata"
+    mapId: au14sorokyne
+    camouflage: Desert
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsOpfor:
+    - LACN
+    - USCM
+    - RMC
+    platoonsGovfor:
+    - UPP
+    - ProdigySF
+    defaultgovfor: RMC
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    faction: ua
+    thirdparties:
+    - ICRCReliefParty
+    - cultistThirdParty
+    threats:
+    - cultistThreat
+    - XenoThreat
