@@ -214,7 +214,6 @@
         layer:
         - MidImpassable
         - LowImpassable
-    fixedRotation: True
 
 - type: entity
   id: RMCIntelTechTree
@@ -482,7 +481,6 @@
         layer:
         - MidImpassable
         - LowImpassable
-    fixedRotation: True
   - type: ActivatableUIBlacklist
     blacklist:
       components:
@@ -564,7 +562,6 @@
           events:
           - !type:TechPartySpawnEvent
             thirdPartyId: CMBInvestigationPartyAlt
-            Amount: 1
           - !type:TechAnnounceEvent
             author: INTEL OPERATIONS
             message: A CMB investigation party has been dispatched to investigate intel leads.
