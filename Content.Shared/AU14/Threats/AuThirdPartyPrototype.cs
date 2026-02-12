@@ -28,8 +28,8 @@ public sealed partial class AuThirdPartyPrototype : IPrototype
     public string? EntryMethod { get; private set; } = null;
 
     [DataField("dropshippath", required: false)]
-    public ResPath dropshippath { get; private set; } = new ResPath( "/Maps/_AU14/ShuttlesDropships/genericthirdpartyshuttle.yml");
-    // used if entrymethod == "shuttle"
+    public ResPath dropshippath { get; private set; } = new ResPath( "/Maps/_CMU14/Shuttles/black_ert.yml");
+    // used if enterbyshuttle is true
 
     [DataField("blacklistedgamemodes")]
     public List<string> BlacklistedGamemodes { get; private set; } = new();

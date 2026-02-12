@@ -26,18 +26,16 @@
         amount: 50
     - name: Webbings
       entries:
-      - id: AU14WebbingMagazine
+      - id: RMCWebbingBlackSmall
         amount: 25
-      - id: AU14WebbingUtility
+      - id: CMWebbingBlack
         amount: 25
-      - id: AU14WebbingDumpPouch
-        amount: 25
-      - id: AU14WebbingAdminPouch
+      - id: RMCWebbingHolsterBlack
         amount: 15
-      - id: AU14WebbingDropPouch
+      - id: RMCWebbingDropPouchBlack
         amount: 15
-      - id: AU14WebbingKnivesFilled
-        amount: 1
+      - id: RMCWebbingLegPouchBlack
+        amount: 15
     - name: Headgear
       entries:
       - id: AU14ProdigyBallisticHelmet
@@ -60,40 +58,29 @@
         amount: 25
     - name: Backpack
       entries:
-      - id: CMBackpackMarine
-        amount: 15
-      - id: AU14IMPBackpackMarine
-        amount: 3
-      - id: AU14TechBackpackMarine
-        amount: 3
-      - id: CMSatchelMarine
-        amount: 15
-#      - id: Marine Chestrig
-#        amount: 15
-      - id: RMCSatchelWelderChestrig
-        amount: 2
+      - id: RMCSatchelLightpackBlack
+        amount: 25
+      - id: AU14BackpackMarineBlack
+        amount: 20
       - id: RMCScabbardShotgun
         amount: 2
       - id: RMCBackpackAmmo
         amount: 1
     - name: Belts
       entries:
-      - id: CMBeltMarine
+      - id: AU14BeltMarineBlack
         amount: 25
       - id: RMCBeltGrenade
         amount: 2
-      - id: RMCM276ShotgunShellLoadingRig
+      - id: AU14M276ShotgunShellLoadingRigBlack
+        amount: 2
+      - id: AU14BeltKnifeBlackFilled
         amount: 2
       - id: RMCBeltHolsterPistolTSE
         amount: 15
-      - id: RMCBeltHolsterRevolver
+      - id: AU14BeltHolsterPistolBlack
         amount: 15
-#      - id: M276 Pattern M82F Holster Rig
-#        amount: 5
-      - id: CMBeltKnifeFilled
-        name: M276 Knife Rig (Full)
-        amount: 1
-      - id: RMCBeltUtilityGeneral
+      - id: AU14BeltUtilityGeneralBlack
         amount: 15
     - name: Pouches
       entries:
@@ -138,14 +125,6 @@
       - id: RMCMaskScarfBlack
         amount: 10
       - id: RMCMaskScarfGray
-        amount: 10
-      - id: RMCMaskScarfTan
-        amount: 10
-      - id: RMCMaskTornScarfGreen
-        amount: 10
-      - id: RMCMaskTornScarfDesert
-        amount: 10
-      - id: RMCMaskTornScarfSnow
         amount: 10
       - id: RMCMaskTornScarfBlack
         amount: 10
@@ -311,7 +290,11 @@
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
       - id: CMBeltMedical
-      - id: CMBeltMedicBag
+      - id: AU14BeltMedicBagBlack
+    - name: Medical Armor
+      choices: { CMUPlatoonMedicalArmor: 1 }
+      entries:
+      - id: CMUArmorProdigyFlakVestMedical
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -360,10 +343,6 @@
         amount: 15
       - id: CMTricordrazineAutoInjector
         amount: 15
-    - name: Medical Armor
-      choices: { CMUPlatoonMedicalArmor: 1 }
-      entries:
-      - id: CMUArmorProdigyFlakVestMedical
     - name: Medical Gloves
       choices: { CMUPlatoonMedicalGloves: 1 }
       entries:
@@ -654,20 +633,6 @@
       entries:
       - id: RMCAttachmentRailFlashlight
       - id: AU14AttachmentTwoPointSling
-    - name: Explosives
-      entries:
-      - id: RMCBoxHEDP
-        amount: 1
-      - id: CMGrenadeSmoke
-        amount: 6
-      - id: RMCGrenadeBlastM12
-        amount: 6
-      - id: RMCGrenadeCustomMetalFoam
-        amount: 1
-      - id: RMCExplosivePlastic
-        amount: 4
-      - id: RMCExplosiveBreachingCharge
-        amount: 2
 
 - type: entity
   parent: ColMarTechBase
@@ -704,3 +669,17 @@
         amount: 12
       - id: RMCBoxShotgunFlechette
         amount: 12
+    - name: Explosives
+      entries:
+      - id: RMCBoxHEDP
+        amount: 2
+      - id: CMPacketGrenadeFragOldFilled
+        amount: 4
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 4
+      - id: RMCGrenadeCustomMetalFoam
+        amount: 3
+      - id: RMCExplosivePlastic
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 6

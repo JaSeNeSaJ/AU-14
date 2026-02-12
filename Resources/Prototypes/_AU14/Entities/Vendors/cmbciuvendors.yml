@@ -20,21 +20,19 @@
         amount: 25
     - name: Gloves
       entries:
-      - id: RMCHandsBlack
+      - id: AU14PVEHandsInsulatedBlackMarine
         amount: 25
-      - id: CMHandsBrown
-        amount: 25
+      - id: AU14PVEHandsFingerlessBlackGloves
+        amount: 15
     - name: Webbings
       entries:
-      - id: AU14WebbingMagazine
+      - id: RMCWebbingBlackSmall
         amount: 25
-      - id: AU14WebbingUtility
+      - id: CMWebbingBlack
         amount: 25
-      - id: AU14WebbingDumpPouch
-        amount: 25
-      - id: AU14WebbingAdminPouch
+      - id: RMCWebbingHolsterBlack
         amount: 15
-      - id: AU14WebbingDropPouch
+      - id: RMCWebbingDropPouchBlack
         amount: 15
       - id: RMCWebbingLegPouchBlack
         amount: 15
@@ -62,29 +60,27 @@
       entries:
       - id: RMCSatchelTSEPA
         amount: 20
-      - id: CMBackpackMarine
-        amount: 15
-      - id: AU14IMPBackpackMarine
-        amount: 3
-      - id: RMCSatchelWelderChestrig
-        amount: 2
+      - id: AU14BackpackMarineBlack
+        amount: 20
       - id: RMCScabbardShotgun
         amount: 2
       - id: RMCBackpackAmmo
         amount: 1
     - name: Belts
       entries:
-      - id: CMBeltMarine
+      - id: AU14BeltMarineBlack
         amount: 25
       - id: RMCBeltGrenade
         amount: 2
-      - id: RMCM276ShotgunShellLoadingRig
+      - id: AU14M276ShotgunShellLoadingRigBlack
         amount: 2
       - id: RMCBeltHolsterPistolTSE
         amount: 15
+      - id: AU14BeltHolsterPistolBlack
+        amount: 15
       - id: CMBeltSecurityMarshal
         amount: 15
-      - id: RMCBeltUtilityGeneral
+      - id: AU14BeltUtilityGeneralBlack
         amount: 15
     - name: Pouches
       entries:
@@ -283,7 +279,7 @@
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
       - id: CMBeltMedical
-      - id: CMBeltMedicBag
+      - id: AU14BeltMedicBagBlack
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -482,14 +478,6 @@
       entries:
       - id: RMCAttachmentRailFlashlight
       - id: RMCAttachmentTwoPointSling
-    - name: Explosives
-      entries:
-      - id: CMGrenadeFrag
-        amount: 4
-      - id: CMGrenadeSmoke
-        amount: 12
-      - id: RMCExplosiveBreachingCharge
-        amount: 10
 
 - type: entity
   parent: ColMarTechBase
@@ -539,3 +527,15 @@
         amount: 1
       - id: CMPacketGrenadeFragFilled
         amount: 5
+    - name: Explosives
+      entries:
+      - id: RMCBoxHEFA
+        amount: 2
+      - id: CMPacketGrenadeFragOldFilled
+        amount: 2
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 4
+      - id: RMCExplosivePlastic
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 10

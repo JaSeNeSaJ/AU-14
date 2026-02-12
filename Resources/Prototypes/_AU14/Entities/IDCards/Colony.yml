@@ -165,3 +165,11 @@
   components:
   - type: PresetIdCard
     job: AU14JobCiviliannspaConstable
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardcivilianPaPOfficer
+  name: PAP officer ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianPaPOfficer

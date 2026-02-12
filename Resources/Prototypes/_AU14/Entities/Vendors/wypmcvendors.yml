@@ -22,21 +22,21 @@
         amount: 25
     - name: Gloves
       entries:
-      - id: RMCHandsBlack
+      - id: AU14PVEHandsInsulatedBlackMarine
         amount: 25
-      - id: CMHandsBrown
-        amount: 25
+      - id: AU14PVEHandsFingerlessBlackGloves
+        amount: 15
     - name: Webbings
       entries:
-      - id: AU14WebbingMagazine
+      - id: RMCWebbingBlackSmall
         amount: 25
-      - id: AU14WebbingUtility
+      - id: CMWebbingBlack
         amount: 25
-      - id: AU14WebbingDumpPouch
-        amount: 25
-      - id: AU14WebbingAdminPouch
+      - id: RMCWebbingHolsterBlack
         amount: 15
-      - id: AU14WebbingDropPouch
+      - id: RMCWebbingDropPouchBlack
+        amount: 15
+      - id: RMCWebbingLegPouchBlack
         amount: 15
     - name: Headgear
       entries:
@@ -44,6 +44,8 @@
         amount: 25
       - id: AU14WYPMCBallCap
         amount: 25
+      - id: RMCM5CameraGear
+        amount: 15
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -56,12 +58,12 @@
         amount: 25
       - id: AU14WYPMCArmorMin
         amount: 25
-      - id: RMCOuterClothingExternalWebbingBlack
-        amount: 25
     - name: Backpack
       entries:
       - id: RMCSatchelLightpackBlack
         amount: 25
+      - id: AU14BackpackMarineBlack
+        amount: 20
       - id: RMCBackpackWelderPMC
         amount: 2
       - id: RMCScabbardShotgun
@@ -70,19 +72,21 @@
         amount: 1
     - name: Belts
       entries:
-      - id: CMBeltMarine
+      - id: AU14BeltMarineBlack
         amount: 25
       - id: RMCBeltHolsterSMGPouch
         amount: 12
       - id: RMCBeltGrenade
         amount: 2
-      - id: RMCM276ShotgunShellLoadingRig
-        amount: 1
-      - id: RMCBeltHolsterPistol
+      - id: AU14M276ShotgunShellLoadingRigBlack
+        amount: 2
+      - id: RMCBeltHolsterPistolTSE
+        amount: 15
+      - id: AU14BeltHolsterPistolBlack
         amount: 15
       - id: RMCBeltSecurityWeYa
         amount: 15
-      - id: RMCBeltUtilityGeneral
+      - id: AU14BeltUtilityGeneralBlack
         amount: 15
     - name: Pouches
       entries:
@@ -289,7 +293,7 @@
       choices: { CMUPlatoonMedicalStorage: 1 }
       entries:
       - id: CMBeltMedical
-      - id: CMBeltMedicBag
+      - id: AU14BeltMedicBagBlack
     - name: General Medical Supplies
       entries:
       - id: AU14HemostaticGauzePacket
@@ -641,18 +645,6 @@
       entries:
       - id: RMCAttachmentTwoPointSling
       - id: RMCAttachmentRailFlashlight
-    - name: Explosives
-      entries:
-      - id: RMCBoxHEDP
-        amount: 1
-      - id: RMCGrenadeBlastM12
-        amount: 4
-      - id: CMGrenadeSmoke
-        amount: 6
-      - id: RMCExplosivePlastic
-        amount: 4
-      - id: RMCExplosiveBreachingCharge
-        amount: 4
 
 - type: entity
   parent: ColMarTechBase
@@ -696,3 +688,17 @@
         amount: 1
       - id: CMMagazineRifleM4SPR
         amount: 12
+    - name: Explosives
+      entries:
+      - id: RMCBoxHEDP
+        amount: 2
+      - id: RMCGrenadeBlastM12
+        amount: 8
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 6
+      - id: RMCExplosivePlastic
+        amount: 4
+      - id: RMCExplosiveBreachingCharge
+        amount: 6

@@ -149,6 +149,7 @@
   id: CMVendorCoffee
   startingInventory:
     RMCDrinkCoffee: 25 # ?
+    RMCDrinkCoffeeGrind: 25 # $1.5
     RMCDrinkTea: 25 # $1.5
     RMCDrinkHotCocoa: 25
     #IceCup #Contraband
