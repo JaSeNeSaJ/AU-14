@@ -69,7 +69,7 @@
     beardChance: 0.1
 
 - type: entity
-  parent: AU14BaseMobSpeciesOrganicK9Handler
+  parent: AU14BaseMobSpeciesOrganicBaseMilitary
   id: AU14IntelThirdPartyK9HandlerGOVFOR
   name: S&R K9 Handler
   components:
