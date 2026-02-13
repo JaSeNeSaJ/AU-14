@@ -7,7 +7,7 @@
   playTimeTracker: AU14JobGOVFORk9handler
   ranks:
     RMCRankStaffSergeant: []
-  startingGear: AU14GearGOVFORPlatoonCorpsman
+  startingGear: AU14GearGOVFORK9Handler
   icon: "AU14JobIconGovK9Handler"
   requireAdminNotify: false
   joinNotifyCrew: false
@@ -40,6 +40,11 @@
   id: AU14JobGOVFORk9handler
   isHumanoid: true
 
+- type: startingGear
+  id: AU14GearGOVFORK9Handler
+  equipment:
+    id: AU14IDCardSquadK9HandlerGOVFOR
+    ears: AU14HeadsetSectionLeader
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORK9Handler
