@@ -71,6 +71,7 @@
     shoes: RMCBootsCorporate
     id: AU14IDCardColonySynthetic
     ears: AU14ColonyAdminHeadset
+    eyes: RMCGlassesMedicalHUDGlasses
 
 - type: entity
   parent: CMSpawnPointJobBase

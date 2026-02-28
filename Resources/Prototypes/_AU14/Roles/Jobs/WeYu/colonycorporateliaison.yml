@@ -76,7 +76,7 @@
     shoes: RMCShoesLaceup
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14CivilianJacketOrangePufferJacket
-    ears: RMCHeadsetDistressPMCPVE
+    ears: AU14ColonyWeylandHeadset
     ears2: RMCM5CameraGear
   inhand:
   - RMCPortableVendorCorporate
