@@ -48,7 +48,7 @@
     id: AU14IDCardCivilianScientist
     jumpsuit: AU14CivilianWorkwearBlue
     shoes: RMCShoesBlack
-    ears: RMCHeadsetDistressPMCPVE
+    ears: AU14ColonyWeylandHeadset
     ears2: RMCM5CameraGear
     outerClothing: RMCLabcoatOpened
 

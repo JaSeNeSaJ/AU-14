@@ -96,6 +96,7 @@
     pocket1: AU14PouchToolsFilledSupportSynthetic
     pocket2: AU14PouchPoliceEquipmentSupportSynth
     outerClothing: AU14CMDefibrillator
+    eyes: RMCGlassesMedicalHUDGlasses
 
 - type: startingGear
   id: AU14GearGOVFORAuxSupportSynthDummyRMC

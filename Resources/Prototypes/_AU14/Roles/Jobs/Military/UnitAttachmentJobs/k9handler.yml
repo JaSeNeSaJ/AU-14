@@ -40,6 +40,7 @@
   equipment:
     id: AU14IDCardSquadK9HandlerGOVFOR
     ears: AU14HeadsetSectionLeader
+    eyes: RMCGlassesMedicalHUDGlasses
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORK9Handler
