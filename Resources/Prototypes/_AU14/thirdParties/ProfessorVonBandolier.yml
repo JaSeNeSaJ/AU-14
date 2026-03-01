@@ -32,7 +32,7 @@
   - type: NpcFactionMember
     factions:
     - AUBureau
-    rules: au14-professorvonbandolier-rules
+    rules: Find the biggest and most dangerous game, whether that is space alien or a man with a gun and eloquently shoot them.
   - type: Skills
     skills:
        RMCSkillConstruction: 2
