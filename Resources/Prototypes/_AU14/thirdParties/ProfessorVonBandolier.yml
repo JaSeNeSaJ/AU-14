@@ -29,15 +29,13 @@
     description: Find the biggest and most dangerous game, whether that is space alien or a man with a gun and eloquently shoot them.
     raffle:
       settings: short
+    rules: au14-professorvonbandolier-rules
   - type: NpcFactionMember
     factions:
     - AUBureau
-    rules: Find the biggest and most dangerous game, whether that is space alien or a man with a gun and eloquently shoot them.
   - type: Skills
     skills:
        RMCSkillConstruction: 2
-       RMCSkillEngineering: 2
-       RMCSkillNavigation: 1
        RMCSkillCqc: 2
        RMCSkillEndurance: 2
        RMCSkillFirearms: 3

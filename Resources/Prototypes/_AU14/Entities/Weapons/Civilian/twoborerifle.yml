@@ -31,7 +31,7 @@
   - type: RMCSelectiveFire
     baseFireModes:
     - SemiAuto
-    recoilwielded: 5
+    recoilWielded: 5
     recoilUnwielded: 5
     scatterWielded: 5
     scatterUnwielded: 14
@@ -39,10 +39,6 @@
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 1.5
     accuracyMultiplierUnwielded: 0.5
-  - type: Construction
-    graph: TwoBore
-    node: start
-    deconstructionTarget: null
   - type: AttachableHolder
     slots:
       rmc-aslot-stock:
@@ -88,11 +84,10 @@
   - type: RMCStunOnHit
     stuns:
     - whitelist:
-      components:
-      - Marine
-      - Xeno
-      - VerySmallXeno
-      - Humanoid
+        components:
+        - Marine
+        - Xeno
+        - VerySmallXeno
       maxRange: 32
       stunTime: 3
       slowTime: 15
