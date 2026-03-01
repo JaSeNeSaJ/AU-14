@@ -1222,7 +1222,7 @@
 
 - type: entity
   parent: RMCAttachableBase
-  id: RMCAttachmentTwoBoreStock
+  id: AU14AttachmentTwoBoreStock
   name: Two Bore Rifle solid stock
   description: Intergrated into the Two Bore Rifle. You shouldn't have this.
   components:
@@ -1233,8 +1233,7 @@
     suffix: ""
   - type: Tag
     tags:
-    - RMCAttachmentStock
-    - RMCAttachmentTwoBoreStock
+    - AU14AttachmentTwoBoreStock
 
 - type: Tag
   id: RMCAttachmentHG3712Stock
