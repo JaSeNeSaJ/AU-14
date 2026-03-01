@@ -120,7 +120,7 @@
       tags:
       - RMCShellShotgun
       - RMCCartridge458SOCOM
-      - AUCartridgeRifleTwoBore
+      - AU14CartridgeRifleTwoBore
   - type: IgnoreContentsSize
     items:
       tags:

@@ -70,12 +70,12 @@
     outerClothing: CMArmorDutchJacketVonBandolier
     jumpsuit: RMCJumpsuitDutchBandolier
     shoes: RMCBootsVanBandolier
-    head: RMCHeadPithHelmet
+    head: AU14HeadPithHelmet
     gloves: RMCHandsDeluxeMarine
     belt: AU14M276ShotgunShellLoadingRigBlackVonBandolier
     pocket1: RMCPouchMagazinePistolLargeVonBandolier
     pocket2: RMCPouchMedkitVonBandolier
-    back: WeaponRifleTwoBore
+    back: AU14WeaponRifleTwoBore
     suitstorage: RMCBeltHolsterRevolverVonBandolier
 
 - type: entity
@@ -85,18 +85,18 @@
   components:
   - type: StorageFill
     contents:
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
-    - id: AUCartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
+    - id: AU14CartridgeRifleTwoBore
 
 - type: entity
   parent: CMArmorDutchJacket

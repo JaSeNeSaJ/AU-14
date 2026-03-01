@@ -1,7 +1,7 @@
 - type: entity
   parent: [ RMCBaseBreechloader, RMCBaseAttachableHolder ]
   name: Double-Deuce Two-Bore Rifle
-  id: WeaponRifleTwoBore
+  id: AU14AU14AU14AU14AU14WeaponRifleTwoBore
   description: A Custom-Built Twin-Barreled Two-Bore Guage Rifle. Built to hunt the largest - or most dangerous - of game. She's Forty-Five Pounds Dry, Illegal in three Sectors, and on a hair-trigger. Take care of her, and she'll take care of you - and anything you point her at.
   components:
   - type: Sprite
@@ -23,8 +23,8 @@
     cycleable: true
     whitelist:
       tags:
-      - AUCartridgeRifleTwoBore
-    proto: AUCartridgeRifleTwoBore
+      - AU14CartridgeRifleTwoBore
+    proto: AU14CartridgeRifleTwoBore
     capacity: 2
   - type: GunRequiresWield
   - type: UseDelay
@@ -42,10 +42,10 @@
   - type: AttachableHolder
     slots:
       rmc-aslot-stock:
-        startingAttachable: RMCAttachmentTwoBoreStock
+        startingAttachable: AU14AttachmentTwoBoreStock
         whitelist:
           tags:
-          - RMCAttachmentTwoBoreStock
+          - AU14AttachmentTwoBoreStock
   - type: AttachableHolderVisuals
     offsets:
       rmc-aslot-stock: -.78, 0
@@ -53,11 +53,11 @@
     size: Ginormous
   - type: Tag
     tags:
-    - RMCWeaponRifleTwoBore
+    - AU14WeaponRifleTwoBore
 
 - type: entity
   parent: CMBaseCartridgeRifle
-  id: AUCartridgeRifleTwoBore
+  id: AU14CartridgeRifleTwoBore
   name: Rifle Cartridge (Two-Bore)
   description: A Two-Bore rifle cartridge. This round makes a .50 Cal look like a pea-shooter. Pray you never get hit with this thing.
   components:
@@ -66,13 +66,13 @@
   - type: Tag
     tags:
     - Cartridge
-    - AUCartridgeRifleTwoBore
+    - AU14CartridgeRifleTwoBore
   - type: CartridgeAmmo
-    proto: AUBulletRifleTwoBore
+    proto: AU14BulletRifleTwoBore
 
 - type: entity
   parent: BulletRifle10x24mm
-  id: AUBulletRifleTwoBore
+  id: AU14BulletRifleTwoBore
   categories: [ HideSpawnMenu ]
   components:
   - type: Projectile
@@ -99,10 +99,10 @@
       dazeTime: 5
 
 - type: Tag
-  id: RMCWeaponRifleTwoBore
+  id: AU14WeaponRifleTwoBore
 
 - type: Tag
-  id: AUBulletRifleTwoBore
+  id: AU14BulletRifleTwoBore
 
 - type: Tag
-  id: AUCartridgeRifleTwoBore
+  id: AU14CartridgeRifleTwoBore
