@@ -1,7 +1,7 @@
 - type: entity
   parent: [ RMCBaseBreechloader, RMCBaseAttachableHolder ]
   name: Double-Deuce Two-Bore Rifle
-  id: AU14AU14AU14AU14AU14WeaponRifleTwoBore
+  id: AU14WeaponRifleTwoBore
   description: A Custom-Built Twin-Barreled Two-Bore Guage Rifle. Built to hunt the largest - or most dangerous - of game. She's Forty-Five Pounds Dry, Illegal in three Sectors, and on a hair-trigger. Take care of her, and she'll take care of you - and anything you point her at.
   components:
   - type: Sprite
