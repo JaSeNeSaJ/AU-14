@@ -195,7 +195,7 @@
         component: RMCUnconscious
         time: 10 #Yes, it's this much.
         type: Add
-        refresh: false
+        refresh: true
 
 - type: reagent
   parent: [ CMReagentMedicine, Kelotane ]
