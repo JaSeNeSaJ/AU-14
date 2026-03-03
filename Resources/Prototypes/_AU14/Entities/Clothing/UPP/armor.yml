@@ -8,10 +8,10 @@
     sprite: _AU14/Clothing/UPP/armor/uppstandardarmor.rsi
 
 - type: entity
-  parent: AU14BaseArmor
+  parent: AU14BaseArmorLight
   id: AU14UPPArmorMinimalistic
   name: UL6 personal armor
-  description: A set of Minimalistic Union of Progressive Peoples armor. This pair is quite small compared to the standard, but should provide a similar amount of protection, or at least you hope.
+  description: A set of Minimalistic Union of Progressive Peoples armor. This pair is quite small compared to the standard, and will provide less protection.
   components:
   - type: Sprite
     sprite: _AU14/Clothing/UPP/armor/upplightarmor.rsi
