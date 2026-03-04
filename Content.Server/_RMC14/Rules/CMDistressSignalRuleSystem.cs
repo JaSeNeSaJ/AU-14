@@ -42,6 +42,7 @@ using Content.Shared._RMC14.CameraShake;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Fax;
+using Content.Shared._RMC14.Humanoid;
 using Content.Shared._RMC14.Intel;
 using Content.Shared._RMC14.Item;
 using Content.Shared._RMC14.Light;
@@ -368,226 +369,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
             }
 
             //Survivor Spawning
-            if (SelectedPlanetMap != null)
-            {
-                if (SelectedPlanetMap.Value.Comp.SurvivorJobs != null)
-                    comp.SurvivorJobs = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobs, notNullableOverride: true);
 
-                comp.SurvivorJobInserts = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobInserts);
-                var activeScenarioSurvivors = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobScenarios);
-                if (activeScenarioSurvivors != null && ActiveNightmareScenario != null)
-                {
-                    activeScenarioSurvivors.TryGetValue(ActiveNightmareScenario, out comp.SurvivorJobScenarios);
-                }
-            }
-
-            var possibleSurvivorJobs = new List<ProtoId<JobPrototype>>();
-            possibleSurvivorJobs.AddRange(comp.SurvivorJobs.Select(x => x.Job));
-
-            if (comp.SurvivorJobInserts != null)
-                possibleSurvivorJobs.AddRange(comp.SurvivorJobInserts.Values.SelectMany(x => x).Select(x => x.Insert));
-            if (comp.SurvivorJobScenarios != null)
-                possibleSurvivorJobs.AddRange(comp.SurvivorJobScenarios.Values.SelectMany(x => x).Select(x => x.Special));
-
-            var survivorSpawners = new Dictionary<ProtoId<JobPrototype>, List<EntityUid>>();
-            var spawnerQuery = EntityQueryEnumerator<SpawnPointComponent>();
-            while (spawnerQuery.MoveNext(out var spawnId, out var spawnComp))
-            {
-                if (spawnComp.Job is not { } job)
-                    continue;
-
-                if (possibleSurvivorJobs.Contains(job))
-                    survivorSpawners.GetOrNew(job).Add(spawnId);
-            }
-
-            // TODO RMC14 remove defaulting to civ survivor spawners
-            foreach (var (job, spawners) in survivorSpawners)
-            {
-                if (job == comp.CivilianSurvivorJob)
-                    continue;
-
-                if (survivorSpawners.TryGetValue(comp.CivilianSurvivorJob, out var civSpawners))
-                {
-                    spawners.AddRange(civSpawners);
-                }
-            }
-
-            if (SelectedPlanetMap != null)
-            {
-                if (SelectedPlanetMap.Value.Comp.SurvivorJobs != null)
-                    comp.SurvivorJobs = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobs, notNullableOverride: true);
-
-                comp.SurvivorJobInserts = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.SurvivorJobInserts);
-                comp.ColonyJobOverrides = _serialization.CreateCopy(SelectedPlanetMap.Value.Comp.ColonyJobOverrides);
-            }
-
-            var survivorSpawnersLeft = new Dictionary<ProtoId<JobPrototype>, List<EntityUid>>();
-            foreach (var (job, jobSpawners) in survivorSpawners)
-            {
-                survivorSpawnersLeft[job] = jobSpawners;
-            }
-
-            NetUserId? SpawnSurvivor(ProtoId<JobPrototype> job, List<NetUserId> list, out bool stop)
-            {
-                stop = false;
-
-                var spawnAsJob = job;
-                var selectRandomInsert = SelectedPlanetMap?.Comp.SelectRandomSurvivorInsert ?? false;
-
-                var playerId = _random.Pick(list);
-                if (!_player.TryGetSessionById(playerId, out var player))
-                {
-                    Log.Error($"Failed to find player with id {playerId} during survivor selection.");
-                    return null;
-                }
-
-                // populate scenario jobs first
-                var scenarioSuccess = false;
-                if (comp.SurvivorJobScenarios != null &&
-                    comp.SurvivorJobScenarios.TryGetValue(job, out var scenarioJobsList))
-                {
-                    for (var i = 0; i < scenarioJobsList.Count; i++)
-                    {
-                        var (scenarioJob, amount) = scenarioJobsList[i];
-
-                        if (!IsAllowed(playerId, scenarioJob))
-                            continue; // check insert playtime requirements
-
-                        if (amount == -1)
-                        {
-                            spawnAsJob = scenarioJob;
-                            scenarioSuccess = true;
-                            break;
-                        }
-
-                        if (amount <= 0)
-                            continue;
-
-                        scenarioJobsList[i] = (scenarioJob, amount - 1);
-                        spawnAsJob = scenarioJob; // Override the original job with the insert
-                        scenarioSuccess = true;
-                        break;
-                    }
-
-                    if (!scenarioSuccess)
-                    {
-                        stop = true;
-                        return null; // All scenario slots are filled, do not allow job
-                    }
-                }
-
-                // select an insert in order, reducing the slot of that insert
-                if (comp.SurvivorJobInserts != null && comp.SurvivorJobInserts.TryGetValue(job, out var insert)
-                                                    && !scenarioSuccess)
-                {
-                    var insertSuccess = false;
-
-                    for (var i = 0; i < insert.Count; i++)
-                    {
-                        var (insertJob, amount) = insert[i];
-
-                        if (!IsAllowed(playerId, insertJob))
-                            continue; // check insert playtime requirements
-
-                        if (amount == -1)
-                        {
-                            spawnAsJob = insertJob;
-                            insertSuccess = true;
-                            break;
-                        }
-
-                        if (amount <= 0)
-                            continue;
-
-                        insert[i] = (insertJob, amount - 1);
-                        spawnAsJob = insertJob; // Override the original job with the insert
-                        insertSuccess = true;
-                        break;
-                    }
-
-                    if (!insertSuccess)
-                    {
-                        stop = true;
-                        return null; // All insert slots are filled, do not allow job
-                    }
-                }
-
-                for (var i = 0; i < comp.SurvivorJobs.Count; i++)
-                {
-                    var (survJob, amount) = comp.SurvivorJobs[i];
-                    if (survJob != job)
-                        continue;
-
-                    if (!scenarioSuccess && selectRandomInsert) // select a random insert if there are any and if this map supports random inserts
-                    {
-                        if (comp.SurvivorJobInserts != null && comp.SurvivorJobInserts.TryGetValue(job, out var randomInsertList))
-                            spawnAsJob = _random.Pick(randomInsertList).Insert;
-                    }
-
-                    if (amount == -1)
-                        break;
-
-                    if (amount <= 0)
-                    {
-                        stop = true;
-                        return null;
-                    }
-
-                    comp.SurvivorJobs[i] = (survJob, amount - 1);
-                }
-
-                if (!survivorSpawnersLeft.TryGetValue(spawnAsJob, out var jobSpawnersLeft) &&
-                    !survivorSpawnersLeft.TryGetValue(comp.CivilianSurvivorJob, out jobSpawnersLeft))
-                {
-                    stop = true;
-                    return null;
-                }
-
-                if (jobSpawnersLeft.Count == 0)
-                {
-                    if (survivorSpawners.TryGetValue(comp.CivilianSurvivorJob, out var jobSpawners))
-                        jobSpawnersLeft.AddRange(jobSpawners);
-
-                    if (jobSpawnersLeft.Count == 0)
-                    {
-                        stop = true;
-                        return null;
-                    }
-                }
-
-                list.Remove(playerId); // remove the player from the pool because they passed the checks
-
-                var spawner = _random.PickAndTake(jobSpawnersLeft);
-                ev.PlayerPool.Remove(player);
-                GameTicker.PlayerJoinGame(player);
-
-                var profile = GameTicker.GetPlayerProfile(player);
-                var coordinates = _transform.GetMoverCoordinates(spawner);
-                var survivorMob = _stationSpawning.SpawnPlayerMob(coordinates, spawnAsJob, profile, null);
-
-                if (!_mind.TryGetMind(playerId, out var mind))
-                    mind = _mind.CreateMind(playerId);
-
-                RemCompDeferred<TacticalMapUserComponent>(survivorMob);
-                _mind.TransferTo(mind.Value, survivorMob);
-
-                _roles.MindAddJobRole(mind.Value, jobPrototype: spawnAsJob);
-
-                _playTime.PlayerRolesChanged(player);
-
-                var spawnEv = new PlayerSpawnCompleteEvent(
-                    survivorMob,
-                    player,
-                    spawnAsJob,
-                    false,
-                    true,
-                    0,
-                    default,
-                    profile
-                );
-                RaiseLocalEvent(survivorMob, spawnEv, true);
-                return playerId;
-            }
 
             EntityUid SpawnXenoEnt(EntProtoId ent, ICommonSession player, bool doBurst = false)
             {
@@ -621,6 +403,9 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                     _parasite.SetHive((corpseMob, victimInfected), comp.Hive);
                     _parasite.SpawnLarva((corpseMob, victimInfected), out var newXeno);
                     _parasite.SetBurstDelay((corpseMob, victimInfected), comp.XenoSurvivorCorpseBurstDelay);
+
+                    // Allow xenos to see their character that they bursted out of
+                    RemCompDeferred<HiddenAppearanceComponent>(corpseMob);
 
                     _xeno.MakeXeno(newXeno);
 
@@ -762,18 +547,21 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
             if (comp.SpawnSurvivors)
             {
-                // Shuffle survivor jobs and ensure civilian survivor stays at the bottom, as civ survivor has infinite slots
-                var compCopy = comp;
-                IEnumerable<(ProtoId<JobPrototype> Job, int Amount)> jobs = comp.SurvivorJobs
-                    .Where(entry => entry.Job != compCopy.CivilianSurvivorJob)
-                    .OrderBy(_ => _random.Next());
-
-                if (comp.SurvivorJobs.TryFirstOrNull(entry => entry.Job == compCopy.CivilianSurvivorJob, out var civJob))
+                // Shuffle survivor jobs if there is no active nightmare scenario
+                if (ActiveNightmareScenario == null)
                 {
-                    jobs = jobs.Append(civJob.Value);
-                }
+                    var compCopy = comp;
+                    IEnumerable<(ProtoId<JobPrototype> Job, int Amount)> jobs = comp.SurvivorJobs
+                        .Where(entry => entry.Job != compCopy.CivilianSurvivorJob)
+                        .OrderBy(_ => _random.Next());
 
-                comp.SurvivorJobs = jobs.ToList();
+                    if (comp.SurvivorJobs.TryFirstOrNull(entry => entry.Job == compCopy.CivilianSurvivorJob, out var civJob))
+                    {
+                        jobs = jobs.Append(civJob.Value);
+                    }
+
+                    comp.SurvivorJobs = jobs.ToList();
+                }
 
                 var survivorCandidates = new Dictionary<ProtoId<JobPrototype>, List<NetUserId>[]>();
                 foreach (var job in comp.SurvivorJobs)
@@ -825,34 +613,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                     }
                 }
 
-                var selectedSurvivors = 0;
-                for (var i = priorities - 1; i >= 0; i--)
-                {
-                    foreach (var (job, players) in survivorCandidates)
-                    {
-                        var list = players[i];
-                        var ignoreLimit = comp.IgnoreMaximumSurvivorJobs.Contains(job);
-                        while (list.Count > 0 && (ignoreLimit || selectedSurvivors < totalSurvivors))
-                        {
-                            if (SpawnSurvivor(job, list, out var stop) is { } id)
-                            {
-                                foreach (var (_, otherPlayersLists) in survivorCandidates)
-                                {
-                                    foreach (var otherPlayers in otherPlayersLists)
-                                    {
-                                        otherPlayers.Remove(id);
-                                    }
-                                }
 
-                                if (!ignoreLimit)
-                                    selectedSurvivors++;
-                            }
-
-                            if (stop)
-                                break;
-                        }
-                    }
-                }
             }
 
             if (spawnedDropships)
@@ -933,7 +694,8 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                     if (!_prototypes.TryIndex(paper.Id, out var entProto, logError: false))
                         continue;
 
-                    var printout = new FaxPrintout(paperComponent.Content, entProto.Name, prototypeId: paper.Id, locked: true);
+                    var content = Loc.GetString(paperComponent.Content);
+                    var printout = new FaxPrintout(content, entProto.Name, prototypeId: paper.Id, locked: true);
                     _fax.Receive(faxId, printout, component: faxComp);
                 }
             }
@@ -1081,12 +843,21 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private void OnDropshipHijackStart(ref DropshipHijackStartEvent ev)
     {
         var hiveStructures = EntityQueryEnumerator<HiveConstructionLimitedComponent, TransformComponent>();
-        while (hiveStructures.MoveNext(out var hiveStructure, out _, out var transformComp))
+        while (hiveStructures.MoveNext(out var id, out _, out var xform))
         {
-            EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(hiveStructure);
+            EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
 
-            if (transformComp.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(hiveStructure.ToCoordinates()))
-                _destruction.DestroyEntity(hiveStructure);
+            if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
+                _destruction.DestroyEntity(id);
+        }
+
+        var xenoLimitedStructures = EntityQueryEnumerator<XenoSecretionLimitedComponent, TransformComponent>();
+        while (xenoLimitedStructures.MoveNext(out var id, out _, out var xform))
+        {
+            EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
+
+            if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
+                _destruction.DestroyEntity(id);
         }
 
         var xenos = EntityQueryEnumerator<XenoComponent, MobStateComponent, TransformComponent>();

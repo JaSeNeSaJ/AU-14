@@ -9,7 +9,7 @@
   - CMDoctor
   - CMResearcher
   - CMNurse
-  - CMFieldDoctor
+  - RMCFieldDoctor
   departmentRadio: MarineMedical
   headOfDepartment: CMCMO
   hidden: true

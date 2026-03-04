@@ -46,6 +46,7 @@
 
   <ItemGroup>
     <Compile Remove="AU14\SetFullPowerCommand.cs" />
+    <Compile Remove="AU14\Threats\KillAllHumansRuleComponent.cs" />
   </ItemGroup>
 
 
