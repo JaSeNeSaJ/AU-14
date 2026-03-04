@@ -15,7 +15,7 @@
     raffle:
       settings: short
   - type: Sprite
-    sprite: _CMU14/Mobs/Xenos/LesserDrone/lesser_drone.rsi # CMU14-Edit Start
+    sprite: _AU14/Mobs/Xenos/LesserDrone/lesser_drone.rsi # CMU14-Edit Start
     layers:
     - map: [ "enum.XenoVisualLayers.Base" ]
       state: alive

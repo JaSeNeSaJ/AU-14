@@ -24,7 +24,7 @@
     layers:
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: alive
-      sprite: _CMU14/Mobs/Animals/carp.rsi
+      sprite: _AU14/Mobs/Animals/carp.rsi
     - map: [ "mask" ]
     - map: [ "clownedon" ]
       sprite: "Effects/creampie.rsi"
@@ -125,7 +125,7 @@
   - type: Sprite
     layers:
     - state: carp_spawn
-      sprite: _CMU14/Mobs/Animals/carp.rsi
+      sprite: _AU14/Mobs/Animals/carp.rsi
   - type: ProportionalSpawner
     id: CMUSpawnMobCarp
     ratio: 16
