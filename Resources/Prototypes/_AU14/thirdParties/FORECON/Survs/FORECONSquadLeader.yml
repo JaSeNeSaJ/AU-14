@@ -29,7 +29,7 @@
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_forecon
     - type: NpcFactionMember
-      factions:
+      faction:
       - GOVFOR
     - type: Marine
       Faction: govfor

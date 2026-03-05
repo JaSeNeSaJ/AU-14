@@ -27,7 +27,7 @@
           RMCSkillEngineer: 3
           RMCSkillPolice: 1
     - type: NpcFactionMember
-      factions:
+      faction:
       - GOVFOR
     - type: Marine
       Faction: govfor

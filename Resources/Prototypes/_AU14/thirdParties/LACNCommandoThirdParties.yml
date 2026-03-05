@@ -79,7 +79,7 @@
       settings: short
     rules: au14-lacncommandosniper-rules
   - type: NpcFactionMember
-    factions:
+    faction:
     - GOVFOR
   - type: Skills
     skills:
@@ -173,7 +173,7 @@
       settings: short
     rules: au14-lacncommandosniper-rules
   - type: NpcFactionMember
-    factions:
+    faction:
     - GOVFOR
   - type: Skills
     skills:

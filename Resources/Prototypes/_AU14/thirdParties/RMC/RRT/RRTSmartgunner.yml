@@ -19,7 +19,7 @@
     - type: Skills
       preset: AU14SkillPresetPlatoonAutomaticRifleman
     - type: NpcFactionMember
-      factions:
+      faction:
       - GOVFOR
     - type: Marine
       Faction: govfor
