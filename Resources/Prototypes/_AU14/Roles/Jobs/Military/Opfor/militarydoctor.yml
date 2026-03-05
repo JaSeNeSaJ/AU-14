@@ -13,6 +13,10 @@
     - NonResuscitable
     - Epilepsy
   ranks:
+    RMCRankFirstLT:
+    - !type:RoleTimeRequirement
+      role: AU14JobGOVFORMilitaryDoctor
+      time: 180000 #50 hours
     RMCRankSecondLT: []
   startingGear: AU14GearOPFORMilitaryDoctor
   dummyStartingGear: AU14GearOPFORMilitaryDoctorDummy
