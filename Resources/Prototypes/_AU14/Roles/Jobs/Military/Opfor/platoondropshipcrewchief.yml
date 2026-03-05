@@ -14,7 +14,7 @@
     AU14RankUSASFCMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     AU14RankUSASFSMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
