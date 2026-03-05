@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14UPPGROMRifleman
-  name: au-14-job-name-uppgrom-rifleman
+  name: au14-job-name-govforsquadrifleman
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMRifleman
   ranks:
@@ -41,7 +41,7 @@
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: JobPrefix
-      prefix: au-14-job-prefix-uppgrom-rifleman
+      prefix: au14-job-prefix-govforsquadrifleman
   hidden: false
 
 - type: entity

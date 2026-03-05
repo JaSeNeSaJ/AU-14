@@ -86,6 +86,50 @@
     tags:
     - AU14SquadUSArmy
 
+- type: entity
+  parent: SquadBase
+  id: AU14SquadUSArmy32nd
+  name: 32nd Arm
+  components:
+  - type: SquadTeam
+    color: "#2e4f68"
+    blacklistedSquadArmor:
+    - Helmet
+    - Goggles
+    - Armor
+    - Gloves
+    radio: UASOF
+    minimapBackground:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: background_ua
+    canSupplyDrop: false
+    group: USArmy
+  - type: Tag
+    tags:
+    - AU14SquadUSArmy
+
+- type: entity
+  parent: SquadBase
+  id: AU14SquadRMCRRT
+  name: RRT
+  components:
+  - type: SquadTeam
+    color: "#3D6F43"
+    blacklistedSquadArmor:
+    - Helmet
+    - Goggles
+    - Armor
+    - Gloves
+    radio: UASOF
+    minimapBackground:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: background_twe
+    canSupplyDrop: false
+    group: RRT
+  - type: Tag
+    tags:
+    - AU14SquadRMCRRT
+
 - type: Tag
   id: AU14SquadUACG
 
@@ -97,3 +141,6 @@
 
 - type: Tag
   id: AU14SquadUSArmy
+
+- type: Tag
+  id: AU14SquadRMCRRT

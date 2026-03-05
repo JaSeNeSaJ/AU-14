@@ -29,6 +29,7 @@
       factions:
       - GOVFOR
     - type: SquadLeader
+    - type: RMCTrackable
     - type: Marine
       Faction: govfor
     - type: Skills

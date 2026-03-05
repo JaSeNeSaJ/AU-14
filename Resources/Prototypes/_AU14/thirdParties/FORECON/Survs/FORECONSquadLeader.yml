@@ -43,6 +43,8 @@
     - type: JobPrefix
       prefix: cm-job-prefix-squad-leader
     - type: MarineOrders
+    - type: RMCTrackable
+    - type: SquadLeader
     - type: RMCPointing
   hidden: false
 

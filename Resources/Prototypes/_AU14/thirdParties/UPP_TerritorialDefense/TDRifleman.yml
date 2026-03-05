@@ -97,6 +97,7 @@
   parent: CMIDCardBase
   id: AU14IDCardUPPTDRifleman
   name: UPP TD Rifleman ID card
+  categories: [ HideSpawnMenu ]
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseRifleman

@@ -113,6 +113,6 @@
   name: chat-radio-uasof
   keycode: "5"
   frequency: 1553
-  color: "#e4860c"
+  color: "#2e4f68"
   longRange: true
-  faction: "opfor"
+  faction: "govfor"

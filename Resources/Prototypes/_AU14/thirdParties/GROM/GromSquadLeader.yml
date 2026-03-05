@@ -44,6 +44,8 @@
     - type: JobPrefix
       prefix: au-14-job-prefix-uppgrom-squadleader
     - type: MarineOrders
+    - type: RMCTrackable
+    - type: SquadLeader
     - type: RMCPointing
   hidden: false
 

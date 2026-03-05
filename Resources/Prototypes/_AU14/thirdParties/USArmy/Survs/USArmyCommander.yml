@@ -43,6 +43,7 @@
     - type: JobPrefix
       prefix: rmc-job-prefix-forecon-co
     - type: MarineOrders
+    - type: RMCTrackable
     - type: RMCPointing
   hidden: false
 

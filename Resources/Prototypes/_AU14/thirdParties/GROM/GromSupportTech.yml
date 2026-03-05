@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14UPPGROMSupportTech
-  name: au-14-job-name-uppgrom-supporttech
+  name: rmc-job-name-forecon-support-tech
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMSupportTech
   ranks:
@@ -53,7 +53,7 @@
         RMCSkillLeadership: 0
         RMCSkillVehicles: 0
     - type: JobPrefix
-      prefix: au-14-job-prefix-uppgrom-supporttech
+      prefix: rmc-job-prefix-forecon-support-tech
   hidden: false
 
 - type: entity

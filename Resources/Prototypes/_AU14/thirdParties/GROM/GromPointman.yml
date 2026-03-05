@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14UPPGROMPointman
-  name: au-14-job-name-uppgrom-pointman
+  name: au14-job-name-govforspecialist-marksmanRMC
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMPointman
   ranks:
@@ -41,7 +41,7 @@
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: JobPrefix
-      prefix: au-14-job-prefix-uppgrom-pointman
+      prefix: au14-job-prefix-govforspecialist-marksmanRMC
   hidden: false
 
 - type: entity

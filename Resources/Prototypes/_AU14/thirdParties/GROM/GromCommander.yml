@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14UPPGROMCommander
-  name: au-14-job-name-uppgrom-commander
+  name: au-14-job-name-rmcrrt-commander
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMCommander
   ranks:
@@ -37,8 +37,9 @@
     - type: Skills
       preset: AU14SkillPresetPlatoonCommander
     - type: JobPrefix
-      prefix: au-14-job-prefix-uppgrom-commander
+      prefix: au-14-job-prefix-rmcrrt-commander
     - type: MarineOrders
+    - type: RMCTrackable
     - type: RMCPointing
   hidden: false
 
