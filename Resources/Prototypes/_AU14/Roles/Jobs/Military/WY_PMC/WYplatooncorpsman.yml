@@ -8,12 +8,13 @@
     AU14RankWeYuSeniorOperator:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatoonCorpsman
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankWeYuOperator: []
   startingGear: AU14GearGOVFORPlatoonCorpsman
   dummyStartingGear: AU14GearGOVFORCorpsmanDummy
   icon: "AU14JobIconCorpsman"
   requireAdminNotify: false
+  spawnMenuRoleName: Hospital Corpsman (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

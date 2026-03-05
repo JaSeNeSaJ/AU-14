@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobDCCBase
   id: AU14JobOpforDCC
   name: au14-job-name-opfordcc
   description: au14-job-description-opfordcc
@@ -10,7 +10,6 @@
     traits:
     - Epilepsy
     - NonResuscitable
-  playTimeTracker: AU14JobGOVFORDCC
   ranks:
     AU14RankUSASFCMSgt:
     - !type:RoleTimeRequirement
@@ -29,6 +28,7 @@
   dummyStartingGear: AU14GearopforDCCDummy
   icon: "AU14JobIconOPFORDCC"
   requireAdminNotify: true
+  spawnMenuRoleName: Dropship Crew Chief (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

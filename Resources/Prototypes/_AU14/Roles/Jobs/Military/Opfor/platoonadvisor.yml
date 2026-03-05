@@ -18,12 +18,13 @@
     RMCRankSergeantMajor:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORadvisor
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMCRankFirstSergeant: []
   startingGear: AU14GearOPFORadvisor
   dummyStartingGear: AU14GearOPFORadvisorDummy
   icon: "AU14JobIconOPFORAdvisor"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Advisor (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   whitelisted: true

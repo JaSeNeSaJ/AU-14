@@ -9,6 +9,7 @@
   startingGear: AU14GearopforPlatoonCorpsman
   icon: "AU14JobIconOPFORK9Handler"
   requireAdminNotify: false
+  spawnMenuRoleName: K9 Handler (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

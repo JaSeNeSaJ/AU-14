@@ -22,12 +22,13 @@
     RMC_Captain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatCo
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMC_Lieutenant: []
   startingGear: AU14GearGOVFORPlatCo
   dummyStartingGear: AU14GearGOVFORPlatCoDummy
   icon: "AU14JobIconPlatCo"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Commander (TWE RMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govforplatco
   accessGroups:

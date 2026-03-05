@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobDSPilotBase
   id: AU14JobGOVFORDSPilot
   name: au14-job-name-govfordspilot
   description: au14-job-description-govfordspilot
@@ -15,12 +15,11 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
-  playTimeTracker: AU14JobGOVFORDSPilot
   ranks:
     RMCRankCaptain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMCRankFirstLT:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
@@ -30,6 +29,7 @@
   dummyStartingGear: AU14GearGOVFORDSPilotDummy
   icon: "AU14JobIconPilotOfficer"
   requireAdminNotify: true
+  spawnMenuRoleName: Pilot Officer (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

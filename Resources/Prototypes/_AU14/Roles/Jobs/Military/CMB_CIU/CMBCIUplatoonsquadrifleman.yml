@@ -8,16 +8,17 @@
     AU14RankCMBSrDeputy:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadRifleman
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankCMBDeputy:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadRifleman
-      time: 120 # 2 hours
+      time: 1200 # 2 hours
     AU14RankCMBProbDeputy: []
   startingGear: AU14GearGOVFORSquadRifleman
   dummyStartingGear: AU14GearGOVFORRiflemanDummy
   icon: "AU14JobIconRFN"
   requireAdminNotify: false
+  spawnMenuRoleName: Operations Officer (CMBCIU)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

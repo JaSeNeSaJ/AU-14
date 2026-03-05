@@ -11,6 +11,7 @@
   dummyStartingGear: AU14GearGOVFORPlatOpDummy
   icon: "AU14JobIconOpsOfc"
   requireAdminNotify: false
+  spawnMenuRoleName: Junior Officer (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobDCCBase
   id: AU14JobGOVFORDCC
   name: au14-job-name-govfordcc
   description: au14-job-description-govfordcc
@@ -11,12 +11,11 @@
     traits:
     - Epilepsy
     - NonResuscitable
-  playTimeTracker: AU14JobGOVFORDCC
   ranks:
     AU14RankUSASFCMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     AU14RankUSASFSMSgt:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
@@ -30,6 +29,7 @@
   dummyStartingGear: AU14GearGOVFORDCCDummy
   icon: "AU14JobIconDCC"
   requireAdminNotify: true
+  spawnMenuRoleName: Dropship Crew Chief (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

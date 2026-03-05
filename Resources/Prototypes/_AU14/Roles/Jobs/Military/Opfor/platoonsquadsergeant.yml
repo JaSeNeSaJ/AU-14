@@ -18,6 +18,7 @@
   dummyStartingGear: AU14GearopforSquadSergantDummy
   icon: "AU14JobIconOPFORSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Squad Sergeant (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

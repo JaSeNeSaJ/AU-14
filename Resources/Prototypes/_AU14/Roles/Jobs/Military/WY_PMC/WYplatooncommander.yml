@@ -9,11 +9,12 @@
     AU14RankWeYuCommanderSenior:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatCo
-      time: 1800 # 30 hours
+      time: 360000 # 100 hours
     AU14RankWeYuCommander: []
   startingGear: AU14GearGOVFORPlatCo
   icon: "AU14JobIconPlatCo"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Commander (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govforplatco
   accessGroups:

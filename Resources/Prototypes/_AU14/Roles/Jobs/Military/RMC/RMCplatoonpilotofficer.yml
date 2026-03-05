@@ -19,7 +19,7 @@
     RMC_Lieutenant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMC_2Lieutenant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
@@ -33,6 +33,7 @@
   dummyStartingGear: AU14GearGOVFORDSPilotDummy
   icon: "AU14JobIconPilotOfficer"
   requireAdminNotify: true
+  spawnMenuRoleName: Pilot Officer (TWE RMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
