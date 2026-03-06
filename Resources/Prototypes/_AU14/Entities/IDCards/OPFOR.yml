@@ -5,7 +5,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforPlatCo
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -16,7 +16,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforPlatOp
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -27,7 +27,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforDSPilot
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -38,7 +38,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforDCC
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -49,7 +49,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforSectionSergeant
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -60,7 +60,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforSquadSergeant
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -71,7 +71,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforSquadRifleman
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -82,7 +82,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforSquadAutomaticRifleman
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -93,7 +93,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforPlatoonCorpsman
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -104,7 +104,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOpforRadioTelephoneOperator
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -126,7 +126,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOPFORSquadCombatTech
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -137,7 +137,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOPFORadvisor
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -148,6 +148,6 @@
   components:
   - type: PresetIdCard
     job: AU14JobOPFORMilitaryDoctor
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
