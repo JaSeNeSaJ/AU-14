@@ -78,8 +78,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTMarksman
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14JobRMCRRTMarksman

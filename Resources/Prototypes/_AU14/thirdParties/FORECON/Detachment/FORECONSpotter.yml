@@ -76,8 +76,7 @@
   components:
   - type: PresetIdCard
     job: AU14FORECONSpotterDetachment
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: jobIcon
   parent: CMJobIconBase

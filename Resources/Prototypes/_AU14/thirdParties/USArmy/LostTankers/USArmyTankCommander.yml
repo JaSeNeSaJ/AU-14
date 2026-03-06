@@ -101,8 +101,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyTankCommander
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: jobIcon
   parent: CMJobIconBase

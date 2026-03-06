@@ -88,8 +88,7 @@
   components:
   - type: PresetIdCard
     job: AU14UPPGROMMachinegunner
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14JobUPPGROMMachinegunner

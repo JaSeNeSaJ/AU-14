@@ -94,8 +94,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyTankLoader
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14JobUSArmyTankLoader

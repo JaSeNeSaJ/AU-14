@@ -69,8 +69,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTSmartgunner
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14JobRMCRRTSmartgunner

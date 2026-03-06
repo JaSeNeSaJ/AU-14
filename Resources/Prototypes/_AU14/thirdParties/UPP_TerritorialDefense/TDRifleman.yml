@@ -101,8 +101,7 @@
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseRifleman
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseRifleman

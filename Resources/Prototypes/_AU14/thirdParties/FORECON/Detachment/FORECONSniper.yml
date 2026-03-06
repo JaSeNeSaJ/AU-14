@@ -78,8 +78,7 @@
   components:
   - type: PresetIdCard
     job: AU14FORECONSniperDetachment
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: playTimeTracker
   id: AU14FORECONSniperDetachment

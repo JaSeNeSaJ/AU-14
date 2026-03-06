@@ -111,8 +111,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyTrooper
-  - type: ItemIFF
-    faction: GOVFOR
+   
 
 - type: jobIcon
   parent: CMJobIconBase
