@@ -115,7 +115,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobOPFORAuxSupportSynth
-   - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
