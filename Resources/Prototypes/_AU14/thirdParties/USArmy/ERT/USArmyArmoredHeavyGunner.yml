@@ -107,8 +107,9 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyHeavyGunner
-  - type: ItemIFF
-    faction: GOVFOR
+     - type: ItemIFF
+    factions:
+    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

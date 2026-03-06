@@ -92,8 +92,9 @@
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseSquadLeader
-  - type: ItemIFF
-    faction: GOVFOR
+     - type: ItemIFF
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseSquadLeader

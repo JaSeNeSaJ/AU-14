@@ -94,8 +94,9 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyTankGunner
-  - type: ItemIFF
-    faction: GOVFOR
+     - type: ItemIFF
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUSArmyTankGunner

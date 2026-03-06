@@ -84,5 +84,6 @@
   components:
   - type: PresetIdCard
     job: AU14UACGAmmobearer
-  - type: ItemIFF
-    faction: GOVFOR
+     - type: ItemIFF
+    factions:
+    - GOVFOR
