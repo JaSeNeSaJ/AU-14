@@ -92,7 +92,8 @@
   components:
   - type: PresetIdCard
     job: AU14UACGSquadleader
-   
+  - type: ItemIFF
+    faction: GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUACGSquadLeader

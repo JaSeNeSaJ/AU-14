@@ -118,7 +118,8 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyCET
-   
+  - type: ItemIFF
+    faction: GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

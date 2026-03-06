@@ -96,7 +96,8 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyCommander
-   
+  - type: ItemIFF
+    faction: GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

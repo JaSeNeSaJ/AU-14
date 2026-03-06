@@ -88,7 +88,8 @@
   components:
   - type: PresetIdCard
     job: AU14UPPGROMRifleman
-   
+  - type: ItemIFF
+    faction: GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMRifleman

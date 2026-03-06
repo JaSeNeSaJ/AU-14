@@ -102,7 +102,8 @@
   components:
   - type: PresetIdCard
     job: AU14UPPGROMSupportTech
-   
+  - type: ItemIFF
+    faction: GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMSupportTech
