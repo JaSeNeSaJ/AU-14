@@ -35,7 +35,7 @@
           RMCSkillSurgery: 1
           RMCSkillVehicles: 1
     - type: NpcFactionMember
-      faction:
+      factions:
       - GOVFOR
     - type: Marine
       Faction: govfor

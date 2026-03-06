@@ -111,7 +111,7 @@
       settings: short
     rules: You are a timeshares salesperson sent to the frontier to sell vacation packages. You travel from colony to colony trying to convince people to buy into shared properties.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:

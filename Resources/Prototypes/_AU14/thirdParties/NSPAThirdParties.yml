@@ -79,7 +79,7 @@
       settings: short
     rules: You are a constable of the Neroid Sector Policing Authority on routine patrol through the sector. Patrol the area under the orders of your chief constable and ensure that the law is enforced.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -169,7 +169,7 @@
       settings: short
     rules: You are a constable of the Neroid Sector Policing Authority on routine patrol through the sector. Patrol the area under the orders of your chief constable and ensure that the law is enforced.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -259,7 +259,7 @@
       settings: short
     rules: You are an Inspector of the Neroid Sector Policing Authority on routine patrol through the sector. Patrol the area with your constables and ensure that the law is enforced.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -349,7 +349,7 @@
       settings: short
     rules: You are a constable of the Neroid Sector Policing Authority on routine patrol through the sector. Patrol the area under the orders of your chief constable and ensure that the law is enforced.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -439,7 +439,7 @@
       settings: short
     rules: You are an Inspector of the Neroid Sector Policing Authority on routine patrol through the sector. Patrol the area with your constables and ensure that the law is enforced.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -561,7 +561,7 @@
       settings: short
     rules: You are an Interstellar Commerce Commission Corporate Liaison, a well experienced ICC Agent that has been attached to an NSPA team. You work with the NSPA specifically to observe proper trade practices and investigate any possibilities of smuggling or black market activity.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:

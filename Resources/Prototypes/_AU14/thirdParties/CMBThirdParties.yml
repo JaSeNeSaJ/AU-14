@@ -79,7 +79,7 @@
       settings: short
     rules: You have been dispatched by the Colonial Administration to investigate unspecified occurrences on this planet. Lead your deputies planetside and ensure that the laws of Sol extend far beyond the Solar System.v
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -169,7 +169,7 @@
       settings: short
     rules: You have been dispatched by the Colonial Administration to investigate unspecified occurrences on this planet. Lead your deputies planetside and ensure that the laws of Sol extend far beyond the Solar System.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -259,7 +259,7 @@
       settings: short
     rules: You have been dispatched by the Colonial Administration to investigate unspecified occurrences on this planet. Lead your deputies planetside and ensure that the laws of Sol extend far beyond the Solar System.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:
@@ -381,7 +381,7 @@
       settings: short
     rules: Through hard work, you have managed to make your way onto the frontier alongside a CMB patrol to document and record any atrocities that may be occurring in this dark sector of space. It’s partly a PR stunt, but it’s important work. In an emergency, you may also be able to provide medical aid to those in need. This third party asks for a slightly higher level of roleplay than others! Please keep this in mind.
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:

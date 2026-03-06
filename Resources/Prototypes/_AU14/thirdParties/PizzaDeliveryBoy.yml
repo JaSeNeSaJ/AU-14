@@ -18,7 +18,7 @@
       settings: short
     rules: You are a Pizza Galaxy deliveryman sent with an assortment of refreshing beverages and a choice of pizza to sell to anyone you may encounter.
   - type: NpcFactionMember
-    faction:
+    factions:
     - GOVFOR
   - type: Skills
     skills:

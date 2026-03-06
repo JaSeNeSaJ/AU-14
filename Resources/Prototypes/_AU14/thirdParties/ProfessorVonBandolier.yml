@@ -31,7 +31,7 @@
       settings: short
     rules: au14-professorvonbandolier-rules
   - type: NpcFactionMember
-    faction:
+    factions:
     - AUBureau
   - type: Skills
     skills:

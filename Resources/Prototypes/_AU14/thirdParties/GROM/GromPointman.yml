@@ -30,7 +30,7 @@
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_sapper
     - type: NpcFactionMember
-      faction:
+      factions:
       - GOVFOR
     - type: Marine
       Faction: govfor
