@@ -596,14 +596,14 @@
       - id: AU14WeaponRifleM16A2
       - id: WeaponSMGMP5
       - id: RMCWeaponSMGMP5Alt
-      - id: RMCWeaponSMGP90
+      - id: RMCWeaponSMGPDW90
     - name: Weapon Ammunition
       entries:
       - id: RMCMagazineRifleM16
         amount: 120
       - id: CMMagazineSMGMP5
         amount: 120
-      - id: RMCMagazineSMGP90
+      - id: RMCMagazineSMGPDW90
         amount: 120
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
