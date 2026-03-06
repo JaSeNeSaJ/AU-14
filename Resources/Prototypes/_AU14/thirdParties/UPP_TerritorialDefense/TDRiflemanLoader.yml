@@ -96,6 +96,6 @@
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseLoader
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR

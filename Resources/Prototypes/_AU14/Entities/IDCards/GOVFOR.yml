@@ -5,7 +5,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatCo
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -16,7 +16,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatOp
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -27,7 +27,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORDSPilot
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -38,7 +38,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORDCC
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -49,7 +49,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSectionSergeant
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -60,7 +60,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadSergeant
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -72,7 +72,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadRifleman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -84,7 +84,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadAutomaticRifleman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -96,7 +96,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORPlatoonCorpsman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -108,7 +108,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORRadioTelephoneOperator
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -119,7 +119,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORAuxSupportSynth
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -130,7 +130,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORSquadCombatTech
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -141,7 +141,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORadvisor
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -152,7 +152,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORMilitaryDoctor
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
@@ -163,7 +163,7 @@
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORk9handler
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

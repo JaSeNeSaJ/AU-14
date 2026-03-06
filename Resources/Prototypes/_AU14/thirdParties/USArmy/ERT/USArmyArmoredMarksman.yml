@@ -110,7 +110,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyMarksman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

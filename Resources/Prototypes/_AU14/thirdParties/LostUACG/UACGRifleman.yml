@@ -93,7 +93,7 @@
   components:
   - type: PresetIdCard
     job: AU14UACGRifleman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

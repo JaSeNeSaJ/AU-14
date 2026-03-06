@@ -118,7 +118,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyCET
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

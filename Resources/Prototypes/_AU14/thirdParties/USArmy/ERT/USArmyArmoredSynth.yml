@@ -140,7 +140,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmySynth
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

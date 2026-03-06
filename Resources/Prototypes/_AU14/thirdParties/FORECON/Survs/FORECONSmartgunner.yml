@@ -91,7 +91,7 @@
   components:
   - type: PresetIdCard
     job: AU14FORECONSmartGunOperator
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

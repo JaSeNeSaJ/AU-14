@@ -93,7 +93,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTCommander
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
     

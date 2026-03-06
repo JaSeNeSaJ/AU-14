@@ -78,7 +78,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTRifleman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

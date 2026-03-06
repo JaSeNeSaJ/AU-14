@@ -114,7 +114,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmySquadLeader
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

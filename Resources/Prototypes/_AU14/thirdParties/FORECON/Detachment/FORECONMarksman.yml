@@ -77,7 +77,7 @@
   components:
   - type: PresetIdCard
     job: AU14FORECONMarksmanDetachment
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

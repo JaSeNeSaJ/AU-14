@@ -69,7 +69,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTSmartgunner
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

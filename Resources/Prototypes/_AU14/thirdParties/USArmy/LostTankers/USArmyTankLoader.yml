@@ -94,7 +94,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyTankLoader
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

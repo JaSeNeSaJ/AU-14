@@ -79,7 +79,7 @@
   components:
   - type: PresetIdCard
     job: AU14RMCRRTCorpsman
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

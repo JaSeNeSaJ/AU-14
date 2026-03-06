@@ -107,7 +107,7 @@
   components:
   - type: PresetIdCard
     job: AU14USArmyHeavyGunner
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 

@@ -92,7 +92,7 @@
   components:
   - type: PresetIdCard
     job: AU14UPPGROMSquadleader
-     - type: ItemIFF
+  - type: ItemIFF
     factions:
     - GOVFOR
 
