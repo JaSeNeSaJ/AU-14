@@ -25,7 +25,6 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: SquadLeader
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
@@ -44,6 +43,8 @@
     - type: JobPrefix
       prefix: au-14-job-prefix-uppgrom-squadleader
     - type: MarineOrders
+    - type: RMCTrackable
+    - type: SquadLeader
     - type: RMCPointing
   hidden: false
 
@@ -92,7 +93,8 @@
   - type: PresetIdCard
     job: AU14UPPGROMSquadleader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

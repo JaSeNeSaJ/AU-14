@@ -52,7 +52,7 @@
   - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: AU14SquadUSArmy
+    squad: AU14SquadUSArmy32nd
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -95,7 +95,8 @@
   - type: PresetIdCard
     job: AU14USArmyTankLoader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUSArmyTankLoader

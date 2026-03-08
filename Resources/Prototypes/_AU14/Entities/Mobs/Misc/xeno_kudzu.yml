@@ -36,7 +36,8 @@
     rarePrototypes:
     - CMUSentryXenoKudzu
   - type: UserIFF
-    faction: FactionXeno
+    factions: 
+    - FactionXeno
 
 - type: entity
   id: CMUXenoKudzuSource

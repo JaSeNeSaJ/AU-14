@@ -89,7 +89,8 @@
   - type: PresetIdCard
     job: AU14PAPThirdpartySeniorInvestigator
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobPaPThirdpartySeniorInvestigator
