@@ -64,7 +64,7 @@
   - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: AU14SquadUSArmy
+    squad: AU14SquadUSArmy32nd
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -111,7 +111,8 @@
   - type: PresetIdCard
     job: AU14USArmyCMT
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

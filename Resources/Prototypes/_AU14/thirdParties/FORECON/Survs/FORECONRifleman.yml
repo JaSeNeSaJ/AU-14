@@ -99,7 +99,8 @@
   - type: PresetIdCard
     job: AU14FORECONRifleman
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobFORECONRifleman

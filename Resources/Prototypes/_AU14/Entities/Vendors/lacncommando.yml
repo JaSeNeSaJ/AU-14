@@ -282,12 +282,12 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: RMCWeaponSMGP90
+      - id: RMCWeaponSMGPDW90
       - id: RMCWeaponRifleMAR30
       - id: WeaponRifleMAR40
     - name: Rifle Ammunition
       entries:
-      - id: RMCMagazineSMGP90
+      - id: RMCMagazineSMGPDW90
         amount: 120
       - id: RMCMagazineRifleMAR40
         amount: 120
