@@ -45,6 +45,6 @@
     contents:
     - id: AU14Tourniquet
     - id: AU14HemostaticGauze
-    - id: AU14HemostaticGauze #      - TODO replace with RMC14 splint
     - id: CMOintment10
+    - id: AU14FirstAidAutoInjectorNoSkill
     - id: CMPacketPillsTricordrazine
