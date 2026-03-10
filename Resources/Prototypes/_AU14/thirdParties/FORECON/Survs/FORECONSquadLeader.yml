@@ -43,6 +43,8 @@
     - type: JobPrefix
       prefix: cm-job-prefix-squad-leader
     - type: MarineOrders
+    - type: RMCTrackable
+    - type: SquadLeader
     - type: RMCPointing
   hidden: false
 
@@ -97,7 +99,8 @@
   - type: PresetIdCard
     job: AU14FORECONSquadleader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobFORECONSquadLeader
