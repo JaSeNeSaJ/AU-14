@@ -232,7 +232,7 @@
     thresholds:
       0: Alive
       150: Critical
-      200: Dead
+      275: Dead
   - type: MobStateActions
     actions:
       Critical:
@@ -354,10 +354,6 @@
   - type: IVDripTarget
   - type: FixedIdentity
     name: rmc-host
-    whitelist:
-      components:
-      - Xeno
-  - type: HiddenAppearance
     whitelist:
       components:
       - Xeno

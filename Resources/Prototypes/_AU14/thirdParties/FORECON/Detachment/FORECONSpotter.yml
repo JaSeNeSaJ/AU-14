@@ -77,7 +77,8 @@
   - type: PresetIdCard
     job: AU14FORECONSpotterDetachment
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

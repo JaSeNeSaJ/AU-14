@@ -79,7 +79,8 @@
       settings: short
     rules: cm-cultist-rules
   - type: UserIFF
-    faction: FactionXeno
+    factions:
+    - FactionXeno
   - type: NpcFactionMember
     factions:
     - RMCXeno

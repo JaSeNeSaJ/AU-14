@@ -22,6 +22,7 @@
   - !type:AddComponentSpecial
     components:
     - type: SquadLeader
+    - type: RMCTrackable
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
@@ -87,11 +88,13 @@
   parent: CMIDCardBase
   id: AU14IDCardUPPTDSquadLeader
   name: UPP TD Squad Leader ID card
+  categories: [ HideSpawnMenu ]
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseSquadLeader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseSquadLeader
