@@ -55,6 +55,9 @@
     - type: CMVendorUser
       id: AU14JobGOVFORSquadCombatTech
       points: 50
+    - type: UserIFF
+      factions:
+       - GOVFOR
   hidden: false
 
 - type: startingGear
