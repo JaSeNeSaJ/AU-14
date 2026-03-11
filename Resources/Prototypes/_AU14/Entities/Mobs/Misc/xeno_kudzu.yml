@@ -36,7 +36,8 @@
     rarePrototypes:
     - CMUSentryXenoKudzu
   - type: UserIFF
-    faction: FactionXeno
+    factions:
+     -  FactionXeno
 
 - type: entity
   id: CMUXenoKudzuSource
@@ -117,7 +118,8 @@
     enabled: true
     intrinsic: true
   - type: UserIFF
-    faction: FactionXeno
+    factions:
+     -  FactionXeno
   - type: Damageable
     damageContainer: StructuralXeno
     damageModifierSet: Resin
