@@ -65,7 +65,7 @@ public sealed class AuThreatSystem : EntitySystem
             var query = _entityManager.EntityQueryEnumerator<Content.Shared.AU14.Threats.ThreatSpawnMarkerComponent>();
             while (query.MoveNext(out var uid, out var comp))
             {
-                if (comp.ThreatMarkerType == markerType && (comp.ID == markerId || (comp.ID == "" && markerId == "")))
+                if (comp.ThreatMarkerType == markerType && !comp.ThirdParty && (comp.ID == markerId || (comp.ID == "" && markerId == "")))
                 {
                     if (_entityManager.GetComponent<TransformComponent>(uid).MapID == mapId)
                         markers.Add(uid);
