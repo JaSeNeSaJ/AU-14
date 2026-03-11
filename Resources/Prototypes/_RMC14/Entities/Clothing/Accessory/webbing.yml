@@ -293,7 +293,7 @@
     - type: StoreAfterFailedInteract
     - type: RMCStorageEjectHand
       state: Open
-      
+
 - type: entity
   parent: CMWebbing
   id: RMCParaWebbing
@@ -305,7 +305,7 @@
       sprite: _RMC14/Objects/Clothing/Webbing/para_webbing.rsi
       state: webbing
     - type: Appearance
-      
+
 - type: entity
   parent: RMCParaWebbing
   id: RMCParaWebbingL88
@@ -317,7 +317,7 @@
         - id: RMCTacticalPrybar
         - id: RMCMagazineRifleL88
         - id: RMCMagazineRifleL88
-        
+
 - type: entity
   parent: RMCParaWebbing
   id: RMCParaWebbingPDW90AP
@@ -846,7 +846,6 @@
   components:
   - type: StorageFill
     contents:
-    - id: RMCMREWeYaPMC
     - id: RMCRangefinder
     - id: RMCGrenadeBlastM12
     - id: RMCTelescopicBaton
@@ -859,8 +858,6 @@
   components:
   - type: StorageFill
     contents:
-    - id: RMCMREWeYaPMC
-    - id: RMCMREWeYaPMC
     - id: RMCTacticalPrybar
     - id: RMCGrenadeBlastM12
     - id: RMCExplosivePlastic
@@ -874,7 +871,6 @@
     contents:
     # - id: CMSplint5
     - id: CMFireExtinguisherPortable
-    - id: RMCMREWeYaPMC
     - id: RMCGrenadeBlastM12
     - id: RMCPowerCellSmartgun
 

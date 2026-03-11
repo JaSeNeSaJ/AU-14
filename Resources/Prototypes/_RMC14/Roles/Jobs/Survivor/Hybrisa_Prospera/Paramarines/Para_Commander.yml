@@ -32,10 +32,7 @@
           background:
             sprite: /Textures/_RMC14/Interface/map_blips.rsi
             state: background_para
-        - type: AssignSquad
-          whitelist:
-            tags:
-              - SquadPara
+
         - type: JobPrefix
           prefix: rmc-job-prefix-para-commander
   hidden: true
@@ -72,4 +69,3 @@
   icon:
     sprite: _RMC14/Interface/cm_job_icons.rsi
     state: para_commander_alt
-    

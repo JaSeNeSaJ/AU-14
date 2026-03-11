@@ -64,7 +64,6 @@
   components:
   - type: StorageFill
     contents:
-    - id: RMCMREWeYaPMC
 
 - type: entity
   parent: CMFirstAidKit

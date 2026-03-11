@@ -174,10 +174,6 @@
         - RMCAttachmentS42xTelescopicMiniscope
       rmc-aslot-stock:
         locked: true
-        startingAttachable: RMCAttachmentM16A5Stock
-        whitelist:
-          tags:
-          - RMCAttachmentM16A5Stock
       rmc-aslot-underbarrel:
         whitelist:
           tags:
