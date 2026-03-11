@@ -262,7 +262,7 @@
       - id: ClothingNeckStethoscope
       - id: CMRollerBedSpawnFolded
       - id: RMCMedevacStretcherFolded
-      - id: AU14IVFoldable
+      - id: AU14IVFoldableFolded
       - id: CMSurgicalLine
       - id: CMSynthGraft
     - name: Medical Pouches
@@ -293,14 +293,20 @@
         amount: 30
       - id: CMTraumaKit10
         amount: 30
-    - name: Limited Medications
+    - name: Limited Pill Medications
       choices: { CMUPlatoonMedicalLimitedMedications: 2 }
       entries:
       - id: AU14PillCanisterMeralyne
       - id: AU14PillCanisterDermaline
       - id: AU14PillCanisterAlbuterol
       - id: AU14PillCanisterImidazoline
-      - id: AU14PillCanisterEthylredoxrazine
+    - name: Limited Injector Medications
+      choices: { CMUPlatoonMedicalLimitedMedicationsInjectors: 3 }
+      entries:
+      - id: AU14MeraBicAutoInjector
+      - id: AU14KeloDermAutoInjector
+      - id: AU14AlbuDexAutoInjector
+      - id: AU14RevivalMixAutoInjector
     - name: Pill Bottles
       entries:
       - id: CMPillCanisterBicaridine
@@ -596,14 +602,14 @@
       - id: AU14WeaponRifleM16A2
       - id: WeaponSMGMP5
       - id: RMCWeaponSMGMP5Alt
-      - id: RMCWeaponSMGP90
+      - id: RMCWeaponSMGPDW90
     - name: Weapon Ammunition
       entries:
       - id: RMCMagazineRifleM16
         amount: 120
       - id: CMMagazineSMGMP5
         amount: 120
-      - id: RMCMagazineSMGP90
+      - id: RMCMagazineSMGPDW90
         amount: 120
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }

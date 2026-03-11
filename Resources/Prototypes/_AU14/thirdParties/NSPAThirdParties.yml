@@ -656,7 +656,7 @@
     back: AU14SatchelNSPAShotgun
     ears: AU14CMBHeadsetOnlyCMB
   inhand:
-  - RMCWeaponSMGP90
+  - RMCWeaponSMGPDW90
 
 - type: startingGear
   id: AU14GearNSPAMarshalInvestigation
@@ -695,11 +695,11 @@
   components:
   - type: StorageFill
     contents:
-    - id: RMCMagazineSMGP90
-    - id: RMCMagazineSMGP90
-    - id: RMCMagazineSMGP90
-    - id: RMCMagazineSMGP90
-    - id: RMCMagazineSMGP90
+    - id: RMCMagazineSMGPDW90
+    - id: RMCMagazineSMGPDW90
+    - id: RMCMagazineSMGPDW90
+    - id: RMCMagazineSMGPDW90
+    - id: RMCMagazineSMGPDW90
 
 - type: startingGear
   id: AU14GearNSPADeputyInvestigationShotgunArmored
@@ -714,7 +714,7 @@
     back: AU14SatchelNSPAShotgun
     ears: AU14CMBHeadsetOnlyCMB
   inhand:
-  - RMCWeaponSMGP90
+  - RMCWeaponSMGPDW90
 
 - type: startingGear
   id: AU14GearNSPAMarshalInvestigationArmored
