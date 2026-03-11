@@ -59,3 +59,12 @@
   hostile:
    - GOVFOR
 
+# Factions
+
+- type: npcFaction
+  id: TWE
+  hostile:
+  - RMCXeno
+  - GOVFOR
+  - AUGoo
+  - OPFOR
