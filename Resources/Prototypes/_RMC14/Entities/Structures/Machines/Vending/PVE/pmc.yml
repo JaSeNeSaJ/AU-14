@@ -132,8 +132,6 @@
     sections:
     - name: Food
       entries:
-          name: MRE
-        amount: 5
       - id: RMCBoxMRE  # TODO RMC14 - PMC rations
         name: MRE Box
         amount: 1
