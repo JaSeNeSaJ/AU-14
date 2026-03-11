@@ -45,6 +45,9 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: medic
+    - type: UserIFF
+      factions:
+      - GOVFOR
   hidden: false
 
 - type: startingGear
