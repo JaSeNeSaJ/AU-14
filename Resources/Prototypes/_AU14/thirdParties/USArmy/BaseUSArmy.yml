@@ -118,7 +118,7 @@
     channels:
     - UASOF
   - type: GrantSquadLeaderTracker
-    defaultMode: USArmyCommandingOfficer
+    defaultMode: SquadLeader
     trackerModes:
-    - USArmyCommandingOfficer
     - SquadLeader
+    - USArmyCommandingOfficer

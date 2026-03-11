@@ -92,8 +92,10 @@
   parent: CMIDCardBase
   id: AU14IDCardUPPTDLoader
   name: UPP TD Loader ID card
+  categories: [ HideSpawnMenu ]
   components:
   - type: PresetIdCard
     job: AU14UPPTerritorialDefenseLoader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR

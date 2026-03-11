@@ -246,7 +246,7 @@
     channels:
     - UPPSOF
   - type: GrantSquadLeaderTracker
-    defaultMode: GROMCommandingOfficer
+    defaultMode: SquadLeader
     trackerModes:
     - GROMCommandingOfficer
     - SquadLeader

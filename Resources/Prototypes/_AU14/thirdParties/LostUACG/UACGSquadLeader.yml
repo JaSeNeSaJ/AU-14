@@ -29,6 +29,7 @@
       factions:
       - GOVFOR
     - type: SquadLeader
+    - type: RMCTrackable
     - type: Marine
       Faction: govfor
     - type: Skills
@@ -92,7 +93,8 @@
   - type: PresetIdCard
     job: AU14UACGSquadleader
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUACGSquadLeader

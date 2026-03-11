@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14UPPGROMMachinegunner
-  name: au-14-job-name-uppgrom-machinegunner
+  name: au14-job-name-govforsquadautomaticriflemanRMC
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMMachinegunner
   ranks:
@@ -41,7 +41,7 @@
     - type: Skills
       preset: AU14SkillPresetPlatoonAutomaticRifleman
     - type: JobPrefix
-      prefix: au-14-job-prefix-uppgrom-machinegunner
+      prefix: au14-job-prefix-govforsquadautomaticriflemanRMC
   hidden: false
 
 - type: entity
@@ -89,7 +89,8 @@
   - type: PresetIdCard
     job: AU14UPPGROMMachinegunner
   - type: ItemIFF
-    faction: GOVFOR
+    factions:
+    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMMachinegunner
