@@ -84,6 +84,9 @@
   - type: NpcFactionMember
     factions:
     - RMCXeno
+  - type: Access
+    tags:
+    - CMAccessXeno
   - type: RemoveComponents
     components:
     - type: Infectable
@@ -187,6 +190,9 @@
   - type: NpcFactionMember
     factions:
     - RMCXeno
+  - type: Access
+    tags:
+    - CMAccessXeno
   - type: RemoveComponents
     components:
     - type: Infectable
