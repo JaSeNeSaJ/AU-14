@@ -73,6 +73,9 @@
         types:
           Blunt: 35
     - type: Synth
+    - type: UserIFF
+      factions:
+      - OPFOR
   hidden: false
 
 - type: startingGear

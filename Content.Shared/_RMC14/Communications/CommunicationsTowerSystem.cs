@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.Intel;
 using Content.Shared._RMC14.Power;
@@ -163,18 +164,26 @@ public sealed class CommunicationsTowerSystem : EntitySystem
         if (ent.Comp.State == CommunicationsTowerState.Broken)
             return;
 
-        if (_gunIFF.TryGetFaction(args.User, out var faction) &&
-            _prototypes.TryIndex(faction, out var factionProto) &&
-            factionProto.TryGetComponent(out FactionFrequenciesComponent? frequencies, _compFactory))
+        var factions = new HashSet<EntProtoId<IFFFactionComponent>>();
+        if (_gunIFF.TryGetFactions(args.User, factions))
         {
-            ent.Comp.Channels.UnionWith(frequencies.Channels);
-            Dirty(ent);
+            foreach (var faction in factions)
+            {
+                if (_prototypes.TryIndex(faction, out var factionProto) &&
+                    factionProto.TryGetComponent(out FactionFrequenciesComponent? frequencies, _compFactory))
+                {
+                    ent.Comp.Channels.UnionWith(frequencies.Channels);
+                }
+            }
+
+            if (factions.Count > 0)
+                Dirty(ent);
         }
 
         args.Handled = true;
         var msg = $"You add your faction's communication frequencies to the {Name(ent)}'s comm list.";
         _popup.PopupClient(msg, ent, args.User, PopupType.Medium);
-        ent.Comp.Faction = faction;
+        ent.Comp.Faction = factions.FirstOrDefault().ToString() ?? string.Empty;
     }
 
     private void OnTowerInteractHand(Entity<CommunicationsTowerComponent> ent, ref InteractHandEvent args)
