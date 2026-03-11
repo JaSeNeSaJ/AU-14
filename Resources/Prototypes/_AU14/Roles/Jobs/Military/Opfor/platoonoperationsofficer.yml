@@ -44,6 +44,9 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: so
+    - type: UserIFF
+      factions:
+      - OPFOR
   hidden: false
 
 - type: startingGear
