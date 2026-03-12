@@ -26,7 +26,7 @@
   - type: UseDelay
     delay: 4
   - type: Handcuff
-    breakoutTime: 60
+    breakoutTime: 35
     cuffedRSI: Objects/Misc/cablecuffs.rsi
     bodyIconState: body-overlay
     breakOnRemove: true
