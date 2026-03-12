@@ -5,6 +5,7 @@
   - CLF
   - AUColonist
   - Civilian
+  - CMUAPE
 
 - type: npcFaction
   id: RMCXeno
@@ -20,6 +21,23 @@
   - CLF
   - TSE
   - AUColonist
+  - CMUAPE
+
+- type: npcFaction
+  id: CMUAPE
+  hostile:
+  - UNMC
+  - NanoTrasen
+  - SPP
+  - GOVFOR
+  - OPFOR
+  - Halcyon
+  - WeYa
+  - Civilian
+  - CLF
+  - TSE
+  - AUColonist
+
 
 - type: npcFaction
   id: RMCDumb
@@ -35,6 +53,7 @@
   - CLF
   - TSE
   - AUColonist
+  - CMUAPE
 
 
 - type: npcFaction

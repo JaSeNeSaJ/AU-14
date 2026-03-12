@@ -5,7 +5,7 @@
   description: rmc-ghost-role-information-rcm-description
   playTimeTracker: RMCJobRoyalCaptain
   ranks:
-    RMCRankTSECaptain: [ ] 
+    RMCRankTSECaptain: [ ]
   startingGear: RMCGearRoyalCaptain
   icon: "RMCJobIconRoyalCaptain"
   joinNotifyCrew: false
@@ -20,7 +20,7 @@
     - type: Skills
       skills:
         RMCSkillCqc: 3
-        RMCSkillFirearms: 2 
+        RMCSkillFirearms: 2
         RMCSkillPolice: 2
         RMCSkillFireman: 3
         RMCSkillConstruction: 2
@@ -44,10 +44,6 @@
     - type: RMCTrackable
     - type: JobPrefix
       prefix: rmc-job-prefix-rcm-captain
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadRoyalMarines
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
@@ -57,7 +53,7 @@
         state: background_twe
   hidden: true
 
-- type: startingGear 
+- type: startingGear
   id: RMCGearRoyalCaptain
   equipment:
     head: RMCHeadRoyalBeretLead

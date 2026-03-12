@@ -294,8 +294,13 @@ public sealed class XenoEggSystem : EntitySystem
         if (!CanPlaceEggPopup(args.User, egg, coordinates, false, out var hiveweeds))
             return;
 
-        if (!_plasma.TryRemovePlasmaPopup(args.User, 30))
-            return;
+        // Only attempt to remove plasma if the user actually has a XenoPlasmaComponent.
+        // This allows non-xeno players (e.g. humans) to plant eggs without having plasma.
+        if (HasComp<XenoPlasmaComponent>(args.User))
+        {
+            if (!_plasma.TryRemovePlasmaPopup(args.User, 30))
+                return;
+        }
 
         //Eggsac code
         if (!hiveweeds)
