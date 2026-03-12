@@ -327,7 +327,12 @@ public abstract class SharedApeDestroySystem : EntitySystem
 
     private void SetCooldown(Entity<ApeDestroyComponent> ape)
     {
-        Dirty(ape);
+        // Find the ape's Destroy action and apply the configured cooldown to it.
+        foreach (var (actionId, action) in _rmcActions.GetActionsWithEvent<ApeDestroyActionEvent>(ape))
+        {
+            _actions.SetCooldown(actionId, ape.Comp.Cooldown);
+            break;
+        }
     }
 
 
