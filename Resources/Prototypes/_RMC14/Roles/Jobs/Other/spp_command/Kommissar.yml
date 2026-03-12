@@ -62,7 +62,6 @@
   equipment:
     head: RMCHeadCapSPPPolBlack
     ears2: RMCM5CameraGear
-    jumpsuit: RMCJumpsuitSPPOfficerShirt
     outerClothing: RMCCoatKommissarShortBlack
     gloves: RMCHandsVeteranSPP
     shoes: RMCBootsSPPFilled
@@ -416,7 +415,6 @@
   equipment:
     head: RMCHeadCapSPPPolKomWhite
     ears2: RMCM5CameraGear
-    jumpsuit: RMCJumpsuitSPPOfficerShirt
     outerClothing: RMCCoatOfficerShortWhite
     gloves: RMCHandsVeteranSPP
     shoes: RMCBootsSPPFilled

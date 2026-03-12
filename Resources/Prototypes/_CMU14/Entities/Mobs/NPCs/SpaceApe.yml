@@ -34,6 +34,8 @@
       sprite: "Effects/creampie.rsi"
       state: "creampie_human"
       visible: false
+  - type: MobCollision
+  - type: RMCMobCollision
   - type: MobState
     allowedStates:
     - Alive
@@ -54,7 +56,7 @@
       - ActionApeHeadbite
   - type: MeleeWeapon
     soundHit:
-      path: /Audio/weapons/punch1.ogg
+      path: /Audio/Weapons/punch1.ogg
     angle: 0
     animation: WeaponArcPunch
     damage:
@@ -123,7 +125,6 @@
     leapSound: /Audio/_AU14/Ape/aperoarshort.ogg
   - type: Sharp
     butcherDelayModifier: 0.5
-    ape: true
   - type: NpcFactionMember
     factions:
     - CMUAPE
