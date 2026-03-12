@@ -369,7 +369,8 @@
   - type: RMCMesonsNonviewable
     xenoVisible: true
   - type: UserIFF
-    faction: FactionXeno
+    factions:
+     -  FactionXeno
 
 - type: entity
   abstract: true

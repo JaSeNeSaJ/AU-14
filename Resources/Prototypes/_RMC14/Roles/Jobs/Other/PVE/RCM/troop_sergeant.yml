@@ -23,13 +23,13 @@
     - type: Skills
       skills:
         RMCSkillCqc: 3
-        RMCSkillFirearms: 1 
+        RMCSkillFirearms: 1
         RMCSkillFireman: 3
         RMCSkillConstruction: 1
         RMCSkillEngineer: 2
         RMCSkillEndurance: 3
         RMCSkillMedical: 2
-        RMCSkillSurgery: 1  
+        RMCSkillSurgery: 1
         RMCSkillMeleeWeapons: 1
         RMCSkillJtac: 3
         RMCSkillPilot: 1
@@ -39,16 +39,13 @@
     - type: RMCPointing
     - type: CommandAccent
     - type: SquadLeader
-      icon: 
+      icon:
         sprite: _RMC14/Interface/cm_job_icons.rsi
         state: rmc_troopleader_pve
     - type: RMCTrackable
     - type: JobPrefix
       prefix: rmc-job-prefix-rcm-pve-troop-sergeant
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadRoyalMarinesPVE
+
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
