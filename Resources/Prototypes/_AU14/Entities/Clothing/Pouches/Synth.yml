@@ -50,7 +50,7 @@
   - type: StorageFill
     contents:
     - id: CMFlash
-    - id: CMStunbaton
+    - id: AU14TeleBaton
     - id: RMCHandcuffs
     - id: RMCHandcuffs
     - id: RMCHandcuffs
