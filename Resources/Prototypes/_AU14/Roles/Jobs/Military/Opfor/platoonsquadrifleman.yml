@@ -29,6 +29,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: UserIFF
+      factions:
+      - OPFOR
     - type: NpcFactionMember
       factions:
       - OPFOR
