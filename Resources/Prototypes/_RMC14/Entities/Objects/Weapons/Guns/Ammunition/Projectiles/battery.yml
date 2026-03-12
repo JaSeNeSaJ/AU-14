@@ -24,7 +24,7 @@
       types:
         Heat: 5
     soundHit:
-      path: /Audio/_RMC14/Bullets/energy_impact1.ogg
+      path: /Audio/Weapons/Guns/Hits/energy_metal1.ogg
     forceSound: true
   - type: RMCProjectileAccuracy
     accuracy: 125
