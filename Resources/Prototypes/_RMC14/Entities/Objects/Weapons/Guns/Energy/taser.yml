@@ -18,7 +18,6 @@
   - type: Gun
     soundGunshot:
       path: /Audio/Weapons/Guns/Hits/taser_hit.ogg
-      volume: 4
   - type: Wieldable
   - type: Battery
     maxCharge: 800
