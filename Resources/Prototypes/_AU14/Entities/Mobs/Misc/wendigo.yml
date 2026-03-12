@@ -23,7 +23,7 @@
       1500: Dead
   - type: Xeno
     unlockAt: 99999 #never unlock naturally
-    role: CmXenoWendigo
+    role: CMXenoWendigo
     actionIds:
     - ActionXenoWatch
     - ActionXenoPunch

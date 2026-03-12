@@ -29,6 +29,9 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - FORECON
     - FORECONAlt
@@ -91,6 +94,9 @@
     threats:
     - cultistThreat
     - XenoThreat
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
    # thirdparties:
     #- UPPSpecOps
     #- CMBCIUSMALL
@@ -177,7 +183,9 @@
     threats:
     - cultistThreat
     - XenoThreat
-
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -232,6 +240,8 @@
     daycycleenabled: true
     threats:
     - XenoThreat
+    - apethreat
+
     thirdparties:
     - USArmy
     - USArmyAlt
@@ -264,6 +274,9 @@
     threats:
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - USArmy
     - USArmyAlt
@@ -307,6 +320,9 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - FORECON
     - FORECONAlt
@@ -349,6 +365,9 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - NSPAInvestigationParty
     - NSPAInvestigationPartyAlt
@@ -391,3 +410,6 @@
     threats:
     - cultistThreat
     - XenoThreat
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
