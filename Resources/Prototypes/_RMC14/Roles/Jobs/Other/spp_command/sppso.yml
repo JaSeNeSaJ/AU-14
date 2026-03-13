@@ -53,14 +53,11 @@
   id: RMCGearSPPSO
   equipment:
     head: CMHeadCapSPPBeret
-    ears: RMCHeadsetSPPCommand
     ears2: RMCM5CameraGear
-    jumpsuit: RMCJumpsuitSPPOfficerAmmoFilled
     outerClothing: RMCCoatSPPSeniorFilled
     gloves: RMCHandsVeteranSPP
     shoes: RMCBootsSPPFilled
     suitstorage: RMCWeaponRifleType71
-    id: RMCIDSPPCard
     belt: RMCBeltHolsterPistolSPPT73
     back: RMCSatchelSPP
     pocket1: RMCPouchAutoinjectorFill

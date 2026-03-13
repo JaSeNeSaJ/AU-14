@@ -23,10 +23,7 @@
       preset: RMCSkillPresetPVERifleman
     - type: JobPrefix
       prefix: rmc-job-prefix-pmc-standard
-    - type: AssignSquad
-      whitelist:
-        tags:
-        - RMCSquadPMC
+
     - type: DemoSpecWhitelist
     - type: GrenadeSpecWhitelist
     - type: ScoutWhitelist

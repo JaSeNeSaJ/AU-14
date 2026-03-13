@@ -8,3 +8,7 @@
     AU14Wendigo: 1
   scalewithpop: false
   spawnTogether: true
+  whitelistedgamemodes:
+    - ColonyFall
+  blacklistedgamemodes:
+    - DistressSignal

@@ -80,13 +80,17 @@
     rules: cm-cultist-rules
   - type: UserIFF
     factions:
-    - FactionXeno
+     -  FactionXeno
   - type: NpcFactionMember
     factions:
     - RMCXeno
+  - type: Access
+    tags:
+    - CMAccessXeno
   - type: RemoveComponents
     components:
     - type: Infectable
+  - type: Cultist
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
@@ -181,13 +185,18 @@
       settings: short
     rules: cm-cultist-rules
   - type: UserIFF
-    faction: FactionXeno
+    factions:
+     -  FactionXeno
   - type: NpcFactionMember
     factions:
     - RMCXeno
+  - type: Access
+    tags:
+    - CMAccessXeno
   - type: RemoveComponents
     components:
     - type: Infectable
+  - type: Cultist
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
