@@ -61,6 +61,8 @@
   id: RMCOverwatchConsoleGovfor
   suffix: Govfor
   components:
+  - type: TacticalMapComputer
+    faction: govfor
   - type: OverwatchConsole
     canOrbitalBombardment: false
     group: GOVFOR
@@ -73,7 +75,8 @@
   - type: Sprite
     overrideDir: South
     enableOverrideDir: false
-
+  - type: TacticalMapComputer
+    faction: govfor
 # Opfor
 - type: entity
   parent: RMCOverwatchConsole
@@ -83,7 +86,8 @@
   - type: OverwatchConsole
     canOrbitalBombardment: false
     group: OPFOR
-
+  - type: TacticalMapComputer
+    faction: opfor
 - type: entity
   parent: RMCOverwatchConsoleOpfor
   id: RMCOverwatchConsoleOpforRotating
@@ -92,7 +96,8 @@
   - type: Sprite
     overrideDir: South
     enableOverrideDir: false
-
+  - type: TacticalMapComputer
+    faction: opfor
 # RCM
 - type: entity
   parent: RMCOverwatchConsole

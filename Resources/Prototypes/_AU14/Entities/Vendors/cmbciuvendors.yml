@@ -689,7 +689,7 @@
         amount: 2
       - id: RMCPacketGrenadeSmokeFilled
         amount: 4
-      - id: RMCExplosivePlastic
-        amount: 4
       - id: RMCExplosiveBreachingCharge
-        amount: 10
+        amount: 8
+      - id: RMCExplosiveBreachingChargeRubber
+        amount: 4
