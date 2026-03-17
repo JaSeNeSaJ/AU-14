@@ -5,7 +5,7 @@
   name: Force on Force
   showInVote: true
   description: Two units face each other in combat
-  minPlayers: 81
+  minPlayers: 55
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:
@@ -32,6 +32,7 @@
   name: Insurgency
   showInVote: true
   description: Insurgency mode
+  minPlayers: 25
   requiresGovforVote: true
   supportedPlanets:
     - AUPlanetShepherdsPride
