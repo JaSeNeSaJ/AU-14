@@ -80,6 +80,8 @@
         crate: AU14Crate20MMGrenadesHoloRMC
       - cost: 4000
         crate: RMCCrateGrenadesAirburstStarShell
+      - cost: 6000
+        crate: RMCCrateExplosiveClaymoreMine
     - name: Food
       entries:
       - cost: 500
@@ -162,6 +164,10 @@
         crate: AU14CrateM5A1SLAW
       - cost: 9500
         crate: AU14CrateM7SLAW
+      - cost: 8000
+        crate: RMCCrateML66D
+      - cost: 10000
+        crate: RMCCrateM2C
     - name: Ammo
       entries:
       - cost: 2500
@@ -188,6 +194,10 @@
         crate: AU14CrateM7SLAWHERocket
       - cost: 3000
         crate: AU14CrateMagazineL64A3
+      - cost: 1500
+        crate: RMCCrateMagazineML66DDrum
+      - cost: 2000
+        crate: RMCCrateMagazineM2C
     - name: Dropship Parts
       entries:
       - cost: 100
