@@ -8,6 +8,12 @@
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
+  - !type:AgeRequirement
+    requiredAge: 21
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NonResuscitable
   ranks:
     AU14RankColonySeniorAdministrator:
     - !type:RoleTimeRequirement
