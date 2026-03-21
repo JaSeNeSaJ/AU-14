@@ -22,7 +22,7 @@
     RMCRankPrivateFirstClass: []
   startingGear: AU14GearGOVFORRadioTelephoneOperator
   dummyStartingGear: AU14GearGOVFORRadioTelephoneOperatorDummy
-  icon: "AU14JobIconRTO"
+  icon: "AU14JobIconSarge"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor

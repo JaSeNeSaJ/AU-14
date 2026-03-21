@@ -3,7 +3,7 @@
   id: AU14JobGOVFORSectionSergeant
   name: au14-job-name-govforSSG
   description: au14-job-description-govforSSG
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
