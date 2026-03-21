@@ -228,7 +228,7 @@
     deleteAfterExplosion: false
   - type: ProjectileGrenade
     fillPrototype: CMProjectileShrapnel
-    capacity: 48 #same as HEFA
+    capacity: 65 #same as HEFA
     directHit: false
   - type: ContainerContainer
     containers:

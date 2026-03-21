@@ -28,8 +28,8 @@
       - !type:SnapToGrid
       steps:
       - material: CMSandbagFull
-        amount: 50
-        doAfter: 30
+        amount: 25
+        doAfter: 25
 
   - node: nodeFilled
     entity: AU14HESCOBarrier

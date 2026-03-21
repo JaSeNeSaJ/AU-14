@@ -162,7 +162,7 @@
 - type: entity
   parent: CMHeadBeret
   id: RMCHeadUNMCHeadset
-  name: UNMC headset
+  name: headset
   description: A headset typically found in use by radio-operators and officers. This one appears to be malfunctioning.
   components:
   - type: Sprite

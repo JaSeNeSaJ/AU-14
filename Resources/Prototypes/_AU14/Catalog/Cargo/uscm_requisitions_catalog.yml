@@ -1,6 +1,6 @@
 - type: entity
   abstract: false
-  id: UPPCargoCatalog
+  id: USCMCargoCatalog
   components:
   - type: RequisitionsComputer
     categories:
@@ -47,21 +47,23 @@
     - name: Explosives
       entries:
       - cost: 3000
-        crate: AU14CrateGrenadesHighExplosiveUPP
+        crate: RMCCrateGrenadesHighExplosive
       - cost: 4000
-        crate: AU14CrateGrenadesIncendiaryUPP
+        crate: RMCCrateGrenadesIncendiary
+      - cost: 3000
+        crate: RMCCrateGrenadesFrag
       - cost: 1000
-        crate: AU14CrateGrenadesSmokeUPP
+        crate: RMCCrateGrenadesSmoke
+      - cost: 4000
+        crate: RMCCrateGrenadesFragOld
       - cost: 3000
         crate: RMCCratePlasticExplosives
       - cost: 4000
         crate: RMCCrateBreachingCharges
-      - cost: 5900
-        crate: AU14CrateGrenadesHighExplosiveBoxUPP
-      - cost: 7800
-        crate: AU14CrateGrenadesIncendiaryBoxUPP
-      - cost: 1800
-        crate: AU14CrateGrenadesSmokeBoxUPP
+      - cost: 10000
+        crate: RMCCrateGrenadesHighExplosiveBox
+      - cost: 10000
+        crate: RMCCrateGrenadesBoxHEFA
       - cost: 10000
         crate: RMCCrateGrenadesAirburstFragBox
       - cost: 10000
@@ -78,10 +80,12 @@
         crate: RMCCrateGrenadesAirburstStarShell
       - cost: 1000
         crate: RMCCrateGrenadesBatonSlug
+      - cost: 6000
+        crate: RMCCrateExplosiveClaymoreMine
     - name: Food
       entries:
       - cost: 500
-        crate: AU14CrateFoodMREUPP
+        crate: RMCCrateFoodMRE
       - cost: 500
         crate: RMCCrateFoodIngredients
     - name: Gear
@@ -156,10 +160,14 @@
         crate: RMCCrateM85A1
       - cost: 500
         crate: AU14CrateAssortedKnives
+      - cost: 4500
+        crate: AU14CrateM5A1SLAW
       - cost: 9500
-        crate: AU14CrateHJRA12
-      - cost: 9500
-        crate: AU14CrateOG60
+        crate: AU14CrateM7SLAW
+      - cost: 8000
+        crate: RMCCrateML66D
+      - cost: 10000
+        crate: RMCCrateM2C
     - name: Ammo
       entries:
       - cost: 2500
@@ -179,17 +187,15 @@
       - cost: 2000
         crate: RMCCrateBoxShellsShotgunBuckshot
       - cost: 3000
-        crate: AU14CrateHJRA12ATRocket
+        crate: AU14CrateM7SLAWAPRocket
       - cost: 2500
-        crate: AU14CrateHJRA12MixedRocket
+        crate: AU14CrateM7SLAWMixedRocket
       - cost: 2000
-        crate: AU14CrateHJRA12HERocket
-      - cost: 3000
-        crate: AU14CrateHJRA12EIIRocket
-      - cost: 3000
-        crate: AU14CrateMagazineType88
-      - cost: 3000
-        crate: AU14CrateMagazineType23Mixed
+        crate: AU14CrateM7SLAWHERocket
+      - cost: 1500
+        crate: RMCCrateMagazineML66DDrum
+      - cost: 2000
+        crate: RMCCrateMagazineM2C
     - name: Dropship Parts
       entries:
       - cost: 100

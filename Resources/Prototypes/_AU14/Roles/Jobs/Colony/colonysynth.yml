@@ -8,7 +8,14 @@
   playTimeTracker: AU14JobCivilianColonySynthetic
   requirements:
   - !type:OverallPlaytimeRequirement
-    time: 7200 # 2 hours
+    time: 18000 # 5 hours
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - SocialAnxietyHeavy
+    - FrontalLisp
+    - NonResuscitable
+    - Epilepsy
   ranks:
     RMCRankSyntheticColonist: []
   startingGear: AU14GearCivilianColonySynthetic

@@ -372,15 +372,11 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-    - apethreat
-    - apethreatcf
-    - wendigoThreat
     thirdparties:
     - NSPAInvestigationParty
     - NSPAInvestigationPartyAlt
     - UPPGROMAlt
     - cultistThirdPartyNoQueen
-    - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
 - type: entity

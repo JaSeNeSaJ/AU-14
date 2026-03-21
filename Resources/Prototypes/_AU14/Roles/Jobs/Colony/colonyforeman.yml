@@ -6,6 +6,15 @@
   setPreference: true
   canBeAntag: false
   playTimeTracker: AU14JobCivilianForeman
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
+  - !type:AgeRequirement
+    requiredAge: 25
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NonResuscitable
   ranks:
     RMCRankCivilian: []
   startingGear: AU14GearCivilianForeman

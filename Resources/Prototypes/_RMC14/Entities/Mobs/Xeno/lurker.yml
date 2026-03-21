@@ -14,7 +14,7 @@
   - type: GhostRole
     name: cm-job-name-xeno-lurker
   - type: Sprite
-    sprite: _CMU14/Mobs/Xenos/Lurker/lurker.rsi # CMU14-Edit
+    sprite: _AU14/Mobs/Xenos/Lurker/lurker.rsi # AU14-Edit
   - type: MobState
     allowedStates:
     - Alive
@@ -145,7 +145,7 @@
     guides:
     - RMCGuideRoleVampire
   - type: Sprite
-    sprite: _CMU14/Mobs/Xenos/Lurker/vampire_lurker.rsi # CMU14-Edit
+    sprite: _AU14/Mobs/Xenos/Lurker/vampire_lurker.rsi # AU14-Edit
   - type: Xeno
     role: CMXenoLurker
     actionIds:

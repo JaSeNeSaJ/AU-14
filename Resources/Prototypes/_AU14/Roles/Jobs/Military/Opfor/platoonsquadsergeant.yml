@@ -16,7 +16,7 @@
     RMCRankSergeant: []
   startingGear: AU14GearopforSquadSergeant
   dummyStartingGear: AU14GearopforSquadSergantDummy
-  icon: "AU14JobIconOPFORSarge"
+  icon: "AU14JobIconOPFORPlatoonSarge"
   requireAdminNotify: false
   spawnMenuRoleName: Squad Sergeant (OPFOR)
   joinNotifyCrew: false
