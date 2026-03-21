@@ -12,10 +12,10 @@
   - type: Physics
     bodyType: Static
   - type: Sprite
-    sprite: _CMU14/Structures/Dropships/osprey.rsi
+    sprite: _AU14/Structures/Dropships/osprey.rsi
     drawdepth: Walls
   - type: Icon
-    sprite: _CMU14/Structures/Dropships/osprey.rsi
+    sprite: _AU14/Structures/Dropships/osprey.rsi
   - type: PlacementReplacement
     key: walls
   - type: Occluder
@@ -51,12 +51,12 @@
   suffix: 1
   components:
   - type: Sprite
-    sprite: _CMU14/Structures/Dropships/osprey_tail.rsi
+    sprite: _AU14/Structures/Dropships/osprey_tail.rsi
     state: "1"
     drawdepth: Overdoors
     offset: 0,-1.5
   - type: Icon
-    sprite: _CMU14/Structures/Dropships/osprey_tail.rsi
+    sprite: _AU14/Structures/Dropships/osprey_tail.rsi
     state: "1"
   - type: Occluder
     enabled: false
@@ -685,10 +685,10 @@
   suffix: 49
   components:
   - type: Sprite
-    sprite: _CMU14/Structures/Dropships/osprey_nose.rsi
+    sprite: _AU14/Structures/Dropships/osprey_nose.rsi
     state: "49"
   - type: Icon
-    sprite: _CMU14/Structures/Dropships/osprey_nose.rsi
+    sprite: _AU14/Structures/Dropships/osprey_nose.rsi
     state: "49"
   - type: Occluder
     enabled: false

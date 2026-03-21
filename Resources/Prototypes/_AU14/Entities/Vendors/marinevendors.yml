@@ -290,12 +290,15 @@
         recommended: true
         amount: 30
       - id: RMCM5Bayonet
+        recommended: true
         amount: 30
       - id: CMM11Knife
         amount: 15
       - id: RMCScabbardMacheteFilled
         name: machete scabbard (Full)
         amount: 5
+      - id: RMCHelmetGarbGunOil
+        amount: 30
       - id: CMFireExtinguisher
         amount: 10
       - id: CMFireExtinguisherPortable

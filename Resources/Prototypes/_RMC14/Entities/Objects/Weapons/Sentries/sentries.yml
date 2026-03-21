@@ -197,9 +197,6 @@
   - type: NpcFactionMember
     factions:
     - WeYa
-  - type: UserIFF
-    factions:
-    - FactionWeYa
   - type: Tag
     tags:
     - RMCSentryWeYa
@@ -605,5 +602,4 @@
     - CLF
   - type: UserIFF
     factions:
-    - FactionCLF
     - FactionSurvivor

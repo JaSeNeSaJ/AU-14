@@ -1,6 +1,5 @@
 - type: entity
-
-  abstract: true
+  abstract: false
   parent:
   - CMXenoDeveloped
   - CMXenoFlammable
@@ -23,8 +22,8 @@
       0: Alive
       1500: Dead
   - type: Xeno
-    BypassTierCount: true
-    role: CMXenoWarrior
+    unlockAt: 99999 #never unlock naturally
+    role: CMXenoWendigo
     actionIds:
     - ActionXenoWatch
     - ActionXenoPunch
@@ -97,3 +96,11 @@
   name: chat-speech-verb-name-default
   speechVerbStrings:
   - Growl
+- type: job
+  parent: CMJobXenoBase
+  id: CMXenoWendigo
+  name: Wendigo
+  playTimeTracker: CMJobXenoWendigo
+- type: playTimeTracker
+  id: CMJobXenoWendigo
+  isXeno: true

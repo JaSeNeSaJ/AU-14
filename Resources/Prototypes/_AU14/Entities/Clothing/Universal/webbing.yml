@@ -204,15 +204,20 @@
       sprite: _AU14/Clothing/UniversalWebbing/adminpouch.rsi
       state: webbing
     - type: Storage
+      quickInsert: true
+      areaInsert: true
+      quickInsertCooldown: 0
       maxItemSize: Normal
       grid:
-        - 0,0,2,1   # up to 4 small or 8 tiny items
-      blacklist:
-        components:
-          - Bible
+      - 0,0,13,5 #21 slots
+      whitelist:
         tags:
-          - CMFirstAidKit
-          - RMCBoxStorage
+        - Document
+        - Folder
+        - Write
+        - RMCIntelItem
+    - type: FixedItemSizeStorage
+    - type: Dumpable
     - type: Webbing
       playerSprite:
         sprite: _AU14/Clothing/UniversalWebbing/adminpouch.rsi

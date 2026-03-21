@@ -35,6 +35,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AU14\Actions\" />
     <Folder Include="AU14\Commands\" />
     <Folder Include="AU14\Extract\" />
     <Folder Include="AU14\Round\Colony\" />

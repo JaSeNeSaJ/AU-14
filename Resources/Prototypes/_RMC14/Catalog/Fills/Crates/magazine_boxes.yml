@@ -328,7 +328,7 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateMagazineML66DDrum
-  name: ML66D drum magazine crate (x1)
+  name: M56D drum magazine crate (x1)
   components:
   - type: StorageFill
     contents:
