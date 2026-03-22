@@ -50,7 +50,7 @@
         tags:
         - AU14SquadUSArmy
     - type: Skills
-      preset: AU14SkillPresetPlatoonCombatTechnician
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: au14-job-prefix-usarmy-cmt
