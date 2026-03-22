@@ -1,7 +1,7 @@
 - type: job
   abstract: true
   parent: AU14JobMilitaryBase
-  id: AU14JobTWEBase
+  id: AU14JobMilitaryBase
   special:
   - !type:AddComponentSpecial
     components:

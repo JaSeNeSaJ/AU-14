@@ -1,7 +1,7 @@
 - type: entity
   parent: CMIDCardBase
   id: AU14IDCardRMCAdvisor
-  name: TWE advisor ID card
+  name: advisor ID card
   components:
   - type: PresetIdCard
     job: AU14JobGOVFORadvisorRMC

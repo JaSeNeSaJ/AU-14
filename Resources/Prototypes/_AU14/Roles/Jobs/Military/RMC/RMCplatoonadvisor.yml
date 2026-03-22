@@ -1,5 +1,5 @@
 - type: job
-  parent: [ AU14JobadvisorBase, AU14JobTWEBase ]
+  parent: [ AU14JobadvisorBase, AU14JobMilitaryBase ]
   id: AU14JobGOVFORadvisorRMC
   name: au14-job-name-govforadvisor
   description: au14-job-description-govforadvisor
