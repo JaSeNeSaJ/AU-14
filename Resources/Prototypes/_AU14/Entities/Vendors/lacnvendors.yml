@@ -637,21 +637,19 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponRifleKramerAR
+      - id: AU14KitWeaponKramer
     - name: Rifle Ammunition
       entries:
       - id: AU14WeaponRifleKramerMagazineStandard
-        amount: 120
-      - id: AU14WeaponRifleKramerMagazineAP
-        amount: 2
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: AU14WeaponPistolTPR23B
+      - id: AU14KitWeaponTPR23B
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:
