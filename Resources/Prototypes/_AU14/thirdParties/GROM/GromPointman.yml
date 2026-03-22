@@ -32,8 +32,6 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -57,7 +55,7 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: au-14-job-name-uppgrom-pointman
+    name: au14-job-name-govforspecialist-marksmanRMC
     description: au14-uppgrom-description
     reregister: false
     job: AU14UPPGROMPointman

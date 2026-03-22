@@ -537,7 +537,7 @@
         unwieldedOnly: true
       accuracyAddMult: 0
       scatterFlat: 2
-  
+
 # Marksman L90 Variant
 - type: entity
   parent: [ CMBaseWeaponRifle, RMCBaseWeaponMagazineVisuals ]
@@ -921,6 +921,51 @@
           - RMCM5Bayonet
       rmc-aslot-rail:
         startingAttachable: AU14AttachmentTwoPointSling
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
+      rmc-aslot-underbarrel:
+        locked: true
+        startingAttachable: AU14AttachmentL90MVerticalGrip
+        whitelist:
+          tags:
+          - AU14AttachmentL90MVerticalGrip
+
+- type: entity
+  parent: AU14WeaponSMGL90A2old
+  id: AU14WeaponSMGL90A2oldnoattachments
+  components:
+  - type: ItemSlots
+    slots:
+      gun_magazine:
+        name: Magazine
+        startingItem: AU14MagazineSMGL90A2
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_reload.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m41_unload.ogg
+        priority: 2
+        whitelist:
+          tags:
+          - AU14MagazineSMGL90A2
+          - AU14MagazineSMGL90A2AP
+          - AU14MagazineSMGL90A2HEAP
+          - AU14MagazineSMGL90A2Incendiary
+          - AU14MagazineSMGL90A2extended
+  - type: AttachableHolder
+    randomAttachmentChance: 0.42
+    slots:
+      rmc-aslot-barrel:
+        whitelist:
+          tags:
+          - RMCAttachmentBarrelCharger
+          - RMCAttachmentExtendedBarrel
+          - RMCAttachmentSuppressor
+          - RMCM5Bayonet
+      rmc-aslot-rail:
         whitelist:
           tags:
           - RMCAttachmentRailFlashlight

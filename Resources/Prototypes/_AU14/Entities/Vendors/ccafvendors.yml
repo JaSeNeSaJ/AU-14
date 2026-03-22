@@ -206,19 +206,19 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AUWeaponRifleM75AMAS
+      - id: AU14KitWeaponM75A
     - name: Primary Ammunition
       entries:
       - id: AU14MagazineRifleM75AMAS
-        amount: 120
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: AU14WeaponPistolTPR23BEmpty
+      - id: AU14KitWeaponTPR23B
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:
