@@ -56,7 +56,7 @@
 - type: entity
   parent: CMWebbingBase
   id: AU14WebbingDumpPouch
-  name: dump pouch
+  name: dump pouch webbing
   description: A pouch to dump your empty mags into.
   components:
     - type: Sprite
