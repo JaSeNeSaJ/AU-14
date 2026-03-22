@@ -629,16 +629,14 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: RMCWeaponSMGFP9000PMC
-      - id: RMCWeaponSMGM63B2
+      - id: AU14KitWeaponFP9000
+      - id: AU14KitWeaponM39B2
     - name: Weapon Ammunition
       entries:
       - id: RMCMagazineSMGFP9000
-        amount: 120
+        amount: 60
       - id: CMMagazineSMGM63
-        amount: 120
-      - id: CMMagazineSMGM63AP
-        amount: 2
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -646,7 +644,7 @@
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM77AP
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:

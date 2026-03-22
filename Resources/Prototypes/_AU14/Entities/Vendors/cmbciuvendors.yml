@@ -598,35 +598,29 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponRifleM16A1
-      - id: AU14WeaponRifleM16A2
-      - id: WeaponSMGMP5
-      - id: RMCWeaponSMGMP5Alt
-      - id: RMCWeaponSMGPDW90
+      - id: AU14KitWeaponM16A1
+      - id: AU14KitWeaponM16A2
+      - id: AU14KitWeaponMP5
+      - id: AU14KitWeaponP90
     - name: Weapon Ammunition
       entries:
       - id: RMCMagazineRifleM16
-        amount: 120
+        amount: 60
       - id: CMMagazineSMGMP5
-        amount: 120
+        amount: 60
       - id: RMCMagazineSMGPDW90
-        amount: 120
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: CMWeaponPistolM1984Empty
-      - id: RMCWeaponPistolB92FS
-      - id: RMCWeaponPistolHG45Marina
+      - id: AU14KitWeaponM4A3
+      - id: AU14KitWeaponHG45
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 120
-      - id: RMCMagazinePistolM1984AP
-        amount: 4
-      - id: RMCMagazinePistolB92FS
-        amount: 120
+        amount: 60
       - id: RMCMagazinePistolMK45
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:

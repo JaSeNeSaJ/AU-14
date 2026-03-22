@@ -666,23 +666,23 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponRifleAG80
+      - id: AU14KitWeaponAG80
+      - id: AU14KitWeaponType64
     - name: Weapon Ammunition
       entries:
       - id: AU14MagazineRifleAG80
-        amount: 240
-      - id: AU14MagazineRifleAG80AP
-        amount: 2
-      - id: AU14MagazineRifleAG80Ext
-        amount: 2
+        amount: 60
+      - id: RMCMagazineSMGType64
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: RMCWeaponPistolT74
+      - id: AU14KitWeaponType74
+      - id: AU14KitWeaponType73
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolT73
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:
