@@ -721,8 +721,8 @@
       entries:
       - id: AU14KitUPPPyroLPO80
         amount: 1
-        giveSquadRoleName: au14-job-name-govforspecialist-marksmanUPP
-        givePrefix: au14-job-prefix-govforspecialist-marksmanUPP
+        giveSquadRoleName: au14-job-name-specialist-pyro
+        givePrefix: au14-job-prefix-specialist-pyro
         isAppendPrefix: true
         isAppendSquadRoleName: true
     - name: Type 88 Marksman kit
