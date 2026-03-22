@@ -8,7 +8,7 @@
   - type: Storage
     maxItemSize: Ginormous
     grid:
-    - 0,0,13,5
+    - 0,0,5,3
   - type: Sprite
     sprite: _RMC14/Objects/Storage/procase_mini.rsi
   - type: Icon
@@ -19,11 +19,7 @@
         amount: 1
       - id: RMCM5CameraGear
         amount: 1
-      - id: RMCOuterClothingExternalWebbing
-        amount: 1
       - id: CMHandsInsulated
-        amount: 1
-      - id: CMSatchelMarineIntel
         amount: 1
       - id: AU14WebbingDumpPouch
         amount: 1
@@ -36,6 +32,8 @@
       - id: CMPamphletIntel
         amount: 1
       - id: RMCTacticalPrybar
+        amount: 1
+      - id: RMCExplosiveBreachingCharge
         amount: 1
       - id: RMCBinocularsPVE
         amount: 1
@@ -56,7 +54,7 @@
   - type: Storage
     maxItemSize: Ginormous
     grid:
-    - 0,0,13,5
+    - 0,0,5,3
   - type: Sprite
     sprite: _RMC14/Objects/Storage/procase_mini.rsi
   - type: Icon
@@ -130,7 +128,7 @@
   - type: Storage
     maxItemSize: Ginormous
     grid:
-    - 0,0,13,5
+    - 0,0,5,3
   - type: Sprite
     sprite: _RMC14/Objects/Storage/procase_mini.rsi
   - type: Icon
@@ -141,11 +139,7 @@
         amount: 1
       - id: RMCHazardVest
         amount: 1
-      - id: RMCSatchelWelder
-        amount: 1
-      - id: RMCToolWebbingFilled
-        amount: 1
-      - id: AU14BeltUtilityFilled
+      - id: AU14BeltUtilityCombatFilled
         amount: 1
       - id: RMCKitEngineering
         amount: 1
@@ -156,4 +150,4 @@
       - id: RMCNailgunTactical
         amount: 1
       - id: RMCMagazineSMGNailgun
-        amount: 1
+        amount: 2
