@@ -1,5 +1,5 @@
 - type: entity
-  parent: CMWeaponPistolBase
+  parent: CMWeaponPistolM1984
   id: AU14WeaponPistolM48A4
   name: M48A4 service pistol
   description: A timeless classic since the first World War, the M1911A1 has limited use with the USCM, and is often used as a sidearm by non-governmental bodies due to its reliability. This is a modernized version with an ammo counter and a polymer grip, designated M48A4. Chambered in .45 ACP.
@@ -15,6 +15,7 @@
     tags:
     - Sidearm
     - AU14WeaponPistolM48A4
+    - CMWeaponPistolM1984
   - type: RMCSelectiveFire
     baseFireModes:
     - SemiAuto
@@ -111,6 +112,7 @@
     tags:
     - Sidearm
     - AU14WeaponPistolM48A5
+    - CMWeaponPistolM1984
   - type: GunDamageModifier
     multiplier: 1.2
   - type: ItemSlots
@@ -148,6 +150,14 @@
           tags:
           - RMCAttachmentBurstFireAssembly
           - RMCAttachmentLaserSight
+  - type: RMCAirShot
+    preparationTime: 1.5
+    requiresCombat: true
+    doAfterBreakOnMove: false
+    ignoreRoof: true
+    shakeAmount: 5
+    requiredSkills:
+      RMCSkillLeadership: 3
 
 - type: Tag
   id: AU14WeaponPistolM48A5

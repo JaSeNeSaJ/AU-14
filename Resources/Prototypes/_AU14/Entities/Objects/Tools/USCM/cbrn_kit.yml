@@ -1,12 +1,9 @@
 - type: entity
   parent: BaseStorageItem
-  id: AU14CBRNKit
-  name: CBRN Kit
+  id: AU14CBRNKitUA
+  name: UA CBRN Kit
   description: 
   components:
-  - type: Tag
-    tags:
-    - MRE
   - type: Sprite
     sprite: _AU14/Objects/Tools/CBRN/uscm.rsi
     state: closed
@@ -34,6 +31,8 @@
     - id: RMCBootsCBRN
     - id: AU14NaloxoneAutoInjector
     - id: AU14NaloxoneAutoInjector
+    - id: CMTricordrazineAutoInjector
+    - id: RMCGeigerCounter
   - type: FixedItemSizeStorage
   - type: RemoveOnlyStorage
   - type: InteractedBlacklist
