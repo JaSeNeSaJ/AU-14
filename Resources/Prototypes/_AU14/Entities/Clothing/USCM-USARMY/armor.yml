@@ -500,3 +500,14 @@
   - type: StorageFill
     contents:
     - id: RMCTacticalPrybar
+
+- type: entity
+  parent: AU14BaseArmor
+  id: AU14ArmorM3RForecon
+  name: M3-R pattern light armor
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/USCMC/Armor/forecon.rsi
+  - type: ClothingSpeedModifier # light armor speed
+    walkModifier: .725
+    sprintModifier: .725
