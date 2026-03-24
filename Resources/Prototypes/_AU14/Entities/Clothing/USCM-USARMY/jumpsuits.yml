@@ -216,3 +216,13 @@
     melee: 10
     bio: 100
     explosionArmor: 10
+
+
+- type: entity
+  parent: RMCJumpsuitSurvivorMarineDropPouch
+  id: AU14JumpsuitFORECON
+  suffix: AU14
+  description: Standard-issue USCM fatigues. They have shards of light Kevlar to help protect against stabbing weapons and bullets.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/junglefatigues.rsi
