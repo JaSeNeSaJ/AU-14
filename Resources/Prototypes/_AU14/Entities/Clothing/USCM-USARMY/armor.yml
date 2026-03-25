@@ -61,7 +61,7 @@
     items:
       components:
       - RMCLighter
-      - RMCFlaskwas
+      - RMCFlask
       - CMScalpel
       - Figurine
       - Matchbox
@@ -145,7 +145,7 @@
     items:
       components:
       - RMCLighter
-      - RMCFlaskwas
+      - RMCFlask
       - CMScalpel
       - Figurine
       - Matchbox

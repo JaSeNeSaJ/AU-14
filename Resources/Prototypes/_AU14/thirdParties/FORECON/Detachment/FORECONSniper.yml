@@ -50,7 +50,7 @@
   parent: AU14BaseMobSpeciesOrganicFORECON
   suffix: AU14, FORECON, Detachment
   id: AU14JobFORECONSniperDetachment
-  name: FORECON Sniper
+  name: FORECON Sniper (Detachment)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

@@ -226,3 +226,12 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/junglefatigues.rsi
+
+- type: entity
+  parent: RMCJumpsuitSurvivorMarineDropPouch
+  id: AU14JumpsuitFORECONDesert
+  suffix: AU14
+  description: Standard-issue USCM fatigues. They have shards of light Kevlar to help protect against stabbing weapons and bullets.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/desertfatigues.rsi
