@@ -45,12 +45,6 @@
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Grenades/flashbang.rsi
-  - type: RMCStunOnTrigger
-    filters:
-    - paralyze: 2.5
-      whitelist:
-        skills:
-          RMCSkillPolice: 2
   - type: SoundOnTrigger
     sound:
       path: "/Audio/Effects/flash_bang.ogg"
@@ -68,7 +62,7 @@
     - RMCGrenadeFlashBang
   - type: RequiresSkill
     skills:
-      RMCSkillPolice: 2
+      RMCSkillPolice: 1
 
 - type: entity
   parent:
@@ -234,7 +228,7 @@
     deleteAfterExplosion: false
   - type: ProjectileGrenade
     fillPrototype: CMProjectileShrapnel
-    capacity: 48 #same as HEFA
+    capacity: 65 #same as HEFA
     directHit: false
   - type: ContainerContainer
     containers:

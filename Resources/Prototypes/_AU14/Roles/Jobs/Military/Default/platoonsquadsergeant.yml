@@ -17,7 +17,7 @@
     RMCRankSergeant: []
   startingGear: AU14GearGOVFORSquadSergeant
   dummyStartingGear: AU14GearGOVFORSquadSergantDummy
-  icon: "AU14JobIconSarge"
+  icon: "AU14JobIconPlatoonSarge"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor

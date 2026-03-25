@@ -274,14 +274,18 @@
         recommended: true
         amount: 30
       - id: RMCTantoA
+        recommended: true
         amount: 15
       - id: RMCTantoB
+        recommended: true
         amount: 15
       - id: CMM11Knife
         amount: 15
       - id: RMCScabbardMacheteFilled
         name: machete scabbard (Full)
         amount: 5
+      - id: RMCHelmetGarbGunOil
+        amount: 30
       - id: CMFireExtinguisher
         amount: 10
       - id: CMFireExtinguisherPortable
@@ -780,24 +784,25 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: RMCWeaponRifleL24
+      - id: AU14KitWeaponL23
+      - id: AU14KitWeaponL90A2
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineRifleL24
-        amount: 320
-      - id: RMCMagazineRifleL24AP
-        amount: 3
+        amount: 60
+      - id: AU14MagazineSMGL90A2
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: RMCWeaponPistolL54Empty
-      - id: AU14L165A1
+      - id: AU14KitWeaponL54
+      - id: AU14KitWeaponL165A1
     - name: Handgun Ammunition
       entries:
       - id: RMCMagazinePistolL54
-        amount: 40
+        amount: 60
       - id: AU14MagazinePistolL165A1
-        amount: 160
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:

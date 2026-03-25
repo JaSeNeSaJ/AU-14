@@ -612,14 +612,14 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AUWeaponRifleM20A
-      - id: WeaponSMGM63
+      - id: AU14KitWeaponM20a
+      - id: AU14KitWeaponM39
     - name: Rifle Ammunition
       entries:
       - id: AU14MagazineRifleM20A
-        amount: 120
+        amount: 60
       - id: CMMagazineSMGM63
-        amount: 120
+        amount: 60
     - name: Underbarrel Ammunition
       entries:
       - id: RMCBoxShotgunBuckshot
@@ -627,14 +627,11 @@
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: AU14WeaponPistolTPR23B
-      - id: RMCWeaponPistolHG45Aguila
+      - id: AU14KitWeaponTPR23B
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 120
-      - id: RMCMagazinePistolMK45
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 1 }
       entries:

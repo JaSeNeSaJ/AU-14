@@ -5,6 +5,11 @@
   description: au14-job-description-civilianphysician
   setPreference: true
   playTimeTracker: AU14JobCivilianPhysician
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NonResuscitable
   ranks:
     RMCRankCivilianDoctor: []
   startingGear: AU14GearCivilianPhysician

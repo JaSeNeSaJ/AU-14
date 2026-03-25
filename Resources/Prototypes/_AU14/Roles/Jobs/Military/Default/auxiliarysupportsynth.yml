@@ -7,7 +7,7 @@
   canBeAntag: false
   requirements:
   - !type:OverallPlaytimeRequirement
-    time: 7200 # 2 hours
+    time: 18000 # 5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:
@@ -19,7 +19,7 @@
     RMCRankChiefWarrantOfficer5:
     - !type:RoleTimeRequirement
       role: AU14JobFORECONSynth
-      time: 252000 #70 hours
+      time: 360000 #100 hours
     RMCRankChiefWarrantOfficer4:
     - !type:RoleTimeRequirement
       role: AU14JobFORECONSynth
@@ -27,11 +27,11 @@
     RMCRankChiefWarrantOfficer3:
     - !type:RoleTimeRequirement
       role: AU14JobFORECONSynth
-      time: 36000 #10 hours
+      time: 72000 #20 hours
     RMCRankChiefWarrantOfficer:
     - !type:RoleTimeRequirement
       role: AU14JobFORECONSynth
-      time: 18000 #5 hours
+      time: 36000 #10 hours
     RMCRankWarrantOfficer: []
   startingGear: AU14GearGOVFORAuxSupportSynth
   dummyStartingGear: AU14GearGOVFORAuxSupportSynthDummy
