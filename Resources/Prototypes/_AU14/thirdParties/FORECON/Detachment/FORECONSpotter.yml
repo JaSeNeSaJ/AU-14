@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14JobFORECONSpotterBase
-  id: AU14JobFORECONSpotterDetachment
+  id: AU14FORECONSpotterDetachment
   name: au14-job-name-forecon-spotter
   description: rmc-job-description-forecon-detachment
   ranks:
