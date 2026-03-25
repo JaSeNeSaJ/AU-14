@@ -460,5 +460,6 @@
     - UPPTDLostTeam
     - PAPInvestigationPartyAlt
     - PAPInvestigationParty
+    - FORECONFirstRecon
     threats:
     - XenoThreat
