@@ -4,7 +4,6 @@
   components:
   - type: IFFFaction
 
-
 - type: entity
   id: FactionHalcyon
   categories: [ HideSpawnMenu ]
@@ -46,7 +45,7 @@
   suffix: Halcyon
   components:
   - type: ItemIFF
-    faction:
+    factions:
     - FactionHalcyon
   - type: Access
     groups:
