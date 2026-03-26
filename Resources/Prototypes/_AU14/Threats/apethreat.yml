@@ -1,6 +1,10 @@
 - type: threat
   id: apethreatcf
   roundstartspawns: apePartycf
+  whitelistedgamemodes:
+  - ColonyFall
+  blacklistedgamemodes:
+  - DistressSignal
 
 - type: partySpawn
   id: apePartycf
@@ -8,15 +12,14 @@
     CMUMobApe: 1
   scalewithpop: false
   spawnTogether: true
-  whitelistedgamemodes:
-  - ColonyFall
-  blacklistedgamemodes:
-  - DistressSignal
-
 
 - type: threat
   id: apethreat
   roundstartspawns: apeParty
+  whitelistedgamemodes:
+  - DistressSignal
+  blacklistedgamemodes:
+  - ColonyFall
 
 - type: partySpawn
   id: apeParty
@@ -24,7 +27,3 @@
     CMUMobApe: 4
   scalewithpop: false
   spawnTogether: true
-  whitelistedgamemodes:
-  - DistressSignal
-  blacklistedgamemodes:
-  - ColonyFall
