@@ -5,7 +5,7 @@
   description: Threat wins when all Govfor are dead (or when specified percent are dead).
   components:
     - type: KillAllGovforRule
-      percent: 100
+      percent: 85
 
 - type: entity
   id: ThreatSurviveRule
@@ -24,3 +24,22 @@
   components:
     - type: KillAllColonistRule
       percent: 95
+
+- type: entity
+  id: KillAllApeRule
+  parent: BaseGameRule
+  name: Kill All Apes
+  description: Threat wins when all Apes are dead (or when specified percent are dead).
+  components:
+    - type: KillAllApeRule
+      percent: 100
+
+- type: entity
+  id: KillAllXenoRule
+  parent: BaseGameRule
+  name: Kill All Xenos/Cultists
+  description: Threat wins when all Xenos and Cultists are dead (or when specified percent are dead).
+  components:
+    - type: KillAllXenoRule
+      percent: 100
+

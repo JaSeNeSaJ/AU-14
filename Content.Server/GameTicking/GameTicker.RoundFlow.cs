@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.Server.Announcements;
 using Content.Server.AU14.Threats;
+using Content.Server.RoundEnd;
 using Content.Server.Discord;
 using Content.Server.GameTicking.Events;
 using Content.Server.Ghost;
@@ -38,6 +39,7 @@ namespace Content.Server.GameTicking
         [Dependency] private readonly RoleSystem _role = default!;
         [Dependency] private readonly ITaskManager _taskManager = default!;
         [Dependency] private readonly SharedRMCPowerSystem _power = default!;
+        [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
 
         private static readonly Counter RoundNumberMetric = Metrics.CreateCounter(
             "ss14_round_number",
@@ -572,6 +574,20 @@ namespace Content.Server.GameTicking
             catch (Exception e)
             {
                 Log.Error($"Error while sending round end Discord message: {e}");
+            }
+
+            // Ensure a round restart is scheduled. Some code calls GameTicker.EndRound
+            // directly and expects the RoundEndSystem to schedule the restart. Call
+            // RoundEndSystem.EndRound here to guarantee the restart countdown is set
+            // up. RoundEndSystem.EndRound will not re-call GameTicker.EndRound if the
+            // RunLevel is already PostRound.
+            try
+            {
+                _roundEndSystem.EndRound();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error while scheduling round restart via RoundEndSystem: {e}");
             }
         }
 

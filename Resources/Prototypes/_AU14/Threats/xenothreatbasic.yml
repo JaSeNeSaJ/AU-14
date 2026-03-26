@@ -4,10 +4,10 @@
   roundstartspawns: XenoThreatSpawns
   blacklistedgamemodes:
    - ColonyFall
-  whitelistedgamemodes:
-      - DistressSignal
+
   winconditions:
   - KillAllGovforRule
+  - KillAllXenoRule
 
 - type: partySpawn
   id: XenoThreatSpawns
@@ -29,6 +29,7 @@
   - DistressSignal
   winconditions:
   - KillAllColonistRule
+  - KillAllXenoRule
 
 - type: partySpawn
   id: XenoThreatSpawnsCF

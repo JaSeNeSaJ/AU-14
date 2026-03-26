@@ -1,6 +1,7 @@
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
+using Content.Server.RoundEnd;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
@@ -59,12 +60,18 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
 
         if (percentDead >= requiredPercent)
         {
-            // End round, threat wins
-            var winMessage = _auRoundSystem._selectedthreat.WinMessage;
+            if (_gameTicker.RunLevel != GameRunLevel.InRound)
+                return;
+
+            var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
             if (!string.IsNullOrEmpty(winMessage))
+            {
                 _gameTicker.EndRound(winMessage);
+            }
             else
+            {
                 _gameTicker.EndRound("Threat victory: Required percentage of Govfor eliminated.");
+            }
         }
     }
 }
