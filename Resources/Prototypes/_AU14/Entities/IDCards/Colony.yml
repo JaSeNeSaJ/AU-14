@@ -25,7 +25,8 @@
     tags:
     - DoorBumpOpener
   - type: ItemIFF
-    faction: FactionSurvivor
+    factions:
+    - FactionSurvivor
   - type: Corrodible
     isCorrodible: false
 
