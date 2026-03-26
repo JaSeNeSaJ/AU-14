@@ -46,7 +46,7 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
     /// Useful for FORECON so any survivor preference will be overriden to FORECON survivor
     /// Basically, if security survivor is overriden by forecon survivor, it will be as if sec survivor: high is forecon survivor: high
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField("joboverrides"), AutoNetworkedField]
     public Dictionary<ProtoId<JobPrototype>, ProtoId<JobPrototype>>? ColonyJobOverrides;
 
     /// <summary>

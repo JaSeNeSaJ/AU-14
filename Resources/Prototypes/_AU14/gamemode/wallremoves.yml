@@ -1,3 +1,5 @@
+## use inverted to invert destruction behavior ie insurgency removes on all modes except insurgency
+
 # Wall removes for various presets
 - type: entity
   id: rockwallremoveinssolaris

@@ -217,6 +217,9 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
 
 - type: partySpawn
   id: cultistPartyThreat
