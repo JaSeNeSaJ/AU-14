@@ -3,9 +3,11 @@
   id: AU14JobOpforSectionSergeant
   name: au14-job-name-opforSSG
   description: au14-job-description-opforSSG
-  setPreference: true
+  setPreference: false
   canBeAntag: false
   requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:

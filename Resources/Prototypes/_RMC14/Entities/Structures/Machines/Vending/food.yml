@@ -43,7 +43,7 @@
     - name: Flasks
       entries:
       - id: CMCanteen
-        amount: 10
+        amount: 50
       - id: CMMetalFlask
         name: metal flask (empty)
         amount: 10

@@ -4,7 +4,6 @@
   components:
   - type: IFFFaction
 
-
 - type: entity
   id: FactionHalcyon
   categories: [ HideSpawnMenu ]
@@ -18,7 +17,8 @@
   description: A soldier dog tag.
   components:
   - type: ItemIFF
-    faction: FactionSPP
+    factions:
+    - FactionSPP
 
 - type: entity
   parent: [ RMCIDCardStandardDogtagHidden, RMCIDSPP ]
@@ -34,7 +34,8 @@
   - type: PresetIdCard
     job: CMSurvivor
   - type: ItemIFF
-    faction: FactionSurvivor
+    factions:
+    - FactionSurvivor
 
 - type: entity
   parent: CMIDCardSilver
@@ -44,7 +45,8 @@
   suffix: Halcyon
   components:
   - type: ItemIFF
-    faction: FactionHalcyon
+    factions:
+    - FactionHalcyon
   - type: Access
     groups:
     - Colony

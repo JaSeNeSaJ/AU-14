@@ -31,8 +31,6 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -50,7 +48,7 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicUSArmy
   id: AU14JobUSArmyCommander
-  name: US Army Commander
+  name: US Army Commander (Surv)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
