@@ -8,3 +8,14 @@
     sprite:  _AU14/Clothing/HAZOPS/hazopsberet.rsi
   - type: Clothing
     sprite: _AU14/Clothing/HAZOPS/hazopsberet.rsi
+
+- type: entity
+  parent: RMCMarineHelmetBase
+  id: AU14HAZOPShelmet
+  name: MAR-PASGT helmet
+  description: A much less expensive variant of the army's PASGT system helmet. More compact and lightweight, ideal for HAZOPS teams.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/HAZOPS/pagst.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/HAZOPS/pagst.rsi
