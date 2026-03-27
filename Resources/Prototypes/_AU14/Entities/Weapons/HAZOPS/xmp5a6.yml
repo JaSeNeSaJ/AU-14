@@ -64,7 +64,7 @@
         startingAttachable: AU14AttachmentM203A4GrenadeLauncher
         whitelist:
           tags:
-          - AU14AttachmentM203A6GrenadeLauncher
+          - AU14AttachmentM203A4GrenadeLauncher
   - type: AttachableHolderVisuals
     offsets:
       rmc-aslot-barrel: 0.75, 0.03
@@ -76,7 +76,7 @@
     - AU14WeaponSMGXMP5A6HAZOPS
 
 - type: Tag
-  id: AU14WeaponSMGXMP5A6HAZOP                                                                                                                                                                             S
+  id: AU14WeaponSMGXMP5A6HAZOPS                                                                                                                                                                             S
 
 - type: entity
   parent: [ RMCUnderAttachmentBase, RMCAttachableToggleableBase ]
