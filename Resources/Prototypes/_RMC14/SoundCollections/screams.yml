@@ -6,6 +6,8 @@
     - /Audio/_AU14/Voice/Screams/male_scream_3.ogg
     - /Audio/_AU14/Voice/Screams/male_scream_4.ogg
     - /Audio/_AU14/Voice/Screams/male_scream_5.ogg
+    - /Audio/_AU14/Voice/UpdatedVoice/Male/Koala/ScreamWarcry/ScreamWarcry1.ogg
+    - /Audio/_AU14/Voice/UpdatedVoice/Male/Koala/ScreamWarcry/ScreamWarcry2.ogg
 
 - type: soundCollection
   id: CMFemaleScreams
