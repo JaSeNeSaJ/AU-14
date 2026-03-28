@@ -34,7 +34,7 @@
           components:
           - SmartGunBattery
     - type: GunIFF
-    enabled: false
+      enabled: false
 
 - type: entity
   parent: CMMagazineRifleBase
