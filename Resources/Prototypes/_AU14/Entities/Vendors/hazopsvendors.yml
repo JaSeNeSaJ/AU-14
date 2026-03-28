@@ -12,9 +12,6 @@
       entries:
       - id: AU14HAZOPUrbanFatigues
         amount: 45
-      - id: AU14MixedSnowFatigues
-        name: surplus uniform
-        amount: 15
     - name: Footwear
       entries:
       - id: CMBootsBlack
@@ -47,16 +44,12 @@
         amount: 1
     - name: Headgear
       entries:
-      - id: AU14JungleM10Helmet
+      - id: AU14HAZOPShelmet
         amount: 45
       - id: AU14JungleBoonieHat
         amount: 35
       - id: AU14JunglePatrolCap
         amount: 35
-      - id: RMCHeadDurag
-        amount: 25
-      - id: RMCArmorHelmetCBRN
-        amount: 10
     - name: Headsets
       entries:
       - id: AU14HeadsetSectionMarine
@@ -69,14 +62,8 @@
         amount: 5
     - name: Armor
       entries:
-      - id: AU14ArmorM3JungleOne
-        amount: 30
-      - id: AU14ArmorM3JungleTwo
-        amount: 30
-      - id: AU14ArmorM3JungleThree
-        amount: 30
-      - id: RMCArmorCBRNAdvanced
-        amount: 10
+      - id: AU14ArmorHAZOPSPWA
+        amount: 60
     - name: Armor Components
       entries:
       - id: AU14KitJungleArmor
@@ -154,7 +141,7 @@
 #        amount: 1
     - name: Mask
       entries:
-      - id: CMMaskGas
+      - id: AU14MaskGasHAZOPSM40
         amount: 40
       - id: CMMaskCoif
         amount: 10
@@ -214,8 +201,8 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14HAZOPSMGequipmentvendor
-  name: HAZOPS machine gunner equipment vendor
-  description: An automated rack hooked up to a small storage of machinegunner equipment.
+  name: HAZOPS smartgunner equipment vendor
+  description: An automated rack hooked up to a small storage of smartgunner equipment.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
@@ -224,19 +211,18 @@
     - name: Essential Equipment
       takeAll: CMUAREssentialEquipment
       entries:
-      - id: RMCWeaponLMGM60
-      - id: CMBeltMarine
-      - id: AU14IMPBackpackMarine
+      - id: AU14SmartGunMinigunHAZOPS
+      - id: AU14HAZOPSBatteryMinigunGAU19Backpack
     - name: Munitions
       entries:
-      - id: RMCMagazineLMGM60
-        amount: 40
+      - id: AU14MagazineMinigunHAZOPS
+        amount: 8
 
 - type: entity
   parent: ColMarTechBase
   id: AU14HAZOPSWeaponsVendor
   name: HAZOPS weapons rack
-  description: An automated rack hooked up to a small storage of 90's weapons due to budget cuts.
+  description: An automated rack hooked up to a small storage of weapons.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
@@ -245,14 +231,11 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14KitWeaponMP5
-      - id: AU14KitWeaponM16A2
+      - id: AU14WeaponSMGXMP5A6HAZOPS
     - name: Primary Ammunition
       entries:
-      - id: CMMagazineSMGMP5
-        amount: 60
-      - id: RMCMagazineRifleM16
-        amount: 60
+      - id: AU14MagazineXMP5A6
+        amount: 120
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -266,7 +249,7 @@
       entries:
       - id: RMCAttachmentRailFlashlight
       - id: RMCAttachmentTwoPointSling
-      - id: RMCAttachmentM203GrenadeLauncher
+      - id: AU14AttachmentM203A4GrenadeLauncher
 
 - type: entity
   parent: ColMarTechBase
@@ -278,31 +261,31 @@
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: M240 Incinerator
+    - name: M240A2 Heavy Incinerator
       entries:
-      - id: RMCWeaponFlamer
-        amount: 2
-      - id: RMCTankFlamer
+      - id: AU14WeaponFlamerM240A2HAZOPS
+        amount: 1
+      - id: AU14TankFlamerM240A2HAZOPS
         amount: 8
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
-        amount: 2
-    - name: M85A1 grenade launcher
-      entries:
-      - id: RMCWeaponLauncherM85A1
         amount: 1
-      - id: RMCPacketGrenadeM74AGMFFilled
-        amount: 4
-      - id: RMCPacketGrenadeBatonSlugHIRRFilled
-        amount: 1
-    - name: MK221 tactical shotgun
+    - name: SPAS-12-HAZ Specialized Shotgun
       entries:
-      - id: WeaponShotgunM890
+      - id: AU14WeaponShotgunSPAS12HAZOPS
         amount: 1
       - id: RMCBoxShotgunBuckshot
         amount: 12
       - id: RMCBoxShotgunSlugs
         amount: 12
+      - id: RMCBoxShotgunIncendiary
+        amount: 2
+    - name: M50 'Bald Eagle' Handcannon
+      entries:
+      - id: AU14WeaponPistolM50HAZOPS
+        amount: 2
+      - id: AU14MagazinePistolM50
+        amount: 50
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
@@ -349,7 +332,7 @@
       - id: CMHeadCapPeakedService
         amount: 2
       - id: AU14HAZOPShecuBeret
-        amount: 2
+        amount: 4
       - id: AU14JunglePatrolCap
         amount: 2
     - name: Headsets
@@ -388,7 +371,7 @@
       - id: AU14JungleM11Helmet
         amount: 1
       - id: AU14HAZOPShecuBeret
-        amount: 2
+        amount: 4
       - id: AU14JunglePatrolCap
         amount: 1
     - name: Miscellaneous
