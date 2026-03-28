@@ -144,14 +144,14 @@ public sealed class DropshipSystem : SharedDropshipSystem
                 }
             }
 
-            if (xenoCount > 0)
-            {
-                _alertLevelSystem.Set(RMCAlertLevels.Red, _dropshipId, false, false);
-                _marineAnnounce.AnnounceToMarines(Loc.GetString("rmc-announcement-unidentified-lifesigns",
-                    ("name", dropshipName),
-                    ("count", xenoCount)),
-                    dropship.UnidentifledlifesignsSound);
-            }
+         //   if (xenoCount > 0)
+         //   {
+           //     _alertLevelSystem.Set(RMCAlertLevels.Red, _dropshipId, false, false);
+                //_marineAnnounce.AnnounceToMarines(Loc.GetString("rmc-announcement-unidentified-lifesigns",
+           //         ("name", dropshipName),
+                //    ("count", xenoCount)),
+                //   #// dropship.UnidentifledlifesignsSound);
+           // }
         }
     }
 
