@@ -339,6 +339,18 @@ public sealed class DropshipSystem : SharedDropshipSystem
     {
         base.FlyTo(computer, destination, user, hijack, startupTime, hyperspaceTime);
 
+        if (TryComp(computer.Owner, out WhitelistedShuttleComponent? whitelistComp) &&
+            IsStrictThirdPartyFaction(whitelistComp.Faction) &&
+            TryComp(destination, out DropshipDestinationComponent? destinationComp) &&
+            !IsThirdPartyDestination(destinationComp))
+        {
+            if (user != null)
+                _popup.PopupEntity("This shuttle can only land at third party dropship destinations.", computer.Owner, user.Value, PopupType.MediumCaution);
+
+            Log.Warning($"{ToPrettyString(user)} tried to launch thirdparty whitelisted shuttle {ToPrettyString(computer.Owner)} to non-thirdparty destination {ToPrettyString(destination)}");
+            return false;
+        }
+
         _hijack = hijack;
         var dropshipId = Transform(computer).GridUid;
         _dropshipId = dropshipId ?? EntityUid.Invalid;
@@ -518,7 +530,12 @@ public sealed class DropshipSystem : SharedDropshipSystem
 
             while (query.MoveNext(out var uid, out var comp))
             {
-                if (!string.IsNullOrEmpty(comp.FactionController))
+                if (IsStrictThirdPartyFaction(whitelistedFaction))
+                {
+                    if (!IsThirdPartyDestination(comp))
+                        continue;
+                }
+                else if (!string.IsNullOrEmpty(comp.FactionController))
                 {
                     if (string.IsNullOrEmpty(whitelistedFaction) || comp.FactionController.ToLowerInvariant() != whitelistedFaction)
                         continue;
@@ -591,6 +608,16 @@ public sealed class DropshipSystem : SharedDropshipSystem
         }
         // Default to Dropship if not set
         return DropshipDestinationComponent.DestinationType.Dropship;
+    }
+
+    private static bool IsStrictThirdPartyFaction(string? faction)
+    {
+        return string.Equals(faction, "thirdparty", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsThirdPartyDestination(DropshipDestinationComponent destination)
+    {
+        return string.Equals(destination.FactionController, "thirdparty", StringComparison.OrdinalIgnoreCase);
     }
 
     protected override bool IsShuttle(EntityUid dropship)
