@@ -122,7 +122,6 @@
     - WEYU
     - USCM
     - RMC
-    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -206,12 +205,10 @@
     platoonsOpfor:
     - UPP
     - WEYU
-    - RMC
 
     platoonsGovfor:
     - LACN
     - ProdigySF
-    - CMBCIU
     - HAZOPS
     - VAIPO
     defaultgovfor: HAZOPS
