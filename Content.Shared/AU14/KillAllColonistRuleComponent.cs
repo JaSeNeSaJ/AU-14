@@ -1,4 +1,4 @@
-namespace Content.Server.AU14.Threats;
+namespace Content.Shared.AU14;
 
 [RegisterComponent]
 public sealed partial class KillAllColonistRuleComponent : Component
