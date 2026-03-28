@@ -1,0 +1,7 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobLEOBase
+  name: au14-job-name-leo
+  description: au14-job-description-leo
+  setPreference: true
+  playTimeTracker: AU14JobCiviliannspaConstable

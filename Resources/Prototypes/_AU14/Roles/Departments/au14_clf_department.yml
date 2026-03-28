@@ -6,8 +6,6 @@
   color: "#e3ce94"
   roles:
   - AU14JobCLFGuerilla
-  - AU14JobCLFPhysician
-  - AU14JobCLFMachineGunner
   - AU14JobCLFCellLeader
   departmentRadio: null
   headOfDepartment: null
