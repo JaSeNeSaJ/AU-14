@@ -33,8 +33,9 @@
         whitelist:
           components:
           - SmartGunBattery
-    - type: GunIFF
-      enabled: false
+  - type: GunIFF
+    enabled: false
+
 
 - type: entity
   parent: CMMagazineRifleBase
