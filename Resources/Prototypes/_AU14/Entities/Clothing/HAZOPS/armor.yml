@@ -9,5 +9,5 @@
   - type: CMArmor
     bio: 35
     bullet: 10
-    explosionArmor: 18
+    explosionArmor: 10
     melee: 18
