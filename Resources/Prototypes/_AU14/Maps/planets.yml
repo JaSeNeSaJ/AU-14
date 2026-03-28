@@ -12,13 +12,13 @@
     platoonsOpfor:
     - UPP
     - VAIPO
-    - HAZOPS
     - ProdigySF
     platoonsGovfor:
     - LACN
     - USCM
     - WEYU
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -122,6 +122,7 @@
     - WEYU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -170,6 +171,7 @@
     - USCM
     - CMBCIU
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -248,6 +250,7 @@
     - CMBCIU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -283,6 +286,7 @@
     - USCM
     - ProdigySF
     - UPP
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: RMC
     govforinship: false
@@ -329,6 +333,7 @@
     - CMBCIU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: RMC
     defaultopfor: WEYU
     govforinship: true
@@ -377,6 +382,7 @@
     - CMBCIU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: WEYU
     govforinship: true
@@ -456,6 +462,7 @@
     - WEYU
     - VAIPO
     - ProdigySF
+    - HAZOPS
     defaultgovfor: UPP
     defaultopfor: RMC
     govforinship: true

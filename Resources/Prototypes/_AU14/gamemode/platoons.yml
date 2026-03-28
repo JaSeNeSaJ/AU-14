@@ -203,7 +203,7 @@
 
 - type: platoon
   id: HAZOPS
-  name: MARSOC HAZOPS
+  name: USCM Hazardous Operations Unit
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
