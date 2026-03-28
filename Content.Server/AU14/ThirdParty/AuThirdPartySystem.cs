@@ -48,7 +48,7 @@ public sealed class AuThirdPartySystem : EntitySystem
     {
         const float SpawnTogetherRadius = 8f;
 
-        const float PlayerAvoidRadius = 20f;
+        const float PlayerAvoidRadius = 8f;
         _sawmill.Debug($"[AuThirdPartySystem] Spawning third party: {party.ID}");
 
         // Determine entry method. If overrideDropship is provided, it takes precedence (true => shuttle, false => ground).
@@ -192,15 +192,26 @@ public sealed class AuThirdPartySystem : EntitySystem
             var query = _entityManager.EntityQueryEnumerator<ThreatSpawnMarkerComponent>();
             while (query.MoveNext(out var uid, out var comp))
             {
-                if (comp.ThreatMarkerType == markerType && (comp.ID == markerId || (comp.ID == "" && markerId == "")))
+                // Only include markers that are of the requested type, match the optional marker ID,
+                // are explicitly marked as ThirdParty, and are unused.
+                if (comp.ThreatMarkerType != markerType || !(comp.ID == markerId || (comp.ID == "" && markerId == "")) || !comp.ThirdParty)
+                    continue;
+
+                if (useDropship && mainGridUid != EntityUid.Invalid)
                 {
-                    if (mapId == null || _entityManager.GetComponent<TransformComponent>(uid).MapID == mapId)
-                    {
-                        // Only include markers that are not already used
-                        if (!comp.Used)
-                            markers.Add(uid);
-                    }
+                    if (!_entityManager.TryGetComponent<TransformComponent>(uid, out var tcomp) || !tcomp.GridUid.HasValue || tcomp.GridUid.Value != mainGridUid)
+                        continue;
                 }
+                else
+                {
+                    // Otherwise, ensure we are on the same map (if mapId set).
+                    if (mapId != null && _entityManager.GetComponent<TransformComponent>(uid).MapID != mapId)
+                        continue;
+                }
+
+                // Only include markers that are not already used
+                if (!comp.Used)
+                    markers.Add(uid);
             }
 
             _sawmill.Debug($"[AuThirdPartySystem] GetMarkers({markerType}): Found {markers.Count} unused markers with markerId '{markerId}' on map {mapId}");
@@ -324,9 +335,10 @@ public sealed class AuThirdPartySystem : EntitySystem
         // If parachute mode, use the parachute marker pool for all types; make local mutable copies so we can pick without replacement during this spawn
         if (parachuteMode)
         {
-            leaderMarkers = markerEntities.ToList();
-            gruntMarkers = markerEntities.ToList();
-            entityMarkers = markerEntities.ToList();
+            // Parachute markers must still have a ThreatSpawnMarkerComponent with ThirdParty==true
+            leaderMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Leader && !comp.Used).ToList();
+            gruntMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Member && !comp.Used).ToList();
+            entityMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Entity && !comp.Used).ToList();
         }
 
         // If this is a groundside spawn, ensure there are enough *safe* markers (unused and not near alive players).
