@@ -1,0 +1,225 @@
+#spawns
+
+# Example CLF objective-point vendor.
+# Mirrors the CLF weapons rack but costs are paid from the CLF faction win-point pool.
+# Each entry's "points" value is the win-point cost to purchase it.
+- type: entity
+  parent: ColMarTechBase
+  id: AU14CLFObjectiveWeaponsVendor
+  name: CLF Requisitions Rack
+  description: A high-value weapons cache accessible only with CLF operational funds.
+  suffix: CLF, Objective Points
+  components:
+  - type: Sprite
+    sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
+    layers:
+    - state: "base"
+      map: [ "enum.VendingMachineVisualLayers.BaseUnshaded", "enum.VendingMachineVisualLayers.Base" ]
+  - type: CMAutomatedVendor
+    useObjectivePoints: true
+    faction: clf
+    sections:
+    - name: Rifles
+      entries:
+      - id: AU14WeaponRifleM16A1
+        amount: 2
+        points: 5
+      - id: AU14WeaponRifleM16A2
+        amount: 3
+        points: 5
+      - id: AU14WeaponRifleAR10
+        amount: 3
+        points: 4
+      - id: RMCWeaponBoltActionRifle
+        amount: 3
+        points: 2
+      - id: WeaponRifleMAR40
+        amount: 2
+        points: 10
+      - id: RMCWeaponRifleType71C
+        amount: 1
+        points: 3
+    - name: Shotguns
+      entries:
+      - id: RMCWeaponShotgunHG3712
+        amount: 1
+        points: 5
+      - id: WeaponShotgunM357Sawn
+        amount: 2
+        points: 6
+      - id: WeaponShotgunM357
+        amount: 3
+        points: 5
+    - name: Handguns
+      entries:
+      - id: CMWeaponPistolM1984Empty
+        amount: 3
+        points: 3
+      - id: RMCWeaponPistolB92FS
+        amount: 2
+        points: 4
+      - id: RMCWeaponRevolverM44
+        amount: 3
+        points: 4
+      - id: RMCWeaponPistolHoldout
+        amount: 6
+        points: 2
+      - id: RMCWeaponPistolD18
+        amount: 7
+        points: 3
+    - name: Special Weapons
+      entries:
+      - id: RMCWeaponLauncherHJRA12
+        amount: 1
+        points: 10
+      - id: RMCWeaponMar50LMG
+        amount: 1
+        points: 16
+    - name: Rifle Ammunition
+      entries:
+      - id: RMCMagazineRifleM16
+        amount: 85
+        points: 1
+      - id: RMCMagazineRifleHunting
+        amount: 25
+        points: 1
+      - id: RMCMagazineRifleMAR40
+        amount: 35
+        points: 1
+      - id: RMCMagazineMar50LMG
+        amount: 2
+        points: 3
+      - id: RMCMagazineLMGM60
+        amount: 5
+        points: 2
+      - id: RMCMagazineRifleType71
+        amount: 9
+        points: 2
+    - name: Shotgun Ammunition
+      entries:
+      - id: RMCBoxShotgunFlechette
+        amount: 7
+        points: 1
+      - id: RMCBoxShotgunBuckshot
+        amount: 6
+        points: 1
+      - id: RMCBoxShotgunSlugs
+        amount: 6
+        points: 1
+    - name: Handgun Ammunition
+      entries:
+      - id: CMMagazinePistolM1984
+        amount: 30
+        points: 1
+      - id: RMCMagazinePistolB92FS
+        amount: 20
+        points: 1
+      - id: RMCMagazinePistolHoldout
+        amount: 30
+        points: 1
+      - id: RMCSpeedLoaderM44
+        amount: 30
+        points: 1
+      - id: RMCSpeedLoader44Marksman
+        amount: 2
+        points: 2
+      - id: RMCMagazinePistolD18
+        amount: 35
+        points: 1
+    - name: Explosives
+      entries:
+      - id: RMCGrenadeMolotov
+        amount: 10
+        points: 2
+      - id: CMGrenadeSmoke
+        amount: 5
+        points: 2
+      - id: CMGrenadeFragOld
+        amount: 4
+        points: 3
+      - id: RMCExplosivePlastic
+        amount: 2
+        points: 8
+      - id: RMCRocketHJRA12HE
+        amount: 2
+        points: 10
+    - name: Improvised Explosive Devices
+      entries:
+      - id: AU14RemoteSignallerAdvanced
+        amount: 5
+        points: 1
+      - id: AU14IED
+        amount: 6
+        points: 6
+      - id: AU14IEDLarge
+        amount: 3
+        points: 17
+      - id: AU14IEDVest
+        amount: 2
+        points: 12
+  - type: Transform
+    anchored: false
+    noRot: true
+  - type: Physics
+    bodyType: Dynamic
+
+
+
+- type: clfSpawnConfig
+  id: CLFSpawnConfig
+  # Additional entity prototypes that CLF can spawn at during round start
+  # These will be used alongside any entities with SafehouseMarkerComponent
+  additionalItems:
+  - AU14CrateCivilianClothingRandom
+  - AU14CLFObjectiveWeaponsVendor
+  - AU14CrateCivilianClothingRandom
+  - AU14CrateCLFinitalTools
+  - RMCCrateMedicalFirstAid
+  - RMCIntelTechTree_clf
+  - RMCComputerIntelCLF
+  - ComputerObjectivesCLF
+  - AU14AnalyzerMachineCLF
+  - AU14CLFObjectiveWeaponsVendor
+
+- type: entity
+  name: Generic Safhouse Marker
+  parent: MarkerBase
+  id: safehousemarker
+  components:
+  - type: Sprite
+    state: green
+  - type: SafehouseMarker
+
+
+- type: entity
+  parent: RMCCrateBase
+  id: AU14CrateCLFinitalTools
+  name: Crate
+  description: Contains several tools
+  components:
+  - type: Sprite
+    state: crate
+  - type: StorageFill
+    contents:
+    - id: RMCM54CMK1Case
+      amount: 1
+    - id: RMCM54CMK1CaseAP
+      amount: 1
+    - id: RMCGunCasePistolZHNK72
+      amount: 1
+    - id: RMCGunCasePistolMK80
+      amount: 1
+    - id: RMCGunCasePistolM44
+      amount: 1
+    - id: CMPackFlareBase
+      amount: 3
+    - id: AU14BaseDefibrillator
+      amount: 1
+    - id: RMCRangefinder
+      amount: 2
+    - id: AU14BeltUtilityFilled
+      amount: 2
+    - id: RMCBoxFlashlights
+      amount: 2
+
+

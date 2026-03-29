@@ -308,6 +308,7 @@
     faction: govfor
     ShuttleType: Dropship
 
+
 - type: entity
   parent: CMComputerDropshipNavigation
   id: CMComputerDropshipNavigationThirdParty
@@ -316,7 +317,8 @@
   - type: WhitelistedShuttle
     faction: thirdparty
     ShuttleType: Dropship
-
+  - type: AccessReader
+    access: []
 - type: entity
   parent: CMComputerDropshipNavigationThirdParty
   id: CMComputerDropshipNavigationOldThirdParty

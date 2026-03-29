@@ -15,7 +15,7 @@
 - type: auThirdParty
   id: UPPGROM
   partyspawn: UPPGROMSpawn
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -23,7 +23,7 @@
   weight: 20
   minplayers: 100
   maxplayers: 400
-  GhostsNeeded: 7
+  GhostsNeeded: 0
   roundstart: true
 
 - type: partySpawn
@@ -43,7 +43,7 @@
 - type: auThirdParty
   id: UPPGROMAlt
   partyspawn: UPPGROMSpawnAlt
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -51,7 +51,7 @@
   weight: 20
   minplayers: 25
   maxplayers: 50
-  GhostsNeeded: 3
+  GhostsNeeded: 0
   roundstart: true
 
 - type: partySpawn
@@ -71,7 +71,7 @@
 - type: auThirdParty
   id: UPPGROMAlt2
   partyspawn: UPPGROMSpawnAlt2
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -79,5 +79,5 @@
   weight: 20
   minplayers: 51
   maxplayers: 99
-  GhostsNeeded: 5
+  GhostsNeeded: 0
   roundstart: true

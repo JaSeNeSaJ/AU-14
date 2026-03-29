@@ -5,11 +5,14 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
+  winconditions:
+  - KillAllColonistRule
+  - KillAllApeRule
 
 - type: partySpawn
   id: apePartycf
   leadersToSpawn:
-    CMUMobApe: 1
+    CMUMobApe: 2
   scalewithpop: false
   spawnTogether: true
 
@@ -20,6 +23,10 @@
   - DistressSignal
   blacklistedgamemodes:
   - ColonyFall
+  winconditions:
+  - KillAllGovforRule
+  - KillAllApeRule
+
 
 - type: partySpawn
   id: apeParty

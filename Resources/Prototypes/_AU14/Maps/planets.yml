@@ -40,7 +40,6 @@
     - TimeSharesSalesman
     - UACGLostTeam
     - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - RMCRRT
     - USArmyArmored
     - cultistThirdParty
@@ -84,7 +83,6 @@
     - TimeSharesSalesman
     - UACGLostTeam
     - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - RMCRRT
     - USArmyArmored
@@ -100,9 +98,11 @@
     - apethreat
     - apethreatcf
     - wendigoThreat
-   # thirdparties:
-    #- UPPSpecOps
-    #- CMBCIUSMALL
+    # Shepherds' Pride exposes CWPS Ranger as its map-specific LEO role.
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCWPSRanger
+      AU14JobLEOBase: AU14JobCivilianCWPSRanger
+
 
 
 - type: entity
@@ -144,6 +144,13 @@
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
+
+
+
+
 - type: entity
   id: AUPlanetLV624
   name: LV624
@@ -175,7 +182,6 @@
     - UACGLostTeam
     - USArmyTank
     - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - RMCRRT
     - USArmyArmored
@@ -192,6 +198,9 @@
     - apethreat
     - apethreatcf
     - wendigoThreat
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -252,6 +261,9 @@
     - USArmyAlt
     - USArmyAlt2
    # - cultistThirdParty
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
 
 - type: entity
   id: AUPlanetLV759
@@ -289,15 +301,15 @@
     - USArmyAlt2
     - ICRCReliefParty
     - TimeSharesSalesman
-    - NSPAInvestigationPartyArmored
-    - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - RMCRRT
     - USArmyArmored
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCiviliannspaConstable
+      AU14JobLEOBase: AU14JobCiviliannspaConstable
 - type: entity
   id: AUPlanetLV327
   name: Port Neroid
@@ -339,11 +351,13 @@
     - TimeSharesSalesman
     - UACGLostTeam
     - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
 - type: entity
   id: AUPlanetCorsatStation
   name: Corsat Station
@@ -376,11 +390,13 @@
     - XenoThreatCF
     thirdparties:
     - NSPAInvestigationParty
-    - NSPAInvestigationPartyAlt
     - UPPGROMAlt
     - cultistThirdPartyNoQueen
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    joboverrides:
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
 - type: entity
   id: AUPlanetSorokyne
   name: Sorokyne Strata
@@ -462,5 +478,131 @@
     - PAPInvestigationPartyAlt
     - PAPInvestigationParty
     - FORECONFirstRecon
+    threats:
+    - XenoThreat
+
+
+- type: entity
+  id: AuPlanetShivasSnowball
+  name: Shivas' Snowball
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Shivas' Snowball"
+    mapId: auShivas
+    camouflage: Snow
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - RMC
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
+    threats:
+    - XenoThreat
+
+- type: entity
+  id: AuPlanetKutjevo
+  name: Kutjevo Biolab
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Kutjevo Biolab"
+    mapId: auKutjevo
+    camouflage: Snow
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - RMC
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
+    threats:
+    - XenoThreat
+
+
+- type: entity
+  id: AuPlanetFiorina
+  name: Fiorina Prison
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Fiorina Prison"
+    mapId: aufiorina
+    camouflage: Urban
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - VAIPO
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: false
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
     threats:
     - XenoThreat
