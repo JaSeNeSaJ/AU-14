@@ -78,7 +78,7 @@ public sealed partial class ThreatPrototype : IPrototype
 
     [DataField("thirdpartyinterval", required: false)]
 
-    public int ThirdPartyInterval { get; private set; } = 300;
+    public int ThirdPartyInterval { get; private set; } = 5000;
 
     [DataField("hiveevolution")]
     public bool hiveevolution { get; private set; } = false;
