@@ -12,7 +12,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -31,7 +32,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -50,7 +52,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -69,7 +72,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -88,7 +92,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -107,7 +112,8 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
-    bullet: 20
+    melee: 15
+    bullet: 15
     bio: 20
     explosionArmor: 10
   - type: CMHardArmor
@@ -126,6 +132,7 @@
     walkModifier: .725
     sprintModifier: .725
   - type: CMArmor
+    melee: 20
     bullet: 20
     bio: 20
     explosionArmor: 10
@@ -153,6 +160,7 @@
   - type: RMCArmorSpeedTier
     speedTier: light
   - type: CMArmor
+    melee: 10
     bullet: 10
     bio: 10
     explosionArmor: 10
