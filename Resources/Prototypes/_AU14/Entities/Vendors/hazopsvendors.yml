@@ -236,6 +236,7 @@
       entries:
       - id: AU14MagazineXMP5A6
         amount: 60
+      - id: CMMagazineRifleM54CAP
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
