@@ -11,7 +11,7 @@ using Content.Shared.Cuffs.Components;
 
 namespace Content.Server.AU14.Threats;
 
-public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleComponent>
+public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponent>
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
@@ -25,8 +25,8 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
     {
-        // Only run this logic when the KillAllGovfor rule is active
-        if (!_gameTicker.IsGameRuleActive<KillAllGovforRuleComponent>())
+        // Only run this logic when the KillAllClf rule is active
+        if (!_gameTicker.IsGameRuleActive<KillAllClfRuleComponent>())
             return;
 
         // Only care about dead mobs
@@ -37,7 +37,7 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
     }
 
     /// <summary>
-    /// Called by KillAllRulesHandcuffSystem when a Govfor entity is handcuffed.
+    /// Called by KillAllRulesHandcuffSystem when a CLF entity is handcuffed.
     /// </summary>
     public void OnHandcuffEvent(EntityUid uid)
     {
@@ -48,21 +48,21 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
     private void CheckVictoryCondition()
     {
         // Get the active rule entity and its component to read Percent
-        var queryRule = EntityQueryEnumerator<KillAllGovforRuleComponent, GameRuleComponent>();
+        var queryRule = EntityQueryEnumerator<KillAllClfRuleComponent, GameRuleComponent>();
         if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
             return;
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
 
-        // Count total and dead/arrested Govfor mobs
+        // Count total and dead/arrested CLF mobs
         var total = 0;
         var eliminated = 0;
 
         var query = _entityManager.EntityQueryEnumerator<MobStateComponent, NpcFactionMemberComponent>();
         while (query.MoveNext(out var uid, out var mobState, out var faction))
         {
-            if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "govfor"))
+            if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf"))
             {
                 total++;
 
@@ -103,9 +103,10 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
                 }
                 else
                 {
-                    _gameTicker.EndRound("Threat victory: Required percentage of Govfor eliminated.");
+                    _gameTicker.EndRound("Govfor victory: Required percentage of CLF eliminated.");
                 }
             }
         }
     }
 }
+

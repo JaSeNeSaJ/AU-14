@@ -41,5 +41,19 @@
   description: Threat wins when all Xenos and Cultists are dead (or when specified percent are dead).
   components:
     - type: KillAllXenoRule
-      percent: 100
+
+- type: entity
+  id: InsWinConditionsRule
+  parent: BaseGameRule
+  name: Kill All Govfor/killallclf respectively
+  description: Threat wins when all Govfor are dead (or when specified percent are dead).
+  components:
+  - type: KillAllGovforRule
+    percent: 85
+    arrest: true
+    winmessage: The CLF have won by eliminating Government Forces!
+
+  - type: KillAllClfRule
+    arrest: true
+    percent: 80
 
