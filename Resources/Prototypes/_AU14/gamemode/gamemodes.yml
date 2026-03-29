@@ -15,9 +15,10 @@
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-  - AUPlanetSorokyne
+#  - AUPlanetSorokyne
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - AuPlanetFiorina
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -38,8 +39,8 @@
   supportedPlanets:
     - AUPlanetShepherdsPride
     - AUPlanetLV624
-    - AUPlanetLV747
-    - AUPlanetSorokyne
+    #- AUPlanetLV747
+  #  - AUPlanetSorokyne
 #    - AUPlanetLV759 removed pending rework
 
   rules:
@@ -60,10 +61,13 @@
   - AUPlanetLV747
   - AUPlanetFlight
   - AUPlanetLV327
-  - AUPlanetSorokyne
+ # - AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - AuPlanetFiorina
+  - AuPlanetKutjevo
+  - AuPlanetShivasSnowball
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -87,7 +91,7 @@
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV327
-    - AUPlanetSorokyne
+   # - AUPlanetSorokyne
     - AUPlanetStableGarrison
 
 - type: gamePreset

@@ -29,21 +29,21 @@
         points: 5
       - id: AU14WeaponRifleAR10
         amount: 3
-        points: 8
+        points: 4
       - id: RMCWeaponBoltActionRifle
         amount: 3
-        points: 6
+        points: 2
       - id: WeaponRifleMAR40
         amount: 2
-        points: 8
+        points: 10
       - id: RMCWeaponRifleType71C
         amount: 1
-        points: 12
+        points: 3
     - name: Shotguns
       entries:
       - id: RMCWeaponShotgunHG3712
         amount: 1
-        points: 10
+        points: 5
       - id: WeaponShotgunM357Sawn
         amount: 2
         points: 6
@@ -71,10 +71,10 @@
       entries:
       - id: RMCWeaponLauncherHJRA12
         amount: 1
-        points: 25
+        points: 10
       - id: RMCWeaponMar50LMG
         amount: 1
-        points: 20
+        points: 16
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineRifleM16
@@ -145,22 +145,23 @@
         points: 10
     - name: Improvised Explosive Devices
       entries:
-      - id: AU14IEDGuide
-        amount: 5
-        points: 1
       - id: AU14RemoteSignallerAdvanced
         amount: 5
-        points: 2
+        points: 1
       - id: AU14IED
         amount: 6
-        points: 4
+        points: 6
       - id: AU14IEDLarge
         amount: 3
-        points: 6
+        points: 17
       - id: AU14IEDVest
         amount: 2
-        points: 8
-
+        points: 12
+  - type: Transform
+    anchored: false
+    noRot: true
+  - type: Physics
+    bodyType: Dynamic
 
 
 
@@ -172,4 +173,53 @@
   - AU14CrateCivilianClothingRandom
   - AU14CLFObjectiveWeaponsVendor
   - AU14CrateCivilianClothingRandom
+  - AU14CrateCLFinitalTools
+  - RMCCrateMedicalFirstAid
+  - RMCIntelTechTree_clf
+  - RMCComputerIntelCLF
+  - ComputerObjectivesCLF
+  - AU14AnalyzerMachineCLF
+  - AU14CLFObjectiveWeaponsVendor
+
+- type: entity
+  name: Generic Safhouse Marker
+  parent: MarkerBase
+  id: safehousemarker
+  components:
+  - type: Sprite
+    state: green
+  - type: SafehouseMarker
+
+
+- type: entity
+  parent: RMCCrateBase
+  id: AU14CrateCLFinitalTools
+  name: Crate
+  description: Contains several tools
+  components:
+  - type: Sprite
+    state: crate
+  - type: StorageFill
+    contents:
+    - id: RMCM54CMK1Case
+      amount: 1
+    - id: RMCM54CMK1CaseAP
+      amount: 1
+    - id: RMCGunCasePistolZHNK72
+      amount: 1
+    - id: RMCGunCasePistolMK80
+      amount: 1
+    - id: RMCGunCasePistolM44
+      amount: 1
+    - id: CMPackFlareBase
+      amount: 3
+    - id: AU14BaseDefibrillator
+      amount: 1
+    - id: RMCRangefinder
+      amount: 2
+    - id: AU14BeltUtilityFilled
+      amount: 2
+    - id: RMCBoxFlashlights
+      amount: 2
+
 

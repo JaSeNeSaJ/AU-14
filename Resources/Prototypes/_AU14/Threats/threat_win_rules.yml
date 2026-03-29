@@ -51,7 +51,7 @@
   - type: KillAllGovforRule
     percent: 85
     arrest: true
-    winmessage: The CLF have won by eliminating Government Forces!
+    winMessage: The CLF have won by eliminating Government Forces!
 
   - type: KillAllClfRule
     arrest: true

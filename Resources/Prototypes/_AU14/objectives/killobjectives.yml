@@ -63,7 +63,7 @@
     - opfor
     repeating: false
     objectivelevel: 1
-    custompoints: 10
+    custompoints: 30
     ObjectiveDescription: "Kill the GOVFOR Commander"
     roundEndMessage: "By Killing the GOVFOR Commander"
   - type: KillObjective
@@ -136,10 +136,32 @@
     - govfor
     repeating: true
     objectivelevel: 2
-    custompoints: 20
+    custompoints: 10
     ObjectiveDescription: "Kill Insurgents"
   - type: KillObjective
     factiontokill: clf
+    amounttokill: 1
+
+- type: entity
+  name: Kill GOVFOR Forces
+  parent: MarkerBase
+  id: killgovforobjective
+  components:
+  - type: Sprite
+    state: red
+  - type: AuObjective
+    id: killgovforobj
+    factioneutral: false
+    applicableModes:
+    - insurgency
+    possiblefactions:
+    - clf
+    repeating: true
+    objectivelevel: 2
+    custompoints: 10
+    ObjectiveDescription: "Kill GOVFOR Forces"
+  - type: KillObjective
+    factiontokill: govfor
     amounttokill: 1
 
 

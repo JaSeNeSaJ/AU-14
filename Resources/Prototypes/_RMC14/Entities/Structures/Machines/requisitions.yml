@@ -273,7 +273,7 @@
   name: ASRS console (Colony)
   components:
   - type: AccessReader
-    access: [ [ "CMCargoTech,auadmin" ] ]
+    access: [ [ "CMCargoTech" ], [ "auadmin" ] ]
   - type: RequisitionsComputer
     faction: colony
 
