@@ -486,3 +486,129 @@
     - FORECONFirstRecon
     threats:
     - XenoThreat
+
+
+- type: entity
+  id: AuPlanetShivasSnowball
+  name: Shivas' Snowball
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Shivas' Snowball"
+    mapId: auShivas
+    camouflage: Snow
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - RMC
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - cultistThirdParty
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
+    threats:
+    - XenoThreat
+
+- type: entity
+  id: AuPlanetKutjevo
+  name: Kutjevo Biolab
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Kutjevo Biolab"
+    mapId: auKutjevo
+    camouflage: Snow
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - RMC
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
+    threats:
+    - XenoThreat
+
+
+- type: entity
+  id: AuPlanetFiorina
+  name: Fiorina Prison
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Fiorina Prison"
+    mapId: aufiorina
+    camouflage: Urban
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsGovfor:
+    - USCM
+    - WEYU
+    - VAIPO
+    - UNISC
+    - UPP
+    - HAZOPS
+    defaultgovfor: USCM
+    defaultopfor: UPP
+    govforinship: true
+    opforinship: true
+    daycycleenabled: false
+    thirdparties:
+    - USArmy
+    - USArmyAlt
+    - USArmyAlt2
+    - USArmyTank
+    - ICRCReliefParty
+    - TimeSharesSalesman
+    - UACGLostTeam
+    - NSPAInvestigationParty
+    - LACNSniperteam
+    - RMCRRT
+    - USArmyArmored
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - ProfessorVonBandolier
+    threats:
+    - XenoThreat
