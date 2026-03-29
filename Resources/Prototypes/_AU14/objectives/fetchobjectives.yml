@@ -138,6 +138,7 @@
     markerentity: fetchobjectivemarkergenericspawnpoint
     amounttospawn: 1
     amounttofetch: 1
+    useanyentity: true
 
 - type: entity
   name: Fetch Nuclear Launch Codes Booklet Objecive
@@ -232,10 +233,12 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - insurgency
     - DistressSignal
     possiblefactions:
     - opfor
     - govfor
+    - CLF
     repeating: false
     objectivelevel: 2
     custompoints: 10

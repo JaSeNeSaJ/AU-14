@@ -82,7 +82,7 @@
     factioneutral: false
     id: clfkillplatcoobj
     applicableModes:
-    - insugency
+    - insurgency
     possiblefactions:
     - clf
     repeating: false
@@ -106,7 +106,7 @@
     id: killclfleaderobj
     factioneutral: false
     applicableModes:
-    - insugency
+    - insurgency
     possiblefactions:
     - govfor
     repeating: false
@@ -131,17 +131,16 @@
     id: killinsurgentsobj
     factioneutral: false
     applicableModes:
-    - insugency
+    - insurgency
     possiblefactions:
     - govfor
-    repeating: false
-    maxrepeatable: 2
+    repeating: true
     objectivelevel: 2
     custompoints: 20
     ObjectiveDescription: "Kill Insurgents"
   - type: KillObjective
     factiontokill: clf
-    amounttokill: 3
+    amounttokill: 1
 
 
 - type: entity
