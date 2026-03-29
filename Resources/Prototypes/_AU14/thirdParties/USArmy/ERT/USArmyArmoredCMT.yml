@@ -50,7 +50,7 @@
         tags:
         - AU14SquadUSArmy
     - type: Skills
-      preset: AU14SkillPresetPlatoonCombatTechnician
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: au14-job-prefix-usarmy-cmt
@@ -59,7 +59,7 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicUSArmy
   id: AU14JobUSArmyCMTArmored
-  name: US Army Combat Medical Technician (32nd Arm)
+  name: US Army Combat Medical Technician (ERT)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

@@ -1,7 +1,7 @@
 - type: platoon
   id: LACN
   name: LACN Landing Forces
-  reqlist: LACNCargoCatalog
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -15,6 +15,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
   possibleships:
     - Daybreak
     - USSBush
@@ -22,28 +23,6 @@
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
-  techTree: RMCIntelTechTree_ua
-
-- type: platoon
-  id: LACNcommando
-  name: LACN Naval Commandos
-  reqlist: LACNCommandosCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14LACNcommandoclothingequipmentvendor
-    Weapons: AU14LACNcommandoWeaponsVendor
-    SWeapons: AU14LACNcommandoSpecialWeaponsVendor
-    Corpsman: AU14LACNcorpsmanvendor
-    Arifleman: AU14LACNMGequipmentvendor
-    Dcc: AU14LACNaircrewvendor
-    OperationsOfficer: AU14LACNcommandocommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14LACNcommandosectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-  possibleships:
-    - Daybreak
-    - USSBush
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
@@ -63,6 +42,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -92,6 +72,7 @@
     OperationsOfficer: AU14UPPcommandvendor
     Rto: AU14RTOVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
     SectionSergeant: AU14UPPSectionLeaderVendor
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
@@ -110,14 +91,14 @@
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
-
+  techTree: RMCIntelTechTree_ua
 
 
 
 - type: platoon
   id: WEYU
   name: WY PMC
-  reqlist: WYPMCCargoCatalog
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
@@ -128,6 +109,7 @@
     Dcc: AU14WYaircrewvendor
     OperationsOfficer: AU14WYdirectorequipmentvendor
     Rto: AU14RTOVendor
+    JuniorOfficer: AU14JOGenericVendor
     SectionSergeant: AU14WYsupervisorequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
@@ -151,11 +133,12 @@
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: CMBCIU
   name: CMB Crisis Intervention
-  reqlist: CMBCIUCargoCatalog
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
@@ -169,6 +152,7 @@
     SectionSergeant: AU14CMBCIUSectionLeader
     Pilot: AU14CMBCIUPilotVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
 #  jobClassOverride:
 #    PlatCo: AU14JobGOVFORPlatCoCMBCIU
 #    SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
@@ -190,6 +174,7 @@
   - /Maps/_CMU14/Shuttles/normandy.yml
   compatibleFighters:
     - /Maps/_AU14/ShuttlesDropships/cmbsquadcar.yml
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: exampleplatoon
@@ -205,6 +190,7 @@
     SectionSergeant: AU14USCMsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
   possibleships:
     - Daybreak
     - USSBush
@@ -213,11 +199,12 @@
     PlatoonCorpsman: 1
     PlatCo: 1
     DSPilot: 1
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: HAZOPS
-  name: MARSOC HAZOPS
-  reqlist: HAZOPSCargoCatalog
+  name: USCM Hazardous Operations Unit
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14HAZOPSclothingequipmentvendor
@@ -231,6 +218,7 @@
     SectionSergeant: AU14HAZOPSsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
   possibleships:
       - Daybreak
       - USSBush
@@ -242,40 +230,9 @@
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
-  id: CCAF
-  name: CCAF
-  reqlist: CCAFCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14CCAFclothingequipmentvendor
-    Weapons: AU14CCAFWeaponsVendor
-    SWeapons: AU14CCAFSpecialWeaponsVendor
-    Corpsman: AU14LACNcorpsmanvendor
-    Arifleman: AU14USCMSGequipmentvendor
-    Dcc: AU14USCMaircrewvendor
-    OperationsOfficer: AU14CCAFcommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14CCAFsectionleaderequipmentvendor
-    combattech: AU14ComtechGearVendor
-    Pilot: AU14AircrewWeaponsVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
-  #platoonflag:  uaflag
-  CompatibleDropships:
-  - /Maps/_CMU14/Shuttles/alamo.yml
-  - /Maps/_CMU14/Shuttles/normandy.yml
-  compatibleFighters:
-    - /Maps/_AU14/ShuttlesDropships/f84owl.yml
-    - /Maps/_AU14/ShuttlesDropships/ud_6.yml
-  possibleships:
-      - Daybreak
-      - USSBush
-  techTree: RMCIntelTechTree_ua
-
-- type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
-  reqlist: ProdigyCargoCatalog
+  reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
@@ -289,6 +246,7 @@
     SectionSergeant: AU14prodigysectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
@@ -300,11 +258,12 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: UNISC
   name: UNISC Peacekeepers
-  reqlist: UNISCCargoCatalog
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14UNISCclothingequipmentvendor
@@ -318,6 +277,7 @@
     SectionSergeant: AU14UNISCsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
 #  jobClassOverride:
 #    SquadRifleman: AU14JobGOVFORSquadRifleman
 #    SectionSergeant: AU14JobGOVFORSectionSergeant
@@ -337,11 +297,12 @@
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
   - /Maps/_AU14/ShuttlesDropships/ud_6.yml
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: VAIPO
   name: VAI Primary Operations
-  reqlist: VAIPOCargoCatalog
+  reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
@@ -355,6 +316,7 @@
     SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   CompatibleDropships:
@@ -365,6 +327,7 @@
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
       - Daybreak
+  techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: RMC
@@ -383,6 +346,7 @@
     SectionSergeant: AU14RMCsectionleaderequipmentvendor
     Pilot: AU14RMCAircrewWeaponsVendor
     combattech: AU14RMCComtechGearVendor
+    JuniorOfficer: AU14JOGenericVendor
     ExtraVendor1: VMarkerOpforDeco5
     Deco1: VMarkerOpforDeco5
   #jobClassOverride:

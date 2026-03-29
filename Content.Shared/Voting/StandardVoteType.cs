@@ -25,10 +25,7 @@ public enum StandardVoteType : byte
     /// </summary>
     Votekick,
 
-    /// <summary>
-    /// Vote to select a platoon (AU14 custom).
-    /// </summary>
-    Platoon
+
 }
 
 /// <summary>

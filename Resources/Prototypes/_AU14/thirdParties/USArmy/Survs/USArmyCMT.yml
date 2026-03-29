@@ -35,14 +35,12 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
         - AU14SquadUSArmy
     - type: Skills
-      preset: AU14SkillPresetPlatoonCombatTechnician
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: au14-job-prefix-usarmy-cmt
@@ -51,7 +49,7 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicUSArmy
   id: AU14JobUSArmyCMT
-  name: US Army Combat Medical Technician
+  name: US Army Combat Medical Technician (Surv)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

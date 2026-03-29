@@ -634,24 +634,23 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: RMCWeaponRifleMAR30
-      - id: RMCWeaponRifleM54CMK1
+      - id: AU14KitWeaponMar30
+      - id: AU14KitWeaponM41AMK1
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineRifleMAR40
-        amount: 120
+        amount: 60
       - id: CMMagazineRifleM54CMK1
-        amount: 120
-      - id: CMMagazineRifleM54CMK1AP
-        amount: 2
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
-      - id: AU14WeaponPistolTPR23B
+      - id: AU14KitWeaponTPR23B
+      - id: AU14KitWeaponM4A3
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
-        amount: 120
+        amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 3 }
       entries:

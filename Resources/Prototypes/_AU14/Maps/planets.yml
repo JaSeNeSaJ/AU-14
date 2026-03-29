@@ -12,13 +12,13 @@
     platoonsOpfor:
     - UPP
     - VAIPO
-    - HAZOPS
     - ProdigySF
     platoonsGovfor:
     - LACN
     - USCM
     - WEYU
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -29,6 +29,9 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - FORECON
     - FORECONAlt
@@ -44,7 +47,9 @@
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
     - ProfessorVonBandolier
-
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - FORECONFirstRecon
 - type: entity
   id: AUPlanetShepherdsPride
   name: Shepherds' Pride
@@ -58,13 +63,13 @@
     - UPP
     - HAZOPS
     - VAIPO
-    - UNISC
     - ProdigySF
     platoonsGovfor:
     - LACN
     - USCM
     - WEYU
     - RMC
+    - UNISC
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: false
@@ -87,10 +92,14 @@
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
     - XenoParasiteRunnerParty
+    - ApeThirdParty
     - ProfessorVonBandolier
     threats:
     - cultistThreat
     - XenoThreat
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
    # thirdparties:
     #- UPPSpecOps
     #- CMBCIUSMALL
@@ -133,7 +142,8 @@
     - CMBInvestigationPartyAlt
     - cultistThirdPartyNoQueen
     - ProfessorVonBandolier
-
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
 - type: entity
   id: AUPlanetLV624
   name: LV624
@@ -174,10 +184,14 @@
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
     - ProfessorVonBandolier
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
     threats:
     - cultistThreat
     - XenoThreat
-
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -225,6 +239,7 @@
     - CMBCIU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: UPP
     govforinship: true
@@ -232,6 +247,8 @@
     daycycleenabled: true
     threats:
     - XenoThreat
+    - apethreat
+
     thirdparties:
     - USArmy
     - USArmyAlt
@@ -250,11 +267,12 @@
     platoonsOpfor:
     - WEYU
     - VAIPO
-    - RMC
+    - HAZOPS
     platoonsGovfor:
     - USCM
     - ProdigySF
     - UPP
+    - RMC
     defaultgovfor: USCM
     defaultopfor: RMC
     govforinship: false
@@ -264,6 +282,9 @@
     threats:
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - USArmy
     - USArmyAlt
@@ -277,7 +298,8 @@
     - RMCRRT
     - USArmyArmored
     - ProfessorVonBandolier
-
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
 - type: entity
   id: AUPlanetLV327
   name: Port Neroid
@@ -307,6 +329,9 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
     thirdparties:
     - FORECON
     - FORECONAlt
@@ -319,7 +344,8 @@
     - NSPAInvestigationPartyAlt
     - LACNSniperteam
     - ProfessorVonBandolier
-
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
 - type: entity
   id: AUPlanetCorsatStation
   name: Corsat Station
@@ -339,6 +365,7 @@
     - CMBCIU
     - USCM
     - RMC
+    - HAZOPS
     defaultgovfor: USCM
     defaultopfor: WEYU
     govforinship: true
@@ -354,8 +381,8 @@
     - NSPAInvestigationPartyAlt
     - UPPGROMAlt
     - cultistThirdPartyNoQueen
-    - ProfessorVonBandolier
-
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
 - type: entity
   id: AUPlanetSorokyne
   name: Sorokyne Strata
@@ -388,6 +415,54 @@
     - PAPInvestigationPartyAlt
     - PAPInvestigationParty
     - ProfessorVonBandolier
+    - XenoParasiteRunnerParty
+    - ApeThirdParty
+    - FORECONKillTeam
     threats:
     - cultistThreat
+    - XenoThreat
+    - apethreat
+    - apethreatcf
+    - wendigoThreat
+
+- type: entity
+  id: AUPlanetTrijent
+  name: Trijent
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Raijin Hydroelectric"
+    mapId: AUTrijentMap
+    camouflage: Desert
+    announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
+    platoonsOpfor:
+    - LACN
+    - USCM
+    - RMC
+    platoonsGovfor:
+    - UPP
+    - WEYU
+    - VAIPO
+    - ProdigySF
+    defaultgovfor: UPP
+    defaultopfor: RMC
+    govforinship: true
+    opforinship: true
+    daycycleenabled: true
+    faction: ua
+    thirdparties:
+    - ICRCReliefParty
+    - cultistThirdParty
+    - cultistThirdPartyNoQueen
+    - UPPGROM
+    - UPPGROMAlt
+    - UPPGROMAlt2
+    - FORECON
+    - FORECONAlt
+    - FORECONAlt2
+    - LACNSniperteam
+    - UPPTDLostTeam
+    - PAPInvestigationPartyAlt
+    - PAPInvestigationParty
+    - FORECONFirstRecon
+    threats:
     - XenoThreat

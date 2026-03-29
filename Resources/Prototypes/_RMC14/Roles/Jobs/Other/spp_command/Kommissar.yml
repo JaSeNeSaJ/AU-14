@@ -61,13 +61,10 @@
   id: RMCGearSPPKommissar
   equipment:
     head: RMCHeadCapSPPPolBlack
-    ears: RMCHeadsetSPPCommand
     ears2: RMCM5CameraGear
-    jumpsuit: RMCJumpsuitSPPOfficerShirt
     outerClothing: RMCCoatKommissarShortBlack
     gloves: RMCHandsVeteranSPP
     shoes: RMCBootsSPPFilled
-    id: RMCIDSPPCard
     belt: RMCBeltHolsterRevolverZHNK72Fill
     back: CMSatchel
     pocket1: RMCPouchAutoinjectorFill
@@ -417,13 +414,10 @@
   id: RMCGearSPPDivisionKommissar
   equipment:
     head: RMCHeadCapSPPPolKomWhite
-    ears: RMCHeadsetSPPCommand
     ears2: RMCM5CameraGear
-    jumpsuit: RMCJumpsuitSPPOfficerShirt
     outerClothing: RMCCoatOfficerShortWhite
     gloves: RMCHandsVeteranSPP
     shoes: RMCBootsSPPFilled
-    id: RMCIDSPPCard
     belt: RMCMatebaBeltFilled
     back: CMSatchel
     pocket1: RMCPouchAutoinjectorFill

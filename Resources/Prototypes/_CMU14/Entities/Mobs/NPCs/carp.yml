@@ -19,12 +19,17 @@
         - MobMask
         layer:
         - MobLayer
+  - type: GhostRole
+    name: Carp
+    description: A endangered species of fish. They are adapted to migrate up hill both ways
+    prob: 1.0
+
   - type: Sprite
     drawdepth: Mobs
     layers:
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: alive
-      sprite: _CMU14/Mobs/Animals/carp.rsi
+      sprite: _AU14/Mobs/Animals/carp.rsi
     - map: [ "mask" ]
     - map: [ "clownedon" ]
       sprite: "Effects/creampie.rsi"
@@ -35,6 +40,7 @@
     - Alive
     - Critical
     - Dead
+  
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -94,8 +100,6 @@
     - type: NameIdentifier
     - type: MonkeyAccent
     - type: AlwaysRevolutionaryConvertible
-    - type: GhostRole
-    - type: GhostTakeoverAvailable
     - type: Clumsy
     - type: Deathgasp
     - type: Cuffable
@@ -125,7 +129,7 @@
   - type: Sprite
     layers:
     - state: carp_spawn
-      sprite: _CMU14/Mobs/Animals/carp.rsi
+      sprite: _AU14/Mobs/Animals/carp.rsi
   - type: ProportionalSpawner
     id: CMUSpawnMobCarp
     ratio: 16

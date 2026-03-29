@@ -225,3 +225,39 @@
         amount: 30
       - id: RMCPouchGeneral
         amount: 30
+
+- type: entity
+  parent: ColMarTechBase
+  id: AU14JOGenericVendor
+  name: junior officer equipment rack
+  description: An automated rack hooked up to a small storage of junior officer equipment.
+  components:
+  - type: Sprite
+    sprite: _AU14/Structures/Vendors/assortedequipment.rsi
+  - type: CMAutomatedVendor
+    jobs: [ AU14JobOpforPlatOp, AU14JobGOVFORPlatOp, AU14JobPlatOpBase ]
+    sections:
+    - name: Assignment Kit
+      choices: { CMUJOLoadoutVendorKit: 1 }
+      entries:
+      - id: AU14KitJOStaffOfficerKit
+        recommended: true
+        giveSquadRoleName: au14-job-name-juniorofficer-so
+        givePrefix: au14-job-prefix-juniorofficer-so
+        isAppendPrefix: false
+        isAppendSquadRoleName: false
+      - id: AU14KitJOIntelligenceOfficer
+        giveSquadRoleName: au14-job-name-juniorofficer-io
+        givePrefix: au14-job-prefix-juniorofficer-io
+        isAppendPrefix: false
+        isAppendSquadRoleName: false
+      - id: AU14KitJOEngineeringKit
+        giveSquadRoleName: au14-job-name-juniorofficer-eo
+        givePrefix: au14-job-prefix-juniorofficer-eo
+        isAppendPrefix: false
+        isAppendSquadRoleName: false
+      - id: AU14KitJOAdjutantKit
+        giveSquadRoleName: au14-job-name-juniorofficer-adj
+        givePrefix: au14-job-prefix-juniorofficer-adj
+        isAppendPrefix: false
+        isAppendSquadRoleName: false

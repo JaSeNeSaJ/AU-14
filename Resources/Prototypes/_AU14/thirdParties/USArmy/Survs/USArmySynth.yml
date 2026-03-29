@@ -39,8 +39,6 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -90,7 +88,7 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicUSArmy
   id: AU14JobUSArmySynth
-  name: US Army Synthetic
+  name: US Army Synthetic (Surv)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

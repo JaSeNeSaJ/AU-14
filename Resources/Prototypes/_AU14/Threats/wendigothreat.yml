@@ -1,6 +1,10 @@
 - type: threat
   id: wendigoThreat
   roundstartspawns: wendigoParty
+  whitelistedgamemodes:
+    - ColonyFall
+  blacklistedgamemodes:
+    - DistressSignal
 
 - type: partySpawn
   id: wendigoParty
