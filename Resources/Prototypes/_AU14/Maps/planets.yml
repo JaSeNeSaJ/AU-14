@@ -97,7 +97,7 @@
     - XenoThreat
     - apethreat
     - apethreatcf
-     - wendigoThreat
+    - wendigoThreat
     # Shepherds' Pride exposes CWPS Ranger as its map-specific LEO role.
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCWPSRanger
