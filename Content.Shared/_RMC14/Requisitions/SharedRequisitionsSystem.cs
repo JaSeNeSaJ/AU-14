@@ -69,6 +69,7 @@ public abstract class SharedRequisitionsSystem : EntitySystem
 
     private void OnRailingMapInit(Entity<RequisitionsRailingComponent> railing, ref MapInitEvent args)
     {
+
         UpdateRailing(railing);
     }
 
@@ -237,8 +238,20 @@ public abstract class SharedRequisitionsSystem : EntitySystem
 
         account.Comp.Started = true;
 
-        // Only give the base starting points, do not scale with marines or scale for late joiners
-        account.Comp.Balance = Starting;
+        // Set faction-specific starting balance
+        if (account.Comp.Faction == "govfor" || account.Comp.Faction == "opfor")
+        {
+            ChangeBudget(200000,account.Comp.Faction);
+        }
+        else if (account.Comp.Faction == "colony")
+        {
+            ChangeBudget(450,account.Comp.Faction);
+        }
+        else
+        {
+            // Default/fallback - use the configured starting balance
+            account.Comp.Balance = Starting;
+        }
 
         Dirty(account);
     }

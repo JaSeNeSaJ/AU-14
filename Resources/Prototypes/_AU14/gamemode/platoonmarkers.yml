@@ -795,6 +795,44 @@
     sprite: _RMC14/Structures/Machines/computer.rsi
     state: overwatch
 
+# Ship markers for consoles
+- type: entity
+  name: Ship Intel Computer Marker
+  id: VMarkerShipIntelComputer
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: IntelComputer
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: terminal1_old
+
+- type: entity
+  name: Ship Tech Tree Console Marker
+  id: VMarkerShipTechTree
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: TechTree
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: techweb
+
+- type: entity
+  name: Ship Groundside Operations Console Marker
+  id: VMarkerShipGroundsideOps
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: GroundsideOps
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/rmc_groundside_communications_console.rsi
+    state: on
+
+
 
 - type: entity
   name: Ship Sweapons  Marker
@@ -922,3 +960,13 @@
     sprite: _RMC14/Effects/elevator.rsi
     state: supply_elevator_lowered
     drawdepth: LowFloors
+
+- type: entity
+  name: Ship Analyzer Marker
+  id: VMarkerShipAnalyzer
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: Analyzer
+

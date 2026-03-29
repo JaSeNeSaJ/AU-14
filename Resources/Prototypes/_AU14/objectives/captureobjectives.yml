@@ -10,6 +10,7 @@
       factioneutral: true
       applicableModes:
         - ForceOnForce
+        - DistressSignal
       possiblefactions:
         - govfor
         - opfor
@@ -39,6 +40,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -85,6 +88,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+
     possiblefactions:
     - govfor
     - opfor
@@ -114,6 +119,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+
     possiblefactions:
     - govfor
     - opfor
@@ -146,6 +153,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -176,6 +185,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -205,6 +216,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - DistressSignal
     possiblefactions:
     - govfor
     - opfor
@@ -235,6 +248,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+
     possiblefactions:
     - govfor
     - opfor
@@ -264,6 +279,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+
     possiblefactions:
     - govfor
     - opfor
@@ -294,6 +311,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -323,6 +342,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -352,6 +373,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -382,6 +405,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -410,6 +435,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -438,6 +465,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -466,6 +495,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -494,6 +525,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -522,6 +555,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -550,6 +585,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -578,6 +615,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -606,6 +645,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -634,6 +675,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -664,6 +707,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -692,6 +737,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -720,6 +767,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -748,6 +797,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor
@@ -776,6 +827,8 @@
     factioneutral: true
     applicableModes:
     - ForceOnForce
+    - DistressSignal
+    - insurgency
     possiblefactions:
     - govfor
     - opfor

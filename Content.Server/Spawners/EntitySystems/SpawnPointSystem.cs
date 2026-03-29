@@ -26,43 +26,62 @@ public sealed class SpawnPointSystem : EntitySystem
         var possiblePositions = new List<EntityCoordinates>();
         var preferredPositions = new List<EntityCoordinates>();
 
-        // --- AU14: Latejoin spawnpoint override for opfor/govfor, with JobClassOverride support ---
+        // AU14: opfor/govfor should prefer mapped job points, then side latejoin points if no mapping exists.
         bool isLateJoin = _gameTicker.RunLevel == GameRunLevel.InRound;
         string? jobId = args.Job?.ToString();
-        bool isOpfor = false;
-        bool isGovfor = false;
-        if (isLateJoin && !string.IsNullOrEmpty(jobId))
-        {
-            isOpfor = jobId.Contains("opfor", StringComparison.OrdinalIgnoreCase);
-            isGovfor = jobId.Contains("govfor", StringComparison.OrdinalIgnoreCase);
-        }
+        bool isOpfor = !string.IsNullOrEmpty(jobId) && jobId.Contains("opfor", StringComparison.OrdinalIgnoreCase);
+        bool isGovfor = !string.IsNullOrEmpty(jobId) && jobId.Contains("govfor", StringComparison.OrdinalIgnoreCase);
 
-        // 1. Try opfor/govfor latejoin spawn points with matching job_id first if applicable
-        if (isLateJoin && (isOpfor || isGovfor))
+        // 1. For opfor/govfor, look for mapped faction job spawn points first.
+        // Intentionally do not filter by args.Station here: faction jobs can spawn on attached ship stations.
+        if (isOpfor || isGovfor)
         {
             var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
-            while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
+            while (points.MoveNext(out var _, out var spawnPoint, out var xform))
             {
-                if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
-                    continue;
-                // Prefer spawn points with matching job_id (for JobClassOverride)
-                if (!string.IsNullOrEmpty(jobId) && spawnPoint.Job != null && string.Equals(spawnPoint.Job.ToString(), jobId, StringComparison.OrdinalIgnoreCase))
+                if ((spawnPoint.SpawnType == SpawnPointType.Job || spawnPoint.SpawnType == SpawnPointType.Unset) &&
+                    (args.Job == null || spawnPoint.Job == args.Job))
                 {
                     preferredPositions.Add(xform.Coordinates);
                 }
-                // Otherwise, fallback to spawn type
-                else if (isOpfor && spawnPoint.SpawnType.ToString() == "LateJoinOpfor")
+            }
+        }
+
+        // 2. If there are no mapped job points, use faction-specific latejoin points (ready + latejoin).
+        if (preferredPositions.Count == 0 && (isOpfor || isGovfor))
+        {
+            var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            while (points.MoveNext(out var _, out var spawnPoint, out var xform))
+            {
+                if (isOpfor && spawnPoint.SpawnType == SpawnPointType.LateJoinOpfor)
                 {
                     possiblePositions.Add(xform.Coordinates);
                 }
-                else if (isGovfor && spawnPoint.SpawnType.ToString() == "LateJoinGovfor")
+                else if (isGovfor && spawnPoint.SpawnType == SpawnPointType.LateJoinGovfor)
                 {
                     possiblePositions.Add(xform.Coordinates);
                 }
             }
         }
 
-        // 2. If none found, or not opfor/govfor, fall back to normal latejoin (prefer job_id match)
+
+        if (!isOpfor && !isGovfor && isLateJoin)
+        {
+            var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+            while (points.MoveNext(out var uid, out var spawnPoint, out var xform))
+            {
+                // Keep spawnpoints restricted to the target station for colonists
+                if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
+                    continue;
+
+                if (spawnPoint.SpawnType == SpawnPointType.Job && (args.Job == null || spawnPoint.Job == args.Job))
+                {
+                    preferredPositions.Add(xform.Coordinates);
+                }
+            }
+        }
+
+        // 3. Fall back to normal station spawnpoint behavior.
         if (preferredPositions.Count == 0 && possiblePositions.Count == 0)
         {
             var points = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
@@ -70,11 +89,8 @@ public sealed class SpawnPointSystem : EntitySystem
             {
                 if (args.Station != null && _stationSystem.GetOwningStation(uid, xform) != args.Station)
                     continue;
-                if (!string.IsNullOrEmpty(jobId) && spawnPoint.Job != null && string.Equals(spawnPoint.Job.ToString(), jobId, StringComparison.OrdinalIgnoreCase))
-                {
-                    preferredPositions.Add(xform.Coordinates);
-                }
-                else if (isLateJoin && spawnPoint.SpawnType == SpawnPointType.LateJoin)
+
+                if (isLateJoin && spawnPoint.SpawnType == SpawnPointType.LateJoin)
                 {
                     possiblePositions.Add(xform.Coordinates);
                 }
@@ -87,7 +103,7 @@ public sealed class SpawnPointSystem : EntitySystem
             }
         }
 
-        // 3. Fallback: any spawn point
+        // 4. Last resort: any spawn point.
         if (preferredPositions.Count == 0 && possiblePositions.Count == 0)
         {
             var points2 = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();

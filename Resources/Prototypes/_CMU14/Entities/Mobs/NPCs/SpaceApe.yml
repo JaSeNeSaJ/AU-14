@@ -5,6 +5,8 @@
   description: A capable and dangerous megafauna, high caloric needs.
   suffix: CMU
   components:
+  - type: NightVision
+    innate: true
   - type: Fixtures
     fixtures:
       fix1:
@@ -36,6 +38,7 @@
       visible: false
   - type: MobCollision
   - type: RMCMobCollision
+  - type: Ape
   - type: MobState
     allowedStates:
     - Alive
@@ -134,7 +137,8 @@
         Blunt: 1000
     mobDamage:
       types:
-        Blunt: 800
+        Blunt: 200
+    gibs: false
     structures:
       tags:
       - Structure

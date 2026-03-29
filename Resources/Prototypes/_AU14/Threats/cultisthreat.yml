@@ -217,6 +217,9 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
 
 - type: partySpawn
   id: cultistPartyThreat
@@ -305,12 +308,12 @@
 - type: auThirdParty
   id: cultistThirdParty
   partyspawn: cultistParty
-  entrymethod: ground
+  entrymethod: shuttle
   weight: 3
   minplayers: 70
   maxplayers: 200
-  GhostsNeeded: 5
-  roundstart: true
+  GhostsNeeded: 3
+  roundstart: false
 
 - type: auThirdParty
   id: cultistThirdPartyNoQueen

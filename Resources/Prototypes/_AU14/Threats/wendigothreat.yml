@@ -2,9 +2,12 @@
   id: wendigoThreat
   roundstartspawns: wendigoParty
   whitelistedgamemodes:
-    - ColonyFall
+  - ColonyFall
   blacklistedgamemodes:
-    - DistressSignal
+  - DistressSignal
+  winconditions:
+  - KillAllColonistRule
+  - KillAllXenoRule
 
 - type: partySpawn
   id: wendigoParty

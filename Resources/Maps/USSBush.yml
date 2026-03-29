@@ -1122,7 +1122,7 @@ entities:
       rot: 3.141592653589793 rad
       pos: 1.5,4.5
       parent: 2
-- proto: CMASRSConsole
+- proto: CMASRSConsoleGovfor
   entities:
   - uid: 68
     components:
@@ -1304,7 +1304,7 @@ entities:
     - type: Transform
       pos: 8.680105,-1.532155
       parent: 2
-- proto: CMCargoElevator
+- proto: CMCargoElevatorGovfor
   entities:
   - uid: 98
     components:

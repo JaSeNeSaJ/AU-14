@@ -15,9 +15,10 @@
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-  - AUPlanetSorokyne
+#  - AUPlanetSorokyne
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - AuPlanetFiorina
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -33,36 +34,40 @@
   name: Insurgency
   showInVote: true
   description: Insurgency mode
-  minPlayers: 30
+  minPlayers: 35
   requiresGovforVote: true
   supportedPlanets:
     - AUPlanetShepherdsPride
     - AUPlanetLV624
-    - AUPlanetLV747
-    - AUPlanetSorokyne
+    #- AUPlanetLV747
+  #  - AUPlanetSorokyne
 #    - AUPlanetLV759 removed pending rework
+
   rules:
   - AuVoteRule
   - PlatoonSpawn
   - AddGovfor
   - AddClf
   - ColonyAntags
-
+  - InsWinConditionsRule
 - type: gamePreset
   id: DistressSignal
   name: Distress Signal
   showInVote: true
-  description: Distress Signal
+  description: Investigate a mysterious distress signal as government forces.
   requiresGovforVote: true
   supportedPlanets:
   - AUPlanetShepherdsPride
   - AUPlanetLV747
   - AUPlanetFlight
   - AUPlanetLV327
-  - AUPlanetSorokyne
+ # - AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - AuPlanetFiorina
+  - AuPlanetKutjevo
+  - AuPlanetShivasSnowball
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -77,7 +82,7 @@
     - colonyfall
   name: Colony Fall
   showInVote: true
-  description: Colony Fall mode
+  description: Live in an offworld colony as it falls into chaos.
   rules:
     - AuVoteRule
     - ColonyAntags
@@ -86,7 +91,7 @@
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV327
-    - AUPlanetSorokyne
+   # - AUPlanetSorokyne
     - AUPlanetStableGarrison
 
 - type: gamePreset
@@ -183,9 +188,8 @@
   - type: AddJobsRule
     jobs:
       AU14JobCLFCellLeader: 1
-      AU14JobCLFPhysician: 2
-      AU14JobCLFGuerilla: 6
-      AU14JobCLFMachineGunner: 1
+      AU14JobCLFPhysician: 1
+      AU14JobCLFGuerilla: 3
 
 - type: entity
   id: ColonyAntags
