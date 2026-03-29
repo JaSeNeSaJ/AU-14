@@ -137,7 +137,7 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
 
 
     [DataField("thirdpartyinterval"), AutoNetworkedField]
-    public int? ThirdPartyInterval =300;
+    public int? ThirdPartyInterval =5000;
 
 }
 
