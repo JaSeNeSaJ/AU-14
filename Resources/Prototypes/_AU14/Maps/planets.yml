@@ -205,12 +205,10 @@
     platoonsOpfor:
     - UPP
     - WEYU
-    - RMC
 
     platoonsGovfor:
     - LACN
     - ProdigySF
-    - CMBCIU
     - HAZOPS
     - VAIPO
     defaultgovfor: HAZOPS

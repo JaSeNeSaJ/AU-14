@@ -609,3 +609,25 @@
         amount: 1
       - id: RMCMagazineSMGType64
         amount: 9
+
+- type: entity
+  parent: RMCKitBase
+  id: AU14KitWeaponXMP5A6
+  name: XMP5A6/10 CQW case
+  components:
+  - type: Item
+    size: Ginormous
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,9,3
+  - type: Sprite
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: Icon
+    sprite: _RMC14/Objects/Storage/procase_mini.rsi
+  - type: StorageFill
+    contents:
+      - id: AU14WeaponSMGXMP5A6HAZOPS
+        amount: 1
+      - id: AU14MagazineXMP5A6
+        amount: 8
