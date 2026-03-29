@@ -278,14 +278,12 @@
         amount: 12
       - id: RMCBoxShotgunSlugs
         amount: 12
-      - id: RMCBoxShotgunIncendiary
-        amount: 1
     - name: M50 'Bald Eagle' Handcannon
       entries:
       - id: AU14WeaponPistolM50HAZOPS
         amount: 8
       - id: AU14MagazinePistolM50
-        amount: 120
+        amount: 80
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
