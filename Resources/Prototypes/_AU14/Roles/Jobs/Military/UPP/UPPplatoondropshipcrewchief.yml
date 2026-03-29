@@ -9,7 +9,7 @@
     UPP_Chotar:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     UPP_StaffSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
@@ -19,6 +19,7 @@
   dummyStartingGear: AU14GearGOVFORDCCDummy
   icon: "AU14JobIconDCC"
   requireAdminNotify: false
+  spawnMenuRoleName: Dropship Crew Chief (UPP)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

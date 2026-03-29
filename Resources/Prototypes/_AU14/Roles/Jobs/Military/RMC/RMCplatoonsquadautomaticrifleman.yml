@@ -24,6 +24,7 @@
   dummyStartingGear: AU14GearGOVFORAutoRiflemanDummy
   icon: "AU14JobIconAFN"
   requireAdminNotify: false
+  spawnMenuRoleName: Automatic Rifleman (TWE RMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

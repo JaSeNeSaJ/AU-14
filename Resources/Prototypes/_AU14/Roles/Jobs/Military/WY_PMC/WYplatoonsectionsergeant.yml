@@ -10,6 +10,7 @@
   dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy
   icon: "AU14JobIconPlatoonSarge"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Sergeant (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

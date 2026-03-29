@@ -15,7 +15,7 @@
     RMC_WarrantOfficer1:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMC_WarrantOfficer2:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
@@ -29,6 +29,7 @@
   dummyStartingGear: AU14GearGOVFORDCCDummy
   icon: "AU14JobIconDCC"
   requireAdminNotify: true
+  spawnMenuRoleName: Dropship Crew Chief (TWE RMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

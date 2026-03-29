@@ -9,7 +9,7 @@
     UPP_Lieutenant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     UPP_JuniorLieutenant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
@@ -23,6 +23,7 @@
   dummyStartingGear: AU14GearGOVFORDSPilotDummy
   icon: "AU14JobIconPilotOfficer"
   requireAdminNotify: false
+  spawnMenuRoleName: Pilot Officer (UPP)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
