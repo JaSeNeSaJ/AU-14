@@ -262,6 +262,17 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
             var newAccount = Spawn(AccountId, MapCoordinates.Nullspace);
             var newAccountComp = EnsureComp<RequisitionsAccountComponent>(newAccount);
             newAccountComp.Faction = faction;
+
+            // Set faction-specific starting balance
+            if (faction == "govfor" || faction == "opfor")
+            {
+                newAccountComp.Balance = 10000;
+            }
+            else if (faction == "colony")
+            {
+                newAccountComp.Balance = 450;
+            }
+
             return (newAccount, newAccountComp);
         }
 

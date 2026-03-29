@@ -266,3 +266,21 @@
   components:
   - type: RequisitionsElevator
     faction: opfor
+
+- type: entity
+  parent: [ CMASRSConsole ]
+  id: CMASRSConsoleColony
+  name: ASRS console (Colony)
+  components:
+  - type: AccessReader
+    access: [ [ "CMCargoTech,auadmin" ] ]
+  - type: RequisitionsComputer
+    faction: colony
+
+- type: entity
+  parent: CMCargoElevator
+  id: CMCargoElevatorColony
+  name: cargo elevator (Colony)
+  components:
+  - type: RequisitionsElevator
+    faction: colony
