@@ -137,7 +137,8 @@
         Blunt: 1000
     mobDamage:
       types:
-        Blunt: 800
+        Blunt: 200
+    gibs: false
     structures:
       tags:
       - Structure
