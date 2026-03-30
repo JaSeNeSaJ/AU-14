@@ -196,7 +196,6 @@
     whitelist:
       tags:
       - CMCartridgeRifle10x24mm
-      - AU14MagazineXMP5A6
     proto: CMCartridgeRifle10x24mm
     capacity: 60
   - type: Sprite
