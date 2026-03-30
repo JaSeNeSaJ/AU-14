@@ -2,9 +2,9 @@
 engine_version = "v264.0.2-fix-physics"
 
 [game]
-defaultpreset = "ColonyFall"
 # Straight in-game baby
-lobbyenabled = true
+lobbyenabled = false
+map = "RMCDev"
 role_timers = false
 
 [events]
