@@ -11,3 +11,6 @@
     bullet: 10
     explosionArmor: 10
     melee: 18
+  - type: ClothingSpeedModifier
+    walkModifier: .75
+    sprintModifier: .75
