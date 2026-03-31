@@ -63,6 +63,9 @@
   - AU14JobLEOLeaderBase
   - AU14JobLEOBase
   - AU14JobWYGuard
+  - AU14JobCivilianCWPSRanger
+  - AU14JobCivilianPaPOfficer
+  - AU14JobCivilianCMBMarshal
 
   departmentRadio: null
   headOfDepartment: null

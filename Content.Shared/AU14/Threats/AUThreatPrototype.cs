@@ -84,5 +84,11 @@ public sealed partial class ThreatPrototype : IPrototype
     public bool hiveevolution { get; private set; } = false;
     // if xeno evo should send messages
 
+    /// <summary>
+    /// Optional job scaling prototype for human job slots.
+    /// Used by ColonyFall and DistressSignal modes (Insurgency/FOF use Planet instead).
+    /// </summary>
+    [DataField("jobScaling", required: false)]
+    public ProtoId<JobScalePrototype>? JobScaling { get; private set; }
 
 }

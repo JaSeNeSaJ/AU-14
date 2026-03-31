@@ -48,5 +48,7 @@
     <Compile Remove="_CMU14\Ape\ApeDestroyEvents.cs" />
     <Compile Remove="_CMU14\Ape\ApeChargeDoAfterEvent.cs" />
     <Compile Remove="_CMU14\Ape\ApeChargeComponent.cs" />
+    <Compile Remove="AU14\Objectives\CountedForKillComponent.cs" />
+    <Compile Remove="AU14\Objectives\CountedForArrestComponent.cs" />
   </ItemGroup>
 </Project>

@@ -45,7 +45,7 @@
   - type: ArrestObjective
     factiontoarrest: clf
     amounttoarrest: 2
-    countkill: true
+    removekillmark: true
 
 - type: entity
   name: Arrest GOVFOR Objective
@@ -69,6 +69,6 @@
   - type: ArrestObjective
     factiontoarrest: govfor
     amounttoarrest: 2
-    countkill: true
+    removekillmark: true
 
 

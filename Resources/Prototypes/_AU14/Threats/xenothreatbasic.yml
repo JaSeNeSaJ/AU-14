@@ -4,6 +4,7 @@
   roundstartspawns: XenoThreatSpawns
   blacklistedgamemodes:
    - ColonyFall
+  jobScaling: DefaultDistressScale
 
   winconditions:
   - KillAllGovforRule
@@ -15,9 +16,14 @@
     CMXenoQueen: 1
   gruntsToSpawn:
     CMXenoLarva: 4
-  scalewithpop: true
   spawnTogether: true
-  #hiveevolution: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    CMXenoLarva:
+      scale: 0.25
+      whenToBeginScaling: 50
 
 
 - type: threat
@@ -37,8 +43,14 @@
     CMXenoQueen: 1
   gruntsToSpawn:
     CMXenoLarva: 1
-  scalewithpop: true
   spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0
+      whenToBeginScaling: 50
+    CMXenoLarva:
+      scale: 0.08
+      whenToBeginScaling: 50
   Markers:
     Member: xenocf
     Leader: xenocf
