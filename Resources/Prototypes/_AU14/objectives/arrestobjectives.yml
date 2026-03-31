@@ -21,7 +21,8 @@
   - type: ArrestObjective
     factiontoarrest: govfor
     amounttoarrest: 2
-    countarrest: true
+    removekillmark: true
+
 
 - type: entity
   name: Arrest CLF Objective
