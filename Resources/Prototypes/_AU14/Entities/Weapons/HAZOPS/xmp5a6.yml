@@ -31,7 +31,7 @@
     recoilUnwielded: 5
     scatterWielded: 7
     scatterUnwielded: 19
-    baseFireRate: 6.7
+    baseFireRate: 7.5
     burstScatterMult: 2
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 1
@@ -189,7 +189,7 @@
       - CMCartridgeRifle10x24mm
       - AU14MagazineXMP5A6
     proto: CMCartridgeRifle10x24mm
-    capacity: 50
+    capacity: 60
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Guns/Ammunition/Magazines/m63.rsi
     layers:

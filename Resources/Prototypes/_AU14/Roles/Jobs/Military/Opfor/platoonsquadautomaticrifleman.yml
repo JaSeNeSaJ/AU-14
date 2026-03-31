@@ -28,6 +28,7 @@
   dummyStartingGear: AU14GearopforAutoRiflemanDummy
   icon: "AU14JobIconOPFORAFN"
   requireAdminNotify: false
+  spawnMenuRoleName: Automatic Rifleman (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

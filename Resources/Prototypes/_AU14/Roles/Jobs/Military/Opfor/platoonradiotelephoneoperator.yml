@@ -24,6 +24,7 @@
   dummyStartingGear: AU14GearopforRadioTelephoneOperatorDummy
   icon: "AU14JobIconOPFORSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Fireteam Leader (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

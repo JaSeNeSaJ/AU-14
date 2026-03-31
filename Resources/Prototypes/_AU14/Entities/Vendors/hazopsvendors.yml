@@ -231,11 +231,12 @@
     - name: Weapons
       choices: { CMUPrimaryWeapon: 1 }
       entries:
-      - id: AU14WeaponSMGXMP5A6HAZOPS
+      - id: AU14KitWeaponXMP5A6
     - name: Primary Ammunition
       entries:
       - id: AU14MagazineXMP5A6
-        amount: 120
+        amount: 60
+      - id: CMMagazineRifleM54CAP
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -278,14 +279,12 @@
         amount: 12
       - id: RMCBoxShotgunSlugs
         amount: 12
-      - id: RMCBoxShotgunIncendiary
-        amount: 2
     - name: M50 'Bald Eagle' Handcannon
       entries:
       - id: AU14WeaponPistolM50HAZOPS
-        amount: 2
+        amount: 8
       - id: AU14MagazinePistolM50
-        amount: 50
+        amount: 80
     - name: Explosives
       entries:
       - id: RMCBoxHEDP

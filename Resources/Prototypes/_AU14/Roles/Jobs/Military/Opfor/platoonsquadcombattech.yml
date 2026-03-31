@@ -30,6 +30,7 @@
   dummyStartingGear: AU14GearOPFORCTDummy
   icon: "AU14JobIconOPFORCT"
   requireAdminNotify: false
+  spawnMenuRoleName: Combat Tech (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:
