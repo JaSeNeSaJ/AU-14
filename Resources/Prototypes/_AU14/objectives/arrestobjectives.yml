@@ -23,6 +23,7 @@
     amounttoarrest: 2
     removekillmark: true
 
+
 - type: entity
   name: Arrest CLF Objective
   parent: MarkerBase
