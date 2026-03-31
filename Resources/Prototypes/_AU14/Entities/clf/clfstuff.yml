@@ -75,6 +75,9 @@
       - id: RMCWeaponMar50LMG
         amount: 1
         points: 16
+      - id: CMUCLFSynthSubversionKey
+        amount: 1
+        points: 26
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineRifleM16
