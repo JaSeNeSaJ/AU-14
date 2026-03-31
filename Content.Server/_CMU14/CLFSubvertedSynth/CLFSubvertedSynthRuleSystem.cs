@@ -59,8 +59,8 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
             return;
 
         _npcFaction.AddFaction(args.Target, CLFNPCFaction);
-        _synth.SetGunRestriction(args.Target, true);
-        _synth.SetMeleeRestriction(args.Target, true);
+        //_synth.SetGunRestriction(args.Target, true);
+        //_synth.SetMeleeRestriction(args.Target, true);
         var subvertedComp = EnsureComp<CLFSubvertedSynthComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind,
             LogImpact.Medium,
@@ -84,8 +84,8 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
         if (!_mind.TryGetMind(args.Target, out var mindId, out var mind))
             return;
         _npcFaction.RemoveFaction(args.Target, CLFNPCFaction);
-        _synth.SetGunRestriction(args.Target, false);
-        _synth.SetMeleeRestriction(args.Target, true);
+        //_synth.SetGunRestriction(args.Target, false);
+        //_synth.SetMeleeRestriction(args.Target, true);
         RemCompDeferred<CLFSubvertedSynthComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind, LogImpact.Medium,
             $"{ToPrettyString(args.Target)} has been repaired from subversion.");
