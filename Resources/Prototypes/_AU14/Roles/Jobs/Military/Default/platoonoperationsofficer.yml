@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobPlatOpBase
   id: AU14JobGOVFORPlatOp
   name: au14-job-name-govforplatop
   description: au14-job-description-govforplatop
@@ -15,13 +15,13 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
-  playTimeTracker: AU14JobGOVFORPlatOp
   ranks:
     RMCRankSecondLT: []
   startingGear: AU14GearGOVFORPlatOp
   dummyStartingGear: AU14GearGOVFORPlatOpDummy
   icon: "AU14JobIconOpsOfc"
   requireAdminNotify: true
+  spawnMenuRoleName: Junior Officer (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

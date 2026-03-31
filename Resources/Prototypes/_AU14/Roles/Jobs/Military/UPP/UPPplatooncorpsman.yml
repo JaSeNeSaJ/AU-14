@@ -14,6 +14,7 @@
   dummyStartingGear: AU14GearGOVFORCorpsmanDummy
   icon: "AU14JobIconCorpsman"
   requireAdminNotify: false
+  spawnMenuRoleName: Hospital Corpsman (UPP)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

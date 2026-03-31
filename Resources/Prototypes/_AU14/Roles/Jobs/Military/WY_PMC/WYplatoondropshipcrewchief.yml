@@ -9,12 +9,13 @@
     AU14RankWeYuSeniorCrewChief:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDCC
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankWeYuCrewChief: []
   startingGear: AU14GearGOVFORDCC
   dummyStartingGear: AU14GearGOVFORDCCDummy
   icon: "AU14JobIconDCC"
   requireAdminNotify: false
+  spawnMenuRoleName: Dropship Crew Chief (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

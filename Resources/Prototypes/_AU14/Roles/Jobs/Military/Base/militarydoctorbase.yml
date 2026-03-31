@@ -6,3 +6,7 @@
   playTimeTracker: AU14JobGOVFORMilitaryDoctor
   basePlaytimeTracker: true
   hidden: true
+
+- type: playTimeTracker
+  id: AU14JobGOVFORMilitaryDoctor
+  isHumanoid: true

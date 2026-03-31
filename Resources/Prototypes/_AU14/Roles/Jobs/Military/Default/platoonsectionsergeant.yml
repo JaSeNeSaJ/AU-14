@@ -18,7 +18,7 @@
     RMCRankMasterSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSectionSergeant
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMCRankGunnerySergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSectionSergeant
@@ -28,6 +28,7 @@
   dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy
   icon: "AU14JobIconPlatoonSarge"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Sergeant (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

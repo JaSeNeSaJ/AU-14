@@ -24,6 +24,7 @@
   dummyStartingGear: AU14GearGOVFORRadioTelephoneOperatorDummy
   icon: "AU14JobIconRTO"
   requireAdminNotify: false
+  spawnMenuRoleName: Fireteam Leader (TWE RMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

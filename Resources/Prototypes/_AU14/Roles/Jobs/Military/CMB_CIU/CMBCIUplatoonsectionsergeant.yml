@@ -10,6 +10,7 @@
   dummyStartingGear: AU14GearGOVFORPlatoonSergantDummy
   icon: "AU14JobIconPlatoonSarge"
   requireAdminNotify: true
+  spawnMenuRoleName: Section Sergeant (CMBCIU)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

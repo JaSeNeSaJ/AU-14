@@ -9,12 +9,13 @@
     AU14RankWeYuEnforcerSenior:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadSergeant
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankWeYuEnforcer: []
   startingGear: AU14GearGOVFORSquadSergeant
   dummyStartingGear: AU14GearGOVFORSquadSergantDummy
   icon: "AU14JobIconSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Squad Sergeant (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
