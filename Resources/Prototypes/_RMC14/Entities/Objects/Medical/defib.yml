@@ -166,6 +166,7 @@
     whitelist:
       components:
         - Marine
+  - type: SynthRepairer
   - type: Item
     size: Small
     sprite: _RMC14/Objects/Devices/reset_key.rsi

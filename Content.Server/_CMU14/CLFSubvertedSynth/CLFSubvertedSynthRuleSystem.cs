@@ -17,6 +17,7 @@ using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Client.GameStates;
 using Robust.Shared.Network;
+using Content.Shared._CMU14.SynthRepairer;
 
 namespace Content.Server._CMU14.CLFSubvertedSynth;
 
@@ -44,6 +45,7 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
         base.Initialize();
         //TargetBeforeDefibrillatorZapsEvent doesn't work for some godawful reason
         SubscribeLocalEvent<CLFSubverterComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRevive);
+        SubscribeLocalEvent<SynthRepairerComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRepair);
     }
 
     private void OnSynthRevive(EntityUid uid, CLFSubverterComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
@@ -58,11 +60,11 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
 
         _npcFaction.AddFaction(args.Target, CLFNPCFaction);
         _synth.SetGunRestriction(args.Target, true);
-        _synth.SetMeleeRestiction(args.Target, true);
+        _synth.SetMeleeRestriction(args.Target, true);
         var subvertedComp = EnsureComp<CLFSubvertedSynthComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind,
             LogImpact.Medium,
-            $"{ToPrettyString(args.Target)}had a CLF synth subverter used on them");
+            $"{ToPrettyString(args.Target)} had a CLF synth subverter used on them");
 
         if (!_role.MindHasRole<CLFSubvertedSynthRoleComponent>(mindId))
         {
@@ -71,5 +73,25 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
 
         if (mind is { UserId: not null } && _player.TryGetSessionById(mind.UserId, out var session))
             _antag.SendBriefing(session, Loc.GetString("clf-subverted-synth-briefing"), Color.Red, subvertedComp.CLFSubversionSound);
+    }
+
+    private void OnSynthRepair(EntityUid uid, SynthRepairerComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
+    {
+        if (!HasComp<SynthComponent>(args.Target) && !HasComp<CLFSubvertedSynthComponent>(args.Target))
+            return;
+        if (HasComp<CLFSubverterComponent>(uid)) //idk how to remove a component from a prototype so this is an un-necessary workaround
+            return;
+        if (!_mind.TryGetMind(args.Target, out var mindId, out var mind))
+            return;
+        _npcFaction.RemoveFaction(args.Target, CLFNPCFaction);
+        _synth.SetGunRestriction(args.Target, false);
+        _synth.SetMeleeRestriction(args.Target, true);
+        RemCompDeferred<CLFSubvertedSynthComponent>(args.Target);
+        _adminLogManager.Add(LogType.Mind, LogImpact.Medium,
+            $"{ToPrettyString(args.Target)} has been repaired from subversion.");
+
+        _role.MindRemoveRole(mindId, "MindRoleCLFSubvertedSynth");
+        if (mind is { UserId: not null } && _player.TryGetSessionById(mind.UserId, out var session))
+            _antag.SendBriefing(session, Loc.GetString("clf-subverted-synth-repaired"), Color.CornflowerBlue, null);
     }
 }

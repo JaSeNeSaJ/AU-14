@@ -59,6 +59,9 @@
   - type: CLFSubvertedSynthRule
   - type: AntagSelection
     selectionTime: PostPlayerSpawn
+    definitions:
+    - prefRoles: [ CLFSubvertedSynthRole ]
+    
 
 - type: entity
   parent: BaseMindRoleAntag

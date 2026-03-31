@@ -10,6 +10,7 @@ public sealed class CLFSubvertedSynthSystem : EntitySystem
     {
         base.Initialize();
         SubscribeLocalEvent<CLFSubvertedSynthComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<CLFSubvertedSynthComponent, ComponentRemove>(OnRemove);
     }
     //hacky hack just to dirty the entity
     private void OnInit(EntityUid uid, CLFSubvertedSynthComponent comp, ComponentInit args)
@@ -18,6 +19,12 @@ public sealed class CLFSubvertedSynthSystem : EntitySystem
         {
             Dirty(uid, sc);
         }
+        DirtyEntity(uid);
+    }
+    private void OnRemove(EntityUid uid, CLFSubvertedSynthComponent comp, ComponentRemove args)
+    {
+        if (TryComp<SynthComponent>(uid, out var sc))
+            Dirty(uid, sc);
         DirtyEntity(uid);
     }
 }

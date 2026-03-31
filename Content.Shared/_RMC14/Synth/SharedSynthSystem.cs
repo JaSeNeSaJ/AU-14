@@ -100,7 +100,7 @@ public abstract class SharedSynthSystem : EntitySystem
         else return;
     }
 
-    public void SetMeleeRestiction(EntityUid ent, bool value)
+    public void SetMeleeRestriction(EntityUid ent, bool value)
     {
         if (TryComp<SynthComponent>(ent, out var comp))
         {
