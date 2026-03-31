@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.Shared.AU14.Threats;
 using Content.Server.AU14.Round;
+using Content.Shared.AU14.util;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Map;
 using Content.Shared.Roles;
@@ -122,11 +123,31 @@ public sealed class AuThreatSystem : EntitySystem
         // Spawn leaders
         if (newpartySpawn != null)
         {
-            foreach (var (protoId, count) in newpartySpawn.LeadersToSpawn)
+            var playerCount = _playerManager.PlayerCount;
+
+            // Helper: compute the spawn count for a single entity prototype ID
+            // using the per-entity scaling dict on the PartySpawnPrototype.
+            // If Benchmark is set it overrides the base; otherwise the static count is the base.
+            int GetScaledCount(string protoId, int staticCount)
             {
+                if (newpartySpawn.Scaling.TryGetValue(protoId, out var entry))
+                {
+                    var baseCount = entry.Benchmark ?? staticCount;
+                    var extra = 0;
+                    if (playerCount > entry.WhenToBeginScaling)
+                        extra = (int) Math.Floor((playerCount - entry.WhenToBeginScaling) * entry.Scale);
+                    return baseCount + extra;
+                }
+                return staticCount;
+            }
+
+            // Spawn leaders — each entity proto gets its own scaled count
+            foreach (var (protoId, staticCount) in newpartySpawn.LeadersToSpawn)
+            {
+                var count = GetScaledCount(protoId, staticCount);
                 var markers = GetSpawnMarkers(ThreatMarkerType.Leader);
                 Logger.DebugS("au14.threat",
-                    $"[DEBUG] Spawning {count} leaders of protoId {protoId} at {markers.Count} markers");
+                    $"[DEBUG] Spawning {count} leaders of protoId {protoId} at {markers.Count} markers (static={staticCount})");
                 for (int i = 0; i < count; i++)
                 {
                     var marker = markers.Count > 0 ? markers[i % markers.Count] : EntityUid.Invalid;
@@ -140,12 +161,13 @@ public sealed class AuThreatSystem : EntitySystem
                 }
             }
 
-            // Spawn grunts/members
-            foreach (var (protoId, count) in newpartySpawn.GruntsToSpawn)
+            // Spawn grunts/members — each entity proto gets its own scaled count
+            foreach (var (protoId, staticCount) in newpartySpawn.GruntsToSpawn)
             {
+                var count = GetScaledCount(protoId, staticCount);
                 var markers = GetSpawnMarkers(ThreatMarkerType.Member);
                 Logger.DebugS("au14.threat",
-                    $"[DEBUG] Spawning {count} members of protoId {protoId} at {markers.Count} markers");
+                    $"[DEBUG] Spawning {count} members of protoId {protoId} at {markers.Count} markers (static={staticCount})");
                 for (int i = 0; i < count; i++)
                 {
                     var marker = markers.Count > 0 ? markers[i % markers.Count] : EntityUid.Invalid;

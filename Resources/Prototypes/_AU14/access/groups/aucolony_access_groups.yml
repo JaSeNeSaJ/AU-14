@@ -11,6 +11,7 @@
   - CMAccessRequisitions
   - CMAccessColonyMedbay
   - CMAccessColonyArmory
+  - CMAccessColonyCommand
 
 - type: accessGroup
   id: auengi

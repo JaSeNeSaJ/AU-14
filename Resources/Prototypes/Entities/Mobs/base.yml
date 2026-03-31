@@ -6,6 +6,7 @@
   abstract: true
   components:
   - type: KillObjectiveTracker
+  - type: ArrestObjectiveTracker
   - type: Sprite
     noRot: true
     drawdepth: Mobs

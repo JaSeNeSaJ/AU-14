@@ -1,5 +1,5 @@
 using Content.Server.GameTicking;
-using Content.Server.GameTicking;
+using Content.Server.Spawners.Components;
 using Content.Server.Spawners.EntitySystems;
 using Content.Server.Station.Systems;
 using Content.Shared.AU14;
@@ -11,7 +11,9 @@ using Robust.Shared.Random;
 namespace Content.Server.AU14.CLF;
 
 /// <summary>
-/// Handles CLF spawning at round start (at a chosen safehouse) and additional entity spawning
+/// Handles CLF spawning at round start (at a chosen safehouse) and additional entity spawning.
+/// Command roles (Cell Leader, Physician) always spawn at the safehouse.
+/// Guerilla roles have a 66% chance to spawn at colony civilian spawn points and 34% at the safehouse.
 /// </summary>
 public sealed class ClfSpawnSystem : EntitySystem
 {
@@ -22,6 +24,25 @@ public sealed class ClfSpawnSystem : EntitySystem
 
     private EntityCoordinates? _chosenSafehouseLocation;
     private bool _hasSpawnedAdditionalEntities;
+
+    /// <summary>
+    /// CLF command job IDs that always spawn at the safehouse.
+    /// </summary>
+    private static readonly HashSet<string> CommandJobIds = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "AU14JobCLFCellLeader",
+        "AU14JobCLFPhysician",
+    };
+
+    /// <summary>
+    /// The colony civilian job whose spawn points guerillas may use.
+    /// </summary>
+    private const string ColonyCivilianJobId = "AU14JobCivilianColonist";
+
+    /// <summary>
+    /// Chance (0-1) for a guerilla to spawn at a colony civilian spawn point instead of the safehouse.
+    /// </summary>
+    private const float GuerillaCivilianSpawnChance = 0.66f;
 
     public override void Initialize()
     {
@@ -54,13 +75,8 @@ public sealed class ClfSpawnSystem : EntitySystem
         if (string.IsNullOrEmpty(jobId) || !jobId.Contains("CLF", StringComparison.OrdinalIgnoreCase))
             return;
 
-        // Late join CLF should use normal latejoin points (don't handle here)
+        // Already handled by another system
         if (args.SpawnResult != null)
-            return;
-
-        // Only handle round start spawning (late join handled by normal SpawnPointSystem)
-        var gameTicker = EntityManager.System<GameTicker>();
-        if (gameTicker.RunLevel == GameRunLevel.InRound)
             return;
 
         // Choose safehouse location if not already chosen
@@ -90,12 +106,54 @@ public sealed class ClfSpawnSystem : EntitySystem
             }
         }
 
-        // Spawn the player at the chosen safehouse
+        // Determine spawn location based on role type
+        bool isCommand = CommandJobIds.Contains(jobId);
+
+        if (!isCommand && _random.Prob(GuerillaCivilianSpawnChance))
+        {
+            // Guerilla: try to spawn at a colony civilian spawn point
+            var civilianSpawnLocation = GetRandomColonyCivilianSpawnPoint();
+            if (civilianSpawnLocation != null)
+            {
+                args.SpawnResult = _stationSpawning.SpawnPlayerMob(
+                    civilianSpawnLocation.Value,
+                    args.Job,
+                    args.HumanoidCharacterProfile,
+                    args.Station);
+                Log.Info($"CLF Spawn System: Spawned guerilla {jobId} at colony civilian spawn point");
+                return;
+            }
+
+            // Fall back to safehouse if no civilian spawn points found
+            Log.Warning("CLF Spawn System: No colony civilian spawn points found, falling back to safehouse for guerilla.");
+        }
+
+        // Command roles always spawn here; guerillas that rolled safehouse (34%) or had no civilian points also land here
         args.SpawnResult = _stationSpawning.SpawnPlayerMob(
             _chosenSafehouseLocation.Value,
             args.Job,
             args.HumanoidCharacterProfile,
             args.Station);
+        Log.Info($"CLF Spawn System: Spawned {(isCommand ? "command" : "guerilla")} {jobId} at safehouse");
+    }
+
+    /// <summary>
+    /// Finds a random spawn point entity whose SpawnPointComponent.Job matches the colony civilian job ID.
+    /// </summary>
+    private EntityCoordinates? GetRandomColonyCivilianSpawnPoint()
+    {
+        var candidates = new List<EntityCoordinates>();
+        var spawnPoints = EntityQueryEnumerator<SpawnPointComponent, TransformComponent>();
+        while (spawnPoints.MoveNext(out var _, out var sp, out var xform))
+        {
+            if (sp.Job != null &&
+                string.Equals(sp.Job.ToString(), ColonyCivilianJobId, StringComparison.OrdinalIgnoreCase))
+            {
+                candidates.Add(xform.Coordinates);
+            }
+        }
+
+        return candidates.Count > 0 ? _random.Pick(candidates) : null;
     }
 
     private void SpawnAdditionalEntities()

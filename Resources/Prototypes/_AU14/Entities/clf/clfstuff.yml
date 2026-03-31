@@ -10,6 +10,7 @@
   description: A high-value weapons cache accessible only with CLF operational funds.
   suffix: CLF, Objective Points
   components:
+  - type: Pullable
   - type: Sprite
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
     layers:
@@ -184,7 +185,7 @@
   - RMCComputerIntelCLF
   - ComputerObjectivesCLF
   - AU14AnalyzerMachineCLF
-  - AU14CLFObjectiveWeaponsVendor
+  - RMCLampTripod
 
 - type: entity
   name: Generic Safhouse Marker
@@ -226,5 +227,7 @@
       amount: 2
     - id: RMCBoxFlashlights
       amount: 2
+    - id: AU14CLFHeadset
+      amount: 5
 
 
