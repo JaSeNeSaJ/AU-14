@@ -1,4 +1,5 @@
 using System.Runtime.Serialization;
+using Content.Shared.AU14.util;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared.AU14.Threats;
@@ -24,9 +25,22 @@ public sealed partial class PartySpawnPrototype : IPrototype
     [DataField("spawnTogether", required: false),]
     public bool SpawnTogether { get; private set; } =  true;
 
+    /// <summary>
+    /// Deprecated — use <see cref="Scaling"/> instead.
+    /// Kept for backwards compatibility with existing YAML.
+    /// </summary>
     [DataField("scalewithpop", required: false)]
     public bool ScalewithPop { get; private set; } = false;
-// does nothing yet
+
+    /// <summary>
+    /// Per-entity population scaling. Key is the entity prototype ID (must match a key in
+    /// <see cref="LeadersToSpawn"/> or <see cref="GruntsToSpawn"/>).
+    /// When present the scaled count replaces the static count for that entity.
+    /// Formula: slots = Benchmark + floor((playerCount - WhenToBeginScaling) * Scale)
+    /// </summary>
+    [DataField("scaling", required: false)]
+    public Dictionary<string, JobScaleEntry> Scaling { get; private set; } = new();
+
     [DataField("Markers", required: false)]
     public Dictionary<ThreatMarkerType, string> Markers { get; private set; } = new Dictionary<ThreatMarkerType, string>();
     // threatmarkertype, custommarkerid. if blank use generic
