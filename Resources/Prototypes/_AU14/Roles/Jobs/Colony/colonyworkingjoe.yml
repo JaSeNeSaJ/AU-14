@@ -79,9 +79,6 @@
       - Colony
       - WEYA
       - CMB
-    - type: MovementSpeedModifier
-      baseWalkSpeed: 2.8
-      baseSprintSpeed: 3.25
     - type: Tag
       tags:
       - WorkingJoe
@@ -100,7 +97,7 @@
   name: Spawn Point Working Joe (Colony)
   components:
   - type: SpawnPoint
-    job_id: AU14JobWorkingJoe
+    job_id: AU14JobColonyWorkingJoe
   - type: Sprite
     state: syn_spawn
 
