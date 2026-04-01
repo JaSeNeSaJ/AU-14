@@ -49,6 +49,8 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - FORECONFirstRecon
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 - type: entity
   id: AUPlanetShepherdsPride
   name: Shepherds' Pride
@@ -102,6 +104,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCWPSRanger
       AU14JobLEOBase: AU14JobCivilianCWPSRanger
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 
 
@@ -147,6 +151,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 
 
@@ -201,6 +207,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
   id: AUPlanetGixensCaverns
@@ -226,6 +234,8 @@
     opforinship: true
     daycycleenabled: false
     #faction: ua
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
   id: AUPlanetFlight
@@ -264,6 +274,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
   id: AUPlanetLV759
@@ -310,6 +322,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCiviliannspaConstable
       AU14JobLEOBase: AU14JobCiviliannspaConstable
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 - type: entity
   id: AUPlanetLV327
   name: Port Neroid
@@ -358,6 +372,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 - type: entity
   id: AUPlanetCorsatStation
   name: Corsat Station
@@ -397,6 +413,8 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 - type: entity
   id: AUPlanetSorokyne
   name: Sorokyne Strata
@@ -438,6 +456,8 @@
     - apethreat
     - apethreatcf
     - wendigoThreat
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
   id: AUPlanetTrijent
@@ -480,6 +500,8 @@
     - FORECONFirstRecon
     threats:
     - XenoThreat
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 
 - type: entity
@@ -523,6 +545,8 @@
     - ProfessorVonBandolier
     threats:
     - XenoThreat
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
   id: AuPlanetKutjevo
@@ -564,6 +588,8 @@
     - ProfessorVonBandolier
     threats:
     - XenoThreat
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
 
 
 - type: entity
@@ -606,3 +632,5 @@
     - ProfessorVonBandolier
     threats:
     - XenoThreat
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale

@@ -1,4 +1,4 @@
-﻿using Content.Shared._RMC14.IdentityManagement;
+using Content.Shared._RMC14.IdentityManagement;
 using Content.Shared._RMC14.Medical.HUD.Components;
 using Content.Shared._RMC14.Medical.Unrevivable;
 using Content.Shared._RMC14.Repairable;
@@ -88,6 +88,26 @@ public abstract class SharedSynthSystem : EntitySystem
 
         RemCompDeferred<RMCRevivableComponent>(ent.Owner);
         RemCompDeferred<SlowOnDamageComponent>(ent.Owner);
+    }
+
+    public void SetGunRestriction(EntityUid ent, bool value)
+    {
+        if (TryComp<SynthComponent>(ent, out var comp))
+        {
+            comp.CanUseGuns = value;
+            DirtyEntity(ent);
+        }
+        else return;
+    }
+
+    public void SetMeleeRestriction(EntityUid ent, bool value)
+    {
+        if (TryComp<SynthComponent>(ent, out var comp))
+        {
+            comp.CanUseMeleeWeapons = value;
+            DirtyEntity(ent);
+        }
+        else return;
     }
 
     private void OnMeleeAttempted(Entity<SynthComponent> ent, ref AttackAttemptEvent args)

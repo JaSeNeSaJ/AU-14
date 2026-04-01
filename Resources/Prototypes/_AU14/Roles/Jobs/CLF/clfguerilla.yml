@@ -44,7 +44,7 @@
     jumpsuit: CMJumpsuitColonist
     shoes: RMCBootsPMCFilled
     ears: AU14CLFHeadset
-    neck: RMCCLFArmband
+   # neck: RMCCLFArmband
 
 - type: entity
   parent: CMSpawnPointJobBase
