@@ -325,6 +325,8 @@
   blacklist:
     components:
     - BorgChassis
+    tags:
+      - WorkingJoe
   icon: _AU14/Interface/Emotes/warcry.png
   chatMessages: ["au14-chat-emote-msg-warcry"]
   chatTriggers:
@@ -350,6 +352,8 @@
   blacklist:
     components:
     - BorgChassis
+    tags:
+      - WorkingJoe
   icon: _AU14/Interface/Emotes/corpsman.png
   chatMessages: ["au14-chat-emote-msg-corpsman"]
   chatTriggers:
