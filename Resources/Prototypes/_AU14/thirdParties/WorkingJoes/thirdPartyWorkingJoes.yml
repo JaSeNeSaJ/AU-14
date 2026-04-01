@@ -12,7 +12,7 @@
   partyspawn: WorkingJoesAPOLLO
   entrymethod: shuttle
   weight:  20
-  minplayers: 0
+  minplayers: 400 # admins spawn only
   maxplayers: 400
   GhostsNeeded: 3
   roundstart: false
@@ -31,7 +31,7 @@
   partyspawn: WorkingJoesNoAPOLLO
   entrymethod: shuttle
   weight:  20
-  minplayers: 0
+  minplayers: 400 # admins spawn only
   maxplayers: 400
   GhostsNeeded: 2
   roundstart: false
