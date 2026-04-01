@@ -205,3 +205,11 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianPaPOfficer
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyWorkingJoe
+  name: Working Joe ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobColonyWorkingJoe
