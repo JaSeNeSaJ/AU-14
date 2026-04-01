@@ -6,9 +6,8 @@
   - type: StorageFill
     contents:
     - id: CMScrewdriver
-    - id: CMCrowbar
     - id: CMWirecutter
-    - id: CMWrench
+    - id: AU14MaintenanceJack
     - id: RMCCableCoil30
     - id: RMCPowerCellHigh
     - id: CMWelderSmall

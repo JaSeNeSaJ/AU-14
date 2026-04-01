@@ -30,8 +30,6 @@
   #    mindRoles:
    #   - MindRoleRunawaySynth
 
-
-
 - type: entity
   parent: BaseMindRoleAntag
   id: MindRoleRunawaySynth
@@ -52,7 +50,36 @@
   objective: roles-antag-synth-objective
   isCM: true
 
+## CLF subverted synth
 
+- type: entity
+  id: CLFSubvertedSynth
+  parent: BaseGameRule
+  components:
+  - type: CLFSubvertedSynthRule
+  - type: AntagSelection
+    selectionTime: PostPlayerSpawn
+    definitions:
+    - prefRoles: [ CLFSubvertedSynthRole ]
+    
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFSubvertedSynth
+  name: CLF Subverted Synth Role
+  components:
+  - type: MindRole
+    antagPrototype: CLFSubvertedSynthRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFSubvertedSynthRole
+  name: roles-antag-clf-subverted-synth-name
+  antagonist: true
+  setPreference: false
+  objective: roles-antag-clf-subverted-synth-objective
+  isCM: true
 
 ## fugitive
 

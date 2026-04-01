@@ -23,6 +23,7 @@
   - DistressSignal
   blacklistedgamemodes:
   - ColonyFall
+  jobScaling: DefaultDistressScale
   winconditions:
   - KillAllGovforRule
   - KillAllApeRule
