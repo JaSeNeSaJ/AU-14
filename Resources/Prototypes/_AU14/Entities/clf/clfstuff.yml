@@ -181,12 +181,11 @@
   - AU14CrateCivilianClothingRandom
   - AU14CrateCLFinitalTools
   - RMCCrateMedicalFirstAid
-  - RMCIntelTechTree_clf
   - RMCComputerIntelCLF
   - ComputerObjectivesCLF
   - AU14AnalyzerMachineCLF
   - RMCLampTripod
-
+  - RMCTechTreeConsoleCLF
 - type: entity
   name: Generic Safhouse Marker
   parent: MarkerBase

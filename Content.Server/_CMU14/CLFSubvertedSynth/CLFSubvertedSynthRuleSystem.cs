@@ -7,6 +7,7 @@ using Content.Server.Roles;
 using Content.Shared._CMU14.CLFSubverter;
 using Content.Shared._RMC14.Medical.Defibrillator;
 using Content.Shared._RMC14.Synth;
+using Content.Shared.AU14.CLF;
 using Content.Shared.Database;
 using Content.Shared.Medical;
 using Content.Shared.Mind.Components;
@@ -62,6 +63,7 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
         //_synth.SetGunRestriction(args.Target, true);
         //_synth.SetMeleeRestriction(args.Target, true);
         var subvertedComp = EnsureComp<CLFSubvertedSynthComponent>(args.Target);
+        EnsureComp<CLFMemberComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind,
             LogImpact.Medium,
             $"{ToPrettyString(args.Target)} had a CLF synth subverter used on them");
@@ -87,6 +89,7 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
         //_synth.SetGunRestriction(args.Target, false);
         //_synth.SetMeleeRestriction(args.Target, true);
         RemCompDeferred<CLFSubvertedSynthComponent>(args.Target);
+        RemCompDeferred<CLFMemberComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind, LogImpact.Medium,
             $"{ToPrettyString(args.Target)} has been repaired from subversion.");
 

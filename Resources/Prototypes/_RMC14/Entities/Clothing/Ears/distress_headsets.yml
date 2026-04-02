@@ -84,7 +84,7 @@
       key_slots:
       - CMEncryptionKeyCommon
       - RMCEncryptionKeyLiaison
-  - type: GrantTacMapAlert
+
   - type: GrantSquadLeaderTracker
     defaultMode: LeaderPmc
     trackerModes:
@@ -132,7 +132,7 @@
       key_slots:
       - CMEncryptionKeyCommon
       - RMCEncryptionKeyLiaison
-  - type: GrantTacMapAlert
+
   - type: RMCHeadset
     radioTextIncrease: 3
   - type: GrantSquadLeaderTracker
@@ -155,7 +155,7 @@
       - CMEncryptionKeyCommon
       - RMCEncryptionKeyLiaison
   - type: GrantMarineIcons
-  - type: GrantTacMapAlert
+
   - type: GrantSquadLeaderTracker
     defaultMode: LeaderGoon
     trackerModes:
@@ -188,7 +188,7 @@
       - CMEncryptionKeyCommon
       - RMCEncryptionKeyLiaison
   - type: GrantMarineIcons
-  - type: GrantTacMapAlert
+
   - type: RMCHeadset
     radioTextIncrease: 3
   - type: GrantSquadLeaderTracker
@@ -245,7 +245,7 @@
     trackerModes:
     - SquadLeader
     - FORECONCommandingOfficer
-      
+
 # Paramarine Hybrisa survivor insert
 - type: entity
   parent: RMCHeadsetIconsPara
@@ -283,7 +283,7 @@
       radioTextIncrease: 2
     - type: GrantSquadLeaderTracker
       defaultMode: ParaCommander
-          
+
 - type: entity
   parent: RMCHeadsetPara
   id: RMCHeadsetParaOfficer
@@ -324,7 +324,7 @@
       key_slots:
       - CMEncryptionKeySOF
   - type: GrantMarineIcons
-  - type: GrantTacMapAlert
+
   - type: GrantSquadLeaderTracker
     defaultMode: MARSOCLeader
     trackerModes:

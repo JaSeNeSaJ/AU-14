@@ -34,6 +34,8 @@
   - AU14JobCivilianMiner
   - AU14JobCivilianPrisoner
   - AU14JobCivilianKellandWarden
+  - AU14JobMobGoon
+  - AU14JobMobBoss
   departmentRadio: null
   headOfDepartment: null
   faction: colonist

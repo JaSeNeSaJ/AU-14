@@ -32,6 +32,7 @@
     - type: NpcFactionMember
       factions:
       - CLF
+    - type: CLFMember
     - type: JobPrefix
       prefix: rmc-job-prefix-clf-cell-commander
     - type: SquadLeader

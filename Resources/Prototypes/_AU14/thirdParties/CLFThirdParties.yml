@@ -62,7 +62,7 @@
   partyspawn: CLFReinforcementsSpawnIntel
   entrymethod: ground
   weight: 1
-  minplayers: 500
+  minplayers: 0
   maxplayers: 600
   GhostsNeeded: 600
   roundstart: false
@@ -81,7 +81,7 @@
   partyspawn: CLFReinforcementsSpawnIntelMachineGunner
   entrymethod: ground
   weight: 1
-  minplayers: 500
+  minplayers: 0
   maxplayers: 600
   GhostsNeeded: 600
   roundstart: false
