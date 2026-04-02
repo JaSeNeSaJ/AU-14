@@ -9,3 +9,5 @@ au14-job-supervisors-mobgoon = The family boss
 
 au14-job-supervisors-wy = The highest ranking executive
 
+au14-job-supervisors-workingjoe-military = the Platoon Commander, warship AI core
+au14-job-supervisors-workingjoe-colony = the Colony Administrator, colony AI core

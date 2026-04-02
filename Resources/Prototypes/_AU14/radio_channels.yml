@@ -116,3 +116,11 @@
   color: "#2e4f68"
   longRange: true
   faction: "govfor"
+
+- type: radioChannel
+  id: AI
+  name: chat-radio-ai
+  keycode: "$"
+  frequency: 7676
+  color: "#d39d22"
+  longRange: true
