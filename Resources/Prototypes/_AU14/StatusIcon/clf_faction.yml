@@ -1,0 +1,12 @@
+# CLF team identifier - visible only to other CLF members
+- type: factionIcon
+  id: CLFFaction
+  priority: 11
+  showTo:
+    components:
+    - ShowAntagIcons
+    - CLFMember
+  icon:
+    sprite: /Textures/_RMC14/Interface/faction_icons.rsi
+    state: clf
+
