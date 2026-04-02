@@ -3,7 +3,7 @@
   id: AU14JobOPFORMilitaryDoctor
   name: au14-job-name-opforMilitaryDoctor
   description: au14-job-description-opforMilitaryDoctor
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:AgeRequirement
     requiredAge: 25

@@ -131,7 +131,7 @@
     - SquadLeader
     - FireteamLeader
     - BattleBuddy
-  - type: GrantTacMapAlert
+
 
   - type: Sprite
     state: generic_headset

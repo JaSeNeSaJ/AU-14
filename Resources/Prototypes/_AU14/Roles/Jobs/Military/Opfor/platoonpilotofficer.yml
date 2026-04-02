@@ -3,7 +3,7 @@
   id: AU14JobOpforDSPilot
   name: au14-job-name-opfordspilot
   description: au14-job-description-opfordspilot
-  setPreference: true
+  setPreference: false
   canBeAntag: false
   requirements:
   - !type:AgeRequirement

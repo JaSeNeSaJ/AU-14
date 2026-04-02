@@ -3,7 +3,7 @@
   id: AU14JobOpforSquadAutomaticRifleman
   name: au14-job-name-opforsquadautomaticrifleman
   description: au14-job-description-opforsquadautomaticrifleman
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:TraitsRequirement
     inverted: true

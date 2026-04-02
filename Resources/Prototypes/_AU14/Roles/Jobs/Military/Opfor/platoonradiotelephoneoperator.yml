@@ -3,7 +3,7 @@
   id: AU14JobOpforRadioTelephoneOperator
   name: au14-job-name-radiotelephoneoperator
   description: au14-job-description-radiotelephoneoperator
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:TraitsRequirement
     inverted: true
