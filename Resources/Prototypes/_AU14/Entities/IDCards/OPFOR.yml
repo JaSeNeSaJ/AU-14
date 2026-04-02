@@ -151,3 +151,15 @@
   - type: ItemIFF
     factions:
     - GOVFOR
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardOPFORWorkingJoe
+  categories: [ HideSpawnMenu ]
+  name: Working Joe ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobOPFORWorkingJoe
+  - type: ItemIFF
+    factions:
+    - GOVFOR
