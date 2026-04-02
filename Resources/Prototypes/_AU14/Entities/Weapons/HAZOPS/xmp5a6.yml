@@ -60,6 +60,15 @@
         whitelist:
           tags:
           - RMCM5Bayonet
+      rmc-aslot-rail:
+        whitelist:
+          tags:
+          - RMCAttachmentRailFlashlight
+          - RMCAttachmentMagneticHarness
+          - RMCAttachmentS5RedDotSight
+          - RMCAttachmentS6ReflexSight
+          - RMCAttachmentS84xTelescopicScope
+          - RMCAttachmentS42xTelescopicMiniscope
       rmc-aslot-underbarrel:
         startingAttachable: AU14AttachmentM203A4GrenadeLauncher
         whitelist:
@@ -187,7 +196,6 @@
     whitelist:
       tags:
       - CMCartridgeRifle10x24mm
-      - AU14MagazineXMP5A6
     proto: CMCartridgeRifle10x24mm
     capacity: 60
   - type: Sprite
