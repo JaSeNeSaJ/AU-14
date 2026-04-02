@@ -61,7 +61,7 @@
     selectionTime: PostPlayerSpawn
     definitions:
     - prefRoles: [ CLFSubvertedSynthRole ]
-    
+
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -103,7 +103,12 @@
       - type: Fugitive
       mindRoles:
       - MindRoleFugitive
+      startingGear: AU14GearFugitive
 
+- type: startingGear
+  id: AU14GearFugitive
+  equipment:
+    pocket1: AU14ObjectiveItemWYLaptop
 
 
 - type: entity
@@ -205,6 +210,7 @@
         text: spy-role-greeting
         color: DarkSlateGray
         sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+      startingGear: AU14GearCorporateSpy
       components:
       - type: CorporateSpy
       mindRoles:
@@ -229,6 +235,11 @@
   objective: roles-antag-spy-objective
   isCM: True
 
+- type: startingGear
+  id: AU14GearCorporateSpy
+  equipment:
+    pocket1: AU14IDCardCorporateSpy
+
 - type: entity
   parent: RMCSatchelBlack
   id: AU14DrugDealerDrugBackpack
@@ -247,3 +258,209 @@
       amount: 2
     - id: AU14PillBottleRMCPsilocybin
       amount: 2
+
+## CLF Veteran
+
+- type: entity
+  id: CLFVeteran
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+  - type: CLFVeteranRule
+  - type: AntagSelection
+    selectionTime: IntraPlayerSpawn
+    definitions:
+    - prefRoles: [ CLFVeteranRole ]
+      max: 1
+      playerRatio: 15
+      briefing:
+        text: clfveteran-role-greeting
+        color: OliveDrab
+        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+      startingGear: AU14GearCLFVeteran
+      components:
+      - type: CLFVeteran
+      - type: Skills
+        skills:
+          RMCSkillFirearms: 3
+          RMCSkillMeleeWeapons: 3
+          RMCSkillCqc: 3
+          RMCSkillEndurance: 3
+          RMCSkillFireman: 3
+          RMCSkillConstruction: 3
+          RMCSkillLeadership: 3
+          RMCSkillMedical: 3
+      mindRoles:
+      - MindRoleCLFVeteran
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFVeteran
+  name: CLF Veteran Role
+  components:
+  - type: MindRole
+    antagPrototype: CLFVeteranRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFVeteranRole
+  name: roles-antag-clfveteran-name
+  antagonist: true
+  category: Colony Antags
+  setPreference: true
+  objective: roles-antag-clfveteran-objective
+  isCM: true
+
+- type: startingGear
+  id: AU14GearCLFVeteran
+  equipment:
+    suitstorage: AU14WeaponRevolverM44Inscribed
+
+## Strike Organizer
+
+- type: entity
+  id: StrikeOrganizer
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+  - type: StrikeOrganizerRule
+  - type: AntagSelection
+    selectionTime: IntraPlayerSpawn
+    definitions:
+    - prefRoles: [ StrikeOrganizerRole ]
+      max: 1
+      playerRatio: 15
+      briefing:
+        text: strikeorganizer-role-greeting
+        color: DarkRed
+        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+      startingGear: AU14GearStrikeOrganizer
+      components:
+      - type: StrikeOrganizer
+      mindRoles:
+      - MindRoleStrikeOrganizer
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleStrikeOrganizer
+  name: Strike Organizer Role
+  components:
+  - type: MindRole
+    antagPrototype: StrikeOrganizerRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: StrikeOrganizerRole
+  name: roles-antag-strikeorganizer-name
+  antagonist: true
+  category: Colony Antags
+  setPreference: true
+  objective: roles-antag-strikeorganizer-objective
+  isCM: true
+
+- type: startingGear
+  id: AU14GearStrikeOrganizer
+  equipment:
+    back: AU14StrikeOrganizerBackpack
+
+- type: entity
+  parent: RMCBackpackRTO
+  id: AU14StrikeOrganizerBackpack
+  name: organizer's radio pack
+  description: A radio telephone pack carried by a labor organize.
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMegaphone
+    - id: RMCSpaceCash1000
+      amount: 2
+
+## Cannibal
+
+- type: entity
+  id: Cannibal
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+  - type: CannibalRule
+  - type: AntagSelection
+    selectionTime: PostPlayerSpawn
+    definitions:
+    - prefRoles: [ CannibalRole ]
+      max: 1
+      playerRatio: 15
+      whitelist:
+        components:
+        - AU14FoodServiceWorkerMarker
+      briefing:
+        text: cannibal-role-greeting
+        color: DarkRed
+        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+      components:
+      - type: Cannibal
+      mindRoles:
+      - MindRoleCannibal
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCannibal
+  name: Cannibal Role
+  components:
+  - type: MindRole
+    antagPrototype: CannibalRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CannibalRole
+  name: roles-antag-cannibal-name
+  antagonist: true
+  category: Colony Antags
+  setPreference: true
+  objective: roles-antag-cannibal-objective
+  isCM: true
+
+## Serial Killer
+
+- type: entity
+  id: SerialKiller
+  parent: BaseGameRule
+  components:
+  - type: GameRule
+  - type: SerialKillerRule
+  - type: AntagSelection
+    selectionTime: IntraPlayerSpawn
+    definitions:
+    - prefRoles: [ SerialKillerRole ]
+      max: 1
+      playerRatio: 15
+      briefing:
+        text: serialkiller-role-greeting
+        color: DarkRed
+        sound: "/Audio/Ambience/Antag/headrev_start.ogg"
+      components:
+      - type: SerialKiller
+      mindRoles:
+      - MindRoleSerialKiller
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleSerialKiller
+  name: Serial Killer Role
+  components:
+  - type: MindRole
+    antagPrototype: SerialKillerRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: SerialKillerRole
+  name: roles-antag-serialkiller-name
+  antagonist: true
+  category: Colony Antags
+  setPreference: true
+  objective: roles-antag-serialkiller-objective
+  isCM: true
+

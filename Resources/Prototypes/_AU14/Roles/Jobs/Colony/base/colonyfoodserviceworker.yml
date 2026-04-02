@@ -27,6 +27,7 @@
         RMCSkillFirearms: 2
     - type: JobPrefix
       prefix: au14-job-prefix-civilianfoodserviceworker
+    - type: AU14FoodServiceWorkerMarker
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi

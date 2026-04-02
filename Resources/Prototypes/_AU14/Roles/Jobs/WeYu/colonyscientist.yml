@@ -4,6 +4,7 @@
   name: au14-job-name-civilianscientist
   description: au14-job-description-civilianscientist
   setPreference: true
+  canebantag: true
   playTimeTracker: AU14JobCivilianScientist
   ranks:
     RMCRankCivilianScientist: []
