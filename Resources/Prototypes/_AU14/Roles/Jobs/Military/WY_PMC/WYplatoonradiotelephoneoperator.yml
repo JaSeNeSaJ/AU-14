@@ -8,12 +8,13 @@
     AU14RankWeYuSeniorOperator:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORRadioTelephoneOperator
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankWeYuOperator: []
   startingGear: AU14GearGOVFORRadioTelephoneOperator
   dummyStartingGear: AU14GearGOVFORRadioTelephoneOperatorDummy
   icon: "AU14JobIconRTO"
   requireAdminNotify: false
+  spawnMenuRoleName: Fireteam Leader (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

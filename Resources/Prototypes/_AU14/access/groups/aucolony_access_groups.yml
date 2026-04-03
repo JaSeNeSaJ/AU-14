@@ -8,9 +8,10 @@
   - CMAccessColonyEngineering
   - CMAccessColonyLogistics
   - CMAccessColonyBrig
-  - CMAccessColonyCommand
+  - CMAccessRequisitions
   - CMAccessColonyMedbay
   - CMAccessColonyArmory
+  - CMAccessColonyCommand
 
 - type: accessGroup
   id: auengi

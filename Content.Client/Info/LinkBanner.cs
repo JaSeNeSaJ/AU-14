@@ -48,13 +48,15 @@ namespace Content.Client.Info
             buttons.AddChild(guidebookButton);
 
             var changelogButton = new ChangelogButton();
+            changelogButton.Visible = false;
             changelogButton.OnPressed += args => UserInterfaceManager.GetUIController<ChangelogUIController>().ToggleWindow();
             buttons.AddChild(changelogButton);
 
             var roadmapButton = new Button
             {
                 Text = Loc.GetString("cm-ui-roadmap"),
-                StyleClasses = { StyleBase.ButtonCaution }
+                StyleClasses = { StyleBase.ButtonCaution },
+                Visible = false
             };
             roadmapButton.OnPressed += _ => UserInterfaceManager.GetUIController<RoadmapUIController>().ToggleRoadmap();
             buttons.AddChild(roadmapButton);

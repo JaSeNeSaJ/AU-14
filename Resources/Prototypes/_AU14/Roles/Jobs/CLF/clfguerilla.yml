@@ -21,6 +21,7 @@
     - type: NpcFactionMember
       factions:
       - CLF
+    - type: CLFMember
     - type: Skills
       skills:
         RMCSkillEndurance: 1
@@ -44,7 +45,7 @@
     jumpsuit: CMJumpsuitColonist
     shoes: RMCBootsPMCFilled
     ears: AU14CLFHeadset
-    neck: RMCCLFArmband
+   # neck: RMCCLFArmband
 
 - type: entity
   parent: CMSpawnPointJobBase

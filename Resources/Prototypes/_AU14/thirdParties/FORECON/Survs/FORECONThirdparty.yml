@@ -15,7 +15,7 @@
 - type: auThirdParty
   id: FORECON
   partyspawn: FORECONSpawn
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -23,7 +23,7 @@
   weight: 20
   minplayers: 100
   maxplayers: 400
-  GhostsNeeded: 7
+  GhostsNeeded: 0
   roundstart: true
 
 - type: partySpawn
@@ -43,7 +43,7 @@
 - type: auThirdParty
   id: FORECONAlt
   partyspawn: FORECONSpawnAlt
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -71,7 +71,7 @@
 - type: auThirdParty
   id: FORECONAlt2
   partyspawn: FORECONSpawnAlt2
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -79,5 +79,5 @@
   weight: 20
   minplayers: 51
   maxplayers: 99
-  GhostsNeeded: 5
+  GhostsNeeded: 0
   roundstart: true

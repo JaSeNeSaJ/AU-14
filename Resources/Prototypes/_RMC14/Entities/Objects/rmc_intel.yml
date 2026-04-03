@@ -243,7 +243,7 @@
           - !type:TechRequisitionsBudgetEvent
             amount: 5000
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional supply budget has been authorised for this operation.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -257,7 +257,7 @@
           - !type:TechDropshipBudgetEvent
             amount: 2000
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional dropship part fabricator points have been authorised for this operation.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -287,7 +287,7 @@
           - !type:TechLogisticsDeliveryEvent
             object: RMCOrbitalCannonWarheadExplosive
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional Orbital Bombardment warheads (HE) have been delivered to Requisitions' ASRS.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -301,7 +301,7 @@
           - !type:TechLogisticsDeliveryEvent
             object: RMCOrbitalCannonWarheadIncendiary
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional Orbital Bombardment warheads (Incendiary) have been delivered to Requisitions' ASRS.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -315,7 +315,7 @@
           - !type:TechLogisticsDeliveryEvent
             object: RMCOrbitalCannonWarheadCluster
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional Orbital Bombardment warheads (Cluster) have been delivered to Requisitions' ASRS.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -344,7 +344,7 @@
           events:
           - !type:TechCryoMarinesEvent
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional troops are being taken out of cryo.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -355,7 +355,7 @@
           events:
           - !type:TechCryoSpecEvent
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: An additional specialist is being taken out of cryo.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -384,7 +384,7 @@
           - !type:TechLogisticsDeliveryEvent
             object: RMCNuke
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: The deployment of Nuclear Ordnance have been authorized and will be delivered to the Requisitions Department, via ASRS.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -515,7 +515,7 @@
           - !type:TechRequisitionsBudgetEvent
             amount: 5000
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional supply budget has been authorised for this operation.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -686,7 +686,7 @@
           - !type:TechRequisitionsBudgetEvent
             amount: 5000
           - !type:TechAnnounceEvent
-            author: ALMAYER SPECIAL ASSETS AUTHORIZED
+            author:  SPECIAL ASSETS AUTHORIZED
             message: Additional supply budget has been authorised for this operation.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
@@ -738,8 +738,8 @@
             state: budget_req
         - name: Insurgent Reinforcements
           description: Summon reinforcements from a neighboring cell.
-          cost: 3
-          increase: 1
+          cost: 15
+          increase: 5
           repurchasable: true
           events:
           - !type:TechPartySpawnEvent

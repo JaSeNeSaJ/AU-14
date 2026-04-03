@@ -3,7 +3,7 @@
   id: AU14JobOpforSquadSergeant
   name: au14-job-name-opforsquadsergeant
   description: au14-job-description-opforsquadsergeant
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:TraitsRequirement
     inverted: true
@@ -18,6 +18,7 @@
   dummyStartingGear: AU14GearopforSquadSergantDummy
   icon: "AU14JobIconOPFORPlatoonSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Squad Sergeant (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

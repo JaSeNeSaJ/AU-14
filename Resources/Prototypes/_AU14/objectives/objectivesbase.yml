@@ -30,7 +30,7 @@
     Mode: DistressSignal
     govforMinorObjectives: 10
     govforMajorObjectives: 5
-    requiredwinpointsgovfor: 30
+    requiredwinpointsgovfor: 100
 
 
 

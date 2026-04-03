@@ -16,6 +16,7 @@
     - type: NpcFactionMember
       factions:
       - CLF
+    - type: CLFMember
     - type: Skills
       skills:
         RMCSkillFirearms: 2

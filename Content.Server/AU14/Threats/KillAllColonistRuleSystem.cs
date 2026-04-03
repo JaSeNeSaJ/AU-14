@@ -2,6 +2,8 @@ using System;
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
+using Content.Server.RoundEnd;
+using Content.Shared.AU14;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
@@ -60,16 +62,19 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
 
         if (percentDead >= requiredPercent)
         {
-
             if (_gameTicker.RunLevel != GameRunLevel.InRound)
                 return;
 
-            // End round, threat wins
+            // End round, threat wins. Prefer configured win message.
             var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
             if (!string.IsNullOrEmpty(winMessage))
-                _gameTicker.EndRound(winMessage!);
+            {
+                _gameTicker.EndRound(winMessage);
+            }
             else
+            {
                 _gameTicker.EndRound("Threat victory: Required percentage of Colonists eliminated.");
+            }
         }
     }
 }

@@ -16,7 +16,7 @@
 - type: auThirdParty
   id: USArmy
   partyspawn: USArmySpawn
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -24,7 +24,7 @@
   weight: 20
   minplayers: 100
   maxplayers: 400
-  GhostsNeeded: 7
+  GhostsNeeded: 0
   roundstart: true
 
 - type: partySpawn
@@ -41,7 +41,7 @@
 - type: auThirdParty
   id: USArmyAlt
   partyspawn: USArmySpawnAlt
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall
@@ -68,7 +68,7 @@
 - type: auThirdParty
   id: USArmyAlt2
   partyspawn: USArmySpawnAlt2
-  blacklistedgamemodes: 
+  blacklistedgamemodes:
     - insurgency
     - forceonforce
     - colonyfall

@@ -5,17 +5,17 @@
   name: Force on Force
   showInVote: true
   description: Two units face each other in combat.
-  minPlayers: 55
+  minPlayers: 0
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:
   #- AUPlanetGixensCaverns Rout of rotation till fixed - eg
   - AUPlanetShepherdsPride
-  - AUPlanetFlight
+  #- AUPlanetFlight
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-  - AUPlanetSorokyne
+  #- AUPlanetSorokyne
   - AUPlanetStableGarrison
   - AUPlanetTrijent
   rules:
@@ -25,7 +25,6 @@
   - AddOpfor
   - RemoveAllJobs
 
-
 - type: gamePreset
   id: Insurgency
   alias:
@@ -33,43 +32,45 @@
   name: Insurgency
   showInVote: true
   description: Insurgency mode
-  minPlayers: 30
+  minPlayers: 0
   requiresGovforVote: true
   supportedPlanets:
     - AUPlanetShepherdsPride
     - AUPlanetLV624
-    - AUPlanetLV747
-    - AUPlanetSorokyne
-#    - AUPlanetLV759 removed pending rework
+    #- AUPlanetLV747
+    #- AUPlanetSorokyne
+    #- AUPlanetLV759 removed pending rework
   rules:
   - AuVoteRule
   - PlatoonSpawn
   - AddGovfor
   - AddClf
   - ColonyAntags
+  - InsWinConditionsRule
 
 - type: gamePreset
   id: DistressSignal
   name: Distress Signal
   showInVote: true
-  description: Distress Signal
+  description: Investigate a mysterious distress signal as government forces.
   requiresGovforVote: true
   supportedPlanets:
   - AUPlanetShepherdsPride
   - AUPlanetLV747
-  - AUPlanetFlight
+  #- AUPlanetFlight
   - AUPlanetLV327
-  - AUPlanetSorokyne
+  #- AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - AuPlanetFiorina
+  - AuPlanetKutjevo
+  - AuPlanetShivasSnowball
   rules:
   - AuVoteRule
   - PlatoonSpawn
   - AddGovfor
   - RemoveAllJobs
-
-
 
 - type: gamePreset
   id: ColonyFall
@@ -77,7 +78,7 @@
     - colonyfall
   name: Colony Fall
   showInVote: true
-  description: Colony Fall mode
+  description: Live in an offworld colony as it falls into chaos.
   rules:
     - AuVoteRule
     - ColonyAntags
@@ -86,7 +87,7 @@
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     - AUPlanetLV327
-    - AUPlanetSorokyne
+   # - AUPlanetSorokyne
     - AUPlanetStableGarrison
 
 - type: gamePreset
@@ -183,9 +184,8 @@
   - type: AddJobsRule
     jobs:
       AU14JobCLFCellLeader: 1
-      AU14JobCLFPhysician: 2
-      AU14JobCLFGuerilla: 6
-      AU14JobCLFMachineGunner: 1
+      AU14JobCLFPhysician: 1
+      AU14JobCLFGuerilla: 3
 
 - type: entity
   id: ColonyAntags

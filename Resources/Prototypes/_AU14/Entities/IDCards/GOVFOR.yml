@@ -206,3 +206,15 @@
     - opforjtac
     - OpforBravo
     - OpforCharlie
+
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardGOVFORWorkingJoe
+  categories: [ HideSpawnMenu ]
+  name: Working Joe ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobGOVFORWorkingJoe
+  - type: ItemIFF
+    factions:
+    - GOVFOR

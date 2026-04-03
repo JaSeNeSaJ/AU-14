@@ -44,6 +44,7 @@
     - type: NpcFactionMember
       factions:
       - CLF
+    - type: CLFMember
     - type: JobPrefix
       prefix: rmc-job-prefix-clf-specialist
   hidden: true

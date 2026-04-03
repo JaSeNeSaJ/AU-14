@@ -46,7 +46,7 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
     /// Useful for FORECON so any survivor preference will be overriden to FORECON survivor
     /// Basically, if security survivor is overriden by forecon survivor, it will be as if sec survivor: high is forecon survivor: high
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField("joboverrides"), AutoNetworkedField]
     public Dictionary<ProtoId<JobPrototype>, ProtoId<JobPrototype>>? ColonyJobOverrides;
 
     /// <summary>
@@ -137,7 +137,19 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
 
 
     [DataField("thirdpartyinterval"), AutoNetworkedField]
-    public int? ThirdPartyInterval = null;
+    public int? ThirdPartyInterval =2900;
+
+    /// <summary>
+    /// Optional job scaling prototype for human job slots in ForceOnForce mode.
+    /// </summary>
+    [DataField("jobScalingFof")]
+    public ProtoId<JobScalePrototype>? JobScalingFof;
+
+    /// <summary>
+    /// Optional job scaling prototype for human job slots in Insurgency mode.
+    /// </summary>
+    [DataField("jobScalingIns")]
+    public ProtoId<JobScalePrototype>? JobScalingIns;
 
 }
 

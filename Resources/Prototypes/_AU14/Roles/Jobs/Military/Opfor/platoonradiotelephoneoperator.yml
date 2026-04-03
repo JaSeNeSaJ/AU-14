@@ -3,7 +3,7 @@
   id: AU14JobOpforRadioTelephoneOperator
   name: au14-job-name-radiotelephoneoperator
   description: au14-job-description-radiotelephoneoperator
-  setPreference: true
+  setPreference: false
   requirements:
   - !type:TraitsRequirement
     inverted: true
@@ -24,6 +24,7 @@
   dummyStartingGear: AU14GearopforRadioTelephoneOperatorDummy
   icon: "AU14JobIconOPFORSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Fireteam Leader (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

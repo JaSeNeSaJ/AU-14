@@ -776,6 +776,17 @@
 
 - type: entity
   parent: CMUAreaShepOutdoors
+  id: CMUAreaShepESTower
+  name: Experimental Sensor Tower
+  components:
+  - type: Sprite
+    state: comms
+  - type: Area
+    resinAllowed: false
+    minimapColor: '#C5A06FCC'
+
+- type: entity
+  parent: CMUAreaShepOutdoors
   id: CMUAreaShepHiddenLZ4
   name: Northwest Jungle - LZ4
   components:

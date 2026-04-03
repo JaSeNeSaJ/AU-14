@@ -29,6 +29,7 @@
     - type: NpcFactionMember
       factions:
        - CLF
+    - type: CLFMember
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -79,7 +80,7 @@
     job_id: AU14JobCLFCellLeader
   - type: Sprite
     state: syn_spawn
-
+  - type: SafehouseMarker
 - type: playTimeTracker
   id: AU14JobCLFCellLeader
   isHumanoid: true

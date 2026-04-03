@@ -1,0 +1,97 @@
+# Job scaling prototypes.
+# Each prototype contains a dictionary of job prototype IDs and their scaling info.
+#
+# Fields per entry:
+#   scale              - extra slots per player beyond whenToBeginScaling
+#   whenToBeginScaling - player count threshold before scaling kicks in
+#   benchmark          - (optional) if set, overrides the base slot count;
+#                        if omitted, scaling is applied on top of existing slots.
+#
+# Formula (benchmark set):   finalSlots = benchmark + floor((playerCount - whenToBeginScaling) * scale)
+# Formula (benchmark null):  finalSlots = existingSlots + floor((playerCount - whenToBeginScaling) * scale)
+#          Only applies when playerCount > whenToBeginScaling; otherwise slots = base unchanged.
+#
+# Human job scaling is referenced from:
+#   - RMCPlanetMapPrototypeComponent.jobScalingFof for ForceOnForce
+#   - RMCPlanetMapPrototypeComponent.jobScalingIns for Insurgency
+#   - ThreatPrototype.jobScaling for ColonyFall / DistressSignal
+# Threat entity scaling is defined directly on the partySpawn prototype via its 'scaling' dict.
+
+- type: jobScale
+  id: DefaultGovforOpforScale
+  jobs:
+    # --- GOVFOR ---
+    AU14JobGOVFORSquadRifleman:
+      scale: 0.5
+      whenToBeginScaling: 1
+    AU14JobGOVFORPlatoonCorpsman:
+      scale: 0.2
+      whenToBeginScaling: 50
+    AU14JobGOVFORSquadSergeant:
+      scale: 0.1
+      whenToBeginScaling: 50
+    AU14JobGOVFORSquadCombatTech:
+      scale: 0.15
+      whenToBeginScaling: 50
+    # --- OPFOR ---
+    AU14JobOpforSquadRifleman:
+      scale: 0.5
+      whenToBeginScaling: 50
+    AU14JobOpforPlatoonCorpsman:
+      scale: 0.2
+      whenToBeginScaling: 50
+    AU14JobOpforSquadSergeant:
+      scale: 0.1
+      whenToBeginScaling: 50
+    AU14JobOPFORSquadCombatTech:
+      scale: 0.15
+      whenToBeginScaling: 50
+
+- type: jobScale
+  id: DefaultDistressScale
+  jobs:
+    # --- GOVFOR ---
+    AU14JobGOVFORSquadRifleman:
+      scale: 100
+      whenToBeginScaling: 0
+    AU14JobGOVFORPlatoonCorpsman:
+      scale: 0.4
+      whenToBeginScaling: 50
+    AU14JobGOVFORSquadSergeant:
+      scale: 0.01
+      whenToBeginScaling: 50
+    AU14JobGOVFORSquadCombatTech:
+      scale: 0.2
+      whenToBeginScaling: 50
+
+
+- type: jobScale
+  id: DefaultInsurgencyScale
+  jobs:
+    AU14JobLEOBase:
+      scale: 0.04
+      whenToBeginScaling: 40
+    AU14JobLEOLeaderBase:
+      scale: 0.01
+      whenToBeginScaling: 40
+    AU14JobCLFGuerilla:
+      scale: 0.08
+      whenToBeginScaling: 40
+    AU14JobCLFPhysician:
+      scale: 0.02
+      whenToBeginScaling: 40
+    # --- GOVFOR (30%) ---
+    AU14JobGOVFORSquadRifleman:
+      scale: 0.3
+      whenToBeginScaling: 50
+      benchmark: 15
+    AU14JobGOVFORPlatoonCorpsman:
+      scale: 0.04
+      whenToBeginScaling: 40
+    AU14JobGOVFORSquadCombatTech:
+      scale: 0.05
+      whenToBeginScaling: 40
+      benchmark: 4
+
+
+

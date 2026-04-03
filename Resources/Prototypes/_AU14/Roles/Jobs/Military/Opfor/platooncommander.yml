@@ -1,11 +1,10 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobPlatCoBase
   id: AU14JobOpforPlatCo
   name: au14-job-name-opforplatco
   description: au14-job-description-opforplatco
-  setPreference: true
+  setPreference: false
   canBeAntag: false
-  playTimeTracker: AU14JobGOVFORPlatCo
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
@@ -23,12 +22,13 @@
     RMCRankCaptain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatCo
-      time: 432000 # 120 hours
+      time: 360000 # 100 hours
     RMCRankFirstLT: []
   startingGear: AU14GearopforPlatCo
   dummyStartingGear: AU14GearopforPlatCoDummy
   icon: "AU14JobIconOPFORPlatCo"
   requireAdminNotify: true
+  spawnMenuRoleName: Platoon Commander (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opforplatco
   accessGroups:

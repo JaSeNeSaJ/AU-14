@@ -3,7 +3,7 @@
   id: AU14JobOPFORSquadCombatTech
   name: au14-job-name-opforsquadcombattech
   description: au14-job-description-opforsquadcombattech
-  setPreference: true
+  setPreference: false
   overwatchSortPriority: -5
   overwatchRoleName: Combat Technician
   requirements:
@@ -30,6 +30,7 @@
   dummyStartingGear: AU14GearOPFORCTDummy
   icon: "AU14JobIconOPFORCT"
   requireAdminNotify: false
+  spawnMenuRoleName: Combat Tech (OPFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-opfor
   accessGroups:

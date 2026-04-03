@@ -217,6 +217,9 @@
   - ColonyFall
   blacklistedgamemodes:
   - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
 
 - type: partySpawn
   id: cultistPartyThreat
@@ -225,8 +228,17 @@
   gruntsToSpawn:
     cultistJob: 2
     cultistJobtwo: 1
-  scalewithpop: true
   spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.15
+      whenToBeginScaling: 50
+    cultistJobtwo:
+      scale: 0.1
+      whenToBeginScaling: 50
 
 - type: partySpawn
   id: cultistParty
@@ -235,8 +247,17 @@
   gruntsToSpawn:
     cultistJob: 1
     cultistJobtwo: 1
-  scalewithpop: true
   spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.1
+      whenToBeginScaling: 50
+    cultistJobtwo:
+      scale: 0.1
+      whenToBeginScaling: 50
 
 - type: partySpawn
   id: cultistPartyNoQueen
@@ -244,8 +265,14 @@
     cultistJobtwo: 1
   gruntsToSpawn:
     cultistJob: 1
-  scalewithpop: true
   spawnTogether: true
+  scaling:
+    cultistJobtwo:
+      scale: 0.1
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.1
+      whenToBeginScaling: 50
 
 - type: startingGear
   id: CMUGearCultist
@@ -305,12 +332,12 @@
 - type: auThirdParty
   id: cultistThirdParty
   partyspawn: cultistParty
-  entrymethod: ground
+  entrymethod: shuttle
   weight: 3
   minplayers: 70
   maxplayers: 200
-  GhostsNeeded: 5
-  roundstart: true
+  GhostsNeeded: 3
+  roundstart: false
 
 - type: auThirdParty
   id: cultistThirdPartyNoQueen

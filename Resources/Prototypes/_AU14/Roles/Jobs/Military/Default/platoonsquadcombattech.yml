@@ -30,6 +30,7 @@
   dummyStartingGear: AU14GearGOVFORCTDummy
   icon: "AU14JobIconGovCT"
   requireAdminNotify: false
+  spawnMenuRoleName: Combat Tech (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

@@ -74,15 +74,21 @@ public sealed partial class ThreatPrototype : IPrototype
     public string? WinMessage { get; private set; } = null;
 
     [DataField("maxthirdParties")]
-    public int MaxThirdParties { get; private set; } = 4;
+    public int MaxThirdParties { get; private set; } = 7;
 
     [DataField("thirdpartyinterval", required: false)]
 
-    public int ThirdPartyInterval { get; private set; } = 30000;
+    public int ThirdPartyInterval { get; private set; } = 2900;
 
     [DataField("hiveevolution")]
     public bool hiveevolution { get; private set; } = false;
     // if xeno evo should send messages
 
+    /// <summary>
+    /// Optional job scaling prototype for human job slots.
+    /// Used by ColonyFall and DistressSignal modes (Insurgency/FOF use Planet instead).
+    /// </summary>
+    [DataField("jobScaling", required: false)]
+    public ProtoId<JobScalePrototype>? JobScaling { get; private set; }
 
 }

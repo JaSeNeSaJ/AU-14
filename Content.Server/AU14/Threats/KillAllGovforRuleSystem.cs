@@ -1,10 +1,13 @@
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
+using Content.Shared.AU14;
+using Content.Shared.Cuffs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared.Cuffs.Components;
 
 namespace Content.Server.AU14.Threats;
 
@@ -30,41 +33,79 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
         if (ev.NewMobState != MobState.Dead)
             return;
 
+        CheckVictoryCondition();
+    }
+
+    /// <summary>
+    /// Called by KillAllRulesHandcuffSystem when a Govfor entity is handcuffed.
+    /// </summary>
+    public void OnHandcuffEvent(EntityUid uid)
+    {
+
+        CheckVictoryCondition();
+    }
+
+    private void CheckVictoryCondition()
+    {
         // Get the active rule entity and its component to read Percent
         var queryRule = EntityQueryEnumerator<KillAllGovforRuleComponent, GameRuleComponent>();
         if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
             return;
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
+        var countArrests = ruleComp.Arrest;
 
-        // Count total and dead Govfor mobs
+        // Count total and dead/arrested Govfor mobs
         var total = 0;
-        var dead = 0;
+        var eliminated = 0;
 
         var query = _entityManager.EntityQueryEnumerator<MobStateComponent, NpcFactionMemberComponent>();
-        while (query.MoveNext(out var _, out var mobState, out var faction))
+        while (query.MoveNext(out var uid, out var mobState, out var faction))
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "govfor"))
             {
                 total++;
+
+                // Count as eliminated if dead
                 if (mobState.CurrentState == MobState.Dead)
-                    dead++;
+                {
+                    eliminated++;
+                }
+                // Or if arrested flag is set and they're cuffed
+                else if (countArrests && TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0)
+                {
+                    eliminated++;
+                }
             }
         }
 
         if (total == 0)
             return; // nothing to count
 
-        var percentDead = (int) ((double)dead / total * 100.0);
+        var percentEliminated = (int) ((double)eliminated / total * 100.0);
 
-        if (percentDead >= requiredPercent)
+        if (percentEliminated >= requiredPercent)
         {
-            // End round, threat wins
-            var winMessage = _auRoundSystem._selectedthreat.WinMessage;
-            if (!string.IsNullOrEmpty(winMessage))
-                _gameTicker.EndRound(winMessage);
+            if (_gameTicker.RunLevel != GameRunLevel.InRound)
+                return;
+
+            var customMessage = ruleComp.WinMessage;
+            if (!string.IsNullOrEmpty(customMessage))
+            {
+                _gameTicker.EndRound(customMessage);
+            }
             else
-                _gameTicker.EndRound("Threat victory: Required percentage of Govfor eliminated.");
+            {
+                var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+                if (!string.IsNullOrEmpty(winMessage))
+                {
+                    _gameTicker.EndRound(winMessage);
+                }
+                else
+                {
+                    _gameTicker.EndRound("Threat victory: Required percentage of Govfor eliminated.");
+                }
+            }
         }
     }
 }

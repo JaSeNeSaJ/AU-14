@@ -9,12 +9,13 @@
     AU14RankWeYuSeniorCrewChief:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankWeYuCrewChief: []
   startingGear: AU14GearGOVFORDSPilot
   dummyStartingGear: AU14GearGOVFORDSPilotDummy
   icon: "AU14JobIconPilotOfficer"
   requireAdminNotify: false
+  spawnMenuRoleName: Pilot Officer (WYPMC)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

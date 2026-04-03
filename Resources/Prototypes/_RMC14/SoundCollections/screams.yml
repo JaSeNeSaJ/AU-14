@@ -19,8 +19,8 @@
     - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Scream/Scream11.ogg
     - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Scream/Scream12.ogg
     - /Audio/_AU14/Voice/UpdatedVoice/Male/Ryan/Scream/Scream13.ogg
-
-
+    - /Audio/_AU14/Voice/UpdatedVoice/Male/Koala/ScreamWarcry/ScreamWarcry1.ogg
+    - /Audio/_AU14/Voice/UpdatedVoice/Male/Koala/ScreamWarcry/ScreamWarcry2.ogg
 
 - type: soundCollection
   id: CMFemaleScreams

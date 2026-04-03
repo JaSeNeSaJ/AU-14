@@ -9,6 +9,7 @@
   startingGear: AU14GearGOVFORK9Handler
   icon: "AU14JobIconGovK9Handler"
   requireAdminNotify: false
+  spawnMenuRoleName: K9 Handler (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

@@ -9,7 +9,7 @@
     - FireteamLeader
     - SeniorEnlistedAdvisor
     - PrimaryLandingZone
-  - type: GrantTacMapAlert
+
   - type: HeadsetAutoSquad
 
 # Alpha
@@ -487,5 +487,5 @@
     - SectionSergeant
     - PVESquadLeader
     - PrimaryLandingZone
-  - type: GrantTacMapAlert
+
   - type: HeadsetAutoSquad

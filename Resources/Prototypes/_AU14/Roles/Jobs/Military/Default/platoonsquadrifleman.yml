@@ -20,6 +20,7 @@
   dummyStartingGear: AU14GearGOVFORRiflemanDummy
   icon: "CMJobIconEmpty"
   requireAdminNotify: false
+  spawnMenuRoleName: Rifleman (GOVFOR)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

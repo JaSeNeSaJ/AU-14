@@ -11,6 +11,7 @@
   dummyStartingGear: AU14GearGOVFORSquadSergantDummy
   icon: "AU14JobIconSarge"
   requireAdminNotify: false
+  spawnMenuRoleName: Squad Sergeant (CMBCIU)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:

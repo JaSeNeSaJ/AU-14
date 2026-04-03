@@ -8,12 +8,13 @@
     AU14RankCMBSrDeputy:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatoonCorpsman
-      time: 1800 # 30 hours
+      time: 108000 # 30 hours
     AU14RankCMBDeputy: []
   startingGear: AU14GearGOVFORPlatoonCorpsman
   dummyStartingGear: AU14GearGOVFORCorpsmanDummy
   icon: "AU14JobIconCorpsman"
   requireAdminNotify: false
+  spawnMenuRoleName: Hospital Corpsman (CMBCIU)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govfor
   accessGroups:
