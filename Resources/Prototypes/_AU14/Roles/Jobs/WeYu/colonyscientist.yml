@@ -41,6 +41,7 @@
         RMCSkillVehicles: 1
         RMCSkillDomestics: 1
         RMCSkillFirearms: 2
+        RMCSkillSurgery: 4
     - type: JobPrefix
       prefix: au14-job-prefix-civilianscientist
     - type: TacticalMapIcon

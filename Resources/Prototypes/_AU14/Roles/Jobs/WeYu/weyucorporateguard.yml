@@ -8,7 +8,7 @@
   hidden: true
 
 - type: job
-  parent: CMJobBase
+  parent: AU14JobWYGuardBase
   id: AU14JobWYGuard
   name: au14-job-name-wyguard
   description: au14-job-description-wyguard

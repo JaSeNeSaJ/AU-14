@@ -8,7 +8,7 @@
   hidden: true
 
 - type: job
-  parent: CMJobBase
+  parent: AU14JobCivilianCorporateLiaisonBase
   id: AU14JobCivilianCorporateLiaison
   name: au14-job-name-civiliancorporateliaison
   description: au14-job-description-civiliancorporateliaison
