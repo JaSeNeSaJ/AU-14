@@ -71,13 +71,13 @@
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: CMArmorM4PMCCorporateLead
     jumpsuit: AU14JumpsuitVeteranPMCCorporate
-    shoes: RMCBootsPMCCommandoFilled
+    shoes: RMCBootsPMCFilled
     head: RMCArmorHelmetPMCBlack
     gloves: AU14PVEHandsInsulatedBlackMarine
     belt: RMCM77BeltPMCFilled
     pocket1: RMCPouchMagazineLargePMC
     pocket2: RMCPouchFirstAidPMCFill
-    back: RMCSatchelLightpackBlack
+    back: RMCSatchelLightpackWeYa
     eyes: CMGlassesSecurity
     ears2: RMCHeadsetDistressWeYa
     suitstorage: AU14WeaponRifleF44AALock

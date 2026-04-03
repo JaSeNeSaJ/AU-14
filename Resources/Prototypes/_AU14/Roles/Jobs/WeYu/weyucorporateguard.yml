@@ -70,10 +70,10 @@
     shoes: RMCBootsPMCFilled
     head: AU14CivBallCapBlack
     belt: AU14BeltUtilityGeneralBlack
-    back: RMCSatchelLightpackBlack
+    back: RMCSatchelLightpackWeYa
     ears2: AU14ColonyAdminHeadset
     ears: RMCM5CameraGear
-    suitstorage: RMCBeltHolsterPistolTSE
+    suitstorage: RMCM77BeltPMCFilled
 
 - type: entity
   parent: CMSpawnPointJobBase

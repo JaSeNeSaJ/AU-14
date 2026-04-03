@@ -32,3 +32,12 @@
   - type: Foldable
     unfoldVerbText: rmc-sleeves-verb-unfold
     foldVerbText: rmc-sleeves-verb-fold
+
+- type: entity
+  parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
+  id: AU14WYPMCFatiguesEngineer
+  name: WY PMC Engineer Fatigues
+  description: A standard set of Weyland-Yutani PMC Engineer Fatigues. It has shards of light Kevlar to help protect against shrapnel.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/WY_PMC/wypmcengiuniform.rsi

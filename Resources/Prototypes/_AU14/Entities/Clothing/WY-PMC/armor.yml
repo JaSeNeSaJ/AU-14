@@ -29,3 +29,12 @@
     sprite: _RMC14/Objects/Clothing/OuterClothing/Misc/biosuit_weya.rsi
   - type: Clothing
     sprite: _RMC14/Objects/Clothing/OuterClothing/Misc/biosuit_weya.rsi
+
+- type: entity
+  parent: AU14BaseArmor
+  id: AU14WYPMCArmorEngineer
+  name: WY PMC Engineer Armor
+  description: A set of Weyland-Yutani PMC Engineer armor.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/WY_PMC/engi_armor.rsi

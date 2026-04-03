@@ -9,7 +9,7 @@
     contents:
       - id: XenoEgg
         amount: 2
-      - id: RMCTentUNMCStandartMedicalFolded
+      - id: RMCTentUNMCStandardMedicalFolded
       - id: AU14TentBigFoldedSurgical
 
 - type: entity
@@ -22,7 +22,7 @@
     contents:
       - id: RMCBottleMindbreaker
         amount: 7
-      - id: RMCTentUNMCStandartMedicalFolded
+      - id: RMCTentUNMCStandardMedicalFolded
       - id: AU14TentBigFoldedSurgical
 
 - type: entity
@@ -35,7 +35,7 @@
     contents:
       - id: AU14DrugDealerDrugBottle
         amount: 7
-      - id: RMCTentUNMCStandartMedicalFolded
+      - id: RMCTentUNMCStandardMedicalFolded
       - id: AU14TentBigFoldedSurgical
 
 - type: entity
