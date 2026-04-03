@@ -11,11 +11,11 @@
   supportedPlanets:
   #- AUPlanetGixensCaverns Rout of rotation till fixed - eg
   - AUPlanetShepherdsPride
-  - AUPlanetFlight
+  #- AUPlanetFlight
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-#  - AUPlanetSorokyne
+  #- AUPlanetSorokyne
   - AUPlanetStableGarrison
   - AUPlanetTrijent
   rules:
@@ -24,7 +24,6 @@
   - AddGovfor
   - AddOpfor
   - RemoveAllJobs
-
 
 - type: gamePreset
   id: Insurgency
@@ -39,9 +38,8 @@
     - AUPlanetShepherdsPride
     - AUPlanetLV624
     #- AUPlanetLV747
-  #  - AUPlanetSorokyne
-#    - AUPlanetLV759 removed pending rework
-
+    #- AUPlanetSorokyne
+    #- AUPlanetLV759 removed pending rework
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -49,6 +47,7 @@
   - AddClf
   - ColonyAntags
   - InsWinConditionsRule
+
 - type: gamePreset
   id: DistressSignal
   name: Distress Signal
@@ -58,9 +57,9 @@
   supportedPlanets:
   - AUPlanetShepherdsPride
   - AUPlanetLV747
-  - AUPlanetFlight
+  #- AUPlanetFlight
   - AUPlanetLV327
- # - AUPlanetSorokyne
+  #- AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
@@ -72,8 +71,6 @@
   - PlatoonSpawn
   - AddGovfor
   - RemoveAllJobs
-
-
 
 - type: gamePreset
   id: ColonyFall

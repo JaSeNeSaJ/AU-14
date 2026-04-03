@@ -15,3 +15,15 @@
   id: CMUShepDropshipDestinationOpforLZ4
   name: LZ4 - Hidden LZ
   categories: [ HideSpawnMenu ]
+
+- type: entity
+  parent: RMCFogWallPermanent
+  id: CMUFogWall_forceonforce_inverted
+  description: It looks way too dangerous to traverse. Best wait until it has cleared up.
+  suffix: ForceOnForce Inverted, 20 minutes
+  components:
+  - type: DestroyOnPreset
+    preset: ForceOnForce
+    inverted: true
+  - type: TimedDespawn
+    lifetime: 1200
