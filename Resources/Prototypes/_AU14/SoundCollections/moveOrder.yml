@@ -29,8 +29,8 @@
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/Move/Move9.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/Move/Move10.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/Move/Move11.ogg
-  - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/DoubleTime/DoubleTime1.ogg
-  - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/DoubleTime/DoubleTime2.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/Move/DoubleTime1.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Male/Dragon-V0942/Move/DoubleTime2.ogg
 
 
 - type: soundCollection
@@ -38,7 +38,7 @@
   files:
   - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcry_female_1.ogg #most of these are move/charge lines. (there probably is a few that have to be remove from here though.)
   - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcry_female_2.ogg
-  - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcryfemale3.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/femalewarcry3.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcry_female_4.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcry_female_5.ogg
   - /Audio/_AU14/Voice/UpdatedVoice/Female/Classic/Warcry/warcry_female_6.ogg
