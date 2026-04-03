@@ -38,3 +38,18 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/WY_PMC/engi_armor.rsi
+
+- type: entity
+  parent: AU14BaseArmorLight
+  id: AU14WYPPOArmor
+  name: WY PPO Armor
+  description: A set of Weyland-Yutani Personal Protection Officer armor. This pair is quite small compared to the standard, and will provide less protection.
+  components:
+  - type: ClothingSpeedModifier
+    walkModifier: 0.90
+    sprintModifier: 0.90
+  - type: Sprite
+    sprite: _AU14/Clothing/WY_PMC/ppo_armor.rsi
+  - type: UniformAccessoryHolder
+    startingAccessories:
+    - RMCPatchWeYaBlackSquare

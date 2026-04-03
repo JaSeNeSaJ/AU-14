@@ -49,6 +49,11 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - FORECONFirstRecon
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -95,6 +100,11 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - ProfessorVonBandolier
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - cultistThreat
     - XenoThreat
@@ -147,6 +157,11 @@
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -194,6 +209,11 @@
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - cultistThreat
     - XenoThreat
@@ -313,6 +333,11 @@
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCiviliannspaConstable
       AU14JobLEOBase: AU14JobCiviliannspaConstable
@@ -364,6 +389,11 @@
     - ProfessorVonBandolier
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -405,6 +435,8 @@
     - cultistThirdPartyNoQueen
     - XenoParasiteRunnerParty
     - ApeThirdParty
+    - WYPMCParty
+    - WYPMCPartyAlt
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -452,6 +484,11 @@
     - apethreat
     - apethreatcf
     - wendigoThreat
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -494,6 +531,8 @@
     - PAPInvestigationPartyAlt
     - PAPInvestigationParty
     - FORECONFirstRecon
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - XenoThreat
     jobScalingFof: DefaultGovforOpforScale
@@ -538,6 +577,8 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - ProfessorVonBandolier
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - XenoThreat
     jobScalingFof: DefaultGovforOpforScale
@@ -581,6 +622,8 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - ProfessorVonBandolier
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - XenoThreat
     jobScalingFof: DefaultGovforOpforScale
@@ -624,6 +667,11 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - ProfessorVonBandolier
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - XenoThreat
     jobScalingFof: DefaultGovforOpforScale
