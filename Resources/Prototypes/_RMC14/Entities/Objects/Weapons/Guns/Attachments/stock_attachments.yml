@@ -509,7 +509,7 @@
     iconActive:
       sprite: _RMC14/Objects/Weapons/Guns/Attachments/m54_stocks/desert.rsi
       state: m54c-col-on
-    actionName: Toggle M54C Folding Stock
+    actionName: Toggle M41A Folding Stock
   - type: AttachableSizeMods
     modifiers:
       - size: 1

@@ -1,18 +1,8 @@
 - type: job
-  parent: CMJobBase
-  id: AU14JobCivilianCorporateLiaisonBase
+  parent: AU14JobCivilianCorporateLiaisonBase
+  id: AU14JobWYHTCorporateLiaison
   name: au14-job-name-civiliancorporateliaison
-  description: au14-job-description-civiliancorporateliaison
-  playTimeTracker: AU14JobCivilianCorporateLiaison
-  basePlaytimeTracker: true
-  hidden: true
-
-- type: job
-  parent: CMJobBase
-  id: AU14JobCivilianCorporateLiaison
-  name: au14-job-name-civiliancorporateliaison
-  description: au14-job-description-civiliancorporateliaison
-  setPreference: true
+  description: au14-wyht-description
   ranks:
     RMCRankWeYaAssistantManager:
     - !type:RoleTimeRequirement
@@ -26,26 +16,18 @@
     - !type:RoleTimeRequirement
       role: AU14JobCivilianCorporateLiaison
       time: 180000 # 50 hours
-    RMCRankWeYaSeniorExecutive:
-    - !type:RoleTimeRequirement
-      role: AU14JobCivilianCorporateLiaison
-      time: 90000 # 25 hours
-    RMCRankWeYaExecutive:
-    - !type:RoleTimeRequirement
-      role: AU14JobCivilianCorporateLiaison
-      time: 36000 # 10 hours
-    RMCRankWeYaJuniorExecutive: []
-  startingGear: AU14GearCivilianCorporateLiaison
+    RMCRankWeYaSeniorExecutive: []
+  spawnMenuRoleName: WY HT Liaison (3rd party)
+  startingGear: AU14GearWYHTLiaison
+  greeting: au14-wyht-greeting
   icon: "CMJobIconLiaison"
-  requireAdminNotify: false
   joinNotifyCrew: false
-  supervisors: au14-job-supervisors-colonycivilian
+  supervisors: au14-job-supervisors-wy
   accessGroups:
   - Colonist
   - auadmin
   - AUPrisonStaff
   - auwy
-  roleWeight: 0.25
   special:
   - !type:AddComponentSpecial
     components:
@@ -77,28 +59,39 @@
       Faction: govfor
   hidden: false
 
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicWeYu
+  id: AU14JobWYHTLiaison
+  name: WY Hazard Transport Liaison (3rd party)
+  components:
+  - type: Threat
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: SquadPMC
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-civiliancorporateliaison
+    description: au14-wyht-description
+    reregister: false
+    job: AU14JobWYHTCorporateLiaison
+    raffle:
+      settings: short
+    rules: au14-wyht-description
+
 - type: startingGear
-  id: AU14GearCivilianCorporateLiaison
+  id: AU14GearWYHTLiaison
   equipment:
-    jumpsuit: AU14CivilianWorkwearBlue
-    shoes: RMCShoesLaceup
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: AU14CivilianJacketOrangePufferJacket
-    ears: AU14ColonyWeylandHeadset
-    ears2: RMCM5CameraGear
+    outerClothing: RMCFancySuitJacketBrown
+    jumpsuit: CMJumpsuitLiaison
+    shoes: RMCShoesFancyLeather
+    back: CMSatchel
+    eyes: CMGlassesSecurity
+    ears2: RMCHeadsetDistressWeYa
   inhand:
   - RMCPortableVendorCorporate
-
-- type: entity
-  parent: CMSpawnPointJobBase
-  id: AU14SpawnPointCivilianCorporateLiaison
-  name: Spawn Point Civilian Corporate Liaison
-  components:
-  - type: SpawnPoint
-    job_id: AU14JobCivilianCorporateLiaison
-  - type: Sprite
-    state: syn_spawn
-
-- type: playTimeTracker
-  id: AU14JobCivilianCorporateLiaison
-  isHumanoid: true
+  storage:
+    back:
+    - AU14CBRNKitWeYu

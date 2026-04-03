@@ -1,10 +1,18 @@
 - type: job
   parent: CMJobBase
+  id: AU14JobWYGuardBase
+  name: au14-job-name-wyguard
+  description: au14-job-description-wyguard
+  playTimeTracker: AU14JobWYGuard
+  basePlaytimeTracker: true
+  hidden: true
+
+- type: job
+  parent: CMJobBase
   id: AU14JobWYGuard
   name: au14-job-name-wyguard
   description: au14-job-description-wyguard
   setPreference: true
-  playTimeTracker: AU14JobWYGuard
   ranks:
     AU14RankWYSecurityOfficer: []
   startingGear: AU14GearWYGuard

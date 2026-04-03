@@ -15,3 +15,17 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/WY_PMC/wypmclightarmor.rsi
+
+- type: entity
+  parent: RMCBaseBioSuit
+  id: AU14SuitBioWeYu
+  name: WeYu-TSS MK I - bio suit
+  description: The 'Weyland-Yutani TerraScientia bio-suit MK I'. An advanced light-weight bio-suit developed in-house by Weston-Yamada. It's a suit that protects against biological contamination.
+  suffix: AU14, Generic, WeYu
+  components:
+  - type: Item
+    size: Small
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/OuterClothing/Misc/biosuit_weya.rsi
+  - type: Clothing
+    sprite: _RMC14/Objects/Clothing/OuterClothing/Misc/biosuit_weya.rsi

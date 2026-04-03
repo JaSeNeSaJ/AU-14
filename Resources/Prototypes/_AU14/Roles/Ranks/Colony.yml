@@ -62,3 +62,20 @@
   id: AU14RankNSPAInspector
   name: Inspector
   prefix: Insp.
+
+# Scientists
+
+- type: rank
+  id: AU14RankScientistAssistant
+  name: Assistant Professor
+  prefix: Assist-Prof.
+
+- type: rank
+  id: AU14RankScientistAssociate
+  name: Associate Professor
+  prefix: Asso-Prof.
+
+- type: rank
+  id: AU14RankScientistProfessor
+  name: Professor
+  prefix: Prof.
