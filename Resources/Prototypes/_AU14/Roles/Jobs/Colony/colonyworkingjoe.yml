@@ -45,6 +45,12 @@
           Blunt: 60
     - type: Synth
       generation: "species-name-workingjoe"
+      critThreshold: 300
+    - type: MobThresholds
+      thresholds:
+        0: Alive
+        300: Critical # doesnt do anything
+        500: Dead
     - type: NameModifier
       baseName: "Working Joe"
     - type: AssignXenoName

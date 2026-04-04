@@ -884,6 +884,7 @@ public sealed class XenoEggSystem : EntitySystem
                     {
                         RemCompDeferred<XenoFragileEggComponent>(uid);
                     }
+                    SetEggSprite((uid, egg), egg.NormalSprite);
                 }
                 else
                 {

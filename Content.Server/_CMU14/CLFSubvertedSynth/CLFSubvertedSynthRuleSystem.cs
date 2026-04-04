@@ -19,6 +19,7 @@ using Robust.Shared.Prototypes;
 using Robust.Client.GameStates;
 using Robust.Shared.Network;
 using Content.Shared._CMU14.SynthRepairer;
+using Robust.Shared.Audio;
 
 namespace Content.Server._CMU14.CLFSubvertedSynth;
 
@@ -52,40 +53,41 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
     private void OnSynthRevive(EntityUid uid, CLFSubverterComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
     {
         if (!HasComp<SynthComponent>(args.Target))
-        {
             return;
-        }
 
         if (!_mind.TryGetMind(args.Target, out var mindId, out var mind))
             return;
 
-        _npcFaction.AddFaction(args.Target, CLFNPCFaction);
-        //_synth.SetGunRestriction(args.Target, true);
-        //_synth.SetMeleeRestriction(args.Target, true);
+        _npcFaction.AddFaction(args.Target, comp.Faction);
         var subvertedComp = EnsureComp<CLFSubvertedSynthComponent>(args.Target);
+        subvertedComp.Faction = comp.Faction;
+        subvertedComp.AdditionalComponents = comp.AdditionalComponents;
+        EntityManager.AddComponents(args.Target, comp.AdditionalComponents); // this is missing
         EnsureComp<CLFMemberComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind,
             LogImpact.Medium,
             $"{ToPrettyString(args.Target)} had a CLF synth subverter used on them");
 
         if (!_role.MindHasRole<CLFSubvertedSynthRoleComponent>(mindId))
-        {
-            _role.MindAddRole(mindId, "MindRoleCLFSubvertedSynth");
-        }
+            _role.MindAddRole(mindId, comp.Role);
 
         if (mind is { UserId: not null } && _player.TryGetSessionById(mind.UserId, out var session))
-            _antag.SendBriefing(session, Loc.GetString("clf-subverted-synth-briefing"), Color.Red, subvertedComp.CLFSubversionSound);
+            _antag.SendBriefing(session, Loc.GetString(comp.Briefing), Color.Red, comp.Sound ?? subvertedComp.CLFSubversionSound);
     }
 
     private void OnSynthRepair(EntityUid uid, SynthRepairerComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
     {
+        if (TryComp<CLFSubvertedSynthComponent>(args.Target, out var subverted))
+            {
+                EntityManager.RemoveComponents(args.Target, subverted.AdditionalComponents);
+                _npcFaction.RemoveFaction(args.Target, subverted.Faction);
+            }
         if (!HasComp<SynthComponent>(args.Target) && !HasComp<CLFSubvertedSynthComponent>(args.Target))
             return;
         if (HasComp<CLFSubverterComponent>(uid)) //idk how to remove a component from a prototype so this is an un-necessary workaround
             return;
         if (!_mind.TryGetMind(args.Target, out var mindId, out var mind))
             return;
-        _npcFaction.RemoveFaction(args.Target, CLFNPCFaction);
         //_synth.SetGunRestriction(args.Target, false);
         //_synth.SetMeleeRestriction(args.Target, true);
         RemCompDeferred<CLFSubvertedSynthComponent>(args.Target);
