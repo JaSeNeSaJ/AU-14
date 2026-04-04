@@ -6,6 +6,7 @@ using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.AU14;
+using Content.Shared._RMC14.Evacuation;
 
 namespace Content.Server.AU14.Threats;
 
@@ -15,10 +16,26 @@ public sealed class KillAllApeRuleSystem : GameRuleSystem<KillAllApeRuleComponen
 	[Dependency] private readonly GameTicker _gameTicker = default!;
 	[Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
 
+	private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
+
 	public override void Initialize()
 	{
 		base.Initialize();
+		_evacuatedQuery = GetEntityQuery<EvacuatedGridComponent>();
 		SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+		SubscribeLocalEvent<EvacuationLaunchedEvent>(OnEvacuationLaunched);
+	}
+
+	private bool IsEvacuated(EntityUid uid)
+	{
+		var xform = Transform(uid);
+		return xform.GridUid is { } grid && _evacuatedQuery.HasComp(grid);
+	}
+
+	private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
+	{
+		if (_gameTicker.IsGameRuleActive<KillAllApeRuleComponent>())
+			CheckVictoryCondition();
 	}
 
 	private void OnMobStateChanged(MobStateChangedEvent ev)
@@ -31,6 +48,11 @@ public sealed class KillAllApeRuleSystem : GameRuleSystem<KillAllApeRuleComponen
 		if (ev.NewMobState != MobState.Dead)
 			return;
 
+		CheckVictoryCondition();
+	}
+
+	private void CheckVictoryCondition()
+	{
 		// Get the active rule entity and its component to read Percent
 		var queryRule = EntityQueryEnumerator<KillAllApeRuleComponent, GameRuleComponent>();
 		if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
@@ -38,7 +60,7 @@ public sealed class KillAllApeRuleSystem : GameRuleSystem<KillAllApeRuleComponen
 
 		var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
 
-		// Count total and dead Ape mobs
+		// Count total and dead Ape mobs (excluding evacuated)
 		var total = 0;
 		var dead = 0;
 
@@ -47,6 +69,14 @@ public sealed class KillAllApeRuleSystem : GameRuleSystem<KillAllApeRuleComponen
 		{
 			if (!_entityManager.HasComponent<ApeComponent>(uid))
 				continue;
+
+			// If the entity's grid was evacuated, count them as dead (do not skip)
+			if (IsEvacuated(uid))
+			{
+				total++;
+				dead++;
+				continue;
+			}
 
 			total++;
 			if (mobState.CurrentState == MobState.Dead)

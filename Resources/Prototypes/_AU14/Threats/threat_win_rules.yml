@@ -43,6 +43,15 @@
     - type: KillAllXenoRule
 
 - type: entity
+  id: KillAllHumanRule
+  parent: BaseGameRule
+  name: Kill All Humans
+  description: Threat wins when all humanoid mobs (excluding xenos) are dead (or when specified percent are dead).
+  components:
+    - type: KillAllHumanRule
+      percent: 85
+
+- type: entity
   id: InsWinConditionsRule
   parent: BaseGameRule
   name: Kill All Govfor/killallclf respectively

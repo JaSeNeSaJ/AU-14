@@ -5,6 +5,7 @@ using Content.Server.AU14.Round;
 using Content.Server.Players.PlayTimeTracking;
 using Content.Server.Station.Components;
 using Content.Server.Station.Events;
+using Content.Shared.AU14;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using Robust.Server.Player;
@@ -348,7 +349,7 @@ public sealed partial class StationJobsSystem
 
             // Build a mapping of station -> ship faction (if any) so we can prefer shipside stations for specific factions.
             var stationFaction = new Dictionary<EntityUid, string?>();
-            var shipQuery = EntityQueryEnumerator<Content.Server.AU14.Round.ShipFactionComponent>();
+            var shipQuery = EntityQueryEnumerator<ShipFactionComponent>();
             while (shipQuery.MoveNext(out var shipUid, out var shipComp))
             {
                 var owning = _stationSystem.GetOwningStation(shipUid);

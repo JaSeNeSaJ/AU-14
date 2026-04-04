@@ -1,18 +1,21 @@
-using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.AU14;
-using Content.Shared.Cuffs;
-using Content.Shared.Mobs.Components;
-using Content.Shared.Mobs;
-using Content.Shared.NPC.Components;
-using Content.Shared.GameTicking.Components;
 using Content.Shared.Cuffs.Components;
+using Content.Shared.Humanoid;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
+using Content.Shared.GameTicking.Components;
 using Content.Shared._RMC14.Evacuation;
+using Content.Shared._RMC14.Xenonids;
 
 namespace Content.Server.AU14.Threats;
 
-public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponent>
+/// <summary>
+/// Kill-all rule that targets all humanoid mobs (any entity with HumanoidAppearanceComponent),
+/// excluding xenos. Evacuated entities are excluded from the count entirely.
+/// </summary>
+public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComponent>
 {
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
@@ -36,17 +39,15 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
 
     private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
     {
-        if (_gameTicker.IsGameRuleActive<KillAllClfRuleComponent>())
+        if (_gameTicker.IsGameRuleActive<KillAllHumanRuleComponent>())
             CheckVictoryCondition();
     }
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
     {
-        // Only run this logic when the KillAllClf rule is active
-        if (!_gameTicker.IsGameRuleActive<KillAllClfRuleComponent>())
+        if (!_gameTicker.IsGameRuleActive<KillAllHumanRuleComponent>())
             return;
 
-        // Only care about dead mobs
         if (ev.NewMobState != MobState.Dead)
             return;
 
@@ -54,7 +55,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
     }
 
     /// <summary>
-    /// Called by KillAllRulesHandcuffSystem when a CLF entity is handcuffed.
+    /// Called by KillAllRulesHandcuffSystem when a human entity is handcuffed.
     /// </summary>
     public void OnHandcuffEvent(EntityUid uid)
     {
@@ -63,46 +64,49 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
 
     private void CheckVictoryCondition()
     {
-        // Get the active rule entity and its component to read Percent
-        var queryRule = EntityQueryEnumerator<KillAllClfRuleComponent, GameRuleComponent>();
+        var queryRule = EntityQueryEnumerator<KillAllHumanRuleComponent, GameRuleComponent>();
         if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
             return;
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
 
-        // Count total and dead/arrested CLF mobs (excluding evacuated)
+        // Count all humanoid mobs (excluding xenos and evacuated)
         var total = 0;
         var eliminated = 0;
 
-        var query = _entityManager.EntityQueryEnumerator<MobStateComponent, NpcFactionMemberComponent>();
-        while (query.MoveNext(out var uid, out var mobState, out var faction))
+        var query = _entityManager.EntityQueryEnumerator<MobStateComponent, HumanoidAppearanceComponent>();
+        while (query.MoveNext(out var uid, out var mobState, out _))
         {
-            if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf"))
+            // Xenos with humanoid appearance (e.g. cultists in human form) are still humanoid — include them.
+            // But actual xenos (XenoComponent) are not humans.
+            if (_entityManager.HasComponent<XenoComponent>(uid))
+                continue;
+
+            // If the entity's grid has been evacuated, count them as dead (do not skip)
+            if (IsEvacuated(uid))
             {
-                // Skip evacuated entities entirely
-                if (IsEvacuated(uid))
-                    continue;
-
                 total++;
+                eliminated++;
+                continue;
+            }
 
-                // Count as eliminated if dead
-                if (mobState.CurrentState == MobState.Dead)
-                {
-                    eliminated++;
-                }
-                // Or if arrested flag is set and they're cuffed
-                else if (countArrests && TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0)
-                {
-                    eliminated++;
-                }
+            total++;
+
+            if (mobState.CurrentState == MobState.Dead)
+            {
+                eliminated++;
+            }
+            else if (countArrests && _entityManager.TryGetComponent(uid, out CuffableComponent? cuffable) && cuffable.CuffedHandCount > 0)
+            {
+                eliminated++;
             }
         }
 
         if (total == 0)
-            return; // nothing to count
+            return;
 
-        var percentEliminated = (int) ((double)eliminated / total * 100.0);
+        var percentEliminated = (int)((double)eliminated / total * 100.0);
 
         if (percentEliminated >= requiredPercent)
         {
@@ -123,7 +127,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
                 }
                 else
                 {
-                    _gameTicker.EndRound("Govfor victory: Required percentage of CLF eliminated.");
+                    _gameTicker.EndRound("Threat victory: Required percentage of humans eliminated.");
                 }
             }
         }
