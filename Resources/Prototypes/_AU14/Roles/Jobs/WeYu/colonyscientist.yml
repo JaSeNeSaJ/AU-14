@@ -1,5 +1,14 @@
 - type: job
   parent: CMJobBase
+  id: AU14JobCivilianScientistBase
+  name: au14-job-name-civilianscientist
+  description: au14-job-description-civilianscientist
+  playTimeTracker: AU14JobCivilianScientist
+  basePlaytimeTracker: true
+  hidden: true
+
+- type: job
+  parent: AU14JobCivilianScientistBase
   id: AU14JobCivilianScientist
   name: au14-job-name-civilianscientist
   description: au14-job-description-civilianscientist
@@ -7,7 +16,15 @@
   canBeAntag: true
   playTimeTracker: AU14JobCivilianScientist
   ranks:
-    RMCRankCivilianScientist: []
+    AU14RankScientistProfessor:
+    - !type:RoleTimeRequirement
+      role: AU14JobCivilianScientist
+      time: 36000 # 10 hours
+    AU14RankScientistAssociate:
+    - !type:RoleTimeRequirement
+      role: AU14JobCivilianScientist
+      time: 7200 # 2 hours
+    AU14RankScientistAssistant: []
   startingGear: AU14GearCivilianScientist
   icon: "RMCJobIconPMCScientist"
   requireAdminNotify: false
@@ -26,6 +43,7 @@
         RMCSkillVehicles: 1
         RMCSkillDomestics: 1
         RMCSkillFirearms: 2
+        RMCSkillSurgery: 4
     - type: JobPrefix
       prefix: au14-job-prefix-civilianscientist
     - type: TacticalMapIcon
