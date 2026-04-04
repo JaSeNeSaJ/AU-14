@@ -40,6 +40,18 @@
     - type: Marine
       Faction: govfor
     - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
     - type: SquadLeader
     - type: RMCTrackable
     - type: RMCPointing
@@ -96,6 +108,6 @@
   - type: ItemIFF
     factions:
     - GOVFOR
-    
+
 - type: playTimeTracker
   id: AU14JobRMCRRTCommander

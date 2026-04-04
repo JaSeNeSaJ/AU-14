@@ -1,4 +1,3 @@
-
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Server.RoundEnd;
@@ -7,6 +6,7 @@ using Content.Shared.Mobs;
 using Content.Shared.Cuffs.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.AU14;
+using Content.Shared._RMC14.Evacuation;
 using Content.Shared._RMC14.Xenonids;
 
 namespace Content.Server.AU14.Threats;
@@ -16,13 +16,27 @@ public sealed class KillAllXenoRuleSystem : GameRuleSystem<KillAllXenoRuleCompon
 	[Dependency] private readonly IEntityManager _entityManager = default!;
 	[Dependency] private readonly GameTicker _gameTicker = default!;
 	[Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
-	// RoundEndSystem is not needed directly here; we call GameTicker.EndRound which
-	// will ensure round end behavior is handled. Keep dependency list minimal.
+
+	private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
 	public override void Initialize()
 	{
 		base.Initialize();
+		_evacuatedQuery = GetEntityQuery<EvacuatedGridComponent>();
 		SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+		SubscribeLocalEvent<EvacuationLaunchedEvent>(OnEvacuationLaunched);
+	}
+
+	private bool IsEvacuated(EntityUid uid)
+	{
+		var xform = Transform(uid);
+		return xform.GridUid is { } grid && _evacuatedQuery.HasComp(grid);
+	}
+
+	private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
+	{
+		if (_gameTicker.IsGameRuleActive<KillAllXenoRuleComponent>())
+			CheckVictoryCondition();
 	}
 
 	private void OnMobStateChanged(MobStateChangedEvent ev)
@@ -35,6 +49,11 @@ public sealed class KillAllXenoRuleSystem : GameRuleSystem<KillAllXenoRuleCompon
 		if (ev.NewMobState != MobState.Dead)
 			return;
 
+		CheckVictoryCondition();
+	}
+
+	private void CheckVictoryCondition()
+	{
 		// Get the active rule entity and its component to read Percent
 		var queryRule = EntityQueryEnumerator<KillAllXenoRuleComponent, GameRuleComponent>();
 		if (!queryRule.MoveNext(out var ruleEnt, out var ruleComp, out var gameRuleComp) || !GameTicker.IsGameRuleActive(ruleEnt, gameRuleComp))
@@ -43,7 +62,7 @@ public sealed class KillAllXenoRuleSystem : GameRuleSystem<KillAllXenoRuleCompon
 		var requiredPercentXeno = Math.Clamp(ruleComp.PercentXeno, 1, 100);
 		var requiredPercentCultist = Math.Clamp(ruleComp.PercentCultist, 1, 100);
 
-		// Count total and dead Xeno and Cultist mobs separately
+		// Count total and dead Xeno and Cultist mobs separately (excluding evacuated)
 		var totalXeno = 0;
 		var deadXeno = 0;
 		var totalCultist = 0;
@@ -59,15 +78,16 @@ public sealed class KillAllXenoRuleSystem : GameRuleSystem<KillAllXenoRuleCompon
 			if (isXeno)
 			{
 				totalXeno++;
-				if (mobState.CurrentState == MobState.Dead)
+				// Treat evacuated entities as dead for victory conditions
+				if (IsEvacuated(uid) || mobState.CurrentState == MobState.Dead)
 					deadXeno++;
 			}
 
 			if (isCultist)
 			{
 				totalCultist++;
-				// Count cultists as "dead" if they are actually dead OR restrained (cuffed).
-				if (mobState.CurrentState == MobState.Dead)
+				// Treat evacuated entities as dead; otherwise count actual death or restraints.
+				if (IsEvacuated(uid) || mobState.CurrentState == MobState.Dead)
 				{
 					deadCultist++;
 				}

@@ -71,9 +71,9 @@ entities:
       marineHijackSound: !type:SoundPathSpecifier
         params:
           volume: -6
-        path: /Audio/_CM14/Announcements/ARES/hijack.ogg
+        path: /Audio/_RMC14/Announcements/ARES/hijack.ogg
       localHijackSound: !type:SoundPathSpecifier
-        path: /Audio/_CM14/Machines/Shuttle/queen_alarm.ogg
+        path: /Audio/_RMC14/Machines/Shuttle/queen_alarm.ogg
 - proto: AtmosDeviceFanTiny
   entities:
   - uid: 2

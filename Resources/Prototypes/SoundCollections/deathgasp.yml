@@ -17,6 +17,10 @@
   - /Audio/_AU14/Voice/DeathGasps/femalegasp3.ogg
   - /Audio/_AU14/Voice/DeathGasps/femalegasp4.ogg
   - /Audio/_AU14/Voice/DeathGasps/femalegasp5.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Female/Melissa/Pain/Pain1.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Female/Melissa/Pain/Pain2.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Female/Melissa/Pain/Pain3.ogg
+  - /Audio/_AU14/Voice/UpdatedVoice/Female/Melissa/Pain/Pain4.ogg
 
 - type: soundCollection
   id: DeathGasp

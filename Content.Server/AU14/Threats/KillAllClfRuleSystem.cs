@@ -8,6 +8,7 @@ using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Cuffs.Components;
+using Content.Shared._RMC14.Evacuation;
 
 namespace Content.Server.AU14.Threats;
 
@@ -17,10 +18,26 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
 
+    private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
+
     public override void Initialize()
     {
         base.Initialize();
+        _evacuatedQuery = GetEntityQuery<EvacuatedGridComponent>();
         SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+        SubscribeLocalEvent<EvacuationLaunchedEvent>(OnEvacuationLaunched);
+    }
+
+    private bool IsEvacuated(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        return xform.GridUid is { } grid && _evacuatedQuery.HasComp(grid);
+    }
+
+    private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
+    {
+        if (_gameTicker.IsGameRuleActive<KillAllClfRuleComponent>())
+            CheckVictoryCondition();
     }
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
@@ -41,7 +58,6 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
     /// </summary>
     public void OnHandcuffEvent(EntityUid uid)
     {
-
         CheckVictoryCondition();
     }
 
@@ -55,7 +71,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
 
-        // Count total and dead/arrested CLF mobs
+        // Count total and dead/arrested CLF mobs (excluding evacuated)
         var total = 0;
         var eliminated = 0;
 
@@ -64,6 +80,10 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf"))
             {
+                // Skip evacuated entities entirely
+                if (IsEvacuated(uid))
+                    continue;
+
                 total++;
 
                 // Count as eliminated if dead
