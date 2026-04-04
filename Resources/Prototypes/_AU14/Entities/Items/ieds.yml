@@ -68,6 +68,7 @@
     beepSound: /Audio/_AU14/IED/detonate.ogg
     startOnStick: true
     canToggleStartOnStick: true
+  - type: PreventThrowWhenArmed
   - type: TimerStartOnSignal
   - type: DeviceLinkSink
     ports:
@@ -106,6 +107,7 @@
     beepSound: /Audio/_AU14/IED/vestbeep.ogg
     startOnStick: true
     canToggleStartOnStick: true
+  - type: PreventThrowWhenArmed
   - type: TimerStartOnSignal
   - type: DeviceLinkSink
     ports:
