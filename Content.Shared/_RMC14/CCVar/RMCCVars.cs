@@ -98,7 +98,7 @@ public sealed partial class RMCCVars : CVars
         CVarDef.Create("rmc.dropship_initial_delay_minutes", 1f, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCDropshipHijackInitialDelayMinutes =
-        CVarDef.Create("rmc.dropship_hijack_initial_delay_minutes", 1, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.dropship_hijack_initial_delay_minutes", 40, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<float> RMCLandingZonePrimaryAutoMinutes =
         CVarDef.Create("rmc.landing_zone_primary_auto_minutes", 25f, CVar.REPLICATED | CVar.SERVER);
@@ -155,10 +155,10 @@ public sealed partial class RMCCVars : CVars
         CVarDef.Create("rmc.dropship_cas_debug", false, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCDropshipFlyByTimeSeconds =
-        CVarDef.Create("rmc.dropship_fly_by_time_seconds", 10, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.dropship_fly_by_time_seconds", 100, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCDropshipHijackTravelTimeSeconds =
-        CVarDef.Create("rmc.dropship_hijack_travel_time_seconds", 10, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.dropship_hijack_travel_time_seconds", 180, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<bool> RMCEntitiesLogDelete =
         CVarDef.Create("rmc.entities_log_delete", false, CVar.SERVER | CVar.SERVERONLY);
