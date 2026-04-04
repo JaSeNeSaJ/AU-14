@@ -80,14 +80,6 @@
     name: "Various Press Organizations"
     notifyAdmins: true
 
-- type: entity
-  parent: CMFax
-  id: CMFaxCLF
-  suffix: CLF
-  components:
-  - type: FaxMachine
-    name: "Colony Liberation Front"
-    notifyAdmins: true
 
 - type: entity
   parent: CMFax

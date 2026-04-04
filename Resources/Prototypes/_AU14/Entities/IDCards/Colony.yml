@@ -213,3 +213,17 @@
   components:
   - type: PresetIdCard
     job: AU14JobColonyWorkingJoe
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCorporateSpy
+  name: Lasalle Bionational ID card
+  description: A corporate identification badge with Lasalle Bionational branding. Grants access to Weyland-Yutani facilities.
+  components:
+  - type: IdCard
+    nameLocId: cm-access-id-card-component-owner-name-job-title-text
+    fullNameLocId: cm-access-id-card-component-owner-full-name-job-title-text
+    canMicrowave: false
+  - type: Access
+    groups:
+    - auwy
