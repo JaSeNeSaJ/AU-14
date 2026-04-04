@@ -3,6 +3,10 @@
   id: AU14JobWYPMCPartyLeader #m41a/2
   name: PMC Leader
   description: au14-pmcparty-description
+  requirements:
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORSectionSergeant
+    time: 4500 # 1 hour
   playTimeTracker: AU14JobWYPMCPartyLeader
   ranks:
     AU14RankWeYuEnforcerLead: []

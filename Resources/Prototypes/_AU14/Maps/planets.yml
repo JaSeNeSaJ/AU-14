@@ -478,17 +478,17 @@
     - XenoParasiteRunnerParty
     - ApeThirdParty
     - FORECONKillTeam
+    - IPIE
+    - IPIESynth
+    - WYHT
+    - WYPMCParty
+    - WYPMCPartyAlt
     threats:
     - cultistThreat
     - XenoThreat
     - apethreat
     - apethreatcf
     - wendigoThreat
-    - IPIE
-    - IPIESynth
-    - WYHT
-    - WYPMCParty
-    - WYPMCPartyAlt
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 

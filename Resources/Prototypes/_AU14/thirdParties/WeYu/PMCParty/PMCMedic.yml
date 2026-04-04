@@ -3,6 +3,10 @@
   id: AU14JobWYPMCPartyMedic #m41a/2
   name: PMC Combat Lifesaver
   description: au14-pmcparty-description
+  requirements:
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatoonCorpsman
+    time: 4500 # 1 hour
   playTimeTracker: AU14JobWYPMCPartyMedic
   ranks:
     AU14RankWeYuOperator: []

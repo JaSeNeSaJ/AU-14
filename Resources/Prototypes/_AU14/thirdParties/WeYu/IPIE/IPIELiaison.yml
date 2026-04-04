@@ -3,6 +3,9 @@
   id: AU14JobIPIELawyer
   name: IPIE Lawyer
   description: au14-ipie-lawyer-description
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   playTimeTracker: AU14JobIPIELawyer
   ranks:
     RMCRankWeYaLegalSpecialist: []
