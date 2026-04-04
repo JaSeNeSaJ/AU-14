@@ -81,7 +81,7 @@
     - colonyfall
   name: Colony Fall
   showInVote: true
-  minplayers: 30
+  minPlayers: 30
   description: Live in an offworld colony as it falls into chaos.
   rules:
     - AuVoteRule
