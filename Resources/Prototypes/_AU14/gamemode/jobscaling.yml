@@ -87,7 +87,7 @@
     AU14JobGOVFORPlatoonCorpsman:
       scale: 0.04
       whenToBeginScaling: 40
-      vbenchmark: 3
+      benchmark: 3
     AU14JobGOVFORSquadCombatTech:
       scale: 0.05
       whenToBeginScaling: 40
