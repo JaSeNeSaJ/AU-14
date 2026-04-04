@@ -80,18 +80,18 @@
     AU14JobCLFPhysician:
       scale: 0.02
       whenToBeginScaling: 40
-    # --- GOVFOR (30%) ---
     AU14JobGOVFORSquadRifleman:
-      scale: 0.3
-      whenToBeginScaling: 50
-      benchmark: 15
+      scale: 0.03
+      whenToBeginScaling: 40
+      benchmark: 8
     AU14JobGOVFORPlatoonCorpsman:
       scale: 0.04
       whenToBeginScaling: 40
+      vbenchmark: 3
     AU14JobGOVFORSquadCombatTech:
       scale: 0.05
       whenToBeginScaling: 40
-      benchmark: 4
+      benchmark: 3
 
 
 

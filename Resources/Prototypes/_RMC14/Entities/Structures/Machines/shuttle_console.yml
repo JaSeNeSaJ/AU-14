@@ -38,7 +38,7 @@
   suffix: Opfor
   components:
   - type: AccessReader
-    access: [ [ "AU14AccessOpforFTL" ], [ "AU14AccessOpforPilot" ] ]
+    access: [ ]
   - type: WhitelistedShuttle
     faction: opfor
     ShuttleType: Dropship
@@ -303,7 +303,7 @@
   name: dropship navigation computer (govfor)
   components:
   - type: AccessReader
-    access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessGovforPilot" ] ]
+    access: [ ]
   - type: WhitelistedShuttle
     faction: govfor
     ShuttleType: Dropship

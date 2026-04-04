@@ -1,7 +1,6 @@
 using Robust.Shared.GameObjects;
 
-namespace Content.Server.AU14.Round
-{
+namespace Content.Shared.AU14{
     /// <summary>
     /// Attach to a ship entity to designate its faction (e.g., "govfor" or "opfor").
     /// </summary>

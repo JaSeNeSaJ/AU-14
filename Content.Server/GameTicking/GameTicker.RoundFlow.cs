@@ -12,6 +12,7 @@ using Content.Shared._RMC14.Power;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Prototypes;
 using Content.Shared._RMC14.TacticalMap;
+using Content.Shared.AU14;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
 using Content.Shared.GameTicking;
@@ -192,9 +193,9 @@ namespace Content.Server.GameTicking
                     var govforGrids = LoadGameMap(govforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });
                     foreach (var grid in govforGrids)
                     {
-                        if (!EntityManager.HasComponent<Content.Server.AU14.Round.ShipFactionComponent>(grid))
+                        if (!EntityManager.HasComponent<ShipFactionComponent>(grid))
                         {
-                            var comp = EntityManager.AddComponent<Content.Server.AU14.Round.ShipFactionComponent>(grid);
+                            var comp = EntityManager.AddComponent<ShipFactionComponent>(grid);
                             comp.Faction = "govfor";
                         }
                         if (!EntityManager.HasComponent<Content.Server.Station.Components.BecomesStationComponent>(grid))
@@ -209,9 +210,9 @@ namespace Content.Server.GameTicking
                     var opforGrids = LoadGameMap(opforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });
                     foreach (var grid in opforGrids)
                     {
-                        if (!EntityManager.HasComponent<Content.Server.AU14.Round.ShipFactionComponent>(grid))
+                        if (!EntityManager.HasComponent<ShipFactionComponent>(grid))
                         {
-                            var comp = EntityManager.AddComponent<Content.Server.AU14.Round.ShipFactionComponent>(grid);
+                            var comp = EntityManager.AddComponent<ShipFactionComponent>(grid);
                             comp.Faction = "opfor";
                         }
                         if (!EntityManager.HasComponent<Content.Server.Station.Components.BecomesStationComponent>(grid))
