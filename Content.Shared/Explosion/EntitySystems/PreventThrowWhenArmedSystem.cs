@@ -37,7 +37,7 @@ namespace Content.Shared.Explosion.EntitySystems
 			if (_net.IsClient)
 				return;
 
-			_popup.PopupEntity(Loc.GetString("prevent-throw-primed"), args.User, args.User, PopupType.SmallCaution);
+			_popup.PopupEntity(Loc.GetString("Cannot throw a primed IED"), args.User, args.User, PopupType.SmallCaution);
 		}
 
 		private void OnInsertAttempt(EntityUid uid, PreventThrowWhenArmedComponent comp, ref ContainerGettingInsertedAttemptEvent args)
