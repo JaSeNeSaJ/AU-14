@@ -1,0 +1,73 @@
+- type: threat
+  id: cultistThreat
+  roundstartspawns: cultistPartyThreat
+  whitelistedgamemodes:
+  - ColonyFall
+  blacklistedgamemodes:
+  - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
+
+- type: partySpawn
+  id: cultistPartyThreat
+  leadersToSpawn:
+    CMXenoQueen: 1
+  gruntsToSpawn:
+    cultistJob: 3
+  spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.3
+      whenToBeginScaling: 50
+
+- type: partySpawn
+  id: cultistParty
+  leadersToSpawn:
+    CMXenoQueen: 1
+  gruntsToSpawn:
+    cultistJob: 2
+  spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.2
+      whenToBeginScaling: 50
+
+- type: partySpawn
+  id: cultistPartyNoQueen
+  leadersToSpawn:
+    cultistJob: 1
+  gruntsToSpawn:
+    cultistJob: 1
+  spawnTogether: true
+  scaling:
+    cultistJob:
+      scale: 0.2
+      whenToBeginScaling: 50
+
+
+- type: auThirdParty
+  id: cultistThirdParty
+  partyspawn: cultistParty
+  entrymethod: shuttle
+  weight: 3
+  minplayers: 70
+  maxplayers: 200
+  GhostsNeeded: 3
+  roundstart: false
+
+- type: auThirdParty
+  id: cultistThirdPartyNoQueen
+  partyspawn: cultistPartyNoQueen
+  entrymethod: ground
+  weight: 15
+  minplayers: 35
+  maxplayers: 200
+  GhostsNeeded: 3
+  roundstart: true
