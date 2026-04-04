@@ -13,6 +13,8 @@
   name: au14-job-name-civilianscientist
   description: au14-job-description-civilianscientist
   setPreference: true
+  canBeAntag: true
+  playTimeTracker: AU14JobCivilianScientist
   ranks:
     AU14RankScientistProfessor:
     - !type:RoleTimeRequirement
