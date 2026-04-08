@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Numerics;
 using Content.Server._CMU14.Dropship.TacticalLand;
+using Content.Server._RMC14.GameStates;
 using Content.Server._RMC14.Marines;
 using Content.Server.AU14.Round;
 using Content.Server.AU14.ThirdParty;
@@ -56,7 +57,6 @@ public sealed class DropshipSystem : SharedDropshipSystem
     [Dependency] private readonly DropshipTacticalLandSystem _tacticalLand = default!;
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly AppearanceSystem _appearance = default!;
-    [Dependency] private readonly AudioSystem _audio = default!;
     [Dependency] private readonly IConfigurationManager _config = default!;
     [Dependency] private readonly ContainerSystem _container = default!;
     [Dependency] private readonly DoorSystem _door = default!;
@@ -74,6 +74,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
     [Dependency] private readonly SharedXenoAnnounceSystem _xenoAnnounce = default!;
     [Dependency] private readonly SharedRMCFlammableSystem _rmcFlammable = default!;
     [Dependency] private readonly SharedRMCExplosionSystem _rmcExplosion = default!;
+    [Dependency] private readonly RMCPvsSystem _rmcPvs = default!;
     [Dependency] private readonly RMCAlertLevelSystem _alertLevelSystem = default!;
     [Dependency] private readonly AreaSystem _area = default!;
     [Dependency] private readonly IntelSystem _intel = default!;
@@ -119,6 +120,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
             {
                 subs.Event<DropshipLockdownMsg>(OnDropshipNavigationLockdownMsg);
                 subs.Event<DropshipRemoteControlToggleMsg>(OnDropshipRemoteControlToggleMsg);
+                subs.Event<DropshipLaunchAlarmToggleMsg>(OnDropshipLaunchAlarmToggleMsg);
             });
 
         Subs.CVar(_config, RMCCVars.RMCLandingZonePrimaryAutoMinutes, v => _lzPrimaryAutoDelay = TimeSpan.FromMinutes(v), true);
@@ -242,6 +244,9 @@ public sealed class DropshipSystem : SharedDropshipSystem
         {
             ent.Comp.State = ftl.State;
             Dirty(ent);
+
+            if (ftl.State == FTLState.Starting && ent.Comp.LaunchAlarmEntity != null)
+                TryStopLaunchAlarm(ent);
         }
 
         RefreshUI();
@@ -319,6 +324,36 @@ public sealed class DropshipSystem : SharedDropshipSystem
             return;
 
         RecordThirdPartyAutoReturnActivity(grid);
+    }
+
+    private void OnDropshipLaunchAlarmToggleMsg(Entity<DropshipNavigationComputerComponent> ent, ref DropshipLaunchAlarmToggleMsg args)
+    {
+        if (!TryGetGridDropship(ent, out var dropship))
+            return;
+
+        if (TryComp(dropship, out FTLComponent? ftl) &&
+            ftl.State is FTLState.Travelling or FTLState.Arriving or FTLState.Starting)
+        {
+            return;
+        }
+
+        if (dropship.Comp.LaunchAlarmEntity != null)
+        {
+            TryStopLaunchAlarm(dropship, ent.Comp);
+        }
+        else
+        {
+            var sound = Audio.PlayPvs(dropship.Comp.LaunchAlarmSound, dropship);
+            if (sound == null)
+                return;
+
+            _rmcPvs.AddGlobalOverride(sound.Value.Entity);
+            dropship.Comp.LaunchAlarmEntity = sound.Value.Entity;
+            ent.Comp.LaunchAlarmStatus = true;
+            Dirty(ent);
+        }
+
+        RefreshUI();
     }
 
     private void OnNavigationLockout(Entity<DropshipNavigationComputerComponent> ent, ref DropshipLockoutDoAfterEvent args)
@@ -414,7 +449,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
             ftl.State == FTLState.Arriving &&
             dropship.Destination is { } destination)
         {
-            var audio = _audio.PlayPvs(dropship.ArrivalSound, destination);
+            var audio = Audio.PlayPvs(dropship.ArrivalSound, destination);
             if (audio != null)
             {
                 ent.Comp.ArrivalSoundEntity = audio.Value.Entity;
@@ -785,7 +820,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
             }
 
             var canTacticalLand = IsStrictThirdPartyFaction(whitelistedFaction);
-            var state = new DropshipNavigationDestinationsBuiState(flyBy, destinations, doorLockStatus, computer.Comp.RemoteControl, canTacticalLand);
+            var state = new DropshipNavigationDestinationsBuiState(flyBy, destinations, doorLockStatus, computer.Comp.RemoteControl, canTacticalLand, computer.Comp.LaunchAlarmStatus);
             _ui.SetUiState(computer.Owner, DropshipNavigationUiKey.Key, state);
             return;
         }
@@ -803,7 +838,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
                 departureName = Name(departureUid);
         }
 
-        var travelState = new DropshipNavigationTravellingBuiState(ftl.State, ftl.StateTime, destinationName, departureName, doorLockStatus, computer.Comp.RemoteControl);
+        var travelState = new DropshipNavigationTravellingBuiState(ftl.State, ftl.StateTime, destinationName, departureName, doorLockStatus, computer.Comp.RemoteControl, computer.Comp.LaunchAlarmStatus);
         _ui.SetUiState(computer.Owner, DropshipNavigationUiKey.Key, travelState);
     }
 
@@ -1274,7 +1309,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
                 dropship.DidIncomingSound = true;
                 Dirty(uid, dropship);
 
-                _audio.PlayGlobal(dropship.IncomingSound, destinationFilter, true);
+                Audio.PlayGlobal(dropship.IncomingSound, destinationFilter, true);
                 continue;
             }
 
@@ -1283,7 +1318,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
                 dropship.DidExplosion = true;
                 Dirty(uid, dropship);
 
-                _audio.PlayGlobal(dropship.CrashSound, destinationFilter, true);
+                Audio.PlayGlobal(dropship.CrashSound, destinationFilter, true);
                 _rmcFlammable.SpawnFireDiamond(dropship.FireId, destinationEntityCoords, dropship.FireRange, 11);
                 _rmcExplosion.QueueExplosion(destinationCoords, "RMCOB", 50000, 1500, 90, uid);
 
