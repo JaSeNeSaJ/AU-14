@@ -1,5 +1,26 @@
 # Synthetic
 
+# AU14 GOVFOR Synth Specializations
+- type: loadout
+  id: AU14GOVFORSynthSpecializationDefault
+  equipment:
+    id: AU14IDCardGOVFORAuxSupportSynth
+
+- type: loadout
+  id: AU14GOVFORSynthSpecializationEngineering
+  equipment:
+    id: AU14IDCardGOVFORAuxSupportSynthEngineering
+
+- type: loadout
+  id: AU14GOVFORSynthSpecializationMedical
+  equipment:
+    id: AU14IDCardGOVFORAuxSupportSynthMedical
+
+- type: loadout
+  id: AU14GOVFORSynthSpecializationSecurity
+  equipment:
+    id: AU14IDCardGOVFORAuxSupportSynthSecurity
+
 # UNMC Jumpsuits
 - type: loadout
   id: SynthUniformRMC
