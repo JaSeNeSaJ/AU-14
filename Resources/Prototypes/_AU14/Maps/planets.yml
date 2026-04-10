@@ -449,7 +449,7 @@
   components:
   - type: RMCPlanetMapPrototype
     votename: "Barker's Lament"
-    mapID: CMU14LV376BarkersLament
+    mapId: CMU14LV376BarkersLament
     camouflage: Urban
     announcement: "The mining colony of Barker's Lament on LV-376 has gone dark."
     platoonsGovfor:
