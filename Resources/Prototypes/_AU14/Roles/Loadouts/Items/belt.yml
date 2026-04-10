@@ -12,3 +12,8 @@
   id: BeltSecurityMPFilledAU14
   equipment:
     belt: CMBeltSecurityMPFilled
+
+- type: loadout
+  id: BeltMedicalFilledAU14
+  equipment:
+    belt: CMBeltMedicalFilled

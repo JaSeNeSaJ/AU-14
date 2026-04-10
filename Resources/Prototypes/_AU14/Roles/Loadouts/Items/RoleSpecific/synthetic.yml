@@ -245,4 +245,24 @@
   equipment:
     outerClothing: CMArmorM3VLSynthUrban
 
+# equipment
+- type: loadout
+  id: MaintenanceJackAU14
+  inhand:
+  - AU14MaintenanceJack
+
+- type: loadout
+  id: SynthBreachingHammerAU14
+  inhand:
+  - RMCSynthBreachingHammer
+
+- type: loadout
+  id: PortableDialysisAU14
+  inhand:
+  - RMCPortableDialysis
+
+- type: loadout
+  id: SynthResetKeyAU14
+  inhand:
+  - RMCSynthResetKey
 # Civilian Synth Specializations
