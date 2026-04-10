@@ -18,6 +18,7 @@
   #- AUPlanetSorokyne
   - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - CMULV376BarkersLament
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -37,6 +38,7 @@
   supportedPlanets:
     - AUPlanetShepherdsPride
     - AUPlanetLV624
+    - CMULV376BarkersLament
     #- AUPlanetLV747
     #- AUPlanetSorokyne
     #- AUPlanetLV759 removed pending rework
@@ -66,6 +68,7 @@
   - AuPlanetFiorina
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
+  - CMULV376BarkersLament
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -90,6 +93,7 @@
     - AUPlanetLV327
    # - AUPlanetSorokyne
     - AUPlanetStableGarrison
+    - CMULV376BarkersLament
 
 - type: gamePreset
   id: Jailbreak
