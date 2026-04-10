@@ -444,6 +444,54 @@
     jobScalingIns: DefaultInsurgencyScale
 
 - type: entity
+  id: CMUPlanetLament
+  name: LV-376 "Ulixes"
+  components:
+  - type: RMCPlanetMapPrototype
+    votename: "Barker's Lament"
+    mapId: CMULV376BarkersLament
+    camouflage: Urban
+    announcement: "The mining colony of Barker's Lament on LV-376 has gone dark."
+    platoonsGovfor:
+    - WEYU
+    - USCM
+    - RMC
+    - CMBCIU
+    - HAZOPS
+    platoonsOpfor:
+    - UPP
+    - ProdigySF
+    - VAIPO
+    - UNISC
+    - LACN
+    defaultgovfor: WEYU
+    defaultopfor: ProdigySF
+    govforinship: false
+    opforinship: true
+    daycycleenabled: true
+    faction: ua
+    thirdparties:
+    - ICRCReliefParty
+    - cultistThirdPartyNoQueen
+    - XenoParasiteRunnerParty
+    - USArmyTank
+    - WYHT
+    - IPIE
+    - IPIESynth
+    - WYPMCParty
+    - WYPMCPartyAlt
+    - CMBInvestigationParty
+    - CMBInvestigationPartyAlt
+    threats:
+    - cultistThreat
+    - XenoThreat
+    joboverrides:
+      AU14JobLEOBase: AU14JobCivilianCMBDeputy
+      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
+    jobScalingFof: DefaultGovforOpforScale
+    jobScalingIns: DefaultInsurgencyScale
+
+- type: entity
   id: AUPlanetSorokyne
   name: Sorokyne Strata
   components:
