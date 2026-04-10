@@ -449,7 +449,7 @@
   components:
   - type: RMCPlanetMapPrototype
     votename: "Barker's Lament"
-    mapId: CMU14LV376BarkersLament
+    mapId: CMULV376BarkersLament
     camouflage: Urban
     announcement: "The mining colony of Barker's Lament on LV-376 has gone dark."
     platoonsGovfor:
@@ -469,7 +469,7 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    faction: au
+    faction: ua
     thirdparties:
     - ICRCReliefParty
     - cultistThirdPartyNoQueen
