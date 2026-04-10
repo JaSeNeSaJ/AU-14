@@ -1,26 +1,5 @@
 # Synthetic
 
-# AU14 GOVFOR Synth Specializations
-- type: loadout
-  id: AU14GOVFORSynthSpecializationDefault
-  equipment:
-    id: AU14IDCardGOVFORAuxSupportSynth
-
-- type: loadout
-  id: AU14GOVFORSynthSpecializationEngineering
-  equipment:
-    id: AU14IDCardGOVFORAuxSupportSynthEngineering
-
-- type: loadout
-  id: AU14GOVFORSynthSpecializationMedical
-  equipment:
-    id: AU14IDCardGOVFORAuxSupportSynthMedical
-
-- type: loadout
-  id: AU14GOVFORSynthSpecializationSecurity
-  equipment:
-    id: AU14IDCardGOVFORAuxSupportSynthSecurity
-
 # UNMC Jumpsuits
 - type: loadout
   id: SynthUniformRMC
@@ -178,13 +157,13 @@
   storage:
     back:
     - RMCTie
-    
+
 - type: loadout
   id: TieGreenRMC
   storage:
     back:
     - RMCTieGreen
-    
+
 - type: loadout
   id: TieBlackRMC
   storage:
@@ -196,7 +175,7 @@
   storage:
     back:
     - RMCTieGold
-    
+
 - type: loadout
   id: TieRedRMC
   storage:
@@ -307,19 +286,19 @@
   storage:
     back:
     - RMCHardHat
-    
+
 - type: loadout
   id: HardHatOrangeRMC
   storage:
     back:
     - RMCHardhatOrange
-    
+
 - type: loadout
   id: HardHatWhiteRMC
   storage:
     back:
     - RMCHardhatWhite
-    
+
 - type: loadout
   id: HardHatBlueRMC
   storage:

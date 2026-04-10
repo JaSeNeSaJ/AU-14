@@ -1,0 +1,23 @@
+# synthetic
+# govfor/opfor
+- type: roleLoadout
+  id: JobAU14JobGOVFORAuxSupportSynth
+  points: 7
+  groups:
+  - GOVFORSynthSpecializationAU14
+  - SynthBackpackAU14
+  - SynthBeltAU14
+  - SynthPouchesLeftAU14
+  - SynthPouchesRightAU14
+  - SynthGlovesAU14
+  - SynthHeadwearAU14
+  - SynthGlassesAU14
+  - SynthUniformAU14
+  - SynthUniformAccessoriesRMC
+  - SynthSuitAU14
+  - SynthSuitSpecialAU14
+  - SynthMasksAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - HelmetGarbsRMC
+  - SmokablesRMC

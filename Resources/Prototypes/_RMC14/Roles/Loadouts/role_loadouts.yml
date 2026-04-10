@@ -773,28 +773,6 @@
   - MiscellaneousRMC
   - MeleeWeaponsRMC
 
-- type: roleLoadout
-  id: JobAU14JobGOVFORAuxSupportSynth
-  points: 7
-  groups:
-  - AU14GOVFORSynthSpecializationRMC
-  - SynthBackpackRMC
-  - SynthHeadwearRMC
-  - SynthGlassesRMC
-  - SynthMasksRMC
-  - HelmetGarbsRMC
-  - AccessoriesRMC
-  - SynthUniformRMC
-  - SynthUniformAccessoriesRMC
-  - SynthSuitsRMC
-  - PaperworkRMC
-  - RecreationalRMC
-  - PlushiesRMC
-  - RMCLoadoutGroupPins
-  - SmokablesRMC
-  - MiscellaneousRMC
-  - MeleeWeaponsRMC
-
 # Requsitions
 - type: roleLoadout
   id: JobCMCargoTech

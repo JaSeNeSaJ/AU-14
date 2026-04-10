@@ -1,0 +1,225 @@
+# general use
+
+
+# synthetic
+# govfor/opfor
+- type: loadoutGroup
+  id: GOVFORSynthSpecializationAU14
+  name: au14-loadout-group-role-specific-ID
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - GOVFORSynthSpecializationDefaultAU14
+  - GOVFORSynthSpecializationEngineeringAU14
+  - GOVFORSynthSpecializationMedicalAU14
+  - GOVFORSynthSpecializationSecurityAU14
+  - GOVFORSynthSpecializationCommandAU14
+  - GOVFORSynthSpecializationIntelAU14
+
+- type: loadoutGroup
+  id: SynthHeadwearAU14
+  name: rmc-loadout-group-synthetic-headwear
+  minLimit: 0
+  maxLimit: 2
+  loadouts:
+  - CapRMC
+  - BeretEngineerRMC
+  - CapMPRMC
+  - CapQuartermasterRMC
+  - HeadCapCargoRMC
+  - HardHatRMC
+  - HardHatOrangeRMC
+  - HardHatWhiteRMC
+  - HardHatBlueRMC
+  - HeadCapOfficerRMC
+
+- type: loadoutGroup
+  id: SynthBackpackAU14
+  name: rmc-loadout-group-backpack
+  minLimit: 1
+  loadouts:
+  - SmarpackAU14
+  - BackpackMarineMedicRMC
+  - MarineTechnicianSatchel
+  - MarineSatchel
+  - CMSatchelAU14
+  - SlingSatchelBlueAU14
+  - SlingSatchelBlackAU14
+  - SatchelWelderRMC
+  - BackpackEngineerRMC
+  - SmarpackBlackAU14
+  - SmarpackGreenAU14
+  - SmarpackWhiteAU14
+  - SmarpackTanAU14
+  - SmarpackA1TanAU14
+  - SmarpackA1GreenAU14
+  - SmarpackA1BlackAU14
+  - SmarpackA1AU14
+  - SmarpackA1WhiteAU14
+
+- type: loadoutGroup
+  id: SynthMasksAU14
+  name: rmc-loadout-group-masks
+  minLimit: 0
+  loadouts:
+  - MaskScarfRedRMC
+  - MaskScarfBlackRMC
+  - MaskScarfGrayRMC
+  - MaskScarfGreenRMC
+  - MaskScarfTanRMC
+  - TornScarfBlackRMC
+  - TornScarfDesertRMC
+  - TornScarfGreenRMC
+  - TornScarfGreyRMC
+  - TornScarfUrbanRMC
+  - TornScarfSnowRMC
+  - NeckerchiefTanRMC
+  - NeckerchiefBlackRMC
+  - NeckerchiefGrayRMC
+  - NeckerchiefGreenRMC
+  - NeckerchiefWhiteRMC
+  - NeckerchiefRedRMC
+
+- type: loadoutGroup
+  id: SynthGlassesAU14
+  name: rmc-loadout-group-synthetic-glasses
+  minLimit: 0
+  maxLimit: 2
+  loadouts:
+  - GlassesMedicalHUDGlassesAU14
+  - AviatorsRMC
+  - EyepatchRMC
+  - GlassesRPGRMC
+  - GlassesRPGRMCOld
+  - GlassesPrescriptionRMC
+  - GogglesRMC
+  - GogglesPrescriptionRMC
+  - GogglesBlackRMC
+  - GogglesOrangeRMC # TODO add prescription variants of all the goggles
+  - GogglesAdvancedRMC
+  - GogglesM1A1RMC
+  - PersonalShadesRMC
+  - SunglassesRMC # TODO prescription sunglasses
+  - GlassesTriMaxYellowRMC
+  - GlassesTriMaxBronzeRMC
+  - GlassesTriMaxBlackRMC
+  - GogglesRedRMC
+  - GogglesBlueRMC
+  - GogglesPurpleRMC
+  - GogglesYellowRMC
+  - GogglesPolarizedBlueRMC
+  - GogglesPolarizedOrangeRMC
+  - GogglesM1A1BlueRMC
+  - GlassesSecurityRMC
+
+- type: loadoutGroup
+  id: SynthUniformAU14
+  name: rmc-loadout-group-synthetic-uniform
+  minLimit: 1
+  loadouts:
+  - CivilianBoilerSuitDarkBlueSynthAU14
+  - SynthUniformRMC
+  - SynthJumpsuitPristineRMC
+  - ScrubsBlueRMC
+  - ScrubsLightBlueRMC
+  - ScrubsGreenRMC
+  - ScrubsPurpleRMC
+  - ScrubsOliveRMC
+  - ScrubsGreyRMC
+  - EngineerUniformRMC
+  - MPUniformRMC
+  - TShirtWhiteRMC
+  - TShirtGrayRMC
+  - TShirtRedRMC
+  - CivilianJumpsuitRMC
+  - WhiteServiceJumpsuitRMC
+  - LiaisonBlueJumpsuitRMC
+  - LiaisonBrownJumpsuitRMC
+  - LiaisonCorporateFormalJumpsuitRMC
+
+- type: loadoutGroup
+  id: SynthBeltAU14
+  name: au14-loadout-group-synth-belt
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - BeltMedicBagSupportSynthAU14
+  - BeltUtilityFilledAU14
+  - BeltHolsterNailgunFillAU14
+  - IntelDetectorAU14
+  - BeltSecurityMPFilledAU14
+
+- type: loadoutGroup
+  id: SynthPouchesLeftAU14
+  name: au14-loadout-group-synth-pouches
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - PouchToolsFilledSupportSyntheticAU14
+  - PouchPoliceEquipmentSupportSynthAU14
+  - PouchCommandFillAU14
+  - PouchDocumentAU14
+  - PouchSlingAU14
+  - PouchAutoinjectorFilledMilitaryDoctorAU14
+  - PouchConstructionFillFullAU14
+  - PouchMedkitPMCFilledAU14
+
+- type: loadoutGroup
+  id: SynthPouchesRightAU14
+  name: au14-loadout-group-synth-pouches-right
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - PouchPoliceEquipmentSupportSynthRightAU14
+  - PouchToolsFilledSupportSyntheticRightAU14
+  - PouchCommandFillRightAU14
+  - PouchDocumentRightAU14
+  - PouchSlingRightAU14
+  - PouchAutoinjectorFilledMilitaryDoctorRightAU14
+  - PouchConstructionFillFullRightAU14
+  - PouchMedkitPMCFilledRightAU14
+
+- type: loadoutGroup
+  id: SynthGlovesAU14
+  name: au14-loadout-group-gloves
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - HandsVeteranInsulatedAU14
+  - ClothingHandGlovesNitrileAU14
+  - HandsLatexAU14
+  - HandsInsulatedBlackMarineAU14
+  - HandsBrownAU14
+
+- type: loadoutGroup
+  id: SynthSuitAU14
+  name: rmc-loadout-group-synthetic-suits
+  minLimit: 0
+  maxLimit: 1
+  loadouts:
+  - CoatBomberRMC
+  - ExternalWebbingRMC
+  - HazardVestRMC
+  - HazardVestBlueRMC
+  - HazardVestYellowRMC
+  - HazardVestBlackRMC
+  - LabcoatRMC
+  - QuartermasterJacketRMC
+  - CorporateBlackJacketRMC
+  - CorporateBrownJacketRMC
+  - CorporateBlueJacketRMC
+  - JacketWindbreakerRMC
+
+- type: loadoutGroup
+  id: SynthSuitSpecialAU14
+  name: au14-loadout-group-synth-suit-special
+  minLimit: 1
+  maxLimit: 1
+  loadouts:
+  - DefibrillatorAU14
+  - ArmorM3VLSynthAU14
+  - ArmorM3VLSynthClassicAU14
+  - ArmorM3VLSynthDesertAU14
+  - ArmorM3VLSynthJungleAU14
+  - ArmorM3VLSynthSnowAU14
+  - ArmorM3VLSynthUrbanAU14

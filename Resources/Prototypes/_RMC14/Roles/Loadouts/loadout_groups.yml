@@ -155,7 +155,7 @@
   - NeckerchiefGrayRMC
   - NeckerchiefTanRMC
   - NeckerchiefWhiteRMC
-  
+
 - type: loadoutGroup
   id: MasksRMCPVE
   name: rmc-loadout-group-masks
@@ -593,16 +593,6 @@
   - CMPPeakedCapRMC
 
 # Synthetic
-- type: loadoutGroup
-  id: AU14GOVFORSynthSpecializationRMC
-  name: rmc-loadout-group-role-specific
-  minLimit: 1
-  maxLimit: 1
-  loadouts:
-  - AU14GOVFORSynthSpecializationDefault
-  - AU14GOVFORSynthSpecializationEngineering
-  - AU14GOVFORSynthSpecializationMedical
-  - AU14GOVFORSynthSpecializationSecurity
 
 - type: loadoutGroup
   id: SynthUniformRMC

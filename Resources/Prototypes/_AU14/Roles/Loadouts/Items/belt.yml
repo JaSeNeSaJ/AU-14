@@ -1,0 +1,14 @@
+- type: loadout
+  id: BeltUtilityFilledAU14
+  equipment:
+    belt: AU14BeltUtilityFilled
+
+- type: loadout
+  id: IntelDetectorAU14
+  equipment:
+    belt: RMCIntelDetector
+
+- type: loadout
+  id: BeltSecurityMPFilledAU14
+  equipment:
+    belt: CMBeltSecurityMPFilled

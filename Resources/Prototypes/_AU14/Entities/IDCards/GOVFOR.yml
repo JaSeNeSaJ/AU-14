@@ -126,26 +126,42 @@
 - type: entity
   parent: AU14IDCardGOVFORAuxSupportSynth
   id: AU14IDCardGOVFORAuxSupportSynthEngineering
-  name: support synthetic engineering ID card
+  name: engineering support synthetic ID card
   components:
   - type: JobTitleChanger
-    jobTitle: Support Synthetic (Engineering)
+    jobTitle: Engineering Support Synthetic
 
 - type: entity
   parent: AU14IDCardGOVFORAuxSupportSynth
   id: AU14IDCardGOVFORAuxSupportSynthMedical
-  name: support synthetic medical ID card
+  name: medical support synthetic ID card
   components:
   - type: JobTitleChanger
-    jobTitle: Support Synthetic (Medical)
+    jobTitle: Medical Support Synthetic
 
 - type: entity
   parent: AU14IDCardGOVFORAuxSupportSynth
   id: AU14IDCardGOVFORAuxSupportSynthSecurity
-  name: support synthetic security ID card
+  name: military police synthetic ID card
   components:
   - type: JobTitleChanger
-    jobTitle: Support Synthetic (Security)
+    jobTitle: Military Police Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthCommand
+  name: command advisor synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Command Advisor Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthIntel
+  name: intelligence support synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Intelligence Support Synthetic
 
 - type: entity
   parent: CMIDCardBase

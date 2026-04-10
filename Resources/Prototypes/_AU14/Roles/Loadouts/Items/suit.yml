@@ -1,0 +1,4 @@
+- type: loadout
+  id: DefibrillatorAU14
+  equipment:
+    outerClothing: AU14CMDefibrillator
