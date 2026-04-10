@@ -12,3 +12,4 @@
       components:
         - type: StationNameSetup
           mapNameTemplate: 'USS George W. Bush'
+        - type: StationJobs
