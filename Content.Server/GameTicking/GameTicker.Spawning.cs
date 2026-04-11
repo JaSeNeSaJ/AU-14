@@ -110,8 +110,6 @@ namespace Content.Server.GameTicking
 
             _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
 
-            AlternateGovforOpforRoundstart(assignedJobs);
-
             // Calculate extended access for stations.
             var stationJobCounts = spawnableStations.ToDictionary(e => e, _ => 0);
             foreach (var (netUser, (job, station)) in assignedJobs)
@@ -288,7 +286,6 @@ namespace Content.Server.GameTicking
             _playTimeTrackings.PlayerRolesChanged(player);
 
             var mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
-
             DebugTools.AssertNotNull(mobMaybe);
             var mob = mobMaybe!.Value;
 
@@ -446,93 +443,6 @@ namespace Content.Server.GameTicking
             _adminLogger.Add(LogType.LateJoin,
                 LogImpact.Low,
                 $"{player.Name} late joined the round as an Observer with {ToPrettyString(ghost):entity}.");
-        }
-
-
-        /// <summary>
-        /// For roundstart only: alternates players assigned to govfor/opfor jobs between govfor and opfor counterparts.
-        /// First player in each role gets govfor, second gets opfor, third govfor, etc.
-        /// Players may have queued for either the govfor or opfor variant — both are collected and alternated.
-        /// </summary>
-        private void AlternateGovforOpforRoundstart(
-            Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
-        {
-            // Step 1: Build govfor ↔ opfor pair mapping from all job prototypes.
-            // Index every govfor/opfor job by a "base role" key (job ID with the faction part stripped).
-            var govforByBase = new Dictionary<string, string>(); // baseRole → govfor job ID
-            var opforByBase = new Dictionary<string, string>();  // baseRole → opfor job ID
-
-            foreach (var job in _prototypeManager.EnumeratePrototypes<JobPrototype>())
-            {
-                var id = job.ID;
-                var isGovfor = id.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase);
-                var isOpfor = id.Contains("opfor", StringComparison.OrdinalIgnoreCase);
-
-                if (!isGovfor && !isOpfor)
-                    continue;
-
-                // Strip the faction identifier to get a neutral key, e.g.
-                //   "AU14JobGOVFORSquadRifleman" → "AU14JobSquadRifleman"
-                //   "AU14JobOpforSquadRifleman"  → "AU14JobSquadRifleman"
-                var baseRole = id
-                    .Replace("GOVFOR", "", StringComparison.OrdinalIgnoreCase)
-                    .Replace("opfor", "", StringComparison.OrdinalIgnoreCase);
-
-                if (isGovfor)
-                    govforByBase.TryAdd(baseRole, id);
-                else
-                    opforByBase.TryAdd(baseRole, id);
-            }
-
-            // Step 2: Collect assigned players whose job has a valid govfor/opfor pair,
-            //         grouped by base role.
-            var playersByBaseRole = new Dictionary<string, List<NetUserId>>();
-
-            foreach (var (player, (job, _)) in assignedJobs)
-            {
-                if (job == null)
-                    continue;
-
-                var jobId = job.Value.Id;
-                var isGovfor = jobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase);
-                var isOpfor = jobId.Contains("opfor", StringComparison.OrdinalIgnoreCase);
-
-                if (!isGovfor && !isOpfor)
-                    continue;
-
-                var baseRole = jobId
-                    .Replace("GOVFOR", "", StringComparison.OrdinalIgnoreCase)
-                    .Replace("opfor", "", StringComparison.OrdinalIgnoreCase);
-
-                // Only process roles that have BOTH a govfor and opfor counterpart.
-                if (!govforByBase.ContainsKey(baseRole) || !opforByBase.ContainsKey(baseRole))
-                    continue;
-
-                if (!playersByBaseRole.TryGetValue(baseRole, out var list))
-                {
-                    list = new List<NetUserId>();
-                    playersByBaseRole[baseRole] = list;
-                }
-
-                list.Add(player);
-            }
-
-            // Step 3: For each base role, force-alternate govfor / opfor.
-            foreach (var (baseRole, players) in playersByBaseRole)
-            {
-                var govforId = govforByBase[baseRole];
-                var opforId = opforByBase[baseRole];
-
-                for (var i = 0; i < players.Count; i++)
-                {
-                    var player = players[i];
-                    var (_, station) = assignedJobs[player];
-
-                    // Even indices (0, 2, 4…) → govfor, odd indices (1, 3, 5…) → opfor.
-                    var targetJob = (i % 2 == 0) ? govforId : opforId;
-                    assignedJobs[player] = (new ProtoId<JobPrototype>(targetJob), station);
-                }
-            }
         }
 
         #region Spawn Points
