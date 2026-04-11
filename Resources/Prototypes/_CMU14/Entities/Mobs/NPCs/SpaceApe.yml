@@ -5,6 +5,7 @@
   description: A capable and dangerous megafauna, high caloric needs.
   suffix: CMU
   components:
+  - type: DropshipHijacker
   - type: NightVision
     innate: true
   - type: Fixtures
