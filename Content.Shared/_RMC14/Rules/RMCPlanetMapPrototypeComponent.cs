@@ -119,16 +119,16 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
     public string? Faction  = String.Empty;
 
     [DataField("govforfighters")]
-    public int govforfighters = 1;
+    public int govforfighters = 0;
 
     [DataField("opforfighters")]
-    public int opforfighters = 1;
+    public int opforfighters = 0;
 
     [DataField("govfordropships")]
-    public int govfordropships = 1;
+    public int govfordropships = 2;
 
     [DataField("opfordropships")]
-    public int opfordropships = 1;
+    public int opfordropships = 2;
 
     [DataField("threats")]
     public List<ProtoId<ThreatPrototype>> AllowedThreats = new();
@@ -137,7 +137,7 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
 
 
     [DataField("thirdpartyinterval"), AutoNetworkedField]
-    public int? ThirdPartyInterval =2900;
+    public int? ThirdPartyInterval =9600;
 
     /// <summary>
     /// Optional job scaling prototype for human job slots in ForceOnForce mode.
