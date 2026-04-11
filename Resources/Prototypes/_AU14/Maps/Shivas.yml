@@ -12,4 +12,3 @@
       components:
         - type: StationNameSetup
           mapNameTemplate: 'Shivas Snowball'
-        - type: StationJobs
