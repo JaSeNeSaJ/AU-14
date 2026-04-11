@@ -5,7 +5,7 @@
   name: Force on Force
   showInVote: true
   description: Two units face each other in combat.
-  minPlayers: 75
+  minPlayers: 65
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:
@@ -15,8 +15,8 @@
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-  #- AUPlanetSorokyne
-  - AUPlanetStableGarrison
+  - AUPlanetSorokyne
+ # - AUPlanetStableGarrison
   - AUPlanetTrijent
   - CMUPlanetLament
   rules:
@@ -61,7 +61,7 @@
   - AUPlanetLV747
   #- AUPlanetFlight
   - AUPlanetLV327
-  #- AUPlanetSorokyne
+   - AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
