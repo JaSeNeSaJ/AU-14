@@ -38,6 +38,11 @@
   - CMUAPE
 
 - type: npcFaction
+  id: ColonySynth
+
+
+
+- type: npcFaction
   id: AUColonist
   hostile:
   - RMCXeno

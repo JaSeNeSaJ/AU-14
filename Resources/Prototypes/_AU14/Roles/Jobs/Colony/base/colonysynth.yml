@@ -29,6 +29,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - ColonySynth
     - type: Skills
       skills:
         RMCSkillCqc: 4

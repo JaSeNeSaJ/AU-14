@@ -91,7 +91,7 @@
     ObjectiveDescription: "Kill the GOVFOR Commander"
     roundEndMessage: "By Killing the GOVFOR Commander"
   - type: KillObjective
-    factiontokill: govfor
+    factiontokill: GOVFOR 
     amounttokill: 1
     specificjob: AU14JobGOVFORPlatCo
 
@@ -161,7 +161,7 @@
     custompoints: 10
     ObjectiveDescription: "Kill GOVFOR Forces"
   - type: KillObjective
-    factiontokill: govfor
+    factiontokill: GOVFOR
     amounttokill: 1
 
 

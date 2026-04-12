@@ -273,6 +273,24 @@
     - prefRoles: [ CLFVeteranRole ]
       max: 1
       playerRatio: 15
+      jobBlacklist:
+      - AU14JobGOVFORSectionSergeant
+      - AU14JobGOVFORSquadSergeant
+      - AU14JobGOVFORSquadRifleman
+      - AU14JobGOVFORRadioTelephoneOperator
+      - AU14JobGOVFORSquadAutomaticRifleman
+      - AU14JobGOVFORPlatoonCorpsman
+      - AU14JobGOVFORPlatCo
+      - AU14JobGOVFORPlatOp
+      - AU14JobGOVFORDSPilot
+      - AU14JobGOVFORDCC
+      - AU14JobGOVFORAuxSupportSynth
+      - AU14JobGOVFORSquadCombatTech
+      - AU14JobGOVFORadvisor
+      - AU14JobGOVFORMilitaryDoctor
+      - AU14JobCLFGuerilla
+      - AU14JobCLFCellLeader
+      - AU14JobCLFPhysician
       briefing:
         text: clfveteran-role-greeting
         color: OliveDrab
@@ -391,9 +409,8 @@
     - prefRoles: [ CannibalRole ]
       max: 1
       playerRatio: 15
-      whitelist:
-        components:
-        - AU14FoodServiceWorkerMarker
+      jobWhitelist:
+      - AU14JobCivilianFoodServiceWorker
       briefing:
         text: cannibal-role-greeting
         color: DarkRed
