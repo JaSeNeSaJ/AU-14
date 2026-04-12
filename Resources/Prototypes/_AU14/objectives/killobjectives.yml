@@ -91,7 +91,7 @@
     ObjectiveDescription: "Kill the GOVFOR Commander"
     roundEndMessage: "By Killing the GOVFOR Commander"
   - type: KillObjective
-    factiontokill: GOVFOR 
+    factiontokill: GOVFOR
     amounttokill: 1
     specificjob: AU14JobGOVFORPlatCo
 
@@ -136,11 +136,12 @@
     - govfor
     repeating: true
     objectivelevel: 2
-    custompoints: 10
+    custompoints: 20
+    maxrepeatable: 8
     ObjectiveDescription: "Kill Insurgents"
   - type: KillObjective
     factiontokill: clf
-    amounttokill: 1
+    amounttokill: 2
 
 - type: entity
   name: Kill GOVFOR Forces
@@ -157,6 +158,7 @@
     possiblefactions:
     - clf
     repeating: true
+    maxrepeatable: 30
     objectivelevel: 2
     custompoints: 10
     ObjectiveDescription: "Kill GOVFOR Forces"
