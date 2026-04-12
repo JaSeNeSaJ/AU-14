@@ -693,13 +693,18 @@
 - type: entity
   parent: CMUAreaLV376SoftUnderground
   id: CMUAreaLV376WYAccessTunnel
-  name: Weyland-Yutani Access Tunnel
+  name: Weyland-Yutani Facility - South Access Tunnel
   components:
   - type: Area
     minimapColor: '#C19504E7'
     powerNet: weylandyutani
   - type: Sprite
     state: yellow
+
+- type: entity
+  parent: CMUAreaLV376WYAccessTunnel
+  id: CMUAreaLV376WYAccessTunnelNorth
+  name: Weyland-Yutani Facility - North Access Tunnel
 
 - type: entity
   parent: CMUAreaLV376SoftUnderground
@@ -749,12 +754,17 @@
 - type: entity
   parent: CMUAreaLV376Underground
   id: CMUAreaLV376WYUndergroundTunnel
-  name: Weyland-Yutani Access Tunnel
+  name: Weyland-Yutani Facility - South Access Tunnel
   components:
   - type: Sprite
     state: purple
   - type: Area
     powerNet: weylandyutani
+
+- type: entity
+  parent: CMUAreaLV376WYUndergroundTunnel
+  id: CMUAreaLV376WYUndergroundTunnelNorth
+  name: Weyland-Yutani Facility - North Access Tunnel
 
 - type: entity
   parent: CMUAreaLV376Underground
@@ -765,6 +775,54 @@
     state: yellow
   - type: Area
     powerNet: weylandyutani
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - Scientist Dorms
+  id: CMUAreaLV376WYFacilitySD
+  components:
+  - type: Sprite
+    state: purple
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - Security
+  id: CMUAreaLV376WYFacilitySec
+  components:
+  - type: Sprite
+    state: red2
+  - type: Area
+    minimapColor: '#A22D2DEE'
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - Chemical Research
+  id: CMUAreaLV376WYFacilityCR
+  components:
+  - type: Sprite
+    state: purple
+  - type: Area
+    minimapColor: '#812DA2EE'
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - Botanical Research
+  id: CMUAreaLV376WYFacilityBR
+  components:
+  - type: Sprite
+    state: purple
+  - type: Area
+    minimapColor: '#812DA2EE'
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - APOLLO Core
+  id: CMUAreaLV376WYFacilityAC
+  components:
+  - type: Sprite
+    state: purple
+  - type: Area
+    minimapColor: '#2D3FA2EE'
 
 - type: entity
   parent: CMUAreaLV376Underground
