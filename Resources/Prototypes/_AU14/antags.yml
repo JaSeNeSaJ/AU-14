@@ -308,6 +308,10 @@
           RMCSkillConstruction: 3
           RMCSkillLeadership: 3
           RMCSkillMedical: 3
+          RMCSkillPolice: 1
+          RMCSkillSurgery: 3
+
+
       mindRoles:
       - MindRoleCLFVeteran
 
