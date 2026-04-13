@@ -36,7 +36,8 @@ public sealed partial class PartySpawnPrototype : IPrototype
     /// Per-entity population scaling. Key is the entity prototype ID (must match a key in
     /// <see cref="LeadersToSpawn"/> or <see cref="GruntsToSpawn"/>).
     /// When present the scaled count replaces the static count for that entity.
-    /// Formula: slots = Benchmark + floor((playerCount - WhenToBeginScaling) * Scale)
+    /// Formula: extra = floor(playerCount * Scale)
+    /// Final: slots = min(Maximum ?? int.MaxValue, (Benchmark ?? staticCount) + extra)
     /// </summary>
     [DataField("scaling", required: false)]
     public Dictionary<string, JobScaleEntry> Scaling { get; private set; } = new();

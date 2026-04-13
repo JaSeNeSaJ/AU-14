@@ -68,6 +68,7 @@
   - AU14JobCivilianCWPSRanger
   - AU14JobCivilianPaPOfficer
   - AU14JobCivilianCMBMarshal
+  - AU14JobCivilianCMBDeputy
 
   departmentRadio: null
   headOfDepartment: null

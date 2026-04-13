@@ -40,8 +40,8 @@
     - govfor
     repeating: true
     objectivelevel: 1
-    custompoints: 13
-    maxrepeatable: 1
+    custompoints: 25
+    maxrepeatable: 3
     ObjectiveDescription: "Arrest  insurgents"
   - type: ArrestObjective
     factiontoarrest: clf
@@ -64,8 +64,8 @@
     - clf
     repeating: true
     objectivelevel: 1
-    custompoints: 13
-    maxrepeatable: 1
+    custompoints: 20
+    maxrepeatable: 3
     ObjectiveDescription: "Arrest GOVFOR soldiers"
   - type: ArrestObjective
     factiontoarrest: govfor
