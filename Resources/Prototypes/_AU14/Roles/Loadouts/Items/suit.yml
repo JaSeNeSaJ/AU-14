@@ -48,19 +48,16 @@
 
 - type: loadout
   id: CivilianFullSuitParamedicGreenAU14
-  name: Green paramedic fullsuit and vest
   equipment:
     outerClothing: AU14CivilianFullSuitParamedicGreen
 
 - type: loadout
   id: CivilianFullSuitParamedicRedAU14
-  name: Red paramedic fullsuit and vest
   equipment:
     outerClothing: AU14CivilianFullSuitParamedicRed
 
 - type: loadout
   id: CivilianFullSuitFirefighterAU14
-  name: Turnout gear and white vest
   equipment:
     outerClothing: AU14CivilianTurnoutGear
 
@@ -82,7 +79,7 @@
     - AU14CivilianHazardVestParamedicWhite
 
 - type: loadout
-  id: AU14CivilianHazardVestParamedicGreenAU14
+  id: CivilianHazardVestParamedicGreenAU14
   storage:
     back:
     - AU14CivilianHazardVestParamedicGreen
