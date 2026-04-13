@@ -9,6 +9,17 @@
     - KillAllColonistRule
     - KillAllXenoRule
 
+- type: threat
+  id: cultistThreatOnMarker
+  roundstartspawns: cultistPartyThreatOnMarkers
+  whitelistedgamemodes:
+  - ColonyFall
+  blacklistedgamemodes:
+  - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
+
 - type: partySpawn
   id: cultistPartyThreat
   leadersToSpawn:
@@ -71,3 +82,24 @@
   maxplayers: 200
   GhostsNeeded: 3
   roundstart: true
+
+- type: partySpawn
+  id: cultistPartyThreatOnMarkers
+  leadersToSpawn: 
+    CMXenoQueen: 1
+  gruntsToSpawn:
+    cultistJob: 3
+  spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.3
+      whenToBeginScaling: 50
+  Markers:
+    Member: cultcfmarker
+    Leader: cultcfmarker
+    
+
+
