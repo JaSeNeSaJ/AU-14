@@ -16,7 +16,7 @@
   ranks:
     RMCRankCivilian: []
   startingGear: AU14GearCLFCellLeader
-  icon: "CMJobIconEmpty"
+  icon: CMJobIconEmpty
   requireAdminNotify: true
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-clfcellleader
@@ -30,6 +30,7 @@
       factions:
        - CLF
     - type: CLFMember
+      statusIcon: CLFFactionLeader
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -65,7 +66,7 @@
     neck: RMCCLFArmband
     head: AU14CivBallCapBlack
     jumpsuit: CMJumpsuitColonist
-    id: AU14IDCardColonyColonist
+    id: AU14IDCardCLFCellLeader
     ears: AU14CLFHeadset
     eyes: RMCGlassesAviators
   inhand:

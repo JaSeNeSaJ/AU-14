@@ -39,6 +39,25 @@
     job: AU14JobCivilianColonist
 
 - type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardCLFCellLeader
+  name: CLF cell leader ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCLFCellLeader
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCLFCivilian
+  name: colonist ID card
+  components:
+  - type: Access
+    groups:
+    - Colonist
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian
+
+- type: entity
   parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardFoodServiceWorker
   name: food service worker ID card
