@@ -1,3 +1,25 @@
+# COS Specizalizations
+
+- type: loadout
+  id: ColonySyntheticSpecializationDefaultAU14
+  equipment:
+    id: AU14IDCardColonySynthetic
+
+- type: loadout
+  id: ColonySyntheticSpecializationEngineeringAU14
+  equipment:
+    id: AU14IDCardColonySyntheticEngineering
+
+- type: loadout
+  id: ColonySyntheticSpecializationMedicalAU14
+  equipment:
+    id: AU14IDCardColonySyntheticMedical
+
+- type: loadout
+  id: ColonySyntheticSpecializationCommandAU14
+  equipment:
+    id: AU14IDCardColonySyntheticCommand
+
 # GOVFOR Synth Specializations
 - type: loadout
   id: GOVFORSynthSpecializationDefaultAU14
@@ -186,33 +208,6 @@
   equipment:
     belt: RMCBeltHolsterNailgunFill
 
-# gloves
-
-- type: loadout
-  id: ClothingHandGlovesNitrileAU14
-  equipment:
-    gloves: ClothingHandsGlovesNitrile
-
-- type: loadout
-  id: HandsLatexAU14
-  equipment:
-    gloves: CMHandsLatex
-
-- type: loadout
-  id: HandsVeteranInsulatedAU14
-  equipment:
-    gloves: RMCHandsVeteranInsulated
-
-- type: loadout
-  id: HandsInsulatedBlackMarineAU14
-  equipment:
-    gloves: AU14PVEHandsInsulatedBlackMarine
-
-- type: loadout
-  id: HandsBrownAU14
-  equipment:
-    gloves: CMHandsBrown
-
 # suits
 
 - type: loadout
@@ -260,9 +255,4 @@
   id: PortableDialysisAU14
   inhand:
   - RMCPortableDialysis
-
-- type: loadout
-  id: SynthResetKeyAU14
-  inhand:
-  - RMCSynthResetKey
 # Civilian Synth Specializations

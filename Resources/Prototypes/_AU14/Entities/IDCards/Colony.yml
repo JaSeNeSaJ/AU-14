@@ -55,6 +55,22 @@
     job: AU14JobCivilianJournalist
 
 - type: entity
+  parent: AU14IDCardColonyJournalist
+  id: AU14IDCardColonyJournalistIndependent
+  name: independent journalist ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Independent Journalist
+
+- type: entity
+  parent: AU14IDCardColonyJournalist
+  id: AU14IDCardColonyJournalistFreePress
+  name: free press journalist ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Free Press Journalist
+
+- type: entity
   parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardCivilianScientist
   name: scientist ID card
@@ -69,6 +85,30 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianColonySynthetic
+
+- type: entity
+  parent: AU14IDCardColonySynthetic
+  id: AU14IDCardColonySyntheticEngineering
+  name: engineering colony synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Engineering Colony Synthetic
+
+- type: entity
+  parent: AU14IDCardColonySynthetic
+  id: AU14IDCardColonySyntheticMedical
+  name: medical colony synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Medical Colony Synthetic
+
+- type: entity
+  parent: AU14IDCardColonySynthetic
+  id: AU14IDCardColonySyntheticCommand
+  name: colony administration advisor synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Colony Administration Advisor Synthetic
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -151,6 +191,22 @@
     job: AU14JobCivilianEmergencyResponseOfficer
 
 - type: entity
+  parent: AU14IDCardColonyEmergencyResponseOfficer
+  id: AU14IDCardColonyEmergencyResponseOfficerParamedic
+  name: emergency response paramedic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Emergency Response Paramedic
+
+- type: entity
+  parent: AU14IDCardColonyEmergencyResponseOfficer
+  id: AU14IDCardColonyEmergencyResponseOfficerFirefighter
+  name: emergency response firefighter ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Emergency Response Firefighter
+
+- type: entity
   parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardColonyCMBDeputy
   name: CMB deputy ID card
@@ -171,8 +227,34 @@
   id: AU14IDCardColonyUSASFRecruiter
   name: USASF recruiter ID card
   components:
+  - type: JobTitleChanger
+    jobTitle: USASF recruiter
   - type: PresetIdCard
     job: AU14JobCivilianUSASFRecruiter
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyUSASFRecruiterMarines
+  name: USCM recruiter ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: USMC recruiter
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyUSASFRecruiterUSArmy
+  name: US Army recruiter ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: US Army recruiter
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyUSASFRecruiterCCAF
+  name: CCAF recruiter ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: CCAF recruiter
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF

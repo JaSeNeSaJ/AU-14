@@ -17,3 +17,23 @@
   id: BeltMedicalFilledAU14
   equipment:
     belt: CMBeltMedicalFilled
+
+- type: loadout
+  id: EngiBeltUtilityFilledAU14
+  equipment:
+    belt: CMBeltUtilityFilled
+
+- type: loadout
+  id: BeltUtilityGeneralAU14
+  equipment:
+    belt: RMCBeltUtilityGeneral
+
+- type: loadout
+  id: BeltMedicalAU14
+  equipment:
+    belt: CMBeltMedical
+
+- type: loadout
+  id: BeltMedicBagAU14
+  equipment:
+    belt: CMBeltMedicBag

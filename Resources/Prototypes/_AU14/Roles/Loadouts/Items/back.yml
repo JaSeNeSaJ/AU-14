@@ -12,3 +12,18 @@
   id: CMSatchelAU14
   equipment:
     back: CMSatchel
+
+- type: loadout
+  id: SatchelLightpackWelderAU14
+  equipment:
+    back: RMCSatchelLightpackWelder
+
+- type: loadout
+  id: SatchelEngineerAU14
+  equipment:
+    back: CMSatchelEngineer
+
+- type: loadout
+  id: MedicalSatchelAU14
+  equipment:
+    back: CMSatchelMedical
