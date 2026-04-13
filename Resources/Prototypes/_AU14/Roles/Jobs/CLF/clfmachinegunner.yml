@@ -4,6 +4,7 @@
   name: au14-job-name-clfmachinegunner
   description: au14-job-description-clfmachinegunner
   setPreference: true
+  ignoreAllegiance: true
   playTimeTracker: AU14JobCLFMachineGunner
   requirements:
   - !type:TraitsRequirement
@@ -43,6 +44,9 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: ShowMarineIcons
+      factions:
+      - CLF
   hidden: false
 
 - type: startingGear
@@ -52,9 +56,8 @@
     gloves: CMHandsInsulated
     shoes: RMCBootsPMCFilled
     neck: RMCCLFArmband
-    jumpsuit: CMJumpsuitColonist
+    jumpsuit: AU14CMJumpsuitColonistCLF
     id: AU14IDCardColonyColonist
-    ears: AU14CLFHeadset
   inhand:
   - RMCWeaponLMGM60
 

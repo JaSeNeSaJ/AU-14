@@ -4,6 +4,7 @@
   name: au14-job-name-clfcellleader
   description: au14-job-description-clfcellleader
   setPreference: true
+  ignoreAllegiance: true
   playTimeTracker: AU14JobCLFCellLeader
   requirements:
   - !type:OverallPlaytimeRequirement
@@ -55,6 +56,9 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: ShowMarineIcons
+      factions:
+      - CLF
   hidden: false
 
 - type: startingGear
@@ -65,9 +69,8 @@
     shoes: RMCScoutShoes
     neck: RMCCLFArmband
     head: AU14CivBallCapBlack
-    jumpsuit: CMJumpsuitColonist
+    jumpsuit: AU14CMJumpsuitColonistCLF
     id: AU14IDCardCLFCellLeader
-    ears: AU14CLFHeadset
     eyes: RMCGlassesAviators
   inhand:
   - RMCWeaponRifleType71

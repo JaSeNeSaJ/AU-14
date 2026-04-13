@@ -4,6 +4,7 @@
   name: au14-job-name-clfguerilla
   description: au14-job-description-clfguerilla
   setPreference: true
+  ignoreAllegiance: true
   playTimeTracker: AU14JobCLFGuerilla
   ranks:
     RMCRankCivilian: []
@@ -37,15 +38,17 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: ShowMarineIcons
+      factions:
+      - CLF
   hidden: false
 
 - type: startingGear
   id: AU14GearCLFGuerilla
   equipment:
-    jumpsuit: CMJumpsuitColonist
+    jumpsuit: AU14CMJumpsuitColonistCLF
     shoes: RMCBootsPMCFilled
-    id: AU14IDCardColonyColonist
-    ears: AU14CLFHeadset
+    id: AU14IDCardCLFCivilian
    # neck: RMCCLFArmband
 
 - type: entity
