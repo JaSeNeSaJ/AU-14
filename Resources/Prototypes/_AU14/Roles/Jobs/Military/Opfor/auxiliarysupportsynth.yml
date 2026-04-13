@@ -76,6 +76,13 @@
     - type: UserIFF
       factions:
       - OPFOR
+    - type: IntrinsicRadioReceiver
+    - type: IntrinsicRadioTransmitter
+      channels:
+      - AI
+    - type: ActiveRadio
+      channels:
+      - AI
   hidden: false
 
 
