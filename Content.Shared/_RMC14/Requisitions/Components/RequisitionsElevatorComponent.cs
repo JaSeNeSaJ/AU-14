@@ -6,7 +6,6 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 namespace Content.Shared._RMC14.Requisitions.Components;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true), AutoGenerateComponentPause]
-[Access(typeof(SharedRequisitionsSystem))]
 public sealed partial class RequisitionsElevatorComponent : Component
 {
     [DataField]
