@@ -5,7 +5,7 @@
   name: Force on Force
   showInVote: true
   description: Two units face each other in combat.
-  minPlayers: 75
+  minPlayers: 70
   requiresOpforVote: true
   requiresGovforVote: true
   supportedPlanets:
@@ -15,9 +15,10 @@
   - AUPlanetLV759
   - AUPlanetLV327
   - AUPlanetCorsatStation
-  #- AUPlanetSorokyne
-  - AUPlanetStableGarrison
+  - AUPlanetSorokyne
+ # - AUPlanetStableGarrison
   - AUPlanetTrijent
+  - CMUPlanetLament
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -37,6 +38,7 @@
   supportedPlanets:
     - AUPlanetShepherdsPride
     - AUPlanetLV624
+    - CMUPlanetLament
     #- AUPlanetLV747
     #- AUPlanetSorokyne
     #- AUPlanetLV759 removed pending rework
@@ -59,13 +61,14 @@
   - AUPlanetLV747
   #- AUPlanetFlight
   - AUPlanetLV327
-  #- AUPlanetSorokyne
+   - AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
   - AuPlanetFiorina
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
+  - CMUPlanetLament
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -90,6 +93,7 @@
     - AUPlanetLV327
    # - AUPlanetSorokyne
     - AUPlanetStableGarrison
+    - CMUPlanetLament
 
 - type: gamePreset
   id: Jailbreak
@@ -146,7 +150,7 @@
       AU14JobGOVFORDCC: 1
       AU14JobGOVFORPlatOp: 5
       AU14JobGOVFORDSPilot: 2
-      AU14JobGOVFORRadioTelephoneOperator: 3
+      AU14JobGOVFORRadioTelephoneOperator: 4
       AU14JobGOVFORSquadSergeant: 3
       AU14JobGOVFORSquadAutomaticRifleman: 3
       AU14JobGOVFORSquadCombatTech: 6
