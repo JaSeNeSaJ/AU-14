@@ -1,5 +1,6 @@
 using Content.Shared.Access;
 using Content.Shared.AU14.Allegiance;
+using Content.Shared.AU14.Origin;
 using Content.Shared.Guidebook;
 using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.StatusIcon;
@@ -162,6 +163,20 @@ namespace Content.Shared.Roles
         /// </summary>
         [DataField]
         public bool IgnoreAllegiance { get; private set; }
+
+        /// <summary>
+        /// Optional list of origins allowed for this job.
+        /// If null or empty, any origin is allowed unless blocked by <see cref="OriginBlackist"/>.
+        /// </summary>
+        [DataField("originwhitelist")]
+        public HashSet<ProtoId<OriginPrototype>>? OriginWhitelist { get; private set; }
+
+        /// <summary>
+        /// Optional list of origins blocked for this job.
+        /// If null or empty, no origins are explicitly blocked.
+        /// </summary>
+        [DataField("originblackist")]
+        public HashSet<ProtoId<OriginPrototype>>? OriginBlackist { get; private set; }
 
         /// <summary>
         /// Optional list of guides associated with this role. If the guides are opened, the first entry in this list
