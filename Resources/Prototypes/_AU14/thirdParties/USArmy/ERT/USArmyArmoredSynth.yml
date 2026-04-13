@@ -94,13 +94,6 @@
         types:
           Blunt: 35
     - type: Synth
-    - type: IntrinsicRadioReceiver
-    - type: IntrinsicRadioTransmitter
-      channels:
-      - AI
-    - type: ActiveRadio
-      channels:
-      - AI
   hidden: true
 
 - type: entity

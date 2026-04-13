@@ -70,13 +70,6 @@
       damage:
         types:
           Blunt: 35
-    - type: IntrinsicRadioReceiver
-    - type: IntrinsicRadioTransmitter
-      channels:
-      - AI
-    - type: ActiveRadio
-      channels:
-      - AI
     - type: Synth
 
   hidden: false

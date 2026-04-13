@@ -76,13 +76,6 @@
     - type: UserIFF
       factions:
       - GOVFOR
-    - type: IntrinsicRadioReceiver
-    - type: IntrinsicRadioTransmitter
-      channels:
-      - AI
-    - type: ActiveRadio
-      channels:
-      - AI
   hidden: false
 
 - type: startingGear
