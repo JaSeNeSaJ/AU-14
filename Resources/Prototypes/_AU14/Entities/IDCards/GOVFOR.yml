@@ -124,6 +124,46 @@
     - GOVFOR
 
 - type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthEngineering
+  name: engineering support synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Engineering Support Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthMedical
+  name: medical support synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Medical Support Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthSecurity
+  name: military police synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Military Police Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthCommand
+  name: command advisor synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Command Advisor Synthetic
+
+- type: entity
+  parent: AU14IDCardGOVFORAuxSupportSynth
+  id: AU14IDCardGOVFORAuxSupportSynthIntel
+  name: intelligence support synthetic ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: Intelligence Support Synthetic
+
+- type: entity
   parent: CMIDCardBase
   id: AU14IDCardSquadCombatTech
   name: combat technician ID card
