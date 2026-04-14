@@ -23,7 +23,7 @@
   description: Threat wins when all AUColonists are dead (or when specified percent are dead).
   components:
     - type: KillAllColonistRule
-      percent: 95
+      percent: 85
 
 - type: entity
   id: KillAllApeRule

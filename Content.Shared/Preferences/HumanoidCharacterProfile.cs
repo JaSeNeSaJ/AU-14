@@ -155,7 +155,7 @@ namespace Content.Shared.Preferences
         /// The allegiance selected for this character. Affects platoon/colony spawning.
         /// </summary>
         [DataField]
-        public ProtoId<AllegiancePrototype>? Allegiance { get; private set; } = "UA";
+        public ProtoId<AllegiancePrototype>? Allegiance { get; private set; } = null;
 
         /// <summary>
         /// The origin selected for this character. Adds components, accents, items and traits at spawn.
