@@ -126,7 +126,7 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
     /// The allegiance associated with this colony.
     /// Characters with a matching allegiance will preferentially spawn here.
     /// </summary>
-    [DataField("allegiance"), AutoNetworkedField]
+    [DataField("Allegiance"), AutoNetworkedField]
     public ProtoId<AllegiancePrototype>? Allegiance;
 
     [DataField("govforfighters")]

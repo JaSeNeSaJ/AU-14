@@ -8,7 +8,7 @@
     votename: "Solaris Gulch"
     mapId: AU747
     lorePrimer: AU14PrimerPlanetLV747
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -67,7 +67,7 @@
     votename: "Shepherds' Pride"
     mapId: Sheperds
     lorePrimer: AU14PrimerPlanetShepherdsPride
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -130,7 +130,7 @@
     votename: "Stable Garrison"
     mapId: stablegarrison
     lorePrimer: AU14PrimerPlanetStableGarrison
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -182,7 +182,7 @@
     votename: "LV624 Green Hell"
     mapId: LV624
     lorePrimer: AU14PrimerPlanetLV624
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -242,7 +242,7 @@
     votename: "Gixens Caverns"
     mapId: GixensCaverns
     lorePrimer: AU14PrimerPlanetGixensCaverns
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -270,7 +270,7 @@
     votename: "Flight"
     mapId: Flight
     lorePrimer: AU14PrimerPlanetFlight
-    allegiance: UA
+    Allegiance: UA
     camouflage: Urban
     announcement: "A nine-story mixed-use building surrounded by an artificial city landscape, has gone dark. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -312,7 +312,7 @@
     votename: "Hybrisa Metropolitan"
     mapId: hybrisametro
     lorePrimer: AU14PrimerPlanetLV759
-    allegiance: TWE
+    Allegiance: TWE
     camouflage: Urban
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -367,7 +367,7 @@
     votename: "Port Neroid"
     mapId: portneroid
     lorePrimer: AU14PrimerPlanetLV327
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -424,7 +424,7 @@
     votename: "Corsat Station"
     mapId: aucorsat
     lorePrimer: AU14PrimerPlanetCorsatStation
-    allegiance: UA
+    Allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -470,7 +470,7 @@
     votename: "Barker's Lament"
     mapId: CMULV376BarkersLament
     lorePrimer: AU14PrimerPlanetLament
-    allegiance: UA
+    Allegiance: UA
     camouflage: Urban
     announcement: "The mining colony of Barker's Lament on LV-376 has gone dark."
     platoonsGovfor:
@@ -520,7 +520,7 @@
     votename: "Sorokyne Strata"
     mapId: au14sorokyne
     lorePrimer: AU14PrimerPlanetSorokyne
-    allegiance: UPP
+    Allegiance: UPP
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -571,7 +571,7 @@
     votename: "Raijin Hydroelectric"
     mapId: AUTrijentMap
     lorePrimer: AU14PrimerPlanetTrijent
-    allegiance: TWE
+    Allegiance: TWE
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -619,7 +619,7 @@
     votename: "Shivas' Snowball"
     mapId: auShivas
     lorePrimer: AU14PrimerPlanetShivasSnowball
-    allegiance: UA
+    Allegiance: UA
     camouflage: Snow
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:
@@ -667,7 +667,7 @@
     votename: "Kutjevo Biolab"
     mapId: auKutjevo
     lorePrimer: AU14PrimerPlanetKutjevo
-    allegiance: UA
+    Allegiance: UA
     camouflage: Snow
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:
@@ -714,7 +714,7 @@
     votename: "Fiorina Prison"
     mapId: aufiorina
     lorePrimer: AU14PrimerPlanetFiorina
-    allegiance: UA
+    Allegiance: UA
     camouflage: Urban
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:

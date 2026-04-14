@@ -282,7 +282,6 @@
     whitelist:
       tags:
       - TattooInk
-    clumsyProof: true
   - type: ContainerAmmoProvider
     container: storagebase
   - type: Item
