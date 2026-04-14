@@ -272,16 +272,16 @@ public sealed partial class RMCCVars : CVars
         CVarDef.Create("rmc.playtime_silver_medal_time_hours", 25, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCPlaytimeGoldMedalTimeHours =
-        CVarDef.Create("rmc.playtime_gold_medal_time_hours", 70, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.playtime_gold_medal_time_hours", 50, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCPlaytimePlatinumMedalTimeHours =
-        CVarDef.Create("rmc.playtime_platinum_medal_time_hours", 175, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.playtime_platinum_medal_time_hours", 70, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCPlaytimeRubyMedalTimeHours =
-        CVarDef.Create("rmc.playtime_ruby_medal_time_hours", 350, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.playtime_ruby_medal_time_hours", 100, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCPlaytimeAmethystMedalTimeHours =
-        CVarDef.Create("rmc.playtime_amethyst_medal_time_hours", 600, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.playtime_amethyst_medal_time_hours", 120, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCPlaytimeEmeraldMedalTimeHours =
         CVarDef.Create("rmc.playtime_emerald_medal_time_hours", 1000, CVar.REPLICATED | CVar.SERVER);
