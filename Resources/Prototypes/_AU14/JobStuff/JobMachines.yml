@@ -19,6 +19,19 @@
       components:
       - Xeno
   - type: BudgetConsole
+  - type: ActivatableUIRequiresAccess
+  - type: AccessReader
+    access: [ [ "AU14AccessGovforCommand" ], [ "CMAccessColonyCommand" ] ]
+  - type: ItemSlots
+    slots:
+      CashSlot:
+        whitelist:
+          tags:
+          - Currency
+  - type: ContainerContainer
+    containers:
+      CashSlot: !type:ContainerSlot {}
+
 
 
 
@@ -185,4 +198,156 @@
         layer:
         - WallLayer
   - type: ColonySiren
+
+- type: entity
+  parent: RMCCommunicationsConsoleBase
+  id: AUColonyATM
+  name: Colony ATM
+  description: Swipe your ID card on the machine to withdraw cash from your personal account.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: terminal
+  - type: InteractionOutline
+  - type: UserInterface
+    interfaces:
+      enum.ColonyAtmUi.Key:
+        type: ColonyAtmBui
+  - type: ColonyAtm
+
+
+# Department Consoles
+- type: entity
+  parent: RMCCommunicationsConsoleBase
+  id: AUDepartmentConsoleBase
+  abstract: true
+  name: Department Console
+  description: A console for managing department employees, salaries, and communications. Insert cash to fund the department.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: terminal
+  - type: InteractionOutline
+  - type: ActivatableUI
+    key: enum.DepartmentConsoleUi.Key
+  - type: UserInterface
+    interfaces:
+      enum.DepartmentConsoleUi.Key:
+        type: DepartmentConsoleBui
+  - type: ActivatableUIBlacklist
+    blacklist:
+      components:
+      - Xeno
+  - type: DepartmentConsole
+  - type: ActivatableUIRequiresAccess
+  - type: AccessReader
+    access:
+    - - CMAccessColonyCommand
+  - type: ItemSlots
+    slots:
+      CashSlot:
+        whitelist:
+          tags:
+          - RMCSpaceCash
+  - type: ContainerContainer
+    containers:
+      CashSlot: !type:ContainerSlot {}
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleMedical
+  name: Medical Department Console
+  description: Manages employees, salaries, and announcements for the Medical department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Medical
+    departmentId: AU14DepartmentColonyMedical
+    departmentAccessLevel: CMAccessColonyMedbay
+    defaultSalary: 50
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleEngineering
+  name: Engineering Department Console
+  description: Manages employees, salaries, and announcements for the Engineering department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Engineering
+    departmentId: AU14DepartmentEngineering
+    departmentAccessLevel: CMAccessColonyEngineering
+    defaultSalary: 50
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleSecurity
+  name: Security Department Console
+  description: Manages employees, salaries, and announcements for the Security department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Security
+    departmentId: AU14DepartmentColonySecurity
+    departmentAccessLevel: CMAccessColonyBrig
+    defaultSalary: 60
+
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleLabor
+  name: Labor Department Console
+  description: Manages employees, salaries, and announcements for the Labor  department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Cargo
+    departmentId: AU14DepartmentLabor
+    departmentAccessLevel: CMAccessColonyLogistics
+    defaultSalary: 45
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleCommand
+  name: Command Department Console
+  description: Manages employees, salaries, and announcements for the Command department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Command
+    departmentId: AU14DepartmentColonyCommand
+    departmentAccessLevel: CMAccessColonyCommand
+    defaultSalary: 75
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleCivilian
+  name: Civilian Department Console
+  description: Manages employees, salaries, and announcements for the Civilian department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Civilian
+    departmentId: AU14DepartmentCivilian
+    departmentAccessLevel: CMAccessColonyPublic
+    defaultSalary: 40
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleServices
+  name: Services Department Console
+  description: Manages employees, salaries, and announcements for the Services department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Services
+    departmentId: AU14DepartmentServices
+    departmentAccessLevel: CMAccessColonyPublic
+    defaultSalary: 40
+
+- type: entity
+  parent: AUDepartmentConsoleBase
+  id: AUDepartmentConsoleCorporate
+  name: Corporate Department Console
+  description: Manages employees, salaries, and announcements for the Corporate department.
+  components:
+  - type: DepartmentConsole
+    departmentName: Corporate
+    departmentId: AU14DepartmentCorporate
+    departmentAccessLevel: CMAccessColonyResearch
+    defaultSalary: 55
+    colonyManaged: false
 

@@ -6,6 +6,8 @@
   setPreference: true
   playTimeTracker: AU14JobCivilianPrisoner
   startingGear: AU14GearCivilianPrisoner
+  ranks:
+    RMCRankCivilian: []
   icon: "CMJobIconEmpty"
   requireAdminNotify: false
   joinNotifyCrew: false

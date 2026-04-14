@@ -155,7 +155,7 @@
   - NeckerchiefGrayRMC
   - NeckerchiefTanRMC
   - NeckerchiefWhiteRMC
-  
+
 - type: loadoutGroup
   id: MasksRMCPVE
   name: rmc-loadout-group-masks
@@ -593,6 +593,7 @@
   - CMPPeakedCapRMC
 
 # Synthetic
+
 - type: loadoutGroup
   id: SynthUniformRMC
   name: rmc-loadout-group-synthetic-uniform

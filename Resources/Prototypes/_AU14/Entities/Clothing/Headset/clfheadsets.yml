@@ -13,13 +13,24 @@
     state: we_ya_key
 
 - type: entity
-  parent: RMCHeadsetMarine
+  parent: RMCBaseUniformAccessory
   id: AU14CLFHeadset
-  name: colony headset
-  description: A headset used by colony personnel to communicate.
+  name: CLF earpiece
+  description: A small, concealable earpiece used by CLF operatives. Virtually invisible when worn, it clips discreetly onto a uniform.
   suffix: CLF, Colony
   components:
-  - type: ContainerFill
-    containers:
-      key_slots:
-      - AU14EncryptionKeyCLF
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/headsets.rsi
+    state: cmb_headset
+  - type: UniformAccessory
+    hidden: true
+    category: Utility
+    limit: 1
+    playerSprite:
+      sprite: _RMC14/Objects/Medals/bronze.rsi
+      state: equipped
+  - type: AccessoryHeadset
+    channels:
+    - Colony
+    - MarineEcho
+    defaultChannel: MarineEcho

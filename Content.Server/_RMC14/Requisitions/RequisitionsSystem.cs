@@ -6,6 +6,13 @@ using Content.Server.AU14.Round;
 using Content.Server.Cargo.Components;
 using Content.Server.Chat.Systems;
 using Content.Server.Storage.EntitySystems;
+using Content.Shared.Access;
+using Content.Shared.Access.Components;
+using Content.Shared.Access.Systems;
+using Content.Shared.Containers.ItemSlots;
+using Content.Shared.Labels.Components;
+using Content.Shared.Lock;
+using Content.Shared.Paper;
 using Content.Server.Store.Components;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Requisitions;
@@ -271,6 +278,8 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
             else if (faction == "colony")
             {
                 newAccountComp.Balance = 450;
+                // Colony accounts should not receive random military deliveries (flares, batteries, etc.)
+                newAccountComp.RandomCrates.Clear();
             }
 
             return (newAccount, newAccountComp);
@@ -424,7 +433,16 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                     _entityStorage.Insert(entity, crate);
                 }
 
-                PrintInvoice(crate, coordinates, PaperRequisitionInvoice);
+                // If this order came from a department console, attach a department note
+                // instead of the generic invoice so it shows on the crate label.
+                if (order.DeptName != null)
+                {
+                    ApplyDepartmentCrateMetadata(crate, coordinates, order);
+                }
+                else
+                {
+                    PrintInvoice(crate, coordinates, PaperRequisitionInvoice);
+                }
 
                 yOffset--;
                 if (yOffset < -comp.Radius)
@@ -495,10 +513,14 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
              QueueDel(entity);
          }
 
-         if (rewards > 0)
-             SendUIFeedback(Loc.GetString("requisition-paperwork-reward-message", ("amount", rewards)));
+         // Colony ASRS does not receive budget or feedback for selling items
+         if (elevator.Comp.Faction != "colony")
+         {
+             if (rewards > 0)
+                 SendUIFeedback(Loc.GetString("requisition-paperwork-reward-message", ("amount", rewards)));
 
-         account.Comp.Balance += rewards;
+             account.Comp.Balance += rewards;
+         }
 
          if (soldAny)
              Dirty(account);
@@ -790,6 +812,49 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         {
             ApplyPlatoonCatalogToComputer(uid, comp);
             Dirty(uid, comp);
+        }
+    }
+
+    /// <summary>
+    ///     Locks a crate to the department's access and attaches a paper note with order info.
+    /// </summary>
+    private void ApplyDepartmentCrateMetadata(EntityUid crate, EntityCoordinates coordinates, RequisitionsEntry order)
+    {
+        var lockSys = EntityManager.System<LockSystem>();
+        var accessSys = EntityManager.System<AccessReaderSystem>();
+
+        // Lock the crate with department access
+        if (!string.IsNullOrEmpty(order.DeptAccessLevel))
+        {
+            var accessReader = EnsureComp<AccessReaderComponent>(crate);
+            accessSys.SetAccesses((crate, accessReader),
+                new List<HashSet<ProtoId<AccessLevelPrototype>>>
+                {
+                    new() { order.DeptAccessLevel }
+                });
+
+            var lockComp = EnsureComp<LockComponent>(crate);
+            lockSys.Lock(crate, null, lockComp);
+        }
+
+        // Spawn a requisition invoice with department order information and attach as label
+        var noteContent =
+            $"[head=2]{order.DeptName ?? "Department"} Order[/head]\n" +
+            $"[bold]Ordered by:[/bold] {order.DeptOrderedBy ?? "Unknown"}\n" +
+            $"[bold]Reason:[/bold] {order.DeptReason ?? "N/A"}\n" +
+            $"[bold]Deliver to:[/bold] {order.DeptDeliverTo ?? "N/A"}";
+
+        var paper = Spawn(PaperRequisitionInvoice, coordinates);
+        if (TryComp<PaperComponent>(paper, out var paperComp))
+        {
+            _metaSystem.SetEntityName(paper, $"{order.DeptName ?? "Dept."} Order Note");
+            _paperSystem.SetContent((paper, paperComp), noteContent);
+        }
+
+        // Attach the note as a paper label on the crate
+        if (TryComp<PaperLabelComponent>(crate, out var label))
+        {
+            _slots.TryInsert(crate, label.LabelSlot, paper, null);
         }
     }
 }

@@ -549,10 +549,15 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
             return;
 
         _cardSystem.TryChangeFullName(cardId, characterName, card);
-        _cardSystem.TryChangeJobTitle(cardId, jobPrototype.LocalizedName, card);
 
-        if (_prototypeManager.TryIndex(jobPrototype.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+        // Respect cards with a prototype-defined title (e.g. fixed-role/faction IDs).
+        if (card.JobTitle == null)
+        {
+            _cardSystem.TryChangeJobTitle(cardId, jobPrototype.LocalizedName, card);
+
+            if (_prototypeManager.TryIndex(jobPrototype.Icon, out var jobIcon))
+                _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+        }
 
         var extendedAccess = false;
         if (station != null)
@@ -587,11 +592,14 @@ public sealed class StationSpawningSystem : SharedStationSpawningSystem
         if (!TryComp<IdCardComponent>(cardId, out var card))
             return;
 
-        // Set name, job title, and icon from the new job
+        // Set name and (unless fixed by prototype) job title/icon from the selected job.
         _cardSystem.TryChangeFullName(cardId, characterName, card);
-        _cardSystem.TryChangeJobTitle(cardId, titleJobPrototype.LocalizedName, card);
-        if (_prototypeManager.TryIndex(titleJobPrototype.Icon, out var jobIcon))
-            _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+        if (card.JobTitle == null)
+        {
+            _cardSystem.TryChangeJobTitle(cardId, titleJobPrototype.LocalizedName, card);
+            if (_prototypeManager.TryIndex(titleJobPrototype.Icon, out var jobIcon))
+                _cardSystem.TryChangeJobIcon(cardId, jobIcon, card);
+        }
 
         // Set access from the old job
         if (station != null)

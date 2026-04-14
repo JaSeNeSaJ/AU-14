@@ -460,12 +460,10 @@
 - type: entity
   parent: CMUAreaLV376Inside
   id: CMUAreaLV376CorpoOffice
-  name: Barker's Lament - WY Colony Office
+  name: Barker's Lament - Galaxy Pizza
   components:
   - type: Sprite
     state: captain
-  - type: Area
-    minimapColor: '#2D3FA2EE'
 
 - type: entity
   parent: CMUAreaLV376Inside
