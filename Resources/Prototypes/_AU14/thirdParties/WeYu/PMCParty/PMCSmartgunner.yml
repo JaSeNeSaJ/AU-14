@@ -20,6 +20,7 @@
     components:
     - type: Skills
       skills:
+        RMCSkillEndurance: 2
         RMCSkillFirearms: 2
         RMCSkillFireman: 1
         RMCSkillJtac: 1

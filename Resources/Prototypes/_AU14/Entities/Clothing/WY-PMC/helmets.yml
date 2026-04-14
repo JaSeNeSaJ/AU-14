@@ -32,7 +32,7 @@
     sprite: _AU14/Clothing/WY_PMC/pmchelmet_closed.rsi
   - type: CMArmor
     bullet: 25
-    bio: 15
+    bio: 25
     # armor_internaldamage = 15
   - type: HideLayerClothing
     slots:

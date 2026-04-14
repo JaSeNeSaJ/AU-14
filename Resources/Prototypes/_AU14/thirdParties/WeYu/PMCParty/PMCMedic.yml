@@ -20,6 +20,7 @@
     components:
     - type: Skills
       skills:
+        RMCSkillEndurance: 1
         RMCSkillFirearms: 2
         RMCSkillFireman: 1
         RMCSkillJtac: 1
@@ -69,6 +70,7 @@
     outerClothing: AU14WYPMCArmor
     jumpsuit: AU14WYPMCFatigues
     shoes: RMCBootsPMCFilled
+    eyes: RMCGlassesMedicalHUDGlasses
     head: AU14ArmorHelmetPMCTactical
     gloves: AU14PVEHandsInsulatedBlackMarine
     belt: CMUBeltMedicBagSupportSynth
