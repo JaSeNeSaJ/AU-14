@@ -124,3 +124,25 @@
     threatmarkertype: Leader
     ID: xenocf
 
+- type: entity
+  name: cultist cf threat member spawn marker
+  parent: MarkerBase
+  id: cultistcfthreatmemberspawnmarker
+  components:
+  - type: Sprite
+    state: green
+  - type: ThreatSpawnMarker
+    threatmarkertype: Member
+    ID: cultcfmarker
+
+- type: entity
+  name: cultist cf threat leader spawn marker
+  parent: MarkerBase
+  id: cultistcfthreatleaderspawnmarker
+  components:
+  - type: Sprite
+    state: green
+  - type: ThreatSpawnMarker
+    threatmarkertype: Leader
+    ID: cultcfmarker
+

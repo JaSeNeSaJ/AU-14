@@ -10,6 +10,17 @@
     - KillAllColonistRule
     - KillAllXenoRule
 
+- type: threat
+  id: cultistThreatOnMarker
+  roundstartspawns: cultistPartyThreatOnMarkers
+  whitelistedgamemodes:
+  - ColonyFall
+  blacklistedgamemodes:
+  - DistressSignal
+  winconditions:
+    - KillAllColonistRule
+    - KillAllXenoRule
+
 - type: partySpawn
   id: cultistPartyThreat
   leadersToSpawn:
@@ -73,6 +84,24 @@
   GhostsNeeded: 3
   roundstart: true
 
+- type: partySpawn
+  id: cultistPartyThreatOnMarkers
+  leadersToSpawn: 
+    CMXenoQueen: 1
+  gruntsToSpawn:
+    cultistJob: 3
+  spawnTogether: true
+  scaling:
+    CMXenoQueen:
+      scale: 0.05
+      whenToBeginScaling: 50
+    cultistJob:
+      scale: 0.3
+      whenToBeginScaling: 50
+  Markers:
+    Member: cultcfmarker
+    Leader: cultcfmarker
+    
 - type: lorePrimer
   id: AU14PrimerThreatCultist
   threattext: "You are a member of the hive, grow and evolve!"
@@ -80,4 +109,3 @@
     "Threat Unknown": 1
     "Colony reports mention coordinated disappearances tied to unknown cells.": 2
     "Signal analysis points to a structured hostile network embedded in the AO.": 3
-

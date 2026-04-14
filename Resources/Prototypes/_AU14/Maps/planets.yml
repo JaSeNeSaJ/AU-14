@@ -504,7 +504,7 @@
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
     threats:
-    - cultistThreat
+    - cultistThreatOnMarker
     - XenoThreat
     joboverrides:
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
