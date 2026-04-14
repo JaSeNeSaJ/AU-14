@@ -79,3 +79,79 @@
   id: AU14RankScientistProfessor
   name: Professor
   prefix: Prof.
+
+# Commercial Pilots
+
+- type: rank
+  id: AU14RankFirstOfficer
+  name: First Officer
+  prefix: 1st Off.
+
+- type: rank
+  id: AU14RankSeniorFirstOfficer
+  name: Senior First Officer
+  prefix: Sen. 1st Off.
+
+- type: rank
+  id: AU14RankCaptain
+  name: Captain
+  prefix: Cpt.
+
+- type: rank
+  id: AU14RankFlightCaptain
+  name: Flight Captain
+  prefix: Flt. Cpt.
+
+# Orbital Manager
+
+- type: rank
+  id: AU14RankOrbitalManager
+  name: Manager
+  prefix: Man.
+
+- type: rank
+  id: AU14RankSeniorOrbitalManager
+  name: Senior Manager
+  prefix: Sn. Man.
+
+# Administrative Assistant
+
+- type: rank
+  id: AU14RankColonyAdminAssistant
+  name: Assistant
+  prefix: Assist.
+
+- type: rank
+  id: AU14RankColonySeniorAdminAssistant
+  name: Senior Assistant
+  prefix: Sn. Assist.
+
+# Corporate Assistant
+
+- type: rank
+  id: AU14RankWYJuniorAssistant
+  name: Junior Assistant
+  prefix: Jr. Assist.
+
+- type: rank
+  id: AU14RankWYAssistant
+  name: Assistant
+  prefix: Assist.
+
+- type: rank
+  id: AU14RankWYSeniorAssistant
+  name: Senior Assistant
+  prefix: Sn. Assist.
+
+# Ambassadors
+
+- type: rank
+  id: AU14RankAmbassador
+  name: Ambassador
+  prefix: Amb.
+
+
+- type: rank
+  id: AU14RankTWEAmbassador
+  name: High Commisioner
+  prefix: High Comm.

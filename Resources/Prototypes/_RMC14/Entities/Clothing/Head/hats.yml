@@ -805,8 +805,8 @@
 - type: entity
   parent: CMHeadBeret
   id: RMCHeadWeYaPilotCap
-  name: Weston-Yamada Pilot cap
-  description: A dark peaked cap enscribed with the Weston-Yamada 'Wings' logo. A formal cap for qualified civilian Pilots, akin to old Earth formal Pilots-wear.
+  name: Weyland-Yutani Pilot cap
+  description: A dark peaked cap enscribed with the Weyland-Yutani 'Wings' logo. A formal cap for qualified civilian Pilots, akin to old Earth formal Pilots-wear.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Head/Hats/weya_pilot_cap.rsi

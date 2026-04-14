@@ -1,14 +1,14 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobCivilianAmbassadorUPP
-  name: au14-job-name-civilianambassadorupp
-  description: au14-job-description-civilianambassadorupp
-  playTimeTracker: AU14JobCivilianAmbassadorUPP
+  id: AU14JobCivilianAmbassadorUA
+  name: au14-job-name-civilianambassadorua
+  description: au14-job-description-civilianambassadorua
+  playTimeTracker: AU14JobCivilianAmbassadorUA
   setPreference: true
   ranks:
     AU14RankAmbassador: []
-  startingGear: AU14GearCivilianAmbassadorUPP
-  icon: "AU14JobIconUPPAmbassador"
+  startingGear: AU14GearCivilianAmbassadorUA
+  icon: "AU14JobIconUAAmbassador"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-orbital
@@ -32,7 +32,7 @@
       id: AU14JobCivilianCorporateLiaison
       points: 70
     - type: JobPrefix
-      prefix: au14-job-prefix-civilianambassadorupp
+      prefix: au14-job-prefix-civilianambassadorua
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
@@ -45,26 +45,26 @@
   hidden: false
 
 - type: startingGear
-  id: AU14GearCivilianAmbassadorUPP
+  id: AU14GearCivilianAmbassadorUA
   equipment:
-    jumpsuit: CMJumpsuitSPPCiv4
+    jumpsuit: CMJumpsuitLiaisonBlack
     shoes: RMCShoesLaceupBrown
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: RMCCoatSPP
+    outerClothing: RMCFancySuitJacketBrown
     ears: AU14ColonyAdminHeadset
   inhand:
   - RMCPortableVendorCorporate
 
 - type: entity
   parent: CMSpawnPointJobBase
-  id: AU14SpawnPointCivilianAmbassadorUPP
-  name: Spawn Point Civilian UPP Ambassador
+  id: AU14SpawnPointCivilianAmbassadorUA
+  name: Spawn Point Civilian UA Ambassador
   components:
   - type: SpawnPoint
-    job_id: AU14JobCivilianAmbassadorUPP
+    job_id: AU14JobCivilianAmbassadorUA
   - type: Sprite
     state: syn_spawn
 
 - type: playTimeTracker
-  id: AU14JobCivilianAmbassadorUPP
+  id: AU14JobCivilianAmbassadorUA
   isHumanoid: true
