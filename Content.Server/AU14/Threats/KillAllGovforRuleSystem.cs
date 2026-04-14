@@ -7,6 +7,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared._RMC14.Areas;
 using Content.Shared.Cuffs.Components;
 using Content.Shared._RMC14.Evacuation;
 
@@ -17,6 +18,7 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
+    [Dependency] private readonly AreaSystem _area = default!;
 
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
@@ -61,6 +63,11 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
         CheckVictoryCondition();
     }
 
+    private bool IsInArrestArea(EntityUid uid)
+    {
+        return _area.TryGetArea(uid, out var area, out _) && area.Value.Comp.CountAsArrestedForEndConditions;
+    }
+
     private void CheckVictoryCondition()
     {
         // Get the active rule entity and its component to read Percent
@@ -96,7 +103,9 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
                     eliminated++;
                 }
                 // Or if arrested flag is set and they're cuffed
-                else if (countArrests && TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0)
+                else if (countArrests &&
+                         ((TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0) ||
+                          IsInArrestArea(uid)))
                 {
                     eliminated++;
                 }
