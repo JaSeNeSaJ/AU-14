@@ -86,7 +86,7 @@
   storage:
     back:
     - CMStunbaton
-    - WeaponTaser
+    - RMCWeaponTaser
 
 - type: playTimeTracker
   id: AU14JobIPIEPPO
