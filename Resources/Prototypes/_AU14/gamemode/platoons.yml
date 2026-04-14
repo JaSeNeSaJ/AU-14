@@ -2,7 +2,7 @@
   id: LACN
   name: LACN Landing Forces
   lorePrimer: AU14PrimerPlatoonLACN
-  allegiance: UA
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -31,7 +31,7 @@
   id: USCM
   name: US Colonial Marines
   lorePrimer: AU14PrimerPlatoonUSCM
-  allegiance: UA
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -65,7 +65,7 @@
   language: russian
   name: UPP Naval Infantry
   lorePrimer: AU14PrimerPlatoonUPP
-  allegiance: UPP
+  Allegiance: UPP
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -146,7 +146,7 @@
   id: CMBCIU
   name: CMB Crisis Intervention
   lorePrimer: AU14PrimerPlatoonCMBCIU
-  allegiance: UA
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -188,7 +188,7 @@
 - type: platoon
   id: exampleplatoon
   name: exampleplatoon
-  lorePrimer: AU14PrimerPlatoonExample
+  lorePrimer: AU14PrimerPlatoonHAZOPS
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -215,7 +215,7 @@
   id: HAZOPS
   name: USCM Hazardous Operations Unit
   lorePrimer: AU14PrimerPlatoonHAZOPS
-  allegiance: UA
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -348,7 +348,7 @@
   id: RMC
   name: TWE Royal Marine Commandos
   lorePrimer: AU14PrimerPlatoonRMC
-  allegiance: TWE
+  Allegiance: TWE
   reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
