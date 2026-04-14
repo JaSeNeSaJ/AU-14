@@ -146,7 +146,6 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    Allegiance: UA
     thirdparties:
     - ICRCReliefParty
     - TimeSharesSalesman
@@ -200,7 +199,6 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    Allegiance: UA
     thirdparties:
     - ICRCReliefParty
     - TimeSharesSalesman
@@ -306,7 +304,6 @@
 - type: entity
   id: AUPlanetLV759
   name: Hybrisa Metropolitan
-  Allegiance: TWE
   components:
   - type: RMCPlanetMapPrototype
     votename: "Hybrisa Metropolitan"
