@@ -33,6 +33,7 @@
   accessGroups:
   - Colonist
   - auwy
+  - aumed
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial
@@ -42,6 +43,7 @@
         RMCSkillFireman: 1
         RMCSkillVehicles: 1
         RMCSkillDomestics: 1
+        RMCSkillMedical: 3
         RMCSkillFirearms: 2
         RMCSkillSurgery: 4
     - type: JobPrefix
