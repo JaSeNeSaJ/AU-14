@@ -4,6 +4,7 @@
   name: au14-job-name-clfphysician
   description: au14-job-description-clfphysician
   setPreference: true
+  ignoreAllegiance: true
   playTimeTracker: AU14JobCLFPhysician
   requirements:
   - !type:TraitsRequirement
@@ -44,19 +45,21 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: ShowMarineIcons
+      factions:
+      - CLF
   hidden: false
 
 - type: startingGear
   id: AU14GearCLFPhysician
   equipment:
     gloves: CMHandsLatex
-    jumpsuit: RMCJumpsuitCivilian
+    jumpsuit: AU14RMCJumpsuitCivilianCLF
     outerClothing: RMCLabcoatOpened
     shoes: CMBootsBlackFilled
     ears2: RMCFlashlightPen
     suitstorage: RMCFlashlight
-    id: AU14IDCardColonyColonist
-    ears: AU14CLFHeadset
+    id: AU14IDCardCLFCivilian
     neck: RMCCLFArmband
 
 - type: entity

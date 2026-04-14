@@ -39,12 +39,39 @@
     job: AU14JobCivilianColonist
 
 - type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardCLFCellLeader
+  name: CLF cell leader ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCLFCellLeader
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCLFCivilian
+  name: colonist ID card
+  components:
+  - type: Access
+    groups:
+    - Colonist
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian
+
+- type: entity
   parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardFoodServiceWorker
   name: food service worker ID card
   components:
   - type: PresetIdCard
     job: AU14JobCivilianFoodServiceWorker
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyShopkeep
+  name: shopkeep ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianShopkeep
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -96,6 +123,14 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyHeadOfEngineering
+  name: head of engineering ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianHeadOfEngineering
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardColonyFreightSystemsSpecialist
   name: freight systems specialist ID card
   components:
@@ -120,11 +155,27 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyHeadOfService
+  name: head of service ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianHeadOfService
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardColonyPhysician
   name: physician ID card
   components:
   - type: PresetIdCard
     job: AU14JobCivilianPhysician
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyHeadPhysician
+  name: head physician ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianHeadPhysician
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF

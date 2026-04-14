@@ -1,5 +1,6 @@
 using Content.Shared._RMC14.Item;
 using Content.Shared.AU14;
+using Content.Shared.AU14.Allegiance;
 using Content.Shared.AU14.Threats;
 using Content.Shared.AU14.util;
 using Content.Shared.Paper;
@@ -115,8 +116,18 @@ public sealed partial class RMCPlanetMapPrototypeComponent : Component
     [DataField("votename")]
     public string? VoteName  = String.Empty;
 
+    [DataField("lorePrimer")]
+    public ProtoId<LorePrimerPrototype>? LorePrimer;
+
     [DataField("faction")]
     public string? Faction  = String.Empty;
+
+    /// <summary>
+    /// The allegiance associated with this colony.
+    /// Characters with a matching allegiance will preferentially spawn here.
+    /// </summary>
+    [DataField("allegiance"), AutoNetworkedField]
+    public ProtoId<AllegiancePrototype>? Allegiance;
 
     [DataField("govforfighters")]
     public int govforfighters = 0;

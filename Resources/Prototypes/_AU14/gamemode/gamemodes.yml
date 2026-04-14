@@ -81,7 +81,7 @@
     - colonyfall
   name: Colony Fall
   showInVote: true
-  minPlayers: 30
+  minPlayers: 0
   description: Live in an offworld colony as it falls into chaos.
   rules:
     - AuVoteRule
@@ -150,7 +150,7 @@
       AU14JobGOVFORDCC: 1
       AU14JobGOVFORPlatOp: 5
       AU14JobGOVFORDSPilot: 2
-      AU14JobGOVFORRadioTelephoneOperator: 3
+      AU14JobGOVFORRadioTelephoneOperator: 4
       AU14JobGOVFORSquadSergeant: 3
       AU14JobGOVFORSquadAutomaticRifleman: 3
       AU14JobGOVFORSquadCombatTech: 6

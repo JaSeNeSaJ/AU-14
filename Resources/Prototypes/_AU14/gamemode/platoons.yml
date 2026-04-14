@@ -1,6 +1,8 @@
 - type: platoon
   id: LACN
   name: LACN Landing Forces
+  lorePrimer: AU14PrimerPlatoonLACN
+  allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -28,6 +30,8 @@
 - type: platoon
   id: USCM
   name: US Colonial Marines
+  lorePrimer: AU14PrimerPlatoonUSCM
+  allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -60,6 +64,8 @@
   id: UPP
   language: russian
   name: UPP Naval Infantry
+  lorePrimer: AU14PrimerPlatoonUPP
+  allegiance: UPP
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -98,6 +104,7 @@
 - type: platoon
   id: WEYU
   name: WY PMC
+  lorePrimer: AU14PrimerPlatoonWEYU
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -138,6 +145,8 @@
 - type: platoon
   id: CMBCIU
   name: CMB Crisis Intervention
+  lorePrimer: AU14PrimerPlatoonCMBCIU
+  allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -179,6 +188,7 @@
 - type: platoon
   id: exampleplatoon
   name: exampleplatoon
+  lorePrimer: AU14PrimerPlatoonExample
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -204,6 +214,8 @@
 - type: platoon
   id: HAZOPS
   name: USCM Hazardous Operations Unit
+  lorePrimer: AU14PrimerPlatoonHAZOPS
+  allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -232,6 +244,7 @@
 - type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
+  lorePrimer: AU14PrimerPlatoonProdigySF
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -263,6 +276,7 @@
 - type: platoon
   id: UNISC
   name: UNISC Peacekeepers
+  lorePrimer: AU14PrimerPlatoonUNISC
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -302,6 +316,7 @@
 - type: platoon
   id: VAIPO
   name: VAI Primary Operations
+  lorePrimer: AU14PrimerPlatoonVAIPO
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -332,6 +347,8 @@
 - type: platoon
   id: RMC
   name: TWE Royal Marine Commandos
+  lorePrimer: AU14PrimerPlatoonRMC
+  allegiance: TWE
   reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
@@ -373,3 +390,44 @@
   techTree: RMCIntelTechTree_ua
 
 # Add more platoons as needed
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonLACN
+  PlatoonInfo: "Latin American  Colonial Navy. A branch of the United Americas' space forces, LACN specializes in rapid deployment and shock tactics for planetary assault and occupation."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUSCM
+  PlatoonInfo: "United States Colonial marines"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUPP
+  PlatoonInfo: "UPP infantry"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonWEYU
+  PlatoonInfo: "Weyland-Yutani PMC "
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonCMBCIU
+  PlatoonInfo: "CMB CIU"
+
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonHAZOPS
+  PlatoonInfo: "USCM Hazardous Operations Unit specializes in high-risk environments, including chemical, biological, radiological, and explosive threats. HAZOPS teams are trained for rapid response and containment in extreme conditions."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonProdigySF
+  PlatoonInfo: "Prodigy Security Forces"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUNISC
+  PlatoonInfo: "UNISC peacekeepers are a multinational force dedicated to maintaining stability and enforcing peace agreements across contested regions, often deployed in high-tension zones to prevent escalation."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonVAIPO
+  PlatoonInfo: "VAI Primary Operations is a private security contractor specializing in high-value asset protection and rapid response."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonRMC
+  PlatoonInfo: "RMC commandos apply disciplined shock tactics: isolate targets, secure terrain, and rotate pressure."

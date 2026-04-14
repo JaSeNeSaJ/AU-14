@@ -279,7 +279,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private void OnMapLoading(LoadingMapsEvent ev)
     {
 
-        SelectRandomPlanet();
+       // SelectRandomPlanet();
         //Just in case the info text is not updated previousely
         GameTicker.UpdateInfoText();
     }
