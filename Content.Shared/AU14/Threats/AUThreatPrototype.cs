@@ -80,6 +80,9 @@ public sealed partial class ThreatPrototype : IPrototype
 
     public int ThirdPartyInterval { get; private set; } = 9600;
 
+    [DataField("lorePrimer")]
+    public ProtoId<LorePrimerPrototype>? LorePrimer { get; private set; }
+
     [DataField("hiveevolution")]
     public bool hiveevolution { get; private set; } = false;
     // if xeno evo should send messages
