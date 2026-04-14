@@ -25,11 +25,6 @@
           RMCSkillFireman: 1
           RMCSkillVehicles: 1
           RMCSkillPolice: 1
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadrifleman
   hidden: false

@@ -37,9 +37,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_pvt
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillEndurance: 1

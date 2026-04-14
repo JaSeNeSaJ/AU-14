@@ -21,11 +21,6 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: JobPrefix

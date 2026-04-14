@@ -24,9 +24,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: private
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 2

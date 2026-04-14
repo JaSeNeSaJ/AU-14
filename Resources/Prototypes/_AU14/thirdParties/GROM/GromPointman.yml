@@ -29,9 +29,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_sapper
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -89,6 +86,6 @@
   - type: ItemIFF
     factions:
     - GOVFOR
-    
+
 - type: playTimeTracker
   id: AU14JobUPPGROMPointman
