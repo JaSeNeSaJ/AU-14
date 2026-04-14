@@ -1,3 +1,4 @@
+using System.Linq;
 using Content.Client._RMC14.LinkAccount;
 using Content.Client.Audio;
 using Content.Client.GameTicking.Managers;
@@ -7,7 +8,9 @@ using Content.Client.Message;
 using Content.Client.Playtime;
 using Content.Client.UserInterface.Systems.Chat;
 using Content.Client.Voting;
+using Content.Shared.AU14.Allegiance;
 using Content.Shared.CCVar;
+using Content.Shared.Preferences;
 using Robust.Client;
 using Robust.Client.Console;
 using Robust.Client.ResourceManagement;
@@ -33,6 +36,12 @@ namespace Content.Client.Lobby
 
         // RMC14
         [Dependency] private readonly LinkAccountManager _linkAccount = default!;
+        [Dependency] private readonly IClientPreferencesManager _preferencesManager = default!;
+
+        /// <summary>
+        /// Whether the player wants to ignore allegiance for spawning the current character.
+        /// </summary>
+        public bool IgnoreAllegiance { get; set; }
 
         private ClientGameTicker _gameTicker = default!;
         private ContentAudioSystem _contentAudioSystem = default!;
@@ -77,6 +86,9 @@ namespace Content.Client.Lobby
 
             Lobby.CharacterPreview.CharacterSetupButton.OnPressed += OnSetupPressed;
             Lobby.CharacterPreview.PatronPerks.OnPressed += OnPatronPerksPressed;
+            Lobby.CharacterPreview.PrevCharacterButton.OnPressed += OnPrevCharPressed;
+            Lobby.CharacterPreview.NextCharacterButton.OnPressed += OnNextCharPressed;
+            Lobby.CharacterPreview.IgnoreAllegianceToggle.OnToggled += OnIgnoreAllegianceToggled;
             Lobby.ReadyButton.OnPressed += OnReadyPressed;
             Lobby.ReadyButton.OnToggled += OnReadyToggled;
 
@@ -121,6 +133,9 @@ namespace Content.Client.Lobby
 
             Lobby!.CharacterPreview.CharacterSetupButton.OnPressed -= OnSetupPressed;
             Lobby.CharacterPreview.PatronPerks.OnPressed -= OnPatronPerksPressed;
+            Lobby.CharacterPreview.PrevCharacterButton.OnPressed -= OnPrevCharPressed;
+            Lobby.CharacterPreview.NextCharacterButton.OnPressed -= OnNextCharPressed;
+            Lobby.CharacterPreview.IgnoreAllegianceToggle.OnToggled -= OnIgnoreAllegianceToggled;
             Lobby!.ReadyButton.OnPressed -= OnReadyPressed;
             Lobby!.ReadyButton.OnToggled -= OnReadyToggled;
 
@@ -347,6 +362,55 @@ namespace Content.Client.Lobby
         {
              // Open the ghost roles UI (server-driven) to display all ghost roles
              _consoleHost.RemoteExecuteCommand(null, "ghostroles");
+        }
+
+        private void OnPrevCharPressed(BaseButton.ButtonEventArgs args)
+        {
+            if (_preferencesManager.Preferences == null || _preferencesManager.Settings == null)
+                return;
+
+            var characters = _preferencesManager.Preferences.Characters;
+            var currentIndex = _preferencesManager.Preferences.SelectedCharacterIndex;
+
+            // Find the previous occupied slot
+            var sortedSlots = characters.Keys.OrderBy(k => k).ToList();
+            if (sortedSlots.Count <= 1)
+                return;
+
+            var idx = sortedSlots.IndexOf(currentIndex);
+            var prevIdx = idx <= 0 ? sortedSlots.Count - 1 : idx - 1;
+            _preferencesManager.SelectCharacter(sortedSlots[prevIdx]);
+            _userInterfaceManager.GetUIController<LobbyUIController>().ReloadCharacterSetup();
+        }
+
+        private void OnNextCharPressed(BaseButton.ButtonEventArgs args)
+        {
+            if (_preferencesManager.Preferences == null || _preferencesManager.Settings == null)
+                return;
+
+            var characters = _preferencesManager.Preferences.Characters;
+            var currentIndex = _preferencesManager.Preferences.SelectedCharacterIndex;
+
+            // Find the next occupied slot
+            var sortedSlots = characters.Keys.OrderBy(k => k).ToList();
+            if (sortedSlots.Count <= 1)
+                return;
+
+            var idx = sortedSlots.IndexOf(currentIndex);
+            var nextIdx = idx >= sortedSlots.Count - 1 ? 0 : idx + 1;
+            _preferencesManager.SelectCharacter(sortedSlots[nextIdx]);
+            _userInterfaceManager.GetUIController<LobbyUIController>().ReloadCharacterSetup();
+        }
+
+        private void OnIgnoreAllegianceToggled(BaseButton.ButtonToggledEventArgs args)
+        {
+            IgnoreAllegiance = args.Pressed;
+            var netManager = IoCManager.Resolve<Robust.Shared.Network.IClientNetManager>();
+            var msg = new MsgIgnoreAllegiance
+            {
+                IgnoreAllegiance = args.Pressed
+            };
+            netManager.ClientSendMessage(msg);
         }
     }
 }

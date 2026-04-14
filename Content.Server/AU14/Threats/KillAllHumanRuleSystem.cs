@@ -6,6 +6,7 @@ using Content.Shared.Humanoid;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared._RMC14.Areas;
 using Content.Shared._RMC14.Evacuation;
 using Content.Shared._RMC14.Xenonids;
 
@@ -20,6 +21,7 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
+    [Dependency] private readonly AreaSystem _area = default!;
 
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
@@ -62,6 +64,11 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
         CheckVictoryCondition();
     }
 
+    private bool IsInArrestArea(EntityUid uid)
+    {
+        return _area.TryGetArea(uid, out var area, out _) && area.Value.Comp.CountAsArrestedForEndConditions;
+    }
+
     private void CheckVictoryCondition()
     {
         var queryRule = EntityQueryEnumerator<KillAllHumanRuleComponent, GameRuleComponent>();
@@ -97,7 +104,9 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
             {
                 eliminated++;
             }
-            else if (countArrests && _entityManager.TryGetComponent(uid, out CuffableComponent? cuffable) && cuffable.CuffedHandCount > 0)
+            else if (countArrests &&
+                     ((_entityManager.TryGetComponent(uid, out CuffableComponent? cuffable) && cuffable.CuffedHandCount > 0) ||
+                      IsInArrestArea(uid)))
             {
                 eliminated++;
             }

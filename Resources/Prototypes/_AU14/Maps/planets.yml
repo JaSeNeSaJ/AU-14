@@ -7,6 +7,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Solaris Gulch"
     mapId: AU747
+    lorePrimer: AU14PrimerPlanetLV747
+    allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -64,6 +66,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Shepherds' Pride"
     mapId: Sheperds
+    lorePrimer: AU14PrimerPlanetShepherdsPride
+    allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -125,6 +129,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Stable Garrison"
     mapId: stablegarrison
+    lorePrimer: AU14PrimerPlanetStableGarrison
+    allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -140,7 +146,7 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    faction: ua
+    Allegiance: UA
     thirdparties:
     - ICRCReliefParty
     - TimeSharesSalesman
@@ -175,6 +181,8 @@
   - type: RMCPlanetMapPrototype
     votename: "LV624 Green Hell"
     mapId: LV624
+    lorePrimer: AU14PrimerPlanetLV624
+    allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -192,7 +200,7 @@
     govforinship: false
     opforinship: true
     daycycleenabled: true
-    faction: ua
+    Allegiance: UA
     thirdparties:
     - ICRCReliefParty
     - TimeSharesSalesman
@@ -233,6 +241,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Gixens Caverns"
     mapId: GixensCaverns
+    lorePrimer: AU14PrimerPlanetGixensCaverns
+    allegiance: UA
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -259,6 +269,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Flight"
     mapId: Flight
+    lorePrimer: AU14PrimerPlanetFlight
+    allegiance: UA
     camouflage: Urban
     announcement: "A nine-story mixed-use building surrounded by an artificial city landscape, has gone dark. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -294,10 +306,13 @@
 - type: entity
   id: AUPlanetLV759
   name: Hybrisa Metropolitan
+  Allegiance: TWE
   components:
   - type: RMCPlanetMapPrototype
     votename: "Hybrisa Metropolitan"
     mapId: hybrisametro
+    lorePrimer: AU14PrimerPlanetLV759
+    allegiance: TWE
     camouflage: Urban
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -351,6 +366,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Port Neroid"
     mapId: portneroid
+    lorePrimer: AU14PrimerPlanetLV327
+    allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -406,6 +423,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Corsat Station"
     mapId: aucorsat
+    lorePrimer: AU14PrimerPlanetCorsatStation
+    allegiance: UA
     camouflage: Desert
     announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
     platoonsOpfor:
@@ -450,6 +469,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Barker's Lament"
     mapId: CMULV376BarkersLament
+    lorePrimer: AU14PrimerPlanetLament
+    allegiance: UA
     camouflage: Urban
     announcement: "The mining colony of Barker's Lament on LV-376 has gone dark."
     platoonsGovfor:
@@ -498,6 +519,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Sorokyne Strata"
     mapId: au14sorokyne
+    lorePrimer: AU14PrimerPlanetSorokyne
+    allegiance: UPP
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -547,6 +570,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Raijin Hydroelectric"
     mapId: AUTrijentMap
+    lorePrimer: AU14PrimerPlanetTrijent
+    allegiance: TWE
     camouflage: Desert
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsOpfor:
@@ -593,6 +618,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Shivas' Snowball"
     mapId: auShivas
+    lorePrimer: AU14PrimerPlanetShivasSnowball
+    allegiance: UA
     camouflage: Snow
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:
@@ -639,6 +666,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Kutjevo Biolab"
     mapId: auKutjevo
+    lorePrimer: AU14PrimerPlanetKutjevo
+    allegiance: UA
     camouflage: Snow
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:
@@ -684,6 +713,8 @@
   - type: RMCPlanetMapPrototype
     votename: "Fiorina Prison"
     mapId: aufiorina
+    lorePrimer: AU14PrimerPlanetFiorina
+    allegiance: UA
     camouflage: Urban
     announcement: "A remote research outpost, Shepherd's Pride, has gone silent. The UNS Almayer is dispatched to investigate the mysterious circumstances."
     platoonsGovfor:
@@ -724,3 +755,62 @@
     - XenoThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
+
+- type: lorePrimer
+  id: AU14PrimerPlanetLV747
+  planetText: "Date 2181 - Solaris Gulch. UA  controlled"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetShepherdsPride
+  planetText: "Date 2181 - Shepherds' Pride. wildlife reserve"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetStableGarrison
+  planetText: "Date 2181 - Stable Garrison. UA controlled frontier world with a joint base and sizeable urban community"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetLV624
+  planetText: "Date 2181 - LV624 Green Hell,  UA controlled"
+- type: lorePrimer
+  id: AU14PrimerPlanetGixensCaverns
+  planetText: "Date 2181 - Gixens Caverns."
+
+- type: lorePrimer
+  id: AU14PrimerPlanetFlight
+  planetText: "Date 2181 - Flight. Multiple story colony  megastructure"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetLV759
+  planetText: "Date 2181 - Hybrisa Metropolitan. Three World Empire territory"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetLV327
+  planetText: "Date 2181 - Port Neroid: valuable waterport on a frontier world, UA controlled"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetCorsatStation
+  planetText: "Date 2181 - Corsat Station. WeYu operated research  station"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetLament
+  planetText: "Date 2181 - Barker's Lament. Salvage and mining colony"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetSorokyne
+  planetText: "Date 2181 - Sorokyne Strata. Union of progressive peoples frotntier outpost"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetTrijent
+  planetText: "Date 2181 - Raijin Hydroelectric, Three World  Empire facility"
+
+- type: lorePrimer
+  id: AU14PrimerPlanetShivasSnowball
+  planetText: "Date 2181 - Shivas' Snowball. United Americas mining and research  colony."
+
+- type: lorePrimer
+  id: AU14PrimerPlanetKutjevo
+  planetText: "Date 2181 - Kutjevo Biolab. Level 3 facility operated by the Weyland-Yutani Corporation."
+- type: lorePrimer
+  id: AU14PrimerPlanetFiorina
+  planetText: "Date 2181 - Fiorina Prison. Privately owned  and operated by the weyland-yutani corporation, Fiorina 161 is a maximum security prison for the most dangerous criminals in the system."
+

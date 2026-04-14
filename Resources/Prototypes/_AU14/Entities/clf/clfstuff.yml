@@ -162,7 +162,13 @@
       entries:
       - id: CMUCLFSynthSubversionKey
         amount: 1
-        points: 10
+        points: 20
+      - id: AU14TattooInkCartridge
+        amount: 10
+        points: 6
+      - id: AU14TattooGun
+        amount: 3
+        points: 8
   - type: Transform
     anchored: false
     noRot: true
@@ -229,6 +235,10 @@
       amount: 2
     - id: AU14CLFHeadset
       amount: 5
+    - id:  AU14TattooInkCartridge
+      amount: 2
+    - id: AU14TattooGun
+      amount: 1
 
 
 - type: entity
@@ -253,4 +263,103 @@
     ammoSlots: [ null, null, null, null, null, null, null ]
   - type: RMCSelectiveFire
     baseFireRate: 6
+
+- type: entity
+  name: Tattoo Gun
+  parent: BaseStorageItem
+  id: AU14TattooGun
+  description: Used to induct people into the CLF.
+  components:
+  - type: TattooGun
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Cannons/syringe_gun.rsi
+    layers:
+    - state: syringe_gun
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,1,1
+    whitelist:
+      tags:
+      - TattooInk
+    clumsyProof: true
+  - type: ContainerAmmoProvider
+    container: storagebase
+  - type: Item
+    size: Normal
+  - type: ContainerContainer
+    containers:
+      storagebase: !type:Container
+        ents: []
+
+# Ink cartridge for the tattoo gun
+- type: Tag
+  id: TattooInk
+
+- type: entity
+  parent: BaseItem
+  id: AU14TattooInkCartridge
+  name: tattoo ink cartridge
+
+  description: A small cartridge of dark ink for use with a tattoo gun.
+  components:
+  - type: Sprite
+    sprite: Objects/Specific/Chemistry/syringe.rsi
+    layers:
+    - state: minisyringe1
+      map: ["enum.SolutionContainerLayers.Fill"]
+      visible: true
+    - state: syringeproj
+
+  - type: Item
+    size: Tiny
+  - type: Tag
+    tags:
+    - TattooInk
+
+
+
+- type: entity
+  parent: CMJumpsuitColonist
+  id: AU14CMJumpsuitColonistCLF
+  name: colonist uniform
+  description: A stylish gray-green jumpsuit - standard issue for colonists. This one has a small earpiece clipped to the collar.
+  suffix: CLF
+  components:
+  - type: UniformAccessoryHolder
+    allowedCategories:
+    - Tie
+    - Patch
+    - Medal
+    - Armband
+    - PridePin
+    - Rank
+    - Decor
+    - Poncho
+    - Mask
+    - Utility
+    startingAccessories:
+    - AU14CLFHeadset
+
+- type: entity
+  parent: RMCJumpsuitCivilian
+  id: AU14RMCJumpsuitCivilianCLF
+  name: gray utility uniform
+  description: A stylish gray jumpsuit, popularly issued to UN contract workers on the frontier. This one has a small earpiece clipped to the collar.
+  suffix: CLF
+  components:
+  - type: UniformAccessoryHolder
+    allowedCategories:
+    - Tie
+    - Patch
+    - Medal
+    - Armband
+    - PridePin
+    - Rank
+    - Decor
+    - Poncho
+    - Mask
+    - Utility
+    startingAccessories:
+    - AU14CLFHeadset
 

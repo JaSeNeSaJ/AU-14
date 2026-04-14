@@ -81,6 +81,25 @@
   objective: roles-antag-clf-subverted-synth-objective
   isCM: true
 
+## CLF Recruit (tattooed into the CLF)
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFRecruit
+  name: CLF Recruit Role
+  components:
+  - type: MindRole
+    antagPrototype: CLFRecruitRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFRecruitRole
+  name: roles-antag-clf-recruit-name
+  antagonist: true
+  setPreference: false
+  objective: roles-antag-clf-recruit-objective
+  isCM: true
+
 ## fugitive
 
 - type: entity
