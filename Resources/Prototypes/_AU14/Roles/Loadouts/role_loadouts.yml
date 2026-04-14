@@ -24,6 +24,18 @@
   - SmokablesRMC
 
 - type: roleLoadout
+  id: JobAU14JobCivilianColonyAdminAssistant
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - CivFootwearAU14
+  - CivJumpsuitAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
   id: JobAU14JobCivilianFoodServiceWorker
   points: 7
   groups:
@@ -247,6 +259,26 @@
   - CannedDrinksAU14
   - SmokablesRMC
 
+- type: roleLoadout
+  id: JobAU14JobCivilianCorporateAssistant
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianLaselleLiaison
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
 # COS
 - type: roleLoadout
   id: JobAU14JobCivilianColonySynthetic
@@ -263,6 +295,91 @@
   - SynthEquipmentAU14
   - SynthGlassesAU14
   - SynthMasksAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+# orbital
+
+- type: roleLoadout
+  id: JobAU14JobColonyPilot
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+
+- type: roleLoadout
+  id: JobAU14JobCivilianOrbitalManager
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianOrbitalSecurity
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+# ambassadors
+
+- type: roleLoadout
+  id: JobAU14JobCivilianAmbassadorICSC
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianAmbassadorUPP
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianAmbassadorUA
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianAmbassadorTWE
+  points: 7
+  groups:
+  - CivSatchelAU14
+  - PaperworkRMC
+  - RecreationalRMC
+  - CannedDrinksAU14
+  - SmokablesRMC
+
+- type: roleLoadout
+  id: JobAU14JobCivilianAmbassadorCCA
+  points: 7
+  groups:
+  - CivSatchelAU14
   - PaperworkRMC
   - RecreationalRMC
   - CannedDrinksAU14

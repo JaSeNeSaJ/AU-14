@@ -360,3 +360,19 @@
   - type: Access
     groups:
     - auwy
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianColonyPilot
+  name: commercial pilot ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianColonyPilot
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianOrbitalManager
+  name: commercial pilot ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianOrbitalManager

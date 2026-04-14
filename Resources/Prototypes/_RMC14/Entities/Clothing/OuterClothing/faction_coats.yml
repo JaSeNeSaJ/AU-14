@@ -194,8 +194,8 @@
 - type: entity
   parent: RMCBaseJacket
   id: RMCCoatWeYaPilot
-  name: Weston-Yamada Pilot formal-jacket
-  description: A suit-style jacket with a fur lined collar and golden epaulettes signifying rank. Worn by Weston-Yamada qualified civilian Pilots, akin to old Earth formal Pilots-wear.
+  name: Weyland-Yutani Pilot formal-jacket
+  description: A suit-style jacket with a fur lined collar and golden epaulettes signifying rank. Worn by Weyland-Yutani qualified civilian Pilots, akin to old Earth formal Pilots-wear.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/OuterClothing/Coats/weya_pilot.rsi
