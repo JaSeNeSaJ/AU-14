@@ -5,7 +5,7 @@
   description: Threat wins when all Govfor are dead (or when specified percent are dead).
   components:
     - type: KillAllGovforRule
-      percent: 85
+      percent: 80
 
 - type: entity
   id: ThreatSurviveRule
