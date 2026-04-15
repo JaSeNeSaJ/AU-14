@@ -391,7 +391,6 @@
   id: JobAU14JobCLFCellLeader
   points: 7
   groups:
-  - CLFSpecializationAU14
   - CivSatchelAU14
   - CivFootwearAU14
   - PaperworkRMC
@@ -403,7 +402,6 @@
   id: JobAU14JobCLFGuerilla
   points: 7
   groups:
-  - CLFSpecializationAU14
   - CivSatchelAU14
   - CivFootwearAU14
   - PaperworkRMC
@@ -415,7 +413,6 @@
   id: JobAU14JobCLFPhysician
   points: 7
   groups:
-  - CLFSpecializationAU14
   - MedJumpsuitAU14
   - MedHatsAU14
   - MedJacketAU14
