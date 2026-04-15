@@ -38,8 +38,6 @@
       whitelist:
         tags:
         - SquadPMC
-    - type: Marine
-      Faction: govfor
   hidden: false
 
 - type: entity

@@ -45,11 +45,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: forecon_synth
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:

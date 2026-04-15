@@ -33,11 +33,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spotter
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: SpotterWhitelist

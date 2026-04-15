@@ -18,11 +18,6 @@
     components:
     - type: Skills
       preset: AU14SkillPresetPlatoonAutomaticRifleman
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadautomaticriflemanRMC
   hidden: false
