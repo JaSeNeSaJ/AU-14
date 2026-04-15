@@ -27,6 +27,7 @@
         state: vc
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: background_ua
     - type: AssignSquad
       whitelist:
         tags:
