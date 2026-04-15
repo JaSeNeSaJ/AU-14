@@ -2,7 +2,6 @@ using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.AU14;
-using Content.Shared.Cuffs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
@@ -129,7 +128,7 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
             }
             else
             {
-                var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+                var winMessage = _auRoundSystem._selectedthreat.WinMessage;
                 if (!string.IsNullOrEmpty(winMessage))
                 {
                     _gameTicker.EndRound(winMessage);

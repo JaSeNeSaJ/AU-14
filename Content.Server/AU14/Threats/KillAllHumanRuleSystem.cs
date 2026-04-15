@@ -7,8 +7,12 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared._RMC14.Areas;
+using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Evacuation;
+using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Construction.Nest;
+using Content.Shared.SSDIndicator;
 
 namespace Content.Server.AU14.Threats;
 
@@ -22,6 +26,7 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
     [Dependency] private readonly AreaSystem _area = default!;
+    [Dependency] private readonly RMCPlanetSystem _rmcPlanet = default!;
 
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
@@ -69,6 +74,24 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
         return _area.TryGetArea(uid, out var area, out _) && area.Value.Comp.CountAsArrestedForEndConditions;
     }
 
+    private bool IsExcludedFromKillCount(EntityUid uid)
+    {
+        return (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD) ||
+               HasComp<XenoNestedComponent>(uid);
+    }
+
+    private bool HasCrashedDropship()
+    {
+        var dropships = EntityQueryEnumerator<DropshipComponent>();
+        while (dropships.MoveNext(out _, out var dropship))
+        {
+            if (dropship.Crashed)
+                return true;
+        }
+
+        return false;
+    }
+
     private void CheckVictoryCondition()
     {
         var queryRule = EntityQueryEnumerator<KillAllHumanRuleComponent, GameRuleComponent>();
@@ -77,6 +100,7 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
+        var crashedDropship = HasCrashedDropship();
 
         // Count all humanoid mobs (excluding xenos and evacuated)
         var total = 0;
@@ -88,6 +112,12 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
             // Xenos with humanoid appearance (e.g. cultists in human form) are still humanoid — include them.
             // But actual xenos (XenoComponent) are not humans.
             if (_entityManager.HasComponent<XenoComponent>(uid))
+                continue;
+
+            if (IsExcludedFromKillCount(uid))
+                continue;
+
+            if (crashedDropship && TryComp(uid, out TransformComponent? xform) && _rmcPlanet.IsOnPlanet(xform))
                 continue;
 
             // If the entity's grid has been evacuated, count them as dead (do not skip)
@@ -129,7 +159,7 @@ public sealed class KillAllHumanRuleSystem : GameRuleSystem<KillAllHumanRuleComp
             }
             else
             {
-                var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+                var winMessage = _auRoundSystem._selectedthreat.WinMessage;
                 if (!string.IsNullOrEmpty(winMessage))
                 {
                     _gameTicker.EndRound(winMessage);
