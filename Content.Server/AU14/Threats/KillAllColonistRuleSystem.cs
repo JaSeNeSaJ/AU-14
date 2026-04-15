@@ -1,14 +1,16 @@
-using System;
 using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
-using Content.Server.RoundEnd;
 using Content.Shared.AU14;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Evacuation;
+using Content.Shared._RMC14.Rules;
+using Content.Shared._RMC14.Xenonids.Construction.Nest;
+using Content.Shared.SSDIndicator;
 
 namespace Content.Server.AU14.Threats;
 
@@ -17,6 +19,7 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
+    [Dependency] private readonly RMCPlanetSystem _rmcPlanet = default!;
 
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
@@ -32,6 +35,24 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
     {
         var xform = Transform(uid);
         return xform.GridUid is { } grid && _evacuatedQuery.HasComp(grid);
+    }
+
+    private bool IsExcludedFromKillCount(EntityUid uid)
+    {
+        return (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD) ||
+               HasComp<XenoNestedComponent>(uid);
+    }
+
+    private bool HasCrashedDropship()
+    {
+        var dropships = EntityQueryEnumerator<DropshipComponent>();
+        while (dropships.MoveNext(out _, out var dropship))
+        {
+            if (dropship.Crashed)
+                return true;
+        }
+
+        return false;
     }
 
     private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
@@ -61,6 +82,7 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
             return;
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
+        var crashedDropship = HasCrashedDropship();
 
         // Count total and dead AUColonist mobs (excluding evacuated)
         var total = 0;
@@ -71,6 +93,12 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "aucolonist"))
             {
+                if (IsExcludedFromKillCount(uid))
+                    continue;
+
+                if (crashedDropship && TryComp(uid, out TransformComponent? xform) && _rmcPlanet.IsOnPlanet(xform))
+                    continue;
+
                 // If the entity's grid was evacuated, count them as dead (do not skip)
                 if (IsEvacuated(uid))
                 {
@@ -96,7 +124,7 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
                 return;
 
             // End round, threat wins. Prefer configured win message.
-            var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+            var winMessage = _auRoundSystem._selectedthreat.WinMessage;
             if (!string.IsNullOrEmpty(winMessage))
             {
                 _gameTicker.EndRound(winMessage);

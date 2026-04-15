@@ -2,14 +2,17 @@ using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.AU14;
-using Content.Shared.Cuffs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
 using Content.Shared._RMC14.Areas;
+using Content.Shared._RMC14.Dropship;
 using Content.Shared.Cuffs.Components;
 using Content.Shared._RMC14.Evacuation;
+using Content.Shared._RMC14.Rules;
+using Content.Shared._RMC14.Xenonids.Construction.Nest;
+using Content.Shared.SSDIndicator;
 
 namespace Content.Server.AU14.Threats;
 
@@ -19,6 +22,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
     [Dependency] private readonly AreaSystem _area = default!;
+    [Dependency] private readonly RMCPlanetSystem _rmcPlanet = default!;
 
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
@@ -68,6 +72,24 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
         return _area.TryGetArea(uid, out var area, out _) && area.Value.Comp.CountAsArrestedForEndConditions;
     }
 
+    private bool HasCrashedDropship()
+    {
+        var dropships = EntityQueryEnumerator<DropshipComponent>();
+        while (dropships.MoveNext(out _, out var dropship))
+        {
+            if (dropship.Crashed)
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool IsExcludedFromKillCount(EntityUid uid)
+    {
+        return (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD) ||
+               HasComp<XenoNestedComponent>(uid);
+    }
+
     private void CheckVictoryCondition()
     {
         // Get the active rule entity and its component to read Percent
@@ -77,6 +99,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
+        var crashedDropship = HasCrashedDropship();
 
         // Count total and dead/arrested CLF mobs (excluding evacuated)
         var total = 0;
@@ -87,6 +110,12 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf"))
             {
+                if (IsExcludedFromKillCount(uid))
+                    continue;
+
+                if (crashedDropship && TryComp<TransformComponent>(uid, out var xform) && _rmcPlanet.IsOnPlanet(xform))
+                    continue;
+
                 // Skip evacuated entities entirely
                 if (IsEvacuated(uid))
                     continue;
@@ -125,7 +154,7 @@ public sealed class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRuleComponen
             }
             else
             {
-                var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+                var winMessage = _auRoundSystem._selectedthreat.WinMessage;
                 if (!string.IsNullOrEmpty(winMessage))
                 {
                     _gameTicker.EndRound(winMessage);

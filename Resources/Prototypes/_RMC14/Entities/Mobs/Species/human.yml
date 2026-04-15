@@ -10,7 +10,5 @@
       Male: RMCMaleHuman
       Unsexed: RMCMaleHuman #sorry fem-leaning enbies
       Female: RMCFemaleHuman
-  - type: Perishable
-    rotAfter: 950
   - type: FixedIdentity
     name: cm-chatsan-replacement-human

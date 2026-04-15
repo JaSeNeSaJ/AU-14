@@ -3,7 +3,7 @@
 #
 # Fields per entry:
 #   scale              - extra slots per player
-#   whenToBeginScaling - legacy compatibility field (currently ignored)
+#   whenToBeginScaling - player count threshold; scaling only starts above this value
 #   benchmark          - (optional) if set, this is the base slot count;
 #                        if omitted, scaling is applied on top of existing slots.
 #   maximum            - (optional) hard cap on final slots after scaling.
