@@ -28,6 +28,9 @@
         state: spp_sec
     - type: Skills
       skills:
+        RMCSkillCqc: 2
+        RMCSkillMeleeWeapons: 2
+        RMCSkillFirearms: 2
         RMCSkillEndurance: 2
         RMCSkillFireman: 2
         RMCSkillMedical: 3
