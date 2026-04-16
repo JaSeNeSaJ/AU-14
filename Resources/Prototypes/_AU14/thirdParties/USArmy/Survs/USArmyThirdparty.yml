@@ -15,6 +15,7 @@
 
 - type: auThirdParty
   id: USArmy
+  displayName: US Army Infantry (Full Squad)
   partyspawn: USArmySpawn
   blacklistedgamemodes:
     - insurgency
@@ -40,6 +41,7 @@
 
 - type: auThirdParty
   id: USArmyAlt
+  displayName: US Army Infantry (Small Team)
   partyspawn: USArmySpawnAlt
   blacklistedgamemodes:
     - insurgency
@@ -67,6 +69,7 @@
 
 - type: auThirdParty
   id: USArmyAlt2
+  displayName: US Army Infantry (Medium Team)
   partyspawn: USArmySpawnAlt2
   blacklistedgamemodes:
     - insurgency

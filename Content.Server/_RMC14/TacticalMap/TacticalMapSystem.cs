@@ -1028,36 +1028,58 @@ public sealed class TacticalMapSystem : SharedTacticalMapSystem
 
     private void UpdateTracked(Entity<ActiveTacticalMapTrackedComponent> ent)
     {
-        // If the tracked entity is restrained/cuffed, remove it from all maps and stop tracking.
+        // If the tracked entity is restrained/cuffed, hide from tacmap UNLESS their faction has active sensors.
         if (TryComp<CuffableComponent>(ent, out var cuffable) && cuffable.CuffedHandCount > 0)
         {
-            if (!_tacticalMapQuery.TryComp(ent.Comp.Map, out var curMap))
+            // Determine the entity's faction so we can check sensors
+            string? entFaction = null;
+            if (_opforMapTrackedQuery.HasComp(ent))
+                entFaction = "OPFOR";
+            else if (_govforMapTrackedQuery.HasComp(ent))
+                entFaction = "GOVFOR";
+            else if (_clfMapTrackedQuery.HasComp(ent))
+                entFaction = "CLF";
+            else if (_marineMapTrackedQuery.HasComp(ent))
+                entFaction = "MARINES";
+            else if (TryComp(ent, out Content.Shared._RMC14.Marines.MarineComponent? marineCuffComp) &&
+                     !string.IsNullOrWhiteSpace(marineCuffComp.Faction))
+                entFaction = marineCuffComp.Faction.ToUpperInvariant();
+
+            // If the faction has active sensors, don't hide — let the normal tracking flow handle it
+            if (entFaction != null && TeamHasActiveSensors(entFaction))
             {
-                // Even if we don't know map, clear from all tactical maps to be safe
-                var maps = EntityQueryEnumerator<TacticalMapComponent>();
-                while (maps.MoveNext(out var mapId, out var map))
-                {
-                    map.MarineBlips.Remove(ent.Owner.Id);
-                    map.XenoBlips.Remove(ent.Owner.Id);
-                    map.XenoStructureBlips.Remove(ent.Owner.Id);
-                    map.OpforBlips.Remove(ent.Owner.Id);
-                    map.GovforBlips.Remove(ent.Owner.Id);
-                    map.ClfBlips.Remove(ent.Owner.Id);
-                    map.MapDirty = true;
-                }
+                // Fall through to normal blip placement below
             }
             else
             {
-                curMap.MarineBlips.Remove(ent.Owner.Id);
-                curMap.XenoBlips.Remove(ent.Owner.Id);
-                curMap.XenoStructureBlips.Remove(ent.Owner.Id);
-                curMap.OpforBlips.Remove(ent.Owner.Id);
-                curMap.GovforBlips.Remove(ent.Owner.Id);
-                curMap.ClfBlips.Remove(ent.Owner.Id);
-                curMap.MapDirty = true;
-            }
+                if (!_tacticalMapQuery.TryComp(ent.Comp.Map, out var curMap))
+                {
+                    // Even if we don't know map, clear from all tactical maps to be safe
+                    var maps = EntityQueryEnumerator<TacticalMapComponent>();
+                    while (maps.MoveNext(out var mapId, out var map))
+                    {
+                        map.MarineBlips.Remove(ent.Owner.Id);
+                        map.XenoBlips.Remove(ent.Owner.Id);
+                        map.XenoStructureBlips.Remove(ent.Owner.Id);
+                        map.OpforBlips.Remove(ent.Owner.Id);
+                        map.GovforBlips.Remove(ent.Owner.Id);
+                        map.ClfBlips.Remove(ent.Owner.Id);
+                        map.MapDirty = true;
+                    }
+                }
+                else
+                {
+                    curMap.MarineBlips.Remove(ent.Owner.Id);
+                    curMap.XenoBlips.Remove(ent.Owner.Id);
+                    curMap.XenoStructureBlips.Remove(ent.Owner.Id);
+                    curMap.OpforBlips.Remove(ent.Owner.Id);
+                    curMap.GovforBlips.Remove(ent.Owner.Id);
+                    curMap.ClfBlips.Remove(ent.Owner.Id);
+                    curMap.MapDirty = true;
+                }
 
-            return;
+                return;
+            }
         }
 
         if (!_transformQuery.TryComp(ent.Owner, out var xform) ||
