@@ -78,7 +78,6 @@
   - type: EncryptionKey
     channels:
     - CMB
-    - WEYA
     - MarineCommand
     - MarineMedical
     - MarineIntel

@@ -37,7 +37,7 @@
   requiresGovforVote: true
   supportedPlanets:
     - AUPlanetShepherdsPride
-    - AUPlanetLV624
+    #- AUPlanetLV624
     - CMUPlanetLament
     #- AUPlanetLV747
     #- AUPlanetSorokyne
@@ -87,12 +87,12 @@
     - AuVoteRule
     - ColonyAntags
   supportedPlanets:
-    - AUPlanetLV747
+    #- AUPlanetLV747
     - AUPlanetShepherdsPride
-    - AUPlanetLV624
-    - AUPlanetLV327
+   # - AUPlanetLV624
+   # - AUPlanetLV327
    # - AUPlanetSorokyne
-    - AUPlanetStableGarrison
+    #- AUPlanetStableGarrison
     - CMUPlanetLament
 
 - type: gamePreset
