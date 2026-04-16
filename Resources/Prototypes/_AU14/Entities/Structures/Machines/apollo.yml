@@ -33,6 +33,27 @@
     - Colony
     - WEYA
     - CMB
+  - type: UserInterface
+    interfaces:
+      enum.VoiceMaskUIKey.Key:
+        type: VoiceMaskBoundUserInterface
+      enum.HumanoidMarkingModifierKey.Key:
+        type: HumanoidMarkingModifierBoundUserInterface
+      enum.CMMobStateActionsUI.Key:
+        type: CMGhostActionBui
+        requireInputValidation: false
+      enum.TacticalMapUserUi.Key:
+        type: TacticalMapUserBui
+      enum.SquadLeaderTrackerUI.Key:
+        type: SquadInfoBui
+      enum.DialogUiKey.Key:
+        type: DialogBui
+      enum.ViewIntelObjectivesUI.Key:
+        type: ViewIntelObjectivesBui
+  - type: TacticalMapUser
+    actionId: RMCActionOpenTacticalMapMarine
+    marines: true
+  - type: NewPlayerLabel
 
 - type: entity
   id: AU14AICoreApolloGOVFOR

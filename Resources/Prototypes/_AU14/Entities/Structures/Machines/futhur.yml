@@ -4,6 +4,9 @@
   name: FAR/TH/UR 2600 A.I.
   description: This is the artificial intelligence system for monitoring the space ships, colonies or stations. It is manufactured by Weyland-Yutani.
   suffix: AU14, GOVFOR
+  components:
+  - type: NameModifier
+    baseName: "FAR/TH/UR 2600 A.I."
 
 - type: entity
   id: AU14AICoreFARTHUROPFOR
@@ -11,6 +14,9 @@
   name: FAR/TH/UR 2600 A.I.
   description: This is the artificial intelligence system for monitoring the space ships, colonies or stations. It is manufactured by Weyland-Yutani.
   suffix: AU14, OPFOR
+  components:
+  - type: NameModifier
+    baseName: "FAR/TH/UR 2600 A.I."
 
 - type: entity
   id: AU14AICoreCPUFARTHUR

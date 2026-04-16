@@ -7,6 +7,7 @@
     layers:
       Snout: Mask
     hideOnToggle: true
+  - type: IdentityBlocker
   - type: Appearance
 
 - type: entity
@@ -70,6 +71,8 @@
   name: sterile mask
   description: A sterile mask designed to help prevent the spread of diseases.
   components:
+  - type: IdentityBlocker
+    coverage: MOUTH
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Mask/sterile.rsi
   - type: Clothing
@@ -163,7 +166,6 @@
   - type: Clothing
     sprite: _RMC14/Objects/Clothing/Mask/coif.rsi
   - type: IdentityBlocker
-    coverage: MOUTH
   - type: Item
     storedRotation: -90
   - type: Appearance
@@ -235,7 +237,6 @@
   - type: Clothing
     sprite: _RMC14/Objects/Clothing/Mask/balaclava.rsi
   - type: IdentityBlocker
-    coverage: MOUTH
   - type: Item
     storedRotation: -90
   - type: HideLayerClothing

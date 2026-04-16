@@ -27,8 +27,9 @@
   id: AU14HeadHelmetRMCHeavy
   name: Mk20 pattern heavy helmet
   suffix: AU14
-  description: Heavy, high-cut ballistic helmet. Designed to be used by Royal Crown Marines smartgunners and pointmen as part of the kestrel armour system.
+  description: Heavy, ballistic helmet. Designed to be used by Royal Crown Marines smartgunners and pointmen as part of the kestrel armour system.
   components:
+  - type: IdentityBlocker
   - type: Sprite
     sprite: _AU14/Clothing/RMC/helmets/heavy.rsi
   - type: Clothing
@@ -39,8 +40,9 @@
   id: AU14HeadHelmetRMCBallistic
   name: Mk17 pattern ballistic helmet
   suffix: AU14
-  description: A High-cut ballistic helmet featuring an attached mandible. Designed to be used by Royal Marines Commando as part of the kestrel armour system.
+  description: A ballistic helmet featuring an attached mandible. Designed to be used by Royal Marines Commando as part of the kestrel armour system.
   components:
+  - type: IdentityBlocker
   - type: Sprite
     sprite: _AU14/Clothing/RMC/helmets/ballistic.rsi
   - type: Clothing
@@ -75,6 +77,7 @@
   suffix: AU14
   description: A High-cut ballistic helmet. Designed to be used by Royal Marines Commando as part of the kestrel armour system. This variant worn by aircrews.
   components:
+  - type: IdentityBlocker
   - type: Sprite
     sprite: _AU14/Clothing/RMC/helmets/pilot.rsi
   - type: Clothing
