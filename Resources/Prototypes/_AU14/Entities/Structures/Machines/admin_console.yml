@@ -41,10 +41,10 @@
     state: terminal1_old
   - type: AdminConsole
     callableParties:
-      UPPGROM: 1000
-      UPPGROMAlt: 500
-      USArmy: 1000
-      USArmyAlt: 500
+      CMBInvestigationPartyAlt: 3700
+      ICRCReliefParty: 2800
+      NSPAInvestigationPartyArmored: 3500
+      PAPInvestigationParty: 4000
   - type: AccessReader
     access: [ [ "CMAccessColonyCommand" ] ]
 

@@ -45,9 +45,9 @@
     state: terminal1_old
   - type: CorporateConsole
     callableParties:
-      UPPGROM: 1500
-      USArmy: 1500
-      USArmyAlt: 750
+      WYPMCParty: 7500
+      WYHT: 6000
+      IPIESynth: 3500
   - type: AccessReader
-    access: [ [ "CMAccessCorporate" ] ]
+    access: [ [ "CMAccessCorp" ] ]
 

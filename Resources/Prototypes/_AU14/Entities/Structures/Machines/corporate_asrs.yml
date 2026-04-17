@@ -13,12 +13,6 @@
   - type: RequisitionsComputer
     faction: corporate
     categories:
-    - name: Office Supplies
-      entries:
-      - cost: 200
-        crate: RMCCrateStationary
-      - cost: 300
-        crate: RMCCrateClipboards
     - name: Corporate Equipment
       entries:
       - cost: 500
