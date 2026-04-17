@@ -310,7 +310,6 @@
       - AU14JobCLFGuerilla
       - AU14JobCLFCellLeader
       - AU14JobCLFPhysician
-      - AU14JobAICoreGovfor
       briefing:
         text: clfveteran-role-greeting
         color: OliveDrab
