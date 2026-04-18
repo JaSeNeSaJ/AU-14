@@ -57,7 +57,7 @@
   - type: XenoCrusherChargable
     setDamage:
       types:
-        Blunt: 0
+        Structural: 750
     throwRange: 2
   - type: RMCMesonsNonviewable
   - type: InteractedBlacklist

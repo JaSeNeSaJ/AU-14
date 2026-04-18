@@ -3,6 +3,7 @@ using Content.Shared.Damage.Prototypes;
 using Content.Shared.Doors.Components;
 using Content.Shared.Weapons.Melee;
 using Robust.Shared.Prototypes;
+using Content.Shared._RMC14.Xenonids.Charge;
 
 namespace Content.Shared._RMC14.Xenonids.ClawSharpness;
 
@@ -14,6 +15,7 @@ public sealed class XenoClawsSystem : EntitySystem
     private EntityQuery<XenoClawsComponent> _xenoClawsQuery;
     private EntityQuery<XenoComponent> _xenoQuery;
     private readonly ProtoId<DamageGroupPrototype> _clawsDamageGroup = "Brute";
+    private EntityQuery<XenoChargingComponent> _xenoChargingQuery;
 
     public override void Initialize()
     {
@@ -52,6 +54,9 @@ public sealed class XenoClawsSystem : EntitySystem
         if (!_meleeWeaponQuery.HasComp(xeno) || !_xenoClawsQuery.TryComp(xeno, out var claws))
             return;
 
+        if (!_xenoChargingQuery.HasComp(xeno))
+            return;
+
         var hasRequiredClaws = claws.ClawType.CompareTo(receiver.MinimumClawStrength) >= 0;
         bool hasRequiredTier = false;
 
@@ -78,6 +83,9 @@ public sealed class XenoClawsSystem : EntitySystem
         var receiver = ent.Comp;
 
         if (!_meleeWeaponQuery.HasComp(xeno))
+            return;
+
+        if (!_xenoChargingQuery.HasComp(xeno))
             return;
 
         if (!TryComp<DoorComponent>(ent, out var door))
