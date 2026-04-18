@@ -513,7 +513,7 @@
   - type: Sprite
     state: red2
   - type: Area
-    state: '#2D3FA2EE'
+    minimapColor: '#2D3FA2EE'
 
 - type: entity
   parent: CMUAreaLV376Inside
