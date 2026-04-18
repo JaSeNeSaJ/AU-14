@@ -26,14 +26,18 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Movement.Components;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Physics;
 using Content.Shared.Popups;
 using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
+using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Physics.Events;
+using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -73,6 +77,7 @@ public sealed class XenoChargeSystem : EntitySystem
     [Dependency] private readonly RMCSlowSystem _slow = default!;
     [Dependency] private readonly SharedDestructibleSystem _destruct = default!;
     [Dependency] private readonly RMCSizeStunSystem _sizeStun = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
 
@@ -454,40 +459,37 @@ public sealed class XenoChargeSystem : EntitySystem
             diff = diff.Normalized() * xeno.Comp.Range;
         else
             diff = diff.Normalized() * MathF.Ceiling(length);
+
         if (_net.IsServer)
         {
-            foreach (var ent in _lookup.GetEntitiesInRange<BarricadeComponent>(origin, xeno.Comp.Range))
-            {
-                if (!TryComp<XenoCrusherChargableComponent>(ent, out var chargable))
-                    continue;
+            var direction = diff.Normalized();
+            var results = _physics.IntersectRay(
+                origin.MapId,
+                new CollisionRay(origin.Position, direction, (int) CollisionGroup.BarricadeImpassable),
+                diff.Length(),
+                xeno.Owner,
+                false
+            );
 
+            foreach (var result in results)
+            {
+                if (!TryComp<XenoCrusherChargableComponent>(result.HitEntity, out var chargable))
+                    continue;
                 if (chargable.InstantDestroy)
                     continue;
 
-                var entPos = _transform.GetMapCoordinates(ent);
-                if (entPos.MapId != origin.MapId)
-                    continue;
+                // Apply damage manually since we're stopping before impact
+                if (chargable.SetDamage != null)
+                {
+                    _damageable.TryChangeDamage(result.HitEntity, chargable.SetDamage, origin: xeno, tool: xeno);
+                }
+                else
+                {
+                    _damageable.TryChangeDamage(result.HitEntity, xeno.Comp.Damage, origin: xeno, tool: xeno);
+                }
 
-                var toEnt = entPos.Position - origin.Position;
-                var dot = Vector2.Dot(toEnt, diff.Normalized());
-                if (dot <= 0)
-                    continue;
-
-                // Check barricade facing — only clamp distance if charging into the front (to prevent tunneling through)
-                // We dont clamp when hitting it fron other angles since it is less relevant there, and also to prevent cases of stopping short and dealing no damage.
-                var barricadeForward = _transform.GetWorldRotation(ent).ToWorldVec();
-                var facingDot = Vector2.Dot(diff.Normalized(), barricadeForward);
-                if (facingDot >= 0)
-                    continue; // charging from behind or side, ignore
-
-                var perpComponent = diff.Normalized() * dot;
-                var perpVec = toEnt - perpComponent;
-                var perpDist = perpVec.Length();
-                if (perpDist > 0.7f)
-                    continue;
-
-                if (dot < diff.Length())
-                    diff = diff.Normalized() * Math.Max(0, dot - 0.5f);
+                diff = direction * Math.Max(0, result.Distance - 0.5f);
+                break;
             }
         }
 
