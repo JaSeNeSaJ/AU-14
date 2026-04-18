@@ -57,7 +57,7 @@
   - type: XenoCrusherChargable
     setDamage:
       types:
-        Brute: 750
+        Blunt: 750
         ## workaround since it doesnt accept Structural.
     throwRange: 2
   - type: RMCMesonsNonviewable

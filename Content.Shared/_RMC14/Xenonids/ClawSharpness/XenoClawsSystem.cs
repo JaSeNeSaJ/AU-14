@@ -60,9 +60,6 @@ public sealed class XenoClawsSystem : EntitySystem
         if (!_meleeWeaponQuery.HasComp(xeno) || !_xenoClawsQuery.TryComp(xeno, out var claws))
             return;
 
-        if (!_xenoChargingQuery.HasComp(xeno))
-            return;
-
         var hasRequiredClaws = claws.ClawType.CompareTo(receiver.MinimumClawStrength) >= 0;
         bool hasRequiredTier = false;
 
@@ -92,9 +89,6 @@ public sealed class XenoClawsSystem : EntitySystem
             return;
 
         if (!_meleeWeaponQuery.HasComp(xeno))
-            return;
-
-        if (!_xenoChargingQuery.HasComp(xeno))
             return;
 
         if (!TryComp<DoorComponent>(ent, out var door))
