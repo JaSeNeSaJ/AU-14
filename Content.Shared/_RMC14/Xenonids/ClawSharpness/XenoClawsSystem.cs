@@ -22,6 +22,7 @@ public sealed class XenoClawsSystem : EntitySystem
         _meleeWeaponQuery = GetEntityQuery<MeleeWeaponComponent>();
         _xenoClawsQuery = GetEntityQuery<XenoClawsComponent>();
         _xenoQuery = GetEntityQuery<XenoComponent>();
+        _xenoChargingQuery = GetEntityQuery<XenoChargingComponent>();
 
         SubscribeLocalEvent<ReceiverXenoClawsComponent, DamageModifyEvent>(OnReceiverDamageModify);
         SubscribeLocalEvent<AirlockReceiverXenoClawsComponent, DamageModifyEvent>(OnAirlockReceiverDamageModify);
