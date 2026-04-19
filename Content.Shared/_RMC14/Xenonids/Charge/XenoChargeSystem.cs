@@ -8,6 +8,7 @@ using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Pulling;
 using Content.Shared._RMC14.Slow;
 using Content.Shared._RMC14.Stun;
+using Content.Shared._RMC14.Xenonids.Actions;
 using Content.Shared._RMC14.Xenonids.Animation;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.HiveLeader;
@@ -363,6 +364,7 @@ public sealed class XenoChargeSystem : EntitySystem
             _xenoAnimations.PlayLungeAnimationEvent(xeno, charge);
         }
 
+        xeno.Comp.AlreadyHit.Clear();
     }
 
     private void OnXenoChargeHit(Entity<XenoChargeComponent> xeno, ref ThrowDoHitEvent args)
@@ -378,6 +380,12 @@ public sealed class XenoChargeSystem : EntitySystem
 
         if (!isValidTarget && !TryComp(targetId, out crush) && !HasComp<DamageableComponent>(targetId))
             return;
+
+        if (xeno.Comp.AlreadyHit.Contains(targetId))
+        {
+            xeno.Comp.AlreadyHit.Remove(targetId);
+            return;
+        }
 
         StopCrusherCharge(xeno);
 
@@ -481,16 +489,20 @@ public sealed class XenoChargeSystem : EntitySystem
                 // Apply damage manually since we're stopping before impact
                 if (chargable.SetDamage != null)
                 {
+                    xeno.Comp.AlreadyHit.Add(result.HitEntity);
                     _damageable.TryChangeDamage(result.HitEntity, chargable.SetDamage, origin: xeno, tool: xeno);
+                    _audio.PlayPvs(xeno.Comp.Sound, xeno);
                 }
                 else
                 {
                     _damageable.TryChangeDamage(result.HitEntity, xeno.Comp.Damage, origin: xeno, tool: xeno);
+                    _audio.PlayPvs(xeno.Comp.Sound, xeno);
                 }
 
                 diff = direction * Math.Max(0, result.Distance - 0.5f);
                 break;
             }
+
         }
 
         xeno.Comp.Charge = diff;
@@ -499,7 +511,7 @@ public sealed class XenoChargeSystem : EntitySystem
         EnsureComp<XenoChargingComponent>(xeno);
 
         _rmcObstacleSlamming.MakeImmune(xeno);
-        _throwing.TryThrow(xeno, diff, xeno.Comp.Strength, animated: false);
+        _throwing.TryThrow(xeno, diff, xeno.Comp.Strength, animated: false, compensateFriction: true);
     }
 
     private void OnXenoChargeStop(Entity<XenoChargeComponent> xeno, ref StopThrowEvent args)
