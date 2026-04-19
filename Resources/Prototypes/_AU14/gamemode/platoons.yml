@@ -19,7 +19,6 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-    - Daybreak
     - USSBush
   #platoonflag: uaflag
   CompatibleDropships:
@@ -56,7 +55,6 @@
   compatibleFighters:
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
       - USSBush
   techTree: RMCIntelTechTree_ua
 
@@ -82,7 +80,7 @@
     SectionSergeant: AU14UPPSectionLeaderVendor
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
-      - Daybreak
+      - USSBush
 #  jobClassOverride:
 #    SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
 #    SectionSergeant: AU14JobGOVFORSectionSergeantUPP
@@ -135,7 +133,7 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
   possibleships:
-      - Daybreak
+      - USSBush
 
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
@@ -176,7 +174,6 @@
 #  DSPilot: 1
 #    SectionSergeant: 1
   possibleships:
-      - Daybreak
       - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -202,8 +199,7 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-    - Daybreak
-    - USSBush
+      - USSBush
   jobSlotOverride:
     SquadRifleman: 12
     PlatoonCorpsman: 1
@@ -232,7 +228,6 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-      - Daybreak
       - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/osprey.yml
@@ -270,7 +265,7 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
+      - USSBush
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
@@ -306,7 +301,6 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
   possibleships:
-      - Daybreak
       - USSBush
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
@@ -341,7 +335,7 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
+      - USSBush
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
@@ -385,7 +379,6 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships: #TODO: RMC Ship
-      - Daybreak
       - USSBush
   techTree: RMCIntelTechTree_ua
 
