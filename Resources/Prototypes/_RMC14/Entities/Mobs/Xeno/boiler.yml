@@ -200,7 +200,7 @@
   suffix: Sapper
   components:
   - type: Sprite
-    sprite: _RMC14/Mobs/Xenonids/Boiler/boiler_sapper.rsi
+    sprite: _AU14/Mobs/Xenos/Boiler/boiler.rsi # AU14-Edit
   - type: Xeno
     actionIds:
     - ActionXenoRest
