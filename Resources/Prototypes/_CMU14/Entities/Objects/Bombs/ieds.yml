@@ -1,0 +1,31 @@
+- type: entity
+  parent: CMGrenadeBase
+  id: CMUPipeBomb
+  name: pipe bomb
+  description: A cheap way to injure someone. Designed by your local insurgent’s.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Bombs/pipebomb.rsi
+  - type: ExplodeOnTrigger
+  - type: Explosive
+    maxIntensity: 20
+    intensitySlope: 8
+    totalIntensity: 100
+    deleteAfterExplosion: false
+  - type: OnUseTimerTrigger
+    examinable: false
+    initialBeepDelay: 0
+    beepSound: /Audio/Effects/lightburn.ogg
+  - type: RandomTimerTrigger
+    min: 1
+    max: 4
+  - type: ProjectileGrenade
+    fillPrototype: CMProjectileShrapnel
+    capacity: 20
+  - type: ContainerContainer
+    containers:
+      cluster-payload: !type:Container
+  - type: CMExplosionEffect
+  - type: CMVocalizeTrigger
+  - type: RMCScorchEffect
+  - type: Tag
