@@ -223,7 +223,7 @@
 - type: entity
   id: RMCCartridgePistolT73
   name: cartridge (7.62x25mm)
-  description: A 7.62x25mm cartridge for the T73/T74 pistol.
+  description: A 7.62x25mm cartridge for the T73/T74 pistols.
   parent: CMCartridgePistolBase
   components:
   - type: Tag
