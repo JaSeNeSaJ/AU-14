@@ -44,6 +44,30 @@ public sealed class AuThirdPartySystem : EntitySystem
     private TimeSpan _spawnInterval = TimeSpan.FromMinutes(5);
     private bool _spawningActive = false;
 
+    // --- Signal modifier applied by Ambassador / AI Core consoles ---
+    private float _signalIntervalMultiplier = 1f;
+
+    /// <summary>
+    /// Returns the list of queued third parties that have not yet spawned.
+    /// </summary>
+    public List<AuThirdPartyPrototype> GetQueuedThirdParties()
+    {
+        if (_thirdPartyList == null || _nextThirdPartyIndex >= _thirdPartyList.Count)
+            return new List<AuThirdPartyPrototype>();
+
+        return _thirdPartyList.GetRange(_nextThirdPartyIndex, _thirdPartyList.Count - _nextThirdPartyIndex);
+    }
+
+    /// <summary>
+    /// Sets the signal interval multiplier. Below 1 = signal boost, above 1 = signal jam.
+    /// </summary>
+    public void SetSignalIntervalMultiplier(float multiplier)
+    {
+        _signalIntervalMultiplier = Math.Max(0.1f, multiplier);
+    }
+
+    public float GetSignalIntervalMultiplier() => _signalIntervalMultiplier;
+
     public void SpawnThirdParty(AuThirdPartyPrototype party, PartySpawnPrototype spawnProto, bool roundStart, Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null, bool? overrideDropship = null)
     {
         const float SpawnTogetherRadius = 8f;
@@ -620,7 +644,7 @@ public sealed class AuThirdPartySystem : EntitySystem
         {
             return;
         }
-        var interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks / Math.Max(1, party.weight)));
+        var interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks * _signalIntervalMultiplier / Math.Max(1, party.weight)));
         if (_spawnTimer < interval.TotalSeconds)
             return;
         _spawnTimer = 0f;

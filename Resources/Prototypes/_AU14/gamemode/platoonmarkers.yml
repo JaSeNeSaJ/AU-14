@@ -970,3 +970,75 @@
     ship: true
     class: Analyzer
 
+# AI Core markers
+- type: entity
+  name: Ship AI Core Marker
+  id: VMarkerShipAICore
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: AICore
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/AIStuff/aicore.rsi
+    state: hydra-off
+
+- type: entity
+  name: Govfor AI Core Marker
+  id: VMarkerGovforAICore
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: AICore
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/AIStuff/aicore.rsi
+    state: hydra-off
+
+- type: entity
+  name: Opfor AI Core Marker
+  id: VMarkerOpforAICore
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: false
+    opfor: true
+    class: AICore
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/AIStuff/aicore.rsi
+    state: hydra-off
+
+# Tactical Map markers
+- type: entity
+  name: Ship Tactical Map Marker
+  id: VMarkerShipTacticalMap
+  parent: VmarkerShip
+  components:
+  - type: VendorMarker
+    ship: true
+    class: TacticalMap
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: overwatch
+
+- type: entity
+  name: Govfor Tactical Map Marker
+  id: VMarkerGovforTacticalMap
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: true
+    opfor: false
+    class: TacticalMap
+
+- type: entity
+  name: Opfor Tactical Map Marker
+  id: VMarkerOpforTacticalMap
+  parent: Vmarker
+  components:
+  - type: VendorMarker
+    govfor: false
+    opfor: true
+    class: TacticalMap
+

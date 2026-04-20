@@ -17,6 +17,13 @@ public sealed partial class AuThirdPartyPrototype : IPrototype
     [IdDataField]
     public string ID { get; private set; } = default!;
 
+    /// <summary>
+    /// Player-facing display name for this third party (e.g., "UPP GROM Special Forces").
+    /// If not set, falls back to ID.
+    /// </summary>
+    [DataField("displayName")]
+    public string? DisplayName { get; private set; }
+
     [DataField("blacklistedThreats")]
     public List<string> BlacklistedThreats { get; private set; } = new();
 

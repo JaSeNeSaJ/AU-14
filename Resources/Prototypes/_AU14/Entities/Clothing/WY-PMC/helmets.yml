@@ -43,6 +43,7 @@
     - FacialHair
   - type: PointLight
     color: "#73e6f5"
+  - type: IdentityBlocker
 
 - type: entity
   parent: AU14ArmorHelmetPMCTactical
@@ -61,6 +62,7 @@
   name: WY PMC Heavy Helmet
   description: A WY PMC helmet.
   components:
+  - type: IdentityBlocker
   - type: Sprite
     sprite: _AU14/Clothing/WY_PMC/wypmcheavy.rsi
   - type: Clothing

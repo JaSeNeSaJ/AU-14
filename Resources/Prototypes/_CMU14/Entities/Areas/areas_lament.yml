@@ -47,6 +47,14 @@
 
 - type: entity
   parent: CMUAreaLV376Outside
+  id: CMUAreaLV376Scrapyard
+  name: Scrapyard
+  components:
+  - type: Sprite
+    state: mining_living
+
+- type: entity
+  parent: CMUAreaLV376Outside
   id: CMUAreaLV376N
   name: Barker's Lament - North Colony
   components:
@@ -393,6 +401,14 @@
 
 - type: entity
   parent: CMUAreaLV376Inside
+  id: CMUAreaLV376ScrapyardOffice
+  name: Scrapyard - Office
+  components:
+  - type: Sprite
+    state: mining_outpost
+
+- type: entity
+  parent: CMUAreaLV376Inside
   id: CMUAreaLV376WaterTreatment
   name: Barker's Lament - Water Treatment
   components:
@@ -460,7 +476,7 @@
 - type: entity
   parent: CMUAreaLV376Inside
   id: CMUAreaLV376CorpoOffice
-  name: Barker's Lament - Galaxy Pizza
+  name: Barker's Lament - Pizza
   components:
   - type: Sprite
     state: captain
@@ -492,10 +508,12 @@
 - type: entity
   parent: CMUAreaLV376Inside
   id: CMUAreaLV376ATC
-  name: Barker's Lament - Air Traffic Control
+  name: Barker's Lament - ATC & Embassy
   components:
   - type: Sprite
     state: red2
+  - type: Area
+    minimapColor: '#2D3FA2EE'
 
 - type: entity
   parent: CMUAreaLV376Inside
@@ -546,6 +564,16 @@
     state: security
   - type: Area
     minimapColor: '#A22D2DEE'
+
+- type: entity
+  parent: CMUAreaLV376CMB
+  id: CMUAreaLV376CMBCells
+  name: Barker's Lament - Colony Marshall Bureau Cells
+  components:
+  - type: Sprite
+    state: blue-red-d
+  - type: Area
+    countAsArrestedForEndConditions: true
 
 - type: entity
   parent: CMUAreaLV376Inside
@@ -638,6 +666,16 @@
     minimapColor: '#A22D2DEE'
 
 - type: entity
+  parent: CMUAreaLV376MilitaryPolice
+  id: CMUAreaLV376Brig
+  name: Military Base - Brig Cells
+  components:
+  - type: Sprite
+    state: blue-red-d
+  - type: Area
+    countAsArrestedForEndConditions: true
+
+- type: entity
   parent: CMUAreaLV376InsideMB
   id: CMUAreaLV376MilitaryMedical
   name: Military Base - Medical
@@ -687,6 +725,14 @@
   components:
   - type: Area
     CAS: false
+
+- type: entity
+  parent: CMUAreaLV376SoftUnderground
+  id: CMUAreaLV376MobBasement
+  name: Mob Hideout
+  components:
+  - type: Sprite
+    state: yellow
 
 - type: entity
   parent: CMUAreaLV376SoftUnderground
@@ -814,13 +860,23 @@
 
 - type: entity
   parent: CMUAreaLV376WYFacility
-  name: Weyland-Yutani Facility - APOLLO Core
+  name: Weyland-Yutani Facility - AI Core
   id: CMUAreaLV376WYFacilityAC
   components:
   - type: Sprite
     state: purple
   - type: Area
     minimapColor: '#2D3FA2EE'
+
+- type: entity
+  parent: CMUAreaLV376WYFacility
+  name: Weyland-Yutani Facility - Storage
+  id: CMUAreaLV376WYFacilityASRS
+  components:
+  - type: Sprite
+    state: purple
+  - type: Area
+    minimapColor: '#C19504E7'
 
 - type: entity
   parent: CMUAreaLV376Underground
@@ -851,6 +907,16 @@
   - type: Area
     powerNet: weylandyutani
     minimapColor: '#2D3FA2EE'
+
+- type: entity
+  parent: CMUAreaLV376WYResearch
+  id: CMUAreaLV376WYCells
+  name: Weyland-Yutani Facility - Subject Cells
+  components:
+  - type: Sprite
+    state: blue-red-d
+  - type: Area
+    countAsArrestedForEndConditions: true
 
 - type: entity
   parent: CMUAreaLV376Underground

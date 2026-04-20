@@ -4,6 +4,9 @@
   name: MU/TH/UR 6000 A.I.
   description: This is the artificial intelligence system for monitoring the space ships, colonies or stations. It is manufactured by Weyland-Yutani.
   suffix: AU14, Colony
+  components:
+  - type: NameModifier
+    baseName: "MU/TH/UR 6000 A.I."
 
 - type: entity
   id: AU14AICoreCPUMUTHUR

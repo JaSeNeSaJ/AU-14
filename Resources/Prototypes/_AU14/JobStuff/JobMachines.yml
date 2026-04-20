@@ -350,4 +350,5 @@
     departmentAccessLevel: CMAccessColonyResearch
     defaultSalary: 55
     colonyManaged: false
+    asrsFaction: corporate
 

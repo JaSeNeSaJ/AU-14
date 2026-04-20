@@ -49,7 +49,6 @@
     channels:
     - Colony
     - CMB
-    - WEYA
     defaultChannel: Colony
   - type: Sprite
     state: we_ya_key

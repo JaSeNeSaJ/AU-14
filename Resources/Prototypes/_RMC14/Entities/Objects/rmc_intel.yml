@@ -738,8 +738,8 @@
             state: budget_req
         - name: Insurgent Reinforcements
           description: Summon reinforcements from a neighboring cell.
-          cost: 15
-          increase: 5
+          cost: 75
+          increase: 20
           repurchasable: true
           events:
           - !type:TechPartySpawnEvent
@@ -749,7 +749,7 @@
             state: beacon
         - name: Machine Gunner
           description: Summon a machine gunner from a neighboring cell.
-          cost: 4
+          cost: 20
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
