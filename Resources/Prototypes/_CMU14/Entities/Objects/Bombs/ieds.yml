@@ -5,7 +5,7 @@
   description: A cheap way to injure someone. Designed by your local insurgent’s.
   components:
   - type: Sprite
-    sprite: Objects/Weapons/Bombs/pipebomb.rsi
+    sprite: _CMU14/Items/pipebomb.rsi
   - type: ExplodeOnTrigger
   - type: Explosive
     maxIntensity: 20
@@ -28,4 +28,3 @@
   - type: CMExplosionEffect
   - type: CMVocalizeTrigger
   - type: RMCScorchEffect
-  - type: Tag
