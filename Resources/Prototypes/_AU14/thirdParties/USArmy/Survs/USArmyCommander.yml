@@ -95,18 +95,6 @@
     back:
     - AU14HatUSArmy
 
-- type: entity
-  parent: CMIDCardGold
-  id: AU14IDCardUSArmyCommander
-  categories: [ HideSpawnMenu ]
-  name: US Army Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: jobIcon
   parent: CMJobIconBase
   id: AU14JobIconUSArmyCommander

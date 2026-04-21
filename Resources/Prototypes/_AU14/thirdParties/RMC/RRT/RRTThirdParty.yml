@@ -1,7 +1,7 @@
 - type: partySpawn
   id: RMCRRTSpawn
   leadersToSpawn:
-    AU14RMCRRTCommander: 1
+    AU14JobRMCRRTCommander: 1
   gruntsToSpawn:
     AU14JobRMCRRTRifleman: 2
     AU14JobRMCRRTCorpsman: 1

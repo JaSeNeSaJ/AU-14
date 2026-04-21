@@ -95,3 +95,10 @@
   icon:
     sprite: _AU14/Interface/au14colonyjobicons.rsi
     state: orbital_security
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyWorkingJoe
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: working_joe

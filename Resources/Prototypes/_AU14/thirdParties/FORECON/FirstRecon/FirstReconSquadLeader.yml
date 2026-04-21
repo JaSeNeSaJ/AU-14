@@ -91,12 +91,3 @@
     head:
     - AU14HelmetGarbM10Netting
     - AU14GogglesM1A1DarkBallistic
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONFirstReconSquadleader
-  categories: [ HideSpawnMenu ]
-  name: FORECON Section Leader ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONFirstReconSquadleader

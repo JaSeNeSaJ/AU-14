@@ -82,16 +82,5 @@
     back:
     - RMCMaskGasSPP
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardPAPThirdpartySeniorInvestigator
-  name: UPP PaP Senior Investigator ID card
-  components:
-  - type: PresetIdCard
-    job: AU14PAPThirdpartySeniorInvestigator
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobPaPThirdpartySeniorInvestigator

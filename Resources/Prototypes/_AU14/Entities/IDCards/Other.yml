@@ -5,6 +5,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobMobBoss
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian
 
 - type: entity
   parent: CMIDCardBase
@@ -13,3 +15,5 @@
   components:
   - type: PresetIdCard
     job: AU14JobMobGoon
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian

@@ -81,12 +81,3 @@
     head:
     - AU14HelmetGarbM10SkrimDesert
     - AU14GogglesM1A1ClearBallistic
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONFirstReconSmartGunOperator
-  categories: [ HideSpawnMenu ]
-  name: FORECON Automatic Rifleman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONFirstReconSmartGunOperator

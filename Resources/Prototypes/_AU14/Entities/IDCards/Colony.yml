@@ -37,6 +37,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianColonist
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian # so everyone can use it roundstart
 
 - type: entity
   parent: CMIDCardBase
@@ -45,6 +47,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobCLFCellLeader
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF

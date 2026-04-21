@@ -17,7 +17,7 @@
       - RMCEncryptionKeyRoyalMarine
   - type: RMCHeadset
     channels:
-    - RoyalMarine
+    - TWESOF
 
 
 - type: entity
@@ -64,7 +64,7 @@
     - RCMPVETroopCommander
   - type: RMCHeadset
     channels:
-    - RoyalMarine
+    - TWESOF
 
 
 - type: entity
@@ -90,8 +90,8 @@
   - type: EncryptionKey
     channels:
     - MarineCommon
-    - RoyalMarine
-    defaultChannel: RoyalMarine
+    - TWESOF
+    defaultChannel: TWESOF
   - type: Sprite
     state: sl_key
 
@@ -103,5 +103,5 @@
   - type: EncryptionKey
     channels:
     - MarineCommon
-    - RoyalMarine
+    - TWESOF
     - MarineCommand
