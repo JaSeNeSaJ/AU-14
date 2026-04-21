@@ -3,7 +3,7 @@
   id: AU14LACNCommandoSniper
   name: rmc-job-name-forecon-sniper
   playTimeTracker: AU14LACNCommandoSniper
-  description: You have been loaned to the United Americas Allied Command by the LACN for a special mission on this planet, the details of which have not been disclosed to you. You have been ordered to investigate the area and report to the local GOVFOR command.
+  description: au14-lacncommando-description
   ranks:
     RMCRankChiefWarrantOfficer:
     - !type:RoleTimeRequirement
@@ -13,7 +13,7 @@
   spawnMenuRoleName: LACN Commando Sniper (AU14, 3rd Party)
   icon: "CMJobIconEmpty"
   startingGear: AU14GearLACNCommandoSniperTeamSniper
-  greeting: You have been loaned to the United Americas Allied Command by the LACN for a special mission on this planet, the details of which have not been disclosed to you. You have been ordered to investigate the area and report to the local GOVFOR command.
+  greeting: au14-lacncommando-description
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-loner
   special:
@@ -46,7 +46,7 @@
     allowSpeech: true
     allowMovement: true
     name: rmc-job-name-forecon-sniper
-    description: You have been loaned to the United Americas Allied Command by the LACN for a special mission on this planet, the details of which have not been disclosed to you. You have been ordered to investigate the area and report to the local GOVFOR command.
+    description: au14-lacncommando-description
     reregister: false
     job: AU14LACNCommandoSniper
     raffle:

@@ -15,7 +15,6 @@
   spawnMenuRoleName: NSPA Constable (SMG, 3rd party)
   supervisors: au14-job-supervisors-colonycivilian
   accessGroups:
-  - AUBureau
   - aucmb
   - Colonist
   - AUPrisonStaff

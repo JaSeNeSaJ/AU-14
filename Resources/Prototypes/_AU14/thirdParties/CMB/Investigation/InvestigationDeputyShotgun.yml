@@ -15,7 +15,6 @@
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
   accessGroups:
-  - AUBureau
   - aucmb
   - Colonist
   - AUPrisonStaff

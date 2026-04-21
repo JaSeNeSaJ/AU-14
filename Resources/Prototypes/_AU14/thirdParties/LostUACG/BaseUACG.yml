@@ -4,8 +4,6 @@
   suffix: AU14, UA, UACG
   abstract: true
   components:
-  - type: HumanoidAppearance
-    species: AU14HumanLatinAmerica
   - type: Threat
   - type: GhostTakeoverAvailable
   - type: RandomHumanoidAppearance

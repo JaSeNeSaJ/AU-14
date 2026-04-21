@@ -3,7 +3,7 @@
   id: AU14LACNCommandoSpotter
   name: au14-job-name-forecon-spotter
   playTimeTracker: AU14LACNCommandoSpotter
-  description: You have been loaned to the United Americas Allied Command by the LACN for a special mission on this planet, the details of which have not been disclosed to you. You have been ordered to investigate the area and report to the local GOVFOR command.
+  description: au14-lacncommando-description
   ranks:
     RMCRankChiefWarrantOfficer:
     - !type:RoleTimeRequirement
@@ -12,7 +12,7 @@
     RMCRankWarrantOfficer: []
   spawnMenuRoleName: LACN Commando Spotter (AU14, 3rd Party)
   startingGear: AU14GearLACNCommandoSniperTeamSpotter
-  greeting: au14-job-description-forecon-killteam-greeting
+  greeting: au14-lacncommando-description
   icon: "CMJobIconEmpty"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-loner
@@ -53,7 +53,7 @@
     allowSpeech: true
     allowMovement: true
     name: au14-job-name-forecon-spotter
-    description: You have been loaned to the United Americas Allied Command by the LACN for a special mission on this planet, the details of which have not been disclosed to you. You have been ordered to investigate the area and report to the local GOVFOR command.
+    description: au14-lacncommando-description
     reregister: false
     job: AU14LACNCommandoSpotter
     raffle:
