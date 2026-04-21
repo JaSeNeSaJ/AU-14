@@ -2,7 +2,10 @@
   parent: ColMarTechBase
   id: CMUWYGuardequipmentvendor
   name: We-Yu Guard equipment vendor
-  description: An automated rack hooked up to a small storage of We-Yu equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Weyland-Yutani Security Guard apparel and equipment.
+    Stocked with field gear for rapid deployment following cryogenic hypersleep or emergency mobilization.
+    The interface is intentionally simple, even someone with tunnel-vision and frostbite can operate it.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/requisitions_ammo.rsi
@@ -40,6 +43,7 @@
       choices: { CMUCMBDutyPouches: 2 }
       entries:
       #- id: RMCPouchRadio
+      - id: RMCPouchFlareFilled
       - id: RMCPouchGeneralMedium
       - id: RMCPouchPistol
       - id: RMCPouchMagazinePistol
@@ -59,6 +63,6 @@
     - name: Inmate Clothing
       entries:
       - id: AU14CivilianPrisonJumpsuit
-        amount: 10
+        amount: 40
       - id: RMCShoesBlack
-        amount: 10
+        amount: 40

@@ -1,8 +1,13 @@
-﻿- type: entity
+- type: entity
   parent: ColMarTechBase
   id: AU14USCMclothingequipmentvendor
   name: USCM apparel vendor
-  description: An automated rack hooked up to a small storage of standard marine apparel.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of US Colonial Marine Corps apparel.
+    Standard issue aboard naval vessels, military outposts, corporate-science installations and civilian colonies across the frontier.
+    Manufactured to outfit personnel rapidly following cryogenic hypersleep or emergency mobilization.
+
+    For full operational readiness, select one item from each section: fatigues with a webbing, footwear, gloves, headgear, armor, backpack, belt and a pouch.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -13,230 +18,226 @@
     - name: Fatigues
       entries:
       - id: AU14DesertFatigues
-        amount: 30
+        amount: 40
       - id: AU14JungleFatigues
-        amount: 30
+        amount: 40
       - id: AU14SnowFatigues
-        amount: 30
+        amount: 40
       - id: AU14MixedSnowFatigues
-        amount: 30
+        amount: 40
     - name: Footwear
       entries:
       - id: CMBootsBlack
-        amount: 20
+        amount: 40
       - id: CMBootsBrown
-        amount: 20
+        amount: 40
       - id: AU14BootsJungle
-        amount: 20
+        amount: 25
     - name: Gloves
       entries:
-      - id: CMHandsBrown
-        amount: 20
       - id: AU14PVEHandsInsulatedBlackMarine
+        amount: 40
+      - id: CMHandsBrown
         amount: 20
       - id: AU14PVEHandsFingerlessBlackGloves
         amount: 20
       - id: AU14PVEHandsFingerlessBrownGloves
-        amount: 20
+        amount: 10
     - name: Webbings
       entries:
       - id: AU14WebbingMagazine
-        amount: 25
+        amount: 40
       - id: AU14WebbingUtility
-        amount: 25
+        amount: 40
       - id: AU14WebbingDumpPouch
         amount: 25
       - id: AU14WebbingAdminPouch
-        amount: 15
+        amount: 20
       - id: AU14WebbingDropPouch
-        amount: 15
+        amount: 20
       - id: AU14WebbingKnivesFilled
-        amount: 1
+        amount: 2
     - name: Headgear
       entries:
       - id: AU14DesertM10Helmet
-        amount: 25
+        amount: 40
       - id: AU14JungleM10Helmet
         amount: 25
       - id: AU14DesertBoonieHat
-        amount: 25
+        amount: 20
       - id: AU14JungleBoonieHat
+        amount: 20
+      - id: AU14DesertPatrolCap
         amount: 25
       - id: AU14JunglePatrolCap
         amount: 25
-      - id: AU14DesertPatrolCap
-        amount: 25
-      - id: AU14JungleFlapCap
-        amount: 25
       - id: AU14DesertFlapCap
-        amount: 25
+        amount: 15
+      - id: AU14JungleFlapCap
+        amount: 15
       - id: RMCM5CameraGear
-        amount: 25
+        amount: 30
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
-        amount: 25
+        amount: 40
       - id: RMCVisorWelding
-        amount: 5
+        amount: 8
     - name: Armor
       entries:
+      - id: AU14ArmorM3DesertOne
+        amount: 40
+      - id: AU14ArmorM3DesertTwo
+        amount: 40
+      - id: AU14ArmorM3DesertThree
+        amount: 40
       - id: AU14ArmorM3JungleOne
         amount: 25
       - id: AU14ArmorM3JungleTwo
         amount: 25
       - id: AU14ArmorM3JungleThree
         amount: 25
-      - id: AU14ArmorM3DesertOne
-        amount: 25
-      - id: AU14ArmorM3DesertTwo
-        amount: 25
-      - id: AU14ArmorM3DesertThree
-        amount: 25
     - name: Armor Components
       entries:
+      - id: AU14KitDesertArmor
+        amount: 40
       - id: AU14KitJungleArmor
         amount: 25
-      - id: AU14KitDesertArmor
-        amount: 25
       - id: AU14ArmorGarbShotgunShellHolder
-        amount: 2
+        amount: 8
       - id: AU14ArmorGarbJunglePoncho
         amount: 25
       - id: AU14ArmorGarbDesertPoncho
-        amount: 25
+        amount: 40
     - name: Backpack
       entries:
       - id: CMBackpackMarine
-        amount: 15
+        amount: 25
       - id: AU14IMPBackpackMarine
-        amount: 3
+        amount: 40
       - id: AU14TechBackpackMarine
-        amount: 3
-      - id: CMSatchelMarine
         amount: 15
-#      - id: Marine Chestrig
-#        amount: 15
       - id: RMCSatchelWelderChestrig
-        amount: 2
+        amount: 5
       - id: RMCScabbardShotgun
-        amount: 2
+        amount: 3
       - id: RMCBackpackAmmo
-        amount: 1
+        amount: 4
+      - id: CMSatchelMarine
+        amount: 40
     - name: Belts
       entries:
       - id: CMBeltMarine
-        amount: 25
+        amount: 40
       - id: RMCBeltGrenade
-        amount: 2
+        amount: 4
       - id: RMCM276ShotgunShellLoadingRig
-        amount: 2
+        amount: 6
       - id: RMCBeltHolsterPistol
-        amount: 15
+        amount: 20
       - id: RMCBeltHolsterRevolver
-        amount: 15
-#      - id: M276 Pattern M82F Holster Rig
-#        amount: 5
+        amount: 20
       - id: CMBeltKnifeFilled
         name: M276 Knife Rig (Full)
-        amount: 1
+        amount: 2
       - id: RMCBeltUtilityGeneral
-        amount: 15
+        amount: 30
     - name: Pouches
       entries:
       - id: RMCPouchBayonet
         name: Bayonet Sheath
-        amount: 15
+        amount: 25
       - id: RMCPouchFlareFilled
         name: Flare Pouch (Full)
-        amount: 15
+        amount: 30
       - id: RMCPouchDocumentSmall
-        amount: 1
+        amount: 3
       - id: RMCPouchMagazine
-        amount: 15
+        amount: 50
       - id: RMCPouchMagazineLarge
-        amount: 2
+        amount: 8
       - id: RMCPouchShotgunLarge
-        amount: 4
+        amount: 8
       - id: RMCPouchGeneralMedium
-        amount: 15
+        amount: 25
       - id: RMCPouchGeneralLarge
-        amount: 2
+        amount: 4
       - id: RMCPouchMagazinePistol
-        amount: 15
+        amount: 25
       - id: RMCPouchMagazinePistolLarge
-        amount: 2
+        amount: 6
       - id: RMCPouchPistol
-        amount: 15
+        amount: 20
+      - id: AU14PouchIFAKFill
+        amount: 5
       - id: RMCPouchConstruction
-        amount: 1
+        amount: 5
       - id: RMCPouchExplosive
-        amount: 1
+        amount: 3
       - id: RMCPouchTools
         amount: 15
-#      - id: Sling Pouch
-#        amount: 1
     - name: Mask
       entries:
       - id: CMMaskGas
-        amount: 20
+        amount: 40
       - id: CMUGasMaskFilter
         amount: 80
       - id: CMMaskCoif
-        amount: 10
+        amount: 20
       - id: RMCMaskScarfBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskScarfGray
-        amount: 10
+        amount: 20
       - id: RMCMaskScarfTan
-        amount: 10
+        amount: 20
       - id: RMCMaskTornScarfGreen
-        amount: 10
+        amount: 20
       - id: RMCMaskTornScarfDesert
-        amount: 10
+        amount: 20
       - id: RMCMaskTornScarfSnow
-        amount: 10
+        amount: 20
       - id: RMCMaskTornScarfBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskSmockBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskNeckerchiefGray
-        amount: 10
+        amount: 20
     - name: Glasses & Goggles
       entries:
       - id: AU14GogglesM1A1ClearBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1Ballistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1DarkBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1LaserBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1OrangeBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1PolarizedBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM60
-        amount: 20
+        amount: 25
       - id: RMCGlassesMarineRpg
-        amount: 20
+        amount: 25
       - id: AU14GlassesBiMex
-        amount: 20
+        amount: 25
       - id: AU14GlassesBiMexOrange
-        amount: 20
+        amount: 25
       - id: RMCGlassesTriMaxBronze
-        amount: 20
+        amount: 25
     - name: Helmet Garb
       entries:
       - id: AU14HelmetGarbM10SkrimJungle
-        amount: 20
+        amount: 15
       - id: AU14HelmetGarbM10SkrimDesert
-        amount: 20
+        amount: 15
       - id: AU14HelmetGarbM10SkrimSnow
-        amount: 20
+        amount: 15
       - id: AU14HelmetGarbM10RainCover
-        amount: 20
+        amount: 40
       - id: AU14HelmetGarbM10Netting
-        amount: 20
+        amount: 40
       - id: RMCHelmetGarbGasmaskJungle
         amount: 20
       - id: RMCHelmetGarbGasmaskDesert
@@ -244,11 +245,11 @@
     - name: Patches
       entries:
       - id: AU14PatchUAFlag
-        amount: 20
+        amount: 80
       - id: AU14PatchUSFlag
-        amount: 20
+        amount: 80
       - id: AU14PatchUSCM
-        amount: 20
+        amount: 80
 
 - type: entity
   parent: ColMarTechBase

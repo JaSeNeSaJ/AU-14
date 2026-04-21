@@ -1,8 +1,13 @@
-﻿- type: entity
+- type: entity
   parent: ColMarTechBase
   id: AU14prodigyclothingequipmentvendor
-  name: Prodigy apparel vendor
-  description: An automated rack hooked up to a small storage of standard marine apparel.
+  name: Prodigy Security Services apparel vendor
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Security Services apparel of the Prodigy Corporation.
+    Standard issue aboard naval vessels, military outposts, corporate-science installations and civilian colonies across the frontier.
+    Manufactured to outfit personnel rapidly following cryogenic hypersleep or emergency mobilization.
+
+    For full operational readiness, select one item from each section: fatigues with a webbing, footwear, gloves, headgear, armor, backpack, belt and a pouch.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -13,151 +18,155 @@
     - name: Fatigues
       entries:
       - id: AU14ProdigyFatigues
-        amount: 50
+        amount: 40
     - name: Footwear
       entries:
       - id: RMCBootsSPPBlackFilled
-        amount: 50
+        amount: 40
     - name: Gloves
       entries:
       - id: AU14PVEHandsInsulatedBlackMarine
-        amount: 50
+        amount: 40
       - id: AU14PVEHandsFingerlessBlackGloves
-        amount: 50
+        amount: 20
     - name: Webbings
       entries:
       - id: RMCWebbingBlackSmall
-        amount: 25
+        amount: 40
       - id: CMWebbingBlack
-        amount: 25
+        amount: 40
       - id: RMCWebbingHolsterBlack
-        amount: 15
+        amount: 20
       - id: RMCWebbingDropPouchBlack
-        amount: 15
+        amount: 20
       - id: RMCWebbingLegPouchBlack
-        amount: 15
+        amount: 25
     - name: Headgear
       entries:
       - id: AU14ProdigyBallisticHelmet
-        amount: 50
+        amount: 40
       - id: AU14ProdigyCap
-        amount: 25
+        amount: 20
       - id: RMCM5CameraGear
-        amount: 25
+        amount: 30
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
-        amount: 25
+        amount: 40
       - id: RMCVisorWelding
-        amount: 5
+        amount: 8
     - name: Armor
       entries:
-      - id: CMUArmorProdigyFlakVestAlt
-        amount: 25
       - id: CMUArmorProdigyFlakVest
-        amount: 25
+        amount: 40
+      - id: CMUArmorProdigyFlakVestAlt
+        amount: 30
     - name: Backpack
       entries:
       - id: RMCSatchelLightpackBlack
-        amount: 25
+        amount: 40
       - id: AU14BackpackMarineBlack
-        amount: 20
+        amount: 30
+      - id: CMBackpackWelder
+        amount: 5
       - id: RMCScabbardShotgun
-        amount: 2
+        amount: 3
       - id: RMCBackpackAmmo
-        amount: 1
+        amount: 4
+      - id: CMSatchelMarine
+        amount: 40
     - name: Belts
       entries:
       - id: AU14BeltMarineBlack
-        amount: 25
+        amount: 40
       - id: RMCBeltGrenade
-        amount: 2
+        amount: 4
       - id: AU14M276ShotgunShellLoadingRigBlack
-        amount: 2
+        amount: 6
+      - id: RMCBeltHolsterPistolTSE
+        amount: 20
+      - id: AU14BeltHolsterPistolBlack
+        amount: 20
       - id: AU14BeltKnifeBlackFilled
         amount: 2
-      - id: RMCBeltHolsterPistolTSE
-        amount: 15
-      - id: AU14BeltHolsterPistolBlack
-        amount: 15
       - id: AU14BeltUtilityGeneralBlack
-        amount: 15
+        amount: 30
     - name: Pouches
       entries:
       - id: RMCPouchBayonet
         name: Bayonet Sheath
-        amount: 15
+        amount: 25
       - id: RMCPouchFlareFilled
         name: Flare Pouch (Full)
-        amount: 15
+        amount: 30
       - id: RMCPouchDocumentSmall
-        amount: 1
+        amount: 3
       - id: RMCPouchMagazine
-        amount: 15
+        amount: 50
       - id: RMCPouchMagazineLarge
-        amount: 2
+        amount: 8
       - id: RMCPouchShotgunLarge
-        amount: 4
+        amount: 8
       - id: RMCPouchGeneralMedium
-        amount: 15
+        amount: 25
       - id: RMCPouchGeneralLarge
-        amount: 2
+        amount: 4
       - id: RMCPouchMagazinePistol
-        amount: 15
+        amount: 25
       - id: RMCPouchMagazinePistolLarge
-        amount: 2
+        amount: 6
       - id: RMCPouchPistol
-        amount: 15
+        amount: 20
+      - id: AU14PouchIFAKFill
+        amount: 5
       - id: RMCPouchConstruction
-        amount: 1
+        amount: 5
       - id: RMCPouchExplosive
-        amount: 1
+        amount: 3
       - id: RMCPouchTools
         amount: 15
-#      - id: Sling Pouch
-#        amount: 1
     - name: Mask
       entries:
       - id: CMMaskGas
-        amount: 20
-      - id: CMUGasMaskFilter
         amount: 40
+      - id: CMUGasMaskFilter
+        amount: 80
       - id: CMMaskCoif
-        amount: 10
+        amount: 20
       - id: RMCMaskScarfBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskScarfGray
-        amount: 10
+        amount: 20
       - id: RMCMaskTornScarfBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskSmockBlack
-        amount: 10
+        amount: 20
       - id: RMCMaskNeckerchiefGray
-        amount: 10
+        amount: 20
     - name: Glasses & Goggles
       entries:
       - id: AU14GogglesM1A1ClearBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1Ballistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1DarkBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1LaserBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1OrangeBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM1A1PolarizedBallistic
-        amount: 20
+        amount: 25
       - id: AU14GogglesM60
-        amount: 20
+        amount: 25
       - id: RMCGlassesMarineRpg
-        amount: 20
+        amount: 25
       - id: AU14GlassesBiMex
-        amount: 20
+        amount: 25
       - id: AU14GlassesBiMexOrange
-        amount: 20
+        amount: 25
       - id: RMCGlassesTriMaxBronze
-        amount: 20
+        amount: 25
 
 - type: entity
   parent: ColMarTechBase
