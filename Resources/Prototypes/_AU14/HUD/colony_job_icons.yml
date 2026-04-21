@@ -102,3 +102,24 @@
   icon:
     sprite: _AU14/Interface/au14colonyjobicons.rsi
     state: working_joe
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyICRCCMO
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: icrc_cmo
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyICRCDoctor
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: icrc_doctor
+
+- type: jobIcon
+  parent: CMJobIconBase
+  id: AU14JobIconColonyICRCNurse
+  icon:
+    sprite: _AU14/Interface/au14colonyjobicons.rsi
+    state: icrc_nurse

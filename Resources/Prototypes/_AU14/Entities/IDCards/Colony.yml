@@ -329,6 +329,14 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyNSPAInspector
+  name: NSPA inspector ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianNSPAInspector
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardciviliannspaConstable
   name: NSPA constable ID card
   components:
@@ -380,3 +388,19 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianOrbitalManager
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianRightsObserver
+  name: rights observer ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobInvestigationCMBRightsObserver
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianICCLiaison
+  name: interstellar commerce commission liaison ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobInvestigationICCLiaison

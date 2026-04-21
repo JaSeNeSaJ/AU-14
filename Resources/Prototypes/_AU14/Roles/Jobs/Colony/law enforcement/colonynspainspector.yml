@@ -1,21 +1,14 @@
 - type: job
   parent: AU14JobLEOLeaderBase
-  id: AU14JobCivilianCMBMarshal
-  name: au14-job-name-civiliancmbmarshal
-  description: au14-job-description-civiliancmbmarshal
+  id: AU14JobCivilianNSPAInspector
+  name: au14-job-name-civiliannspainspector
+  description: au14-job-description-civiliannspainspector
   setPreference: false
   canBeAntag: false
-  requirements:
-  - !type:AgeRequirement
-    requiredAge: 25
-  - !type:TraitsRequirement
-    inverted: true
-    traits:
-    - Epilepsy
   ranks:
-    AU14RankCMBMarshal: []
-  startingGear: AU14GearCivilianCMBMarshal
-  icon: "RMCJobIconBureauMarshal"
+    RMCRankTSEPAInspector: []
+  startingGear: AU14GearCivilianNSPAInspector
+  icon: "RMCJobIconTSEPAInspector"
   requireAdminNotify: true
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
@@ -28,6 +21,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - AUBureau
     - type: Skills
       skills:
         RMCSkillCqc: 2
@@ -42,7 +38,7 @@
         RMCSkillLeadership: 1
         RMCSkillVehicles: 1
     - type: JobPrefix
-      prefix: au14-job-prefix-cmbmarshal
+      prefix: au14-job-prefix-civiliannspainspector
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
@@ -50,39 +46,40 @@
   hidden: false
 
 - type: startingGear
-  id: AU14GearCivilianCMBMarshal
+  id: AU14GearCivilianNSPAInspector
   equipment:
-    head: RMCHeadCapBureau
-    jumpsuit: AU14CMBUniform
-    belt: CMBeltSecurityMarshalFilled
+    id: AU14IDCardColonyNSPAInspector
+    outerClothing: RMCCoatTSEPA
+    jumpsuit: RMCJumpsuitTSEPA
     shoes: RMCBootsPMCFilled
-    id: AU14IDCardColonyCMBMarshal
+    head: RMCHeadCapTSEPAPeakedGold
+    belt: CMBeltSecurityMarshalFilled
+    back: RMCSatchelTSEPA
     ears: AU14CMBHeadset
-    outerClothing: AU14CMBMarshalWindbreaker
 
 - type: entity
   parent: CMSpawnPointJobBase
-  id: AU14SpawnPointCivilianCMBMarshal
-  name: Spawn Point Civilian CMB Marshal
+  id: AU14SpawnPointCivilianNSPAInspector
+  name: Spawn Point Civilian NSPA Inspector
   components:
   - type: SpawnPoint
-    job_id: AU14JobCivilianCMBMarshal
+    job_id: AU14JobCivilianNSPAInspector
   - type: Sprite
     state: syn_spawn
 - type: entity
   parent: MarkerBase
   id: aumarshallghost
-  name: Marshall colonist ghost role
+  name: Inspector colonist ghost role
   components:
   - type: Sprite
     layers:
     - state: red
   - type: RandomHumanoidSpawner
-    settings: Aughostmarshall
+    settings: Aughostinspector
 
 - type: randomHumanoidSettings
   parent: RMCSettingsGhostRole
-  id: Aughostmarshall
+  id: Aughostinspector
   components:
   - type: RMCJobSpawner
-    job: AU14JobCivilianCMBMarshal
+    job: AU14JobCivilianNSPAInspector
