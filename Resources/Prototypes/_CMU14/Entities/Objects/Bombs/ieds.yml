@@ -6,6 +6,10 @@
   components:
   - type: Sprite
     sprite: _CMU14/Items/pipebomb.rsi
+    layers:
+    - state: base
+      map: ["enum.TriggerVisualLayers.Base"]
+    - state: wires
   - type: ExplodeOnTrigger
   - type: Explosive
     maxIntensity: 20
@@ -28,3 +32,35 @@
   - type: CMExplosionEffect
   - type: CMVocalizeTrigger
   - type: RMCScorchEffect
+
+- type: entity
+  parent: BaseItem
+  id: CMUPipeBombFuse
+  name: pipe bomb
+  description: Incomplete. Seems like it need Paper as the fuse
+  suffix: Fuse
+  components:
+  - type: Sprite
+    sprite: _CMU14/Items/pipebomb.rsi
+    state: base
+  - type: CraftIntoPipeBomb
+    Spawn: CMUPipeBomb
+    NeedWires: true
+    DestroyReq: true
+    Time: 2
+
+- type: entity
+  parent: BaseItem
+  id: CMUPipeBombCasing
+  name: pipe bomb
+  description: Empty casing. Seems like it need lighter.
+  suffix: Casing
+  components:
+  - type: Sprite
+    sprite: _CMU14/Items/pipebomb.rsi
+    state: base
+  - type: CraftIntoPipeBomb
+    Spawn: CMUPipeBombFuse
+    NeedLighter: true
+    DestroyReq: true
+    Time: 2
