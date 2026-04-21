@@ -37,7 +37,7 @@
   parent: BaseItem
   id: CMUPipeBombFuse
   name: pipe bomb
-  description: Incomplete. Seems like it need Cable as the fuse
+  description: Incomplete. Seems like it need’s Cable as the fuse
   suffix: Fuse
   components:
   - type: Sprite
@@ -53,7 +53,7 @@
   parent: BaseItem
   id: CMUPipeBombCasing
   name: pipe bomb
-  description: Empty casing. Seems like it need Lighter.
+  description: Empty casing. Seems like it need a Lighter.
   suffix: Casing
   components:
   - type: Sprite

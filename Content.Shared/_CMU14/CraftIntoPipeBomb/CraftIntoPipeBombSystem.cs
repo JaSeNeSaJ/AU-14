@@ -27,6 +27,8 @@ public sealed class CraftIntoPipeBombSystem : EntitySystem
     [Dependency] private readonly TagSystem _tags = default!;
     [Dependency] private readonly SharedStackSystem _stack = default!;
 
+    public static readonly ProtoId<TagPrototype> RMCMetal = "RMCSheetMetal";
+
     public override void Initialize()
     {
         base.Initialize();
@@ -108,9 +110,8 @@ public sealed class CraftIntoPipeBombSystem : EntitySystem
             {
                 countStack = stack.Count;
             }
-            if (countStack >= 5)
+            if (countStack >= 5 && _repair.UseFuel(used.Value, args.User, 5))
             {
-                _repair.UseFuel(used.Value, args.User, 5);
                 _stack.Use(ent, 5, stack);
             }
             else
