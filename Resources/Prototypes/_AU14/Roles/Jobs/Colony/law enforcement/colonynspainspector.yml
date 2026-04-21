@@ -68,7 +68,7 @@
     state: syn_spawn
 - type: entity
   parent: MarkerBase
-  id: aumarshallghost
+  id: aughostinspector
   name: Inspector colonist ghost role
   components:
   - type: Sprite
