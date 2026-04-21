@@ -1,8 +1,10 @@
-﻿- type: entity
+- type: entity
   parent: ColMarTechBase
   id: AU14CMBequipmentvendor
   name: CMB equipment vendor
-  description: An automated rack hooked up to a small storage of CMB equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Colonial Marshall Bureau equipment.
+    Stocked with apparel and law enforcement field gear for rapid deployment.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/requisitions_ammo.rsi
@@ -37,20 +39,17 @@
     - name: Pouches
       choices: { CMUCMBDutyPouches: 2 }
       entries:
-      - id: RMCPouchFirstAidSplintsGauzeOintment
+      - id: AU14PouchIFAKFill
       - id: RMCPouchRadio
       - id: RMCPouchGeneralMedium
       - id: RMCPouchPistol
       - id: RMCPouchMagazinePistol
-      - id: AU14PouchIFAKFill
     - name: Equipment
       takeAll: CMUCMBEssentialEquipment
       entries:
+      - id: RMCBinocularsCivPVE
+      - id: RMCHandcuffs
       - id: RMCRadioHandheldColonyOff
-      - id: RMCGrenadeFlashBang
-      - id: RMCHandcuffs
-      - id: RMCHandcuffs
-      - id: RMCHandcuffs
     - name: Duty Weapons
       choices: { CMUCMBDutyWeapons: 1 }
       entries:
@@ -59,15 +58,17 @@
     - name: Inmate Clothing
       entries:
       - id: AU14CivilianPrisonJumpsuit
-        amount: 10
+        amount: 40
       - id: RMCShoesBlack
-        amount: 10
+        amount: 40
 
 - type: entity
   parent: ColMarTechBase
   id: AU14CWPSequipmentvendor
   name: CWPS equipment vendor
-  description: An automated rack hooked up to a small storage of CWPS equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Colonial Wilderness Preservation Service equipment.
+    Stocked with apparel and law enforcement field gear for rapid deployment.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/requisitions_ammo.rsi
@@ -81,6 +82,7 @@
       - id: AU14CWPSCampaignHat
       - id: AU14CWPSCap
       - id: RMCBootsPMCFilled
+      - id: CMGlassesSecurity
     - name: Belt
       takeAll: CMUCMBEssentialEquipmentBelt
       entries:
@@ -101,18 +103,17 @@
     - name: Pouches
       choices: { CMUCMBDutyPouches: 2 }
       entries:
-      - id: RMCPouchFirstAidSplintsGauzeOintment
+      - id: AU14PouchIFAKFill
       - id: RMCPouchRadio
       - id: RMCPouchGeneralMedium
       - id: RMCPouchPistol
       - id: RMCPouchMagazinePistol
-      - id: AU14PouchIFAKFill
     - name: Equipment
       takeAll: CMUCMBEssentialEquipment
       entries:
-      - id: RMCRadioHandheldColonyOff
-      - id: RMCHandcuffs
       - id: RMCBinocularsCivPVE
+      - id: RMCHandcuffs
+      - id: RMCRadioHandheldColonyOff
     - name: Duty Weapons
       choices: { CMUCMBDutyWeapons: 1 }
       entries:
@@ -121,9 +122,9 @@
     - name: Inmate Clothing
       entries:
       - id: AU14CivilianPrisonJumpsuit
-        amount: 10
+        amount: 40
       - id: RMCShoesBlack
-        amount: 10
+        amount: 40
 
 - type: entity
   parent: ColMarTechBase

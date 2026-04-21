@@ -57,10 +57,6 @@
         amount: 25
       - id: RMCM5CameraGear
         amount: 30
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
-        amount: 30
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad

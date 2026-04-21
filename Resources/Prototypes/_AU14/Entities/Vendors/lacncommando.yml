@@ -56,10 +56,6 @@
         amount: 8
       - id: RMCM5CameraGear
         amount: 30
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetSectionMarine
-        amount: 30
     - name: Armor
       entries:
       - id: AU14LACNCommandoArmorStandard
