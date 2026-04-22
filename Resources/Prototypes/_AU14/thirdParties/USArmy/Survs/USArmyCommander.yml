@@ -94,6 +94,7 @@
   storage:
     back:
     - AU14HatUSArmy
+    - RMCFlashlight
 
 - type: jobIcon
   parent: CMJobIconBase
