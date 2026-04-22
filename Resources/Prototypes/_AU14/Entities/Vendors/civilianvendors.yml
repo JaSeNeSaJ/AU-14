@@ -136,6 +136,10 @@
       - id: AU14SlingSatchelBlue
       - id: RMCBeltUtilityGeneral
       - id: RMCPouchGeneral
+    - name: Field Tents
+      entries:
+        id: RMCTentUNMCStandardFolded
+        amount: 1
 
 - type: entity
   parent: ColMarTechBase

@@ -267,3 +267,7 @@
         amount: 1
       - id: RMCBeltUtilityGeneral
         amount: 1
+    - name: Field Tents
+      entries:
+      - id: RMCTentUNMCExtendedFolded # TODO: Custom We-Yu archeology tent
+        amount: 1
