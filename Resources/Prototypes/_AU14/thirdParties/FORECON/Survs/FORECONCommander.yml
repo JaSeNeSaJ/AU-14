@@ -96,17 +96,5 @@
     back:
     - RMCAttachmentRailFlashlight
 
-- type: entity
-  parent: CMIDCardGold
-  id: AU14IDCardFORECONCommander
-  categories: [ HideSpawnMenu ]
-  name: FORECON Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobFORECONCommander

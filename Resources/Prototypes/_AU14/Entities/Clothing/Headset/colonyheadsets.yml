@@ -103,3 +103,36 @@
     containers:
       key_slots:
       - AU14EncryptionKeyWEYU
+
+- type: entity
+  parent: AU14ColonyAdminHeadset
+  id: AU14ColonyAmbassadorTWEHeadset
+  name: twe commissioner headset
+  description: A headset used by TWE's commissioners to communicate.
+  suffix: Colony
+  components:
+  - type: RMCHeadset
+    channels:
+    - TWESOF
+
+- type: entity
+  parent: AU14ColonyAdminHeadset
+  id: AU14AmbassadorUAHeadset
+  name: ua ambassador headset
+  description: A headset used by UA's ambassadors to communicate.
+  suffix: Colony
+  components:
+  - type: RMCHeadset
+    channels:
+    - UASOF
+
+- type: entity
+  parent: AU14ColonyAdminHeadset
+  id: AU14AmbassadorUPPHeadset
+  name: upp ambassador headset
+  description: A headset used by UPP's ambassadors to communicate.
+  suffix: Colony
+  components:
+  - type: RMCHeadset
+    channels:
+    - UPPSOF

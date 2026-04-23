@@ -37,6 +37,11 @@
     id: AU14IDCardSquadK9HandlerGOVFOR
     ears: AU14HeadsetSectionLeader
     eyes: RMCGlassesMedicalHUDGlasses
+    jumpsuit: AU14UniversalBlackFatigues
+    shoes: CMBootsBlack
+    belt: RMCM1984BeltFilled
+    pocket1: RMCFlashlight
+
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORK9Handler

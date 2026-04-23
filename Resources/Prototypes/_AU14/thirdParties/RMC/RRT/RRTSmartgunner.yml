@@ -53,20 +53,8 @@
     belt: RMCBeltSmartGunOperatorPistolFilledL165A1
     pocket1: RMCPouchDrumPMCFilled
     pocket2: AU14PouchIFAKFill
-    ears: AU14HeadsetSectionMarine
+    ears: AU14HeadsetRMCRRT
     suitstorage: RMCSmartGunRoyal
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardRMCRRTSmartgunner
-  name: RMC RRT machinegunner ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14RMCRRTSmartgunner
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobRMCRRTSmartgunner
