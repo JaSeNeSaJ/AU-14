@@ -14,7 +14,7 @@
     - Epilepsy
   startingGear: AU14GearOPFORWorkingJoe
   dummyStartingGear: AU14GearOPFORWorkingJoeDummy
-  icon: "AU14JobIconOPFORSynth"
+  icon: "AU14JobIconOPFORWorkingJoe"
   spawnMenuRoleName: Working Joe (OPFOR)
   supervisors: au14-job-supervisors-workingjoe-military
   accessGroups:

@@ -1,13 +1,54 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobCivilianProfessorVonBandolier
+  name: Professor Von Bandolier
+  description: Find the biggest and most dangerous game, whether that is space alien or a man with a gun and eloquently shoot them.
+  setPreference: true
+  playTimeTracker: AU14JobCivilianProfessorVonBandolier
+  ranks:
+    AU14RankScientistProfessor: []
+  startingGear: AU14GearProfessorVonBandolier
+  icon: "CMJobIconEmpty"
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-loner
+  accessGroups:
+  - Colonist
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - AUBureau
+    - type: Skills
+      skills:
+          RMCSkillConstruction: 2
+          RMCSkillCqc: 2
+          RMCSkillEndurance: 2
+          RMCSkillFirearms: 3
+          RMCSkillFireman: 2
+          RMCSkillIntel: 1
+          RMCSkillJtac: 1
+          RMCSkillLeadership: 1
+          RMCSkillMedical: 2
+          RMCSkillSurgery: 1
+          RMCSkillVehicles: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-civiliancolonist
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: synth
+  hidden: false
+
 - type: entity
-  parent: RMCBaseMobSpeciesOrganic
+  parent: AU14BaseMobSpeciesOrganicMisc
   id: AU14PartyJobProfessorVonBandolier
   name: Professor Von Bandolier
   components:
   - type: Threat
   - type: GhostTakeoverAvailable
-  - type: Loadout
-    prototypes: [ AU14GearProfessorVonBandolier ]
-  - type: RandomHumanoidAppearance
   - type: RandomHumanoidAppearanceWhitelisted #civilian type
     allowedMaleHairStyles:
     - RMCHumanHairBaldingHair
@@ -21,31 +62,18 @@
     - "#995b2e"
     allowedEyeColorsHex: [ "#995b2e" ]
     beardChance: 0
+  - type: GhostRoleApplySpecial
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
     name: Professor Von Bandolier
     description: Find the biggest and most dangerous game, whether that is space alien or a man with a gun and eloquently shoot them.
+    reregister: false
+    job: AU14JobCivilianProfessorVonBandolier
     raffle:
       settings: short
     rules: au14-professorvonbandolier-rules
-  - type: NpcFactionMember
-    factions:
-    - AUBureau
-  - type: Skills
-    skills:
-       RMCSkillConstruction: 2
-       RMCSkillCqc: 2
-       RMCSkillEndurance: 2
-       RMCSkillFirearms: 3
-       RMCSkillFireman: 2
-       RMCSkillIntel: 1
-       RMCSkillJtac: 1
-       RMCSkillLeadership: 1
-       RMCSkillMedical: 2
-       RMCSkillSurgery: 1
-       RMCSkillVehicles: 1
 
 - type: partySpawn
   id: ProfessorVonBandolierSpawn
@@ -67,6 +95,7 @@
 - type: startingGear
   id: AU14GearProfessorVonBandolier
   equipment:
+    id: AU14IDCardCivilianProfessorVonBandolier
     outerClothing: CMArmorDutchJacketVonBandolier
     jumpsuit: RMCJumpsuitDutchBandolier
     shoes: RMCBootsVanBandolier
@@ -86,17 +115,7 @@
   - type: StorageFill
     contents:
     - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
-    - id: AU14CartridgeRifleTwoBore
+      amount: 14
 
 - type: entity
   parent: CMArmorDutchJacket
@@ -131,11 +150,7 @@
   - type: StorageFill
     contents:
     - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
+      amount: 6
 
 
 - type: entity
@@ -147,8 +162,8 @@
     contents:
     - id: RMCWeaponRevolverM44Marksman
     - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
-    - id: RMCSpeedLoader44Marksman
+      amount: 6
+
+- type: playTimeTracker
+  id: AU14JobCivilianProfessorVonBandolier
+  isHumanoid: true

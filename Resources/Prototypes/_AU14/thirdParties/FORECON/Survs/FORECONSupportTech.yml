@@ -109,17 +109,5 @@
     - CMMagazineRifleM4SPR
     - CMMagazineRifleM4SPR
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSupportTech
-  categories: [ HideSpawnMenu ]
-  name: FORECON Support Tech ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSupportTech
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobFORECONSupportTech

@@ -12,6 +12,7 @@
   - AU14JobCivilianHeadOfEngineering
   - AU14JobCivilianHeadOfService
   - AU14JobCivilianHeadPhysician
+  - AU14JobCivilianColonyAdminAssistant
 
   departmentRadio: null
   headOfDepartment: AU14JobCivilianColonyAdministrator
@@ -46,6 +47,7 @@
   - AU14JobCivilianJournalist
   - AU14JobCivilianColonySynthetic
   - AU14JobCivilianUSASFRecruiter
+  - AU14JobColonyWorkingJoe
   departmentRadio: null
   headOfDepartment: null
   faction: colonist
@@ -75,8 +77,6 @@
   color: "#e3ce94"
   roles:
   - AU14JobCivilianPrisoner
-  - AU14JobCivilianKellandWarden
-  - AU14JobColonyWorkingJoe
   - AU14JobMobGoon
   - AU14JobMobBoss
   departmentRadio: null
@@ -111,7 +111,7 @@
   - AU14JobWYGuard
   - AU14JobCivilianScientist
   - AU14JobCivilianKellandWarden
-
+  - AU14JobCivilianCorporateAssistant
 
 
 

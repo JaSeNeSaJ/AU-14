@@ -62,20 +62,8 @@
     pocket1: RMCPouchToolsSocMarineRaiderFill
     pocket2: AU14PouchIFAKFill
     back: AU14RMCRRTBackpackRifleman
-    ears: AU14HeadsetSectionMarine
+    ears: AU14HeadsetRMCRRT
     suitstorage: AU14WeaponRifleL90Full
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardRMCRRTRifleman
-  name: RMC RRT rifleman ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14RMCRRTRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobRMCRRTRifleman
