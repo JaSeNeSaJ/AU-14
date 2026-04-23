@@ -120,16 +120,5 @@
     back: AU14CMDefibrillator
     ears: RMCHeadsetForecon
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSynth
-  name: FORECON Synth ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSynth
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobFORECONSynth

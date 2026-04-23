@@ -14,7 +14,7 @@
     - Epilepsy
   startingGear: AU14GearGOVFORWorkingJoe
   dummyStartingGear: AU14GearGOVFORWorkingJoeDummy
-  icon: "AU14JobIconGovSynth"
+  icon: "AU14JobIconGovWorkingJoe"
   spawnMenuRoleName: Working Joe (GOVFOR)
   supervisors: au14-job-supervisors-workingjoe-military
   accessGroups:
@@ -130,7 +130,7 @@
       - CanPilot
       - FootstepSound
       - DoorBumpOpener
-  hidden: true
+  hidden: false
 
 - type: startingGear
   parent: AU14GearWorkingJoeBase

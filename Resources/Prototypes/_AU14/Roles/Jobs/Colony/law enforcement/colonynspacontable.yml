@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobLEOBase
   id: AU14JobCiviliannspaConstable
   name: au14-job-name-civiliannspaConstable
   description: au14-job-description-civiliannspaConstable
@@ -12,15 +12,14 @@
     traits:
     - Epilepsy
   canBeAntag: false
-  playTimeTracker: AU14JobCiviliannspaConstable
   ranks:
     AU14RankNSPAInspector:
     - !type:RoleTimeRequirement
-      role: AU14JobCiviliannspaConstable
+      role: AU14JobCivilianCMBDeputy
       time: 90000 # 25 hours
     AU14RankNSPASeniorConstable:
     - !type:RoleTimeRequirement
-      role: AU14JobCiviliannspaConstable
+      role: AU14JobCivilianCMBDeputy
       time: 36000 # 10 hours
     AU14RankNSPAConstable: []
   startingGear: AU14GearCiviliannspaConstable
@@ -74,7 +73,3 @@
     job_id: AU14JobCiviliannspaConstable
   - type: Sprite
     state: syn_spawn
-
-- type: playTimeTracker
-  id: AU14JobCiviliannspaConstable
-  isHumanoid: true

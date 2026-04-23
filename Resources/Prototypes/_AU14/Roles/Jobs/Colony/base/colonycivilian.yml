@@ -35,9 +35,7 @@
 - type: startingGear
   id: AU14GearCivilianColonist
   equipment:
-    jumpsuit: CMJumpsuitColonist
-    shoes: RMCShoesBlack
-    id: AU14IDCardCLFCivilian
+    id: AU14IDCardColonyColonist
 
 - type: entity
   parent: CMSpawnPointJobBase

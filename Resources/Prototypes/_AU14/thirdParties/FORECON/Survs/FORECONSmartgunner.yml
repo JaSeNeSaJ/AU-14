@@ -89,17 +89,5 @@
     ears: RMCHeadsetForecon
     suitstorage: RMCSmartGun
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSmartGunOperator
-  categories: [ HideSpawnMenu ]
-  name: FORECON Smart Gun Operator ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSmartGunOperator
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobFORECONSmartGunOperator

@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14USArmyCETBase
-  id: AU14USArmyCETArmored
+  id: AU14JobUSArmyCETArmored
   name: au14-job-name-usarmy-cet
   description: au14-job-description-usarmy
   ranks:
@@ -67,7 +67,7 @@
     name: au14-job-name-usarmy-cet
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmyCETArmored
+    job: AU14JobUSArmyCETArmored
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -87,7 +87,7 @@
     pocket1: AU14PouchIFAKFill
     pocket2: RMCPouchMagazine
     back: AU14MolleBackpack
-    ears: AU14HeadsetUSArmy
+    ears: AU14HeadsetUSArmyERT
     suitstorage: RMCWeaponRifleM54C
   storage:
     belt:
@@ -104,18 +104,6 @@
     - CMMagazineRifleM54C
     - CMMagazineRifleM54C
     - CMMagazineRifleM54C
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyCET
-  categories: [ HideSpawnMenu ]
-  name: US Army Combat Engineering Tech ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyCET
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

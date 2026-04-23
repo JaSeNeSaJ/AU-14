@@ -88,17 +88,5 @@
     - RMCMagazineRifleM4SPRA19
     - RMCMagazineRifleM4SPRA19
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONMarksman
-  categories: [ HideSpawnMenu ]
-  name: FORECON Marksman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONMarksman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobFORECONMarksman
