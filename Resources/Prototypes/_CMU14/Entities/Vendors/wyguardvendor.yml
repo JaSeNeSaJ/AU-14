@@ -16,8 +16,23 @@
       entries:
       - id: RMCJumpsuitVeteranPMCHybrisaLead
       - id: RMCOuterClothingExternalWebbingBlack
-      - id: AU14CivBallCapBlack
       - id: RMCBootsPMCFilled
+    - name: Headwear
+      choices: { CMUCMBDutyHeadgear: 1 }
+      entries:
+      - id: ArmorHelmetPMCCorporate
+      - id: RMCArmorHelmetPMCCorporateHybrisa
+      - id: RMCArmorHelmetPMCKutjevoSecurity
+      - id: AU14CivBallCapBlack
+      - id: RMCHeadCapWestonYamadaDark
+    - name: Uniform
+      choices: { CMUCMBDutyJacket: 1 }
+      entries:
+      - id: AU14JumpsuitVeteranPMCCorporateLead
+      - id: AU14JumpsuitVeteranPMCCorporate
+      - id: AU14WYGuardFatigues
+      - id: RMCJumpsuitMPCorporate
+      - id: RMCJumpsuitVeteranPMCKutjevo
     - name: Belt
       choices: { CMUCMBDutyBelt: 1 }
       entries:

@@ -153,9 +153,12 @@
 
 - type: entity
   parent: RMCMagazinePistolM77Rubber
-  id: RMCMagazinePistolM88Rubber
+  id: CMMagazinePistolM88Rubber
   name: Mod 88 rubber magazine (9mm)
   description: A 19-round rubber magazine for the Mod 88 combat pistol. The blue stripe and safety markings designate the non-lethal load designed to deform and deliver blunt-force trauma on impact. Standard issue to leverage security and suppression without creating unnecessary casualties.
+  components:
+  - type: BallisticAmmoProvider
+    proto: CMCartridgePistolM88Rubber
 
 - type: entity
   parent: RMCCartridgePistol9mmRubber

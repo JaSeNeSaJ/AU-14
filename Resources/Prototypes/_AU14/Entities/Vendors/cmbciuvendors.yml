@@ -1,3 +1,4 @@
+# Apparel, equipment, medic, aircrew, command, AR, section-leader, weaponry, special-weapons
 - type: entity
   parent: ColMarTechBase
   id: AU14CMBCIUapparelvendor
@@ -121,6 +122,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -239,7 +242,7 @@
       - id: CMFireExtinguisherPortable
         amount: 5
       - id: CMRollerBedSpawnFolded
-        amount: 1
+        amount: 5
       - id: RMCBinoculars
         amount: 2
       #- id: CMFoldingBarricadesMB6x3
@@ -389,6 +392,8 @@
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
       - id: RMCOuterClothingExternalWebbingBlack
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -434,7 +439,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -566,7 +571,7 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14CMBCIUGunnerVendor
-  name: CMB CIU gunner equipment vendor
+  name: CMB CIU automatic rifleman equipment vendor
   description: >-
     An automated weapons rack, hooked up to a small armory of Crisis Intervention Unit light-machine gun equipment from the Colonial Marshall Bureau.
     Standard issue for designated LMG crews on naval vessels and outposts.
@@ -687,42 +692,62 @@
       - id: RMCAttachmentFlashlightGrip
         amount: 1
       - id: RMCBoxShotgunBuckshot
-        amount: 8
+        amount: 12
       - id: RMCBoxShotgunSlugs
-        amount: 6
+        amount: 10
       - id: RMCBoxShotgunFlechette
-        amount: 6
+        amount: 8
     - name: XM38 Tactical Shotgun
       entries:
       - id: RMCWeaponShotgunXM38
         amount: 1
+      - id: RMCAttachmentS6ReflexSight
+        amount: 1
+      - id: RMCAttachmentFlashlightGrip
+        amount: 1
       - id: RMCBoxShotgunBuckshot
         amount: 8
       - id: RMCBoxShotgunSlugs
-        amount: 6
+        amount: 10
       - id: RMCBoxShotgunFlechette
-        amount: 6
+        amount: 12
     - name: XM51 Breaching Scattergun
       entries:
       - id: RMCXM51Case
         amount: 1
       - id: RMCMagazineShotgunXM51
-        amount: 5
+        amount: 10
+      - id: RMCBoxShotgunBreaching
+        amount: 8
     - name: M85A1 Grenade Launcher
       entries:
       - id: RMCWeaponLauncherM85A1
         amount: 1
+      - id: RMCPacketGrenadeBatonSlugHIRRFilled
+        amount: 12
+#     - id: AU14PacketGrenadeNeuroRMCFilled
+#       amount: 2
       - id: CMPacketGrenadeFragFilled
-        amount: 5
+        amount: 4
+      - id: RMCPacketGrenadeM74AGMSFilled
+        amount: 8
+      - id: RMCPacketGrenadeM74AGMFFilled
+        amount: 1
+      - id: RMCPouchExplosive
+        amount: 2
     - name: Explosives
       entries:
+      - id: RMCBoxHEDP
+        amount: 4
       - id: RMCBoxHEFA
-        amount: 2
+        amount: 3
+      - id: RMCPouchExplosive
+        amount: 1
       - id: CMPacketGrenadeFragOldFilled
         amount: 2
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 8
+        amount: 12
       - id: RMCExplosiveBreachingChargeRubber
-        amount: 4
+        amount: 22

@@ -122,6 +122,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -409,6 +411,8 @@
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
       - id: AU14LACNICPS2
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -465,7 +469,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -718,6 +722,8 @@
       entries:
       - id: RMCWeaponLauncherM85A1
         amount: 1
+      - id: RMCPacketGrenadeBatonSlugHIRRFilled
+        amount: 2
       - id: RMCPacketGrenadeM74AGMSHornetFilled
         amount: 4
       - id: RMCPacketGrenadeM74AGMFFilled
@@ -725,8 +731,6 @@
       - id: RMCPacketGrenadeM74AGMSFilled
         amount: 2
       - id: RMCPacketGrenadeM74AGMIFilled
-        amount: 1
-      - id: RMCPacketGrenadeBatonSlugHIRRFilled
         amount: 1
       - id: RMCPacketGrenadeM74AGMSStarShellFilled
         amount: 1
@@ -741,9 +745,9 @@
       - id: AU14WeaponSniperRifleM42A2
         amount: 1
       - id: CMMagazineSniperM96S
-        amount: 6
+        amount: 15
       - id: CMMagazineSniperM96SFlak
-        amount: 2
+        amount: 4
       - id: RMCScoutShoes
         amount: 1
     - name: MOU53 break action shotgun
@@ -753,16 +757,16 @@
       - id: RMCAttachmentMOU53Stock
         amount: 1
       - id: RMCBoxShotgunFlechette
-        amount: 7
+        amount: 12
       - id: RMCBoxShotgunSlugs
-        amount: 5
+        amount: 12
     - name: Explosives
       entries:
       - id: CMPacketGrenadeFragOldFilled
         amount: 15
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
-      - id: RMCExplosivePlastic
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
+      - id: RMCExplosivePlastic
+        amount: 12

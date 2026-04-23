@@ -121,6 +121,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -360,14 +362,16 @@
       entries:
       - id: RMCAttachmentMiniFlamethrower
         amount: 1
+      - id: CMFireExtinguisherPortable
+        amount: 1
     - name: M42A2 scout rifle
       entries:
       - id: AU14WeaponSniperRifleM42A2
         amount: 1
       - id: CMMagazineSniperM96S
-        amount: 6
+        amount: 12
       - id: CMMagazineSniperM96SFlak
-        amount: 2
+        amount: 3
       - id: CMMagazineSniperM96SIncendiary
         amount: 1
       - id: RMCScoutShoes
@@ -377,6 +381,22 @@
       - id: RMCAttachmentU7UnderbarrelShotgun
         amount: 2
       - id: RMCBoxShotgunBuckshot
-        amount: 6
-      - id: RMCBoxShotgunBreaching
+        amount: 16
+      - id: RMCBoxShotgunSlugs
         amount: 4
+      - id: RMCBoxShotgunBreaching
+        amount: 5
+    - name: Disposable Special Light Anti-Tank Weapon
+      entries:
+      - id: AU14CrateM5A1SLAW
+        amount: 2
+    - name: Explosives
+      entries:
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 7
+      - id: RMCGrenadeCustomMetalFoam
+        amount: 6
+      - id: RMCExplosiveBreachingCharge
+        amount: 18
+      - id: RMCExplosivePlastic
+        amount: 10

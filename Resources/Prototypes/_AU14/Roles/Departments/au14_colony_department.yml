@@ -30,7 +30,6 @@
   - AU14JobCivilianFoodServiceWorker
   - AU14JobCivilianShopkeep
   - AU14JobCivilianWasteManagementSpecialist
-  - AU14JobColonyWorkingJoe
   departmentRadio: null
   headOfDepartment: null
   faction: colonist
@@ -75,8 +74,8 @@
   - AU14JobCivilianHeadPhysician
   - AU14JobCivilianPhysician
   - AU14JobCivilianNurse
-  - AU14JobCivilianEmergencyResponseOfficer
   - AU14JobCivilianEthicsAndWellnessAdvisor
+  - AU14JobCivilianEmergencyResponseOfficer
   departmentRadio: null
   headOfDepartment: AU14JobCivilianHeadPhysician
   faction: colonist
@@ -125,6 +124,7 @@
   - AU14JobCivilianScientist
   - AU14JobCivilianKellandWarden
   - AU14JobCivilianCorporateAssistant
+  - AU14JobColonyWorkingJoe
   departmentRadio: null
   headOfDepartment: null
   faction: colonist
@@ -136,9 +136,9 @@
   description: au14-department-criminal-description
   color: "#e3ce94"
   roles:
-  - AU14JobMobBoss
-  - AU14JobMobGoon
   - AU14JobCivilianPrisoner
+  - AU14JobMobGoon
+  - AU14JobMobBoss
   departmentRadio: null
   headOfDepartment: null
   faction: colonist

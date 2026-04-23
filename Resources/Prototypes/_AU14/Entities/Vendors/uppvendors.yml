@@ -147,6 +147,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -434,6 +436,8 @@
       entries:
       - id: AU14ArmorPilotFlakJacket
       - id: AU14ExternalWebbing
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -481,7 +485,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -742,6 +746,12 @@
         givePrefix: au14-job-prefix-govforspecialist-pointmanUPP
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: RMCBoxShotgunHeavyBuckshot
+        amount: 4
+      - id: RMCBoxShotgunHeavySlugs
+        amount: 7
+      - id: RMCBoxShotgunHeavyFlechette
+        amount: 1
     - name: Heavy Antitank HJRA-12 Rifleman kit
       entries:
       - id: AU14KitUPPHATHJRA12
@@ -750,6 +760,14 @@
         givePrefix: au14-job-prefix-govforspecialist-heavyantitankUPP
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: RMCRocketHJRA12AT
+        amount: 16
+      - id: RMCRocketHJRA12HE
+        amount: 7
+      - id: RMCRocketHJRA12Incen
+        amount: 3
+      - id: RMCPouchExplosive
+        amount: 1
     - name: LPO80 Pyrotechnician kit
       entries:
       - id: AU14KitUPPPyroLPO80
@@ -758,6 +776,10 @@
         givePrefix: au14-job-prefix-specialist-pyro
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: RMCAttachmentUnderbarrelExtinguisherSpec
+        amount: 1
+      - id: RMCPouchFuelTankFilledExtinguisher
+        amount: 1
     - name: Type 88 Marksman kit
       entries:
       - id: AU14KitUPPMarksmanType88
@@ -766,16 +788,18 @@
         givePrefix: au14-job-prefix-govforspecialist-marksmanUPP
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: RMCMagazineSniperType88
+        amount: 10
     - name: Explosives
       entries:
       - id: AU14PacketGrenadeHighExplosiveUPPFilled
-        amount: 10
+        amount: 12
       - id: AU14PacketGrenadeSmokeUPPFilled
-        amount: 4
-      - id: RMCExplosivePlastic
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
+      - id: RMCExplosivePlastic
+        amount: 12
 
 # AirCrew Weapons
 - type: entity

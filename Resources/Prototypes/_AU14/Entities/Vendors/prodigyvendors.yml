@@ -124,6 +124,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -267,7 +269,6 @@
       - id: RMCZipties
         amount: 30
 
-#corpsman
 - type: entity
   parent: ColMarTechBase
   id: AU14prodigycorpsmanvendor
@@ -407,6 +408,8 @@
       entries:
       - id: CMUArmorProdigyFlakVestAlt
       - id: RMCOuterClothingExternalWebbingBlack
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -454,7 +457,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -697,15 +700,15 @@
       entries:
       - id: RMCWeaponFlamer
         amount: 1
+      - id: RMCAttachmentUnderbarrelExtinguisher
+        amount: 1
       - id: RMCTankFlamer
         amount: 3
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
         amount: 1
-    - name: M5A1 SLAW
-      entries:
-      - id: RMCWeaponLauncherDisposableFolded
-        amount: 2
+      - id: RMCPouchFuelTankFilledExtinguisher
+        amount: 1
     - name: HG 37-12 Pump Shotgun
       entries:
       - id: RMCWeaponShotgunHG3712
@@ -716,17 +719,21 @@
         amount: 12
       - id: RMCBoxShotgunFlechette
         amount: 12
+    - name: Disposable Special Light Anti-Tank Weapon
+      entries:
+      - id: RMCWeaponLauncherDisposableFolded
+        amount: 5
+      - id: AU14CrateM5A1SLAW
+        amount: 2
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
         amount: 2
       - id: CMPacketGrenadeFragOldFilled
-        amount: 4
-      - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
-      - id: RMCGrenadeCustomMetalFoam
-        amount: 3
-      - id: RMCExplosivePlastic
-        amount: 4
-      - id: RMCExplosiveBreachingCharge
         amount: 6
+      - id: RMCPacketGrenadeSmokeFilled
+        amount: 12
+      - id: RMCExplosiveBreachingCharge
+        amount: 24
+      - id: RMCExplosivePlastic
+        amount: 18

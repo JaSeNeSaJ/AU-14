@@ -137,6 +137,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -283,11 +285,15 @@
       entries:
       - id: AU14WeaponFlamerM240A2HAZOPS
         amount: 1
+#     - id: RMCAttachmentUnderbarrelExtinguisherSpec
+#       amount: 1
       - id: AU14TankFlamerM240A2HAZOPS
         amount: 8
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
         amount: 1
+      - id: RMCPouchFuelTankFilledExtinguisher
+        amount: 2
     - name: SPAS-12-HAZ Specialized Shotgun
       entries:
       - id: AU14WeaponShotgunSPAS12HAZOPS
@@ -296,12 +302,18 @@
         amount: 12
       - id: RMCBoxShotgunSlugs
         amount: 12
+      - id: RMCBoxShotgunBreaching
+        amount: 1
     - name: M50 'Bald Eagle' Handcannon
       entries:
       - id: AU14WeaponPistolM50HAZOPS
         amount: 8
       - id: AU14MagazinePistolM50
         amount: 80
+    - name: Disposable Special Light Anti-Tank Weapon
+      entries:
+      - id: AU14CrateM5A1SLAW
+        amount: 1
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
@@ -309,11 +321,11 @@
       - id: CMPacketGrenadeFragOldFilled
         amount: 4
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
+        amount: 5
       - id: RMCExplosivePlastic
-        amount: 4
+        amount: 12
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
 
 - type: entity
   parent: ColMarTechBase

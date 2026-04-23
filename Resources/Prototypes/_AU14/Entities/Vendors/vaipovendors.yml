@@ -139,6 +139,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -430,6 +432,8 @@
       entries:
       - id: CMArmorM3VLFlakVest
       - id: AU14ArmorPilotFlakJacket
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -485,7 +489,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -731,9 +735,9 @@
         - id: RMCWeaponSMGM63B2
           amount: 1
         - id: CMMagazineSMGM63Ext
-          amount: 2
+          amount: 4
         - id: CMMagazineSMGM63AP
-          amount: 2
+          amount: 3
         - id: CMMagazineSMGM63
           amount: 3
         - id: RMCBeltHolsterSMGPouch
@@ -743,13 +747,19 @@
        - id: WeaponRifleM4SPR
          amount: 1
        - id: CMMagazineRifleM4SPRAP
-         amount: 2
+         amount: 4
        - id: CMMagazineRifleM4SPR
-         amount: 5
+         amount: 8
        - id: RMCAttachmentS84xTelescopicScope
          amount: 1
        - id: RMCAttachmentBipod
          amount: 1
+    - name: Disposable Special Light Anti-Tank Weapon
+      entries:
+      - id: RMCWeaponLauncherDisposableFolded
+        amount: 7
+      - id: AU14CrateM5A1SLAW
+        amount: 3
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
@@ -757,8 +767,8 @@
       - id: CMPacketGrenadeFragOldFilled
         amount: 4
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
-      - id: RMCExplosivePlastic
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
+      - id: RMCExplosivePlastic
+        amount: 12

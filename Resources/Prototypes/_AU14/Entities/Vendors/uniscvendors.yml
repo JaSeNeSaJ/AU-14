@@ -144,6 +144,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -433,6 +435,8 @@
       - id: AU14ArmorM3UNISC
       - id: AU14ExternalWebbing
       - id: RMCOuterClothingExternalWebbingBlack
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -476,7 +480,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -689,6 +693,8 @@
       - id: CMPacketGrenadeFragOldFilled
         amount: 1
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
+        amount: 12
+      - id: RMCExplosivePlastic
         amount: 6

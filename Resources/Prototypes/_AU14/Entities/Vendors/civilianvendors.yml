@@ -138,7 +138,7 @@
       - id: RMCPouchGeneral
     - name: Field Tents
       entries:
-        id: RMCTentUNMCStandardFolded
+      - id: RMCTentUNMCStandardFolded
         amount: 1
 
 - type: entity

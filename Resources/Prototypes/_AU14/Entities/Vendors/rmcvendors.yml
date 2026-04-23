@@ -164,6 +164,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -526,6 +528,8 @@
       choices: { CMUPlatoonAirCrewVest: 1 }
       entries:
       - id: AU14ICPS2RMC
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -578,7 +582,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -892,8 +896,10 @@
       entries:
       - id: RMCWeaponFlamer
         amount: 1
-      - id: RMCPVECaseFlamerFuel
+      - id: RMCAttachmentUnderbarrelExtinguisher
         amount: 1
+      - id: RMCPVECaseFlamerFuel
+        amount: 2
       - id: RMCBackpackFlamer
         name: G4-1 fueltank
         amount: 1
@@ -905,6 +911,8 @@
         givePrefix: au14-job-prefix-govforspecialist-marksmanRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: AU14MagazineSniperL64A3
+        amount: 18
     - name: Pointman kit
       entries:
       - id: AU14KitRMCPointmanL23B
@@ -913,6 +921,10 @@
         givePrefix: au14-job-prefix-govforspecialist-pointmanRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: RMCMagazineRifleL24
+        amount: 14
+      - id: RMCBoxShotgunBuckshot
+        amount: 8
     - name: Sapper kit
       entries:
       - id: AU14KitRMCMarksmanL164A3
@@ -921,20 +933,40 @@
         givePrefix: au14-job-prefix-govforspecialist-grenadierRMC
         isAppendPrefix: true
         isAppendSquadRoleName: true
+      - id: AU14Packet20MMGrenadeFragRMCFilled
+        amount: 3
+      - id: AU14Packet20MMGrenadeHERMCFilled
+        amount: 4
+      - id: AU14Packet20MMGrenadeHoloRMCFilled
+        amount: 2
+      - id: AU14Packet20MMGrenadeIncendiaryRMCFilled
+        amount: 1
+      - id: AU14Packet20MMGrenadeHESHRMCFilled
+        amount: 1
+    - name: Shoulder-Launched Multipurpose Assault Weapon
+      entries:
+      - id: RMCWeaponLauncherM5ATL
+        amount: 1
+      - id: RMCRocket84mmAntiArmor
+        amount: 15
+      - id: RMCRocket84mm
+        amount: 7
+      - id: RMCPouchExplosive
+        amount: 1
     - name: Explosives
       entries:
       - id: AU14BoxHEDPRMC
         amount: 2
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
+        amount: 5
       - id: AU14PacketGrenadeIncendiaryRMCFilled
         amount: 4
       - id: AU14PacketGrenadeNeuroRMCFilled
-        amount: 2
-      - id: RMCExplosivePlastic
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
+      - id: RMCExplosivePlastic
+        amount: 12
 
 # AirCrew Weapons
 - type: entity
@@ -1048,11 +1080,10 @@
     #  points: 4
     - name: Explosives
       entries:
-      - id: RMCExplosivePlastic
-        points: 5
       - id: RMCExplosiveBreachingCharge
-        points: 8
-        recommended: true
+        points: 16
+      - id: RMCExplosivePlastic
+        points: 12
     - name: Utilities
       entries:
       - id: RMCSynthResetKey

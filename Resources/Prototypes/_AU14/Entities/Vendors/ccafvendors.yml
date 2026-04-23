@@ -127,6 +127,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -257,13 +259,13 @@
       - id: AUWeaponRifleC10A6BR
         amount: 1
       - id: AU14MagazineRifleC10A6BR
-        amount: 15
+        amount: 25
     - name: M100 MGR Airburst Grenade Launcher
       entries:
       - id: AUWeaponRifleM100MGR
         amount: 1
       - id: AU14MagazineRifleM100MGR
-        amount: 3
+        amount: 6
       - id: RMCPacketGrenadeM74AGMFFilled
         amount: 4
       - id: RMCPacketGrenadeM74AGMSHornetFilled
@@ -274,22 +276,26 @@
         amount: 2
       - id: RMCPacketGrenadeBatonSlugHIRRFilled
         amount: 1
-    - name: M5A1 Special Light Anti-Tank Weapon
+      - id: RMCPouchExplosive
+        amount: 2
+    - name: Disposable Special Light Anti-Tank Weapon
       entries:
       - id: RMCWeaponLauncherDisposableFolded
-        amount: 2
+        amount: 8
+      - id: AU14CrateM5A1SLAW
+        amount: 1
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
         amount: 1
       - id: RMCBoxHEFA
-        amount: 1
+        amount: 2
       - id: CMGrenadeSmoke
-        amount: 6
+        amount: 7
       - id: RMCExplosivePlastic
-        amount: 2
+        amount: 7
       - id: RMCExplosiveBreachingCharge
-        amount: 2
+        amount: 14
 
 - type: entity
   parent: ColMarTechBase

@@ -128,6 +128,8 @@
         amount: 5
       - id: RMCPouchExplosive
         amount: 3
+      - id: RMCPouchFuelTank
+        amount: 2
       - id: RMCPouchTools
         amount: 15
     - name: Mask
@@ -401,6 +403,8 @@
       entries:
       - id: CMArmorM3VLFlakVest
       - id: RMCOuterClothingExternalWebbingBlack
+      - id: RMCArmorVestSquad
+        amount: 2
     - name: Footwear
       choices: { CMUPlatoonAirCrewFootwear: 1 }
       entries:
@@ -448,7 +452,7 @@
       - id: RMCPouchMagazinePistolLarge
       - id: RMCPouchTools
     - name: Glasses
-      choices: { CMUPlatoonAirCrewGlasses: 2 }
+      choices: { CMUPlatoonAirCrewGlasses: 1 }
       entries:
       - id: RMCSunglassesBigFake
       - id: RMCGlassesMarineRpg
@@ -704,42 +708,44 @@
       - id: WeaponShotgunM890
         amount: 1
       - id: RMCBoxShotgunBuckshot8g
-        amount: 4
+        amount: 12
       - id: RMCBoxShotgunSlugs
-        amount: 4
+        amount: 12
     - name: NSG 23 Assault Rifle
       entries:
       - id: RMCWeaponRifleSSG45NoLock
         amount: 1
       - id: RMCMagazineRifleSSG45
-        amount: 12
+        amount: 26
       - id: RMCMagazineRifleSSG45Extended
         amount: 2
       - id: RMCMagazineRifleSSG45AP
-        amount: 1
+        amount: 2
     - name: M5RA/2 battle rifle
       entries:
       - id: RMCPVECaseM5SPR2
-        amount: 1
+        amount: 2
       - id: RMCAttachmentS5RedDotSight
-        amount: 1
+        amount: 2
       - id: RMCAttachmentFlashlightGrip
-        amount: 1
+        amount: 2
       - id: RMCAttachmentExtendedBarrel
-        amount: 1
+        amount: 2
       - id: CMMagazineRifleM4SPR
-        amount: 12
+        amount: 36
+    - name: M5A1 Special Light Anti-Tank Weapon
+      entries:
+      - id: RMCWeaponLauncherDisposableFolded
+        amount: 6
     - name: Explosives
       entries:
       - id: RMCBoxHEDP
         amount: 2
       - id: RMCGrenadeBlastM12
-        amount: 8
+        amount: 12
       - id: RMCPacketGrenadeSmokeFilled
-        amount: 4
+        amount: 5
       - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 16
       - id: RMCExplosivePlastic
-        amount: 4
-      - id: RMCExplosiveBreachingCharge
-        amount: 6
+        amount: 12
