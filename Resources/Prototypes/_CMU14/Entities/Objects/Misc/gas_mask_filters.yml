@@ -6,11 +6,9 @@
   - type: Item
     size: Tiny
   - type: Sprite
-    sprite: _RMC14/Objects/Tools/screwdriver.rsi
+    sprite: _CMU14/Items/gas_mask_filter.rsi
     layers:
-    - state: screwdriver
-      map: [ "enum.DamageStateVisualLayers.Base" ]
-    - state: screwdriver-screwybits
+    - state: icon
   - type: Tag
     tags:
     - CMUGasMaskFilter
@@ -30,6 +28,11 @@
   id: CMUGasMaskFilterUPP
   name: ShMB/4 gas mask filter
   description: A little metal canister. May possibly also filter out airborne contaminants. There is an asbestos warning label on the side.
+  components:
+  - type: Sprite
+    sprite: _CMU14/Items/gas_mask_filter.rsi
+    layers:
+    - state: upp
 
 - type: entity
   parent: CMUBaseGasMaskFilter
@@ -41,6 +44,10 @@
     neurotoxinResist: true
     neurotoxinDamageMultiplier: 2.5 # 4 seconds
     baseIntegrity: 100
+  - type: Sprite
+    sprite: _CMU14/Items/gas_mask_filter.rsi
+    layers:
+    - state: fancy
 
 - type: entity
   parent: CMUBaseGasMaskFilter
@@ -52,3 +59,7 @@
     neurotoxinResist: true
     neurotoxinDamageMultiplier: 1.25 # 8 seconds
     baseIntegrity: 100
+  - type: Sprite
+    sprite: _CMU14/Items/gas_mask_filter.rsi
+    layers:
+    - state: wy
