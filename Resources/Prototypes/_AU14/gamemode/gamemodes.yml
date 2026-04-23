@@ -65,7 +65,7 @@
   - AUPlanetCorsatStation
   - AUPlanetStableGarrison
   - AUPlanetTrijent
-  - AuPlanetFiorina
+#  - AuPlanetFiorina -removed due to load errors
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
   - CMUPlanetLament
