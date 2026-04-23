@@ -81,17 +81,5 @@
     head:
     - AU14GogglesM1A1Ballistic
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyTankGunner
-  categories: [ HideSpawnMenu ]
-  name: US Army Tank Gunner ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyTankGunner
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUSArmyTankGunner

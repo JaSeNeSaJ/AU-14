@@ -38,8 +38,6 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonIvy
     shoes: RMCShoesBlue
-    id: AU14IDCardColonyJournalist
-
     outerClothing: AU14CivilianJacketTanPufferVest
 
 - type: entity

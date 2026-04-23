@@ -20,10 +20,10 @@
   id: EROEssentialAU14
   storage:
     back:
-    - RMCFireAxe
-    - CMFireExtinguisher
     - RMCRadioHandheldColonyOff
-    - CMRollerBedSpawnFolded
     - CMFireExtinguisherPortable
   equipment:
     ears: RMCFlashlightPen
+    suitstorage: RMCFireAxe
+  inhand:
+  - CMFireExtinguisher

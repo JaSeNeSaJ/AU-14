@@ -44,13 +44,7 @@
 - type: startingGear
   id: AU14GearCivilianEmergencyResponseOfficer
   equipment:
-    jumpsuit: AU14CivilianParamedicClothesRed
     shoes: RMCBootsPMC
-    id: AU14IDCardColonyEmergencyResponseOfficer
-
-    gloves: CMHandsBrown
-    head: AU14CivBallCapBlack
-    outerClothing: AU14CivilianFullSuitParamedicRed
 
 - type: entity
   parent: CMSpawnPointJobBase

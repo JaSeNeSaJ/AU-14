@@ -92,17 +92,5 @@
     - RMCMRESPP
     - CMCanteen
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPTDSquadLeader
-  name: UPP TD Squad Leader ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14UPPTerritorialDefenseSquadLeader
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseSquadLeader

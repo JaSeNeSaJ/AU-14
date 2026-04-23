@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14USArmyCMTBase
-  id: AU14USArmyCMTArmored
+  id: AU14JobUSArmyCMTArmored
   name: au14-job-name-usarmy-cmt
   description: au14-job-description-usarmy
   ranks:
@@ -67,7 +67,7 @@
     name: au14-job-name-usarmy-cmt
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmyCMTArmored
+    job: AU14JobUSArmyCMTArmored
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -87,7 +87,7 @@
     pocket1: AU14PouchIFAKFill
     pocket2: RMCPouchMagazine
     back: AU14CMDefibrillator
-    ears: AU14HeadsetUSArmy
+    ears: AU14HeadsetUSArmyERT
     suitstorage: RMCWeaponRifleM54CFilled
   storage:
     head:
@@ -96,18 +96,6 @@
     - CMMagazineRifleM54C
     - CMMagazineRifleM54C
     - CMMagazineRifleM54C
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyCMT
-  categories: [ HideSpawnMenu ]
-  name: US Army Combat Medical Tech ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyCMT
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

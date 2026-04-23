@@ -16,18 +16,14 @@
   - type: StorageFill
     contents:
       - id: AU14ArmorGhillie
-        amount: 1
       - id: AU14HelmetGhillie
-        amount: 1
       - id: AU14JungleFatiguesFORECON
-        amount: 1
       - id: RMCPatchFORECON
       - id: RMCScoutShoes
       - id: CMBackpackSniper
       - id: AU14PVEHandsInsulatedBlackMarine
-      - id: AU14WeaponPistolM48A4
-      - id: AU14MagazinePistolM48A4
-        amount: 3
+      - id: AU14BeltPostelPistolM48A4
+      - id: AU14PouchIFAKFill
 
 - type: entity
   parent: RMCBasePVEEquipmentCase
@@ -52,11 +48,9 @@
     contents:
     - id: AU14WeaponRifleM49A
     - id: CMMagazineRifleM4SPRExt
-    - id: CMMagazineRifleM4SPRExt
-    - id: CMMagazineRifleM4SPRExt
+      amount: 3
     - id: CMMagazineRifleM4SPRAP
-    - id: CMMagazineRifleM4SPRAP
-    - id: CMMagazineRifleM4SPRAP
+      amount: 3
   - type: ItemMapper
     mapLayers:
       gun:
@@ -81,12 +75,9 @@
     sprite: _RMC14/Objects/Storage/procase_mini.rsi
   - type: StorageFill
     contents:
-    - id: AU14WeaponRifleM41AMK1Recon
+    - id: AU14WeaponRifleM41AMK1ReconSuppressed
     - id: CMMagazineRifleM54CMK1
-    - id: CMMagazineRifleM54CMK1
-    - id: CMMagazineRifleM54CMK1
-    - id: CMMagazineRifleM54CMK1
-    - id: CMMagazineRifleM54CMK1
+      amount: 5
     - id: AU14PouchSlingBinocs
 
 - type: entity
