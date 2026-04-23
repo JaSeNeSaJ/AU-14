@@ -130,7 +130,9 @@
   parent: ColMarTechBase
   id: AU14NSPAequipmentvendor
   name: NSPA equipment vendor
-  description: An automated rack hooked up to a small storage of NSPA equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Neroid Sector Police Authority equipment.
+    Stocked with apparel and law enforcement field gear for rapid deployment.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/requisitions_ammo.rsi
@@ -212,7 +214,9 @@
   parent: ColMarTechBase
   id: AU14PaPequipmentvendor
   name: PaP equipment vendor
-  description: An automated rack hooked up to a small storage of PaP equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Peoples Armed Police equipment.
+    Stocked with apparel and law enforcement field gear for rapid deployment.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/requisitions_ammo.rsi

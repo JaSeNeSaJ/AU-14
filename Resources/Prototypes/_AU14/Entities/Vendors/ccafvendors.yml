@@ -1,3 +1,4 @@
+# Apparel, AR, weaponry, special-weapons, command, section-leader
 - type: entity
   parent: ColMarTechBase
   id: AU14CCAFclothingequipmentvendor
@@ -178,8 +179,11 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14CCAFMGequipmentvendor
-  name: CCAF smart gunner equipment vendor
-  description: An automated rack hooked up to a small storage of machinegunner equipment.
+  name: CCAF automatic rifleman equipment vendor
+  description: >-
+    An automated weapons rack, hooked up to a small armory of Canadian Colonial Armed Forces light-machine gun systems.
+    Standard issue for designated automatic riflemen on naval vessels and high-threat outposts.
+    Built to bring fire support online rapidly after cryogenic hypersleep or emergency mobilization.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
@@ -200,7 +204,12 @@
   parent: ColMarTechBase
   id: AU14CCAFWeaponsVendor
   name: CCAF weapons rack
-  description: An automated rack hooked up to a small storage of weapons.
+  description: >-
+    An automated weapons rack, hooked up to a small armory of Canadian Colonial Armed Forces weaponry.
+    Standard issue across the frontier where threats can appear without warning.
+    Engineered to arm personnel in seconds following cryogenic hypersleep or emergency mobilization.
+
+    For immediate combat readiness: select a primary weapon kit and a sidearm.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/guns.rsi
@@ -232,7 +241,12 @@
   parent: ColMarTechBase
   id: AU14CCAFSpecialWeaponsVendor
   name: CCAF special weapons rack
-  description: An automated rack hooked up to a small storage of special weapons.
+  description: >-
+    An automated special weapons rack, hooked up to a restricted armory of Canadian Colonial Armed Forces heavy and breaching ordnance.
+    Standard issue only for qualified operators.
+    Engineered to deliver overwhelming firepower the instant cryogenic hypersleep ends or an emergency mobilization is called.
+
+    Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
   - type: Sprite
     sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
@@ -281,7 +295,9 @@
   parent: ColMarTechBase
   id: AU14CCAFcommandequipmentvendor
   name: CCAF command vendor
-  description: An automated rack hooked up to a small storage of command apparel and equipment. Let's go, Marines!
+  description: >-
+    An automated command rack, hooked up to a restricted storage of Canadian Colonial Armed Forces command-leadership equipment.
+    Manufactured to equip commanding personnel following cryogenic hypersleep or an emergency directive is issued.
   components:
   - type: Sprite
     sprite: _AU14/Structures/Vendors/uscmcommandclothes.rsi
@@ -324,7 +340,9 @@
   parent: ColMarTechBase
   id: AU14CCAFsectionleaderequipmentvendor
   name: CCAF section leader vendor
-  description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
+  description: >-
+    An automated supervisor rack, hooked up to a compact storage of Canadian Colonial Armed Forces section-leadership equipment.
+    Designed for immediate readiness following cryogenic hypersleep or rapid mobilization orders.
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
@@ -344,6 +362,3 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 2
-
-
-

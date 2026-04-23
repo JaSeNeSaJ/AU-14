@@ -168,7 +168,12 @@
   parent: ColMarTechBase
   id: AU14CMBCIUequipmentvendor
   name: CMB CIU equipment vendor
-  description: An automated rack hooked up to a small storage of standard CMB CIU equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Crisis Intervention Unit equipment from the Colonial Marshall Bureau.
+    Stocked with medical supplies and field gear for rapid deployment following cryogenic hypersleep or emergency mobilization.
+    The interface is intentionally simple, even someone with tunnel-vision and frostbite can operate it.
+
+    Rapid-issue protocol: prioritize medical supplies, a ration pack, an e-tool and sandbags.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -250,12 +255,16 @@
       - id: RMCZipties
         amount: 30
 
-#corpsman
 - type: entity
   parent: ColMarTechBase
   id: AU14CMBCIUTacticalMedicVendor
   name: CMB CIU Tactical Medic Vendor
-  description: An automated rack hooked up to a small storage of medical supplies.
+  description: >-
+    An automated medical rack, hooked up to a compact stock of Crisis Intervention Unit trauma supplies from the Colonial Marshall Bureau.
+    Standard issue for corpsmen aboard naval vessels, outposts and colonies where casualties arrive faster than reinforcements.
+    Designed for rapid reconstitution of combat medics following cryogenic hypersleep or emergency call-up.
+
+    Corpsman protocol: select the essential equipment set, storage and limited medications.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforMedical" ], [ "AU14AccessOpforMedical" ] ]
@@ -360,7 +369,11 @@
   parent: ColMarTechBase
   id: AU14CMBCIUPilotVendor
   name: CMB CIU aircrew vendor
-  description: An automated rack hooked up to a small storage of aircrew apparel and equipment.
+  description: >-
+    An automated dispenser rack, hooked up to a small storage of Crisis Intervention Unit aircrew flight and support gear from the Colonial Marshall Bureau.
+    Engineered to get flight personnel flight-ready in seconds after cryogenic hypersleep or scramble orders.
+
+    Aircrew protocol: select a set of fatigues, the essential medical equipment and storage kit.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforPilot" ], [ "AU14AccessOpforPilot" ] ]
@@ -505,7 +518,9 @@
   parent: ColMarTechBase
   id: AU14CMBCIUCommandVendor
   name: CMB CIU command vendor
-  description: An automated rack hooked up to a small storage of CMB CIU command apparel and equipment.
+  description: >-
+    An automated command rack, hooked up to a restricted storage of Crisis Intervention Unit leadership equipment from the Colonial Marshall Bureau.
+    Manufactured to equip commanding personnel following cryogenic hypersleep or an emergency directive is issued.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforCommand" ], [ "AU14AccessOpforCommand" ] ]
@@ -552,7 +567,10 @@
   parent: ColMarTechBase
   id: AU14CMBCIUGunnerVendor
   name: CMB CIU gunner equipment vendor
-  description: An automated rack hooked up to a small storage of gunner equipment.
+  description: >-
+    An automated weapons rack, hooked up to a small armory of Crisis Intervention Unit light-machine gun equipment from the Colonial Marshall Bureau.
+    Standard issue for designated LMG crews on naval vessels and outposts.
+    Built to bring fire support online rapidly after cryogenic hypersleep or emergency mobilization.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -575,7 +593,9 @@
   parent: ColMarTechBase
   id: AU14CMBCIUSectionLeader
   name: CMB CIU section leader vendor
-  description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
+  description: >-
+    An automated supervisor rack, hooked up to a compact storage of Crisis Intervention Unit section-leadership equipment from the Colonial Marshall Bureau.
+    Designed for immediate readiness following cryogenic hypersleep or rapid mobilization orders.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforFTL" ], [ "AU14AccessOpforFTL" ] ]
@@ -592,13 +612,16 @@
       - id: RMCPackFlareCAS
         amount: 2
 
-#weapons
-
 - type: entity
   parent: ColMarTechBase
   id: AU14CMBCIUWeaponsVendor
   name: CMB CIU weapons rack
-  description: An automated rack hooked up to a small storage of weapons.
+  description: >-
+    An automated weapons rack, hooked up to a small armory of Crisis Intervention Unit weaponry from the Colonial Marshall Bureau.
+    Standard issue across the frontier where threats can appear without warning.
+    Engineered to arm personnel in seconds following cryogenic hypersleep or emergency mobilization.
+
+    For immediate combat readiness: select a primary weapon kit and a sidearm.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
@@ -642,7 +665,12 @@
   parent: ColMarTechBase
   id: AU14CMBCIUSpecialWeaponsVendor
   name: CMB CIU Special Weapons Rack
-  description: An automated rack hooked up to a small storage of special weapons.
+  description: >-
+    An automated special weapons rack, hooked up to a restricted armory of Crisis Intervention Unit heavy and breaching ordnance from the Colonial Marshall Bureau.
+    Standard issue only for qualified operators.
+    Engineered to deliver overwhelming firepower the instant cryogenic hypersleep ends or an emergency mobilization is called.
+
+    Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
   - type: AccessReader
     access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]

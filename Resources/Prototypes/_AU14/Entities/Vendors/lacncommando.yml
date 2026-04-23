@@ -1,3 +1,4 @@
+# Apparel, command, section-leader, weapons, special-weapons
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcommandoclothingequipmentvendor
@@ -172,8 +173,10 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcommandocommandequipmentvendor
-  name: LACN naval commandos command vendor
-  description: An automated rack hooked up to a small storage of command apparel and equipment.
+  name: LACN Naval Commandos command vendor
+  description: >-
+    An automated command rack, hooked up to a restricted storage of Latin American Colonial Navy command-leadership equipment for the Naval Commandos.
+    Manufactured to equip commanding personnel following cryogenic hypersleep or an emergency directive is issued.
   components:
   - type: AccessReader
     access:
@@ -224,8 +227,10 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcommandosectionleaderequipmentvendor
-  name: LACN naval commandos section leader vendor
-  description: An automated rack hooked up to a small storage of apparel and equipment for the section leader.
+  name: LACN Naval Commandos section leader vendor
+  description: >-
+    An automated supervisor rack, hooked up to a compact storage of Latin American Colonial Navy section-leadership equipment for the Naval Commandos.
+    Designed for immediate readiness following cryogenic hypersleep or rapid mobilization orders.
   components:
   - type: AccessReader
     access:
@@ -278,8 +283,13 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcommandoWeaponsVendor
-  name: LACN naval commandos weapons rack
-  description: An automated rack hooked up to a small storage of weapons.
+  name: LACN Naval Commandos weapons rack
+  description: >-
+    An automated weapons rack, hooked up to a small armory of Latin American Colonial Navy weaponry for the Naval Commandos.
+    Standard issue across the frontier where threats can appear without warning.
+    Engineered to arm personnel in seconds following cryogenic hypersleep or emergency mobilization.
+
+    For immediate combat readiness: select a primary weapon kit and a sidearm.
   components:
   - type: AccessReader
     access:
@@ -331,8 +341,13 @@
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcommandoSpecialWeaponsVendor
-  name: LACN naval commandos special weapons rack
-  description: An automated rack hooked up to a small storage of special weapons.
+  name: LACN Naval Commandos special weapons rack
+  description: >-
+    An automated special weapons rack, hooked up to a restricted armory of Latin American Colonial Navy heavy and breaching ordnance for the Naval Commandos.
+    Standard issue only for qualified operators.
+    Engineered to deliver overwhelming firepower the instant cryogenic hypersleep ends or an emergency mobilization is called.
+
+    Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
   - type: AccessReader
     access:
