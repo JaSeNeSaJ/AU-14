@@ -40,7 +40,7 @@ public sealed class KillAllColonistRuleSystem : GameRuleSystem<KillAllColonistRu
     private bool IsExcludedFromKillCount(EntityUid uid)
     {
         return (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD) ||
-               HasComp<XenoNestedComponent>(uid);
+               HasComp<XenoNestedComponent>(uid) || HasComp<SynthComponent>(uid);
     }
 
     private bool HasCrashedDropship()
