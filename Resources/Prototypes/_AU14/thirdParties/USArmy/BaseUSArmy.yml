@@ -1,5 +1,5 @@
 - type: entity
-  parent: RMCBaseMobSpeciesOrganic
+  parent: CMMobHuman
   id: AU14BaseMobSpeciesOrganicUSArmy
   abstract: true
   suffix: AU14, UA, US Army
@@ -99,26 +99,3 @@
     - id: RMCDrinkAlcoholDavenport
     - id: RMCZippoGold
     - id: CMTarbackCigar
-
-- type: entity
-  parent: RMCHeadsetMarine
-  id: AU14HeadsetUSArmy
-  name: US Army headset
-  description: Issued to US Army units.
-  suffix: US Army
-  components:
-  - type: Sprite
-    sprite: _RMC14/Objects/Clothing/headsets.rsi
-    state: soc_headset
-  - type: ContainerFill
-    containers:
-      key_slots:
-      - CMEncryptionKeyColony
-  - type: RMCHeadset
-    channels:
-    - UASOF
-  - type: GrantSquadLeaderTracker
-    defaultMode: SquadLeader
-    trackerModes:
-    - SquadLeader
-    - USArmyCommandingOfficer

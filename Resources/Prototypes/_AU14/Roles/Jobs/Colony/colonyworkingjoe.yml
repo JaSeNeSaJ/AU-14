@@ -125,7 +125,7 @@
       - CanPilot
       - FootstepSound
       - DoorBumpOpener
-  hidden: true
+  hidden: false
 
 - type: startingGear
   parent: AU14GearWorkingJoeBase

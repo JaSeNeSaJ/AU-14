@@ -1,5 +1,5 @@
 - type: entity
-  parent: RMCBaseMobSpeciesOrganic
+  parent: CMMobHuman
   id: AU14BaseMobSpeciesOrganicUPPGROM
   suffix: AU14, UPP, GROM
   abstract: true
@@ -196,6 +196,7 @@
     - id: CMSurgicalLine
     - id: CMSynthGraft
     - id: CMPillCanisterBicaridine
+    - id: CMPillCanisterKelotane
 
 - type: entity
   parent: AU14PouchPistolAlt

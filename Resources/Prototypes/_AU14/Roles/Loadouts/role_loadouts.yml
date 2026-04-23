@@ -88,9 +88,9 @@
   id: JobAU14JobCivilianEngineer
   points: 7
   groups:
+  - EngiSatchelAU14
   - EngiJacketAU14
   - EngiGlovesAU14
-  - EngiSatchelAU14
   - EngiBeltAU14
   - EngiPouchAU14
   - EngiPouchRightAU14
@@ -105,9 +105,9 @@
   id: JobAU14JobCivilianForeman
   points: 7
   groups:
+  - EngiSatchelAU14
   - EngiJacketAU14
   - EngiGlovesAU14
-  - EngiSatchelAU14
   - EngiBeltAU14
   - EngiPouchAU14
   - EngiPouchRightAU14
@@ -135,9 +135,9 @@
   id: JobAU14JobCivilianFreightSystemsSpecialist
   points: 7
   groups:
+  - EngiSatchelAU14
   - EngiJacketAU14
   - EngiGlovesAU14
-  - EngiSatchelAU14
   - EngiBeltAU14
   - EngiPouchAU14
   - EngiPouchRightAU14
@@ -151,6 +151,7 @@
   id: JobAU14JobCivilianNurse
   points: 7
   groups:
+  - MedBackpackAU14
   - MedJumpsuitAU14
   - MedHatsAU14
   - MedJacketAU14
@@ -159,7 +160,6 @@
   - MedBeltAU14
   - MedPouchAU14
   - MedPouchRightAU14
-  - MedBackpackAU14
   - ForceMedEssentialAU14
   - PaperworkRMC
   - RecreationalRMC
@@ -170,6 +170,7 @@
   id: JobAU14JobCivilianPhysician
   points: 7
   groups:
+  - MedBackpackAU14
   - MedJumpsuitAU14
   - MedHatsAU14
   - MedJacketAU14
@@ -178,7 +179,6 @@
   - MedBeltAU14
   - MedPouchAU14
   - MedPouchRightAU14
-  - MedBackpackAU14
   - ForceMedEssentialAU14
   - PaperworkRMC
   - RecreationalRMC
@@ -190,6 +190,7 @@
   points: 7
   groups:
   - EROSpecializationAU14
+  - CivSatchelAU14
   - EROJumpsuitAU14
   - EROJacketAU14
   - EROSuitSpecialAU14
@@ -200,7 +201,6 @@
   - EROPouchRightAU14
   - CivFootwearAU14
   - EROBeltAU14
-  - CivSatchelAU14
   - ForceEROEssentialAU14
   - PaperworkRMC
   - RecreationalRMC
