@@ -892,6 +892,8 @@
         amount: 4
       - id: AU14PacketGrenadeIncendiaryRMCFilled
         amount: 4
+      - id: AU14PacketGrenadeNeuroRMCFilled
+        amount: 2
       - id: RMCExplosivePlastic
         amount: 4
       - id: RMCExplosiveBreachingCharge
