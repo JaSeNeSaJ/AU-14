@@ -106,4 +106,7 @@
     maxIntegrity: 150
   - type: HardpointVisual
     vehicleState: snowplow_0
+  - type: Tag
+    tags:
+    - VehiclePlow
 

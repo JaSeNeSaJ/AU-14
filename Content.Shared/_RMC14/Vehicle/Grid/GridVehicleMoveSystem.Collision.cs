@@ -1,11 +1,13 @@
 using System;
 using System.Numerics;
 using System.Collections.Generic;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
 using Content.Shared.Doors.Components;
 using Content.Shared.Foldable;
 using Content.Shared.Item;
 using Content.Shared.Mobs.Components;
+using Content.Shared.Popups;
 using Content.Shared.Vehicle.Components;
 using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Power;
@@ -110,6 +112,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             if (ignoredEntities != null && ignoredEntities.Contains(other))
                 continue;
 
+            var isSmashingNow = IsSmashingCapable(mover);
+
             if (!TryBuildCollisionCandidate(
                     uid,
                     fixtures,
@@ -118,6 +122,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                     aabb,
                     movementAabb,
                     operatorUid,
+                    isSmashingNow,
                     out var candidate))
             {
                 continue;
@@ -158,7 +163,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 continue;
             }
 
-            if (applyEffects && candidate.Door is { } door && !_net.IsClient)
+            if (applyEffects && candidate.Door is { } door && !_net.IsClient && !isSmashingNow)
             {
                 if (!candidate.IsUnpoweredDoor)
                 {
@@ -265,6 +270,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         Box2 vehicleAabb,
         Box2 movementAabb,
         EntityUid? operatorUid,
+        bool canSmashWalls,
         out CollisionCandidate candidate)
     {
         candidate = default;
@@ -324,7 +330,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         var doorPowerKnown = TryGetDoorPowered(other, out var doorPowered);
         var isUnpoweredDoor = hasDoor && doorPowerKnown && !doorPowered;
-        if (hasDoor && doorPowerKnown && doorPowered && door != null && _door.CanOpen(other, door, operatorUid))
+        if (!canSmashWalls && hasDoor && doorPowerKnown && doorPowered && door != null && _door.CanOpen(other, door, operatorUid))
             collisionClass = VehicleCollisionClass.Ignore;
 
         var collisionAabb = GetCollisionAabb(collisionClass, vehicleAabb, movementAabb);
@@ -407,7 +413,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (TryComp(other, out VehicleSmashableComponent? smashable) &&
             smashable.RequiresDoorUnpowered &&
             hasDoor &&
-            !isUnpoweredDoor)
+            !isUnpoweredDoor &&
+            !IsSmashingCapable(mover))
         {
             if (applyEffects)
             {
@@ -419,10 +426,149 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             return CollisionHandlingResult.Blocked;
         }
 
+        // Smashable is gated to specific vehicle tags (e.g. resin walls that only heavy
+        // armor can plow through). Anyone else bumps into it like a concrete wall.
+        if (smashable != null &&
+            smashable.RequiredVehicleTag is { } requiredTag &&
+            !_tag.HasTag(vehicle, requiredTag))
+        {
+            if (applyEffects)
+            {
+                PlayCollisionSound(vehicle, ref playedCollisionSound);
+                ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
+                if (IsSmashingCapable(mover))
+                    ApplyCrashImmobility(vehicle, mover);
+            }
+
+            AddBlockingCollision(vehicle, other, collisionAabb, otherAabb, clearance, mapId, debug, blockers);
+            return CollisionHandlingResult.Blocked;
+        }
+
         if (applyEffects)
+        {
+            // Capture before TrySmash — ApplySmashSlowdown inside it scales CurrentSpeed down,
+            // which can drop it below WallSmashMinSpeed and make IsSmashingCapable return false.
+            var wasSmashingCapable = IsSmashingCapable(mover);
+            var selfDamageScale = smashable?.SelfDamageMultiplier ?? 1f;
             TrySmash(other, vehicle, ref playedCollisionSound);
+            ApplyHeavySmashSelfDamage(vehicle, mover, selfDamageScale);
+            if (wasSmashingCapable)
+                ApplyCrashImmobility(vehicle, mover);
+        }
 
         return CollisionHandlingResult.Continue;
+    }
+
+    /// <summary>Ramming a mob locks the vehicle down for the configured duration. Bypasses the speed gate — any speed counts.</summary>
+    private void ApplyMobCrashImmobility(EntityUid vehicle, GridVehicleMoverComponent mover, float duration)
+    {
+        if (duration <= 0f)
+            return;
+
+        var until = _timing.CurTime + TimeSpan.FromSeconds(duration);
+        if (until <= mover.ImmobileUntil)
+            return;
+
+        mover.ImmobileUntil = until;
+        mover.CurrentSpeed = 0f;
+        mover.IsCommittedToMove = false;
+        mover.IsPushMove = false;
+        mover.PushDirection = Vector2i.Zero;
+        Dirty(vehicle, mover);
+        ShowImmobileImpactPopup(vehicle);
+    }
+
+    /// <summary>
+    /// Flashes the "engine sputters and dies" popup to the driver the moment the vehicle goes
+    /// immobile. Separate from the retry popup so we don't spam it during the crash tick.
+    /// Uses PopupCursor — PopupEntity anchors to the driver's transform (interior grid) or
+    /// the vehicle (outer grid), but the driver's camera can be on either depending on
+    /// view-toggle state, so a cursor popup is the only thing guaranteed to be on-screen.
+    /// </summary>
+    private void ShowImmobileImpactPopup(EntityUid vehicle)
+    {
+        if (_net.IsClient)
+            return;
+
+        if (!TryComp(vehicle, out VehicleComponent? vehicleComp) || vehicleComp.Operator is not { } driver)
+            return;
+
+        _popup.PopupCursor(Loc.GetString("rmc-vehicle-crash-immobile"), driver, PopupType.LargeCaution);
+        _nextImmobilePopupAt[vehicle] = _timing.CurTime + ImmobilePopupCooldown;
+    }
+
+    /// <summary>
+    /// Rate-limited popup shown when the driver tries to drive while immobile. Explains why
+    /// the vehicle isn't responding without being spammy.
+    /// </summary>
+    private void TryShowImmobileRetryPopup(EntityUid vehicle)
+    {
+        if (_net.IsClient)
+            return;
+
+        var now = _timing.CurTime;
+        if (_nextImmobilePopupAt.TryGetValue(vehicle, out var next) && now < next)
+            return;
+
+        if (!TryComp(vehicle, out VehicleComponent? vehicleComp) || vehicleComp.Operator is not { } driver)
+            return;
+
+        _popup.PopupCursor(Loc.GetString("rmc-vehicle-crash-immobile-try-again"), driver, PopupType.SmallCaution);
+        _nextImmobilePopupAt[vehicle] = now + ImmobilePopupCooldown;
+    }
+
+    /// <summary>Hull integrity damage for ramming a mob. Plow-reduced. Shares the wall-smash cooldown to avoid double-dipping.</summary>
+    private void ApplyMobCollisionHullDamage(EntityUid vehicle, GridVehicleMoverComponent mover)
+    {
+        if (_timing.CurTime < mover.NextWallSmashAt)
+            return;
+
+        mover.NextWallSmashAt = _timing.CurTime + TimeSpan.FromSeconds(mover.WallSmashCooldown);
+        Dirty(vehicle, mover);
+
+        var selfDamageMult = HasPlowInstalled(vehicle) ? mover.WallSmashPlowDamageMultiplier : 1f;
+        var hull = mover.MobCollisionHullDamage * selfDamageMult;
+        if (hull > 0f)
+            _hardpoints.DamageHardpoint(vehicle, vehicle, hull);
+    }
+
+    /// <summary>
+    /// Applies the heavy-smash tread + hull integrity damage to the vehicle. Called for both
+    /// hard-wall smashes and vehicle-smashable passes (windows/shutters/doors/etc.).
+    /// No-op if the vehicle isn't a smasher, isn't currently moving fast enough, or is still on cooldown.
+    /// <paramref name="targetDamageMultiplier"/> scales the vehicle's self-damage — set below 1
+    /// for softer targets (e.g. resin walls) so they're cheaper to plow through.
+    /// </summary>
+    private void ApplyHeavySmashSelfDamage(EntityUid vehicle, GridVehicleMoverComponent mover, float targetDamageMultiplier = 1f)
+    {
+        if (!IsSmashingCapable(mover))
+            return;
+
+        if (_timing.CurTime < mover.NextWallSmashAt)
+            return;
+
+        mover.NextWallSmashAt = _timing.CurTime + TimeSpan.FromSeconds(mover.WallSmashCooldown);
+        Dirty(vehicle, mover);
+
+        if (_net.IsClient)
+            return;
+
+        var selfDamageMult = HasPlowInstalled(vehicle) ? mover.WallSmashPlowDamageMultiplier : 1f;
+        selfDamageMult *= targetDamageMultiplier;
+
+        if (mover.WallSmashWheelDamage > 0f)
+        {
+            var wheelDmg = mover.WallSmashWheelDamage * selfDamageMult;
+            if (wheelDmg > 0f)
+                _wheels.DamageWheels(vehicle, wheelDmg);
+        }
+
+        if (mover.WallSmashHullDamage > 0f)
+        {
+            var hull = mover.WallSmashHullDamage * selfDamageMult;
+            if (hull > 0f)
+                _hardpoints.DamageHardpoint(vehicle, vehicle, hull);
+        }
     }
 
     private CollisionHandlingResult HandleHardCollision(
@@ -445,14 +591,157 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (isVehicle && TryPushVehicle(vehicle, mover, grid, gridPos, other, applyEffects))
             return CollisionHandlingResult.Continue;
 
+        if (TryHeavySmash(vehicle, mover, other, applyEffects, ref playedCollisionSound))
+        {
+            if (applyEffects)
+                ApplyCrashImmobility(vehicle, mover);
+            return CollisionHandlingResult.Continue;
+        }
+
         if (applyEffects)
         {
             PlayCollisionSound(vehicle, ref playedCollisionSound);
             ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
+            if (IsSmashingCapable(mover))
+                ApplyCrashImmobility(vehicle, mover);
         }
 
         AddBlockingCollision(vehicle, other, collisionAabb, otherAabb, clearance, mapId, debug, blockers);
         return CollisionHandlingResult.Blocked;
+    }
+
+    /// <summary>
+    /// Renders the vehicle immobile (driver can't accelerate) for <see cref="GridVehicleMoverComponent.CrashImmobileDuration"/>
+    /// seconds. No-op on vehicles that leave the duration at 0.
+    /// </summary>
+    private void ApplyCrashImmobility(EntityUid vehicle, GridVehicleMoverComponent mover)
+    {
+        if (mover.CrashImmobileDuration <= 0f)
+            return;
+
+        var until = _timing.CurTime + TimeSpan.FromSeconds(mover.CrashImmobileDuration);
+        if (until <= mover.ImmobileUntil)
+            return;
+
+        mover.ImmobileUntil = until;
+        mover.CurrentSpeed = 0f;
+        mover.IsCommittedToMove = false;
+        mover.IsPushMove = false;
+        mover.PushDirection = Vector2i.Zero;
+        Dirty(vehicle, mover);
+        ShowImmobileImpactPopup(vehicle);
+    }
+
+    private bool IsSmashingCapable(GridVehicleMoverComponent mover)
+    {
+        if (!mover.CanSmashWalls)
+            return false;
+
+        if (mover.WallSmashMinSpeed > 0f && MathF.Abs(mover.CurrentSpeed) < mover.WallSmashMinSpeed)
+            return false;
+
+        return true;
+    }
+
+    private bool TryHeavySmash(
+        EntityUid vehicle,
+        GridVehicleMoverComponent mover,
+        EntityUid target,
+        bool applyEffects,
+        ref bool playedCollisionSound)
+    {
+        if (!IsSmashingCapable(mover))
+            return false;
+
+        if (_tag.HasTag(target, SmashIgnoreTag))
+            return false;
+
+        if (!HasComp<DamageableComponent>(target))
+            return false;
+
+        if (_timing.CurTime < mover.NextWallSmashAt)
+            return false;
+
+        // Probes must be side-effect-free — otherwise the probe pass zeros speed and
+        // sets the cooldown, and the effects pass that follows it takes the wrong
+        // branch (cooldown hit → fallback IsSmashingCapable check fails because
+        // speed was just zeroed → ApplyCrashImmobility never fires).
+        if (!applyEffects)
+            return true;
+
+        PlayCollisionSound(vehicle, ref playedCollisionSound);
+        ApplyHeavySmashSlowdown(mover);
+        mover.NextWallSmashAt = _timing.CurTime + TimeSpan.FromSeconds(mover.WallSmashCooldown);
+        Dirty(vehicle, mover);
+
+        if (_net.IsClient)
+            return true;
+
+        if (mover.WallSmashDamage > 0f)
+        {
+            var damage = new DamageSpecifier
+            {
+                DamageDict =
+                {
+                    [CollisionDamageType] = (double) mover.WallSmashDamage,
+                },
+            };
+            _damageable.TryChangeDamage(target, damage, true, origin: vehicle, tool: vehicle);
+        }
+
+        var selfDamageMult = HasPlowInstalled(vehicle) ? mover.WallSmashPlowDamageMultiplier : 1f;
+
+        if (mover.WallSmashWheelDamage > 0f)
+        {
+            var wheelDmg = mover.WallSmashWheelDamage * selfDamageMult;
+            if (wheelDmg > 0f)
+                _wheels.DamageWheels(vehicle, wheelDmg);
+        }
+
+        if (mover.WallSmashHullDamage > 0f)
+        {
+            var hull = mover.WallSmashHullDamage * selfDamageMult;
+            if (hull > 0f)
+                _hardpoints.DamageHardpoint(vehicle, vehicle, hull);
+        }
+
+        return true;
+    }
+
+    private bool HasPlowInstalled(EntityUid vehicle)
+    {
+        if (!TryComp(vehicle, out ItemSlotsComponent? itemSlots))
+            return false;
+
+        foreach (var slot in itemSlots.Slots.Values)
+        {
+            if (slot.Item is not { } item)
+                continue;
+
+            if (_tag.HasTag(item, PlowTag))
+                return true;
+        }
+
+        return false;
+    }
+
+    private void ApplyHeavySmashSlowdown(GridVehicleMoverComponent mover)
+    {
+        if (mover.WallSmashSlowdownDuration <= 0f || mover.WallSmashSlowdownMultiplier >= 1f)
+            return;
+
+        var now = _timing.CurTime;
+        mover.SmashSlowdownMultiplier = MathF.Min(mover.SmashSlowdownMultiplier, mover.WallSmashSlowdownMultiplier);
+        var until = now + TimeSpan.FromSeconds(mover.WallSmashSlowdownDuration);
+        if (until > mover.SmashSlowdownUntil)
+            mover.SmashSlowdownUntil = until;
+
+        // Slamming into a wall kills all forward momentum. Driver must re-accelerate.
+        // This also avoids post-impact drift when the vehicle was off-axis going into the wall.
+        mover.CurrentSpeed = 0f;
+        mover.IsCommittedToMove = false;
+        mover.IsPushMove = false;
+        mover.PushDirection = Vector2i.Zero;
     }
 
     private static void AddBlockingCollision(
@@ -744,7 +1033,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (!TryComp(target, out VehicleSmashableComponent? smashable))
             return false;
 
-        PlayCollisionSound(vehicle, ref playedCollisionSound);
+        // If the smashable has its own dedicated sound (e.g. resin break), skip the
+        // generic metal-crash — otherwise both would play on top of each other.
+        if (smashable.SmashSound == null)
+            PlayCollisionSound(vehicle, ref playedCollisionSound);
+        else
+            ConsumeCollisionSoundCooldown(vehicle, ref playedCollisionSound);
 
         if (TryComp(vehicle, out GridVehicleMoverComponent? mover))
             ApplySmashSlowdown(vehicle, mover, smashable);
@@ -758,6 +1052,31 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         SmashTarget(target, vehicle, smashable);
 
         return true;
+    }
+
+    /// <summary>
+    /// Marks the vehicle's CollisionSound as if it had just played, so other collision
+    /// handlers on the same impact tick don't fire the generic metal-crash on top of
+    /// whatever dedicated sound already played.
+    /// </summary>
+    private void ConsumeCollisionSoundCooldown(EntityUid vehicle, ref bool playedCollisionSound)
+    {
+        if (playedCollisionSound)
+            return;
+
+        if (!TryComp<VehicleSoundComponent>(vehicle, out var sound))
+            return;
+
+        if (_net.IsClient)
+        {
+            playedCollisionSound = true;
+            return;
+        }
+
+        var now = _timing.CurTime;
+        sound.NextCollisionSound = now + TimeSpan.FromSeconds(sound.CollisionSoundCooldown);
+        Dirty(vehicle, sound);
+        playedCollisionSound = true;
     }
 
     private void SmashTarget(EntityUid target, EntityUid vehicle, VehicleSmashableComponent smashable)
@@ -842,6 +1161,19 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         _lastMobCollision[target] = now;
 
         PlayMobCollisionSound(vehicle, ref playedCollisionSound);
+
+        if (TryComp(vehicle, out GridVehicleMoverComponent? vehicleMover))
+        {
+            if (vehicleMover.MobCollisionHullDamage > 0f)
+                ApplyMobCollisionHullDamage(vehicle, vehicleMover);
+
+            var isXeno = HasComp<XenoComponent>(target);
+            var mobImmobility = isXeno
+                ? vehicleMover.XenoMobCrashImmobileDuration
+                : vehicleMover.MobCrashImmobileDuration;
+            if (mobImmobility > 0f)
+                ApplyMobCrashImmobility(vehicle, vehicleMover, mobImmobility);
+        }
 
         var damage = new DamageSpecifier
         {

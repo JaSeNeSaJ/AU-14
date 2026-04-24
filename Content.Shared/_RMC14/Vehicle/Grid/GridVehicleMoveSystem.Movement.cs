@@ -150,6 +150,22 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         var facing = mover.CurrentDirection;
         var hadFacing = facing != Vector2i.Zero;
 
+        // Crash immobility: driver loses both speed (capped to 0 via GetModifiedMaxSpeed) and
+        // steering. Turning used to leak through because TryApplyFacing has no speed gate.
+        var immobilized = _timing.CurTime < mover.ImmobileUntil;
+        if (immobilized)
+        {
+            mover.CurrentSpeed = GridVehicleMotionSimulator.StepIdleSpeed(
+                mover.CurrentSpeed,
+                mover.Deceleration,
+                frameTime);
+
+            if (hasInput)
+                TryShowImmobileRetryPopup(uid);
+
+            return false;
+        }
+
         if (hasInput && !hadFacing)
         {
             if (!TryApplyFacing(uid, mover, grid, gridComp, inputDir, startDelay: false, blockAfterTurn: false, allowMoveClearance: false))
@@ -965,7 +981,10 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
     private float GetModifiedMaxSpeed(EntityUid uid, GridVehicleMoverComponent mover)
     {
-        var maxSpeed = mover.MaxSpeed * GetSmashSlowdownMultiplier(mover);
+        if (_timing.CurTime < mover.ImmobileUntil)
+            return 0f;
+
+        var maxSpeed = mover.MaxSpeed * GetSmashSlowdownMultiplier(mover) * GetIntegritySpeedMultiplier(uid, mover);
 
         if (TryComp<VehicleOverchargeComponent>(uid, out var overcharge) && _timing.CurTime < overcharge.ActiveUntil)
             maxSpeed *= overcharge.SpeedMultiplier;
@@ -977,7 +996,10 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
     private float GetModifiedMaxReverseSpeed(EntityUid uid, GridVehicleMoverComponent mover)
     {
-        var maxSpeed = mover.MaxReverseSpeed * GetSmashSlowdownMultiplier(mover);
+        if (_timing.CurTime < mover.ImmobileUntil)
+            return 0f;
+
+        var maxSpeed = mover.MaxReverseSpeed * GetSmashSlowdownMultiplier(mover) * GetIntegritySpeedMultiplier(uid, mover);
 
         if (TryComp<VehicleOverchargeComponent>(uid, out var overcharge) && _timing.CurTime < overcharge.ActiveUntil)
             maxSpeed *= overcharge.SpeedMultiplier;
@@ -985,6 +1007,18 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             maxSpeed *= speedMod.SpeedMultiplier;
 
         return maxSpeed;
+    }
+
+    private float GetIntegritySpeedMultiplier(EntityUid uid, GridVehicleMoverComponent mover)
+    {
+        if (mover.SpeedAtZeroIntegrity >= 1f)
+            return 1f;
+
+        if (!TryComp(uid, out HardpointIntegrityComponent? integrity) || integrity.MaxIntegrity <= 0f)
+            return 1f;
+
+        var ratio = Math.Clamp(integrity.Integrity / integrity.MaxIntegrity, 0f, 1f);
+        return mover.SpeedAtZeroIntegrity + (1f - mover.SpeedAtZeroIntegrity) * ratio;
     }
 
     private float GetAccelerationModifier(EntityUid uid)

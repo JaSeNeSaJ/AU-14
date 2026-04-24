@@ -7,12 +7,19 @@
   - type: Vehicle
     movementKind: Grid
   - type: Clickable
+  - type: Tag
+    tags:
+    - VehicleHeavy
   - type: GridVehicleMover
     maxSpeed: 7
     acceleration: 4
     deceleration: 10
     xenoBlockMinimumSize: Immobile
     xenoPushMinimumSize: Immobile
+    canSmashWalls: true
+    wallSmashWheelDamage: 0.4
+    wallSmashHullDamage: 15
+    speedAtZeroIntegrity: 0.5
   - type: VehicleOvercharge
     speedMultiplier: 1.4
     duration: 3
@@ -23,7 +30,8 @@
     runningSoundCooldown: 2
     hornSound: /Audio/Effects/Vehicle/carhorn.ogg
     hornCooldown: 1
-    collisionSoundCooldown: 0.5
+    collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
+    collisionSoundCooldown: 1.5
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 7
@@ -274,6 +282,7 @@
     reverseAcceleration: 2.0
     turnDelay: 0.25
     turnInPlace: false
+    speedAtZeroIntegrity: 0.5
   - type: Sprite
     sprite: _RMC14/Structures/Vehicles/sppapc.rsi
     layers:

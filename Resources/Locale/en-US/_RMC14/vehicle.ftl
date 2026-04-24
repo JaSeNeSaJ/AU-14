@@ -1,4 +1,7 @@
 rmc-vehicle-wheel-repaired = Wheel repaired.
+rmc-vehicle-crash-immobile = The engine sputters and dies from the impact!
+rmc-vehicle-crash-immobile-try-again = The engine refuses to start — the crash wrecked it.
+rmc-vehicle-crash-immobile-recovered = The engine coughs back to life.
 rmc-vehicle-ride-climb = Climb on
 rmc-vehicle-ride-climb-self = You climb onto {$vehicle}.
 rmc-vehicle-ride-climb-others = {$user} climbs onto {$vehicle}.
