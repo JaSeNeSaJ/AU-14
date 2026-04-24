@@ -114,11 +114,6 @@ public sealed class HardpointSlotSystem : EntitySystem
             return;
 
         ent.Comp.CompletingInserts.Add(args.SlotId);
-        // Insert the specific item resolved by the do-after (args.Used) rather than whatever
-        // is in the user's active hand. Power loaders don't sync their active clamp to the
-        // pilot's active hand, so TryInsertFromHand would grab the wrong clamp (or empty) and
-        // silently fail. Going through the container insert directly avoids that entirely —
-        // Container.Insert handles removing the item from the source hand/container.
         _itemSlots.TryInsert(ent.Owner, slot, item, args.User, excludeUserAudio: false);
         ent.Comp.CompletingInserts.Remove(args.SlotId);
     }
@@ -219,10 +214,6 @@ public sealed class HardpointSlotSystem : EntitySystem
             return;
         }
 
-        // Don't try to hand the hardpoint to the user — it's power-loader-grabbable so a
-        // regular human can't pick it up anyway. Pass user: null to bypass the CanPickup
-        // check inside TryEject, and let the item fall to the tile the remover is standing
-        // on. The loader then grabs it as usual.
         if (!_itemSlots.TryEject(ent.Owner, itemSlot, user: null, out var ejected, excludeUserAudio: true) || ejected is null)
         {
             ent.Comp.LastUiError = "Couldn't remove the hardpoint.";
