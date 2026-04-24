@@ -10,7 +10,6 @@ using Content.Shared.Popups;
 using Content.Shared.Sticky;
 using Content.Shared.Tag;
 using Content.Shared.Verbs;
-using Discord;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.Explosion.EntitySystems;
