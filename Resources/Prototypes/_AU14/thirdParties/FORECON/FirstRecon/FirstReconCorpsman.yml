@@ -91,12 +91,3 @@
     - CMMagazineRifleM54CMK1
     outerClothing:
     - AU14ArmorGarbCorpsmanWebbingForecon
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONFirstReconCorpsman
-  categories: [ HideSpawnMenu ]
-  name: FORECON Corpsman 2. Class ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONFirstReconCorpsman

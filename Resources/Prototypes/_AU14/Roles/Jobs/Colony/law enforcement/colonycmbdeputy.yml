@@ -1,11 +1,10 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobLEOBase
   id: AU14JobCivilianCMBDeputy
   name: au14-job-name-civiliancmbdeputy
   description: au14-job-description-civiliancmbdeputy
   setPreference: false
   canBeAntag: false
-  playTimeTracker: AU14JobCivilianCMBDeputy
   requirements:
   - !type:AgeRequirement
     requiredAge: 21
@@ -76,7 +75,3 @@
     job_id: AU14JobCivilianCMBDeputy
   - type: Sprite
     state: syn_spawn
-
-- type: playTimeTracker
-  id: AU14JobCivilianCMBDeputy
-  isHumanoid: true

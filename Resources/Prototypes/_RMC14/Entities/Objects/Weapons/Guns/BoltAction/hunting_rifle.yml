@@ -121,8 +121,8 @@
 - type: entity
   parent: CMBaseCartridgeRifle
   id: RMCCartridgeBoltActionRifle
-  name: Cartridge (5.56x45)
-  description: A Cartridge for the Basira-Armstrong hunting rifle. Compliant with the 15-cartridge limit on civilian hunting rifles.
+  name: cartridge (6.5mm)
+  description: "A 6.5mm cartridge for the Basira-Armstrong hunting rifle. Compliant with the 15-cartridge limit on civilian hunting rifles."
   components:
   - type: Tag
     tags:

@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobLEOLeaderBase
   id: AU14JobCivilianCMBMarshal
   name: au14-job-name-civiliancmbmarshal
   description: au14-job-description-civiliancmbmarshal
@@ -12,7 +12,6 @@
     inverted: true
     traits:
     - Epilepsy
-  playTimeTracker: AU14JobCivilianCMBMarshal
   ranks:
     AU14RankCMBMarshal: []
   startingGear: AU14GearCivilianCMBMarshal
@@ -87,7 +86,3 @@
   components:
   - type: RMCJobSpawner
     job: AU14JobCivilianCMBMarshal
-
-- type: playTimeTracker
-  id: AU14JobCivilianCMBMarshal
-  isHumanoid: true

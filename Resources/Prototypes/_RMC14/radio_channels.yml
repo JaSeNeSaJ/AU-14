@@ -11,7 +11,7 @@
 - type: radioChannel
   id: MarineCommon
   name: chat-radio-marine-common
-  keycode: "g" #; and g in cm13
+  keycode: "ć" #; and g in cm13
   frequency: 1480
   color: "#B4B4B4"
   colorblindColor: "#6FD08C"
@@ -184,14 +184,14 @@
   longRange: true
   tower: true
 
-- type: radioChannel
-  id: RoyalMarine
-  name: chat-radio-royal-marine
-  keycode: "q"
-  frequency: 1551
-  color: "#e1580e"
-  longRange: true
-  tower: true
+#- type: radioChannel
+#  id: RoyalMarine
+#  name: chat-radio-royal-marine
+#  keycode: "q"
+#  frequency: 1551
+#  color: "#e1580e"
+#  longRange: true
+#  tower: true
 
 - type: radioChannel
   id: Hivemind

@@ -80,17 +80,5 @@
   - CMFlare
   - AUWeaponRifleM20A
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUACGRifleman
-  categories: [ HideSpawnMenu ]
-  name: UACG Rifleman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UACGRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUACGRifleman

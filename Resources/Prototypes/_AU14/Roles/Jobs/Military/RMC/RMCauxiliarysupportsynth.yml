@@ -21,7 +21,7 @@
       role: AU14JobGOVFORAuxSupportSynth
       time: 180000 # 50 hours
     RMC_WarrantOfficer2: []
-  startingGear: AU14GearGOVFORAuxSupportSynthRMC
+  startingGear: AU14GearGOVFORAuxSupportSynth
   dummyStartingGear: AU14GearGOVFORAuxSupportSynthDummyRMC
   icon: "AU14JobIconGovSynth"
   requireAdminNotify: false
@@ -81,23 +81,6 @@
           Blunt: 35
     - type: Synth
   hidden: true
-
-- type: startingGear
-  id: AU14GearGOVFORAuxSupportSynthRMC
-  equipment:
-    id: AU14IDCardGOVFORAuxSupportSynth
-    ears: RMCM5CameraGear
-    ears2: AU14HeadsetSectionLeader
-    gloves: AU14HandsRMC
-    shoes: RMCBootsRoyalFilled
-    jumpsuit: AU14CivilianBoilerSuitDarkBlueSynthRMC
-    belt: CMUBeltMedicBagSupportSynthRMC
-    head: AU14HeadBeretRMC
-    back: AU14SmartpackBlackFilled
-    pocket1: AU14PouchToolsFilledSupportSynthetic
-    pocket2: AU14PouchPoliceEquipmentSupportSynth
-    outerClothing: AU14CMDefibrillator
-    eyes: RMCGlassesMedicalHUDGlasses
 
 - type: startingGear
   id: AU14GearGOVFORAuxSupportSynthDummyRMC
