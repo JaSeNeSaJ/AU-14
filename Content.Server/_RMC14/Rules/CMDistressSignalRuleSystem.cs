@@ -297,6 +297,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
             // TODO: come up with random name like operation name, in a function that can be reused for hive v hive
             comp.Hive = _hive.CreateHive("xenonid hive", comp.HiveId);
+            TheHive = comp.Hive;
             if (comp.SpawnPlanet && !SpawnXenoMap((uid, comp)))
             {
                 Log.Error("Failed to load xeno map");
