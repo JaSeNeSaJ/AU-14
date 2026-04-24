@@ -70,6 +70,9 @@
   - type: Damageable
     damageContainer: StructuralMarine
     damageModifierSet: StructuralMarine
+  - type: MeleeReceivedMultiplier
+    xenoMultiplier: 5
+    otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
     drawdepth: Mobs
@@ -255,6 +258,9 @@
   - type: Damageable
     damageContainer: StructuralMarine
     damageModifierSet: StructuralMarine
+  - type: MeleeReceivedMultiplier
+    xenoMultiplier: 5
+    otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
     offset: "0,0.5"

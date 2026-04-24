@@ -7,6 +7,9 @@
     sprite: _RMC14/Structures/Vehicles/hardpoints/tank.rsi
   - type: Item
     size: Large
+  - type: PowerLoaderGrabbable
+    virtualRight: RMCVirtualPowerLoaderRight
+    virtualLeft: RMCVirtualPowerLoaderLeft
 
 - type: entity
   parent: VehicleTankHardpointBase
@@ -80,6 +83,9 @@
   - type: HardpointIntegrity
     maxIntegrity: 300
   - type: VehicleWheelItem
+  - type: RemoveComponents
+    components:
+    - type: PowerLoaderGrabbable
 
 - type: entity
   parent: VehicleTankHardpointBase
@@ -103,4 +109,7 @@
     - VehicleArmorCaustic
   - type: VehicleAccelerationModifierAttachment
     accelerationMultiplier: 0.9
+  - type: RemoveComponents
+    components:
+    - type: PowerLoaderGrabbable
 

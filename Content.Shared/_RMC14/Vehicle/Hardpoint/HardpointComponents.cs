@@ -53,7 +53,7 @@ public sealed partial class HardpointSlotsComponent : Component
     public float FrameDamageFractionWhileIntact = 0.1f;
 
     [DataField]
-    public ProtoId<ToolQualityPrototype> RemoveToolQuality = "Prying";
+    public ProtoId<ToolQualityPrototype> RemoveToolQuality = "VehicleServicing";
 
     [NonSerialized]
     public HashSet<string> PendingInserts = new();
