@@ -26,6 +26,7 @@
     xenoBlockMinimumSize: Immobile
     canXenosPush: false
     canSmashWalls: true
+    wallSmashMinSpeed: 0.9
     speedAtZeroIntegrity: 0.7
   - type: VehicleRideSurface
     bounds:
@@ -79,6 +80,9 @@
   - type: Damageable
     damageContainer: StructuralMarine
     damageModifierSet: VehicleFrameTank
+  - type: MeleeReceivedMultiplier
+    xenoMultiplier: 2.4
+    otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
     drawdepth: Mobs

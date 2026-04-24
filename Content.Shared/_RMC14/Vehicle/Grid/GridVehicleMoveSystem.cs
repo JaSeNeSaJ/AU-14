@@ -55,6 +55,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
     private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> SmashIgnoreTag = "VehicleSmashIgnore";
     private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> PlowTag = "VehiclePlow";
+    private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> VehicleHeavyTag = "VehicleHeavy";
+    private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> VehicleHeavyDriveOverTag = "VehicleHeavyDriveOver";
 
     private EntityQuery<MapGridComponent> gridQ;
     private EntityQuery<PhysicsComponent> physicsQ;

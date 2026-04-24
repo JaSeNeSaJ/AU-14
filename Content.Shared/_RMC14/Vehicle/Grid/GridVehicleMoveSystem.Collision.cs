@@ -101,6 +101,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             AddDebugCollisionProbe(uid, mover, fixtures, tx, aabb, movementAabb, world.MapId, probeBlocked, applyEffects);
         }
 
+        var isHeavyVehicle = _tag.HasTag(uid, VehicleHeavyTag);
+
         foreach (var other in hits)
         {
             if (other == uid)
@@ -110,6 +112,11 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 continue;
 
             if (ignoredEntities != null && ignoredEntities.Contains(other))
+                continue;
+
+            // Heavy vehicles (APC/Tank) drive over consoles and similar tagged props
+            // without collision — no block, no damage, no sound. Lighter vehicles bump them.
+            if (isHeavyVehicle && _tag.HasTag(other, VehicleHeavyDriveOverTag))
                 continue;
 
             var isSmashingNow = IsSmashingCapable(mover);
@@ -600,10 +607,15 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         if (applyEffects)
         {
-            PlayCollisionSound(vehicle, ref playedCollisionSound);
-            ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
+            // Only play the heavy crash sound if the vehicle was actually going fast
+            // enough to smash (even though we didn't smash — gated by WallSmashMinSpeed).
+            // Low-speed bumps shouldn't trigger the loud metal-crash clip.
             if (IsSmashingCapable(mover))
+            {
+                PlayCollisionSound(vehicle, ref playedCollisionSound);
                 ApplyCrashImmobility(vehicle, mover);
+            }
+            ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
         }
 
         AddBlockingCollision(vehicle, other, collisionAabb, otherAabb, clearance, mapId, debug, blockers);
