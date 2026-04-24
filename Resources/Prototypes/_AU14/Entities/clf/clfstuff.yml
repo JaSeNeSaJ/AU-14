@@ -39,15 +39,15 @@
         points: 10
       - id: RMCWeaponRifleType71C
         amount: 1
-        points: 3
+        points: 7
     - name: Shotguns
       entries:
       - id: RMCWeaponShotgunHG3712
         amount: 1
-        points: 5
+        points: 7
       - id: WeaponShotgunM357Sawn
         amount: 2
-        points: 6
+        points: 4
       - id: WeaponShotgunM357
         amount: 3
         points: 5
@@ -135,9 +135,9 @@
       - id: CMGrenadeSmoke
         amount: 5
         points: 2
-      - id: CMGrenadeFragOld
+      - id: RMCGrenadeIED
         amount: 4
-        points: 3
+        points: 5
       - id: RMCExplosivePlastic
         amount: 2
         points: 8
@@ -146,18 +146,21 @@
         points: 10
     - name: Improvised Explosive Devices
       entries:
+      - id: CMMultitool
+        amount: 10
+        points: 1
       - id: AU14RemoteSignallerAdvanced
-        amount: 5
+        amount: 10
         points: 1
       - id: AU14IED
         amount: 6
         points: 6
-      - id: AU14IEDLarge
-        amount: 3
-        points: 17
       - id: AU14IEDVest
         amount: 2
-        points: 12
+        points: 10
+      - id: AU14IEDLarge
+        amount: 3
+        points: 15
     - name: Special Equipment
       entries:
       - id: CMUCLFSynthSubversionKey
@@ -169,6 +172,26 @@
       - id: AU14TattooGun
         amount: 3
         points: 8
+    - name: Mortar
+      entries:
+      - id: RMCRangefinder
+        amount: 5
+        points: 3
+      - id: RMCMortarKit
+        amount: 1
+        points: 20
+      - id: RMCMortarShellFlare
+        amount: 10
+        points: 3
+      - id: RMCMortarShellHE
+        amount: 10
+        points: 6
+      - id: AU14MortarShellHEATMP
+        amount: 10
+        points: 8
+      - id: RMCMortarShellIncendiary
+        amount: 5
+        points: 12
   - type: Transform
     anchored: false
     noRot: true

@@ -2039,7 +2039,6 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private void OnXenoComponentInit(Entity<XenoComponent> ent, ref ComponentInit args)
     {
         _hive.SetHive(ent.Owner, TheHive);
-        SetFriendlyHives(TheHive);
         if (!_queenBuildingBoostEnabled)
             return;
 

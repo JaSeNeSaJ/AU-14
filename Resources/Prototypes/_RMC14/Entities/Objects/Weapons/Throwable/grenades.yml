@@ -331,7 +331,7 @@
 - type: entity
   parent: CMGrenadeBase
   id: RMCGrenadeIED
-  name: improvised explosive device
+  name: throwable improvised explosive device
   description: An improvised chemical explosive grenade. Designed to kill through fragmentation.
   components:
   - type: Sprite
