@@ -46,8 +46,6 @@
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml

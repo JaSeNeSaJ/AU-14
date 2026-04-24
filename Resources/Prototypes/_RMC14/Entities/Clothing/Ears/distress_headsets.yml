@@ -263,7 +263,7 @@
           - CMEncryptionKeyColony
     - type: RMCHeadset
       channels:
-        - RoyalMarine
+        - TWESOF
     - type: GrantSquadLeaderTracker
       defaultMode: ParaTeamLeader
       trackerModes:
@@ -279,7 +279,7 @@
   components:
     - type: RMCHeadset
       channels:
-        - RoyalMarine
+        - TWESOF
       radioTextIncrease: 2
     - type: GrantSquadLeaderTracker
       defaultMode: ParaCommander
@@ -293,7 +293,7 @@
   components:
     - type: RMCHeadset
       channels:
-        - RoyalMarine
+        - TWESOF
       radioTextIncrease: 3
     - type: GrantSquadLeaderTracker
       defaultMode: ParaTeamLeader

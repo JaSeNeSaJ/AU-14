@@ -89,17 +89,5 @@
     ears: RMCHeadsetGROM
     suitstorage: AU14WeaponRifleAG80Filled
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMSupportTech
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Support Tech ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMSupportTech
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUPPGROMSupportTech

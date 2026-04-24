@@ -238,7 +238,6 @@
       entries:
       - id: AU14MagazineXMP5A6
         amount: 60
-      - id: CMMagazineRifleM54CAP
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -248,11 +247,10 @@
       - id: CMMagazinePistolM1984
         amount: 60
     - name: Attachments
-      choices: { CMUAttachmentsVendor: 2 }
+      choices: { CMUAttachmentsVendor: 1 }
       entries:
       - id: RMCAttachmentRailFlashlight
       - id: RMCAttachmentTwoPointSling
-      - id: AU14AttachmentM203A4GrenadeLauncher
 
 - type: entity
   parent: ColMarTechBase

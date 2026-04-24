@@ -78,6 +78,7 @@
 - type: startingGear
   id: AU14GearCultist
   equipment:
+    id: AU14IDCardColonyColonist
     outerClothing: ClothingOuterRobesCult
     jumpsuit: CMJumpsuitColonist
     shoes: CMBootsBrownFilled

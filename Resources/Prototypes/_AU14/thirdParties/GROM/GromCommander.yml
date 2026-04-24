@@ -86,18 +86,6 @@
     ears: RMCHeadsetGROM
     suitstorage: AU14WeaponRifleAG80Filled
 
-- type: entity
-  parent: CMIDCardBase
-  categories: [ HideSpawnMenu ]
-  id: AU14IDCardUPPGROMCommander
-  name: UPP GROM Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: jobIcon
   parent: CMJobIconBase
   id: AU14JobIconUPPGROMCommander

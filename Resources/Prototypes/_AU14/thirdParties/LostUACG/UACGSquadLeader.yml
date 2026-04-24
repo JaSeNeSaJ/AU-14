@@ -91,17 +91,5 @@
   - RMCBinocularsPVE
   - AUWeaponRifleM20A
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUACGSquadleader
-  categories: [ HideSpawnMenu ]
-  name: UACG Squad Leader ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UACGSquadleader
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUACGSquadLeader

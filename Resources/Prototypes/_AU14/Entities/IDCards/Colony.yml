@@ -37,6 +37,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianColonist
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian # so everyone can use it roundstart
 
 - type: entity
   parent: CMIDCardBase
@@ -45,6 +47,8 @@
   components:
   - type: PresetIdCard
     job: AU14JobCLFCellLeader
+  - type: IdCard
+    jobTitle: au14-id-job-title-colony-civilian
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -325,6 +329,14 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardColonyNSPAInspector
+  name: NSPA inspector ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianNSPAInspector
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardciviliannspaConstable
   name: NSPA constable ID card
   components:
@@ -376,3 +388,19 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianOrbitalManager
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianRightsObserver
+  name: rights observer ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobInvestigationCMBRightsObserver
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardCivilianICCLiaison
+  name: interstellar commerce commission liaison ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobInvestigationICCLiaison
