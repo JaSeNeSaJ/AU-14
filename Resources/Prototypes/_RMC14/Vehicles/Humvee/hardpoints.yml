@@ -155,10 +155,6 @@
     cameraRecoilScalar: 0
   - type: GunIFF
     enabled: true
-    intrinsic: true
-  - type: UserIFF
-    factions:
-    - FactionMarine
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 5
     accuracyMultiplierUnwielded: 5
@@ -265,6 +261,9 @@
     maxIntegrity: 100
   - type: HardpointVisual
     vehicleState: snowplow_0
+  - type: Tag
+    tags:
+    - VehiclePlow
 
 - type: entity
   parent: VehicleHumveeHardpointBase

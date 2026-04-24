@@ -49,6 +49,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     [Dependency] private readonly VehicleWheelSystem _wheels = default!;
     [Dependency] private readonly SharedDestructibleSystem _destructible = default!;
     [Dependency] private readonly SharedRMCPowerSystem _rmcPower = default!;
+    [Dependency] private readonly HardpointSystem _hardpoints = default!;
+    [Dependency] private readonly Content.Shared.Tag.TagSystem _tag = default!;
+    [Dependency] private readonly Content.Shared.Popups.SharedPopupSystem _popup = default!;
+
+    private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> SmashIgnoreTag = "VehicleSmashIgnore";
+    private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> PlowTag = "VehiclePlow";
 
     private EntityQuery<MapGridComponent> gridQ;
     private EntityQuery<PhysicsComponent> physicsQ;
@@ -91,6 +97,9 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     public static bool MovementDebugEnabled { get; set; }
 
     private readonly Dictionary<EntityUid, TimeSpan> _lastMobCollision = new();
+    private readonly Dictionary<EntityUid, TimeSpan> _nextImmobilePopupAt = new();
+    private readonly HashSet<EntityUid> _immobileAnnounced = new();
+    private static readonly TimeSpan ImmobilePopupCooldown = TimeSpan.FromSeconds(4);
     private readonly Dictionary<EntityUid, bool> _hardState = new();
     private readonly Dictionary<EntityUid, bool> _lastMobPushAxis = new();
     private readonly Dictionary<EntityUid, float> _movementAccumulator = new();
@@ -171,6 +180,8 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         _hardState.Remove(ent.Owner);
         _movementAccumulator.Remove(ent.Owner);
         _activeXenoPushers.Remove(ent.Owner);
+        _nextImmobilePopupAt.Remove(ent.Owner);
+        _immobileAnnounced.Remove(ent.Owner);
     }
 
     private void OnMoverMove(Entity<GridVehicleMoverComponent> ent, ref MoveEvent args)
@@ -307,6 +318,22 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         {
             if (vehicle.MovementKind != VehicleMovementKind.Grid)
                 continue;
+
+            // Detect the tick the crash lockout ends and tell the driver the engine is
+            // back. Server-only so it only fires once, not per predicting client.
+            if (!_net.IsClient)
+            {
+                var locked = _timing.CurTime < mover.ImmobileUntil;
+                if (locked)
+                {
+                    _immobileAnnounced.Add(uid);
+                }
+                else if (_immobileAnnounced.Remove(uid) && vehicle.Operator is { } driver)
+                {
+                    // Cursor popup — driver's camera may be on vehicle or interior, this always renders on-screen.
+                    _popup.PopupCursor(Loc.GetString("rmc-vehicle-crash-immobile-recovered"), driver, Content.Shared.Popups.PopupType.Medium);
+                }
+            }
 
             TrySyncMoverToCurrentGrid((uid, mover), centerOnTile: false, xform);
 

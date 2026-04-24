@@ -84,8 +84,8 @@
     maxIntensity: 40
     intensitySlope: 18
     totalIntensity: 650
-    tileBreakScale: 4
-    maxTileBreak: 12
+    tileBreakScale: 0
+    maxTileBreak: 0
 
 - type: entity
   parent: RMCBaseBullet

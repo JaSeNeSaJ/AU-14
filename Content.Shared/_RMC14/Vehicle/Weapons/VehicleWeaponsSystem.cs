@@ -12,7 +12,9 @@ using Content.Shared.Weapons.Ranged.Components;
 using Content.Shared.Weapons.Ranged.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared._RMC14.Weapons.Ranged;
+using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Localization;
 using Robust.Shared.Network;
@@ -42,6 +44,7 @@ public sealed partial class VehicleWeaponsSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
 
     public override void Initialize()
     {
@@ -62,6 +65,35 @@ public sealed partial class VehicleWeaponsSystem : EntitySystem
         SubscribeLocalEvent<HardpointSlotsChangedEvent>(OnHardpointSlotsChanged);
 
         SubscribeLocalEvent<VehicleTurretComponent, GunShotEvent>(OnTurretGunShot);
+
+        SubscribeLocalEvent<VehicleWeaponsComponent, GetIFFGunUserEvent>(OnGetIFFGunUser);
+        SubscribeLocalEvent<VehicleTurretComponent, GetIFFGunUserEvent>(OnTurretGetIFFGunUser);
+    }
+
+    private void OnGetIFFGunUser(Entity<VehicleWeaponsComponent> ent, ref GetIFFGunUserEvent args)
+    {
+        if (args.GunUser != null)
+            return;
+
+        if (ent.Comp.Operator is { } op)
+            args.GunUser = op;
+    }
+
+    // For nested guns (cannon inside turret inside vehicle), GiveAmmoIFF may land on the turret
+    // instead of the vehicle. Forward the lookup up to the vehicle so the primary gunner's faction applies.
+    private void OnTurretGetIFFGunUser(Entity<VehicleTurretComponent> ent, ref GetIFFGunUserEvent args)
+    {
+        if (args.GunUser != null)
+            return;
+
+        if (!_container.TryGetOuterContainer(ent.Owner, Transform(ent.Owner), out var container))
+            return;
+
+        if (!TryComp<VehicleWeaponsComponent>(container.Owner, out var weapons))
+            return;
+
+        if (weapons.Operator is { } op)
+            args.GunUser = op;
     }
 
     private void OnWeaponSeatStrapAttempt(Entity<VehicleWeaponsSeatComponent> ent, ref StrapAttemptEvent args)

@@ -14,6 +14,15 @@
     pushCooldown: 2
     xenoBlockMinimumSize: Immobile
     xenoPushMinimumSize: Immobile
+    canSmashWalls: true
+    wallSmashMinSpeed: 6
+    wallSmashWheelDamage: 3
+    wallSmashHullDamage: 150
+    mobCollisionHullDamage: 20
+    speedAtZeroIntegrity: 0.2
+    crashImmobileDuration: 90
+    mobCrashImmobileDuration: 20
+    xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
     speedMultiplier: 1.5
     duration: 3
@@ -24,8 +33,8 @@
     runningSoundCooldown: 2
     hornSound: /Audio/_RMC14/Vehicle/sound_vehicles_humvee_horn.ogg
     hornCooldown: 1
-#    collisionSound: /Audio/_RMC14/Structures/metalhit.ogg
-#    collisionSoundCooldown: 0.4
+    collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
+    collisionSoundCooldown: 1.5
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 6
