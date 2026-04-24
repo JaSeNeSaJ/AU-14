@@ -75,17 +75,5 @@
     ears: RMCHeadsetGROM
     suitstorage: RMCWeaponLMGQYJ72
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMMachinegunner
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Machinegunner ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMMachinegunner
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUPPGROMMachinegunner

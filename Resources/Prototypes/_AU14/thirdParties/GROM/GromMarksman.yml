@@ -75,17 +75,5 @@
     ears: RMCHeadsetGROM
     suitstorage: RMCWeaponRifleAK4047
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMMarksman
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Marksman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMMarksman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUPPGROMMarksman

@@ -43,10 +43,7 @@
 - type: startingGear
   id: AU14GearCivilianUSASFRecruiter
   equipment:
-    jumpsuit: AU14UASFFatigues
     shoes: RMCBootsCorporate
-    id: AU14IDCardColonyUSASFRecruiter
-    head: AU14USASFCap
 
 - type: entity
   parent: CMSpawnPointJobBase

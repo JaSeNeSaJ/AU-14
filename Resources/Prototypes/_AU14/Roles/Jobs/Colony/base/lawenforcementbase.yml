@@ -4,5 +4,12 @@
   name: au14-job-name-leo
   description: au14-job-description-leo
   setPreference: true
-  playTimeTracker: AU14JobCiviliannspaConstable
+  playTimeTracker: AU14JobCivilianCMBDeputy
+  basePlaytimeTracker: true
   icon: "RMCJobIconBureauDeputy"
+  hidden: false
+
+
+- type: playTimeTracker
+  id: AU14JobCivilianCMBDeputy
+  isHumanoid: true

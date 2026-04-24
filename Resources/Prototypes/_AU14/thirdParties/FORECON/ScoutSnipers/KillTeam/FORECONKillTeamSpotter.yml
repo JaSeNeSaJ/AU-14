@@ -65,7 +65,7 @@
     pocket1: AU14PouchSlingBinocs
     pocket2: AU14PouchIFAKFill
     back: CMBackpackSniper
-    ears: RMCHeadsetForecon
+    ears: AU14HeadsetFORECONERT
     suitstorage: AU14WeaponRifleM41AMK1ReconSuppressed
   storage:
     belt:
@@ -75,12 +75,3 @@
     back:
     - RMCExplosiveBreachingCharge
     - RMCExplosivePlastic
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONKillTeamSpotter
-  categories: [ HideSpawnMenu ]
-  name: FORECON Spotter ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONKillTeamSpotter

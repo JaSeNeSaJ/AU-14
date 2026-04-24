@@ -1,7 +1,7 @@
 # Bureau
 
 - type: entity
-  parent: [RMCAllowSuitStorageClothingJacketMB, RMCBaseJacket]
+  parent: RMCOuterClothingExternalWebbing
   id: RMCCoatBureauTrenchCoatBrown
   name: brown trench-coat
   description: A worn, brown, old style trench-coat. When a bum sees a cop coming, he don't stick around.
@@ -35,7 +35,7 @@
 
 # Bureau Deputy
 - type: entity
-  parent: [RMCAllowSuitStorageClothingJacketMB, RMCBaseJacket]
+  parent: RMCOuterClothingExternalWebbing
   id: RMCCoatBureauDeputy
   name: CMB deputy jacket
   description: A thick and stylish black leather jacket with a Marshal's Deputy badge pinned to it. The back is enscribed with the powerful letters of 'DEPUTY' representing justice, authority, and protection in the outer rim.
@@ -129,7 +129,7 @@
 
 # TSEPA
 - type: entity
-  parent: [RMCAllowSuitStorageClothingJacketMB, RMCBaseJacket]
+  parent: RMCOuterClothingExternalWebbing
   id: RMCCoatTSEPA
   name: NSPA police jacket
   description: A black polyester jacket with a silver Sakura emblem of the Neroid Sector Policing Authority pinned to it. Empire and Honor, Bound by Duty. Duty Beyond Borders, Justice Across Worlds.
