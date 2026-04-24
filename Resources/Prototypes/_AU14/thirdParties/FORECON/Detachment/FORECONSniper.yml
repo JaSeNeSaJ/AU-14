@@ -68,22 +68,10 @@
   id: AU14GearFORECONSniperDetachment
   equipment:
     id: AU14IDCardFORECONSniperDetachment
-    ears: AU14HeadsetSectionLeader
+    ears: AU14HeadsetFORECONERT
   inhand:
   - AU14KitFORECONDetachmentUniform
   - AU14KitFORECONDetachmentSniper
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSniperDetachment
-  categories: [ HideSpawnMenu ]
-  name: FORECON Sniper ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSniperDetachment
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14FORECONSniperDetachment

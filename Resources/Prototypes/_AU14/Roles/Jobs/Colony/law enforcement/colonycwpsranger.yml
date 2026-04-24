@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobLEOBase
   id: AU14JobCivilianCWPSRanger
   name: au14-job-name-civiliancwpsranger
   description: au14-job-description-civiliancwpsranger
@@ -12,15 +12,14 @@
     inverted: true
     traits:
     - Epilepsy
-  playTimeTracker: AU14JobCivilianCWPSRanger
   ranks:
     AU14RankCWPSSeniorRanger:
     - !type:RoleTimeRequirement
-      role: AU14JobCivilianCWPSRanger
+      role: AU14JobCivilianCMBDeputy
       time: 72000 # 20 hours
     AU14RankCWPSRanger:
     - !type:RoleTimeRequirement
-      role: AU14JobCivilianCWPSRanger
+      role: AU14JobCivilianCMBDeputy
       time: 7200 # 2 hours
     AU14RankCWPSRangerTrainee: []
   startingGear: AU14GearCivilianCWPSRanger
@@ -74,7 +73,3 @@
     job_id: AU14JobCivilianCWPSRanger
   - type: Sprite
     state: syn_spawn
-
-- type: playTimeTracker
-  id: AU14JobCivilianCWPSRanger
-  isHumanoid: true

@@ -48,10 +48,6 @@
     job: AU14JobWYPMCPartyEngineer
     raffle:
       settings: short
-    requirements:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSquadCombatTech
-      time: 4500 # 1 hour
     rules: au14-wypmc-description
 
 - type: startingGear

@@ -88,17 +88,7 @@
     - RMCMRESPP
     - CMCanteen
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPTDRifleman
-  name: UPP TD Rifleman ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14UPPTerritorialDefenseRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
+
 
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseRifleman

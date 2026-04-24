@@ -66,19 +66,10 @@
     pocket1: RMCPouchMagazine
     pocket2: AU14PouchIFAKFill
     back: CMBackpackSniper
-    ears: RMCHeadsetForecon
+    ears: AU14HeadsetFORECONERT
     suitstorage: RMCM96SBSniperRifle
   storage:
     pocket1:
     - CMMagazineSniperM96S
     - CMMagazineSniperM96S
     - CMMagazineSniperM96S
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONKillTeamSniper
-  categories: [ HideSpawnMenu ]
-  name: FORECON Sniper ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONKillTeamSniper
