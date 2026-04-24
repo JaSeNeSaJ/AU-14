@@ -75,17 +75,5 @@
     ears: RMCHeadsetGROM
     suitstorage: RMCWeaponShotgunType23
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMPointman
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Pointman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMPointman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUPPGROMPointman

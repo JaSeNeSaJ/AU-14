@@ -81,17 +81,5 @@
     head:
     - RMCGogglesBallisticPolarizedBlue
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyTankLoader
-  categories: [ HideSpawnMenu ]
-  name: US Army Tank Loader ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyTankLoader
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-
 - type: playTimeTracker
   id: AU14JobUSArmyTankLoader

@@ -164,6 +164,28 @@
     tags:
     - AU14SquadFirstRecon
 
+- type: entity
+  parent: SquadBase
+  id: AU14SquadLACNCommando
+  name: LACN Commando
+  components:
+  - type: SquadTeam
+    color: "#32CD32"
+    blacklistedSquadArmor:
+    - Helmet
+    - Goggles
+    - Armor
+    - Gloves
+    radio: UASOF
+    minimapBackground:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: background_forecon
+    canSupplyDrop: false
+    group: LACNCommando
+  - type: Tag
+    tags:
+    - AU14SquadLACNCommando
+
 - type: Tag
   id: AU14SquadUACG
 
@@ -181,3 +203,6 @@
 
 - type: Tag
   id: AU14SquadFirstRecon
+
+- type: Tag
+  id: AU14SquadLACNCommando

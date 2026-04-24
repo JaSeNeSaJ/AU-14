@@ -1,5 +1,5 @@
 - type: entity
-  parent: RMCBaseMobSpeciesOrganic
+  parent: CMMobHuman
   id: AU14BaseMobSpeciesOrganicTDThirdparty
   abstract: true
   suffix: AU14, TD, UPP
