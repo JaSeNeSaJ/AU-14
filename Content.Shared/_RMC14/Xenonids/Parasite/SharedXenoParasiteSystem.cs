@@ -879,7 +879,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
 
         if (_doAfter.TryStartDoAfter(doAfterEventArgs))
         {
-            /* TODO add this
+
             if (_net.IsServer &&
                 TryComp(victim, out InfectableComponent? infectable) &&
                 TryComp(victim, out HumanoidAppearanceComponent? appearance) &&
@@ -889,7 +889,6 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
                 var filter = Filter.Pvs(victim);
                 _audio.PlayEntity(sound, filter, victim, true);
             }
-            */
 
             EnsureComp<VictimBurstComponent>(burstFrom);
             _appearance.SetData(burstFrom.Owner, BurstVisuals.Visuals, VictimBurstState.Bursting);
