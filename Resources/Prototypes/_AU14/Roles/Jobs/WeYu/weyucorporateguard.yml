@@ -1,10 +1,18 @@
 - type: job
   parent: CMJobBase
+  id: AU14JobWYGuardBase
+  name: au14-job-name-wyguard
+  description: au14-job-description-wyguard
+  playTimeTracker: AU14JobWYGuard
+  basePlaytimeTracker: true
+  hidden: true
+
+- type: job
+  parent: AU14JobWYGuardBase
   id: AU14JobWYGuard
   name: au14-job-name-wyguard
   description: au14-job-description-wyguard
   setPreference: true
-  playTimeTracker: AU14JobWYGuard
   ranks:
     AU14RankWYSecurityOfficer: []
   startingGear: AU14GearWYGuard
@@ -62,10 +70,10 @@
     shoes: RMCBootsPMCFilled
     head: AU14CivBallCapBlack
     belt: AU14BeltUtilityGeneralBlack
-    back: RMCSatchelLightpackBlack
-    ears2: AU14ColonyAdminHeadset
+    back: RMCSatchelLightpackWeYa
+    ears2: AU14ColonyWeylandHeadset
     ears: RMCM5CameraGear
-    suitstorage: RMCBeltHolsterPistolTSE
+    suitstorage: RMCM77BeltPMCFilled
 
 - type: entity
   parent: CMSpawnPointJobBase

@@ -29,9 +29,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_spec
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -77,18 +74,6 @@
     back: RMCSatchelSPPFullMarksman
     ears: RMCHeadsetGROM
     suitstorage: RMCWeaponRifleAK4047
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMMarksman
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Marksman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMMarksman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMMarksman

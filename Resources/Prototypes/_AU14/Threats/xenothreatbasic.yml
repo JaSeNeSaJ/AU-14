@@ -1,6 +1,7 @@
 
 - type: threat
   id: XenoThreat
+  lorePrimer: AU14PrimerThreatXeno
   roundstartspawns: XenoThreatSpawns
   blacklistedgamemodes:
    - ColonyFall
@@ -15,19 +16,17 @@
   leadersToSpawn:
     CMXenoQueen: 1
   gruntsToSpawn:
-    CMXenoLarva: 4
+    CMXenoLarva: 6
   spawnTogether: true
   scaling:
-    CMXenoQueen:
-      scale: 0.05
-      whenToBeginScaling: 50
     CMXenoLarva:
-      scale: 0.25
-      whenToBeginScaling: 50
+      scale: 0.16
+      whenToBeginScaling: 30
 
 
 - type: threat
   id: XenoThreatCF
+  lorePrimer: AU14PrimerThreatXeno
   roundstartspawns: XenoThreatSpawnsCF
   whitelistedgamemodes:
   - ColonyFall
@@ -45,12 +44,18 @@
     CMXenoLarva: 1
   spawnTogether: true
   scaling:
-    CMXenoQueen:
-      scale: 0
-      whenToBeginScaling: 50
     CMXenoLarva:
       scale: 0.08
       whenToBeginScaling: 50
   Markers:
     Member: xenocf
     Leader: xenocf
+
+- type: lorePrimer
+  id: AU14PrimerThreatXeno
+  threattext: You are a member of the hive, grow and evolve!"
+  KnowledgeLevelsGovforThreat:
+    "Threat Unknown": 1
+    "Threat is biological in nature.": 2
+    "Xenosmorphs identified, full threat knowledge": 3
+

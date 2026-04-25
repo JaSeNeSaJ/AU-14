@@ -14,6 +14,7 @@
 
 - type: auThirdParty
   id: UPPGROM
+  displayName: UPP GROM Special Forces (Full Squad)
   partyspawn: UPPGROMSpawn
   blacklistedgamemodes:
     - insurgency
@@ -42,6 +43,7 @@
 
 - type: auThirdParty
   id: UPPGROMAlt
+  displayName: UPP GROM Special Forces (Small Team)
   partyspawn: UPPGROMSpawnAlt
   blacklistedgamemodes:
     - insurgency
@@ -70,6 +72,7 @@
 
 - type: auThirdParty
   id: UPPGROMAlt2
+  displayName: UPP GROM Special Forces (Medium Team)
   partyspawn: UPPGROMSpawnAlt2
   blacklistedgamemodes:
     - insurgency

@@ -28,9 +28,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -83,18 +80,6 @@
   storage:
     head:
     - RMCGogglesBallisticPolarizedBlue
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyTankLoader
-  categories: [ HideSpawnMenu ]
-  name: US Army Tank Loader ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyTankLoader
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUSArmyTankLoader

@@ -29,9 +29,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_cont
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -77,18 +74,6 @@
     back: RMCSatchelSPPFullMachinegunner
     ears: RMCHeadsetGROM
     suitstorage: RMCWeaponLMGQYJ72
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMMachinegunner
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Machinegunner ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMMachinegunner
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMMachinegunner

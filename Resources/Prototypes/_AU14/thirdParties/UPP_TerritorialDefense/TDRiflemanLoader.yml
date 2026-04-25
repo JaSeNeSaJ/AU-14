@@ -28,9 +28,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_spec
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillEndurance: 1
@@ -85,15 +82,3 @@
     - RMCRocketHJRA12AT
     - RMCRocketHJRA12HE
     - RMCRocketHJRA12Incen
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPTDLoader
-  name: UPP TD Loader ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14UPPTerritorialDefenseLoader
-  - type: ItemIFF
-    factions:
-    - GOVFOR

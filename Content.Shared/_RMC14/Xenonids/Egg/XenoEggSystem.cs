@@ -126,6 +126,10 @@ public sealed class XenoEggSystem : EntitySystem
 
     private void OnDropshipHijackStart(ref DropshipHijackStartEvent ev)
     {
+        // Ovipositor cooldown reset is xeno-specific; skip for human-vs-human hijacks
+        if (ev.IsHumanHijack)
+            return;
+
         var query = EntityQueryEnumerator<XenoOvipositorCapableComponent>();
         while (query.MoveNext(out var uid, out _))
         {
@@ -884,6 +888,7 @@ public sealed class XenoEggSystem : EntitySystem
                     {
                         RemCompDeferred<XenoFragileEggComponent>(uid);
                     }
+                    SetEggSprite((uid, egg), egg.NormalSprite);
                 }
                 else
                 {

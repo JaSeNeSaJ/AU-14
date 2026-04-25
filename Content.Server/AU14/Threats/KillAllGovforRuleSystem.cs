@@ -2,12 +2,13 @@ using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.AU14;
-using Content.Shared.Cuffs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.GameTicking.Components;
+using Content.Shared._RMC14.Areas;
 using Content.Shared.Cuffs.Components;
+using Content.Shared._RMC14.Evacuation;
 
 namespace Content.Server.AU14.Threats;
 
@@ -16,11 +17,28 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
     [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly GameTicker _gameTicker = default!;
     [Dependency] private readonly Round.AuRoundSystem _auRoundSystem = default!;
+    [Dependency] private readonly AreaSystem _area = default!;
+
+    private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
 
     public override void Initialize()
     {
         base.Initialize();
+        _evacuatedQuery = GetEntityQuery<EvacuatedGridComponent>();
         SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
+        SubscribeLocalEvent<EvacuationLaunchedEvent>(OnEvacuationLaunched);
+    }
+
+    private bool IsEvacuated(EntityUid uid)
+    {
+        var xform = Transform(uid);
+        return xform.GridUid is { } grid && _evacuatedQuery.HasComp(grid);
+    }
+
+    private void OnEvacuationLaunched(ref EvacuationLaunchedEvent ev)
+    {
+        if (_gameTicker.IsGameRuleActive<KillAllGovforRuleComponent>())
+            CheckVictoryCondition();
     }
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
@@ -41,8 +59,12 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
     /// </summary>
     public void OnHandcuffEvent(EntityUid uid)
     {
-
         CheckVictoryCondition();
+    }
+
+    private bool IsInArrestArea(EntityUid uid)
+    {
+        return _area.TryGetArea(uid, out var area, out _) && area.Value.Comp.CountAsArrestedForEndConditions;
     }
 
     private void CheckVictoryCondition()
@@ -55,7 +77,7 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
 
-        // Count total and dead/arrested Govfor mobs
+        // Count total and dead/arrested Govfor mobs (excluding evacuated)
         var total = 0;
         var eliminated = 0;
 
@@ -64,6 +86,14 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "govfor"))
             {
+                // If the grid was evacuated, count them as dead (do not skip)
+                if (IsEvacuated(uid))
+                {
+                    total++;
+                    eliminated++;
+                    continue;
+                }
+
                 total++;
 
                 // Count as eliminated if dead
@@ -72,7 +102,9 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
                     eliminated++;
                 }
                 // Or if arrested flag is set and they're cuffed
-                else if (countArrests && TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0)
+                else if (countArrests &&
+                         ((TryComp<CuffableComponent>(uid, out var cuffable) && cuffable.CuffedHandCount > 0) ||
+                          IsInArrestArea(uid)))
                 {
                     eliminated++;
                 }
@@ -96,7 +128,7 @@ public sealed class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovforRuleCo
             }
             else
             {
-                var winMessage = _auRoundSystem._selectedthreat?.WinMessage;
+                var winMessage = _auRoundSystem._selectedthreat.WinMessage;
                 if (!string.IsNullOrEmpty(winMessage))
                 {
                     _gameTicker.EndRound(winMessage);

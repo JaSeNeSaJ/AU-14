@@ -5,7 +5,7 @@
   description: Threat wins when all Govfor are dead (or when specified percent are dead).
   components:
     - type: KillAllGovforRule
-      percent: 85
+      percent: 80
 
 - type: entity
   id: ThreatSurviveRule
@@ -23,7 +23,7 @@
   description: Threat wins when all AUColonists are dead (or when specified percent are dead).
   components:
     - type: KillAllColonistRule
-      percent: 95
+      percent: 85
 
 - type: entity
   id: KillAllApeRule
@@ -41,6 +41,15 @@
   description: Threat wins when all Xenos and Cultists are dead (or when specified percent are dead).
   components:
     - type: KillAllXenoRule
+
+- type: entity
+  id: KillAllHumanRule
+  parent: BaseGameRule
+  name: Kill All Humans
+  description: Threat wins when all humanoid mobs (excluding xenos) are dead (or when specified percent are dead).
+  components:
+    - type: KillAllHumanRule
+      percent: 85
 
 - type: entity
   id: InsWinConditionsRule

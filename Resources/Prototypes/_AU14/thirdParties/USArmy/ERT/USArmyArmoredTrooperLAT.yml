@@ -1,6 +1,6 @@
 - type: job
   parent: AU14USArmyTrooperBase
-  id: AU14USArmyTrooperArmoredLAT
+  id: AU14JobUSArmyTrooperArmoredLAT
   name: au14-job-name-usarmy-trooper-lat
   description: au14-job-description-usarmy
   ranks:
@@ -31,11 +31,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -63,7 +58,7 @@
     name: au14-job-name-usarmy-trooper
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmyTrooperArmoredLAT
+    job: AU14JobUSArmyTrooperArmoredLAT
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -82,7 +77,7 @@
     pocket1: AU14PouchIFAKFill
     pocket2: AU14PouchIFAKFill
     back: AU14MolleBackpack
-    ears: AU14HeadsetUSArmy
+    ears: AU14HeadsetUSArmyERT
     suitstorage: RMCWeaponRifleM54C
   storage:
     head:

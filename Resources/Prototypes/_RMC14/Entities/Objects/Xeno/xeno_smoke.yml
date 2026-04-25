@@ -51,12 +51,13 @@
       components:
       - Marine
       - Xeno
+      - Vehicle
   - type: DeleteOnExplosion # so this is supposed to be random depending on the explosion severity but uhhh hahAHAHA help
 
 - type: entity
   id: RMCSmokeNeurotoxin
   name: neurotoxin gas
-  categories: [ HideSpawnMenu ]
+  #categories: [ HideSpawnMenu ]
   components:
   - type: Transform
     anchored: true
@@ -112,6 +113,9 @@
       components:
       - Marine
   - type: DeleteOnExplosion
+  - type: GasMaskFilterDamage
+    damage: 10
+    neurotoxin: true
 
 - type: entity
   id: RMCSmokeRunner

@@ -25,11 +25,6 @@
           RMCSkillFireman: 1
           RMCSkillVehicles: 1
           RMCSkillPolice: 1
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: JobPrefix
       prefix: au14-job-prefix-govforspecialist-marksmanRMC
   hidden: false
@@ -67,20 +62,8 @@
     pocket1: RMCPouchToolsSocMarineRaiderFill
     pocket2: AU14PouchIFAKFill
     back: AU14RMCRRTBackpackMarksman
-    ears: AU14HeadsetSectionMarine
+    ears: AU14HeadsetRMCRRT
     suitstorage: AU14WeaponRifleL90MFull
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardRMCRRTMarksman
-  name: RMC RRT marksman ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14RMCRRTMarksman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobRMCRRTMarksman

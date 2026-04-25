@@ -529,3 +529,11 @@
       preset: Fog
       inverted: true
 
+- type: entity
+  id: junglevegetationremove_colonyfall_inverted
+  suffix: ColonyFall Inverted
+  parent: CMWallJungle
+  components:
+  - type: DestroyOnPreset
+    preset: ColonyFall
+    inverted: true

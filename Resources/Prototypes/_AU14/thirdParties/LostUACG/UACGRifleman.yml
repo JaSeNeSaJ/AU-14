@@ -33,9 +33,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: private
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 2
@@ -82,18 +79,6 @@
   inhand:
   - CMFlare
   - AUWeaponRifleM20A
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUACGRifleman
-  categories: [ HideSpawnMenu ]
-  name: UACG Rifleman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UACGRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUACGRifleman

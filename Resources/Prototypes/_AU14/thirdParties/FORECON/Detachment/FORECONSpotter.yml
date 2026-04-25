@@ -33,11 +33,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spotter
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: SpotterWhitelist
@@ -71,22 +66,10 @@
   id: AU14GearFORECONSpotterDetachment
   equipment:
     id: AU14IDCardFORECONSpotterDetachment
-    ears: AU14HeadsetSectionLeader
+    ears: AU14HeadsetFORECONERT
   inhand:
   - AU14KitFORECONDetachmentUniform
   - AU14KitFORECONDetachmentSpotter
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSpotterDetachment
-  categories: [ HideSpawnMenu ]
-  name: FORECON Spotter ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSpotterDetachment
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

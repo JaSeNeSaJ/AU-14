@@ -40,6 +40,11 @@
 - type: accessLevel
   id: CMAccessColonyChem
 
+# Grants access to manage player-operated shopkeeper vendor machines
+- type: accessLevel
+  id: AU14AccessShopkeep
+  name: au14-access-shopkeep
+
 # PVE Hybrisa Exclusive
 - type: accessLevel
   id: RMCAccessTSEPA

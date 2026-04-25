@@ -1,5 +1,6 @@
 - type: threat
   id: apethreatcf
+  lorePrimer: AU14PrimerThreatApe
   roundstartspawns: apePartycf
   whitelistedgamemodes:
   - ColonyFall
@@ -8,6 +9,7 @@
   winconditions:
   - KillAllColonistRule
   - KillAllApeRule
+  minplayers: 400 # off
 
 - type: partySpawn
   id: apePartycf
@@ -18,6 +20,7 @@
 
 - type: threat
   id: apethreat
+  lorePrimer: AU14PrimerThreatApe
   roundstartspawns: apeParty
   whitelistedgamemodes:
   - DistressSignal
@@ -27,6 +30,7 @@
   winconditions:
   - KillAllGovforRule
   - KillAllApeRule
+  minplayers: 400 # off
 
 
 - type: partySpawn
@@ -35,3 +39,11 @@
     CMUMobApe: 4
   scalewithpop: false
   spawnTogether: true
+
+- type: lorePrimer
+  id: AU14PrimerThreatApe
+  threattext: "You are a dangerous megafauna with high caloric needs, satiate your hunger."
+  KnowledgeLevelsGovforThreat:
+    "Threat Unknown": 1
+    "Distress traffic mentions aggressive unknown fauna near colony infrastructure.": 2
+    "Recovered comms indicate repeated massed strikes on soft logistics targets.": 3

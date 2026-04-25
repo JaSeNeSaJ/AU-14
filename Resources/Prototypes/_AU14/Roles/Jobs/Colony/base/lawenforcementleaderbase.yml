@@ -4,4 +4,12 @@
   name: au14-job-name-leoleader
   description: au14-job-description-leoleader
   setPreference: true
-  playTimeTracker: AU14JobCiviliannspaConstable
+  playTimeTracker: AU14JobCivilianCMBMarshal
+  icon: "RMCJobIconBureauMarshal"
+  basePlaytimeTracker: true
+  hidden: false
+
+
+- type: playTimeTracker
+  id: AU14JobCivilianCMBMarshal
+  isHumanoid: true

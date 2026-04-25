@@ -1,10 +1,18 @@
 - type: job
   parent: CMJobBase
+  id: AU14JobCivilianCorporateLiaisonBase
+  name: au14-job-name-civiliancorporateliaison
+  description: au14-job-description-civiliancorporateliaison
+  playTimeTracker: AU14JobCivilianCorporateLiaison
+  basePlaytimeTracker: true
+  hidden: true
+
+- type: job
+  parent: AU14JobCivilianCorporateLiaisonBase
   id: AU14JobCivilianCorporateLiaison
   name: au14-job-name-civiliancorporateliaison
   description: au14-job-description-civiliancorporateliaison
   setPreference: true
-  playTimeTracker: AU14JobCivilianCorporateLiaison
   ranks:
     RMCRankWeYaAssistantManager:
     - !type:RoleTimeRequirement

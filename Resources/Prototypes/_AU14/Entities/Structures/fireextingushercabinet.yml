@@ -56,6 +56,16 @@
                   volume: -4
 
 - type: entity
+  parent: AU14HybrisaExtinguisherCabinet
+  suffix: Filled, CMU14
+  id: CMUHybrisaExtinguisherCabinetFilled
+  components:
+  - type: ContainerFill
+    containers:
+      ItemCabinet:
+      - CMFireExtinguisher
+
+- type: entity
   parent: ExtinguisherCabinet
   id: AU14ExtinguisherCabinetOpen
   suffix: Open

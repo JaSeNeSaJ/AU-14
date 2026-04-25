@@ -60,7 +60,7 @@
         amount: 25
     - name: Backpack
       entries:
-      - id: RMCSatchelLightpackBlack
+      - id: RMCSatchelLightpackWeYa
         amount: 25
       - id: AU14BackpackMarineBlack
         amount: 20
@@ -80,9 +80,7 @@
         amount: 2
       - id: AU14M276ShotgunShellLoadingRigBlack
         amount: 2
-      - id: RMCBeltHolsterPistolTSE
-        amount: 15
-      - id: AU14BeltHolsterPistolBlack
+      - id: RMCBeltHolsterPistolPMC
         amount: 15
       - id: RMCBeltSecurityWeYa
         amount: 15
@@ -106,7 +104,7 @@
         amount: 4
       - id: RMCPouchGeneralMedium
         amount: 15
-      - id: RMCPouchGeneralLarge
+      - id: RMCPouchMagazineLargePMC
         amount: 2
       - id: RMCPouchMagazinePistol
         amount: 15
@@ -124,6 +122,10 @@
 #        amount: 1
     - name: Mask
       entries:
+      - id: CMMaskGas
+        amount: 20
+      - id: CMUGasMaskFilterWY
+        amount: 40
       - id: CMMaskCoif
         amount: 10
       - id: RMCMaskScarfBlack

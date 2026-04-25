@@ -81,18 +81,8 @@
 - type: startingGear
   id: AU14GearGOVFORAuxSupportSynth
   equipment:
-    id: AU14IDCardGOVFORAuxSupportSynth
     ears: RMCM5CameraGear
     ears2: AU14HeadsetSectionLeader
-    gloves: CMHandsInsulated
-    shoes: CMBootsBlackFilled
-    jumpsuit: AU14CivilianBoilerSuitDarkBlueSynth
-    belt: CMUBeltMedicBagSupportSynth
-    head: AU14CivBallCapBlack
-    back: AU14SmartpackBlackFilled
-    pocket1: AU14PouchToolsFilledSupportSynthetic
-    pocket2: AU14PouchPoliceEquipmentSupportSynth
-    outerClothing: AU14CMDefibrillator
 
 - type: entity
   parent: CMSpawnPointJobBase

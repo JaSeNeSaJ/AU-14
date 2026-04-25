@@ -10,6 +10,7 @@ using Content.Server._RMC14.Stations;
 using Content.Server._RMC14.Xenonids.Hive;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Server.AU14.Round;
 using Content.Server.Chat.Managers;
 using Content.Server.Fax;
 using Content.Server.GameTicking;
@@ -68,6 +69,7 @@ using Content.Shared._RMC14.Xenonids.JoinXeno;
 using Content.Shared._RMC14.Xenonids.Maturing;
 using Content.Shared._RMC14.Xenonids.Parasite;
 using Content.Shared.Actions;
+using Content.Shared.AU14;
 using Content.Shared.CCVar;
 using Content.Shared.Coordinates;
 using Content.Shared.Database;
@@ -277,7 +279,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private void OnMapLoading(LoadingMapsEvent ev)
     {
 
-        SelectRandomPlanet();
+       // SelectRandomPlanet();
         //Just in case the info text is not updated previousely
         GameTicker.UpdateInfoText();
     }
@@ -295,6 +297,7 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
             // TODO: come up with random name like operation name, in a function that can be reused for hive v hive
             comp.Hive = _hive.CreateHive("xenonid hive", comp.HiveId);
+            TheHive = comp.Hive;
             if (comp.SpawnPlanet && !SpawnXenoMap((uid, comp)))
             {
                 Log.Error("Failed to load xeno map");
@@ -842,113 +845,165 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
     private void OnDropshipHijackStart(ref DropshipHijackStartEvent ev)
     {
-        var hiveStructures = EntityQueryEnumerator<HiveConstructionLimitedComponent, TransformComponent>();
-        while (hiveStructures.MoveNext(out var id, out _, out var xform))
+        // For human hijacks, build a set of map IDs belonging to the hijacker's faction ship(s).
+        // For xeno hijacks, keep legacy behavior (Almayer maps).
+        var targetShipMaps = new HashSet<MapId>();
+        if (ev.IsHumanHijack && !string.IsNullOrEmpty(ev.HijackerFaction))
         {
-            EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
-
-            if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
-                _destruction.DestroyEntity(id);
-        }
-
-        var xenoLimitedStructures = EntityQueryEnumerator<XenoSecretionLimitedComponent, TransformComponent>();
-        while (xenoLimitedStructures.MoveNext(out var id, out _, out var xform))
-        {
-            EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
-
-            if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
-                _destruction.DestroyEntity(id);
-        }
-
-        var xenos = EntityQueryEnumerator<XenoComponent, MobStateComponent, TransformComponent>();
-        var xenoAmount = 0;
-        var larva = 0;
-        //TODO RMC14 only do main hive
-        while (xenos.MoveNext(out var xeno, out var comp, out var mobstate, out var transformComp))
-        {
-            if (_mobState.IsDead(xeno))
-                continue;
-
-            if (transformComp.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(xeno.ToCoordinates()))
+            // Scan ShipFactionComponent grids matching the hijacker's faction
+            var shipQuery = EntityQueryEnumerator<ShipFactionComponent, TransformComponent>();
+            while (shipQuery.MoveNext(out _, out var shipFaction, out var shipXform))
             {
-                if (comp.CountedInSlots)
-                    larva++;
-
-                //Ghost player and send message
-                if (TryComp(xeno, out ActorComponent? actor))
+                if (!string.IsNullOrEmpty(shipFaction.Faction) &&
+                    string.Equals(shipFaction.Faction, ev.HijackerFaction, StringComparison.OrdinalIgnoreCase))
                 {
-                    var session = actor.PlayerSession;
-                    Entity<MindComponent> mind;
-
-                    if (_mind.TryGetMind(session, out var mindId, out var mindComp))
-                        mind = (mindId, mindComp);
-                    else
-                        mind = _mind.CreateMind(session.UserId);
-
-                    var ghost = _ghost.SpawnGhost((mind.Owner, mind.Comp), xeno);
-                    if (ghost != null)
-                        EnsureComp<JoinXenoCooldownIgnoreComponent>(ghost.Value);
-
-                    var origin = _transform.GetMoverCoordinates(xeno);
-                    _popup.PopupCoordinates(Loc.GetString("rmc-xeno-hibernation"), origin, Filter.SinglePlayer(session), true, PopupType.MediumXeno);
+                    targetShipMaps.Add(shipXform.MapID);
                 }
-
-                QueueDel(xeno);
             }
-            else
-                xenoAmount++;
-        }
 
-        //Queen Maturing - TODO only main hive
-        var queens = EntityQueryEnumerator<XenoMaturingComponent, MobStateComponent>();
-        while (queens.MoveNext(out var queen, out var maturing, out var mobstate))
-        {
-            if (_mobState.IsDead(queen))
-                continue;
-
-            _maturing.Mature((queen, maturing));
-        }
-
-        //Surge
-        var shipQuery = EntityQueryEnumerator<MarineComponent, MobStateComponent, InfectableComponent, TransformComponent>();
-
-        float totalHostWeights = 0;
-        while (shipQuery.MoveNext(out var marine, out var mob, out var _, out var _, out var transformComp))
-        {
-            if (_mobState.IsDead(marine) || !_almayerMaps.Contains(transformComp.MapID))
-                continue;
-
-            if (!TryComp<MindContainerComponent>(marine, out var mindContainer))
-                continue;
-
-            if (mindContainer is null ||
-                !TryComp<MindComponent>(mindContainer.Mind, out var mind))
-                continue;
-
-            foreach (var roleId in mind.MindRoles)
+            // Also include Almayer maps as fallback
+            var almayerQuery = EntityQueryEnumerator<AlmayerComponent, TransformComponent>();
+            while (almayerQuery.MoveNext(out _, out var aXform))
             {
-                if (!TryComp<MindRoleComponent>(roleId, out var mindRole))
-                    continue;
-
-                if (mindRole.JobPrototype == null || !_prototypes.TryIndex(mindRole.JobPrototype, out var proto))
-                    continue;
-
-                totalHostWeights += proto.RoleWeight;
+                targetShipMaps.Add(aXform.MapID);
+            }
+        }
+        else
+        {
+            // Legacy xeno hijack: use Almayer maps
+            foreach (var mapId in _almayerMaps)
+            {
+                targetShipMaps.Add(mapId);
             }
         }
 
-        //Get the maximum of either remaining marines or minimum amount
-        var surgeAmount = Math.Max((int)Math.Ceiling(totalHostWeights * _hijackShipWeight) - xenoAmount, _hijackMinBurrowed);
-        var rules = QueryActiveRules();
-        while (rules.MoveNext(out _, out var rule, out _))
+        // Only do xeno-specific cleanup for xeno hijacks
+        if (!ev.IsHumanHijack)
         {
-            // Reset Hivecore Cooldown
-            var hiveComp = EnsureComp<HiveComponent>(rule.Hive);
-            //Add all the stranded xenos up
-            _hive.IncreaseBurrowedLarva(larva); // TODO RMC14 should prob make sure it's only main hive
-            _hive.ResetHiveCoreCooldown((rule.Hive, hiveComp));
-            var surge = EnsureComp<HijackBurrowedSurgeComponent>(rule.Hive);
-            surge.PooledLarva = surgeAmount;
+            var hiveStructures = EntityQueryEnumerator<HiveConstructionLimitedComponent, TransformComponent>();
+            while (hiveStructures.MoveNext(out var id, out _, out var xform))
+            {
+                EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
+
+                if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
+                    _destruction.DestroyEntity(id);
+            }
+
+            var xenoLimitedStructures = EntityQueryEnumerator<XenoSecretionLimitedComponent, TransformComponent>();
+            while (xenoLimitedStructures.MoveNext(out var id, out _, out var xform))
+            {
+                EnsureComp<HiveConstructionSuppressAnnouncementsComponent>(id);
+
+                if (xform.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(id.ToCoordinates()))
+                    _destruction.DestroyEntity(id);
+            }
+
+            var xenos = EntityQueryEnumerator<XenoComponent, MobStateComponent, TransformComponent>();
+            var xenoAmount = 0;
+            var larva = 0;
+            //TODO RMC14 only do main hive
+            while (xenos.MoveNext(out var xeno, out var comp, out var mobstate, out var transformComp))
+            {
+                if (_mobState.IsDead(xeno))
+                    continue;
+
+                if (transformComp.ParentUid != ev.Dropship && _rmcPlanet.IsOnPlanet(xeno.ToCoordinates()))
+                {
+                    if (comp.CountedInSlots)
+                        larva++;
+
+                    //Ghost player and send message
+                    if (TryComp(xeno, out ActorComponent? actor))
+                    {
+                        var session = actor.PlayerSession;
+                        Entity<MindComponent> mind;
+
+                        if (_mind.TryGetMind(session, out var mindId, out var mindComp))
+                            mind = (mindId, mindComp);
+                        else
+                            mind = _mind.CreateMind(session.UserId);
+
+                        var ghost = _ghost.SpawnGhost((mind.Owner, mind.Comp), xeno);
+                        if (ghost != null)
+                            EnsureComp<JoinXenoCooldownIgnoreComponent>(ghost.Value);
+
+                        var origin = _transform.GetMoverCoordinates(xeno);
+                        _popup.PopupCoordinates(Loc.GetString("rmc-xeno-hibernation"), origin, Filter.SinglePlayer(session), true, PopupType.MediumXeno);
+                    }
+
+                    QueueDel(xeno);
+                }
+                else
+                    xenoAmount++;
+            }
+
+            //Queen Maturing - TODO only main hive
+            var queens = EntityQueryEnumerator<XenoMaturingComponent, MobStateComponent>();
+            while (queens.MoveNext(out var queen, out var maturing, out var mobstate))
+            {
+                if (_mobState.IsDead(queen))
+                    continue;
+
+                _maturing.Mature((queen, maturing));
+            }
+
+            //Surge - search target ship maps for marines
+            var surgeQuery = EntityQueryEnumerator<MarineComponent, MobStateComponent, InfectableComponent, TransformComponent>();
+
+            float totalHostWeights = 0;
+            while (surgeQuery.MoveNext(out var marine, out var mob, out var _, out var _, out var transformComp))
+            {
+                if (_mobState.IsDead(marine) || !targetShipMaps.Contains(transformComp.MapID))
+                    continue;
+
+                if (!TryComp<MindContainerComponent>(marine, out var mindContainer))
+                    continue;
+
+                if (mindContainer is null ||
+                    !TryComp<MindComponent>(mindContainer.Mind, out var mind))
+                    continue;
+
+                foreach (var roleId in mind.MindRoles)
+                {
+                    if (!TryComp<MindRoleComponent>(roleId, out var mindRole))
+                        continue;
+
+                    if (mindRole.JobPrototype == null || !_prototypes.TryIndex(mindRole.JobPrototype, out var proto))
+                        continue;
+
+                    totalHostWeights += proto.RoleWeight;
+                }
+            }
+
+            //Get the maximum of either remaining marines or minimum amount
+            var surgeAmount = Math.Max((int)Math.Ceiling(totalHostWeights * _hijackShipWeight) - xenoAmount, _hijackMinBurrowed);
+            var rules = QueryActiveRules();
+            while (rules.MoveNext(out _, out var rule, out _))
+            {
+                // Reset Hivecore Cooldown
+                var hiveComp = EnsureComp<HiveComponent>(rule.Hive);
+                //Add all the stranded xenos up
+                _hive.IncreaseBurrowedLarva(larva); // TODO RMC14 should prob make sure it's only main hive
+                _hive.ResetHiveCoreCooldown((rule.Hive, hiveComp));
+                var surge = EnsureComp<HijackBurrowedSurgeComponent>(rule.Hive);
+                surge.PooledLarva = surgeAmount;
+            }
+        }
+        else
+        {
+            // Human faction hijack: scan target ship maps for crew to apply similar effects.
+            // No xeno cleanup needed. Just count crew on the target ship for logging/future use.
+            var crewOnShip = 0;
+            var crewQuery = EntityQueryEnumerator<MarineComponent, MobStateComponent, TransformComponent>();
+            while (crewQuery.MoveNext(out var crewUid, out _, out var mobState, out var xform))
+            {
+                if (_mobState.IsDead(crewUid) || !targetShipMaps.Contains(xform.MapID))
+                    continue;
+
+                crewOnShip++;
+            }
+
+            Log.Info($"Human faction hijack by '{ev.HijackerFaction}': found {crewOnShip} crew on target ship maps, {targetShipMaps.Count} ship map(s) scanned.");
         }
     }
     private void OnDropshipHijackLanded(ref DropshipHijackLandedEvent ev)
@@ -966,13 +1021,23 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                 EnsureComp<RMCHijackSongComponent>(songEnt);
 
             rule.ForceEndAt = time + _forceEndHijackTime;
+            rule.HijackIsHuman = ev.IsHumanHijack;
             break;
         }
 
+        // Only stun/shake for crash landings (xeno hijack), not normal landings (human hijack)
+        if (ev.IsHumanHijack)
+            return;
+
         var didCameraShake = false;
+
+        // Stun everyone on Almayer grids on the target map
         var warshipQuery = EntityQueryEnumerator<AlmayerComponent, TransformComponent>();
-        while (warshipQuery.MoveNext(out var uid, out _, out var xform)) // Stun everyone on the Almayer
+        while (warshipQuery.MoveNext(out var uid, out _, out var xform))
         {
+            if (_transform.GetMapId(uid) != _transform.GetMapId(ev.Map))
+                continue;
+
             if (!didCameraShake)
             {
                 var map = _transform.GetMapId(uid);
@@ -981,7 +1046,25 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                 didCameraShake = true;
             }
 
-            StunAllMarinesOnAlmayer(xform);
+            StunAllOnShip(xform);
+        }
+
+        // Also stun on ShipFactionComponent grids on the target map
+        var shipQuery = EntityQueryEnumerator<ShipFactionComponent, TransformComponent>();
+        while (shipQuery.MoveNext(out var uid, out _, out var xform))
+        {
+            if (_transform.GetMapId(uid) != _transform.GetMapId(ev.Map))
+                continue;
+
+            if (!didCameraShake)
+            {
+                var map = _transform.GetMapId(uid);
+                var sameMap = Filter.BroadcastMap(map);
+                _rmcCameraShake.ShakeCamera(sameMap, 10, 2);
+                didCameraShake = true;
+            }
+
+            StunAllOnShip(xform);
         }
     }
 
@@ -1076,7 +1159,14 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
 
             if (distress.ForceEndAt != null && Timing.CurTime >= distress.ForceEndAt)
             {
-                EndRound(distress, DistressSignalRuleResult.MinorXenoVictory, "rmc-distress-signal-minorxenovictory-timeout");
+                // For human-vs-human hijack, timeout is AllDied since there's no xeno side
+                var timeoutResult = distress.HijackIsHuman
+                    ? DistressSignalRuleResult.AllDied
+                    : DistressSignalRuleResult.MinorXenoVictory;
+                var timeoutMsg = distress.HijackIsHuman
+                    ? "rmc-distress-signal-alldied-timeout"
+                    : "rmc-distress-signal-minorxenovictory-timeout";
+                EndRound(distress, timeoutResult, timeoutMsg);
                 continue;
             }
 
@@ -1095,11 +1185,19 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
                 distress.AbandonedAt ??= time + distress.AbandonedDelay;
             }
 
+            // Collect all ship maps (Almayer + ShipFaction) for the "abandoned" alive check
             _almayerMaps.Clear();
             var almayerQuery = EntityQueryEnumerator<AlmayerComponent, TransformComponent>();
             while (almayerQuery.MoveNext(out _, out var xform))
             {
                 _almayerMaps.Add(xform.MapID);
+            }
+
+            var shipFacQuery = EntityQueryEnumerator<ShipFactionComponent, TransformComponent>();
+            while (shipFacQuery.MoveNext(out _, out var xform))
+            {
+                if (!_almayerMaps.Contains(xform.MapID))
+                    _almayerMaps.Add(xform.MapID);
             }
 
             var xenosAlive = false;
@@ -1942,7 +2040,6 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     private void OnXenoComponentInit(Entity<XenoComponent> ent, ref ComponentInit args)
     {
         _hive.SetHive(ent.Owner, TheHive);
-        SetFriendlyHives(TheHive);
         if (!_queenBuildingBoostEnabled)
             return;
 
@@ -1977,13 +2074,13 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     }
 
     /// <summary>
-    /// Stuns all marines on the Almayer.
+    /// Stuns all non-xeno occupants on a ship grid.
     /// </summary>
-    private void StunAllMarinesOnAlmayer(TransformComponent xform)
+    private void StunAllOnShip(TransformComponent xform)
     {
         // Get enumeration exceptions from people dropping things if we just paralyze as we go
         var toKnock = new ValueList<EntityUid>();
-        GetMarinesOnAlmayer(xform, ref toKnock);
+        GetOccupantsOnShip(xform, ref toKnock);
 
         foreach (var child in toKnock)
         {
@@ -1995,9 +2092,9 @@ public sealed class CMDistressSignalRuleSystem : GameRuleSystem<CMDistressSignal
     }
 
     /// <summary>
-    /// Gets all marines on the Almayer.
+    /// Gets all non-xeno entities on a ship grid (for crash stun).
     /// </summary>
-    private void GetMarinesOnAlmayer(TransformComponent xform, ref ValueList<EntityUid> reference)
+    private void GetOccupantsOnShip(TransformComponent xform, ref ValueList<EntityUid> reference)
     {
         // Not recursive because probably not necessary? If we need it to be that's why this method is separate.
         var childEnumerator = xform.ChildEnumerator;

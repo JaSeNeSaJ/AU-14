@@ -59,7 +59,6 @@
 - type: startingGear
   id: AU14GearCivilianColonyAdministrator
   equipment:
-    jumpsuit: CMJumpsuitLiaisonBlack
     shoes: RMCShoesLaceupBrown
     id: AU14IDCardColonyAdministrator
     ears: AU14ColonyAdminHeadset

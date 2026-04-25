@@ -80,6 +80,9 @@ public sealed partial class CMDistressSignalRuleComponent : Component
     public bool HijackSongPlayed;
 
     [DataField]
+    public bool HijackIsHuman;
+
+    [DataField]
     public SoundSpecifier MajorMarineAudio = new SoundCollectionSpecifier("RMCMarineMajor");
 
     [DataField]
@@ -91,9 +94,8 @@ public sealed partial class CMDistressSignalRuleComponent : Component
     [DataField]
     public SoundSpecifier MinorXenoAudio = new SoundCollectionSpecifier("RMCXenoMinor");
 
-    // TODO RMC14
-    // [DataField]
-    // public SoundSpecifier AllDiedAudio = new SoundCollectionSpecifier("CMAllDied");
+    [DataField]
+    public SoundSpecifier AllDiedAudio = new SoundCollectionSpecifier("RMCAllDied");
 
     [DataField]
     public EntProtoId? LandingZoneGas = "RMCLandingZoneGas";

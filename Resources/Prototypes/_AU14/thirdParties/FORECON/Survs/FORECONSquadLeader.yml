@@ -6,6 +6,22 @@
   playTimeTracker: AU14JobFORECONSquadLeader
   basePlaytimeTracker: true
   hidden: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
 
 - type: job
   parent: AU14FORECONSquadleaderBase
@@ -48,7 +64,6 @@
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: cm-job-prefix-squad-leader
-    - type: MarineOrders
     - type: RMCTrackable
     - type: SquadLeader
     - type: RMCPointing
@@ -95,18 +110,6 @@
     - CMMagazineRifleM4SPR
     - CMMagazineRifleM4SPR
     - CMMagazineRifleM4SPR
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSquadleader
-  categories: [ HideSpawnMenu ]
-  name: FORECON Section Leader ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSquadleader
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobFORECONSquadLeader

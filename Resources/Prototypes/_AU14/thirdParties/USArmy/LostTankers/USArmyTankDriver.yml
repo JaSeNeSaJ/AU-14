@@ -28,9 +28,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -87,18 +84,6 @@
     - CMMagazinePistolMK80
     head:
     - AU14GogglesM1A1Ballistic
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyTankDriver
-  categories: [ HideSpawnMenu ]
-  name: US Army Tank Driver ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyTankDriver
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUSArmyTankDriver

@@ -102,7 +102,7 @@
   id: OreWood
   oreEntity: Log
   minOreYield: 1
-  maxOreYield: 2
+  maxOreYield: 6
 
 - type: entity
   parent: RMCBaseTree

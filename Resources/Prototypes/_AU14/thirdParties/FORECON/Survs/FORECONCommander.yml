@@ -41,6 +41,18 @@
     - type: JobPrefix
       prefix: rmc-job-prefix-forecon-co
     - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
     - type: RMCTrackable
     - type: RMCPointing
   hidden: false
@@ -83,18 +95,6 @@
   storage:
     back:
     - RMCAttachmentRailFlashlight
-
-- type: entity
-  parent: CMIDCardGold
-  id: AU14IDCardFORECONCommander
-  categories: [ HideSpawnMenu ]
-  name: FORECON Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobFORECONCommander

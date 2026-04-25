@@ -132,11 +132,7 @@ public sealed class AuThreatSystem : EntitySystem
             {
                 if (newpartySpawn.Scaling.TryGetValue(protoId, out var entry))
                 {
-                    var baseCount = entry.Benchmark ?? staticCount;
-                    var extra = 0;
-                    if (playerCount > entry.WhenToBeginScaling)
-                        extra = (int) Math.Floor((playerCount - entry.WhenToBeginScaling) * entry.Scale);
-                    return baseCount + extra;
+                    return JobScaling.CalculateScaledSlots(playerCount, staticCount, entry);
                 }
                 return staticCount;
             }

@@ -32,6 +32,7 @@ using Content.Server._RMC14.Xenonids.Hive;
 using Content.Server.AU14.Round;
 using Content.Server.AU14.Threats;
 using Content.Shared._RMC14.Xenonids.Hive;
+using Content.Shared.AU14.util;
 
 namespace Content.Server.GameTicking
 {
@@ -46,9 +47,121 @@ namespace Content.Server.GameTicking
         [Dependency] private readonly AuJobSelectionSystem _auJobSelectionSystem = default!;
         [Dependency] private readonly AuThreatSystem _auThreatSystem = default!;
         [Dependency] private readonly Content.Server.AU14.ThirdParty.AuThirdPartySystem _auThirdParty = default!;
+        [Dependency] private readonly Content.Server.AU14.Allegiance.AllegianceSystem _allegianceSystem = default!;
+        [Dependency] private readonly Content.Server.AU14.Origin.OriginSystem _originSystem = default!;
 
         public static readonly EntProtoId ObserverPrototypeName = "MobObserver";
         public static readonly EntProtoId AdminObserverPrototypeName = "RMCAdminObserver";
+
+        /// <summary>
+        /// Determines which platoon a job belongs to based on its ID.
+        /// Returns null if the job doesn't belong to a specific platoon.
+        /// </summary>
+        private PlatoonPrototype? GetPlatoonForJob(string? jobId)
+        {
+            if (string.IsNullOrEmpty(jobId))
+                return null;
+
+            if (jobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase))
+                return _platoonSpawnRuleSystem.SelectedGovforPlatoon;
+
+            if (jobId.Contains("OPFOR", StringComparison.OrdinalIgnoreCase))
+                return _platoonSpawnRuleSystem.SelectedOpforPlatoon;
+
+            return null;
+        }
+
+        /// <summary>
+        /// Resolves the correct character profile for a player based on allegiance.
+        /// If the player is ignoring allegiance or the job/platoon has no requirements, returns the selected profile.
+        /// If the selected profile doesn't match, searches other profiles.
+        /// Returns null if no matching profile is found and the player isn't ignoring allegiance.
+        /// </summary>
+        private HumanoidCharacterProfile? ResolveProfileForAllegiance(
+            NetUserId userId,
+            HumanoidCharacterProfile selectedProfile,
+            string? jobId)
+        {
+            HumanoidCharacterProfile? FindMatchingProfile(Func<HumanoidCharacterProfile, bool> predicate)
+            {
+                if (_prefsManager.TryGetCachedPreferences(userId, out var prefs))
+                {
+                    foreach (var (_, profile) in prefs.Characters)
+                    {
+                        if (profile is HumanoidCharacterProfile humanoid && predicate(humanoid))
+                            return humanoid;
+                    }
+                }
+
+                return null;
+            }
+
+            // If player is ignoring allegiance, always use selected profile
+            if (_allegianceSystem.IsIgnoringAllegiance(userId))
+                return selectedProfile;
+
+            JobPrototype? jobProto = null;
+            if (jobId != null)
+                _prototypeManager.TryIndex<JobPrototype>(jobId, out jobProto);
+
+            bool MeetsJobRequirements(HumanoidCharacterProfile profile)
+            {
+                if (jobProto == null)
+                    return true;
+
+                return _allegianceSystem.DoesCharacterMeetJobAllegiance(profile, jobProto)
+                       && _allegianceSystem.DoesCharacterMeetJobOrigin(profile, jobProto);
+            }
+
+            var platoon = GetPlatoonForJob(jobId);
+
+            // No platoon for this job = no allegiance restriction
+            if (platoon == null)
+            {
+                if (MeetsJobRequirements(selectedProfile))
+                    return selectedProfile;
+
+                return FindMatchingProfile(MeetsJobRequirements);
+            }
+
+            // No allegiance set on the platoon = no restriction
+            if (platoon.Allegiance == null)
+            {
+                if (MeetsJobRequirements(selectedProfile))
+                    return selectedProfile;
+
+                return FindMatchingProfile(MeetsJobRequirements);
+            }
+
+            // Job ignores allegiance
+            if (jobProto is { IgnoreAllegiance: true })
+            {
+                if (MeetsJobRequirements(selectedProfile))
+                    return selectedProfile;
+
+                return FindMatchingProfile(MeetsJobRequirements);
+            }
+
+            // Check if the selected profile matches
+            if (_allegianceSystem.IsAllegianceApplicableForPlatoon(selectedProfile, platoon, jobProto))
+                return selectedProfile;
+
+            // Selected doesn't match — search all character profiles
+            if (_prefsManager.TryGetCachedPreferences(userId, out var prefs))
+            {
+                var match = _allegianceSystem.FindApplicableCharacterForPlatoon(
+                    prefs.Characters,
+                    prefs.SelectedCharacterIndex,
+                    platoon,
+                    jobProto);
+
+                if (match != null)
+                    return match;
+            }
+
+            // No matching profile found
+            return null;
+        }
 
         /// <summary>
         /// How many players have joined the round through normal methods.
@@ -110,8 +223,6 @@ namespace Content.Server.GameTicking
 
             _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, profiles, spawnableStations);
 
-            AlternateGovforOpforRoundstart(assignedJobs);
-
             // Calculate extended access for stations.
             var stationJobCounts = spawnableStations.ToDictionary(e => e, _ => 0);
             foreach (var (netUser, (job, station)) in assignedJobs)
@@ -140,7 +251,20 @@ namespace Content.Server.GameTicking
                 if (job == null)
                     continue;
 
-                SpawnPlayer(_playerManager.GetSessionById(player), profiles[player], station, job, false);
+                // Allegiance check: resolve the correct character profile for this player's job/platoon
+                var selectedProfile = profiles[player];
+                var resolvedProfile = ResolveProfileForAllegiance(player, selectedProfile, job);
+
+                if (resolvedProfile == null)
+                {
+                    // No matching character for this platoon's allegiance — keep player in lobby
+                    var playerSession = _playerManager.GetSessionById(player);
+                    _chatManager.DispatchServerMessage(playerSession,
+                        Loc.GetString("allegiance-no-matching-character"));
+                    continue;
+                }
+
+                SpawnPlayer(_playerManager.GetSessionById(player), resolvedProfile, station, job, false);
             }
 
             RefreshLateJoinAllowed();
@@ -173,7 +297,18 @@ namespace Content.Server.GameTicking
                     return;
             }
 
-            SpawnPlayer(player, character, station, jobId, lateJoin, silent);
+            // Allegiance check: resolve the correct character profile for this job/platoon
+            var resolvedProfile = ResolveProfileForAllegiance(player.UserId, character, jobId);
+
+            if (resolvedProfile == null)
+            {
+                // No matching character for this platoon's allegiance — keep player in lobby
+                _chatManager.DispatchServerMessage(player,
+                    Loc.GetString("allegiance-no-matching-character"));
+                return;
+            }
+
+            SpawnPlayer(player, resolvedProfile, station, jobId, lateJoin, silent);
         }
 
         private void SpawnPlayer(ICommonSession player,
@@ -290,6 +425,9 @@ namespace Content.Server.GameTicking
             var mobMaybe = _stationSpawning.SpawnPlayerCharacterOnStation(station, jobId, character);
             DebugTools.AssertNotNull(mobMaybe);
             var mob = mobMaybe!.Value;
+
+            // Apply origin effects (components, accents, items)
+            _originSystem.ApplyOrigin(mob, character);
 
             _mind.TransferTo(newMind, mob);
 
@@ -445,93 +583,6 @@ namespace Content.Server.GameTicking
             _adminLogger.Add(LogType.LateJoin,
                 LogImpact.Low,
                 $"{player.Name} late joined the round as an Observer with {ToPrettyString(ghost):entity}.");
-        }
-
-
-        /// <summary>
-        /// For roundstart only: alternates players assigned to govfor/opfor jobs between govfor and opfor counterparts.
-        /// First player in each role gets govfor, second gets opfor, third govfor, etc.
-        /// Players may have queued for either the govfor or opfor variant — both are collected and alternated.
-        /// </summary>
-        private void AlternateGovforOpforRoundstart(
-            Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
-        {
-            // Step 1: Build govfor ↔ opfor pair mapping from all job prototypes.
-            // Index every govfor/opfor job by a "base role" key (job ID with the faction part stripped).
-            var govforByBase = new Dictionary<string, string>(); // baseRole → govfor job ID
-            var opforByBase = new Dictionary<string, string>();  // baseRole → opfor job ID
-
-            foreach (var job in _prototypeManager.EnumeratePrototypes<JobPrototype>())
-            {
-                var id = job.ID;
-                var isGovfor = id.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase);
-                var isOpfor = id.Contains("opfor", StringComparison.OrdinalIgnoreCase);
-
-                if (!isGovfor && !isOpfor)
-                    continue;
-
-                // Strip the faction identifier to get a neutral key, e.g.
-                //   "AU14JobGOVFORSquadRifleman" → "AU14JobSquadRifleman"
-                //   "AU14JobOpforSquadRifleman"  → "AU14JobSquadRifleman"
-                var baseRole = id
-                    .Replace("GOVFOR", "", StringComparison.OrdinalIgnoreCase)
-                    .Replace("opfor", "", StringComparison.OrdinalIgnoreCase);
-
-                if (isGovfor)
-                    govforByBase.TryAdd(baseRole, id);
-                else
-                    opforByBase.TryAdd(baseRole, id);
-            }
-
-            // Step 2: Collect assigned players whose job has a valid govfor/opfor pair,
-            //         grouped by base role.
-            var playersByBaseRole = new Dictionary<string, List<NetUserId>>();
-
-            foreach (var (player, (job, _)) in assignedJobs)
-            {
-                if (job == null)
-                    continue;
-
-                var jobId = job.Value.Id;
-                var isGovfor = jobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase);
-                var isOpfor = jobId.Contains("opfor", StringComparison.OrdinalIgnoreCase);
-
-                if (!isGovfor && !isOpfor)
-                    continue;
-
-                var baseRole = jobId
-                    .Replace("GOVFOR", "", StringComparison.OrdinalIgnoreCase)
-                    .Replace("opfor", "", StringComparison.OrdinalIgnoreCase);
-
-                // Only process roles that have BOTH a govfor and opfor counterpart.
-                if (!govforByBase.ContainsKey(baseRole) || !opforByBase.ContainsKey(baseRole))
-                    continue;
-
-                if (!playersByBaseRole.TryGetValue(baseRole, out var list))
-                {
-                    list = new List<NetUserId>();
-                    playersByBaseRole[baseRole] = list;
-                }
-
-                list.Add(player);
-            }
-
-            // Step 3: For each base role, force-alternate govfor / opfor.
-            foreach (var (baseRole, players) in playersByBaseRole)
-            {
-                var govforId = govforByBase[baseRole];
-                var opforId = opforByBase[baseRole];
-
-                for (var i = 0; i < players.Count; i++)
-                {
-                    var player = players[i];
-                    var (_, station) = assignedJobs[player];
-
-                    // Even indices (0, 2, 4…) → govfor, odd indices (1, 3, 5…) → opfor.
-                    var targetJob = (i % 2 == 0) ? govforId : opforId;
-                    assignedJobs[player] = (new ProtoId<JobPrototype>(targetJob), station);
-                }
-            }
         }
 
         #region Spawn Points

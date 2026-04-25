@@ -37,9 +37,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_pvt
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillEndurance: 1
@@ -91,17 +88,7 @@
     - RMCMRESPP
     - CMCanteen
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPTDRifleman
-  name: UPP TD Rifleman ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14UPPTerritorialDefenseRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
+
 
 - type: playTimeTracker
   id: AU14JobUPPTerritorialDefenseRifleman

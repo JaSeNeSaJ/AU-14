@@ -28,9 +28,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -41,6 +38,18 @@
     - type: JobPrefix
       prefix: au14-job-prefix-usarmy-tankcommander
     - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
     - type: RMCTrackable
     - type: RMCPointing
   hidden: false
@@ -90,18 +99,6 @@
     - CMMagazinePistolMK80
     head:
     - RMCGogglesBallisticPolarizedOrange
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyTankCommander
-  categories: [ HideSpawnMenu ]
-  name: US Army Tank Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyTankCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

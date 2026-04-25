@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14USArmyHeavyGunnerBase
-  id: AU14USArmyHeavyGunnerArmored
+  id: AU14JobUSArmyHeavyGunnerArmored
   name: au14-job-name-usarmy-hg
   description: au14-job-description-usarmy
   ranks:
@@ -40,11 +40,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -72,7 +67,7 @@
     name: au14-job-name-usarmy-hg
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmyHeavyGunnerArmored
+    job: AU14JobUSArmyHeavyGunnerArmored
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -89,7 +84,7 @@
     belt: RMCBeltSmartGunOperatorPistol
     pocket1: AU14PouchIFAKFill
     pocket2: AU14PouchIFAKFill
-    ears: AU14HeadsetUSArmy
+    ears: AU14HeadsetUSArmyERT
     suitstorage: RMCSmartGun
   storage:
     belt:
@@ -98,18 +93,6 @@
     - RMCMagazineSmartGun
     - RMCMagazineSmartGun
     - RMCMagazineSmartGun
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyHeavyGunner
-  categories: [ HideSpawnMenu ]
-  name: US Army Heavy Gunner Operator ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyHeavyGunner
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

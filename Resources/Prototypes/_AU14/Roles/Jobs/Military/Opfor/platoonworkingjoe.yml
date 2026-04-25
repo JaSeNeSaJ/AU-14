@@ -14,7 +14,7 @@
     - Epilepsy
   startingGear: AU14GearOPFORWorkingJoe
   dummyStartingGear: AU14GearOPFORWorkingJoeDummy
-  icon: "AU14JobIconOPFORSynth"
+  icon: "AU14JobIconOPFORWorkingJoe"
   spawnMenuRoleName: Working Joe (OPFOR)
   supervisors: au14-job-supervisors-workingjoe-military
   accessGroups:
@@ -40,8 +40,17 @@
       damage:
         types:
           Blunt: 60
+    - type: MovementSpeedModifier
+      baseWalkSpeed: 2.85
+      baseSprintSpeed: 3.25
     - type: Synth
       generation: "species-name-workingjoe"
+      critThreshold: 300
+    - type: MobThresholds
+      thresholds:
+        0: Alive
+        300: Critical # doesnt do anything
+        500: Dead
     - type: NameModifier
       baseName: "Working Joe"
     - type: AssignXenoName
@@ -53,11 +62,6 @@
     - type: Icon
       sprite: _AU14/Mobs/WorkingJoe/parts.rsi
       state: full
-    - type: NpcFactionMember
-      factions:
-      - OPFOR
-    - type: Marine
-      Faction: govfor
     - type: UserIFF
       factions:
       - OPFOR
@@ -66,6 +70,29 @@
       interfaces:
         enum.WorkingJoeVoiceUiKey.Key:
           type: WorkingJoeVoiceBui
+        enum.VoiceMaskUIKey.Key:
+          type: VoiceMaskBoundUserInterface
+        enum.HumanoidMarkingModifierKey.Key:
+          type: HumanoidMarkingModifierBoundUserInterface
+        enum.StrippingUiKey.Key:
+          type: StrippableBoundUserInterface
+        enum.CMSurgeryUIKey.Key:
+          type: CMSurgeryBui
+        enum.HolocardChangeUIKey.Key:
+          type: HolocardChangeBoundUserInterface
+          interactionRange: 0
+          requireInputValidation: false
+        enum.CMMobStateActionsUI.Key:
+          type: CMGhostActionBui
+          requireInputValidation: false
+        enum.TacticalMapUserUi.Key:
+          type: TacticalMapUserBui
+        enum.SquadLeaderTrackerUI.Key:
+          type: SquadInfoBui
+        enum.DialogUiKey.Key:
+          type: DialogBui
+        enum.ViewIntelObjectivesUI.Key:
+          type: ViewIntelObjectivesBui
     - type: Vocal
       sounds:
         Male: AU14WorkingJoeSounds
@@ -92,9 +119,17 @@
       - OpforBravo
       - OpforIntel
       - opforjtac
+    - type: Access
+      groups:
+      - AU14OpforCommand
+      - AUPrisonStaff
+      - auwy
     - type: Tag
       tags:
       - WorkingJoe
+      - CanPilot
+      - FootstepSound
+      - DoorBumpOpener
   hidden: true
 
 - type: startingGear

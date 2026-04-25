@@ -1,6 +1,8 @@
 - type: platoon
   id: LACN
   name: LACN Landing Forces
+  lorePrimer: AU14PrimerPlatoonLACN
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -17,7 +19,6 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-    - Daybreak
     - USSBush
   #platoonflag: uaflag
   CompatibleDropships:
@@ -28,6 +29,8 @@
 - type: platoon
   id: USCM
   name: US Colonial Marines
+  lorePrimer: AU14PrimerPlatoonUSCM
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -43,8 +46,6 @@
     Pilot: AU14AircrewWeaponsVendor
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
   #platoonflag:  uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -52,7 +53,6 @@
   compatibleFighters:
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
       - USSBush
   techTree: RMCIntelTechTree_ua
 
@@ -60,6 +60,8 @@
   id: UPP
   language: russian
   name: UPP Naval Infantry
+  lorePrimer: AU14PrimerPlatoonUPP
+  Allegiance: UPP
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -76,7 +78,7 @@
     SectionSergeant: AU14UPPSectionLeaderVendor
     Pilot: AU14UPPAirCrewWeaponsVendor
   possibleships:
-      - Daybreak
+      - USSBush
 #  jobClassOverride:
 #    SquadRifleman: AU14JobGOVFORSquadRiflemanUPP
 #    SectionSergeant: AU14JobGOVFORSectionSergeantUPP
@@ -98,6 +100,7 @@
 - type: platoon
   id: WEYU
   name: WY PMC
+  lorePrimer: AU14PrimerPlatoonWEYU
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -128,7 +131,7 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
   possibleships:
-      - Daybreak
+      - USSBush
 
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
@@ -138,6 +141,8 @@
 - type: platoon
   id: CMBCIU
   name: CMB Crisis Intervention
+  lorePrimer: AU14PrimerPlatoonCMBCIU
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -167,7 +172,6 @@
 #  DSPilot: 1
 #    SectionSergeant: 1
   possibleships:
-      - Daybreak
       - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -179,6 +183,7 @@
 - type: platoon
   id: exampleplatoon
   name: exampleplatoon
+  lorePrimer: AU14PrimerPlatoonHAZOPS
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -192,8 +197,7 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-    - Daybreak
-    - USSBush
+      - USSBush
   jobSlotOverride:
     SquadRifleman: 12
     PlatoonCorpsman: 1
@@ -204,6 +208,8 @@
 - type: platoon
   id: HAZOPS
   name: USCM Hazardous Operations Unit
+  lorePrimer: AU14PrimerPlatoonHAZOPS
+  Allegiance: UA
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -220,7 +226,6 @@
     combattech: AU14ComtechGearVendor
     JuniorOfficer: AU14JOGenericVendor
   possibleships:
-      - Daybreak
       - USSBush
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/osprey.yml
@@ -232,6 +237,7 @@
 - type: platoon
   id: ProdigySF
   name: Prodigy Security Forces
+  lorePrimer: AU14PrimerPlatoonProdigySF
   reqlist: UPPCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -257,12 +263,13 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
+      - USSBush
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: UNISC
   name: UNISC Peacekeepers
+  lorePrimer: AU14PrimerPlatoonUNISC
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -292,7 +299,6 @@
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/normandy.yml
   possibleships:
-      - Daybreak
       - USSBush
   compatibleFighters:
   - /Maps/_AU14/ShuttlesDropships/f84owl.yml
@@ -302,6 +308,7 @@
 - type: platoon
   id: VAIPO
   name: VAI Primary Operations
+  lorePrimer: AU14PrimerPlatoonVAIPO
   reqlist: USCMCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
@@ -326,12 +333,14 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships:
-      - Daybreak
+      - USSBush
   techTree: RMCIntelTechTree_ua
 
 - type: platoon
   id: RMC
   name: TWE Royal Marine Commandos
+  lorePrimer: AU14PrimerPlatoonRMC
+  Allegiance: TWE
   reqlist: RMCCargoCatalog
   VendorToMarker:
     Rifleman: AU14RMCequipmentvendor
@@ -368,8 +377,48 @@
     - /Maps/_AU14/ShuttlesDropships/f84owl.yml
     - /Maps/_AU14/ShuttlesDropships/ud_6.yml
   possibleships: #TODO: RMC Ship
-      - Daybreak
       - USSBush
   techTree: RMCIntelTechTree_ua
 
 # Add more platoons as needed
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonLACN
+  PlatoonInfo: "Latin American  Colonial Navy. A branch of the United Americas' space forces, LACN specializes in rapid deployment and shock tactics for planetary assault and occupation."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUSCM
+  PlatoonInfo: "United States Colonial marines"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUPP
+  PlatoonInfo: "UPP infantry"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonWEYU
+  PlatoonInfo: "Weyland-Yutani PMC "
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonCMBCIU
+  PlatoonInfo: "CMB CIU"
+
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonHAZOPS
+  PlatoonInfo: "USCM Hazardous Operations Unit specializes in high-risk environments, including chemical, biological, radiological, and explosive threats. HAZOPS teams are trained for rapid response and containment in extreme conditions."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonProdigySF
+  PlatoonInfo: "Prodigy Security Forces"
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonUNISC
+  PlatoonInfo: "UNISC peacekeepers are a multinational force dedicated to maintaining stability and enforcing peace agreements across contested regions, often deployed in high-tension zones to prevent escalation."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonVAIPO
+  PlatoonInfo: "VAI Primary Operations is a private security contractor specializing in high-value asset protection and rapid response."
+
+- type: lorePrimer
+  id: AU14PrimerPlatoonRMC
+  PlatoonInfo: "RMC commandos apply disciplined shock tactics: isolate targets, secure terrain, and rotate pressure."

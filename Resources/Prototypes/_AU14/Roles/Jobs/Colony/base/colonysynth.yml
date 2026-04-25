@@ -29,6 +29,9 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: NpcFactionMember
+      factions:
+      - ColonySynth
     - type: Skills
       skills:
         RMCSkillCqc: 4
@@ -74,11 +77,8 @@
 - type: startingGear
   id: AU14GearCivilianColonySynthetic
   equipment:
-    jumpsuit: RMCJumpsuitCivilian
     shoes: RMCBootsCorporate
-    id: AU14IDCardColonySynthetic
     ears: AU14ColonyAdminHeadset
-    eyes: RMCGlassesMedicalHUDGlasses
 
 - type: entity
   parent: CMSpawnPointJobBase

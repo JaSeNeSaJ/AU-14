@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14USArmySynthBase
-  id: AU14USArmySynthArmored
+  id: AU14JobUSArmySynthArmored
   name: rmc-job-name-forecon-synth
   description: au14-job-description-usarmy
   ranks:
@@ -45,11 +45,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: forecon_synth
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -112,7 +107,7 @@
     name: rmc-job-name-forecon-synth
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmySynthArmored
+    job: AU14JobUSArmySynthArmored
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -130,19 +125,7 @@
     pocket1: AU14PouchToolsFilledComtech
     pocket2: AU14PouchPoliceEquipmentSupportSynth
     back: AU14CMDefibrillator
-    ears: AU14HeadsetUSArmy
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmySynth
-  name: US Army Synth ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14USArmySynth
-  - type: ItemIFF
-    factions:
-    - GOVFOR
+    ears: AU14HeadsetUSArmyERT
 
 - type: jobIcon
   parent: CMJobIconBase

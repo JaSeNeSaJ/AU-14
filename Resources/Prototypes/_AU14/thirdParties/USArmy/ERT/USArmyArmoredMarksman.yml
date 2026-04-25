@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14USArmyMarksmanBase
-  name: au14-job-name-usarmy-marksman
+  name: rmc-job-name-forecon-marksman
   description: au14-job-description-usarmy
   playTimeTracker: AU14JobUSArmyMarksman
   basePlaytimeTracker: true
@@ -9,7 +9,7 @@
 
 - type: job
   parent: AU14USArmyMarksmanBase
-  id: AU14USArmyMarksmanArmored
+  id: AU14JobUSArmyMarksmanArmored
   name: rmc-job-name-forecon-marksman
   description: au14-job-description-usarmy
   ranks:
@@ -40,11 +40,6 @@
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_ua
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: AssignSquad
       whitelist:
         tags:
@@ -59,7 +54,7 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicUSArmy
-  id: AU14JobUSArmyMarksmanArmoreds
+  id: AU14JobUSArmyMarksmanArmored
   name: US Army Marksman (ERT)
   components:
   - type: Threat
@@ -73,7 +68,7 @@
     name: rmc-job-name-forecon-marksman
     description: au14-job-description-usarmy
     reregister: false
-    job: AU14USArmyMarksmanArmored
+    job: AU14JobUSArmyMarksmanArmored
     raffle:
       settings: short
     rules: au14-usarmy-rules
@@ -92,7 +87,7 @@
     pocket1: AU14PouchIFAKFill
     pocket2: AU14PouchIFAKFill
     back: AU14MolleSatchel
-    ears: AU14HeadsetUSArmy
+    ears: AU14HeadsetUSArmyERT
     suitstorage: WeaponRifleM4SPRCustom
   storage:
     back:
@@ -101,18 +96,6 @@
     - RMCMagazineRifleM4SPRA19
     - RMCMagazineRifleM4SPRA19
     - RMCAttachmentS84xTelescopicScope
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUSArmyMarksman
-  categories: [ HideSpawnMenu ]
-  name: US Army Marksman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14USArmyMarksman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

@@ -29,9 +29,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_pvt
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -77,18 +74,6 @@
     back: RMCSatchelSPPFull
     ears: RMCHeadsetGROM
     suitstorage: AU14WeaponRifleAG80Filled
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUPPGROMRifleman
-  categories: [ HideSpawnMenu ]
-  name: UPP GROM Rifleman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMRifleman
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobUPPGROMRifleman

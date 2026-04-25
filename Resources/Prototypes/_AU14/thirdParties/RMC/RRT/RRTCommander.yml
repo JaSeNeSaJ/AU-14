@@ -34,12 +34,19 @@
           RMCSkillPowerLoader: 2
           RMCSkillSurgery: 1
           RMCSkillVehicles: 1
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
     - type: SquadLeader
     - type: RMCTrackable
     - type: RMCPointing
@@ -82,20 +89,8 @@
     pocket1: AU14PouchSlingBinocs
     pocket2: AU14PouchIFAKFill
     back: AU14RMCRRTBackpackCommander
-    ears: AU14HeadsetSectionLeader
+    ears: AU14HeadsetRMCRRT
     suitstorage: AU14WeaponSMGL90A2old
 
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardRMCRRTCommander
-  name: RMC RRT commander ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14RMCRRTCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
-    
 - type: playTimeTracker
   id: AU14JobRMCRRTCommander

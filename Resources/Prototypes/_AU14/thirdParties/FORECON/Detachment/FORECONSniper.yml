@@ -33,11 +33,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spec_sniper
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: SpotterWhitelist
@@ -73,22 +68,10 @@
   id: AU14GearFORECONSniperDetachment
   equipment:
     id: AU14IDCardFORECONSniperDetachment
-    ears: AU14HeadsetSectionLeader
+    ears: AU14HeadsetFORECONERT
   inhand:
   - AU14KitFORECONDetachmentUniform
   - AU14KitFORECONDetachmentSniper
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONSniperDetachment
-  categories: [ HideSpawnMenu ]
-  name: FORECON Sniper ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONSniperDetachment
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14FORECONSniperDetachment

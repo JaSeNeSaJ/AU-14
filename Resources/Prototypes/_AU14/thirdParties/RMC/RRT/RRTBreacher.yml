@@ -26,11 +26,6 @@
           RMCSkillFireman: 1
           RMCSkillVehicles: 1
           RMCSkillPolice: 1
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: JobPrefix
       prefix: au14-job-prefix-govforspecialist-pointmanRMC
   hidden: false
@@ -68,22 +63,10 @@
     pocket1: RMCPouchToolsSocMarineRaiderFill
     pocket2: AU14PouchIFAKFill
     back: AU14RMCRRTBackpackBreacher
-    ears: AU14HeadsetSectionMarine
+    ears: AU14HeadsetRMCRRT
     suitstorage: AU14BallisticShieldRMC
   inhand:
   - AU14WeaponRifleL90BFull
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardRMCRRTBreacher
-  name: RMC RRT breacher ID card
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: PresetIdCard
-    job: AU14RMCRRTBreacher
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobRMCRRTBreacher

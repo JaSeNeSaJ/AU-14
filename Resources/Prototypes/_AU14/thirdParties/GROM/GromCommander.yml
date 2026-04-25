@@ -25,9 +25,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_co
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: AssignSquad
       whitelist:
         tags:
@@ -37,6 +34,18 @@
     - type: JobPrefix
       prefix: au-14-job-prefix-rmcrrt-commander
     - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
     - type: RMCTrackable
     - type: RMCPointing
   hidden: false
@@ -76,18 +85,6 @@
     back: RMCSatchelSPPFull
     ears: RMCHeadsetGROM
     suitstorage: AU14WeaponRifleAG80Filled
-
-- type: entity
-  parent: CMIDCardBase
-  categories: [ HideSpawnMenu ]
-  id: AU14IDCardUPPGROMCommander
-  name: UPP GROM Commander ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UPPGROMCommander
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: jobIcon
   parent: CMJobIconBase

@@ -26,17 +26,18 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_sec
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       skills:
-        RMCSkillEndurance: 2
-        RMCSkillFireman: 1
-        RMCSkillMedical: 3
-        RMCSkillSurgery: 2
+        RMCSkillCqc: 2
+        RMCSkillMeleeWeapons: 2
+        RMCSkillFirearms: 2
+        RMCSkillPolice: 2
+        RMCSkillEndurance: 3
+        RMCSkillFireman: 2
+        RMCSkillMedical: 2
+        RMCSkillJtac: 1
+        RMCSkillIntel: 2
+        RMCSkillLeadership: 2
         RMCSkillVehicles: 1
     - type: JobPrefix
       prefix: au-14-job-prefix-papthirdparty-captain
@@ -80,17 +81,6 @@
   storage:
     back:
     - RMCMaskGasSPP
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardPAPThirdpartySeniorInvestigator
-  name: UPP PaP Senior Investigator ID card
-  components:
-  - type: PresetIdCard
-    job: AU14PAPThirdpartySeniorInvestigator
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobPaPThirdpartySeniorInvestigator

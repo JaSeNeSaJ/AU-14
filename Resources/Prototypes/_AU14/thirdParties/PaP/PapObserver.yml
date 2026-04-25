@@ -26,13 +26,11 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spp_sec
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       skills:
+        RMCSkillCqc: 2
+        RMCSkillMeleeWeapons: 2
+        RMCSkillFirearms: 2
         RMCSkillEndurance: 2
         RMCSkillFireman: 2
         RMCSkillMedical: 3
@@ -80,17 +78,6 @@
   storage:
     back:
     - RMCMaskGasSPP
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardPAPThirdpartyObserver
-  name: UPP PaP Observer ID card
-  components:
-  - type: PresetIdCard
-    job: AU14PAPThirdpartyObserver
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobPaPThirdpartyObserver

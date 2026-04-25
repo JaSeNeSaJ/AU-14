@@ -25,11 +25,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: spec
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
-    - type: Marine
-      Faction: govfor
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: ScoutWhitelist
@@ -64,22 +59,10 @@
   id: AU14GearFORECONMarksmanDetachment
   equipment:
     id: AU14IDCardFORECONMarksmanDetachment
-    ears: AU14HeadsetSectionLeader
+    ears: AU14HeadsetFORECONERT
   inhand:
   - AU14KitFORECONDetachmentUniform
   - AU14CaseM4RA
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardFORECONMarksmanDetachment
-  categories: [ HideSpawnMenu ]
-  name: FORECON Marksman ID card
-  components:
-  - type: PresetIdCard
-    job: AU14FORECONMarksmanDetachment
-  - type: ItemIFF
-    factions:
-    - GOVFOR
 
 - type: playTimeTracker
   id: AU14FORECONMarksmanDetachment

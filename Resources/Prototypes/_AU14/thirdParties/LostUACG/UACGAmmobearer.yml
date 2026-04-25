@@ -24,9 +24,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: private
-    - type: NpcFactionMember
-      factions:
-      - GOVFOR
     - type: Skills
       skills:
         RMCSkillFirearms: 2
@@ -73,15 +70,3 @@
   inhand:
   - CMFlare
   - AUWeaponRifleM20A
-
-- type: entity
-  parent: CMIDCardBase
-  id: AU14IDCardUACGAmmobearer
-  categories: [ HideSpawnMenu ]
-  name: UACG Ammo Bearer ID card
-  components:
-  - type: PresetIdCard
-    job: AU14UACGAmmobearer
-  - type: ItemIFF
-    factions:
-    - GOVFOR
