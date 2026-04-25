@@ -226,6 +226,6 @@
     - range: 6
       falloff: 10
   - type: RMCAntiVehicleDamage
-    multiplier: 12
+    multiplier: 9
 
 # TODO RMC14 84mm WP
