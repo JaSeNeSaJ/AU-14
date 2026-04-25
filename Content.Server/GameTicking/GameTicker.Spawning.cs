@@ -246,7 +246,7 @@ namespace Content.Server.GameTicking
             // Spawn everybody in!
             foreach (var (player, (job, station)) in assignedJobs)
             {
-                if (job != null && (job == "AU14JobThreatLeader" || job == "AU14JobThreatMember"))
+                if (job != null && (job == "AU14JobThreatLeader" || job == "AU14JobThreatMember" || job == "AU14JobThirdPartyLeader" || job == "AU14JobThirdPartyMember"))
                     continue;
                 if (job == null)
                     continue;
