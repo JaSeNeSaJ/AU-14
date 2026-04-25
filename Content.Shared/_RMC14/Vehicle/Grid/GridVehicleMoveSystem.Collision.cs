@@ -295,7 +295,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         var isMob = TryComp(other, out MobStateComponent? mob);
         var isXeno = HasComp<XenoComponent>(other);
         var isVehicle = HasComp<VehicleComponent>(other);
-        var isSmashable = HasComp<VehicleSmashableComponent>(other);
+        var isSmashable = HasComp<VehicleSmashableComponent>(other) && !_tag.HasTag(other, SmashIgnoreTag);
 
         if (!isMob &&
             !isXeno &&

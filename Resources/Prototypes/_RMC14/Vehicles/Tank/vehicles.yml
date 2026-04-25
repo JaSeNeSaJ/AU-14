@@ -82,7 +82,7 @@
     damageContainer: StructuralMarine
     damageModifierSet: VehicleFrameTank
   - type: MeleeReceivedMultiplier
-    xenoMultiplier: 2.4
+    xenoMultiplier: 3.4
     otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
