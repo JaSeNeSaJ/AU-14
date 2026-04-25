@@ -243,10 +243,6 @@
     cameraRecoilScalar: 0
   - type: GunIFF
     enabled: true
-    intrinsic: true
-  - type: UserIFF
-    factions:
-    - FactionMarine
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 5
     accuracyMultiplierUnwielded: 5
@@ -309,10 +305,6 @@
     cameraRecoilScalar: 0
   - type: GunIFF
     enabled: true
-    intrinsic: true
-  - type: UserIFF
-    factions:
-    - FactionMarine
   - type: RMCWeaponAccuracy
     accuracyMultiplier: 5
     accuracyMultiplierUnwielded: 5

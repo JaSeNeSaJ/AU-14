@@ -7,6 +7,9 @@
     sprite: _RMC14/Structures/Vehicles/hardpoints/sppapc.rsi
   - type: Item
     size: Large
+  - type: PowerLoaderGrabbable
+    virtualRight: RMCVirtualPowerLoaderRight
+    virtualLeft: RMCVirtualPowerLoaderLeft
 
 - type: entity
   parent: VehicleSPPAPCHardpointBase
@@ -26,6 +29,9 @@
   - type: HardpointIntegrity
     maxIntegrity: 500
   - type: VehicleWheelItem
+  - type: RemoveComponents
+    components:
+    - type: PowerLoaderGrabbable
 
 - type: entity
   parent: VehicleSPPAPCHardpointBase
