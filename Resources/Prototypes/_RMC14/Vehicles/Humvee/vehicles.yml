@@ -19,7 +19,7 @@
     wallSmashWheelDamage: 3
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
-    speedAtZeroIntegrity: 0.2
+    speedAtZeroIntegrity: 0
     crashImmobileDuration: 90
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
@@ -188,7 +188,7 @@
           - HardpointItem
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12
@@ -202,7 +202,7 @@
   components:
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12
@@ -270,7 +270,7 @@
   components:
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12

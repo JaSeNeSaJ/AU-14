@@ -140,3 +140,21 @@
     Slash: 0.9
     Piercing: 0.8
     Structural: 0.8
+
+- type: damageModifierSet
+  id: VehicleFrameHumvee
+  coefficients:
+    Blunt: 2
+    Slash: 1
+    Piercing: 2
+    Heat: 2
+    Structural: 1
+
+- type: damageModifierSet
+  id: VehicleFrameVan
+  coefficients:
+    Blunt: 2
+    Slash: 1
+    Piercing: 2
+    Heat: 2
+    Structural: 1
