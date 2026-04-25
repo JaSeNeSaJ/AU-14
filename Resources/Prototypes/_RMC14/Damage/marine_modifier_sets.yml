@@ -118,20 +118,20 @@
 - type: damageModifierSet
   id: VehicleFrameAPC
   coefficients:
-    Blunt: 0.7
+    Blunt: 0.95
     Slash: 0.8
-    Piercing: 0.6
-    Structural: 0.7
-    Caustic: 1
+    Piercing: 0.45
+    Structural: 0.95
+    Caustic: 1.5
 
 - type: damageModifierSet
   id: VehicleFrameARC
   coefficients:
-    Blunt: 0.8
+    Blunt: 0.95
     Slash: 1
-    Piercing: 0.6
-    Structural: 0.8
-    Caustic: 1
+    Piercing: 0.45
+    Structural: 0.95
+    Caustic: 1.5
 
 - type: damageModifierSet
   id: VehicleFrameCLFVan

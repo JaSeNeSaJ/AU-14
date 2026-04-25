@@ -26,7 +26,7 @@
     xenoBlockMinimumSize: Immobile
     canXenosPush: false
     canSmashWalls: true
-    wallSmashMinSpeed: 0.9
+    wallSmashMinSpeed: 1.5
     wallSmashWheelDamage: 0.6
     wallSmashHullDamage: 12
     wallSmashSlowdownMultiplier: 0.2
