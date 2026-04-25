@@ -20,7 +20,8 @@
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
     speedAtZeroIntegrity: 0.2
-    crashImmobileDuration: 90
+    crashImmobileDuration: 30
+    crashImmobileMinSpeed: 7
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
@@ -35,6 +36,7 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 6
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 6
@@ -209,7 +211,8 @@
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
     speedAtZeroIntegrity: 0.2
-    crashImmobileDuration: 90
+    crashImmobileDuration: 30
+    crashImmobileMinSpeed: 7
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
@@ -576,3 +579,37 @@
       slotType: Wheel
       compatibilityId: SPPVan
       insertDelay: 1.5
+
+- type: entity
+  parent: VehicleBoxVanBase
+  id: VehicleCMBPoliceVan
+  name: CMB paddywagon
+  description: A van used by the Colonial Marshal Bureau to transport both prisoners and officers alike.
+  components:
+  - type: Sprite
+    sprite: _CMU14/Structures/Vehicles/marshalpaddywagon.rsi
+    offset: "0,0.5"
+    layers:
+    - map: [ base ]
+      state: van_base
+    - map: [ damaged_frame ]
+      state: damaged_frame
+      visible: false
+    - map: [ rmc-wheels ]
+      state: wheels_1
+  - type: VehicleEnter
+    interiorPath: /Maps/_RMC14/Vehicles/pizza_van_interior.yml
+    enterDoAfter: 1.0
+    exitDoAfter: 1.0
+    maxPassengers: 8
+    maxXenos: 2
+    entryPoints:
+    - offset: 1,-0.25
+      radius: 0.6
+      interiorCoords: 0.4,1.65
+    - offset: -1,-0.25
+      radius: 0.6
+      interiorCoords: 0.55,0.43
+    - offset: 0,2
+      radius: 0.75
+      interiorCoords: -0.75,1.2

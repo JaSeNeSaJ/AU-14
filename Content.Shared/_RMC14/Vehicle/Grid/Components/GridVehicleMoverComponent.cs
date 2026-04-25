@@ -335,6 +335,9 @@ public sealed partial class GridVehicleMoverComponent : Component
     [DataField]
     public float CrashImmobileDuration;
 
+    [DataField]
+    public float CrashImmobileMinSpeed;
+
     /// <summary>
     /// Seconds the vehicle is rendered immobile after hitting a humanoid mob. 0 = no lockout.
     /// Unlike wall crashes, this does NOT require <see cref="WallSmashMinSpeed"/> — any mob collision triggers.
