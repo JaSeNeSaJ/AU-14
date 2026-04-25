@@ -51,7 +51,7 @@
     min: 1
     max: 4
     instantfusechance: true
-    instfusemchance: 10
+    instfusechance: 10
   - type: ProjectileGrenade
     fillPrototype: CMProjectileShrapnel
     capacity: 20

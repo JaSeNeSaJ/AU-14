@@ -60,7 +60,7 @@ public sealed partial class TriggerSystem
 
         if (component.InstantFuseChance == true) {
             randomroll = _random.NextFloat(1f,100f);
-            if (randomroll <= 10f)
+            if (randomroll <= component.Instfusechance)
                 component.Delay = 0f;
         }
 
