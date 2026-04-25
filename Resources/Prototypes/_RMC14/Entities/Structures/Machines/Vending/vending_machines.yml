@@ -471,7 +471,7 @@
     denyState: deny-unshaded
     ejectState: eject-unshaded
   - type: AccessReader
-    access: [["CMAccessBrig"]]
+    access: [ [ "AU14AccessGovforSecurity" ], [ "AU14AccessOpforSecurity" ] ]
 
 - type: vendingMachineInventory
   id: CMVendorSec
