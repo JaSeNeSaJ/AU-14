@@ -109,10 +109,10 @@
 - type: damageModifierSet
   id: VehicleFrameTank
   coefficients:
-    Blunt: 0.8
+    Blunt: 0.95
     Slash: 0.7
-    Piercing: 0.4
-    Structural: 0.8
+    Piercing: 0.3
+    Structural: 0.95
     Caustic: 1.5
 
 - type: damageModifierSet
