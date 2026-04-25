@@ -45,6 +45,7 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 2.5
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 8
@@ -81,7 +82,7 @@
     damageContainer: StructuralMarine
     damageModifierSet: VehicleFrameTank
   - type: MeleeReceivedMultiplier
-    xenoMultiplier: 2.4
+    xenoMultiplier: 3.4
     otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
