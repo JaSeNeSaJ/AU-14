@@ -20,7 +20,8 @@
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
     speedAtZeroIntegrity: 0.2
-    crashImmobileDuration: 90
+    crashImmobileDuration: 30
+    crashImmobileMinSpeed: 8
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
@@ -35,6 +36,7 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 7
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 6
