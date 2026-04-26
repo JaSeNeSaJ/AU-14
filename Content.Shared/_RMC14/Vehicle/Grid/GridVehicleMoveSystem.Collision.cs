@@ -293,7 +293,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         var isMob = TryComp(other, out MobStateComponent? mob);
         var isXeno = HasComp<XenoComponent>(other);
         var isVehicle = HasComp<VehicleComponent>(other);
-        var isSmashable = HasComp<VehicleSmashableComponent>(other);
+        var isSmashable = HasComp<VehicleSmashableComponent>(other) && !_tag.HasTag(other, SmashIgnoreTag);
 
         if (!isMob &&
             !isXeno &&
@@ -437,9 +437,10 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         {
             if (applyEffects)
             {
+                var preCollisionSpeed = MathF.Abs(mover.CurrentSpeed);
                 PlayCollisionSound(vehicle, ref playedCollisionSound);
                 ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
-                if (IsSmashingCapable(mover))
+                if (IsSmashingCapable(mover) && ShouldApplyCrashImmobility(mover, preCollisionSpeed))
                     ApplyCrashImmobility(vehicle, mover);
             }
 
@@ -449,11 +450,12 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         if (applyEffects)
         {
+            var preCollisionSpeed = MathF.Abs(mover.CurrentSpeed);
             var wasSmashingCapable = IsSmashingCapable(mover);
             var selfDamageScale = smashable?.SelfDamageMultiplier ?? 1f;
             TrySmash(other, vehicle, ref playedCollisionSound);
             ApplyHeavySmashSelfDamage(vehicle, mover, selfDamageScale);
-            if (wasSmashingCapable)
+            if (wasSmashingCapable && ShouldApplyCrashImmobility(mover, preCollisionSpeed))
                 ApplyCrashImmobility(vehicle, mover);
         }
 
@@ -508,6 +510,9 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
     private void ApplyMobCollisionHullDamage(EntityUid vehicle, GridVehicleMoverComponent mover)
     {
+        if (mover.WallSmashMinSpeed > 0f && MathF.Abs(mover.CurrentSpeed) < mover.WallSmashMinSpeed)
+            return;
+
         if (_timing.CurTime < mover.NextWallSmashAt)
             return;
 
@@ -572,9 +577,11 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (isVehicle && TryPushVehicle(vehicle, mover, grid, gridPos, other, applyEffects))
             return CollisionHandlingResult.Continue;
 
+        var preCollisionSpeed = MathF.Abs(mover.CurrentSpeed);
+
         if (TryHeavySmash(vehicle, mover, other, applyEffects, ref playedCollisionSound))
         {
-            if (applyEffects)
+            if (applyEffects && ShouldApplyCrashImmobility(mover, preCollisionSpeed))
                 ApplyCrashImmobility(vehicle, mover);
             return CollisionHandlingResult.Continue;
         }
@@ -584,13 +591,25 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             if (IsSmashingCapable(mover))
             {
                 PlayCollisionSound(vehicle, ref playedCollisionSound);
-                ApplyCrashImmobility(vehicle, mover);
+                if (ShouldApplyCrashImmobility(mover, preCollisionSpeed))
+                    ApplyCrashImmobility(vehicle, mover);
             }
             ApplyWheelCollisionDamage(vehicle, mover, wheelDamage);
         }
 
         AddBlockingCollision(vehicle, other, collisionAabb, otherAabb, clearance, mapId, debug, blockers);
         return CollisionHandlingResult.Blocked;
+    }
+
+    private static bool ShouldApplyCrashImmobility(GridVehicleMoverComponent mover, float impactSpeed)
+    {
+        if (mover.CrashImmobileDuration <= 0f)
+            return false;
+
+        if (mover.CrashImmobileMinSpeed <= 0f)
+            return true;
+
+        return impactSpeed >= mover.CrashImmobileMinSpeed;
     }
 
     private void ApplyCrashImmobility(EntityUid vehicle, GridVehicleMoverComponent mover)
@@ -840,6 +859,9 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (speedMag <= 0f)
             return 0f;
 
+        if (mover.WallSmashMinSpeed > 0f && speedMag < mover.WallSmashMinSpeed)
+            return 0f;
+
         var damage = speedMag * wheels.CollisionDamagePerSpeed;
 
         if (wheels.MinCollisionDamage > 0f)
@@ -1077,8 +1099,22 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
         if (sound.CollisionSound == null)
             return;
 
+        if (TryComp<GridVehicleMoverComponent>(uid, out var mover)
+            && mover.WallSmashMinSpeed > 0f
+            && MathF.Abs(mover.CurrentSpeed) < mover.WallSmashMinSpeed)
+        {
+            return;
+        }
+
         if (_net.IsClient)
             return;
+
+        if (sound.CollisionSoundMinSpeed > 0f &&
+            TryComp<GridVehicleMoverComponent>(uid, out var movers) &&
+            MathF.Abs(movers.CurrentSpeed) < sound.CollisionSoundMinSpeed)
+        {
+            return;
+        }
 
         var now = _timing.CurTime;
         if (sound.NextCollisionSound > now)

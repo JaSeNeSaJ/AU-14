@@ -303,6 +303,9 @@ public sealed partial class GridVehicleMoverComponent : Component
     public float CrashImmobileDuration;
 
     [DataField]
+    public float CrashImmobileMinSpeed;
+
+    [DataField]
     public float MobCrashImmobileDuration;
 
     [DataField]
