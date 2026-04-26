@@ -19,9 +19,8 @@
     wallSmashWheelDamage: 3
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
-    speedAtZeroIntegrity: 0.2
-    crashImmobileDuration: 30
-    crashImmobileMinSpeed: 7
+    speedAtZeroIntegrity: 0
+    crashImmobileDuration: 90
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
@@ -71,7 +70,7 @@
         - LargeMobLayer
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameVan
   - type: MeleeReceivedMultiplier
     xenoMultiplier: 5
     otherMultiplier: 1
@@ -210,9 +209,8 @@
     wallSmashWheelDamage: 3
     wallSmashHullDamage: 150
     mobCollisionHullDamage: 20
-    speedAtZeroIntegrity: 0.2
-    crashImmobileDuration: 30
-    crashImmobileMinSpeed: 7
+    speedAtZeroIntegrity: 0
+    crashImmobileDuration: 90
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
   - type: VehicleOvercharge
@@ -260,7 +258,7 @@
         - LargeMobLayer
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameVan
   - type: MeleeReceivedMultiplier
     xenoMultiplier: 5
     otherMultiplier: 1
