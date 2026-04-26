@@ -20,6 +20,9 @@ public sealed partial class VehicleSoundComponent : Component
     public float CollisionSoundCooldown = 0.25f;
 
     [DataField]
+    public float CollisionSoundMinSpeed;
+
+    [DataField]
     public SoundSpecifier? MobCollisionSound;
 
     [DataField]
