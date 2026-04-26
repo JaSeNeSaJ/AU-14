@@ -596,7 +596,7 @@
             state: cryotroops
         - name: LACN Commandos Scout Team
           description: Summon an LACN Commandos Scout Team.
-          cost: 20
+          cost: 25
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
@@ -609,7 +609,7 @@
             state: beacon
         - name: FORECON Marksman Team
           description: Summon a FORECON Marksman Team.
-          cost: 20
+          cost: 30
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
@@ -622,7 +622,7 @@
             state: cryotroops
         - name: FORECON Marksman Team
           description: Summon a FORECON Sniper Team.
-          cost: 20
+          cost: 25
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
@@ -645,7 +645,7 @@
       -
         - name: RMC Rapid Reaction Troop
           description: Summon a Royal Marines Commando Rapid Reaction Troop.
-          cost: 40
+          cost: 50
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
@@ -658,7 +658,7 @@
             state: beacon
         - name: US Army 32nd ArmDiv reinforcements
           description: Summon a squad from US Army 32nd Armored Division.
-          cost: 50
+          cost: 60
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
