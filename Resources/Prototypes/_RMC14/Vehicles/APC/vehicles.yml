@@ -17,11 +17,9 @@
     xenoBlockMinimumSize: Immobile
     xenoPushMinimumSize: Immobile
     canSmashWalls: true
-    wallSmashMinSpeed: 3
+    wallSmashMinSpeed: 2.1
     wallSmashWheelDamage: 0.4
     wallSmashHullDamage: 15
-    wallSmashSlowdownMultiplier: 0.2
-    wallSmashSlowdownDuration: 1.5
     speedAtZeroIntegrity: 0.5
   - type: VehicleOvercharge
     speedMultiplier: 1.4
@@ -35,7 +33,6 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
-    collisionSoundMinSpeed: 5
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 7
@@ -72,7 +69,7 @@
     damageContainer: StructuralMarine
     damageModifierSet: VehicleFrameAPC
   - type: MeleeReceivedMultiplier
-    xenoMultiplier: 3.4
+    xenoMultiplier: 2.4
     otherMultiplier: 1
   - type: InteractionOutline
   - type: Sprite
