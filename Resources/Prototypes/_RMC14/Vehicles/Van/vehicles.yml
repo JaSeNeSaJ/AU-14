@@ -35,6 +35,7 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 6
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 6
@@ -595,7 +596,7 @@
     - map: [ rmc-wheels ]
       state: wheels_1
   - type: VehicleEnter
-    interiorPath: /Maps/_RMC14/Vehicles/pizza_van_interior.yml
+    interiorPath: /Maps/_RMC14/Vehicles/van_interior.yml
     enterDoAfter: 1.0
     exitDoAfter: 1.0
     maxPassengers: 8
