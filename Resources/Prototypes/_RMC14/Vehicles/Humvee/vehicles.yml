@@ -15,9 +15,11 @@
     xenoBlockMinimumSize: Immobile
     xenoPushMinimumSize: Immobile
     canSmashWalls: true
-    wallSmashMinSpeed: 6
+    wallSmashMinSpeed: 7
     wallSmashWheelDamage: 3
     wallSmashHullDamage: 150
+    wallSmashSlowdownMultiplier: 0.2
+    wallSmashSlowdownDuration: 1.5
     mobCollisionHullDamage: 20
     speedAtZeroIntegrity: 0.2
     crashImmobileDuration: 30
