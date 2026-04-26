@@ -4,6 +4,7 @@ using Content.Shared._RMC14.Xenonids.Construction.Nest;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Spray;
 using Content.Shared.Atmos.Components;
+using Content.Shared.AU14;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Standing;
 using Content.Shared.Stunnable;
@@ -31,6 +32,9 @@ public sealed class AcidPillarSystem : EntitySystem
     private bool CanTarget(EntityUid pillar, EntityUid target)
     {
         if (_mobState.IsDead(target) || HasComp<XenoNestedComponent>(target))
+            return false;
+
+        if (HasComp<CultistComponent>(target))
             return false;
 
         if (_hive.FromSameHiveOrAlly(pillar, target))
