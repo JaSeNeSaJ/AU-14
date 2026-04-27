@@ -15,11 +15,13 @@
     xenoBlockMinimumSize: Immobile
     xenoPushMinimumSize: Immobile
     canSmashWalls: true
-    wallSmashMinSpeed: 6
+    wallSmashMinSpeed: 7
     wallSmashWheelDamage: 3
     wallSmashHullDamage: 150
+    wallSmashSlowdownMultiplier: 0.2
+    wallSmashSlowdownDuration: 1.5
     mobCollisionHullDamage: 20
-    speedAtZeroIntegrity: 0.2
+    speedAtZeroIntegrity: 0
     crashImmobileDuration: 90
     mobCrashImmobileDuration: 20
     xenoMobCrashImmobileDuration: 60
@@ -35,6 +37,7 @@
     hornCooldown: 1
     collisionSound: /Audio/_RMC14/Effects/metal_crash.ogg
     collisionSoundCooldown: 1.5
+    collisionSoundMinSpeed: 7
     mobCollisionSound: /Audio/_RMC14/Xeno/alien_claw_block.ogg
   - type: VehicleSpotlight
     radius: 6
@@ -171,6 +174,9 @@
     - offset: 1,-0.1
       radius: 0.45
       interiorCoords: 2.41,-1.35
+  - type: MeleeReceivedMultiplier
+    xenoMultiplier: 4
+    otherMultiplier: 1
 
 - type: entity
   parent: VehicleHumveeBase
@@ -185,7 +191,7 @@
           - HardpointItem
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12
@@ -199,7 +205,7 @@
   components:
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12
@@ -267,7 +273,7 @@
   components:
   - type: Damageable
     damageContainer: StructuralMarine
-    damageModifierSet: StructuralMarine
+    damageModifierSet: VehicleFrameHumvee
   - type: HardpointIntegrity
     maxIntegrity: 1000
     repairFuelCost: 12
