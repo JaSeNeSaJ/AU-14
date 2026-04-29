@@ -702,7 +702,8 @@
         amount: 60
       - id: RMCMagazineRifleL42A
         amount: 60
-      - id: CMMagazineRifleM54
+      - id: CMMagazineRifleM54C
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:

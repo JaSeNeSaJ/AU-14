@@ -214,7 +214,7 @@
   name: VAISO
   components:
   - type: SquadTeam
-    color: "#e3580e"
+    color: "#943d0a"
     blacklistedSquadArmor:
     - Helmet
     - Goggles
@@ -236,7 +236,7 @@
   name: VAISP
   components:
   - type: SquadTeam
-    color: "#e3580e"
+    color: "#1ecc43"
     blacklistedSquadArmor:
     - Helmet
     - Goggles
