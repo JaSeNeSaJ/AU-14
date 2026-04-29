@@ -477,8 +477,6 @@
     faction: ua
     thirdparties:
     - ICRCReliefParty
-    - cultistThirdPartyNoQueen
-    - XenoParasiteRunnerParty
     - USArmyTank
     - WYHT
     - IPIE
@@ -487,6 +485,10 @@
     - WYPMCPartyAlt
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
+    - UPPGROM
+    - ICRCReliefParty
+    - UACGLostTeam
+    - USArmy
     threats:
     - cultistThreatOnMarker
     - XenoThreat
@@ -772,7 +774,7 @@
 
 - type: lorePrimer
   id: AU14PrimerPlanetLament
-  planetText: "Date 2181 - Barker's Lament. Salvage and mining colony"
+  planetText: "Date 2181 - Barker's Lament, mining and farming colony on the planet of LV-376 'Ulixes'. Primarily under the control of the United Americas, despite the constant interference of Weyland-Yutani."
 
 - type: lorePrimer
   id: AU14PrimerPlanetSorokyne
