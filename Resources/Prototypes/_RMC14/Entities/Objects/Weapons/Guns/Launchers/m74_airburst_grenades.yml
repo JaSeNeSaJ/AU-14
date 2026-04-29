@@ -468,7 +468,6 @@
   - type: RMCStunOnHit
     stuns:
     - whitelist:
-        minMobSize: VerySmallXeno
       maxRange: 10
       stunTime: 1.6
       slowTime: 4
