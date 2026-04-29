@@ -24,6 +24,14 @@
         amount: 40
       - id: CMJumpsuitTShirtRed
         amount: 40
+      - id: AU14CivilianWorkwearPink
+        amount: 40
+      - id: AU14CivilianWorkwearGreen
+        amount: 40
+      - id: RMCJumpsuitKhakiWorkwearJacketless
+        amount: 40
+      - id: CMJumpsuitLiaisonField
+        amount: 40
     - name: Footwear
       entries:
       - id: CMBootsBlackFilled
@@ -683,20 +691,29 @@
       entries:
       - id: AU14KitWeaponMar30
       - id: AU14KitWeaponM41AMK1
+      - id: AU14KitWeaponMar40
+      - id: AU14KitWeaponABR40
+      - id: AU14KitWeaponM41AMK1
     - name: Rifle Ammunition
       entries:
       - id: RMCMagazineRifleMAR40
         amount: 60
       - id: CMMagazineRifleM54CMK1
         amount: 60
+      - id: RMCMagazineRifleL42A
+        amount: 60
+      - id: CMMagazineRifleM54
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
       - id: AU14KitWeaponTPR23B
       - id: AU14KitWeaponM4A3
+      - id: AU14KitWeaponM48A4
     - name: Handgun Ammunition
       entries:
       - id: CMMagazinePistolM1984
+        amount: 60
+      - id: AU14MagazinePistolM48A4
         amount: 60
     - name: Attachments
       choices: { CMUAttachmentsVendor: 3 }

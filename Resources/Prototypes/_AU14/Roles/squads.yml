@@ -230,6 +230,28 @@
     tags:
     - AU14SquadVAISO
 
+- type: entity
+  parent: SquadBase
+  id: AU14SquadVAISP
+  name: VAISP
+  components:
+  - type: SquadTeam
+    color: "#e3580e"
+    blacklistedSquadArmor:
+    - Helmet
+    - Goggles
+    - Armor
+    - Gloves
+    radio: VAI
+    minimapBackground:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: background_forecon
+    canSupplyDrop: false
+    group: VAISP
+  - type: Tag
+    tags:
+    - AU14SquadVAISP
+
 - type: Tag
   id: AU14SquadUACG
 
@@ -256,3 +278,6 @@
 
 - type: Tag
   id: AU14SquadVAISO
+
+- type: Tag
+  id: AU14SquadVAISP
