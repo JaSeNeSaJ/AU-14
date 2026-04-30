@@ -492,30 +492,66 @@
 
 - type: entity
   parent: CMAutoInjector
-  id: AU14AlbuDexAutoInjector
-  name: albu-dex autoinjector
-  description: An autoinjector loaded with 3 uses of Albuterol and Dexalin as well as a small dose of Dexalin+.
+  id: AU14OxycodoneAutoInjector
+  name: oxycodone autoinjector
+  description: An autoinjector loaded with 3 uses of Oxycodone.
   components:
   - type: Hypospray
-    transferAmount: 30
+    transferAmount: 20
   - type: SolutionContainerManager
     solutions:
       pen:
-        maxVol: 93
+        maxVol: 60
         reagents:
-        - ReagentId: CMDexalin
-          Quantity: 45
-        - ReagentId: AU14Albuterol
-          Quantity: 45
-        - ReagentId: CMDexalinPlus
-          Quantity: 3
+        - ReagentId: CMUOxycodone
+          Quantity: 60
   - type: CMRefillableSolution
     reagents:
-      CMDexalin: 45
-      AU14Albuterol: 45
-      CMDexalinPlus: 3
+      CMUOxycodone: 60
   - type: IconLabel
-    labelTextLocId: rmc-albudex-container-label-text
+    labelTextLocId: rmc-oxycodone-container-label-text
+
+- type: entity
+  parent: CMAutoInjector
+  id: AU14TramadolAutoInjector
+  name: tramadol autoinjector
+  description: An autoinjector loaded with 3 uses of Tramadol.
+  components:
+  - type: Hypospray
+    transferAmount: 20
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 60
+        reagents:
+        - ReagentId: CMUTramadol
+          Quantity: 60
+  - type: CMRefillableSolution
+    reagents:
+      CMUTramadol: 20
+  - type: IconLabel
+    labelTextLocId: rmc-tramadol-container-label-text
+
+- type: entity
+  parent: CMAutoInjector
+  id: AU14ParacetamolAutoInjector
+  name: paracetamol autoinjector
+  description: An autoinjector loaded with 3 uses of Paracetamol.
+  components:
+  - type: Hypospray
+    transferAmount: 20
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 60
+        reagents:
+        - ReagentId: CMUParacetamol
+          Quantity: 60
+  - type: CMRefillableSolution
+    reagents:
+      CMUParacetamol: 60
+  - type: IconLabel
+    labelTextLocId: rmc-paracetamol-container-label-text
 
 #gauze
 
