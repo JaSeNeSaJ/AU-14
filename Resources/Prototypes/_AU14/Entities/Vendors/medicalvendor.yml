@@ -74,6 +74,12 @@
         amount: 25
       - id: CMKelotaneAutoInjector
         amount: 25
+      - id: AU14ParacetamolAutoInjector
+        amount: 20
+      - id: AU14TramadolAutoInjector
+        amount: 20
+      - id: AU14OxycodoneAutoInjector
+        amount: 20
     - name: Medical Utilities
       entries:
       - id: CMRollerBedSpawnFolded

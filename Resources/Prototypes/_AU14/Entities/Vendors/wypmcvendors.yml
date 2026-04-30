@@ -371,6 +371,12 @@
         amount: 40
       - id: CMKelotaneAutoInjector
         amount: 40
+      - id: AU14ParacetamolAutoInjector
+        amount: 40
+      - id: AU14TramadolAutoInjector
+        amount: 40
+      - id: AU14OxycodoneAutoInjector
+        amount: 40
     - name: Medical Gloves
       choices: { CMUPlatoonMedicalGloves: 1 }
       entries:

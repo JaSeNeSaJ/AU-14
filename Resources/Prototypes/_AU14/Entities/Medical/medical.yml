@@ -517,6 +517,69 @@
   - type: IconLabel
     labelTextLocId: rmc-albudex-container-label-text
 
+- type: entity
+  parent: CMAutoInjector
+  id: AU14OxycodoneAutoInjector
+  name: oxycodone autoinjector
+  description: An autoinjector loaded with 3 uses of Oxycodone.
+  components:
+  - type: Hypospray
+    transferAmount: 20
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 60
+        reagents:
+        - ReagentId: CMUOxycodone
+          Quantity: 60
+  - type: CMRefillableSolution
+    reagents:
+      CMUOxycodone: 60
+  - type: IconLabel
+    labelTextLocId: rmc-oxycodone-container-label-text
+
+- type: entity
+  parent: CMAutoInjector
+  id: AU14TramadolAutoInjector
+  name: tramadol autoinjector
+  description: An autoinjector loaded with 3 uses of Tramadol.
+  components:
+  - type: Hypospray
+    transferAmount: 20
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 60
+        reagents:
+        - ReagentId: CMUTramadol
+          Quantity: 60
+  - type: CMRefillableSolution
+    reagents:
+      CMUTramadol: 20
+  - type: IconLabel
+    labelTextLocId: rmc-tramadol-container-label-text
+
+- type: entity
+  parent: CMAutoInjector
+  id: AU14ParacetamolAutoInjector
+  name: paracetamol autoinjector
+  description: An autoinjector loaded with 3 uses of Paracetamol.
+  components:
+  - type: Hypospray
+    transferAmount: 20
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 60
+        reagents:
+        - ReagentId: CMUParacetamol
+          Quantity: 60
+  - type: CMRefillableSolution
+    reagents:
+      CMUParacetamol: 60
+  - type: IconLabel
+    labelTextLocId: rmc-paracetamol-container-label-text
+
 #gauze
 
 - type: entity
