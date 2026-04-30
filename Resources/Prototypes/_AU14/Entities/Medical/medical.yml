@@ -628,25 +628,8 @@
       - state: tourniquet-inhand-left
       right:
       - state: tourniquet-inhand-right
-  - type: WoundTreater
-    wound: Brute
-    treats: true
-    group: Brute
-    consumable: true
-    canUseUnskilled: true
-    skills:
-      RMCSkillMedical: 2
-    treatBeginSound:
-      path: "/Audio/_RMC14/Medical/splint.ogg"
-    treatEndSound:
-      path: "/Audio/Items/Medical/brutepack_begin.ogg"
-    userPopup: au14-tq-user-popup
-    targetPopup: au14-tq-target-popup
-    othersPopup: au14-tq-others-popup
-    noneSelfPopup: cm-gauze-none-self-popup
-    noneOtherPopup: cm-gauze-none-other-popup
-    noWoundsOnUserPopup: cm-wounds-already-treated-self-popup
-    noWoundsOnTargetPopup: cm-wounds-already-treated-target-popup
-  - type: MedicallyUnskilledDoAfter
-    min: 1
-    doAfter: 1
+  - type: CMUTourniquetItem
+    applyDelay: 1.5
+    removeDelay: 1.0
+    consumedOnApply: true
+    refundOnRemove: AU14Tourniquet
