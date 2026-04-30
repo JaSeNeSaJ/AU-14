@@ -492,6 +492,33 @@
 
 - type: entity
   parent: CMAutoInjector
+  id: AU14AlbuDexAutoInjector
+  name: albu-dex autoinjector
+  description: An autoinjector loaded with 3 uses of Albuterol and Dexalin as well as a small dose of Dexalin+.
+  components:
+  - type: Hypospray
+    transferAmount: 30
+  - type: SolutionContainerManager
+    solutions:
+      pen:
+        maxVol: 93
+        reagents:
+        - ReagentId: CMDexalin
+          Quantity: 45
+        - ReagentId: AU14Albuterol
+          Quantity: 45
+        - ReagentId: CMDexalinPlus
+          Quantity: 3
+  - type: CMRefillableSolution
+    reagents:
+      CMDexalin: 45
+      AU14Albuterol: 45
+      CMDexalinPlus: 3
+  - type: IconLabel
+    labelTextLocId: rmc-albudex-container-label-text
+
+- type: entity
+  parent: CMAutoInjector
   id: AU14OxycodoneAutoInjector
   name: oxycodone autoinjector
   description: An autoinjector loaded with 3 uses of Oxycodone.
