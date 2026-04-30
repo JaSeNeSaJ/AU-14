@@ -29,16 +29,16 @@
       - id: CMSynthGraft
         amount: 12
       - id: CMSyringe
-        amount: 20
+        amount: 30
     - name: Pill Bottles
       entries:
-      - id: CMPillCanisterBicaridine
-        amount: 10
       - id: CMPillCanisterDexalin
         amount: 10
       - id: CMPillCanisterDylovene
         amount: 10
       - id: CMPillCanisterInaprovaline
+        amount: 10
+      - id: CMPillCanisterBicaridine
         amount: 10
       - id: CMPillCanisterKelotane
         amount: 10
@@ -65,25 +65,31 @@
       - id: RMCIronAutoInjector
         amount: 20
       - id: CMInaprovalineAutoInjector
-        amount: 20
+        amount: 25
       - id: CMDexalinPlusAutoInjector
-        amount: 20
+        amount: 25
       - id: CMTricordrazineAutoInjector
-        amount: 20
+        amount: 25
+      - id: CMBicaridineAutoInjector
+        amount: 25
+      - id: CMKelotaneAutoInjector
+        amount: 25
     - name: Medical Utilities
       entries:
       - id: CMRollerBedSpawnFolded
         amount: 25
+      - id: CMPortableSurgicalBedSpawnFolded
+        amount: 5
       - id: RMCBoxBodyBag
         amount: 4
       - id: RMCBoxSterileMask
         amount: 3
       - id: RMCBoxLatexGloves
         amount: 3
-      - id: CMHealthAnalyzer
-        amount: 12
       - id: AU14CMDefibrillator
-        amount: 20
+        amount: 10
+      - id: CMHealthAnalyzer
+        amount: 25
       - id: RMCVial
         amount: 35
      # FixOVien
@@ -116,7 +122,7 @@
     - name: Blood Packs
       entries:
       - id: CMBloodPackFull
-        amount: 45
+        amount: 20
     - name: Empty Packs
       entries:
       - id: CMBloodPack
@@ -151,11 +157,11 @@
     - name: Blood Packs
       entries:
       - id: CMBloodPackFull
-        amount: 8
+        amount: 6
     - name: Miscellaneous
       entries:
       - id: CMBloodPack
-        amount: 22
+        amount: 20
         name: empty blood pack
 
 - type: entity
