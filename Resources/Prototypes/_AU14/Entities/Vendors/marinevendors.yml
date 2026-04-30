@@ -338,8 +338,22 @@
         amount: 20
       - id: RMCPillCanisterIron
         amount: 20
-    #      - id: CMPillCanisterPeridaxon
-    #      - id: CMPillCanisterTramadol
+      - id: AU14PillCanisterParacetamol
+        amount: 20
+      - id: AU14PillCanisterTramadol
+        amount: 20
+      - id: AU14PillCanisterOxycodone
+        amount: 20
+      - id: AU14PillCanisterCardiocaine
+        amount: 20
+      - id: AU14PillCanisterHepatocytin
+        amount: 20
+      - id: AU14PillCanisterNephronate
+        amount: 20
+      - id: AU14PillCanisterOsteoCalc
+        amount: 20
+      - id: AU14PillCanisterPulmovine
+        amount: 20
     - name: Injectors
       entries:
       - id: CMEpinephrineAutoInjector
@@ -1140,7 +1154,7 @@
     - CMStasisBagFolded
     - CMSurgicalCaseFilled
     - CMFirstAidKit
-    - CMFirstAidKit
+    - CMMedicalUpgradeKitFilledCommando
 
 - type: entity
   parent: ColMarTechBase
