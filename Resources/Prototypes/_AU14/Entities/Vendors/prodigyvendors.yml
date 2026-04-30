@@ -515,20 +515,36 @@
         amount: 30
     - name: Pill Bottles
       entries:
-      - id: CMPillCanisterBicaridine
-        amount: 15
       - id: CMPillCanisterDexalin
-        amount: 15
+        amount: 20
       - id: CMPillCanisterDylovene
-        amount: 15
+        amount: 20
       - id: CMPillCanisterInaprovaline
-        amount: 15
+        amount: 20
+      - id: CMPillCanisterBicaridine
+        amount: 20
       - id: CMPillCanisterKelotane
-        amount: 15
+        amount: 20
       - id: CMPillCanisterTricordrazine
-        amount: 15
-#      - id: CMPillCanisterPeridaxon
-#      - id: CMPillCanisterTramadol
+        amount: 20
+      - id: RMCPillCanisterIron
+        amount: 20
+      - id: AU14PillCanisterParacetamol
+        amount: 20
+      - id: AU14PillCanisterTramadol
+        amount: 20
+      - id: AU14PillCanisterOxycodone
+        amount: 20
+      - id: AU14PillCanisterCardiocaine
+        amount: 20
+      - id: AU14PillCanisterHepatocytin
+        amount: 20
+      - id: AU14PillCanisterNephronate
+        amount: 20
+      - id: AU14PillCanisterOsteoCalc
+        amount: 20
+      - id: AU14PillCanisterPulmovine
+        amount: 20
     - name: Injectors
       entries:
       - id: CMEpinephrineAutoInjector
