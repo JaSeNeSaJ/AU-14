@@ -1134,6 +1134,8 @@
         amount: 5
       - id: RMCWeaponRifleL90A2
         amount: 3
+      - id: AU14Mk86Case
+        amount: 1
     - name: primary ammunition
       entries:
       - id: RMCMagazineRifleL24

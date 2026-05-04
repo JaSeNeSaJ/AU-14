@@ -846,6 +846,8 @@
         amount: 5
       - id: RMCWeaponPistolM77Empty
         amount: 5
+      - id: RMCM2CCase
+        amount: 1
     - name: primary ammunition
       entries:
       - id: CMMagazineRifleM54C

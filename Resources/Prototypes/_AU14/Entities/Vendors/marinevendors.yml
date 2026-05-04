@@ -1217,16 +1217,20 @@
         amount: 10
     - name: special issue firearms
       entries:
+      - id: RMCWeaponRifleM54C
+        amount: 8
+      - id: WeaponRifleM4SPR
+        amount: 6
       - id: WeaponShotgunM42A1
         amount: 2
       - id: WeaponShotgunM42A2
         amount: 1
-      - id: WeaponRifleM4SPR
-        amount: 3
       - id: AU14WeaponPistolM4A4Empty
-        amount: 5
+        amount: 8
       - id: RMCWeaponRevolverM44Empty
         amount: 5
+      - id: RMCML66DCase
+        amount: 1
     - name: primary ammunition
       entries:
       - id: CMMagazineRifleM54CMK1
@@ -1247,6 +1251,16 @@
         amount: 10
       - id: RMCMagazineRifleM4SPRWP
         amount: 5
+      - id: CMMagazineRifleM54C
+        amount: 100
+      - id: CMMagazineRifleM54CAP
+        amount: 15
+      - id: CMMagazineRifleM54CExt
+        amount: 10
+      - id: RMCMagazineRifleM54CWP
+        amount: 5
+      - id: RMCMagazineRifleM54CHEAPEmpty
+        amount: 0
       - id: RMCBoxShotgunBuckshot
         amount: 20
       - id: RMCBoxShotgunFlechette
@@ -1331,6 +1345,8 @@
       entries:
       - id: RMCAttachmentM54CStockCollapsible
         amount: 30
+      - id: RMCAttachmentM54CStockSolid
+        amount: 5
       - id: RMCAttachmentM63StockCollapsible
         amount: 15
       - id: RMCAttachmentM63Stock
@@ -1358,10 +1374,8 @@
     - name: RTO Packs
       entries:
       - id: AU14BackpackRTOPackJungle
-        amount: 1
+        amount: 2
       - id: AU14BackpackRTOPackDesert
-        amount: 1
-      - id: AU14BackpackRTOPackGray
         amount: 1
     - name: Tents
       entries:
