@@ -36,7 +36,8 @@
                     <PanelContainer.PanelOverride>
                         <graphics:StyleBoxFlat BackgroundColor="#0B131A" BorderColor="#1E3341" BorderThickness="1" />
                     </PanelContainer.PanelOverride>
-                    <ScrollContainer VerticalExpand="True"
+                    <ScrollContainer Name="RoleScroll"
+                                     VerticalExpand="True"
                                      HorizontalExpand="True"
                                      HScrollEnabled="False">
                         <BoxContainer Orientation="Vertical"

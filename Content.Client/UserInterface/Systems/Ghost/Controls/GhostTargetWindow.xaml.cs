@@ -108,13 +108,14 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
                 HScrollEnabled = false,
             };
 
+            var tabTitle = GetTabTitle(tabName, warps.Count, warps.Count);
             var tabButton = new Button
             {
-                Text = GetTabTitle(tabName, warps.Count, warps.Count),
+                Text = tabTitle,
                 HorizontalExpand = true,
                 SizeFlagsStretchRatio = 1,
                 ClipText = true,
-                MinWidth = 56,
+                MinWidth = GetTabMinWidth(tabTitle),
                 MinHeight = 28,
                 TextAlign = Label.AlignMode.Center,
                 ToolTip = $"{tabName} ({warps.Count})",
@@ -361,6 +362,17 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
             {
                 icon = CreateSpritePreview(targetUid, density);
             }
+            else if (!string.IsNullOrWhiteSpace(warp.EntityPrototype))
+            {
+                var preview = new EntityPrototypeView
+                {
+                    SetSize = GetPreviewViewportSize(density),
+                    Stretch = SpriteView.StretchMode.Fit,
+                    Scale = GetPreviewSpriteScale(density),
+                };
+                preview.SetPrototype(warp.EntityPrototype);
+                icon = preview;
+            }
             else if (target is { } previewSource &&
                      GhostPreviewHelper.TryCreateJobPreviewDummy(
                          _uiManager,
@@ -373,17 +385,6 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
             {
                 _previewDummies.Add(dummy);
                 icon = CreateSpritePreview(dummy, density);
-            }
-            else if (!string.IsNullOrWhiteSpace(warp.EntityPrototype))
-            {
-                var preview = new EntityPrototypeView
-                {
-                    SetSize = GetPreviewViewportSize(density),
-                    Stretch = SpriteView.StretchMode.Fit,
-                    Scale = GetPreviewSpriteScale(density),
-                };
-                preview.SetPrototype(warp.EntityPrototype);
-                icon = preview;
             }
             else if (!string.IsNullOrWhiteSpace(warp.IconPrototype) &&
                      _prototypeManager.TryIndex<JobIconPrototype>(warp.IconPrototype, out var jobIcon))
@@ -560,7 +561,9 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
 
                 var tabVisible = visibleInTab > 0;
                 tab.Button.Visible = tabVisible;
-                tab.Button.Text = GetTabTitle(tab.Name, visibleInTab, tab.TotalCount);
+                var tabTitle = GetTabTitle(tab.Name, visibleInTab, tab.TotalCount);
+                tab.Button.Text = tabTitle;
+                tab.Button.MinWidth = GetTabMinWidth(tabTitle);
                 tab.Scroll.SetScrollValue(Vector2.Zero);
 
                 if (!tabVisible)
@@ -725,6 +728,11 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
             return visible == total
                 ? $"{label} {total}"
                 : $"{label} {visible}/{total}";
+        }
+
+        private static float GetTabMinWidth(string title)
+        {
+            return Math.Max(96, (title.Length * 9) + 32);
         }
 
         private string GetCountText(int visible, int total)
