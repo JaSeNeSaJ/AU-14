@@ -312,7 +312,7 @@
     departmentAccessLevel: CMAccessColonyEngineering
     defaultSalary: 50
   - type: AccessReader
-    access: [["AU14AccessColonyForeman"]]
+    access: [["AU14AccessColonyHeadEngineer"]]
 
 - type: entity
   parent: AUDepartmentConsoleBase
