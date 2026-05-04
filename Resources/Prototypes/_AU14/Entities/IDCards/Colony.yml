@@ -84,7 +84,7 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: General Practitioner
+    jobTitle: au14-job-name-civiliangeneralpractitioner
 
 - type: entity
   parent: AU14IDCardCLFPhysician
@@ -95,7 +95,7 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: Pharmacist
+    jobTitle: au14-job-name-civilianpharmacist
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -106,7 +106,7 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: Surgeon
+    jobTitle: au14-job-name-civiliansurgeon
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -274,7 +274,7 @@
   name: surgeon ID card
   components:
   - type: JobTitleChanger
-    jobTitle: Surgeon
+    jobTitle: au14-job-name-civiliansurgeon
 
 - type: entity
   parent: AU14IDCardColonyPhysician
@@ -282,7 +282,7 @@
   name: general practitioner ID card
   components:
   - type: JobTitleChanger
-    jobTitle: General Practitioner
+    jobTitle: au14-job-name-civiliangeneralpractitioner
 
 - type: entity
   parent: AU14IDCardColonyPhysician
@@ -290,7 +290,7 @@
   name: pharmacist ID card
   components:
   - type: JobTitleChanger
-    jobTitle: Pharmacist
+    jobTitle: au14-job-name-civilianpharmacist
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
