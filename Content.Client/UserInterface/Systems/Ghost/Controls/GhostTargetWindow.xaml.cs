@@ -601,7 +601,7 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
         {
             return tab switch
             {
-                "Marines" => 0,
+                "Military" => 0,
                 "Xenos" => 1,
                 "Survivors" => 2,
                 "WeYa/PMC" => 3,
@@ -642,7 +642,7 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
         {
             return tab switch
             {
-                "Marines" => Color.FromHex("#3E84B8"),
+                "Military" => Color.FromHex("#3E84B8"),
                 "Xenos" => Color.FromHex("#9B4BD0"),
                 "Survivors" => Color.FromHex("#C38312"),
                 "WeYa/PMC" => Color.FromHex("#72B956"),

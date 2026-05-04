@@ -84,8 +84,8 @@ namespace Content.Server.Ghost
         {
             ["RMCXeno"] = "Xenos",
             ["Xeno"] = "Xenos",
-            ["UNMC"] = "Marines",
-            ["GOVFOR"] = "Marines",
+            ["UNMC"] = "Military",
+            ["GOVFOR"] = "Military",
             ["RoyalMarines"] = "TSE/Royal",
             ["TSE"] = "TSE/Royal",
             ["SPP"] = "SPP",
@@ -511,7 +511,7 @@ namespace Content.Server.Ghost
                     return "Survivors";
 
                 if (MarineDepartments.Contains(department.ID))
-                    return "Marines";
+                    return "Military";
             }
 
             if (job != null && TryGetJobIdTab(job.ID, out var jobTab))
@@ -605,7 +605,7 @@ namespace Content.Server.Ghost
                     : "Unknown Tier";
             }
 
-            if (tab == "Marines" && department != null)
+            if (tab == "Military" && department != null)
                 return Loc.GetString(department.Name);
 
             if (tab == "Survivors")
