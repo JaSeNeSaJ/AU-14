@@ -14,47 +14,49 @@ public sealed class UniformWidthContainer : Container
 
     protected override Vector2 MeasureOverride(Vector2 availableSize)
     {
-        var visibleCount = Children.Count(child => child.Visible || child.ReservesSpace);
+        var visibleChildren = Children
+            .Where(child => child.Visible || child.ReservesSpace)
+            .ToList();
+        var visibleCount = visibleChildren.Count;
         if (visibleCount == 0)
             return Vector2.Zero;
 
         var separation = ActualSeparation * (visibleCount - 1);
-        var availableWidth = float.IsFinite(availableSize.X)
-            ? availableSize.X
-            : 0;
-        var childWidth = Math.Max(0, (availableWidth - separation) / visibleCount);
-        var childSize = new Vector2(childWidth, availableSize.Y);
         var maxHeight = 0f;
-        var desiredWidth = (float) separation;
+        var minChildWidth = 0f;
 
-        foreach (var child in Children)
+        foreach (var child in visibleChildren)
         {
-            if (!child.Visible && !child.ReservesSpace)
-                continue;
-
-            child.Measure(childSize);
+            child.Measure(new Vector2(float.PositiveInfinity, availableSize.Y));
             maxHeight = Math.Max(maxHeight, child.DesiredSize.Y);
-            desiredWidth += child.DesiredSize.X;
+            minChildWidth = Math.Max(minChildWidth, child.DesiredSize.X);
         }
 
-        return new Vector2(float.IsFinite(availableSize.X) ? availableSize.X : desiredWidth, maxHeight);
+        if (float.IsFinite(availableSize.X))
+        {
+            var fillChildWidth = Math.Max(0, (availableSize.X - separation) / visibleCount);
+            minChildWidth = Math.Max(minChildWidth, fillChildWidth);
+        }
+
+        return new Vector2((minChildWidth * visibleCount) + separation, maxHeight);
     }
 
     protected override Vector2 ArrangeOverride(Vector2 finalSize)
     {
-        var visibleCount = Children.Count(child => child.Visible || child.ReservesSpace);
+        var visibleChildren = Children
+            .Where(child => child.Visible || child.ReservesSpace)
+            .ToList();
+        var visibleCount = visibleChildren.Count;
         if (visibleCount == 0)
             return finalSize;
 
         var separation = ActualSeparation * (visibleCount - 1);
-        var childWidth = Math.Max(0, (finalSize.X - separation) / visibleCount);
+        var minChildWidth = visibleChildren.Max(child => child.DesiredSize.X);
+        var childWidth = Math.Max(minChildWidth, (finalSize.X - separation) / visibleCount);
         var offset = 0f;
 
-        foreach (var child in Children)
+        foreach (var child in visibleChildren)
         {
-            if (!child.Visible && !child.ReservesSpace)
-                continue;
-
             child.Arrange(UIBox2.FromDimensions(offset, 0, childWidth, finalSize.Y));
             offset += childWidth + ActualSeparation;
         }

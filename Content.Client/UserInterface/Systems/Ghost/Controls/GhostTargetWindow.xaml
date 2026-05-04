@@ -38,8 +38,9 @@
                 </BoxContainer>
                 <ScrollContainer Name="TabBarScroll"
                                  HorizontalExpand="True"
-                                 HScrollEnabled="False"
+                                 HScrollEnabled="True"
                                  VScrollEnabled="False"
+                                 ReserveScrollbarSpace="False"
                                  MinHeight="38">
                     <ghost:UniformWidthContainer Name="FactionTabBar"
                                                  HorizontalExpand="True"
