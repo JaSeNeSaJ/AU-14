@@ -601,14 +601,30 @@
       entries:
       - id: AU14PouchCommandFill
         amount: 10
-    - name: Miscellaneous
+    - name: Equipment
+      takeAll: CMStandard
       entries:
       - id: RMCLaserDesignator
+      - id: RMCWhistle
+      - id: RMCPackFlareCAS
+    - name: Spare Equipment
+      entries:
+      - id: AU14ProdigyBeret
+        amount: 3
+      - id: RMCExplosiveBreachingCharge
+        amount: 4
+      - id: RMCBinoculars
+        amount: 5
+      - id: RMCLaserDesignator
+        amount: 2
+      - id: RMCFulton20
         amount: 4
       - id: RMCWhistle
         amount: 10
+      - id: RMCBoxPackFlareCAS
+        amount: 1
       - id: RMCPackFlareCAS
-        amount: 10
+        amount: 6
 
 - type: entity
   parent: ColMarTechBase
@@ -653,7 +669,7 @@
   id: AU14prodigysectionleaderequipmentvendor
   name: Prodigy Security Forces section leader vendor
   description: >-
-    An automated supervisor rack, hooked up to a compact storage of Security Forces section-leadership equipment from the Prodigy Corporation.
+    An automated equipment rack, hooked up to a compact storage of Security Forces section-leadership equipment from the Prodigy Corporation.
     Designed for immediate readiness following cryogenic hypersleep or rapid mobilization orders.
   components:
   - type: AccessReader
@@ -663,17 +679,15 @@
   - type: CMAutomatedVendor
     sections:
     - name: Headgear
+      choices: { CMHat: 1 }
       entries:
       - id: AU14ProdigyBeret
-        amount: 2
-    - name: Miscellaneous
+    - name: Equipment
+      takeAll: CMStandard
       entries:
       - id: RMCLaserDesignator
-        amount: 2
       - id: RMCWhistle
-        amount: 2
       - id: RMCPackFlareCAS
-        amount: 2
 
 - type: entity
   parent: ColMarTechBase
