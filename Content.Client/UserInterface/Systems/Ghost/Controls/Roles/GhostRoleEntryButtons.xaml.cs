@@ -16,6 +16,7 @@ public sealed partial class GhostRoleEntryButtons : BoxContainer
     private readonly GhostRoleKind _ghostRoleKind;
     private readonly uint _playerCount;
     private readonly TimeSpan _raffleEndTime = TimeSpan.MinValue;
+    private string? _requestButtonText;
 
     public GhostRoleEntryButtons(GhostRoleInfo ghostRoleInfo)
     {
@@ -55,12 +56,21 @@ public sealed partial class GhostRoleEntryButtons : BoxContainer
                 : TimeSpan.Zero;
 
             var timeString = $"{timeLeft.Minutes:0}:{timeLeft.Seconds:00}";
-            RequestButton.Text = Loc.GetString(messageId, ("time", timeString), ("players", _playerCount));
+            SetRequestButtonText(Loc.GetString(messageId, ("time", timeString), ("players", _playerCount)));
         }
         else
         {
-            RequestButton.Text = Loc.GetString(messageId);
+            SetRequestButtonText(Loc.GetString(messageId));
         }
+    }
+
+    private void SetRequestButtonText(string text)
+    {
+        if (_requestButtonText == text)
+            return;
+
+        _requestButtonText = text;
+        RequestButton.Text = text;
     }
 
     private static bool IsActiveRaffle(GhostRoleKind kind)

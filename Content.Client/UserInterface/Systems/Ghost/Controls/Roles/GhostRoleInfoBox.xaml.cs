@@ -45,6 +45,18 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls.Roles
                 return CreateSpritePreview(uid.Value);
             }
 
+            if (!string.IsNullOrWhiteSpace(entityPrototype))
+            {
+                var preview = new EntityPrototypeView
+                {
+                    SetSize = new Vector2(60, 60),
+                    Stretch = SpriteView.StretchMode.Fit,
+                    Scale = new Vector2(1.15f, 1.15f),
+                };
+                preview.SetPrototype(entityPrototype);
+                return preview;
+            }
+
             if (_entityManager.TryGetEntity(entity, out uid) &&
                 GhostPreviewHelper.TryCreateJobPreviewDummy(
                     _uiManager,
@@ -57,18 +69,6 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls.Roles
             {
                 _previewDummy = dummy;
                 return CreateSpritePreview(dummy);
-            }
-
-            if (!string.IsNullOrWhiteSpace(entityPrototype))
-            {
-                var preview = new EntityPrototypeView
-                {
-                    SetSize = new Vector2(60, 60),
-                    Stretch = SpriteView.StretchMode.Fit,
-                    Scale = new Vector2(1.15f, 1.15f),
-                };
-                preview.SetPrototype(entityPrototype);
-                return preview;
             }
 
             return new Label
