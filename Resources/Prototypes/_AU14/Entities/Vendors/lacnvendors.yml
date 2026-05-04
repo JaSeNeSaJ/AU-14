@@ -865,11 +865,13 @@
     - name: special issue firearms
       entries:
       - id: WeaponShotgunM42A2
-        amount: 3
+        amount: 4
       - id: CMWeaponPistolM1984Empty
         amount: 5
       - id: RMCWeaponRevolverM44Empty
         amount: 5
+      - id: AU14Mk86Case
+        amount: 1
     - name: primary ammunition
       entries:
       - id: AU14WeaponRifleKramerMagazineStandard
