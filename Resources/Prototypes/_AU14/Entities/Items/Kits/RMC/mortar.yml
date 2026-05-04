@@ -8,7 +8,7 @@
     contents:
     - id: AU14MortarKitRMC
     - id: RMCPamphletMortarOperator
-      amount: 2
+      amount: 3
     - id: CMBeltMortar
       amount: 2
     - id: CMBackpackMortar
