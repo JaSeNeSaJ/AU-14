@@ -51,11 +51,12 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: au14-id-job-title-colony-civilian
+    jobTitle: au14-job-name-civiliancolonist
   - type: ItemIFF
     factions:
     - FactionSurvivor
     - FactionCLF
+
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -66,7 +67,7 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: au14-id-job-title-colony-civilian
+    jobTitle: au14-job-name-civiliancolonist
   - type: ItemIFF
     factions:
     - FactionSurvivor
@@ -81,11 +82,33 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: au14-id-job-title-colony-civilian
+    jobTitle: au14-job-name-civilianphysician
   - type: ItemIFF
     factions:
     - FactionSurvivor
     - FactionCLF
+
+- type: entity
+  parent: AU14IDCardCLFPhysician
+  id: AU14IDCardCLFGeneralPractitioner
+  name: CLF general practitioner ID card
+  components:
+  - type: Access
+    groups:
+    - Colonist
+  - type: IdCard
+    jobTitle: au14-job-name-civiliangeneralpractitioner
+
+- type: entity
+  parent: AU14IDCardCLFPhysician
+  id: AU14IDCardCLFPharmacist
+  name: CLF pharmacist ID card
+  components:
+  - type: Access
+    groups:
+    - Colonist
+  - type: IdCard
+    jobTitle: au14-job-name-civilianpharmacist
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
@@ -96,7 +119,7 @@
     groups:
     - Colonist
   - type: IdCard
-    jobTitle: au14-id-job-title-colony-civilian
+    jobTitle: au14-job-name-civiliansurgeon
   - type: ItemIFF
     factions:
     - FactionSurvivor
@@ -279,6 +302,30 @@
   components:
   - type: PresetIdCard
     job: AU14JobCivilianPhysician
+
+- type: entity
+  parent: AU14IDCardColonyPhysician
+  id: AU14IDCardColonySurgeon
+  name: surgeon ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: au14-job-name-civiliansurgeon
+
+- type: entity
+  parent: AU14IDCardColonyPhysician
+  id: AU14IDCardColonyGeneralPractitioner
+  name: general practitioner ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: au14-job-name-civiliangeneralpractitioner
+
+- type: entity
+  parent: AU14IDCardColonyPhysician
+  id: AU14IDCardColonyPharmacist
+  name: pharmacist ID card
+  components:
+  - type: JobTitleChanger
+    jobTitle: au14-job-name-civilianpharmacist
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
