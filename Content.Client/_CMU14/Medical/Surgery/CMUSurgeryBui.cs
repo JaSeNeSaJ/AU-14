@@ -70,6 +70,7 @@ public sealed class CMUSurgeryBui : BoundUserInterface
 
         RefreshInProgressPanel(state);
         RefreshPartStack(state);
+        _window.ApplyUniformScale(true);
     }
 
     private void RefreshInProgressPanel(CMUSurgeryBuiState state)
@@ -162,16 +163,22 @@ public sealed class CMUSurgeryBui : BoundUserInterface
         _window.InProgressChoiceContainer.DisposeAllChildren();
         if (inFlight is null || !TryGetInFlightPart(state, inFlight, out var part))
         {
-            _window.InProgressActionRailPanel.Visible = true;
-            AddAbandonButton();
+            if (stepArmed)
+            {
+                _window.InProgressActionRailPanel.Visible = true;
+                AddAbandonButton();
+            }
             return;
         }
+
+        if (!inFlight.OwnedByViewer && !stepArmed)
+            return;
 
         _window.InProgressActionRailPanel.Visible = true;
 
         var continuationCount = 0;
         CMUSurgeryEntry? closeUp = null;
-        if (!stepArmed)
+        if (!stepArmed && inFlight.OwnedByViewer)
         {
             foreach (var entry in part.EligibleSurgeries)
             {
@@ -207,7 +214,8 @@ public sealed class CMUSurgeryBui : BoundUserInterface
                 AddChoiceButton(part, close, Loc.GetString("cmu-medical-surgery-close-up-button"), true);
         }
 
-        AddAbandonButton();
+        if (stepArmed || inFlight.OwnedByViewer)
+            AddAbandonButton();
     }
 
     private static bool ShouldShowInProgressContinuation(CMUSurgeryEntry entry)
@@ -325,6 +333,7 @@ public sealed class CMUSurgeryBui : BoundUserInterface
             _window.ProcedureHeaderLabel.Text = string.Empty;
             _window.PartListContainer.AddChild(CreateEmptyLabel(Loc.GetString("cmu-medical-surgery-no-eligible")));
             _window.ProcedureListContainer.AddChild(CreateEmptyLabel(Loc.GetString("cmu-medical-surgery-no-eligible")));
+            _window.ApplyUniformScale(true);
             return;
         }
 
@@ -340,10 +349,12 @@ public sealed class CMUSurgeryBui : BoundUserInterface
             _window.SelectedPartStatusLabel.Text = Loc.GetString("cmu-medical-surgery-no-part-selected");
             _window.ProcedureHeaderLabel.Text = string.Empty;
             _window.ProcedureListContainer.AddChild(CreateEmptyLabel(Loc.GetString("cmu-medical-surgery-no-part-selected")));
+            _window.ApplyUniformScale(true);
             return;
         }
 
         BuildProcedurePanel(selectedPart);
+        _window.ApplyUniformScale(true);
     }
 
     private void EnsureSelectedPart(CMUSurgeryBuiState state)
@@ -564,11 +575,11 @@ public sealed class CMUSurgeryBui : BoundUserInterface
         };
         panel.AddChild(root);
 
-        root.AddChild(new PanelContainer
+        var accent = new PanelContainer
         {
             MinSize = new Vector2(7, 44),
             PanelOverride = CreatePanelStyle(categoryColor, categoryColor, 0f),
-        });
+        };
 
         var labels = new BoxContainer
         {
@@ -591,6 +602,8 @@ public sealed class CMUSurgeryBui : BoundUserInterface
             FontColorOverride = TextSecondary,
             ClipText = true,
         });
+
+        root.AddChild(accent);
         root.AddChild(labels);
 
         var beginButton = CreateActionButton(
