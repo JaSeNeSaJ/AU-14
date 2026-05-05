@@ -451,7 +451,7 @@
     factions:
     - FactionSurvivor
     - FactionCMB
-    - FactionWY
+    - FactionWeYa
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
