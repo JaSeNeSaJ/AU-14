@@ -926,20 +926,12 @@ public sealed class CMUSurgeryDispatchSystem : EntitySystem
         var marker = ent.Comp;
         if (!marker.Patient.IsValid())
             return;
-        // BUI cancel only abandons the viewer's own armed/in-flight step.
-        // Another surgeon can keep a menu open without clearing someone
-        // else's active work.
+        // BUI cancel is deliberate takeover/abandon. Opening another
+        // surgeon's menu is harmless, but once a medic presses abandon they
+        // should be able to stop a stale or unsafe surgery order.
         var medic = ent.Owner;
-        var canClearArmed = TryComp<CMUSurgeryArmedStepComponent>(marker.Patient, out var armed)
-            && armed.Surgeon == medic;
-        var canClearInFlight = TryComp<CMUSurgeryInProgressComponent>(marker.Patient, out var lockComp)
-            && TryComp<CMUSurgeryInFlightComponent>(lockComp.Part, out var inFlight)
-            && inFlight.Surgeon == medic;
-
-        if (canClearArmed)
-            _flowSurgery.ClearArmed(marker.Patient, armed);
-        if (canClearInFlight)
-            _flowSurgery.ClearSurgeryInFlight(marker.Patient);
+        _flowSurgery.ClearArmed(marker.Patient);
+        _flowSurgery.ClearSurgeryInFlight(marker.Patient);
 
         var parts = BuildPartEntries(marker.Patient, medic);
         var refreshedArmed = CompOrNull<CMUSurgeryArmedStepComponent>(marker.Patient);

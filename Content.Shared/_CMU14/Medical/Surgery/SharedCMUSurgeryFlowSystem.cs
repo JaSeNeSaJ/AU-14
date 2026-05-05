@@ -912,7 +912,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         EntityUid? viewer = null)
     {
         CMUArmedStepInfo? armedInfo = null;
-        if (armed is not null && (viewer is null || armed.Surgeon == viewer.Value))
+        if (armed is not null)
         {
             // Surface the leaf the medic picked — SurgeryId may differ when
             // a prereq is currently being run.
