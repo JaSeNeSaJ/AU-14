@@ -11,19 +11,19 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-    RMCRankPrivateStaffSergeant:
+    RMCRankStaffSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORAuxTech
       time: 270000 # 75 hours
-    RMCRankPrivateSergeant:
+    RMCRankSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORAuxTech
       time: 180000 # 50 hours
-    RMCRankPrivateCorporal:
+    RMCRankCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORAuxTech
       time: 72000 # 24 hours 
-    RMCRankPrivateLanceCorporal:
+    RMCRankLanceCorporal:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORAuxTech
       time: 36000 # 10 hours
