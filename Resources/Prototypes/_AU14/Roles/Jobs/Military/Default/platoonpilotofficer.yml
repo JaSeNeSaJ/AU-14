@@ -16,10 +16,10 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-    RMCRankMajor:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORDSPilot
-      time: 540000 # 150 hours, why tf is it 60h
+    #RMCRankMajor:
+    #- !type:RoleTimeRequirement
+    #  role: AU14JobGOVFORDSPilot
+    #  time: 540000 # 150 hours, why tf is it 60h
     RMCRankCaptain:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORDSPilot
