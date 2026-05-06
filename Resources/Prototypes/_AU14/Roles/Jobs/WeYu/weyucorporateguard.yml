@@ -14,7 +14,7 @@
   description: au14-job-description-wyguard
   setPreference: true
   ranks:
-    AU14RankWYSecurityOfficerCHief:
+    AU14RankWYSecurityOfficerChief:
     - !type:RoleTimeRequirement
       role: AU14JobWYGuard
       time: 360000 # 100 hours
