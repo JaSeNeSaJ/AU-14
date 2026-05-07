@@ -147,6 +147,8 @@
       entries:
       - id: RMCHardhatWhite
         amount: 2
+      - id: AU14HeadBeanieclava
+        amount: 10
     - name: External Wear
       entries:
       - id: RMCCoatMilitiaVest
