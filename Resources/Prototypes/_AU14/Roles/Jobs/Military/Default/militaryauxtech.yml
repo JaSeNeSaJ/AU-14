@@ -83,6 +83,9 @@
     ears: AU14HeadsetGOVFORAux
     ears2: RMCM5CameraGear
     id: AU14JobIDCardGOVFORAuxTech
+  storage:
+    back:
+    - CMStampApproved
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -99,3 +102,6 @@
   equipment:
     shoes: CMBootsBlackFilled
     back: CMSatchelMarine
+  storage:
+    back:
+    - CMStampApproved

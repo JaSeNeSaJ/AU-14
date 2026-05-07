@@ -25,6 +25,7 @@
       - id: RMCArmorHelmetPMCKutjevoSecurity
       - id: AU14CivBallCapBlack
       - id: RMCHeadCapWestonYamadaDark
+      - id: AU14HeadCommandoBeanie
     - name: Uniform
       choices: { CMUCMBDutyJacket: 1 }
       entries:

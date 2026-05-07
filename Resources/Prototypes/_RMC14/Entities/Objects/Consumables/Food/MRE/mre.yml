@@ -1,6 +1,3 @@
-﻿- type: Tag
-  id: MRE
-
 - type: entity
   parent: BaseStorageItem
   id: CMMRE
@@ -98,6 +95,78 @@
       - Xeno
 
 - type: entity
+  abstract: true
+  parent: BaseItem
+  id: CMMREComponentBase
+  name: MRE component
+  description: A package from a Meal Ready-to-Eat, property of the Marines. Contains a part of a meal, prepared for field consumption.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Consumable/Food/mre_components.rsi
+  - type: Item
+    size: Small
+  - type: SpawnItemsOnUse
+    sound:
+      collection: CMFoodRip
+  - type: MREItem
+
+- type: entity
+  abstract: true
+  parent: CMFoodBase
+  id: CMMREFoodBase
+  description: The contents of a Marine Standard issue MRE.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Consumable/Food/mre_contents.rsi
+  - type: Item
+    size: Small
+  - type: MREItem
+
+- type: entity
+  parent: RMCBoxMagazineSupplySmallBase
+  id: RMCBoxMREEmpty
+  name: box of MREs (x12)
+  description: A box of MREs. Nutritious, but not delicious.
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: RMCBoxMREEmpty
+  - type: ItemSlots
+  - type: CMItemSlots
+    count: 12
+    slot:
+      name: MRE
+      whitelist:
+        tags:
+        - MRE
+  - type: Sprite
+    layers:
+    - state: supply_box_small
+      color: "#b59471"
+    - state: supply_ammo_small_full
+      map: [ "enum.CMItemSlotsLayers.Fill" ]
+      color: "#a69571"
+    - state: supply_box_small_food
+      color: "#b59471"
+    - state: supply_lid_small_closed
+      map: [ "lid" ]
+      color: "#b59471"
+    - state: supply_lid_small_closed_marking
+      map: [ "lid_marking" ]
+      color: "#b59471"
+
+- type: entity
+  parent: RMCBoxMREEmpty
+  id: RMCBoxMRE
+  suffix: Filled
+  components:
+  - type: CMItemSlots
+    startingItem: CMMRE
+
+- type: Tag
+  id: MRE
+
+- type: entity
   parent: CMMRE
   id: RMCMRESPP # TODO RMC14 - Custom Contents
   name: UPP IRP ration pack
@@ -105,14 +174,6 @@
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Consumable/Food/mre_spp.rsi
-
-- type: entity
-  parent: RMCBoxMREEmpty
-  id: AU14BoxMREUPP
-  suffix: Filled
-  components:
-  - type: CMItemSlots
-    startingItem: RMCMRESPP
 
 - type: entity
   parent: CMMRE
@@ -164,36 +225,6 @@
       - Xeno
 
 - type: entity
-  abstract: true
-  parent: BaseItem
-  id: CMMREComponentBase
-  name: MRE component
-  description: A package from a Meal Ready-to-Eat, property of the Marines. Contains a part of a meal, prepared for field consumption.
-  components:
-  - type: Sprite
-    sprite: _RMC14/Objects/Consumable/Food/mre_components.rsi
-  - type: Item
-    size: Small
-  - type: SpawnItemsOnUse
-    sound:
-      collection: CMFoodRip
-  - type: MREItem
-
-- type: entity
-  abstract: true
-  parent: CMFoodBase
-  id: CMMREFoodBase
-  description: The contents of a Marine Standard issue MRE.
-  components:
-  - type: Sprite
-    sprite: _RMC14/Objects/Consumable/Food/mre_contents.rsi
-  - type: Item
-    size: Small
-  - type: MREItem
-
-# SPP survival bar
-
-- type: entity
   parent: BaseItem
   id: RMCSurvivalRationSPP
   name: UPP survival ration
@@ -221,44 +252,3 @@
     blacklist:
       components:
       - Xeno
-
-- type: entity
-  parent: RMCBoxMagazineSupplySmallBase
-  id: RMCBoxMREEmpty
-  name: box of MREs (x12)
-  description: A box of MREs. Nutritious, but not delicious.
-  components:
-  - type: Construction
-    graph: RMCBoxMagazine
-    node: RMCBoxMREEmpty
-  - type: ItemSlots
-  - type: CMItemSlots
-    count: 12
-    slot:
-      name: MRE
-      whitelist:
-        tags:
-        - MRE
-  - type: Sprite
-    layers:
-    - state: supply_box_small
-      color: "#b59471"
-    - state: supply_ammo_small_full
-      map: [ "enum.CMItemSlotsLayers.Fill" ]
-      color: "#a69571"
-    - state: supply_box_small_food
-      color: "#b59471"
-    - state: supply_lid_small_closed
-      map: [ "lid" ]
-      color: "#b59471"
-    - state: supply_lid_small_closed_marking
-      map: [ "lid_marking" ]
-      color: "#b59471"
-
-- type: entity
-  parent: RMCBoxMREEmpty
-  id: RMCBoxMRE
-  suffix: Filled
-  components:
-  - type: CMItemSlots
-    startingItem: CMMRE
