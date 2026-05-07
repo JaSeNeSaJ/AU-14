@@ -306,7 +306,8 @@ namespace Content.IntegrationTests.Tests
                 // RMC14
                 "ActivateDropshipWeaponOnSpawn",
                 "AmbientSound",
-                "HiveKingCocoon"
+                "HiveKingCocoon",
+                "TriggerOnSpawn"
                 // RMC14
             };
 

@@ -19,12 +19,6 @@
   color: "#e3ce94"
   roles:
     - AU14JobCivilianColonist
-    - AU14JobCivilianJournalist
-    - AU14JobCivilianUSASFRecruiter
-    - AU14JobCivilianColonySynthetic
-    - AU14JobCivilianFoodServiceWorker
-    - AU14JobCivilianShopkeep
-    - AU14JobCivilianWasteManagementSpecialist
   departmentRadio: null
   headOfDepartment: null
   faction: colonist

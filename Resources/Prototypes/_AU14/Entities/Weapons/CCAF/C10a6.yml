@@ -18,7 +18,7 @@
       gun_magazine: !type:ContainerSlot
       gun_chamber: !type:ContainerSlot
   - type: Gun
-    selectedMode: FullAuto
+    selectedMode: Burst
     availableModes:
     - Burst
     soundGunshot:
