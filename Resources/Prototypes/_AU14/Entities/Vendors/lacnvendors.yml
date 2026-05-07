@@ -283,7 +283,6 @@
       - id: AU14NaloxoneAutoInjector
         amount: 2
 
-#corpsman
 - type: entity
   parent: ColMarTechBase
   id: AU14LACNcorpsmanvendor
