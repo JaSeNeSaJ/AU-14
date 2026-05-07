@@ -620,7 +620,7 @@
         amount: 2
     - name: Backpack
       entries:
-      - id: RMCBackpackRTO
+      - id: RMCBackpackRTOSPP
         amount: 5
     - name: Pouches
       entries:

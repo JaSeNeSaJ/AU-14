@@ -670,7 +670,7 @@
       map: [ "closedLayer" ]
   - type: Storage
     grid:
-    - 0,0,19,1 # 20
+    - 0,0,14,1 # 1
 
 - type: entity
   parent: RMCBackpackRTO
@@ -682,7 +682,7 @@
     sprite: _RMC14/Objects/Clothing/Back/Backpacks/PMC/rto.rsi
   - type: Storage
     grid:
-    - 0,0,19,1 # 20
+    - 0,0,14,1 # 1
   - type: RotaryPhone
     category: Weston-Yamada
   - type: ItemCamouflage
@@ -698,7 +698,7 @@
     sprite: _RMC14/Objects/Clothing/Back/Backpacks/SPP/rto.rsi
   - type: Storage
     grid:
-    - 0,0,19,1 # 20
+    - 0,0,14,1 # 1
   - type: RotaryPhone
     category: Socialist Progressive People
   - type: ItemCamouflage
