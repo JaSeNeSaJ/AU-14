@@ -25,7 +25,7 @@ public sealed class JobTest
         {
             // only checking primary departments so don't bother with others
             var departments = prototypeManager.EnumeratePrototypes<DepartmentPrototype>()
-                .Where(department => department.Primary)
+                .Where(department => department.Primary && !department.EditorHidden)
                 .ToList();
             var jobs = prototypeManager.EnumeratePrototypes<JobPrototype>();
             foreach (var job in jobs)
