@@ -48,6 +48,8 @@
         amount: 40
       - id: AU14ProdigyCap
         amount: 20
+      - id: AU14HeadCommandoBeanie
+        amount: 10
     - name: Headsets
       entries:
       - id: RMCM5CameraGear

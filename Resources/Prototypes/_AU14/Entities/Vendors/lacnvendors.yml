@@ -50,6 +50,8 @@
         amount: 40
       - id: AU14LACNNavyCap
         amount: 20
+      - id: AU14LACNCommandoBeanie
+        amount: 10
     - name: Headsets
       entries:
       - id: RMCM5CameraGear

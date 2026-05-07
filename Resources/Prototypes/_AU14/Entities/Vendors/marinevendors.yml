@@ -77,6 +77,8 @@
         amount: 15
       - id: AU14JungleFlapCap
         amount: 15
+      - id: AU14HeadCommandoBeanie
+        amount: 10
     - name: Headsets
       entries:
       - id: RMCM5CameraGear
