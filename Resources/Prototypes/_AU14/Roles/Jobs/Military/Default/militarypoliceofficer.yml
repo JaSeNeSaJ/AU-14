@@ -26,11 +26,11 @@
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORMilitaryPoliceMan
       time: 86400 # 24 hours
-    RMCRankCorporal:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORMilitaryPoliceMan
-      time: 36000 # 10 hours
-    RMCRankLanceCorporal: []
+    #RMCRankCorporal:
+    #- !type:RoleTimeRequirement
+    #  role: AU14JobGOVFORMilitaryPoliceMan
+    #  time: 36000 # 10 hours
+    RMCRankCorporal: []
   startingGear: AU14GearGOVFORMilitaryPoliceMan
   dummyStartingGear: AU14GearGOVFORMilitaryPoliceManDummy
   icon: "AU14JobIconRFN"

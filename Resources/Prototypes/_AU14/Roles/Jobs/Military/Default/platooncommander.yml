@@ -27,11 +27,11 @@
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatCo
       time: 180000 # 50 hours
-    RMCRankCaptain:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatCo
-      time: 36000 # 10 hours
-    RMCRankFirstLT: []
+    #RMCRankCaptain:
+    #- !type:RoleTimeRequirement
+    #  role: AU14JobGOVFORPlatCo
+    #  time: 36000 # 10 hours
+    RMCRankCaptain: []
   startingGear: AU14GearGOVFORPlatCo
   dummyStartingGear: AU14GearGOVFORPlatCoDummy
   icon: "AU14JobIconPlatCo"

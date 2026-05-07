@@ -16,10 +16,10 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-    RMCRankCaptain:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatOp
-      time: 360000 # 100 hours
+    #RMCRankCaptain:
+    #- !type:RoleTimeRequirement
+    #  role: AU14JobGOVFORPlatOp
+    #  time: 360000 # 100 hours
     RMCRankFirstLT:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORPlatOp

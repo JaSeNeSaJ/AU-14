@@ -24,11 +24,11 @@
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORadvisor
       time: 86400 # 24 hours
-    RMCRankFirstSergeant:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORadvisor
-      time: 43200 # 12 hours
-    RMCRankMasterSergeant: []
+    #RMCRankFirstSergeant:
+    #- !type:RoleTimeRequirement
+    #  role: AU14JobGOVFORadvisor
+    #  time: 43200 # 12 hours
+    RMCRankFirstSergeant: []
   startingGear: AU14GearGOVFORadvisor
   dummyStartingGear: AU14GearGOVFORadvisorDummy
   icon: "AU14JobIconGovAdvisor"
