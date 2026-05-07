@@ -56,6 +56,8 @@
         amount: 20
       - id: AU14JunglePatrolCap
         amount: 25
+      - id: AU14HeadCommandoBeanie
+        amount: 10
     - name: Headsets
       entries:
       - id: RMCM5CameraGear
@@ -226,6 +228,8 @@
     Standard issue for designated smart-gun crews on naval vessels and high-threat outposts.
     Built to bring heavy fire support online rapidly after cryogenic hypersleep or emergency mobilization.
   components:
+  - type: AccessReader
+    access: [ [ "AU14AccessGovforGunner" ], [ "AU14AccessOpforGunner" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
   - type: CMAutomatedVendor
