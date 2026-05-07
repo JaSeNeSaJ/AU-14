@@ -673,6 +673,7 @@
   - SmokablesRMC
   - ForceStampApprovedAU14
   - ForceSynthResetKeyAU14
+  - SynthAccesoriesSpecialAU14
 
 - type: roleLoadout
   id: JobAU14JobGOVFORAuxTech
