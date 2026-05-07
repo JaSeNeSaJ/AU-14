@@ -308,6 +308,7 @@ namespace Content.IntegrationTests.Tests
                 "ActivateDropshipWeaponOnSpawn",
                 "AmbientSound",
                 "HiveKingCocoon",
+                "TriggerOnSpawn"
                 // RMC14
                 // CMU14
                 "AU14CrateCASNapalm", // StorageFill leaves its large dropship ammo detached from the crate in this generic test.

@@ -106,6 +106,9 @@
     quickEquip: false
     equipDelay: 10
     unequipDelay: 6
+  - type: ContainerContainer
+    containers:
+      cluster-payload: !type:Container
   - type: OnUseTimerTrigger
     delay: 0.1
     delayOptions: [3, 4]
