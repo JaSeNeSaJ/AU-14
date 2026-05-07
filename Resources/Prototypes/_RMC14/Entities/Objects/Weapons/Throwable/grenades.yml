@@ -323,7 +323,7 @@
     examinable: false
     initialBeepDelay: 0
     beepSound: null
-    min: 1
+    min: 2
     max: 4
     instantfusechance: false
     instfusechance: 10

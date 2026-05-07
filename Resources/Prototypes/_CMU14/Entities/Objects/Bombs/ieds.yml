@@ -48,9 +48,9 @@
     examinable: false
     initialBeepDelay: 0
     beepSound: /Audio/Effects/lightburn.ogg
-    min: 1
+    min: 2
     max: 4
-    instantfusechance: true
+    instantfusechance: false
     instfusechance: 10
   - type: ProjectileGrenade
     fillPrototype: CMProjectileShrapnel
