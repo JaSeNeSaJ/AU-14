@@ -127,6 +127,8 @@ public sealed partial class ChatUIController : UIController
     /// </summary>
     private const int SpeechBubbleCap = 4;
 
+    private const int MaxChatHistory = 2500;
+
     private LayoutContainer _speechBubbleRoot = default!;
 
     /// <summary>
@@ -562,6 +564,8 @@ public sealed partial class ChatUIController : UIController
             FilterableChannels |= ChatChannel.Radio;
             FilterableChannels |= ChatChannel.Emotes;
             FilterableChannels |= ChatChannel.Notifications;
+            FilterableChannels |= ChatChannel.Damage;
+            FilterableChannels |= ChatChannel.Visual;
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
             // TODO: this logic is iffy (checking if controlling something that's NOT a ghost), is there a better way to check this?
@@ -935,6 +939,9 @@ public sealed partial class ChatUIController : UIController
         if (!msg.HideChat)
         {
             History.Add((_timing.CurTick, msg));
+            if (History.Count > MaxChatHistory)
+                History.RemoveRange(0, History.Count - MaxChatHistory);
+
             MessageAdded?.Invoke(msg);
 
             if (!msg.Read)
