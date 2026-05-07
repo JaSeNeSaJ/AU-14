@@ -582,15 +582,15 @@
             sprite: _RMC14/Interface/tech_tree.rsi
             state: budget_req
         - name: Search and Rescue K9 Team
-          description: Summon a Search and Rescue K9 Team.
+          description: Hail a nearby Search and Rescue K9 Team.
           cost: 15
           repurchasable: false
           events:
           - !type:TechPartySpawnEvent
-            thirdPartyId: AU14IntelThirdPartyK9GOVFOR
+            thirdPartyId: AU14IntelThirdPartyK9
           - !type:TechAnnounceEvent
             author: INTEL OPERATIONS
-            message: A Search and Rescue K9 Team has been awoken to aid with the operation.
+            message: A Search and Rescue K9 Team flying nearby has indicated they will touch down.
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
             state: cryotroops
