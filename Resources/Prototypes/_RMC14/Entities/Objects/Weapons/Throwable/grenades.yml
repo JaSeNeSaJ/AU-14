@@ -248,7 +248,7 @@
   parent: CMGrenadeFragOld
   id: RMCGrenadeBlastM12
   name: M12 blast grenade
-  description: A high-explosive grenade produced for private security firms. It explodes around 3 seconds after the pin has been pulled.
+  description: A high-explosive grenade produced for private security firms. It explodes around 4 seconds after the pin has been pulled.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Weapons/Grenades/m12blast.rsi
