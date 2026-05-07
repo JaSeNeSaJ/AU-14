@@ -6,6 +6,7 @@
   components:
   - type: Sprite
     sprite: _AU14/Weapons/Guns/CCAF/C10A6BR.rsi
+    state: base
     layers:
     - state: base
       map: [ "enum.GunVisualLayers.Base" ]

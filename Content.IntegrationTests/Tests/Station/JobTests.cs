@@ -11,7 +11,7 @@ public sealed class JobTest
 {
     /// <summary>
     /// Ensures that every job belongs to at most 1 primary department.
-    /// Having no primary department is ok.
+    /// Having no primary or multiple EditorHidden departments is ok.
     /// </summary>
     [Test]
     public async Task PrimaryDepartmentsTest()

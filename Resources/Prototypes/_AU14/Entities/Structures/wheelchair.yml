@@ -1,0 +1,39 @@
+- type: entity
+  parent: RMCWheelchair
+  id: AU14Wheelchair
+  name: foldable wheelchair
+  description: Helps those with injuries related to immobility to move freely.
+  components:
+  - type: Item
+    size: Normal
+  - type: Sprite
+    sprite: _AU14/Structures/wheelchair.rsi # missing inhand sprites
+    layers:
+    - state: wheelchair
+      map: ["unfoldedLayer"]
+      visible: false
+    - state: folded
+      map: ["foldedLayer"]
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.FoldedVisuals.State:
+        foldedLayer:
+          True: {visible: true}
+          False: {visible: false}
+        unfoldedLayer:
+          True: {visible: false}
+          False: {visible: true}
+  - type: Foldable
+    folded: true
+  - type: DeployFoldable
+
+# - type: entity
+#   parent: AU14Wheelchair
+#   id: AU14WheelchairFolded
+#   suffix: folded
+#   components:
+#   - type: Foldable
+#     folded: true
+#   - type: Strap
+#     enabled: false
