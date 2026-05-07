@@ -946,8 +946,10 @@
       whitelist:
         tags:
         - CMTraumaKit
+        - CMBurnKit
         - CMSurgicalLine
         - CMSynthGraft
+        - CMUCastItem
         components:
         - CMSurgeryTool
     - type: FixedItemSizeStorage
@@ -958,8 +960,10 @@
     whitelist:
       tags:
       - CMTraumaKit
+      - CMBurnKit
       - CMSurgicalLine
       - CMSynthGraft
+      - CMUCastItem
       components:
       - CMSurgeryTool
   - type: FixedItemSizeStorage
@@ -978,7 +982,7 @@
     - id: CMUOrganClampItem
     - id: CMSurgicalLine
     - id: CMSynthGraft
-
+    - id: CMUCastItem
 - type: entity
   parent: CMWebbingBase
   id: CMWebbingSurgicalBlue
@@ -998,8 +1002,10 @@
       whitelist:
         tags:
         - CMTraumaKit
+        - CMBurnKit
         - CMSurgicalLine
         - CMSynthGraft
+        - CMUCastItem
         components:
         - CMSurgeryTool
     - type: FixedItemSizeStorage
@@ -1010,8 +1016,10 @@
     whitelist:
       tags:
       - CMTraumaKit
+      - CMBurnKit
       - CMSurgicalLine
       - CMSynthGraft
+      - CMUCastItem
       components:
       - CMSurgeryTool
   - type: FixedItemSizeStorage
@@ -1030,7 +1038,7 @@
     - id: CMUOrganClampItem
     - id: CMSurgicalLine
     - id: CMSynthGraft
-
+    - id: CMUCastItem
 - type: entity
   parent: CMWebbing
   id: RMCWebbingSPPCommandFilled
