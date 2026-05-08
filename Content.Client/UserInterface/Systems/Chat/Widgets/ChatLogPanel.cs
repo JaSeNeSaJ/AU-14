@@ -15,6 +15,8 @@ public sealed class ChatLogPanel : PanelContainer
     private readonly Button _scrollToLatest;
     private bool _isAtBottom = true;
     private int _pendingScrollToBottomFrames;
+    private int _pendingLayoutRefreshFrames;
+    private float _lastLayoutWidth = -1f;
 
     public int EntryCount => _rows.ChildCount;
 
@@ -22,14 +24,7 @@ public sealed class ChatLogPanel : PanelContainer
     {
         HorizontalExpand = true;
         VerticalExpand = true;
-        PanelOverride = new StyleBoxFlat
-        {
-            BackgroundColor = Color.FromHex("#07090b"),
-            ContentMarginLeftOverride = 3,
-            ContentMarginRightOverride = 3,
-            ContentMarginTopOverride = 3,
-            ContentMarginBottomOverride = 3
-        };
+        PanelOverride = new StyleBoxEmpty();
 
         var root = new BoxContainer
         {
@@ -98,6 +93,7 @@ public sealed class ChatLogPanel : PanelContainer
         _isAtBottom = true;
         _scrollToLatest.Visible = false;
         QueueScrollToBottom();
+        QueueLayoutRefresh();
     }
 
     public void ScrollToBottom()
@@ -111,11 +107,15 @@ public sealed class ChatLogPanel : PanelContainer
     {
         foreach (var child in _rows.Children)
         {
-            child.InvalidateMeasure();
+            if (child is ChatMessageRow row)
+                row.RefreshLayout();
+            else
+                child.InvalidateMeasure();
         }
 
         _rows.InvalidateMeasure();
         _scroll.InvalidateMeasure();
+        InvalidateMeasure();
 
         if (forceScrollToBottom || _isAtBottom)
             ScrollToBottom();
@@ -126,12 +126,24 @@ public sealed class ChatLogPanel : PanelContainer
     protected override void Resized()
     {
         base.Resized();
-        RefreshLayout();
+        QueueLayoutRefresh();
     }
 
     protected override void FrameUpdate(FrameEventArgs args)
     {
         base.FrameUpdate(args);
+
+        if (Width > 0 && MathF.Abs(Width - _lastLayoutWidth) > 0.5f)
+        {
+            _lastLayoutWidth = Width;
+            QueueLayoutRefresh();
+        }
+
+        if (_pendingLayoutRefreshFrames > 0)
+        {
+            RefreshLayout();
+            _pendingLayoutRefreshFrames--;
+        }
 
         if (_pendingScrollToBottomFrames <= 0)
             return;
@@ -149,11 +161,22 @@ public sealed class ChatLogPanel : PanelContainer
         _pendingScrollToBottomFrames = 4;
     }
 
+    private void QueueLayoutRefresh()
+    {
+        // RichTextLabel caches line breaks during measure. On startup, chat rows
+        // can be created before the separated chat panel reaches its final width,
+        // so keep refreshing briefly until the real width has settled.
+        _pendingLayoutRefreshFrames = 8;
+    }
+
     private void UpdateScrollState()
     {
-        var scrollBottom = _scroll.VScrollTarget + Height + 12;
+        var scrollBottom = _scroll.VScrollTarget + _scroll.Height + 12;
         var contentHeight = _rows.DesiredSize.Y;
         _isAtBottom = scrollBottom >= contentHeight;
+        if (!_isAtBottom)
+            _pendingScrollToBottomFrames = 0;
+
         _scrollToLatest.Visible = !_isAtBottom;
     }
 }

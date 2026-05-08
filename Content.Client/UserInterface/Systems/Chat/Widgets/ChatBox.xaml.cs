@@ -35,7 +35,7 @@ public partial class ChatBox : UIWidget
 
     private readonly ISawmill _sawmill;
     private readonly ChatUIController _controller;
-    private readonly Dictionary<string, Button> _tabButtons = new();
+    private readonly Dictionary<string, ChatTabButton> _tabButtons = new();
     private readonly Dictionary<string, int> _tabUnread = new();
     private readonly List<ChatTabSettings> _overflowTabs = new();
     private List<ChatTabSettings> _tabs = new();
@@ -44,6 +44,8 @@ public partial class ChatBox : UIWidget
     private IReadOnlyList<ChatRadioTarget> _radioTargets = Array.Empty<ChatRadioTarget>();
     private string _activeTabId = ChatUserSettings.AllTabId;
     private string _secondaryTabId = ChatUserSettings.RadioTabId;
+    private string? _draggingTabId;
+    private string? _dragTargetTabId;
     private bool _splitChatEnabled;
     private bool _splitAvailable = true;
     private bool _legacyChatEnabled;
@@ -107,6 +109,8 @@ public partial class ChatBox : UIWidget
         ChatInput.FilterButton.Popup.OnTabSelected += OnSettingsTabSelected;
         ChatInput.FilterButton.Popup.OnTabAdded += OnSettingsTabAdded;
         ChatInput.FilterButton.Popup.OnTabRemoved += OnSettingsTabRemoved;
+        ChatInput.FilterButton.Popup.OnTabRenamed += OnSettingsTabRenamed;
+        ChatInput.FilterButton.Popup.OnTabMoved += OnSettingsTabMoved;
         ChatInput.FilterButton.Popup.OnRadioFilter += OnSettingsRadioFilter;
         ChatInput.FilterButton.Popup.OnStyleChanged += OnSettingsStyleChanged;
         ChatInput.FilterButton.Popup.OnStyleReset += OnSettingsStyleReset;
@@ -294,6 +298,9 @@ public partial class ChatBox : UIWidget
 
     private void RebuildTabs()
     {
+        _draggingTabId = null;
+        _dragTargetTabId = null;
+
         foreach (var button in _tabButtons.Values)
         {
             TabBar.RemoveChild(button);
@@ -307,13 +314,20 @@ public partial class ChatBox : UIWidget
                 continue;
 
             var capturedTabId = tab.Id;
-            var button = new Button
+            var isAll = IsAllTab(tab);
+            var button = new ChatTabButton(tab.Id)
             {
                 ToggleMode = true,
+                Mode = BaseButton.ActionMode.Release,
                 MinWidth = Math.Max(58, tab.Title.Length * 9),
-                StyleClasses = { StyleNano.StyleClassChatChannelSelectorButton }
+                StyleClasses = { StyleNano.StyleClassChatChannelSelectorButton },
+                CanDrag = !isAll
             };
             button.OnPressed += _ => SetActiveTab(capturedTabId);
+            button.DragStarted += OnTabDragStarted;
+            button.DragEntered += OnTabDragEntered;
+            button.DragExited += OnTabDragExited;
+            button.DragEnded += OnTabDragEnded;
             TabBar.AddChild(button);
             _tabButtons[capturedTabId] = button;
         }
@@ -408,6 +422,70 @@ public partial class ChatBox : UIWidget
         SetActiveTab(tabId);
     }
 
+    private void OnTabDragStarted(string tabId)
+    {
+        if (string.Equals(tabId, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        _draggingTabId = tabId;
+        _dragTargetTabId = null;
+        UpdateTabDragVisuals();
+    }
+
+    private void OnTabDragEntered(string targetTabId)
+    {
+        if (_draggingTabId == null)
+            return;
+
+        if (string.Equals(_draggingTabId, targetTabId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(targetTabId, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase))
+        {
+            _dragTargetTabId = null;
+            UpdateTabDragVisuals();
+            return;
+        }
+
+        _dragTargetTabId = targetTabId;
+        UpdateTabDragVisuals();
+    }
+
+    private void OnTabDragExited(string targetTabId)
+    {
+        if (_draggingTabId == null ||
+            !string.Equals(_dragTargetTabId, targetTabId, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        _dragTargetTabId = null;
+        UpdateTabDragVisuals();
+    }
+
+    private void OnTabDragEnded(string tabId)
+    {
+        var draggingTabId = _draggingTabId;
+        if (draggingTabId == null)
+            return;
+
+        var targetTabId = _dragTargetTabId;
+
+        _draggingTabId = null;
+        _dragTargetTabId = null;
+
+        UpdateTabDragVisuals();
+
+        if (targetTabId != null)
+            MoveTabByDrag(draggingTabId, targetTabId);
+    }
+
+    private void UpdateTabDragVisuals()
+    {
+        foreach (var (tabId, button) in _tabButtons)
+        {
+            var dragging = string.Equals(tabId, _draggingTabId, StringComparison.OrdinalIgnoreCase);
+            var dropTarget = string.Equals(tabId, _dragTargetTabId, StringComparison.OrdinalIgnoreCase);
+            button.SetDragVisualState(dragging, dropTarget);
+        }
+    }
+
     private void OnSplitResizeDragged(GUIMouseMoveEventArgs args)
     {
         if (!_splitChatEnabled || ChatPanes.Height <= 0)
@@ -487,6 +565,7 @@ public partial class ChatBox : UIWidget
                 : Color.FromHex("#737987");
         }
 
+        UpdateTabDragVisuals();
         UpdateTabOverflowControls();
     }
 
@@ -772,6 +851,54 @@ public partial class ChatBox : UIWidget
         SaveSplitSettings();
         RebuildTabs();
         SetActiveTab(_activeTabId);
+    }
+
+    private void OnSettingsTabRenamed(string tabId, string title)
+    {
+        if (string.Equals(tabId, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        var tab = _tabs.FirstOrDefault(entry => string.Equals(entry.Id, tabId, StringComparison.OrdinalIgnoreCase));
+        if (tab == null)
+            return;
+
+        var sanitized = ChatUserSettings.SanitizeTabTitle(title);
+        if (tab.Title == sanitized)
+            return;
+
+        tab.Title = sanitized;
+        SaveTabs();
+        RebuildTabs();
+        SyncFilterPopup();
+        RefreshVisibleChatLayout();
+    }
+
+    private void OnSettingsTabMoved(string tabId, string targetTabId)
+    {
+        MoveTabByDrag(tabId, targetTabId);
+    }
+
+    private void MoveTabByDrag(string tabId, string targetTabId)
+    {
+        if (string.Equals(tabId, targetTabId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(tabId, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase) ||
+            string.Equals(targetTabId, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase))
+            return;
+
+        var from = _tabs.FindIndex(tab => string.Equals(tab.Id, tabId, StringComparison.OrdinalIgnoreCase));
+        var to = _tabs.FindIndex(tab => string.Equals(tab.Id, targetTabId, StringComparison.OrdinalIgnoreCase));
+        if (from <= 0 || to <= 0 || from == to)
+            return;
+
+        var moving = _tabs[from];
+        _tabs.RemoveAt(from);
+        var insertIndex = Math.Clamp(to, 1, _tabs.Count);
+        _tabs.Insert(insertIndex, moving);
+
+        SaveTabs();
+        RebuildTabs();
+        SyncFilterPopup();
+        RefreshVisibleChatLayout();
     }
 
     private void OnSettingsRadioFilter(string label, bool active)
@@ -1203,6 +1330,8 @@ public partial class ChatBox : UIWidget
         ChatInput.FilterButton.Popup.OnTabSelected -= OnSettingsTabSelected;
         ChatInput.FilterButton.Popup.OnTabAdded -= OnSettingsTabAdded;
         ChatInput.FilterButton.Popup.OnTabRemoved -= OnSettingsTabRemoved;
+        ChatInput.FilterButton.Popup.OnTabRenamed -= OnSettingsTabRenamed;
+        ChatInput.FilterButton.Popup.OnTabMoved -= OnSettingsTabMoved;
         ChatInput.FilterButton.Popup.OnRadioFilter -= OnSettingsRadioFilter;
         ChatInput.FilterButton.Popup.OnStyleChanged -= OnSettingsStyleChanged;
         ChatInput.FilterButton.Popup.OnStyleReset -= OnSettingsStyleReset;
