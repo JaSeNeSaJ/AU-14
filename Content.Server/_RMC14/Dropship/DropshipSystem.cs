@@ -721,7 +721,7 @@ public sealed class DropshipSystem : SharedDropshipSystem
                     // Xeno hijack announcements
                     var xenoText = Loc.GetString("rmc-announcement-dropship-hijack-hive");
                     _xenoAnnounce.AnnounceSameHive(user.Value, xenoText);
-                    _audio.PlayPvs(dropship.LocalHijackSound, dropshipId.Value);
+                    Audio.PlayPvs(dropship.LocalHijackSound, dropshipId.Value);
 
                     var marineText = Loc.GetString("rmc-announcement-dropship-hijack");
                     _marineAnnounce.AnnounceARESStaging(dropshipId.Value, marineText, dropship.MarineHijackSound, new LocId("rmc-announcement-dropship-message"), victimFaction);
