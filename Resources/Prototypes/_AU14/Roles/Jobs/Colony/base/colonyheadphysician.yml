@@ -26,6 +26,10 @@
   - Colonist
   - aumed
   - AUPrisonStaff
+  - auheadsofcolony
+  access:
+# - AU14AccessColonyHeadPhysician # implicit
+  - AU14AccessColonyAdministrator
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial
@@ -68,4 +72,3 @@
 - type: playTimeTracker
   id: AU14JobCivilianHeadPhysician
   isHumanoid: true
-

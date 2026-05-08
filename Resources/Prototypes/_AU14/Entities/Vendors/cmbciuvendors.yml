@@ -50,6 +50,8 @@
         amount: 40
       - id: RMCHeadCapBureau
         amount: 25
+      - id: AU14HeadCommandoBeanie
+        amount: 10
     - name: Headsets
       entries:
       - id: RMCM5CameraGear
@@ -89,10 +91,10 @@
         amount: 4
       - id: AU14M276ShotgunShellLoadingRigBlack
         amount: 6
-      - id: RMCBeltHolsterPistolTSE
-        amount: 20
       - id: AU14BeltHolsterPistolBlack
         amount: 20
+      - id: RMCBeltHolsterRevolver
+        amount: 10
       - id: CMBeltSecurityMarshal
         amount: 30
       - id: AU14BeltUtilityGeneralBlack
@@ -568,14 +570,28 @@
       entries:
       - id: AU14PouchCommandFill
         amount: 10
-    - name: Miscellaneous
+    - name: Equipment
+      takeAll: CMStandard
       entries:
       - id: RMCLaserDesignator
+      - id: RMCWhistle
+      - id: RMCPackFlareCAS
+    - name: Spare Equipment
+      entries:
+      - id: RMCExplosiveBreachingCharge
+        amount: 4
+      - id: RMCBinoculars
+        amount: 5
+      - id: RMCLaserDesignator
+        amount: 2
+      - id: RMCFulton20
         amount: 4
       - id: RMCWhistle
         amount: 10
+      - id: RMCBoxPackFlareCAS
+        amount: 1
       - id: RMCPackFlareCAS
-        amount: 10
+        amount: 6
 
 - type: entity
   parent: ColMarTechBase
@@ -587,7 +603,7 @@
     Built to bring fire support online rapidly after cryogenic hypersleep or emergency mobilization.
   components:
   - type: AccessReader
-    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
+    access: [ [ "AU14AccessGovforGunner" ], [ "AU14AccessOpforGunner" ] ]
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/smart_gun_operator_gear.rsi
   - type: CMAutomatedVendor
@@ -608,7 +624,7 @@
   id: AU14CMBCIUSectionLeader
   name: CMB CIU section leader vendor
   description: >-
-    An automated supervisor rack, hooked up to a compact storage of Crisis Intervention Unit section-leadership equipment from the Colonial Marshall Bureau.
+    An automated equipment rack, hooked up to a compact storage of Crisis Intervention Unit section-leadership equipment from the Colonial Marshall Bureau.
     Designed for immediate readiness following cryogenic hypersleep or rapid mobilization orders.
   components:
   - type: AccessReader
@@ -617,14 +633,12 @@
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Miscellaneous
+    - name: Equipment
+      takeAll: CMStandard
       entries:
       - id: RMCLaserDesignator
-        amount: 1
       - id: RMCWhistle
-        amount: 1
       - id: RMCPackFlareCAS
-        amount: 2
 
 - type: entity
   parent: ColMarTechBase

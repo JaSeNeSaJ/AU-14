@@ -75,7 +75,7 @@ public sealed class RMCStandingSystem : EntitySystem
                             if (_standing.IsDown(ent))
                                 _popup.PopupClient(Loc.GetString("rmc-standing-keep-lying"), ent, ent, PopupType.Medium);
 
-                            if (_standing.Down(ent))
+                            if (_standing.Down(ent, downedBy: ent))
                             {
                                 rest.Resting = true;
                                 Dirty(ent, rest);
@@ -140,13 +140,24 @@ public sealed class RMCStandingSystem : EntitySystem
         if (args.Cancelled)
             return false;
 
-        if (_standing.IsDown(drop))
-        {
-            args.Cancel();
-            return true;
-        }
+        if (!ShouldBlockDownedActions(drop))
+            return false;
 
-        return false;
+        args.Cancel();
+        return true;
+    }
+
+    private bool ShouldBlockDownedActions(Entity<DropItemsOnRestComponent> drop)
+    {
+        if (!_standing.IsDown(drop))
+            return false;
+
+        if (TryComp<RMCRestComponent>(drop, out var rest) && rest.Resting)
+            return true;
+
+        return HasComp<KnockedDownComponent>(drop) ||
+               HasComp<StunnedComponent>(drop) ||
+               _mob.IsIncapacitated(drop);
     }
 
     private void OnEnterDown(Entity<DownOnEnterComponent> mob, ref EntInsertedIntoContainerMessage args)

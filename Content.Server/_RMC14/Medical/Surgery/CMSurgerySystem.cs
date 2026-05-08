@@ -3,6 +3,8 @@ using Content.Server._RMC14.Medical.Wounds;
 using Content.Server.Body.Systems;
 using Content.Server.Chat.Systems;
 using Content.Server.Popups;
+using Content.Shared._CMU14.Medical;
+using Content.Shared._CMU14.Medical.Surgery;
 using Content.Shared._CMU14.Medical.StatusEffects;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.Surgery;
@@ -65,6 +67,8 @@ public sealed class CMSurgerySystem : SharedCMSurgerySystem
     protected override void RefreshUI(EntityUid body)
     {
         if (!HasComp<CMSurgeryTargetComponent>(body))
+            return;
+        if (HasComp<CMUHumanMedicalComponent>(body))
             return;
 
         var isSynth = HasComp<SynthComponent>(body);
@@ -161,6 +165,12 @@ public sealed class CMSurgerySystem : SharedCMSurgerySystem
             return;
         }
 
+        if (HasComp<CMUHumanMedicalComponent>(args.Target.Value))
+        {
+            args.Handled = true;
+            return;
+        }
+
         args.Handled = true;
         _ui.OpenUi(args.Target.Value, CMSurgeryUIKey.Key, user);
 
@@ -179,6 +189,12 @@ public sealed class CMSurgerySystem : SharedCMSurgerySystem
 
     private void OnStepScreamComplete(Entity<CMSurgeryStepEmoteEffectComponent> ent, ref CMSurgeryStepEvent args)
     {
+        if (HasComp<CMUAutodocContainedPatientComponent>(args.Body))
+            return;
+
+        if (HasComp<SynthComponent>(args.Body))
+            return;
+
         if (TryComp<PainShockComponent>(args.Body, out var pain)
             && _cmuPain.GetSuppressionMultiplier(args.Body) < 1f
             && _cmuPain.GetEffectiveTier(args.Body, pain) <= PainTier.None)

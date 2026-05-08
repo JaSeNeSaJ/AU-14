@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using Content.Shared._CMU14.Medical.Items;
+using Content.Shared._CMU14.Medical.Surgery.Markers;
 using Content.Shared._CMU14.Medical.StatusEffects;
 using Content.Shared._RMC14.Medical.Surgery;
 using Content.Shared._RMC14.Medical.Surgery.Steps;
+using Content.Shared._RMC14.Medical.Surgery.Steps.Parts;
 using Content.Shared._RMC14.Medical.Surgery.Tools;
 using Content.Shared._RMC14.Repairable;
 using Content.Shared.Bed.Sleep;
@@ -101,7 +103,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         _toolCategories["bone_gel"] = new[] { typeof(CMBoneGelComponent) };
         _toolCategories["bone_graft"] = new[] { typeof(CMUBoneGraftComponent) };
         _toolCategories["organ_clamp"] = new[] { typeof(CMUOrganClampComponent) };
-        _toolCategories["burn_debridement"] = new[] { typeof(CMUBurnDebridementToolComponent) };
+        _toolCategories["scalpel_or_burn_kit"] = new[] { typeof(CMUBurnDebridementToolComponent) };
         // Resolver only checks "is this a BodyPart" — the matching-symmetry
         // check (right leg slot ↔ right leg part) lives in
         // OnArmedInteractUsing's reattach-surgery branch.
@@ -146,14 +148,20 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         BodyPartSymmetry? fallbackSymmetry = null,
         bool allowSamePartInFlightSwitch = false)
     {
-        // Reattach targets the patient body — no BodyPartComponent there,
-        // so dispatch supplies the slot type/symmetry as a fallback.
+        // Missing-limb reattach rows do not have a limb entity yet, so they
+        // resolve through a real body-part anchor while keeping the missing
+        // slot type/symmetry as the logical target.
         if (!CanOperateOnPatient(patient, surgeon, popup: true))
             return null;
 
         BodyPartType armedType;
         BodyPartSymmetry armedSymmetry;
-        if (TryComp<BodyPartComponent>(targetPart, out var partComp))
+        var operationPart = targetPart;
+        var isReattach = IsReattachSurgeryId(surgeryId);
+        if (TryComp<BodyPartComponent>(targetPart, out var partComp)
+            && (!isReattach
+                || fallbackType is null
+                || (partComp.PartType == fallbackType && partComp.Symmetry == fallbackSymmetry)))
         {
             armedType = partComp.PartType;
             armedSymmetry = partComp.Symmetry;
@@ -162,6 +170,8 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         {
             armedType = t;
             armedSymmetry = s;
+            if (isReattach && !TryGetReattachAnchorPart(patient, out operationPart))
+                return null;
         }
         else
         {
@@ -179,17 +189,15 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         // instead of silently switching surgeries.
         if (TryComp<CMUSurgeryInProgressComponent>(patient, out var lockComp))
         {
-            if (lockComp.Part != targetPart)
+            if (lockComp.Part != operationPart)
                 return null;
             if (!allowSamePartInFlightSwitch
                 && !lockComp.AwaitingClosureChoice
                 && lockComp.LeafSurgeryId != surgeryId)
                 return null;
-            // Reattach has Part=patient for every slot, so part-equality
-            // alone would let the medic silently switch the in-flight
-            // reattach to a different missing slot. Pin it to the slot the
-            // surgery was started on.
-            if (IsReattachSurgeryId(surgeryId)
+            // Reattach may share the same socket anchor for several missing
+            // slots, so pin the in-flight surgery to the slot it started on.
+            if (isReattach
                 && (lockComp.TargetPartType != armedType || lockComp.TargetSymmetry != armedSymmetry))
                 return null;
         }
@@ -208,7 +216,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         // Resolve via the requirement chain so prereqs (open-incision,
         // open-ribcage, etc.) can't be skipped. Legacy RMC prereqs without
         // a CMU metadata entry get a synthesized label from the step proto.
-        if (!TryResolveNextStep(patient, targetPart, surgeryId, out var resolved))
+        if (!TryResolveNextStep(patient, operationPart, surgeryId, out var resolved))
             return null;
 
         var armed = EnsureComp<CMUSurgeryArmedStepComponent>(patient);
@@ -264,10 +272,45 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
     {
         if (TryComp<CMUSurgeryInProgressComponent>(patient, out var lockComp))
         {
+            ClearAbandonedReattachState(patient, lockComp);
+
             if (lockComp.Part.IsValid() && HasComp<CMUSurgeryInFlightComponent>(lockComp.Part))
                 RemComp<CMUSurgeryInFlightComponent>(lockComp.Part);
             RemComp<CMUSurgeryInProgressComponent>(patient);
         }
+    }
+
+    private void ClearAbandonedReattachState(EntityUid patient, CMUSurgeryInProgressComponent lockComp)
+    {
+        // Reattach starts on a real socket anchor because the target limb
+        // does not exist yet. If that temporary flow is abandoned before the
+        // limb is attached, remove the progress markers so another missing
+        // slot cannot inherit them. Once the limb exists, the normal open
+        // part state should remain so it can still be closed.
+        if (!IsReattachSurgeryId(lockComp.LeafSurgeryId))
+            return;
+
+        if (TryComp<BodyPartComponent>(lockComp.Part, out var part)
+            && part.PartType == lockComp.TargetPartType
+            && part.Symmetry == lockComp.TargetSymmetry)
+        {
+            return;
+        }
+
+        if (lockComp.Part.IsValid())
+            ClearReattachMarkers(lockComp.Part);
+        if (lockComp.Part != patient)
+            ClearReattachMarkers(patient);
+    }
+
+    private void ClearReattachMarkers(EntityUid uid)
+    {
+        RemComp<CMIncisionOpenComponent>(uid);
+        RemComp<CMBleedersClampedComponent>(uid);
+        RemComp<CMSkinRetractedComponent>(uid);
+        RemComp<CMUStumpRemovedComponent>(uid);
+        RemComp<CMUReattachPreppedComponent>(uid);
+        RemComp<CMUReattachCompleteComponent>(uid);
     }
 
     public void ClearArmed(EntityUid patient, CMUSurgeryArmedStepComponent? armed = null, bool expired = false)
@@ -289,6 +332,9 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
 
     public bool CanOperateOnPatient(EntityUid patient, EntityUid surgeon, bool popup = false)
     {
+        if (HasComp<CMUAutodocContainedPatientComponent>(patient))
+            return true;
+
         if (RmcSurgery.IsLyingDown(patient))
             return true;
 
@@ -404,6 +450,11 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         // so the medic can still treat the patient between steps.
         if (!isRightTool && !hasWrongDamage)
             return false;
+        // A wrong-tool scalpel click is also the normal way to reopen the
+        // surgery menu. Let the surgery dispatch path handle that click
+        // instead of cutting the patient.
+        if (!isRightTool && HasComp<CMScalpelComponent>(used))
+            return false;
 
         handled = true;
 
@@ -414,14 +465,11 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         }
 
         var hasTargetPart = TryFindClickedPart(patient, clickTarget, armed.TargetPartType, armed.TargetSymmetry, out var targetPart);
-        if (!hasTargetPart && !IsReattachOnPatientBody(patient, clickTarget, armed))
+        if (!hasTargetPart && !TryResolveReattachAnchorForUse(patient, clickTarget, armed, out targetPart))
         {
             Popup.PopupEntity(Loc.GetString("cmu-medical-surgery-wrong-part"), patient, user, PopupType.SmallCaution);
             return true;
         }
-
-        if (!hasTargetPart)
-            targetPart = patient;
 
         if (isRightTool)
         {
@@ -439,7 +487,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
             }
 
             if (armed.RequiredToolCategory == "severed_limb"
-                && !LimbMatchesAnyMissingSlot(patient, used))
+                && !LimbMatchesMissingSlot(patient, used, armed.TargetPartType, armed.TargetSymmetry))
             {
                 Popup.PopupEntity(Loc.GetString("cmu-medical-surgery-wrong-limb"), patient, user, PopupType.SmallCaution);
                 return true;
@@ -459,7 +507,6 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         }
 
         ApplyWrongToolDamage(user, patient, used, damageType, amount);
-        ClearArmed(patient, armed);
         return true;
     }
 
@@ -515,11 +562,15 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
             : false;
     }
 
-    private bool IsReattachOnPatientBody(EntityUid patient, EntityUid? clickTarget, CMUSurgeryArmedStepComponent armed)
+    private bool TryResolveReattachAnchorForUse(EntityUid patient, EntityUid? clickTarget, CMUSurgeryArmedStepComponent armed, out EntityUid anchor)
     {
+        anchor = default;
         if (!IsReattachSurgeryId(armed.LeafSurgeryId))
             return false;
-        return clickTarget == patient;
+        if (!TryGetReattachAnchorPart(patient, out anchor))
+            return false;
+
+        return clickTarget is null || clickTarget == patient || clickTarget == anchor;
     }
 
     public static bool IsReattachSurgeryId(string surgeryId)
@@ -562,6 +613,40 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
     /// </summary>
     protected virtual void RunStepEffect(EntityUid patient, CMUSurgeryArmedStepComponent armed, EntityUid surgeon, EntityUid? tool, EntityUid? targetPart)
     {
+    }
+
+    public bool TryCompleteAutomatedStep(EntityUid patient, CMUSurgeryArmedStepComponent armed, EntityUid surgeon)
+    {
+        if (!Net.IsServer)
+            return false;
+
+        if (armed.Surgeon != surgeon)
+            return false;
+
+        if (!CanOperateOnPatient(patient, surgeon, popup: true))
+        {
+            ClearArmed(patient, armed);
+            return false;
+        }
+
+        EntityUid targetPart;
+        if (TryFindClickedPart(patient, null, armed.TargetPartType, armed.TargetSymmetry, out var foundPart))
+        {
+            targetPart = foundPart;
+        }
+        else if (TryResolveReattachAnchorForUse(patient, null, armed, out var anchor))
+        {
+            targetPart = anchor;
+        }
+        else
+        {
+            Popup.PopupEntity(Loc.GetString("cmu-medical-surgery-wrong-part"), patient, surgeon, PopupType.SmallCaution);
+            ClearArmed(patient, armed);
+            return false;
+        }
+
+        RunStepEffect(patient, armed, surgeon, null, targetPart);
+        return true;
     }
 
     private void OnStepDoAfterAttempt(Entity<CMUSurgeryArmedStepComponent> ent, ref DoAfterAttemptEvent<CMUSurgeryStepDoAfterEvent> args)
@@ -655,7 +740,10 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         if (!IsSelfSurgeryPart(partType))
             return false;
 
-        return surgeryId is "CMSurgeryCloseIncision" or "CMSurgeryCloseRibcage";
+        return surgeryId is "CMUSurgeryCloseIncision"
+            or "CMUSurgeryCloseBoneCavity"
+            or "CMSurgeryCloseIncision"
+            or "CMSurgeryCloseRibcage";
     }
 
     private static bool IsSelfSurgeryPart(BodyPartType partType)
@@ -678,6 +766,10 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         resolved = default!;
         if (targetPart is null)
             return false;
+
+        if (TryResolveReattachNextStep(patient, targetPart.Value, surgeryId, out resolved))
+            return true;
+
         if (RmcSurgery.GetSingleton(surgeryId) is not { } surgeryEnt)
             return false;
 
@@ -722,6 +814,47 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
             // Gating prereq id only when the leaf surgery isn't the one
             // being armed — lets the BUI flag "(via Open Incision)".
             resolvedSurgeryProtoId == surgeryId ? null : resolvedSurgeryProtoId);
+        return true;
+    }
+
+    private bool TryResolveReattachNextStep(EntityUid patient, EntityUid targetPart, string surgeryId, out CMUResolvedStep resolved)
+    {
+        resolved = default!;
+        if (surgeryId != "CMUSurgeryReattachLimb" || targetPart == default)
+            return false;
+
+        if (HasComp<CMUReattachCompleteComponent>(targetPart))
+            return TryResolveStepAt(surgeryId, 3, out resolved, targetPart);
+        if (HasComp<CMUReattachPreppedComponent>(targetPart))
+            return TryResolveStepAt(surgeryId, 2, out resolved, targetPart);
+        if (HasComp<CMUStumpRemovedComponent>(targetPart))
+            return TryResolveStepAt(surgeryId, 1, out resolved, targetPart);
+
+        if (!HasComp<CMIncisionOpenComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 0, targetPart, out resolved);
+        if (!HasComp<CMBleedersClampedComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 1, targetPart, out resolved);
+        if (!HasComp<CMSkinRetractedComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 2, targetPart, out resolved);
+
+        return TryResolveStepAt(surgeryId, 0, out resolved, targetPart);
+    }
+
+    private bool TryResolveGatedStep(string surgeryId, int stepIndex, EntityUid targetPart, out CMUResolvedStep resolved)
+    {
+        if (!TryResolveStepAt(surgeryId, stepIndex, out var step, targetPart))
+        {
+            resolved = default!;
+            return false;
+        }
+
+        resolved = new CMUResolvedStep(
+            step.ResolvedSurgeryId,
+            step.StepIndex,
+            step.StepLabel,
+            step.ToolCategory,
+            step.TotalSteps,
+            step.ResolvedSurgeryId);
         return true;
     }
 
@@ -829,11 +962,25 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         return false;
     }
 
-    public bool LimbMatchesAnyMissingSlot(EntityUid patient, EntityUid heldLimb)
+    public bool TryGetReattachAnchorPart(EntityUid patient, out EntityUid anchor)
+    {
+        anchor = default;
+        if (!TryComp<BodyComponent>(patient, out var bodyComp))
+            return false;
+        if (Body.GetRootPartOrNull(patient, bodyComp) is not { } root)
+            return false;
+
+        anchor = root.Entity;
+        return true;
+    }
+
+    public bool LimbMatchesMissingSlot(EntityUid patient, EntityUid heldLimb, BodyPartType targetType, BodyPartSymmetry targetSymmetry)
     {
         if (!TryComp<BodyPartComponent>(heldLimb, out var heldBp))
             return false;
-        if (heldBp.PartType is not (BodyPartType.Arm or BodyPartType.Leg))
+        if (heldBp.PartType != targetType || heldBp.Symmetry != targetSymmetry)
+            return false;
+        if (targetType is not (BodyPartType.Arm or BodyPartType.Leg))
             return false;
 
         if (!TryComp<BodyComponent>(patient, out var bodyComp))
@@ -841,21 +988,21 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         if (Body.GetRootPartOrNull(patient, bodyComp) is not { } root)
             return false;
 
-        var heldSide = heldBp.Symmetry switch
+        var targetSide = targetSymmetry switch
         {
             BodyPartSymmetry.Left => "left",
             BodyPartSymmetry.Right => "right",
             _ => null,
         };
-        if (heldSide is null)
+        if (targetSide is null)
             return false;
 
         foreach (var (slotId, slot) in root.BodyPart.Children)
         {
-            if (slot.Type != heldBp.PartType)
+            if (slot.Type != targetType)
                 continue;
             // Slot id encodes side — left_arm / right_leg / etc.
-            if (!slotId.Contains(heldSide, System.StringComparison.Ordinal))
+            if (!slotId.Contains(targetSide, System.StringComparison.Ordinal))
                 continue;
             // Accept the matching slot — if it's filled, the attach call
             // no-ops with a "slot occupied" popup, which is the right UX.
@@ -895,7 +1042,12 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         return false;
     }
 
-    public CMUSurgeryBuiState BuildBuiState(EntityUid patient, string patientName, List<CMUSurgeryPartEntry> parts, CMUSurgeryArmedStepComponent? armed)
+    public CMUSurgeryBuiState BuildBuiState(
+        EntityUid patient,
+        string patientName,
+        List<CMUSurgeryPartEntry> parts,
+        CMUSurgeryArmedStepComponent? armed,
+        EntityUid? viewer = null)
     {
         CMUArmedStepInfo? armedInfo = null;
         if (armed is not null)
@@ -919,9 +1071,11 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
             inFlight = new CMUSurgeryInFlightInfo(
                 GetNetEntity(lockComp.Part),
                 partDisplay,
+                flight.LeafSurgeryId,
                 flight.LeafSurgeryDisplayName,
                 flight.SurgeonName,
-                flight.StartedAt);
+                flight.StartedAt,
+                viewer is null || flight.Surgeon == viewer.Value);
         }
 
         return new CMUSurgeryBuiState(GetNetEntity(patient), patientName, parts, armedInfo, inFlight);
