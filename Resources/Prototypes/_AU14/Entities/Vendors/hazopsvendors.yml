@@ -22,7 +22,7 @@
       entries:
       - id: CMBootsBlack
         amount: 40
-      - id: RMCBootsCBRN
+      - id: AU14BootsCBRNHAZOPS
         amount: 25
     - name: Gloves
       entries:
@@ -75,9 +75,13 @@
       entries:
       - id: AU14ArmorHAZOPSPWA
         amount: 60
+      - id: AU14ArmorHAZOPSCBRN
+        amount: 60
     - name: Armor Components
       entries:
       - id: AU14KitJungleArmor
+        amount: 40
+      - id: AU14KitDesertArmor
         amount: 40
     - name: Backpack
       entries:
@@ -151,6 +155,8 @@
     - name: Mask
       entries:
       - id: AU14MaskGasHAZOPSM40
+        amount: 40
+      - id: AU14MaskGasHAZOPSM17
         amount: 40
       - id: CMUGasMaskFilterHAZOPS
         amount: 80
