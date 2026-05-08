@@ -66,6 +66,10 @@
                     <LineEdit Name="NewTabNameEdit" PlaceHolder="{Loc 'hud-chatbox-tabs-new-placeholder'}" HorizontalExpand="True"/>
                     <Button Name="AddTabButton" Text="{Loc 'hud-chatbox-tabs-add'}"/>
                 </BoxContainer>
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <LineEdit Name="RenameTabNameEdit" PlaceHolder="{Loc 'hud-chatbox-tabs-rename-placeholder'}" HorizontalExpand="True"/>
+                    <Button Name="RenameTabButton" Text="{Loc 'hud-chatbox-tabs-rename'}"/>
+                </BoxContainer>
                 <Button Name="RemoveTabButton" Text="{Loc 'hud-chatbox-tabs-remove'}"/>
             </BoxContainer>
             <BoxContainer Name="StylesPage" Visible="False" MinWidth="650" Orientation="Vertical" SeparationOverride="7">

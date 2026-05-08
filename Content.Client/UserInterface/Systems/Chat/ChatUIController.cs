@@ -541,6 +541,10 @@ public sealed partial class ChatUIController : UIController
 
     private void UpdateChannelPermissions()
     {
+        var oldCanSendChannels = CanSendChannels;
+        var oldFilterableChannels = FilterableChannels;
+        var oldSelectableChannels = SelectableChannels;
+
         CanSendChannels = default;
         FilterableChannels = default;
 
@@ -607,10 +611,17 @@ public sealed partial class ChatUIController : UIController
         DebugTools.Assert((FilterableChannels & ChatChannel.OOC) != 0, "OOC must always be available");
         DebugTools.Assert((SelectableChannels & ChatSelectChannel.OOC) != 0, "OOC must always be available");
 
-        // let our chatbox know all the new settings
-        CanSendChannelsChanged?.Invoke(CanSendChannels);
-        FilterableChannelsChanged?.Invoke(FilterableChannels);
-        SelectableChannelsChanged?.Invoke(SelectableChannels);
+        // Let chatboxes know only when something actually changed. Attaching to a
+        // new entity during xeno evolution keeps the same xeno chat permissions,
+        // so rebuilding the full chat history here is unnecessary and hitches.
+        if (oldCanSendChannels != CanSendChannels)
+            CanSendChannelsChanged?.Invoke(CanSendChannels);
+
+        if (oldFilterableChannels != FilterableChannels)
+            FilterableChannelsChanged?.Invoke(FilterableChannels);
+
+        if (oldSelectableChannels != SelectableChannels)
+            SelectableChannelsChanged?.Invoke(SelectableChannels);
     }
 
     public void ClearUnfilteredUnreads(ChatChannel channels)
