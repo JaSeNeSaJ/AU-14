@@ -620,19 +620,6 @@
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
             state: cryotroops
-        - name: FORECON Marksman Team
-          description: Summon a FORECON Sniper Team.
-          cost: 25
-          repurchasable: false
-          events:
-          - !type:TechPartySpawnEvent
-            thirdPartyId: AU14IntelThirdPartySniperGOVFOR
-          - !type:TechAnnounceEvent
-            author: INTEL OPERATIONS
-            message: A FORECON Sniper Team has been dispatched to aid with the operation.
-          icon:
-            sprite: _RMC14/Interface/tech_tree.rsi
-            state: cryotroops
         - name: Unlock Tier 3
           description: Transitions the tree to another tier.
           cost: 1
