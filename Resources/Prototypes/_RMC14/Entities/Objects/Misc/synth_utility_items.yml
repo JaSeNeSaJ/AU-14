@@ -71,7 +71,6 @@
   components:
   - type: StorageFill
     contents:
-    - id: RMCWelderIndustrialHighCapacity
     - id: RMCCableCoil30
       amount: 2
     - id: CMWirecutter

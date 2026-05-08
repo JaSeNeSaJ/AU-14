@@ -1071,7 +1071,7 @@
   description: The L1 pattern Modular Operational Load-Bearing System designates the standard issue set of lightweight load-carrying equipment for the RCM. This configuration features a harness and webbing capable of fitting a wide variety of surgical equipment.
   components:
   - type: Sprite
-    sprite: _RMC14/Objects/Clothing/Webbing/webbing_surgical_rcm.rsi
+    sprite: _RMC14/Objects/Clothing/Webbing/webbing_surgical_blue.rsi
     state: webbing
   - type: Webbing
     components:

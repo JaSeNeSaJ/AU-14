@@ -10,8 +10,6 @@
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
-    jobs:
-    - RMCJobSynthetic
     sections:
     - name: Standard Equipment
       takeAll: CMStandard
@@ -115,8 +113,6 @@
         name: S-V42A1 smartpack, tan
       - id: RMCSmartpackA1White
         name: S-V42A1 smartpack, white
-      - id: RMCSatchelSPPSynth
-        name: UCP3 combat pack, synthetic
     - name: Belt
       choices: { CMBelt: 1 }
       entries:
@@ -176,10 +172,6 @@
   id: ColMarTechCrewSyntheticColony
   name: ColMarTech Synthetic Equipment Rack
   suffix: Colony Synth Access
-  components:
-  - type: CMAutomatedVendor
-    jobs:
-    - RMCJobSyntheticColony
 
 - type: entity
   parent: ColMarTechBase
@@ -193,8 +185,6 @@
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/clothing.rsi
   - type: CMAutomatedVendor
-    jobs:
-    - RMCJobSynthetic
     sections:
     - name: Standard Equipment
       takeAll: CMStandard
@@ -226,8 +216,6 @@
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/gear.rsi
   - type: CMAutomatedVendor
-    jobs:
-    - RMCJobSynthetic
     sections:
     - name: Engineer Supplies
       entries:
@@ -255,9 +243,6 @@
       - id: RMCExplosivePlastic
         points: 3
       - id: RMCES11MobileFuelCanister
-        points: 4
-      - id: RMCWelderIndustrialHighCapacity
-        name: industrial blowtorch
         points: 4
       - id: RMCEngineerKit
         points: 1
@@ -379,8 +364,6 @@
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/experimental.rsi
   - type: CMAutomatedVendor
-    jobs:
-    - RMCJobSynthetic
     pointsType: ExperimentalTools
     sections:
     - name: Experimental Tools
@@ -439,7 +422,6 @@
   - type: CMVendorBundle
     bundle:
     - CMHeadsetMedical
-    - RMCPamphletCanine
 
 - type: entity
   parent: CMVendorBundleRiflemanApparel
@@ -450,4 +432,3 @@
   - type: CMVendorBundle
     bundle:
     - CMHeadsetMPO
-    - RMCPamphletCanine
