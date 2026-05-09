@@ -90,7 +90,9 @@ namespace Content.Shared.Chat
         public bool HidePopup;
         public string? SpeechStyleClass;
         public bool RepeatCheckSender;
-        public string? LanguageIcon; //RMC
+        // RMC14
+        public string? LanguageIcon;
+        // RMC14
 
         [NonSerialized]
         public bool Read;
@@ -109,6 +111,7 @@ namespace Content.Shared.Chat
             string? speechStyleClass = null,
             bool repeatCheckSender = true,
             ChatDisplayMetadata? display = null,
+            string? languageIcon = null,
             string? languageIcon = null) //RMC
         {
             Channel = channel;
@@ -124,6 +127,7 @@ namespace Content.Shared.Chat
             SpeechStyleClass = speechStyleClass;
             RepeatCheckSender = repeatCheckSender;
             Display = display ?? CreateDefaultDisplay(channel);
+            LanguageIcon = languageIcon;
             LanguageIcon = languageIcon;
         }
 
@@ -184,6 +188,7 @@ namespace Content.Shared.Chat
                 _ => "CHAT"
             });
         }
+        // RMC14
     }
 
     /// <summary>
