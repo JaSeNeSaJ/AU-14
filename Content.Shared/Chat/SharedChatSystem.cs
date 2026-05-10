@@ -1,5 +1,4 @@
 using System.Collections.Frozen;
-using System.Linq;
 using System.Text.RegularExpressions;
 using Content.Shared._AU14.Abominations;
 using Content.Shared._CMU14.Yautja;
@@ -195,7 +194,7 @@ public abstract partial class SharedChatSystem : EntitySystem
             {
                 Log.Info("Has XenoComponent, returning false");
                 return false;
-
+            }
             if (!quiet)
                 _popup.PopupEntity(Loc.GetString("chat-manager-no-radio-key"), source, source);
             return true;
@@ -205,12 +204,12 @@ public abstract partial class SharedChatSystem : EntitySystem
         var prefix = input[0];
         var channelKey = input[1];
         var lookupKey = $"{prefix}{char.ToLower(channelKey)}";
+
+        var foundChannel = _channelLookup.TryGetValue(lookupKey, out channel);
+
         output = SanitizeMessageCapital(input[2..].TrimStart());
 
-        if (_channelLookup.TryGetValue(lookupKey, out channel))
-        {
-        }
-        else if (channelKey == DefaultChannelKey || char.ToLower(channelKey) == DefaultChannelKey)
+        if (!foundChannel && char.ToLowerInvariant(channelKey) == DefaultChannelKey)
         {
             var ev = new GetDefaultRadioChannelEvent();
             RaiseLocalEvent(source, ev);
@@ -220,6 +219,7 @@ public abstract partial class SharedChatSystem : EntitySystem
             {
                 if (!quiet)
                     _popup.PopupEntity(Loc.GetString("rmc-no-queen-hivemind-chat"), source, source, PopupType.LargeCaution);
+
                 output = SanitizeMessageCapital(input[1..].TrimStart());
                 return false;
             }
@@ -230,7 +230,7 @@ public abstract partial class SharedChatSystem : EntitySystem
             return true;
         }
 
-        if (channel == null && !quiet)
+        if (!foundChannel && !quiet)
         {
             var msg = Loc.GetString("chat-manager-no-such-channel", ("key", channelKey));
             _popup.PopupEntity(msg, source, source);
@@ -244,6 +244,7 @@ public abstract partial class SharedChatSystem : EntitySystem
         {
             Log.Info("Has XenoComponent but no channel, returning false");
             return false;
+        }
         // RMC14
 
         return true;
@@ -258,12 +259,14 @@ public abstract partial class SharedChatSystem : EntitySystem
     {
         if (string.IsNullOrEmpty(message))
             return message;
+        // Capitalize first letter
         message = OopsConcat(char.ToUpper(message[0]).ToString(), message.Remove(0, 1));
         return message;
     }
 
     private static string OopsConcat(string a, string b)
     {
+        // This exists to prevent Roslyn being clever and compiling something that fails sandbox checks.
         return a + b;
     }
 
@@ -279,6 +282,8 @@ public abstract partial class SharedChatSystem : EntitySystem
             index = message.IndexOf(theWordI, index + 1)
         )
         {
+            // Stops the code If It's tryIng to capItalIze the letter I In the mIddle of words
+            // Repeating the code twice is the simplest option
             if (index + 1 < message.Length && char.IsLetter(message[index + 1]))
                 continue;
             if (index - 1 >= 0 && char.IsLetter(message[index - 1]))
@@ -302,6 +307,7 @@ public abstract partial class SharedChatSystem : EntitySystem
             trimmed = $"{message[..maxLength]}...";
         }
 
+        // No more than max newlines, other replaced to spaces
         if (maxNewlines > 0)
         {
             var chars = trimmed.ToCharArray();
@@ -328,7 +334,7 @@ public abstract partial class SharedChatSystem : EntitySystem
         var rawmsg = message.WrappedMessage;
         var tagStart = rawmsg.IndexOf($"[{outerTag}]");
         var tagEnd = rawmsg.IndexOf($"[/{outerTag}]");
-        if (tagStart < 0 || tagEnd < 0)
+        if (tagStart < 0 || tagEnd < 0) //If the outer tag is not found, the injection is not performed
             return rawmsg;
         tagStart += outerTag.Length + 2;
 
