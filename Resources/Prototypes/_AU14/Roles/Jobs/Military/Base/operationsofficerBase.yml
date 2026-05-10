@@ -6,6 +6,7 @@
   playTimeTracker: AU14JobGOVFORPlatOp
   basePlaytimeTracker: true
   hidden: true
+  abstract: true
   requirements:
   - type: DepartmentTimeRequirement
     department: AU14DepartmentGovernmentForces

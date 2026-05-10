@@ -5,6 +5,7 @@
   description: au14-job-description-govforplatco
   playTimeTracker: AU14JobGOVFORPlatCo
   basePlaytimeTracker: true
+  abstract: true
   hidden: true
   requirements:
   - type: DepartmentTimeRequirement

@@ -6,6 +6,7 @@
   playTimeTracker: AU14JobGOVFORDSPilot
   basePlaytimeTracker: true
   hidden: true
+  abstract: true
   requirements:
   - type: DepartmentTimeRequirement
     department: AU14DepartmentGovernmentForces
