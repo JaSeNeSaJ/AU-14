@@ -101,6 +101,8 @@ public sealed partial class ChatSystem
             range,
             language,
             languageIcon,
+            speakerName: name,
+            visibleLanguage: !(languagePrototype?.NeedsSpeech ?? true),
             needsLos: needsLos);
 
         var ev = new EntitySpokeEvent(source, speakerProcessedMessage, null, null, language);
@@ -166,6 +168,7 @@ public sealed partial class ChatSystem
 
         var showLanguageName = languagePrototype?.ShowLanguageName ?? false;
         var languageIcon = showLanguageName ? languagePrototype?.DisplayedLanguageIcon : null;
+        var visibleLanguage = !(languagePrototype?.NeedsSpeech ?? true);
 
         foreach (var (session, data) in GetRecipients(source, WhisperMuffledRange, ignoreXenos))
         {
@@ -186,10 +189,17 @@ public sealed partial class ChatSystem
 
             if (data.Range <= WhisperClearRange)
             {
-                actualWrappedMessage = Loc.GetString(
-                    "chat-manager-entity-whisper-wrap-message",
-                    ("entityName", name),
-                    ("message", FormattedMessage.EscapeText(listenerMessage)));
+                var hidePopup = visibleLanguage && !_language.CanUnderstand(listener, language);
+                actualWrappedMessage = hidePopup
+                    ? Loc.GetString(
+                        "chat-manager-entity-me-wrap-message",
+                        ("entityName", name),
+                        ("entity", source),
+                        ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                    : Loc.GetString(
+                        "chat-manager-entity-whisper-wrap-message",
+                        ("entityName", name),
+                        ("message", FormattedMessage.EscapeText(listenerMessage)));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     listenerMessage,
@@ -197,15 +207,23 @@ public sealed partial class ChatSystem
                     source,
                     false,
                     session.Channel,
+                    hidePopup: hidePopup,
                     languageIcon: languageIcon);
             }
             else if (_examineSystem.InRangeUnOccluded(source, listener, WhisperMuffledRange))
             {
                 var obfuscatedMessage = ObfuscateMessageReadability(listenerMessage, 0.2f);
-                actualWrappedMessage = Loc.GetString(
-                    "chat-manager-entity-whisper-wrap-message",
-                    ("entityName", nameIdentity),
-                    ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                var hidePopup = visibleLanguage && !_language.CanUnderstand(listener, language);
+                actualWrappedMessage = hidePopup
+                    ? Loc.GetString(
+                        "chat-manager-entity-me-wrap-message",
+                        ("entityName", nameIdentity),
+                        ("entity", source),
+                        ("message", FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage)))
+                    : Loc.GetString(
+                        "chat-manager-entity-whisper-wrap-message",
+                        ("entityName", nameIdentity),
+                        ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     obfuscatedMessage,
@@ -213,6 +231,7 @@ public sealed partial class ChatSystem
                     source,
                     false,
                     session.Channel,
+                    hidePopup: hidePopup,
                     languageIcon: languageIcon);
             }
             else
@@ -261,6 +280,127 @@ public sealed partial class ChatSystem
         _adminLogger.Add(LogType.Chat, LogImpact.Low, $"Whisper from {ToPrettyString(source):user}{logName} in {language}: {logMessage}.");
     }
 
+    public void SendRadioSpeakerWhisperWithLanguage(
+        EntityUid source,
+        string message,
+        ProtoId<LanguagePrototype> language,
+        string? nameOverride = null,
+        bool ignoreXenos = false)
+    {
+        LanguagePrototype? languagePrototype = null;
+        if (!_prototypeManager.TryIndex(language, out languagePrototype))
+        {
+            language = SharedLanguageSystem.CommonLanguage;
+            _prototypeManager.TryIndex(language, out languagePrototype);
+        }
+
+        var needsLos = languagePrototype?.NeedsLOS ?? false;
+        var showLanguageName = languagePrototype?.ShowLanguageName ?? false;
+        var languageIcon = showLanguageName ? languagePrototype?.DisplayedLanguageIcon : null;
+        var visibleLanguage = !(languagePrototype?.NeedsSpeech ?? true);
+        var escapedName = FormattedMessage.EscapeText(nameOverride ?? Identity.Name(source, EntityManager));
+
+        foreach (var (session, data) in GetRecipients(source, WhisperMuffledRange, ignoreXenos))
+        {
+            if (session.AttachedEntity is not { Valid: true } listener)
+                continue;
+
+            if (MessageRangeCheck(session, data, ChatTransmitRange.GhostRangeLimit) != MessageRangeCheckResult.Full)
+                continue;
+
+            if (needsLos && !data.Observer && listener != source && !data.HasLOS)
+                continue;
+
+            var listenerMessage = listener == source
+                ? message
+                : _language.ObfuscateMessageForListener(listener, message, language);
+
+            string actualWrappedMessage;
+
+            if (data.Range <= WhisperClearRange)
+            {
+                var hidePopup = visibleLanguage && !_language.CanUnderstand(listener, language);
+                actualWrappedMessage = hidePopup
+                    ? Loc.GetString(
+                        "chat-manager-entity-me-wrap-message",
+                        ("entityName", escapedName),
+                        ("entity", source),
+                        ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                    : Loc.GetString(
+                        "chat-manager-entity-whisper-wrap-message",
+                        ("entityName", escapedName),
+                        ("message", FormattedMessage.EscapeText(listenerMessage)));
+                _chatManager.ChatMessageToOne(
+                    ChatChannel.Whisper,
+                    listenerMessage,
+                    actualWrappedMessage,
+                    source,
+                    false,
+                    session.Channel,
+                    hidePopup: hidePopup,
+                    languageIcon: languageIcon);
+            }
+            else if (data.HasLOS)
+            {
+                var obfuscatedMessage = ObfuscateMessageReadability(listenerMessage, 0.2f);
+                var hidePopup = visibleLanguage && !_language.CanUnderstand(listener, language);
+                actualWrappedMessage = hidePopup
+                    ? Loc.GetString(
+                        "chat-manager-entity-me-wrap-message",
+                        ("entityName", escapedName),
+                        ("entity", source),
+                        ("message", FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage)))
+                    : Loc.GetString(
+                        "chat-manager-entity-whisper-wrap-message",
+                        ("entityName", escapedName),
+                        ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                _chatManager.ChatMessageToOne(
+                    ChatChannel.Whisper,
+                    obfuscatedMessage,
+                    actualWrappedMessage,
+                    source,
+                    false,
+                    session.Channel,
+                    hidePopup: hidePopup,
+                    languageIcon: languageIcon);
+            }
+            else
+            {
+                var obfuscatedMessage = ObfuscateMessageReadability(listenerMessage, 0.2f);
+                actualWrappedMessage = Loc.GetString(
+                    "chat-manager-entity-whisper-unknown-wrap-message",
+                    ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                _chatManager.ChatMessageToOne(
+                    ChatChannel.Whisper,
+                    obfuscatedMessage,
+                    actualWrappedMessage,
+                    source,
+                    false,
+                    session.Channel,
+                    languageIcon: languageIcon);
+            }
+        }
+
+        var replayWrappedMessage = Loc.GetString(
+            "chat-manager-entity-whisper-wrap-message",
+            ("entityName", escapedName),
+            ("message", FormattedMessage.EscapeText(message)));
+        _replay.RecordServerMessage(
+            new ChatMessage(
+                ChatChannel.Whisper,
+                message,
+                replayWrappedMessage,
+                GetNetEntity(source),
+                null,
+                MessageRangeHideChatForReplay(ChatTransmitRange.GhostRangeLimit),
+                speechStyleClass: CompOrNull<RMCSpeechBubbleSpecificStyleComponent>(source)?.SpeechStyleClass,
+                repeatCheckSender: !HasComp<ChatRepeatIgnoreSenderComponent>(source),
+                languageIcon: languageIcon));
+
+        var ev = new EntitySpokeEvent(source, message, null, null, language);
+        RaiseLocalEvent(source, ev, true);
+    }
+
     private void SendInVoiceRangeWithLanguage(
         ChatChannel channel,
         string speakerMessage,
@@ -269,6 +409,8 @@ public sealed partial class ChatSystem
         ChatTransmitRange range,
         ProtoId<LanguagePrototype> language,
         string? languageIcon = null,
+        string? speakerName = null,
+        bool visibleLanguage = false,
         NetUserId? author = null,
         bool needsLos = false)
     {
@@ -286,13 +428,20 @@ public sealed partial class ChatSystem
             if (needsLos && !data.Observer && listener != source && !data.HasLOS)
                 continue;
 
+            var canUnderstand = _language.CanUnderstand(listener, language);
             var listenerMessage = listener == source
                 ? speakerMessage
                 : _language.ObfuscateMessageForListener(listener, speakerMessage, language);
 
-            var finalWrappedMessage = string.Format(
-                wrappedMessageTemplate,
-                FormattedMessage.EscapeText(listenerMessage));
+            var finalWrappedMessage = visibleLanguage && !canUnderstand
+                ? Loc.GetString(
+                    "chat-manager-entity-me-wrap-message",
+                    ("entityName", speakerName ?? FormattedMessage.EscapeText(Name(source))),
+                    ("entity", source),
+                    ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                : string.Format(
+                    wrappedMessageTemplate,
+                    FormattedMessage.EscapeText(listenerMessage));
 
             var ev = new ChatMessageOverrideInVoiceRangeEvent(
                 session,
@@ -315,6 +464,7 @@ public sealed partial class ChatSystem
                 ev.EntHideChat,
                 session.Channel,
                 author: author,
+                hidePopup: visibleLanguage && !canUnderstand,
                 languageIcon: languageIcon);
         }
 
