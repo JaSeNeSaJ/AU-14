@@ -72,10 +72,14 @@ namespace Content.IntegrationTests.Tests
                     .Where(p => !pair.IsTestPrototype(p))
                     .Where(p => !p.Components.ContainsKey("MapGrid")) // This will smash stuff otherwise.
                     .Where(p => !p.Components.ContainsKey("RoomFill")) // This comp can delete all entities, and spawn others
+                    .Where(p => !p.Components.ContainsKey("ConditionalSpawner")) // Spawns arbitrary prototypes as a side effect.
+                    .Where(p => !p.Components.ContainsKey("RandomSpawner")) // Spawns arbitrary prototypes as a side effect.
+                    .Where(p => !p.Components.ContainsKey("EntityTableSpawner")) // Spawns arbitrary prototypes as a side effect.
                     .Where(p => !p.Components.ContainsKey("GhostRole")) // Ghost role entities can spawn squads/loadouts as side effects.
                     .Where(p => !p.Components.ContainsKey("GhostRoleApplySpecial")) // Spawns special-role setup on direct entity spawn.
                     .Where(p => !p.Components.ContainsKey("HiveKingCocoon")) // Spawns an (audio) announcement.
                     .Where(p => !p.Components.ContainsKey("HivePylon")) // Spawn an (audio) announcement on deletion.
+                    .Where(p => p.Categories.All(x => x.ID != SpawnerCategory))
                     .Select(p => p.ID)
                     .ToList();
             });
