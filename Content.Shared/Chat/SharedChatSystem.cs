@@ -168,9 +168,9 @@ public abstract partial class SharedChatSystem : EntitySystem
                 ? _prototypeManager.Index<RadioChannelPrototype>(HivemindChannel)
                 : _prototypeManager.Index<RadioChannelPrototype>(CommonChannel);
 
-
-            if (channel.ID == HivemindChannel.Id &&
-                !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1, null, hive))
+        // RMC14
+        if (channel?.ID == HivemindChannel.Id &&
+            !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1, null, hive))
             {
                 if (!quiet)
                     _popup.PopupEntity(Loc.GetString("rmc-no-queen-hivemind-chat"), source, source, PopupType.LargeCaution);
@@ -178,6 +178,7 @@ public abstract partial class SharedChatSystem : EntitySystem
                 output = SanitizeMessageCapital(input[1..].TrimStart());
                 return false;
             }
+            // RMC14
 
             return true;
         }
