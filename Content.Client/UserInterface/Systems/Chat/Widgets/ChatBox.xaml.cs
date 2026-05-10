@@ -1199,7 +1199,13 @@ public partial class ChatBox : UIWidget
     {
         var formatted = new FormattedMessage(3);
         formatted.PushColor(color);
+
+        // RMC14
+        if (!string.IsNullOrWhiteSpace(message.LanguageIcon))
+            formatted.AddMarkupOrThrow($"[langicon language=\"{FormattedMessage.EscapeText(message.LanguageIcon)}\"][/langicon]");
+        // RMC14
         formatted.AddMarkupOrThrow(message.WrappedMessage);
+
         formatted.Pop();
 
         return FilterProblematicTags(formatted);
