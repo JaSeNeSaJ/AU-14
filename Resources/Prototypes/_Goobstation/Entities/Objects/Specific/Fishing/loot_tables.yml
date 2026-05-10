@@ -46,6 +46,58 @@
     - id: FishToxic
     - id: FishIan
 
+# Extra-rare oddities dredged up from fishing spots
+- type: entityTable
+  id: UltraRareFishingLootTable
+  table: !type:GroupSelector
+    children:
+    - id: RMCCrayonBox
+    - id: CMUPipeBomb
+      weight: 0.35
+    - id: PlushieXeno
+    - !type:NestedSelector
+      tableId: FishingCashTable
+    - id: RMCGrenadeIED
+      weight: 0.25
+    - !type:NestedSelector
+      tableId: FishingWeaponMagazineTable
+    - !type:NestedSelector
+      tableId: RandomDeliveryLetterBasic
+      weight: 2
+
+- type: entityTable
+  id: FishingCashTable
+  table: !type:GroupSelector
+    children:
+    - id: SpaceCash100
+      amount: !type:RangeNumberSelector
+        range: 1, 4
+    - id: SpaceCash500
+      amount: !type:RangeNumberSelector
+        range: 1, 3
+    - id: SpaceCash1000
+      weight: 0.5
+      amount: !type:RangeNumberSelector
+        range: 1, 2
+    - id: SpaceCash2500
+      weight: 0.15
+
+- type: entityTable
+  id: FishingWeaponMagazineTable
+  table: !type:GroupSelector
+    children:
+    - id: CMMagazinePistolM1984
+    - id: RMCMagazinePistolM1984AP
+    - id: CMMagazineSMGM63
+    - id: CMMagazineSMGM63AP
+    - id: CMMagazineRifleM54C
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CExt
+    - id: RMCMagazineShotgunXM51
+    - id: RMCMagazineRifleM16
+    - id: RMCMagazineRifleType71
+    - id: RMCMagazineRifleL42A
+
 # Fish from water
 - type: entityTable
   id: WaterFishTable
@@ -76,6 +128,9 @@
       - !type:NestedSelector
         tableId: RareFishTable
         weight: 10
+      - !type:NestedSelector
+        tableId: UltraRareFishingLootTable
+        weight: 1
 
 # Items from Lava
 - type: entityTable
@@ -85,6 +140,10 @@
       # TODO: lava/plasma fish
       - !type:NestedSelector
         tableId: BasicFishingLootTable
+        weight: 99
+      - !type:NestedSelector
+        tableId: UltraRareFishingLootTable
+        weight: 1
 
 # Items from Plasma
 - type: entityTable
@@ -94,6 +153,10 @@
     # TODO: lava/plasma fish
       - !type:NestedSelector
         tableId: BasicFishingLootTable
+        weight: 99
+      - !type:NestedSelector
+        tableId: UltraRareFishingLootTable
+        weight: 1
 
 # Items from Toilets
 - type: entityTable
@@ -107,3 +170,6 @@
       - !type:NestedSelector
         tableId: WaterFishTable
         weight: 20
+      - !type:NestedSelector
+        tableId: UltraRareFishingLootTable
+        weight: 1
