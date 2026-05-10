@@ -391,6 +391,7 @@ internal sealed partial class ChatManager : IChatManager
 
     public void ChatMessageToOne(ChatChannel channel, string message, string wrappedMessage, EntityUid source, bool hideChat, INetChannel client, Color? colorOverride = null, bool recordReplay = false, string? audioPath = null, float audioVolume = 0, NetUserId? author = null, bool hidePopup = false,
         // RMC14
+        bool useEmoteSpeechBubble = false,
         string? languageIcon = null)
         // RMC14
     {
@@ -400,7 +401,6 @@ internal sealed partial class ChatManager : IChatManager
 
         var speechStyleClass = _entityManager.GetComponentOrNull<RMCSpeechBubbleSpecificStyleComponent>(source)?.SpeechStyleClass;
         var repeatCheckSender = !_entityManager.HasComponent<ChatRepeatIgnoreSenderComponent>(source);
-
         // CMU14
         var customWrappedMessage = AddGhostFollowButton(wrappedMessage, source, client);
 
@@ -415,9 +415,10 @@ internal sealed partial class ChatManager : IChatManager
             audioPath,
             audioVolume,
             hidePopup,
+            useEmoteSpeechBubble,
             speechStyleClass: speechStyleClass,
             repeatCheckSender: repeatCheckSender,
-            languageIcon: languageIcon // RMC
+            languageIcon: languageIcon
         );
 
         _netManager.ServerSendMessage(new MsgChatMessage() { Message = msg }, client);
