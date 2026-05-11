@@ -173,8 +173,37 @@
   name: camera controls
   description: A computer to monitor cameras linked to the dropship.
   components:
+  - type: GuideHelp
+    guides:
+    - RMCGuideRoleCAS
   - type: Sprite
     state: consoleleft
+  - type: UserInterface
+    interfaces:
+      enum.RMCCameraUiKey.Key:
+        type: RMCCameraBui
+  - type: RMCCameraComputer
+    protoIds:
+    - RMCMonitorCameraAlamo
+    - RMCFlareCAS
+    - RMCAirFlareCAS
+    - RMCLaserDesignatorTarget
+  - type: ActivatableUI
+    key: enum.RMCCameraUiKey.Key
+
+- type: entity
+  parent: CMComputerDropshipCamerasAlamo
+  id: RMCComputerDropshipCamerasNormandy
+  name: camera controls
+  description: A computer to monitor cameras linked to the dropship.
+  suffix: Normandy
+  components:
+  - type: RMCCameraComputer
+    protoIds:
+    - RMCMonitorCameraNormandy
+    - RMCFlareCAS
+    - RMCAirFlareCAS
+    - RMCLaserDesignatorTarget
 
 - type: entity
   parent: CMComputerDropship

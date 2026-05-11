@@ -493,7 +493,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
                 return true;
             }
 
-            if (RequiresActivatedCautery(used, armed.RequiredToolCategory))
+            if (RequiresActivatedSurgeryTool(used, armed.RequiredToolCategory))
             {
                 Popup.PopupEntity(Loc.GetString("cmu-medical-surgery-welder-not-lit"), patient, user, PopupType.SmallCaution);
                 return true;
@@ -549,9 +549,9 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         return true;
     }
 
-    private bool RequiresActivatedCautery(EntityUid tool, string? requiredToolCategory)
+    private bool RequiresActivatedSurgeryTool(EntityUid tool, string? requiredToolCategory)
     {
-        if (requiredToolCategory != "cautery")
+        if (requiredToolCategory is not ("cautery" or "blowtorch"))
             return false;
 
         if (TryComp<SmokableComponent>(tool, out var smokable))
@@ -820,24 +820,32 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
     private bool TryResolveReattachNextStep(EntityUid patient, EntityUid targetPart, string surgeryId, out CMUResolvedStep resolved)
     {
         resolved = default!;
-        if (surgeryId != "CMUSurgeryReattachLimb" || targetPart == default)
+        if (targetPart == default)
             return false;
 
-        if (HasComp<CMUReattachCompleteComponent>(patient))
-            return TryResolveStepAt(surgeryId, 3, out resolved, patient);
-        if (HasComp<CMUReattachPreppedComponent>(patient))
-            return TryResolveStepAt(surgeryId, 2, out resolved, patient);
-        if (HasComp<CMUStumpRemovedComponent>(patient))
-            return TryResolveStepAt(surgeryId, 1, out resolved, patient);
+        if (surgeryId == "RMCSynthSurgeryReattachLimb")
+        {
+            if (HasComp<CMUReattachCompleteComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 3, out resolved, targetPart);
+            if (HasComp<CMUReattachPreppedComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 2, out resolved, targetPart);
+            if (HasComp<CMUStumpRemovedComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 1, out resolved, targetPart);
 
-        if (!HasComp<CMIncisionOpenComponent>(patient))
-            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 0, patient, out resolved);
-        if (!HasComp<CMBleedersClampedComponent>(patient))
-            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 1, patient, out resolved);
-        if (!HasComp<CMSkinRetractedComponent>(patient))
-            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 2, patient, out resolved);
+            return TryResolveStepAt(surgeryId, 0, out resolved, targetPart);
+        }
 
-        return TryResolveStepAt(surgeryId, 0, out resolved, patient);
+        if (surgeryId != "CMUSurgeryReattachLimb")
+            return false;
+
+        if (!HasComp<CMIncisionOpenComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 0, targetPart, out resolved);
+        if (!HasComp<CMBleedersClampedComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 1, targetPart, out resolved);
+        if (!HasComp<CMSkinRetractedComponent>(targetPart))
+            return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 2, targetPart, out resolved);
+
+        return TryResolveStepAt(surgeryId, 0, out resolved, targetPart);
     }
 
     private bool TryResolveGatedStep(string surgeryId, int stepIndex, EntityUid targetPart, out CMUResolvedStep resolved)
