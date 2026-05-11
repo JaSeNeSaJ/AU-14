@@ -7,7 +7,7 @@
   ignoreAllegiance: true
   playTimeTracker: AU14JobCLFPhysician
   requirements:
-  - type: RoleTimeRequirement
+  - !type:RoleTimeRequirement
     role: AU14JobCLFGuerilla
     time: 7200 # 2 hours
   - !type:OverallPlaytimeRequirement

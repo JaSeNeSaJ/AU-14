@@ -6,7 +6,7 @@
   setPreference: true
   playTimeTracker: AU14JobCivilianColonyAdministrator
   requirements:
-  - type: DepartmentTimeRequirement
+  - !type:DepartmentTimeRequirement
     department: AU14DepartmentCivilian
     time: 108000 # 30 hours
   - !type:OverallPlaytimeRequirement

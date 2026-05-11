@@ -7,7 +7,7 @@
   ignoreAllegiance: true
   playTimeTracker: AU14JobCLFGuerilla
   requirements:
-  - type: DepartmentTimeRequirement
+  - !type:DepartmentTimeRequirement
     department: AU14DepartmentCivilian
     time: 18000 # 5 hours
   - !type:OverallPlaytimeRequirement

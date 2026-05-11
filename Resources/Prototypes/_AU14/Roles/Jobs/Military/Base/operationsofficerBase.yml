@@ -8,7 +8,7 @@
   hidden: true
   abstract: true
   requirements:
-  - type: DepartmentTimeRequirement
+  - !type:DepartmentTimeRequirement
     department: AU14DepartmentGovernmentForces
     time: 72000 # 20 hours
   - type: RoleTimeRequirement

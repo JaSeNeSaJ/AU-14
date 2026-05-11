@@ -7,7 +7,7 @@
   canBeAntag: false
   playTimeTracker: AU14JobCivilianColonySynthetic
   requirements:
-  - type: OverallPlaytimeRequirement
+  - !type:OverallPlaytimeRequirement
     time: 108000 # 30 hours
   - !type:TraitsRequirement
     inverted: true

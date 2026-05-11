@@ -7,7 +7,7 @@
   canBeAntag: false
   playTimeTracker: AU14JobCivilianHeadOfService
   requirements:
-  - type: DepartmentTimeRequirement
+  - !type:DepartmentTimeRequirement
     department: AU14DepartmentServices
     time: 72000 # 20 hours
   - !type:OverallPlaytimeRequirement
