@@ -1466,6 +1466,21 @@
 
 - type: entity
   parent: ActionXenoBase
+  id: ActionXenoChargerLunge
+  name: Lunge
+  description: Leap forwards, knocking back and damaging enemies in your way. If used during charge, inherits all your momentum for a devastating all-in charge.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: tumble
+  - type: InstantAction
+    event: !type:XenoChargerLungeActionEvent
+  - type: ActionBlockIfResting
+
+- type: entity
+  parent: ActionXenoBase
   id: ActionXenoTumble
   name: Tumble (25) # TODO RMC14 proper plasma costs
   description: Charge towards your side and push back the first enemy hit. Can only be used towards either side of where you are facing.
