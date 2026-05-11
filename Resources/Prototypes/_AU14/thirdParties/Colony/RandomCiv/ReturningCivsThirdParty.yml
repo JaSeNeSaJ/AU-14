@@ -11,7 +11,7 @@
   id: ReturningCivs
   partyspawn: ReturningCivsSpawn
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
-  weight: 1
+  weight: 30
   minplayers: 3
   maxplayers: 49
   GhostsNeeded: 5
@@ -33,7 +33,7 @@
   id: ReturningCivsMedium
   partyspawn: ReturningCivsMediumSpawn
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
-  weight: 1
+  weight: 30
   minplayers: 50
   maxplayers: 100
   GhostsNeeded: 7
@@ -55,7 +55,7 @@
   id: ReturningCivsLarge
   partyspawn: ReturningCivsLargeSpawn
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
-  weight: 1
+  weight: 30
   minplayers: 101
   maxplayers: 400
   GhostsNeeded: 9
