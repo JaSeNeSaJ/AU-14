@@ -51,9 +51,8 @@
   equipment:
     id: AU14IDCardCLFCivilian
    # neck: RMCCLFArmband
-  storage:
-    back:
-    - AU14CLFHeadset
+  inhand:
+  - AU14CLFHeadset
 
 - type: entity
   parent: CMSpawnPointJobBase

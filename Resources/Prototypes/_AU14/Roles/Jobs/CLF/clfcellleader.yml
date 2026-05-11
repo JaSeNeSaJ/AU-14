@@ -73,9 +73,7 @@
     eyes: RMCGlassesAviators
   inhand:
   - RMCWeaponRifleType71
-  storage:
-    back:
-    - AU14CLFHeadset
+  - AU14CLFHeadset
 
 - type: entity
   parent: CMSpawnPointJobBase
