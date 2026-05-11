@@ -706,7 +706,7 @@
 
 - type: entity
   parent: AU14AreaGarrisonOutdoors
-  id: AU14AreaGarrisonNorthJungle
+  id: AU14AreaGarrisonNorthDesert
   name: Northern Jungle
   components:
   - type: Sprite
@@ -716,7 +716,7 @@
 
 - type: entity
   parent: AU14AreaGarrisonOutdoors
-  id: AU14AreaGarrisonSouthJungle
+  id: AU14AreaGarrisonSouthDesert
   name: Southern Jungle
   components:
   - type: Sprite
@@ -736,7 +736,7 @@
 
 - type: entity
   parent: AU14AreaGarrisonIndoors
-  id: AU14AreaGarrisonSouthJungleTunnel
+  id: AU14AreaGarrisonSouthDesertTunnel
   name: Southern Jungle Tunnel
   components:
   - type: Sprite
@@ -796,7 +796,7 @@
 
 - type: entity
   parent: AU14AreaGarrisonFullProtection
-  id: AU14AreaStableGarrisonSewerCanal
+  id: AU14AreaStableGarrisonSewer2
   name: Stable Garrison - Sewer Northeast
   components:
   - type: Sprite
@@ -806,7 +806,7 @@
 
 - type: entity
   parent: AU14AreaGarrisonFullProtection
-  id: AU14AreaStableGarrisonSewerCanal
+  id: AU14AreaStableGarrisonSewer3
   name: Stable Garrison - Sewer Southeast
   components:
   - type: Sprite
