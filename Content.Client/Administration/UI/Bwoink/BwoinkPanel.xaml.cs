@@ -106,6 +106,7 @@ namespace Content.Client.Administration.UI.Bwoink
             UpdateTypingIndicator();
         }
 
+        [System.Obsolete]
         protected override void Dispose(bool disposing)
         {
             base.Dispose(disposing);

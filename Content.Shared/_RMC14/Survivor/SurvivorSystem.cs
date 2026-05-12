@@ -1,4 +1,4 @@
-﻿using Content.Shared._RMC14.Armor;
+using Content.Shared._RMC14.Armor;
 using Content.Shared._RMC14.Storage;
 using Content.Shared.GameTicking;
 using Content.Shared.Hands.EntitySystems;
@@ -13,17 +13,17 @@ using Robust.Shared.Random;
 
 namespace Content.Shared._RMC14.Survivor;
 
-public sealed class SurvivorSystem : EntitySystem
+public sealed partial class SurvivorSystem : EntitySystem
 {
-    [Dependency] private readonly IComponentFactory _compFactory = default!;
-    [Dependency] private readonly InventorySystem _inventory = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedStorageSystem _storage = default!;
-    [Dependency] private readonly RMCStorageSystem _rmcStorage = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private IComponentFactory _compFactory = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private SharedStorageSystem _storage = default!;
+    [Dependency] private RMCStorageSystem _rmcStorage = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedHandsSystem _hands = default!;
 
     private readonly HashSet<EntityUid> _appliedPresets = new();
 

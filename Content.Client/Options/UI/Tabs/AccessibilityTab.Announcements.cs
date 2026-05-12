@@ -12,7 +12,7 @@ namespace Content.Client.Options.UI.Tabs;
 
 public sealed partial class AccessibilityTab
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
 
     private void RegisterAnnouncementOptions()
     {

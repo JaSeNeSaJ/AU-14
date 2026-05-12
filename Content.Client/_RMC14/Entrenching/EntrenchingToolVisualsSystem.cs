@@ -1,13 +1,13 @@
-﻿using Content.Shared._RMC14.Entrenching;
+using Content.Shared._RMC14.Entrenching;
 using Content.Shared.Toggleable;
 using Robust.Client.GameObjects;
 using static Content.Shared._RMC14.Entrenching.EntrenchingToolComponentVisualLayers;
 
 namespace Content.Client._RMC14.Entrenching;
 
-public sealed class EntrenchingToolVisualsSystem : EntitySystem
+public sealed partial class EntrenchingToolVisualsSystem : EntitySystem
 {
-    [Dependency] private readonly AppearanceSystem _appearance = default!;
+    [Dependency] private AppearanceSystem _appearance = default!;
 
     public override void Initialize()
     {

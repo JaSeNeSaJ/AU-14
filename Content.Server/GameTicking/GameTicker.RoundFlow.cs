@@ -36,11 +36,11 @@ namespace Content.Server.GameTicking
 {
     public sealed partial class GameTicker
     {
-        [Dependency] private readonly DiscordWebhook _discord = default!;
-        [Dependency] private readonly RoleSystem _role = default!;
-        [Dependency] private readonly ITaskManager _taskManager = default!;
-        [Dependency] private readonly SharedRMCPowerSystem _power = default!;
-        [Dependency] private readonly RoundEndSystem _roundEndSystem = default!;
+        [Dependency] private DiscordWebhook _discord = default!;
+        [Dependency] private RoleSystem _role = default!;
+        [Dependency] private ITaskManager _taskManager = default!;
+        [Dependency] private SharedRMCPowerSystem _power = default!;
+        [Dependency] private RoundEndSystem _roundEndSystem = default!;
 
         private static readonly Counter RoundNumberMetric = Metrics.CreateCounter(
             "ss14_round_number",
@@ -175,10 +175,10 @@ namespace Content.Server.GameTicking
                     {
                         // Get the map entity from the MapId
                         var mapEntity = _mapManager.GetMapEntityId(mapId);
-                        if (!EntityManager.HasComponent<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity))
-                            EntityManager.AddComponent<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity);
-                        if (!EntityManager.HasComponent<TacticalMapComponent>((EntityUid)mapEntity))
-                            EntityManager.AddComponent<TacticalMapComponent>(mapEntity);
+                        if (!HasComp<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity))
+                            AddComp<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity);
+                        if (!HasComp<TacticalMapComponent>((EntityUid)mapEntity))
+                            AddComp<TacticalMapComponent>(mapEntity);
                     }
                 }
             }
@@ -193,14 +193,14 @@ namespace Content.Server.GameTicking
                     var govforGrids = LoadGameMap(govforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });
                     foreach (var grid in govforGrids)
                     {
-                        if (!EntityManager.HasComponent<ShipFactionComponent>(grid))
+                        if (!HasComp<ShipFactionComponent>(grid))
                         {
-                            var comp = EntityManager.AddComponent<ShipFactionComponent>(grid);
+                            var comp = AddComp<ShipFactionComponent>(grid);
                             comp.Faction = "govfor";
                         }
-                        if (!EntityManager.HasComponent<Content.Server.Station.Components.BecomesStationComponent>(grid))
+                        if (!HasComp<Content.Server.Station.Components.BecomesStationComponent>(grid))
                         {
-                            EntityManager.AddComponent<Content.Server.Station.Components.BecomesStationComponent>(grid);
+                            AddComp<Content.Server.Station.Components.BecomesStationComponent>(grid);
                         }
                     }
                 }
@@ -210,14 +210,14 @@ namespace Content.Server.GameTicking
                     var opforGrids = LoadGameMap(opforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });
                     foreach (var grid in opforGrids)
                     {
-                        if (!EntityManager.HasComponent<ShipFactionComponent>(grid))
+                        if (!HasComp<ShipFactionComponent>(grid))
                         {
-                            var comp = EntityManager.AddComponent<ShipFactionComponent>(grid);
+                            var comp = AddComp<ShipFactionComponent>(grid);
                             comp.Faction = "opfor";
                         }
-                        if (!EntityManager.HasComponent<Content.Server.Station.Components.BecomesStationComponent>(grid))
+                        if (!HasComp<Content.Server.Station.Components.BecomesStationComponent>(grid))
                         {
-                            EntityManager.AddComponent<Content.Server.Station.Components.BecomesStationComponent>(grid);
+                            AddComp<Content.Server.Station.Components.BecomesStationComponent>(grid);
                         }
                     }
                 }

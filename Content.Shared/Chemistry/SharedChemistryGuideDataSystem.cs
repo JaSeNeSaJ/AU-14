@@ -1,4 +1,4 @@
-﻿using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Chemistry.Reagent;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 
@@ -7,9 +7,9 @@ namespace Content.Shared.Chemistry;
 /// <summary>
 /// This handles the chemistry guidebook and caching it.
 /// </summary>
-public abstract class SharedChemistryGuideDataSystem : EntitySystem
+public abstract partial class SharedChemistryGuideDataSystem : EntitySystem
 {
-    [Dependency] protected readonly IPrototypeManager PrototypeManager = default!;
+    [Dependency] protected IPrototypeManager PrototypeManager = default!;
 
     protected readonly Dictionary<string, ReagentGuideEntry> Registry = new();
 

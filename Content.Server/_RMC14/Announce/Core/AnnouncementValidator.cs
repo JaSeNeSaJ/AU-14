@@ -5,9 +5,9 @@ using Robust.Shared.IoC;
 
 namespace Content.Server._RMC14.Announce.Validation;
 
-public sealed class AnnouncementValidator
+public sealed partial class AnnouncementValidator
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
 
     private const int MaxMessageLength = 1000;
     private const int MaxLineCount = 10;

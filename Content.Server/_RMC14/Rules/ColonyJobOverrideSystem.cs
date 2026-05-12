@@ -15,9 +15,9 @@ namespace Content.Server._RMC14.Rules
     /// who selected the override job will have their profile updated to select the
     /// overridden job instead. This ensures assignment consumes the overridden job's slots.
     /// </summary>
-    public sealed class ColonyJobOverrideSystem : EntitySystem
+    public sealed partial class ColonyJobOverrideSystem : EntitySystem
     {
-        [Dependency] private readonly RMCPlanetSystem _planetSystem = default!;
+        [Dependency] private RMCPlanetSystem _planetSystem = default!;
 
         public override void Initialize()
         {

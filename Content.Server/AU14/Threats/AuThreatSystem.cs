@@ -9,7 +9,6 @@ using Content.Shared.Roles;
 using Content.Shared.Mind;
 using Content.Server.GameTicking;
 using Robust.Shared.Network;
-using Content.Shared.AU14.Threats;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Players;
@@ -20,16 +19,16 @@ using Robust.Shared.Random;
 
 namespace Content.Server.AU14.Threats;
 
-public sealed class AuThreatSystem : EntitySystem
+public sealed partial class AuThreatSystem : EntitySystem
 {
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly SharedMindSystem _mindSystem = default!;
-    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private SharedMindSystem _mindSystem = default!;
+    [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
     public readonly ProtoId<NpcFactionPrototype> threatnpcfaction = "THREAT";
-    [Dependency] private readonly SharedRoleSystem _roles = default!;
-    [Dependency] private readonly IPlayerManager _playerManager = default!;
-    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private SharedRoleSystem _roles = default!;
+    [Dependency] private IPlayerManager _playerManager = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     /// <summary>
     /// Spawns the chosen threat's leaders, members, and entities at their correct markers at round start.
