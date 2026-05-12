@@ -47,10 +47,11 @@ public sealed partial class AbominationAssimilationProfile
     public List<string> IffFactions = new();
 
     /// <summary>
-    /// Source humanoid. Used at transform time to read SkillsComponent if it still exists.
+    /// Source humanoid (NetEntity so the profile can travel inside networked state).
+    /// Used at transform time to read SkillsComponent if it still exists.
     /// </summary>
     [DataField]
-    public EntityUid? SourceEntity;
+    public NetEntity? SourceEntity;
 
     [DataField]
     public AbominationAppearanceSnapshot? Appearance;

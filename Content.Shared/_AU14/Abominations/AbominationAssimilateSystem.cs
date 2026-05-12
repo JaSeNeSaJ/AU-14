@@ -124,7 +124,7 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         var profile = new AbominationAssimilationProfile
         {
             Name = Name(target),
-            SourceEntity = target,
+            SourceEntity = GetNetEntity(target),
         };
 
         if (TryComp<NpcFactionMemberComponent>(target, out var npcFaction))

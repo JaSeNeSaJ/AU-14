@@ -207,9 +207,9 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     private void CopySkillsFromSource(EntityUid mimic, AbominationAssimilationProfile profile)
     {
-        if (profile.SourceEntity is not { } source ||
-            !Exists(source) ||
-            !TryComp<SkillsComponent>(source, out var sourceSkills))
+        if (profile.SourceEntity is not { } netSource ||
+            !TryGetEntity(netSource, out var source) ||
+            !TryComp<SkillsComponent>(source.Value, out var sourceSkills))
         {
             return;
         }
