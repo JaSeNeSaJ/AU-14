@@ -1,0 +1,32 @@
+# Wall placed by skitter via "Secrete Flesh" (XenoConstruction).
+# Slightly weaker than resin wall.
+- type: entity
+  parent: CMBaseWallXeno
+  id: AU14AbominationFleshWall
+  name: flesh wall
+  description: A pulsing wall of fused sinew and bone. It twitches.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Xenos/xeno_resin_wall.rsi # TODO: replace with flesh wall sprite
+  - type: Icon
+    sprite: _RMC14/Structures/Xenos/xeno_resin_wall.rsi
+    state: resin
+  - type: IconSmooth
+    key: walls
+    base: resin
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 600
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+  - type: XenoConstructionMinRange
+  - type: XenoConstructionPlasmaCost
+    plasma: 100
+    scalingCost: true
+  - type: MeleeReceivedMultiplier
+    xenoDamage:
+      types:
+        Slash: 200

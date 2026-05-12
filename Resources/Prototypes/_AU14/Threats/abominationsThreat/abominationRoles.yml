@@ -1,0 +1,51 @@
+# One job + playTimeTracker per abomination caste, mirroring the xeno pattern.
+# All inherit CMJobXenoBase so they pick up "no crew notify", hidden, etc.
+
+- type: job
+  parent: CMJobXenoBase
+  id: AU14AbominationSpider
+  name: au14-job-name-abomination-spider
+  playTimeTracker: AU14JobAbominationSpider
+
+- type: playTimeTracker
+  id: AU14JobAbominationSpider
+  isXeno: true
+
+- type: job
+  parent: CMJobXenoBase
+  id: AU14AbominationGrunt
+  name: au14-job-name-abomination-grunt
+  playTimeTracker: AU14JobAbominationGrunt
+
+- type: playTimeTracker
+  id: AU14JobAbominationGrunt
+  isXeno: true
+
+- type: job
+  parent: CMJobXenoBase
+  id: AU14AbominationSkitter
+  name: au14-job-name-abomination-skitter
+  playTimeTracker: AU14JobAbominationSkitter
+
+- type: playTimeTracker
+  id: AU14JobAbominationSkitter
+  isXeno: true
+
+- type: job
+  parent: CMJobXenoBase
+  id: AU14AbominationMimic
+  name: au14-job-name-abomination-mimic
+  playTimeTracker: AU14JobAbominationMimic
+
+- type: playTimeTracker
+  id: AU14JobAbominationMimic
+  isXeno: true
+
+# Generic abomination speech verb used by AU14AbominationBase.
+- type: speechVerb
+  id: Abomination
+  name: chat-speech-verb-name-default
+  speechVerbStrings:
+  - Snarl
+  - Growl
+  - Hiss

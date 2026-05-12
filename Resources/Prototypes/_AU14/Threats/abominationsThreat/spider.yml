@@ -1,0 +1,65 @@
+# Spider: a skittering severed-head abomination.
+# - XenoLeap = short pounce (parasite-style "just jump", not Wendigo's leap)
+# - XenoSpit = ranged acid projectile
+- type: entity
+  parent: AU14AbominationBase
+  id: AU14AbominationSpider
+  name: spider abomination
+  description: A skittering, multi-legged head crowned with too many teeth. It wants on your face.
+  components:
+  - type: Sprite
+    sprite: _AU14/Mobs/Abominations/spider.rsi
+  - type: GhostRole
+    name: Spider Abomination
+    description: A skittering severed head. Pounce onto prey and bury them in acid.
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      80: Critical
+      120: Dead
+  - type: Xeno
+    role: AU14AbominationSpider
+    actionIds:
+    - ActionAbominationRest
+    - ActionAbominationSpiderLeap
+    - ActionAbominationSpiderSpit
+    tier: 1
+    hudOffset: -0.1,0.1
+    contributesToVictory: false
+    countedInSlots: false
+    unlockAt: 0
+  - type: XenoPlasma
+    plasma: 200
+    maxPlasma: 200
+    plasmaRegenOnWeeds: 3
+  - type: XenoLeap
+    plasmaCost: 0
+    delay: 0
+    moveDelayTime: 0.8
+    knockdownTime: 2
+    knockdownRequiresInvisibility: false
+    unrootOnMelee: true
+  - type: XenoSpit
+  - type: CMArmor
+    xenoArmor: 10
+    explosionArmor: 5
+  - type: MeleeWeapon
+    damage:
+      groups:
+        Brute: 18
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3.2
+    baseSprintSpeed: 5.5
+  - type: RMCSize
+    size: Small
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.2
+        density: 100
+        mask:
+        - SmallMobMask
+        layer:
+        - SmallMobLayer

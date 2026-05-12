@@ -1,0 +1,49 @@
+# Skitter: 4-legged support abomination.
+# - PlantKudzu (custom action) spawns a kudzu source under itself.
+# - XenoConstruction lets it secrete flesh walls (uses the existing
+#   "Choose Structure" / "Secrete Structure" action pair, abomination-named).
+- type: entity
+  parent: AU14AbominationBase
+  id: AU14AbominationSkitter
+  name: skitter abomination
+  description: A four-legged crawling abomination, its underside trailing wet sinew.
+  components:
+  - type: Sprite
+    sprite: _AU14/Mobs/Abominations/skitter.rsi
+  - type: GhostRole
+    name: Skitter Abomination
+    description: A support abomination. Spread kudzu and secrete flesh walls to lock down corridors.
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      250: Critical
+      330: Dead
+  - type: Xeno
+    role: AU14AbominationSkitter
+    actionIds:
+    - ActionAbominationRest
+    - ActionAbominationPlantKudzu
+    - ActionAbominationChooseStructure
+    - ActionAbominationSecreteStructure
+    tier: 1
+    hudOffset: -0.15,0.05
+  - type: XenoPlasma
+    plasma: 400
+    maxPlasma: 400
+    plasmaRegenOnWeeds: 5
+  - type: XenoConstruction
+    buildDelay: 2
+    canBuild:
+    - AU14AbominationFleshWall
+  - type: CMArmor
+    xenoArmor: 12
+    explosionArmor: 10
+  - type: MeleeWeapon
+    damage:
+      groups:
+        Brute: 14
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.4
+    baseSprintSpeed: 4.2
+  - type: RMCSize
+    size: Small

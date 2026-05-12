@@ -1,0 +1,63 @@
+# NPC + IFF faction for abominations.
+# Hostile to everything except itself; kept separate from RMCXeno so the
+# two threats can coexist without friendly-firing each other.
+- type: npcFaction
+  id: Abomination
+  hostile:
+  - UNMC
+  - NanoTrasen
+  - SPP
+  - GOVFOR
+  - OPFOR
+  - Halcyon
+  - WeYa
+  - Civilian
+  - CLF
+  - TSE
+  - AUColonist
+  - CMUAPE
+  - RMCXeno
+
+- type: entity
+  id: FactionAbomination
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: IFFFaction
+
+# Abstract base for every abomination mob. Reuses the xeno chassis
+# (CMXenoDeveloped) so we get ghost takeover, hands, actions, speech,
+# melee, doafter, etc. for free, then overrides faction + name.
+- type: entity
+  abstract: true
+  parent:
+  - CMXenoDeveloped
+  - CMXenoFlammable
+  - RMCXenoMobCollision
+  id: AU14AbominationBase
+  name: abomination
+  components:
+  - type: Abomination
+  - type: GhostTakeoverAvailable
+  - type: GhostRole
+    name: Abomination
+    description: A twisted mass of flesh hungry for prey.
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    raffle:
+      settings: short
+  - type: NpcFactionMember
+    factions:
+    - Abomination
+  - type: UserIFF
+    factions:
+    - FactionAbomination
+  - type: Speech
+    speechVerb: Abomination
+    speechSounds: Bass
+  - type: ReplacementAccent
+    accent: genericAggressive
+  - type: TacticalMapIcon
+    icon:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: warrior

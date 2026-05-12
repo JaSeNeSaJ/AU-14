@@ -1,0 +1,51 @@
+# Mimic: humanoid abomination that assimilates incapacitated humans.
+# Combat form. While transformed via AbominationMimicSystem it inherits the
+# victim's name/factions/IFF/skills/appearance for the duration.
+- type: entity
+  parent: AU14AbominationBase
+  id: AU14AbominationMimic
+  name: mimic abomination
+  description: A wet, vaguely humanoid silhouette. Its features won't stop sliding.
+  components:
+  - type: Sprite
+    sprite: _AU14/Mobs/Abominations/mimic.rsi
+  - type: GhostRole
+    name: Mimic Abomination
+    description: Assimilate the downed and disappear into the colony wearing their faces.
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      300: Critical
+      400: Dead
+  - type: Xeno
+    role: AU14AbominationMimic
+    actionIds:
+    - ActionAbominationRest
+    - ActionAbominationAssimilate
+    - ActionAbominationMimicTransform
+    tier: 2
+    hudOffset: -0.15,0.05
+  - type: XenoPlasma
+    plasma: 300
+    maxPlasma: 300
+    plasmaRegenOnWeeds: 3
+  - type: AbominationMimic
+    transformDuration: 360
+  - type: AbominationAssimilate
+    doAfter: 8
+  - type: UserInterface
+    interfaces:
+      enum.AbominationMimicUiKey.Key:
+        type: AbominationMimicBui
+  - type: CMArmor
+    xenoArmor: 18
+    explosionArmor: 15
+  - type: MeleeWeapon
+    damage:
+      groups:
+        Brute: 22
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.6
+    baseSprintSpeed: 4.4
+  - type: RMCSize
+    size: Medium

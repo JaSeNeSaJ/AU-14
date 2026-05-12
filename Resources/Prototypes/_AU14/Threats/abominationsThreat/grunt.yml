@@ -1,0 +1,62 @@
+# Grunt: hulking front-line abomination.
+# - ApeLeap = slam (jump + knockdown)
+# - Long melee range (MeleeWeapon.range) so it can swing across multiple tiles
+- type: entity
+  parent: AU14AbominationBase
+  id: AU14AbominationGrunt
+  name: grunt abomination
+  description: A bloated, lumbering brute. Each fist is the size of a man's torso.
+  components:
+  - type: Sprite
+    sprite: _AU14/Mobs/Abominations/grunt.rsi
+  - type: GhostRole
+    name: Grunt Abomination
+    description: A heavy slam-melee abomination. Crush colonists with overwhelming reach.
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      600: Critical
+      750: Dead
+  - type: Xeno
+    role: AU14AbominationGrunt
+    actionIds:
+    - ActionAbominationRest
+    - ActionAbominationGruntSlam
+    tier: 2
+    hudOffset: -0.15,0.25
+  - type: XenoHeavy
+  - type: XenoPlasma
+    plasma: 0
+    maxPlasma: 0
+    plasmaRegenOnWeeds: 0
+  - type: ApeLeap
+    delay: 1.2
+    knockdownTime: 3
+    leapSound: /Audio/_AU14/Ape/aperoarshort.ogg
+    damage:
+      types:
+        Blunt: 35
+  - type: CMArmor
+    xenoArmor: 30
+    explosionArmor: 35
+  # Long-reach punch: angle:0 + range:2 lets it hit one tile farther than a normal swing
+  - type: MeleeWeapon
+    soundHit:
+      path: /Audio/Weapons/punch1.ogg
+    angle: 0
+    animation: WeaponArcPunch
+    range: 2
+    damage:
+      groups:
+        Brute: 50
+  - type: XenoPunch
+    damage:
+      types:
+        Blunt: 35
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 1.8
+    baseSprintSpeed: 2.8
+  - type: Tackle
+    max: 3
+  - type: RMCSize
+    size: Big

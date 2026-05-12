@@ -1,0 +1,99 @@
+# All abomination actions inherit from the matching xeno/ape prototype so they
+# can reuse the engine wiring, but expose abomination-named IDs that the mob
+# YAMLs reference. This keeps every abomination's actionbar fully namespaced.
+
+# --- Shared self-actions ---
+
+- type: entity
+  parent: ActionXenoRest
+  id: ActionAbominationRest
+  name: Rest
+  description: Lie down on flesh to regenerate health faster.
+
+- type: entity
+  parent: ActionXenoChooseStructure
+  id: ActionAbominationChooseStructure
+  name: Choose Flesh Structure
+  description: "Choose a structure to secrete with the 'Secrete Flesh' action."
+
+- type: entity
+  parent: ActionXenoSecreteStructure
+  id: ActionAbominationSecreteStructure
+  name: Secrete Flesh
+  description: "Builds the structure chosen with the 'Choose Flesh Structure' action."
+
+# --- Spider ---
+
+- type: entity
+  parent: ActionXenoLeap
+  id: ActionAbominationSpiderLeap
+  name: Pounce
+  description: Pounce onto an enemy, knocking them down briefly.
+
+- type: entity
+  parent: ActionXenoSpit
+  id: ActionAbominationSpiderSpit
+  name: Acid Spit
+  description: Spit a glob of acid at a target.
+
+# --- Grunt ---
+
+- type: entity
+  parent: ActionApeLeap
+  id: ActionAbominationGruntSlam
+  name: Slam
+  description: Leap to a position and slam down, knocking enemies prone.
+
+# --- Skitter ---
+
+- type: entity
+  parent: ActionXenoBase
+  id: ActionAbominationPlantKudzu
+  name: Spread Kudzu
+  description: Vomit out a fast-spreading kudzu source under yourself.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: plant_weeds
+    useDelay: 30
+  - type: InstantAction
+    event: !type:Content.Shared._AU14.Abominations.AbominationPlantKudzuActionEvent
+
+# --- Mimic ---
+
+- type: entity
+  parent: ActionXenoBase
+  id: ActionAbominationAssimilate
+  name: Assimilate
+  description: Begin assimilating an incapacitated humanoid. They will become part of your mimic pool.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: headbite
+    useDelay: 2
+  - type: TargetAction
+    range: 1.5
+    checkCanAccess: true
+    deselectOnMiss: false
+  - type: EntityTargetAction
+    event: !type:Content.Shared._AU14.Abominations.AbominationAssimilateActionEvent
+  - type: ActionBlockIfResting
+
+- type: entity
+  parent: ActionXenoBase
+  id: ActionAbominationMimicTransform
+  name: Mimic
+  description: Take the shape of one of your assimilated victims for a limited time.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: place_resin
+    useDelay: 5
+  - type: InstantAction
+    event: !type:Content.Shared._AU14.Abominations.AbominationMimicTransformActionEvent
