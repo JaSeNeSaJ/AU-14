@@ -11,7 +11,7 @@
   - !type:DepartmentTimeRequirement
     department: AU14DepartmentGovernmentForces
     time: 144000 # 40 hours
-  - type: RoleTimeRequirement
+  - !type:RoleTimeRequirement
     role: AU14JobGOVFORPlatOp
     time: 72000 # 20 hours
 
