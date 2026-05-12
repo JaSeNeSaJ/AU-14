@@ -61,6 +61,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private XenoSystem _xeno = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private PricingSystem _pricing = default!;
 
     private static readonly EntProtoId AccountId = "RMCASRSAccount";
     private static readonly EntProtoId PaperRequisitionInvoice = "RMCPaperRequisitionInvoice";
