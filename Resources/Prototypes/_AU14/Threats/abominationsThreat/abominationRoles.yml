@@ -45,6 +45,16 @@
 - type: speechVerb
   id: Abomination
   name: chat-speech-verb-name-default
+
+# Mimic-only radio channel, modelled on Hivemind.
+# Lets disguised mimics coordinate without breaking cover on local chat.
+- type: radioChannel
+  id: AbominationMimic
+  name: chat-radio-abomination-mimic
+  keycode: "b"
+  frequency: 427
+  color: "#a63636"
+  longRange: true
   speechVerbStrings:
   - Snarl
   - Growl

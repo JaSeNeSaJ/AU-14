@@ -33,6 +33,15 @@
     transformDuration: 360
   - type: AbominationAssimilate
     doAfter: 8
+  # Mimic-only radio channel so disguised mimics can coordinate.
+  # Overrides the Hivemind channel inherited from CMXenoDeveloped.
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - AbominationMimic
+  - type: ActiveRadio
+    channels:
+    - AbominationMimic
   - type: UserInterface
     interfaces:
       enum.AbominationMimicUiKey.Key:
