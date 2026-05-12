@@ -1,0 +1,27 @@
+# Mimic chooses a profile -> polymorphs into a real MobHuman. The server-side
+# AbominationMimicSystem then patches that human's appearance / factions /
+# skills onto it from the snapshot.
+- type: polymorph
+  id: AbominationMimicDisguise
+  configuration:
+    entity: MobHuman
+    forced: true
+    inventory: Drop
+    transferName: false
+    transferDamage: true
+    revertOnCrit: true
+    revertOnDeath: true
+    duration: 360
+
+# Assimilation completes -> the victim is polymorphed into an abomination mimic.
+# One-way: they don't auto-revert when they die or get crit, they just stay a mimic.
+- type: polymorph
+  id: AbominationAssimilationToMimic
+  configuration:
+    entity: AU14AbominationMimic
+    forced: true
+    inventory: Drop
+    transferName: false
+    transferDamage: false
+    revertOnCrit: false
+    revertOnDeath: false
