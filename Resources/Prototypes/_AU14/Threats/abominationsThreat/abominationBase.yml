@@ -57,6 +57,15 @@
     speechSounds: Bass
   - type: ReplacementAccent
     accent: genericAggressive
+  # Replaces the Hivemind channel inherited from CMXenoDeveloped so abominations
+  # don't share the xeno hive radio.
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Abomination
+  - type: ActiveRadio
+    channels:
+    - Abomination
   - type: TacticalMapIcon
     icon:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
