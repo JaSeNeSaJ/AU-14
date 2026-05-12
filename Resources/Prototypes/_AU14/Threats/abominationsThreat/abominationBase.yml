@@ -42,12 +42,14 @@
   # these mobs as xenos.
   - type: RemoveComponents
     components:
+    # Dummy role just to satisfy the [DataField(required: true)] on XenoComponent.Role
+    # while RemoveComponents deserialises the entry; the component is stripped at spawn.
     - type: Xeno
+      role: CMXenoLarva
     - type: XenoRegen
     - type: XenoEvolution
     - type: XenoStateVisuals
     - type: HiveTracker
-    - type: HiveMember
     - type: AssignXenoName
     - type: XenoFriendly
     - type: AffectableByWeeds

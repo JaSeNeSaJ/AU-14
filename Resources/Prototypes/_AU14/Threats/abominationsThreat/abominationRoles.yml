@@ -78,7 +78,7 @@
 - type: radioChannel
   id: AbominationMimic
   name: chat-radio-abomination-mimic
-  keycode: "b"
+  keycode: "i"
   frequency: 427
   color: "#a63636"
   longRange: true
