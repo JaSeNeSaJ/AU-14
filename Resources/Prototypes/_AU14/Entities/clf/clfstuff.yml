@@ -248,6 +248,12 @@
       - id: AU14CLFHeadset
         amount: 10
         points: 8
+      - id: AU14FlagCarriableCLF
+        amount: 4
+        points: 5
+      - id: RMCMegaphone
+        amount: 2
+        points: 3
     - name: Mortar
       entries:
       - id: RMCRangefinder
