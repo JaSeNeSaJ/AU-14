@@ -16,6 +16,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
+  spawnMenuRoleName: Phycisian (3rd party)
   accessGroups:
   - Colonist
   - aumed

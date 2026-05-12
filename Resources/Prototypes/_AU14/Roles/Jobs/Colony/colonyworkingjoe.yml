@@ -14,7 +14,8 @@
     - Epilepsy
   startingGear: AU14GearColonyWorkingJoe
   dummyStartingGear: AU14GearColonyWorkingJoeDummy
-  icon: "AU14JobIconColonySynth"
+  icon: "AU14JobIconColonyWorkingJoe"
+  hasIcon: false
   spawnMenuRoleName: Working Joe (Colony)
   supervisors: au14-job-supervisors-workingjoe-colony
   accessGroups:
