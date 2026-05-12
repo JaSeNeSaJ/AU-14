@@ -24,9 +24,10 @@
   components:
   - type: IFFFaction
 
-# Abstract base for every abomination mob. Reuses the xeno chassis
-# (CMXenoDeveloped) so we get ghost takeover, hands, actions, speech,
-# melee, doafter, etc. for free, then overrides faction + name.
+# Abstract base for every abomination mob. We inherit the xeno-base
+# *chassis* (hands, speech, ghost takeover, doafter, melee plumbing) but
+# strip the components that make the engine consider the entity a
+# xenomorph. Abominations are a separate threat, not part of the hive.
 - type: entity
   abstract: true
   parent:
@@ -36,6 +37,20 @@
   id: AU14AbominationBase
   name: abomination
   components:
+  # Strip xeno-defining components inherited from the chassis. They have
+  # to come off so HUDs, role registration and hive systems don't tag
+  # these mobs as xenos.
+  - type: RemoveComponents
+    components:
+    - type: Xeno
+    - type: XenoRegen
+    - type: XenoEvolution
+    - type: XenoStateVisuals
+    - type: HiveTracker
+    - type: HiveMember
+    - type: AssignXenoName
+    - type: XenoFriendly
+    - type: AffectableByWeeds
   - type: Abomination
   - type: GhostTakeoverAvailable
   - type: GhostRole

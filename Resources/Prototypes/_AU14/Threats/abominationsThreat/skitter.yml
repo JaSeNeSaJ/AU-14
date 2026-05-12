@@ -18,15 +18,13 @@
       0: Alive
       250: Critical
       330: Dead
-  - type: Xeno
-    role: AU14AbominationSkitter
-    actionIds:
-    - ActionAbominationRest
-    - ActionAbominationPlantKudzu
-    - ActionAbominationChooseStructure
-    - ActionAbominationSecreteStructure
-    tier: 1
-    hudOffset: -0.15,0.05
+  - type: MobStateActions
+    actions:
+      Alive:
+      - ActionAbominationRest
+      - ActionAbominationPlantKudzu
+      - ActionAbominationChooseStructure
+      - ActionAbominationSecreteStructure
   - type: XenoPlasma
     plasma: 400
     maxPlasma: 400

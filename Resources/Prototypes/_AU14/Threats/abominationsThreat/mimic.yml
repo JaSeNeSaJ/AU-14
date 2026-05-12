@@ -17,18 +17,12 @@
       0: Alive
       300: Critical
       400: Dead
-  - type: Xeno
-    role: AU14AbominationMimic
-    actionIds:
-    - ActionAbominationRest
-    - ActionAbominationAssimilate
-    - ActionAbominationMimicTransform
-    tier: 2
-    hudOffset: -0.15,0.05
-  - type: XenoPlasma
-    plasma: 300
-    maxPlasma: 300
-    plasmaRegenOnWeeds: 3
+  - type: MobStateActions
+    actions:
+      Alive:
+      - ActionAbominationRest
+      - ActionAbominationAssimilate
+      - ActionAbominationMimicTransform
   - type: AbominationMimic
     transformDuration: 360
   - type: AbominationAssimilate

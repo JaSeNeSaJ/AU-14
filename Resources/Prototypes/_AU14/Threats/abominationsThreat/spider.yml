@@ -17,17 +17,12 @@
       0: Alive
       80: Critical
       120: Dead
-  - type: Xeno
-    role: AU14AbominationSpider
-    actionIds:
-    - ActionAbominationRest
-    - ActionAbominationSpiderLeap
-    - ActionAbominationSpiderSpit
-    tier: 1
-    hudOffset: -0.1,0.1
-    contributesToVictory: false
-    countedInSlots: false
-    unlockAt: 0
+  - type: MobStateActions
+    actions:
+      Alive:
+      - ActionAbominationRest
+      - ActionAbominationSpiderLeap
+      - ActionAbominationSpiderSpit
   - type: XenoPlasma
     plasma: 200
     maxPlasma: 200
