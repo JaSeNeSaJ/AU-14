@@ -10,9 +10,9 @@
     mode: SnapgridCenter
   components:
   - type: Sprite
-    sprite: Objects/Misc/fleshkudzu.rsi # TODO: replace with dedicated nest sprite
-    state: kudzu_11
-    drawdepth: HighFloorObjects
+    sprite: _RMC14/Structures/Xenos/hive_structures.rsi
+    state: eggmorph
+    drawdepth: Mobs
   - type: Clickable
   - type: InteractionOutline
   - type: Fixtures

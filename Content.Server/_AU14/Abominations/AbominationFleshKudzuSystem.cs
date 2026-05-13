@@ -2,6 +2,7 @@ using Content.Server.Chat.Systems;
 using Content.Shared._AU14.Abominations;
 using Content.Shared.Damage;
 using Content.Shared.Interaction.Events;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
@@ -18,6 +19,7 @@ namespace Content.Server._AU14.Abominations;
 /// </summary>
 public sealed class AbominationFleshKudzuSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
@@ -62,9 +64,14 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
                     // forceEmote + ignoreActionBlocker so the kudzu (which has no
                     // Speech/Vocal) can still emit the chat + sound; without
                     // these the emote silently fails AllowedToUseEmote.
-                    // TODO: filter so abominations don't see/hear it themselves.
                     _chat.TryEmoteWithChat(uid, _random.Pick(kudzu.Emotes), ignoreActionBlocker: true, forceEmote: true);
                 }
+
+                // The emote system won't pick a sound for non-humanoid emitters,
+                // so play one of the configured human-scream/cry collections
+                // directly. This is what makes the tendons actually audible.
+                if (kudzu.EmoteSounds.Count > 0)
+                    _audio.PlayPvs(_random.Pick(kudzu.EmoteSounds), uid);
             }
         }
     }

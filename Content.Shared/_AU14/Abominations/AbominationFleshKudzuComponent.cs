@@ -1,5 +1,6 @@
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Damage;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
@@ -44,5 +45,16 @@ public sealed partial class AbominationFleshKudzuComponent : Component
         "Crying",
         "Gasp",
         "Scream",
+    };
+
+    /// <summary>
+    /// Sound collections played alongside the emote (the emote system itself
+    /// doesn't play sound for non-humanoid emitters). Pulled at random.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public List<SoundSpecifier> EmoteSounds = new()
+    {
+        new SoundCollectionSpecifier("MaleScreams"),
+        new SoundCollectionSpecifier("FemaleScreams"),
     };
 }

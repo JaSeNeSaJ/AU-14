@@ -59,13 +59,8 @@
     - Unconscious
     - TemporaryBlindness
     - Deaf
-  - type: Hands
-  - type: GiveHands
-    hands:
-    - name: Right Hand
-      location: Right
-    - name: Left Hand
-      location: Left
+  # Only the skitter has hands (added in skitter.yml). Spider, grunt and the
+  # combat-form mimic intentionally have no fingers.
   - type: Body
     prototype: Primate
     requiredLegs: 1
@@ -84,6 +79,22 @@
     allowMovement: true
     raffle:
       settings: short
+  # Heavy slash melee — Slash damage routes through the CMU bodypart system's
+  # BruteGroup -> SeveranceDamage path, so all abominations have a high
+  # built-in limb-sever chance. Individual mobs override the damage value.
+  - type: MeleeWeapon
+    soundHit:
+      collection: RCMXenoClaw
+    soundSwing:
+      path: /Audio/_RMC14/Weapons/alien_claw_swipe.ogg
+      params:
+        variation: 0.1
+        volume: -5
+    angle: 0
+    animation: RMCWeaponArcXenoClaw
+    damage:
+      types:
+        Slash: 12
   - type: Speech
     speechVerb: Abomination
     speechSounds: Bass

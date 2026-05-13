@@ -26,8 +26,9 @@
       - ActionAbominationSpiderLeap
       - ActionAbominationSpiderSpit
   - type: AbominationLeap
-    range: 5
-    strength: 22
+    # Range matches the xeno runner (XenoLeapComponent.Range default).
+    range: 6
+    strength: 25
     flightDuration: 0.6
     knockdownTime: 2
     damage:
@@ -35,10 +36,9 @@
         Brute: 12
   - type: AbominationSpit
   - type: MeleeWeapon
-    angle: 0
     damage:
-      groups:
-        Brute: 18
+      types:
+        Slash: 18
   - type: MovementSpeedModifier
     baseWalkSpeed: 3.2
     baseSprintSpeed: 5.5

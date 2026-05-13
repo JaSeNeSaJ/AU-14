@@ -25,9 +25,13 @@
       Alive:
       - ActionAbominationGruntSlam
       - ActionAbominationGruntCharge
+      - ActionAbominationGruntSpit
+      - ActionAbominationGruntAcidSpray
   - type: AbominationLeap
-    range: 4
-    strength: 18
+    # Same distance as the spider / runner pounce; grunt's signature
+    # distance attack is Charge, not Slam.
+    range: 6
+    strength: 22
     flightDuration: 0.9
     knockdownTime: 3
     damage:
@@ -46,15 +50,21 @@
       types:
         Blunt: 250
         Structural: 750
+  # Acid spit + cone spray. Same projectile as the spider, but the grunt
+  # gets the boiler-style fan to lay down area denial.
+  - type: AbominationSpit
+    speed: 14
+    range: 10
+  - type: AbominationAcidSpray
+    shots: 7
+    spreadDegrees: 50
+    speed: 14
+    range: 7
   - type: MeleeWeapon
-    soundHit:
-      path: /Audio/Weapons/punch1.ogg
-    angle: 0
-    animation: WeaponArcPunch
     range: 2
     damage:
-      groups:
-        Brute: 50
+      types:
+        Slash: 50
   - type: MovementSpeedModifier
     baseWalkSpeed: 1.8
     baseSprintSpeed: 2.8

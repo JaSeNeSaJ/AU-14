@@ -25,7 +25,7 @@
       state: pounce
     useDelay: 5
   - type: TargetAction
-    range: 5
+    range: 6
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
@@ -63,7 +63,7 @@
       state: pounce
     useDelay: 8
   - type: TargetAction
-    range: 4
+    range: 6
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
@@ -85,6 +85,42 @@
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationChargeActionEvent
+
+- type: entity
+  parent: ActionAbominationBase
+  id: ActionAbominationGruntSpit
+  name: Acid Spit
+  description: Hawk up a glob of corrosive acid at the target.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: xeno_spit
+    useDelay: 4
+  - type: TargetAction
+    range: 10
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationSpitActionEvent
+
+- type: entity
+  parent: ActionAbominationBase
+  id: ActionAbominationGruntAcidSpray
+  name: Acid Spray
+  description: Vomit a cone of corrosive acid in the target direction.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: spray_acid
+    useDelay: 22
+  - type: TargetAction
+    range: 7
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationAcidSprayActionEvent
 
 # --- Skitter ---
 
