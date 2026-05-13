@@ -132,7 +132,7 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         return true;
     }
 
-    private AbominationAssimilationProfile BuildProfile(EntityUid target)
+    public AbominationAssimilationProfile BuildProfile(EntityUid target)
     {
         var profile = new AbominationAssimilationProfile
         {
@@ -173,7 +173,7 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         };
     }
 
-    private void AddProfileToAllMimics(AbominationAssimilationProfile profile)
+    public void AddProfileToAllMimics(AbominationAssimilationProfile profile)
     {
         var query = EntityQueryEnumerator<AbominationMimicComponent>();
         while (query.MoveNext(out var uid, out var mimic))

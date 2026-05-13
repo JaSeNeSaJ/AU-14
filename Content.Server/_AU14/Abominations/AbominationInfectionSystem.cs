@@ -2,11 +2,13 @@ using Content.Server.Chat.Systems;
 using Content.Server.Medical;
 using Content.Server.Polymorph.Systems;
 using Content.Shared._AU14.Abominations;
+using Content.Shared._AU14.Abominations.Reagents;
 using Content.Shared._RMC14.Synth;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Coordinates;
 using Content.Shared.Damage;
 using Content.Shared.Drunk;
+using Content.Shared.EntityEffects;
 using Content.Shared.Humanoid;
 using Content.Shared.Jittering;
 using Content.Shared.Mobs;
@@ -33,6 +35,7 @@ public sealed class AbominationInfectionSystem : EntitySystem
     public static readonly ProtoId<EmotePrototype> CoughEmote = "Cough";
     public static readonly ProtoId<EmotePrototype> ScreamEmote = "Scream";
 
+    [Dependency] private readonly AbominationAssimilateSystem _assimilate = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedDrunkSystem _drunk = default!;
@@ -48,6 +51,20 @@ public sealed class AbominationInfectionSystem : EntitySystem
     {
         SubscribeLocalEvent<AbominationComponent, MeleeHitEvent>(OnAbominationMeleeHit);
         SubscribeLocalEvent<AbominationInfectionComponent, MobStateChangedEvent>(OnInfectedMobStateChanged);
+        SubscribeLocalEvent<ExecuteEntityEffectEvent<CauseAbominationInfection>>(OnExecuteCauseInfection);
+    }
+
+    private void OnExecuteCauseInfection(ref ExecuteEntityEffectEvent<CauseAbominationInfection> args)
+    {
+        var target = args.Args.TargetEntity;
+        if (HasComp<AbominationComponent>(target) || HasComp<AbominationInfectionComponent>(target))
+            return;
+        if (HasComp<SynthComponent>(target))
+            return;
+        if (!HasComp<HumanoidAppearanceComponent>(target))
+            return;
+
+        ApplyInfection(target);
     }
 
     private void OnAbominationMeleeHit(Entity<AbominationComponent> abomination, ref MeleeHitEvent args)
@@ -89,7 +106,9 @@ public sealed class AbominationInfectionSystem : EntitySystem
     /// <summary>
     /// Once the victim has shown any symptoms, dying turns them into a mimic
     /// regardless of cause — the threat reclaims the body. Flesh kudzu is
-    /// seeded at the corpse coords before polymorph swaps the entity.
+    /// seeded at the corpse coords before polymorph swaps the entity, and
+    /// the victim's identity profile is pushed into the shared mimic pool so
+    /// other mimics can wear their face.
     /// </summary>
     private void OnInfectedMobStateChanged(Entity<AbominationInfectionComponent> ent, ref MobStateChangedEvent args)
     {
@@ -103,6 +122,12 @@ public sealed class AbominationInfectionSystem : EntitySystem
 
         if (!ent.Comp.HasShownSymptoms)
             return;
+
+        // Snapshot the victim's identity FIRST while the original entity still
+        // exists — polymorph would otherwise delete/banish it before we can
+        // read its appearance + factions.
+        var profile = _assimilate.BuildProfile(ent.Owner);
+        _assimilate.AddProfileToAllMimics(profile);
 
         _polymorph.PolymorphEntity(ent.Owner, TurnIntoMimic);
     }

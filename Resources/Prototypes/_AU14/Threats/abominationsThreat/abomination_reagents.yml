@@ -1,0 +1,39 @@
+# Abomination venom — bloodstream metabolism applies the abomination
+# infection. Same end state as a mimic-melee infection.
+- type: reagent
+  id: AbominationVenom
+  name: reagent-name-abomination-venom
+  parent: BaseReagent
+  group: Biological
+  desc: reagent-desc-abomination-venom
+  physicalDesc: reagent-physical-desc-viscous
+  flavor: bitter
+  color: "#56213a"
+  metabolisms:
+    Poison:
+      effects:
+      - !type:CauseAbominationInfection
+        probability: 1.0
+      - !type:HealthChange
+        damage:
+          types:
+            Toxin: 0.5
+
+# Pre-filled syringe used by mimics / admins to inject the venom directly.
+- type: entity
+  parent: BaseSyringe
+  id: AU14AbominationVenomSyringe
+  name: abomination venom syringe
+  description: A syringe filled with a viscous, dark fluid that smells like rotted flesh.
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      injector:
+        maxVol: 15
+        reagents:
+        - ReagentId: AbominationVenom
+          Quantity: 15
+  - type: Injector
+    minTransferAmount: 5
+    maxTransferAmount: 15
+    transferAmount: 5

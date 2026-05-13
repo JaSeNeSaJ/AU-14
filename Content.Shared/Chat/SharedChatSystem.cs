@@ -1,5 +1,6 @@
 using System.Collections.Frozen;
 using System.Text.RegularExpressions;
+using Content.Shared._AU14.Abominations;
 using Content.Shared._RMC14.Chat;
 using Content.Shared.AU14;
 using Content.Shared._RMC14.Xenonids;
@@ -144,6 +145,13 @@ public abstract class SharedChatSystem : EntitySystem
         if (input.StartsWith(RadioCommonPrefix))
         {
             output = SanitizeMessageCapital(input[1..].TrimStart());
+            // AU14: abominations get their own threat channel as their default,
+            // same way xenos get Hivemind.
+            if (HasComp<AbominationComponent>(source))
+            {
+                channel = _prototypeManager.Index<RadioChannelPrototype>("Abomination");
+                return true;
+            }
             channel = (HasComp<XenoComponent>(source) || HasComp<CultistComponent>(source))
                 ? _prototypeManager.Index<RadioChannelPrototype>(HivemindChannel)
                 : _prototypeManager.Index<RadioChannelPrototype>(CommonChannel);
