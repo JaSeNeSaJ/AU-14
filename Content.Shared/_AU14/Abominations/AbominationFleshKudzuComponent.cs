@@ -1,13 +1,14 @@
+using Content.Shared.Chat.Prototypes;
 using Content.Shared.Damage;
-using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared._AU14.Abominations;
 
 /// <summary>
-/// Behaviour for the flesh kudzu tile. Heals abominations standing on it,
-/// and periodically plays a sob / gasp / breathing sound.
+/// Behaviour for the flesh kudzu tile. Heals abominations standing on it
+/// and periodically vents emotes (crying / gasping) for ambience.
 /// </summary>
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class AbominationFleshKudzuComponent : Component
@@ -23,16 +24,25 @@ public sealed partial class AbominationFleshKudzuComponent : Component
     [DataField, AutoNetworkedField]
     public DamageSpecifier Heal = new();
 
-    /// <summary>Minimum delay between sob/gasp sound plays on this tile.</summary>
+    /// <summary>Minimum delay between vocal emotes on this tile.</summary>
     [DataField, AutoNetworkedField]
-    public TimeSpan SobIntervalMin = TimeSpan.FromSeconds(20);
+    public TimeSpan EmoteIntervalMin = TimeSpan.FromSeconds(20);
 
     [DataField, AutoNetworkedField]
-    public TimeSpan SobIntervalMax = TimeSpan.FromSeconds(60);
+    public TimeSpan EmoteIntervalMax = TimeSpan.FromSeconds(60);
 
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
-    public TimeSpan NextSobAt;
+    public TimeSpan NextEmoteAt;
 
+    /// <summary>
+    /// Emotes the kudzu can vent — picked from at random. Defaults are the
+    /// existing speech emotes so the kudzu sobs / gasps audibly.
+    /// </summary>
     [DataField, AutoNetworkedField]
-    public SoundSpecifier? SobSound = new SoundCollectionSpecifier("MaleScreams");
+    public List<ProtoId<EmotePrototype>> Emotes = new()
+    {
+        "Crying",
+        "Gasp",
+        "Scream",
+    };
 }

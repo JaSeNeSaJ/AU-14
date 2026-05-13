@@ -1,6 +1,7 @@
 using Content.Server.Chat.Systems;
 using Content.Server.Medical;
 using Content.Shared._AU14.Abominations;
+using Content.Shared._RMC14.Synth;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Coordinates;
 using Content.Shared.Damage;
@@ -38,11 +39,11 @@ public sealed class AbominationInfectionSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<AbominationMimicComponent, MeleeHitEvent>(OnMimicMeleeHit);
+        SubscribeLocalEvent<AbominationComponent, MeleeHitEvent>(OnAbominationMeleeHit);
         SubscribeLocalEvent<AbominationInfectionComponent, MobStateChangedEvent>(OnInfectedMobStateChanged);
     }
 
-    private void OnMimicMeleeHit(Entity<AbominationMimicComponent> mimic, ref MeleeHitEvent args)
+    private void OnAbominationMeleeHit(Entity<AbominationComponent> abomination, ref MeleeHitEvent args)
     {
         if (!args.IsHit || args.HitEntities.Count == 0)
             return;
@@ -53,7 +54,9 @@ public sealed class AbominationInfectionSystem : EntitySystem
                 continue;
             if (HasComp<AbominationComponent>(hit) || HasComp<AbominationInfectionComponent>(hit))
                 continue;
-            if (!_random.Prob(mimic.Comp.InfectionChance))
+            if (HasComp<SynthComponent>(hit))
+                continue;
+            if (!_random.Prob(abomination.Comp.InfectionChance))
                 continue;
 
             ApplyInfection(hit);

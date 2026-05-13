@@ -153,3 +153,17 @@
     useDelay: 5
   - type: InstantAction
     event: !type:Content.Shared._AU14.Abominations.AbominationMimicTransformActionEvent
+
+- type: entity
+  id: ActionAbominationMimicRevert
+  name: Drop Disguise
+  description: Burst out of your current form and return to your combat shape.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: headbite
+    useDelay: 1
+  - type: InstantAction
+    event: !type:Content.Shared._AU14.Abominations.AbominationMimicRevertActionEvent

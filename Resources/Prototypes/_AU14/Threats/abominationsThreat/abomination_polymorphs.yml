@@ -9,9 +9,10 @@
     inventory: Drop
     transferName: false
     transferDamage: true
-    revertOnCrit: true
-    revertOnDeath: true
-    duration: 360
+    # We handle crit/death/expiry ourselves so we can run the shake-and-scream
+    # revert sequence; the polymorph layer must not auto-revert.
+    revertOnCrit: false
+    revertOnDeath: false
 
 # Assimilation completes -> the victim is polymorphed into an abomination mimic.
 # One-way: they don't auto-revert when they die or get crit, they just stay a mimic.

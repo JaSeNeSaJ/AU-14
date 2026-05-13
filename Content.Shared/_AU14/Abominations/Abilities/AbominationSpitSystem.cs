@@ -1,17 +1,16 @@
 using System.Numerics;
-using Content.Shared.Projectiles;
+using Content.Shared.Weapons.Ranged.Systems;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
-using Robust.Shared.Physics.Components;
-using Robust.Shared.Physics.Systems;
+using Robust.Shared.Spawners;
 
 namespace Content.Shared._AU14.Abominations.Abilities;
 
 public sealed class AbominationSpitSystem : EntitySystem
 {
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedGunSystem _gun = default!;
     [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     public override void Initialize()
@@ -24,29 +23,32 @@ public sealed class AbominationSpitSystem : EntitySystem
         if (args.Handled)
             return;
 
+        var origin = _transform.GetMapCoordinates(ent);
+        var target = _transform.ToMapCoordinates(args.Target);
+        if (origin.MapId != target.MapId || origin.Position == target.Position)
+            return;
+
         args.Handled = true;
 
+        _audio.PlayPredicted(ent.Comp.Sound, ent, ent);
+
+        // Spawn + launch is server-authoritative; client predicts the sound only.
         if (_net.IsClient)
             return;
 
-        var origin = _transform.GetMapCoordinates(ent);
-        var target = _transform.ToMapCoordinates(args.Target);
-        if (origin.MapId != target.MapId)
-            return;
-
         var direction = target.Position - origin.Position;
-        if (direction == Vector2.Zero)
-            return;
-
-        var velocity = Vector2.Normalize(direction) * ent.Comp.Speed;
+        var velocity = direction.Normalized() * ent.Comp.Speed;
 
         var projectile = Spawn(ent.Comp.Projectile, origin);
-        if (TryComp<ProjectileComponent>(projectile, out var proto))
-            proto.Shooter = ent.Owner;
-        if (TryComp<PhysicsComponent>(projectile, out var physics))
-            _physics.SetLinearVelocity(projectile, velocity, body: physics);
 
-        if (ent.Comp.Sound != null)
-            _audio.PlayPvs(ent.Comp.Sound, ent);
+        // ShootProjectile sets up the ProjectileComponent.Shooter, body type and
+        // initial velocity correctly. Doing this manually is what made the
+        // previous version's networking go sideways.
+        _gun.ShootProjectile(projectile, velocity, Vector2.Zero, ent.Owner, ent.Owner, ent.Comp.Speed);
+
+        // Hard despawn so missed projectiles don't litter the map.
+        var lifetime = ent.Comp.Range / ent.Comp.Speed;
+        var despawn = EnsureComp<TimedDespawnComponent>(projectile);
+        despawn.Lifetime = lifetime;
     }
 }

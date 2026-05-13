@@ -39,7 +39,7 @@
     thresholds:
     - trigger:
         !type:DamageTrigger
-        damage: 40
+        damage: 30
       behaviors:
       - !type:DoActsBehavior
         acts: [ "Destruction" ]
@@ -50,6 +50,22 @@
       types:
         Slash: -0.5
         Blunt: -0.5
+  # Tendons go up easily. Anti-flesh-kudzu countermeasure is fire.
+  - type: Flammable
+    fireSpread: true
+    canResistFire: false
+    damage:
+      types:
+        Heat: 8
+  - type: Reactive
+    groups:
+      Flammable: [ Touch ]
+      Extinguish: [ Touch ]
+  - type: Temperature
+    heatDamageThreshold: 320
+    heatDamage:
+      types:
+        Heat: 15
   # Slashes/pierces anyone standing on it - except abominations.
   - type: DamageContacts
     damage:

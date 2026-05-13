@@ -1,6 +1,6 @@
+using Content.Server.Chat.Systems;
 using Content.Shared._AU14.Abominations;
 using Content.Shared.Damage;
-using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Random;
@@ -10,12 +10,12 @@ namespace Content.Server._AU14.Abominations;
 
 /// <summary>
 /// Periodic heal-tick for abominations standing on a flesh kudzu tile, plus
-/// occasional sob/gasp ambience. The damage tick for non-abominations is
+/// occasional sob/cry/scream emotes. Damage tick for non-abominations is
 /// handled by upstream DamageContacts on the kudzu prototype.
 /// </summary>
 public sealed class AbominationFleshKudzuSystem : EntitySystem
 {
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
@@ -33,14 +33,14 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
                 HealContacts((uid, kudzu, physics));
             }
 
-            if (kudzu.NextSobAt <= now)
+            if (kudzu.NextEmoteAt <= now)
             {
-                kudzu.NextSobAt = now + TimeSpan.FromSeconds(_random.NextDouble(
-                    kudzu.SobIntervalMin.TotalSeconds,
-                    kudzu.SobIntervalMax.TotalSeconds));
+                kudzu.NextEmoteAt = now + TimeSpan.FromSeconds(_random.NextDouble(
+                    kudzu.EmoteIntervalMin.TotalSeconds,
+                    kudzu.EmoteIntervalMax.TotalSeconds));
 
-                if (kudzu.SobSound != null)
-                    _audio.PlayPvs(kudzu.SobSound, uid);
+                if (kudzu.Emotes.Count > 0)
+                    _chat.TryEmoteWithChat(uid, _random.Pick(kudzu.Emotes));
             }
         }
     }

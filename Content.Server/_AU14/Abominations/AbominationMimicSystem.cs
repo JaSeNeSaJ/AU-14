@@ -1,16 +1,20 @@
 using System.Linq;
+using Content.Server.Chat.Systems;
 using Content.Server.Polymorph.Components;
 using Content.Server.Polymorph.Systems;
 using Content.Shared._AU14.Abominations;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
+using Content.Shared.Actions;
+using Content.Shared.Chat.Prototypes;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
+using Content.Shared.Jittering;
+using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Polymorph;
 using Content.Shared.Popups;
-using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -19,23 +23,30 @@ namespace Content.Server._AU14.Abominations;
 /// <summary>
 /// Drives the mimic's transform action and disguise lifetime.
 ///
-/// While disguised the mimic is polymorphed into a real MobHuman so it
-/// shares all of a human's capabilities (sprite, hands, slots, talk).
-/// We then patch the new human entity's appearance, name, factions, IFF and
-/// skills from the snapshot stored on the chosen profile.
-///
-/// Reverts:
-///  - 360s timer (configurable on AbominationMimicComponent.TransformDuration).
-///  - PolymorphPrototype.RevertOnCrit / RevertOnDeath handle crit/death paths.
-///  - Pressing the transform action while already disguised triggers an
-///    explicit revert.
+/// Flow:
+///  1. Transform action -> picker BUI -> StartDisguise polymorphs into a real
+///     MobHuman, patches name/factions/IFF/skills/appearance, and grants the
+///     disguised entity an explicit Revert button.
+///  2. Disguise lasts <see cref="AbominationMimicComponent.TransformDuration"/>
+///     (default 4.5min). Expiry, crit/death, and pressing the Revert button
+///     all funnel through <see cref="BeginRevert"/>.
+///  3. BeginRevert adds <see cref="AbominationMimicRevertingComponent"/> which
+///     spends a couple of seconds jittering + screaming, then polymorph-reverts
+///     the entity back into its combat form. The cooldown
+///     (<see cref="AbominationMimicComponent.TransformCooldown"/>, default 5min)
+///     is stamped onto the original mimic at this point.
 /// </summary>
 public sealed class AbominationMimicSystem : EntitySystem
 {
     public static readonly ProtoId<PolymorphPrototype> DisguisePolymorph = "AbominationMimicDisguise";
+    public static readonly EntProtoId RevertAction = "ActionAbominationMimicRevert";
+    public static readonly ProtoId<EmotePrototype> ScreamEmote = "Scream";
 
+    [Dependency] private readonly SharedActionsSystem _actions = default!;
+    [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly NpcFactionSystem _faction = default!;
     [Dependency] private readonly GunIFFSystem _gunIff = default!;
+    [Dependency] private readonly SharedJitteringSystem _jitter = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
     [Dependency] private readonly SkillsSystem _skills = default!;
@@ -48,6 +59,8 @@ public sealed class AbominationMimicSystem : EntitySystem
     {
         SubscribeLocalEvent<AbominationMimicComponent, AbominationMimicTransformActionEvent>(OnTransformAction);
         SubscribeLocalEvent<AbominationMimicComponent, AbominationMimicSelectFormMessage>(OnSelectForm);
+        SubscribeLocalEvent<AbominationMimicTransformedComponent, AbominationMimicRevertActionEvent>(OnRevertAction);
+        SubscribeLocalEvent<AbominationMimicTransformedComponent, MobStateChangedEvent>(OnDisguisedMobStateChanged);
     }
 
     private void OnTransformAction(Entity<AbominationMimicComponent> mimic, ref AbominationMimicTransformActionEvent args)
@@ -55,13 +68,14 @@ public sealed class AbominationMimicSystem : EntitySystem
         if (args.Handled)
             return;
 
-        args.Handled = true;
+        // Disguised mimics already have the Revert button; the Transform action
+        // on the disguised form is a no-op so they don't double-pick.
+        if (HasComp<AbominationMimicTransformedComponent>(mimic))
+            return;
 
-        // While disguised, the action acts as a quick revert.
-        if (HasComp<AbominationMimicTransformedComponent>(mimic) &&
-            HasComp<PolymorphedEntityComponent>(mimic))
+        if (mimic.Comp.NextTransformAt is { } cd && _timing.CurTime < cd)
         {
-            _polymorph.Revert((mimic.Owner, null));
+            _popup.PopupClient(Loc.GetString("abomination-mimic-on-cooldown"), mimic, mimic);
             return;
         }
 
@@ -71,6 +85,7 @@ public sealed class AbominationMimicSystem : EntitySystem
             return;
         }
 
+        args.Handled = true;
         _ui.TryOpenUi(mimic.Owner, AbominationMimicUiKey.Key, args.Performer);
         PushBuiState(mimic);
     }
@@ -78,6 +93,10 @@ public sealed class AbominationMimicSystem : EntitySystem
     private void OnSelectForm(Entity<AbominationMimicComponent> mimic, ref AbominationMimicSelectFormMessage args)
     {
         if (args.Index < 0 || args.Index >= mimic.Comp.AssimilatedPool.Count)
+            return;
+
+        // Cooldown re-check in case they sat on the picker.
+        if (mimic.Comp.NextTransformAt is { } cd && _timing.CurTime < cd)
             return;
 
         var profile = mimic.Comp.AssimilatedPool[args.Index];
@@ -92,8 +111,8 @@ public sealed class AbominationMimicSystem : EntitySystem
     }
 
     /// <summary>
-    /// Polymorph the mimic into a real MobHuman, then patch the disguise on top.
-    /// The new human entity inherits the mimic's pool so it can transform again.
+    /// Polymorph the mimic into a real MobHuman, patch the disguise on top,
+    /// and grant the disguised entity the Revert action.
     /// </summary>
     public EntityUid? StartDisguise(Entity<AbominationMimicComponent> mimic, AbominationAssimilationProfile profile, TimeSpan duration)
     {
@@ -101,21 +120,98 @@ public sealed class AbominationMimicSystem : EntitySystem
         if (disguised is not { } disguisedUid)
             return null;
 
-        // Carry the mimic's pool + parameters forward so the disguised human
-        // can still open the picker and pick a different form.
         var carried = EnsureComp<AbominationMimicComponent>(disguisedUid);
         carried.AssimilatedPool = new List<AbominationAssimilationProfile>(mimic.Comp.AssimilatedPool);
         carried.TransformDuration = mimic.Comp.TransformDuration;
+        carried.TransformCooldown = mimic.Comp.TransformCooldown;
         Dirty(disguisedUid, carried);
 
-        // Mark the disguise so the update loop / explicit revert can find it.
         var tracker = EnsureComp<AbominationMimicTransformedComponent>(disguisedUid);
         tracker.Profile = profile;
         tracker.ExpiresAt = _timing.CurTime + duration;
         Dirty(disguisedUid, tracker);
 
         ApplyProfile(disguisedUid, profile);
+
+        _actions.AddAction(disguisedUid, RevertAction);
         return disguisedUid;
+    }
+
+    private void OnRevertAction(Entity<AbominationMimicTransformedComponent> ent, ref AbominationMimicRevertActionEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        args.Handled = true;
+        BeginRevert(ent.Owner);
+    }
+
+    private void OnDisguisedMobStateChanged(Entity<AbominationMimicTransformedComponent> ent, ref MobStateChangedEvent args)
+    {
+        if (args.NewMobState is MobState.Critical or MobState.Dead)
+            BeginRevert(ent.Owner);
+    }
+
+    /// <summary>
+    /// Start the shake+scream revert sequence. Idempotent: if a revert is
+    /// already pending we leave the existing timer alone.
+    /// </summary>
+    private void BeginRevert(EntityUid mimic)
+    {
+        if (!HasComp<AbominationMimicTransformedComponent>(mimic))
+            return;
+
+        if (HasComp<AbominationMimicRevertingComponent>(mimic))
+            return;
+
+        var reverting = EnsureComp<AbominationMimicRevertingComponent>(mimic);
+        reverting.RevertAt = _timing.CurTime + reverting.JitterDuration;
+        Dirty(mimic, reverting);
+
+        _jitter.DoJitter(mimic, reverting.JitterDuration, refresh: true, amplitude: 16, frequency: 16);
+        _chat.TryEmoteWithChat(mimic, ScreamEmote);
+        _popup.PopupClient(Loc.GetString("abomination-mimic-transform-revert"), mimic, mimic);
+    }
+
+    public override void Update(float frameTime)
+    {
+        var now = _timing.CurTime;
+
+        // Stage 1: trigger BeginRevert when the disguise's lifetime ends.
+        var disguised = EntityQueryEnumerator<AbominationMimicTransformedComponent, PolymorphedEntityComponent>();
+        while (disguised.MoveNext(out var uid, out var tracker, out _))
+        {
+            if (HasComp<AbominationMimicRevertingComponent>(uid))
+                continue;
+            if (tracker.ExpiresAt > now)
+                continue;
+
+            BeginRevert(uid);
+        }
+
+        // Stage 2: actually polymorph-revert once the shake-and-scream timer ends.
+        var reverting = EntityQueryEnumerator<AbominationMimicRevertingComponent, PolymorphedEntityComponent>();
+        while (reverting.MoveNext(out var uid, out var revert, out var polymorphed))
+        {
+            if (revert.RevertAt > now)
+                continue;
+
+            FinishRevert(uid, polymorphed);
+        }
+    }
+
+    private void FinishRevert(EntityUid disguisedUid, PolymorphedEntityComponent polymorphed)
+    {
+        // Stamp the cooldown on the ORIGINAL mimic so the next transform is gated.
+        if (TryComp<AbominationMimicComponent>(disguisedUid, out var disguisedMimic) &&
+            TryComp<AbominationMimicComponent>(polymorphed.Parent, out var originalMimic))
+        {
+            originalMimic.AssimilatedPool = new List<AbominationAssimilationProfile>(disguisedMimic.AssimilatedPool);
+            originalMimic.NextTransformAt = _timing.CurTime + disguisedMimic.TransformCooldown;
+            Dirty(polymorphed.Parent, originalMimic);
+        }
+
+        _polymorph.Revert((disguisedUid, null));
     }
 
     private void ApplyProfile(EntityUid disguised, AbominationAssimilationProfile profile)
@@ -127,19 +223,6 @@ public sealed class AbominationMimicSystem : EntitySystem
         ApplyIffFactions(disguised, profile.IffFactions);
         CopySkillsFromSource(disguised, profile);
         ApplyAppearance(disguised, profile.Appearance);
-    }
-
-    public override void Update(float frameTime)
-    {
-        var now = _timing.CurTime;
-        var query = EntityQueryEnumerator<AbominationMimicTransformedComponent, PolymorphedEntityComponent>();
-        while (query.MoveNext(out var uid, out var disguised, out _))
-        {
-            if (disguised.ExpiresAt > now)
-                continue;
-
-            _polymorph.Revert((uid, null));
-        }
     }
 
     private void ApplyFactions(EntityUid disguised, IEnumerable<string> factions)

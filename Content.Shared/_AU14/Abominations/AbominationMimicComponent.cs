@@ -13,12 +13,15 @@ public sealed partial class AbominationMimicComponent : Component
     public List<AbominationAssimilationProfile> AssimilatedPool = new();
 
     [DataField, AutoNetworkedField]
-    public TimeSpan TransformDuration = TimeSpan.FromSeconds(360);
+    public TimeSpan TransformDuration = TimeSpan.FromSeconds(270);
 
     /// <summary>
-    /// Probability that a successful melee hit on a humanoid infects them with
-    /// AbominationInfectionComponent. 0 = never, 1 = every hit.
+    /// Cooldown between transforms. Starts when a disguise ends; the mimic must
+    /// wait this long before opening the picker again.
     /// </summary>
     [DataField, AutoNetworkedField]
-    public float InfectionChance = 0.25f;
+    public TimeSpan TransformCooldown = TimeSpan.FromSeconds(300);
+
+    [DataField, AutoNetworkedField]
+    public TimeSpan? NextTransformAt;
 }

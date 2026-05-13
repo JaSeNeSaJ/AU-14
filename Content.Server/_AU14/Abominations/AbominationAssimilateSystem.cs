@@ -1,5 +1,6 @@
 using Content.Server.Polymorph.Systems;
 using Content.Shared._AU14.Abominations;
+using Content.Shared._RMC14.Synth;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared.DoAfter;
 using Content.Shared.Humanoid;
@@ -106,6 +107,13 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         if (!HasComp<HumanoidAppearanceComponent>(target))
         {
             reason = Loc.GetString("abomination-assimilate-not-humanoid");
+            return false;
+        }
+
+        // Synths have no flesh to absorb. Same flavour as xenos refusing to nest them.
+        if (HasComp<SynthComponent>(target))
+        {
+            reason = Loc.GetString("abomination-assimilate-synth");
             return false;
         }
 

@@ -18,6 +18,10 @@ public sealed partial class AbominationSpitComponent : Component
     [DataField, AutoNetworkedField]
     public float Speed = 18f;
 
+    /// <summary>Max distance in tiles before the projectile auto-despawns.</summary>
+    [DataField, AutoNetworkedField]
+    public float Range = 12f;
+
     [DataField, AutoNetworkedField]
     public SoundSpecifier? Sound = new SoundCollectionSpecifier("XenoSpitAcid");
 }
