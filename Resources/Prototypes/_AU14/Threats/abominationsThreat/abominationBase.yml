@@ -24,36 +24,52 @@
   components:
   - type: IFFFaction
 
-# Abstract base for every abomination mob. We inherit the xeno-base
-# *chassis* (hands, speech, ghost takeover, doafter, melee plumbing) but
-# strip the components that make the engine consider the entity a
-# xenomorph. Abominations are a separate threat, not part of the hive.
+# Abstract base for every abomination mob. Built from the core mob mixins
+# (BaseMob / MobDamageable / MobCombat / MobBloodstream / MobFlammable),
+# NOT from anything xeno-related. Abominations are a separate threat and
+# do not share any xeno systems (no plasma, no hive, no evolution).
 - type: entity
   abstract: true
   parent:
-  - CMXenoDeveloped
-  - CMXenoFlammable
-  - RMCXenoMobCollision
+  - BaseMob
+  - MobDamageable
+  - MobCombat
+  - MobBloodstream
+  - MobFlammable
   id: AU14AbominationBase
   name: abomination
   components:
-  # Strip xeno-defining components inherited from the chassis. They have
-  # to come off so HUDs, role registration and hive systems don't tag
-  # these mobs as xenos.
-  - type: RemoveComponents
-    components:
-    # Dummy role just to satisfy the [DataField(required: true)] on XenoComponent.Role
-    # while RemoveComponents deserialises the entry; the component is stripped at spawn.
-    - type: Xeno
-      role: CMXenoLarva
-    - type: XenoRegen
-    - type: XenoEvolution
-    - type: XenoStateVisuals
-    - type: HiveTracker
-    - type: AssignXenoName
-    - type: XenoFriendly
-    - type: AffectableByWeeds
   - type: Abomination
+  - type: NoSlip
+  - type: Climbing
+  - type: ComplexInteraction
+  - type: StatusEffects
+    allowed:
+    - Stun
+    - KnockedDown
+    - SlowedDown
+    - Muted
+    - Dazed
+    - Blinded
+    - Unconscious
+    - TemporaryBlindness
+    - Deaf
+  - type: Hands
+  - type: GiveHands
+    hands:
+    - name: Right Hand
+      location: Right
+    - name: Left Hand
+      location: Left
+  - type: Body
+    prototype: Primate
+    requiredLegs: 1
+  - type: NpcFactionMember
+    factions:
+    - Abomination
+  - type: UserIFF
+    factions:
+    - FactionAbomination
   - type: GhostTakeoverAvailable
   - type: GhostRole
     name: Abomination
@@ -63,19 +79,12 @@
     allowMovement: true
     raffle:
       settings: short
-  - type: NpcFactionMember
-    factions:
-    - Abomination
-  - type: UserIFF
-    factions:
-    - FactionAbomination
   - type: Speech
     speechVerb: Abomination
     speechSounds: Bass
   - type: ReplacementAccent
     accent: genericAggressive
-  # Replaces the Hivemind channel inherited from CMXenoDeveloped so abominations
-  # don't share the xeno hive radio.
+  # Abomination radio channel — see abominationRoles.yml.
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
     channels:
@@ -87,3 +96,13 @@
     icon:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
       state: warrior
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 3
+    baseSprintSpeed: 4
+  - type: NameIdentifier
+    group: Abomination
+
+- type: nameIdentifierGroup
+  id: Abomination
+  maxValue: 999
+  prefix: Abomination

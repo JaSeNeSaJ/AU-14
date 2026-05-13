@@ -1,53 +1,64 @@
-# All abomination actions inherit from the matching xeno/ape prototype so they
-# can reuse the engine wiring, but expose abomination-named IDs that the mob
-# YAMLs reference. This keeps every abomination's actionbar fully namespaced.
-
-# --- Shared self-actions ---
-
-- type: entity
-  parent: ActionXenoRest
-  id: ActionAbominationRest
-  name: Rest
-  description: Lie down on flesh to regenerate health faster.
-
-- type: entity
-  parent: ActionXenoChooseStructure
-  id: ActionAbominationChooseStructure
-  name: Choose Flesh Structure
-  description: "Choose a structure to secrete with the 'Secrete Flesh' action."
-
-- type: entity
-  parent: ActionXenoSecreteStructure
-  id: ActionAbominationSecreteStructure
-  name: Secrete Flesh
-  description: "Builds the structure chosen with the 'Choose Flesh Structure' action."
+# Standalone abomination action prototypes. Do NOT parent any ActionXeno*
+# or ActionApe* — abominations don't share a chassis with either.
 
 # --- Spider ---
 
 - type: entity
-  parent: ActionXenoLeap
   id: ActionAbominationSpiderLeap
   name: Pounce
-  description: Pounce onto an enemy, knocking them down briefly.
+  description: Pounce onto a target, knocking them down briefly.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: pounce
+    useDelay: 5
+  - type: TargetAction
+    range: 7
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
 
 - type: entity
-  parent: ActionXenoSpit
   id: ActionAbominationSpiderSpit
   name: Acid Spit
   description: Spit a glob of acid at a target.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: xeno_spit
+    useDelay: 3
+  - type: TargetAction
+    range: 10
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationSpitActionEvent
 
 # --- Grunt ---
 
 - type: entity
-  parent: ActionApeLeap
   id: ActionAbominationGruntSlam
   name: Slam
   description: Leap to a position and slam down, knocking enemies prone.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: pounce
+    useDelay: 8
+  - type: TargetAction
+    range: 6
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
 
 # --- Skitter ---
 
 - type: entity
-  parent: ActionXenoBase
   id: ActionAbominationPlantKudzu
   name: Spread Kudzu
   description: Vomit out a fast-spreading kudzu source under yourself.
@@ -61,13 +72,26 @@
   - type: InstantAction
     event: !type:Content.Shared._AU14.Abominations.AbominationPlantKudzuActionEvent
 
+- type: entity
+  id: ActionAbominationSecreteWall
+  name: Secrete Flesh Wall
+  description: Vomit a wall of fused sinew on the tile beneath you.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: secrete_resin
+    useDelay: 10
+  - type: InstantAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationSecreteWallActionEvent
+
 # --- Mimic ---
 
 - type: entity
-  parent: ActionXenoBase
   id: ActionAbominationAssimilate
   name: Assimilate
-  description: Begin assimilating an incapacitated humanoid. They will become part of your mimic pool.
+  description: Begin assimilating an incapacitated humanoid. They will become a mimic too.
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -81,10 +105,8 @@
     deselectOnMiss: false
   - type: EntityTargetAction
     event: !type:Content.Shared._AU14.Abominations.AbominationAssimilateActionEvent
-  - type: ActionBlockIfResting
 
 - type: entity
-  parent: ActionXenoBase
   id: ActionAbominationMimicTransform
   name: Mimic
   description: Take the shape of one of your assimilated victims for a limited time.

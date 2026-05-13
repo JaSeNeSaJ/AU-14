@@ -1,6 +1,6 @@
 # Spider: a skittering severed-head abomination.
-# - XenoLeap = short pounce (parasite-style "just jump", not Wendigo's leap)
-# - XenoSpit = ranged acid projectile
+# - AbominationLeap = short pounce
+# - AbominationSpit = ranged acid projectile
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationSpider
@@ -9,6 +9,9 @@
   components:
   - type: Sprite
     sprite: _AU14/Mobs/Abominations/spider.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: alive
   - type: GhostRole
     name: Spider Abomination
     description: A skittering severed head. Pounce onto prey and bury them in acid.
@@ -20,33 +23,25 @@
   - type: MobStateActions
     actions:
       Alive:
-      - ActionAbominationRest
       - ActionAbominationSpiderLeap
       - ActionAbominationSpiderSpit
-  - type: XenoPlasma
-    plasma: 200
-    maxPlasma: 200
-    plasmaRegenOnWeeds: 3
-  - type: XenoLeap
-    plasmaCost: 0
-    delay: 0
-    moveDelayTime: 0.8
+  - type: AbominationLeap
+    range: 6
+    strength: 28
+    flightDuration: 0.6
     knockdownTime: 2
-    knockdownRequiresInvisibility: false
-    unrootOnMelee: true
-  - type: XenoSpit
-  - type: CMArmor
-    xenoArmor: 10
-    explosionArmor: 5
+    damage:
+      groups:
+        Brute: 12
+  - type: AbominationSpit
   - type: MeleeWeapon
+    angle: 0
     damage:
       groups:
         Brute: 18
   - type: MovementSpeedModifier
     baseWalkSpeed: 3.2
     baseSprintSpeed: 5.5
-  - type: RMCSize
-    size: Small
   - type: Fixtures
     fixtures:
       fix1:

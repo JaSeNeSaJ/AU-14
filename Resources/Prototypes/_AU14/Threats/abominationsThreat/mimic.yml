@@ -1,6 +1,6 @@
 # Mimic: humanoid abomination that assimilates incapacitated humans.
-# Combat form. While transformed via AbominationMimicSystem it inherits the
-# victim's name/factions/IFF/skills/appearance for the duration.
+# Combat form. While transformed via AbominationMimicSystem it polymorphs
+# into a real MobHuman wearing the victim's face.
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationMimic
@@ -9,6 +9,9 @@
   components:
   - type: Sprite
     sprite: _AU14/Mobs/Abominations/mimic.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: alive
   - type: GhostRole
     name: Mimic Abomination
     description: Assimilate the downed and disappear into the colony wearing their faces.
@@ -20,31 +23,16 @@
   - type: MobStateActions
     actions:
       Alive:
-      - ActionAbominationRest
       - ActionAbominationAssimilate
       - ActionAbominationMimicTransform
   - type: AbominationMimic
     transformDuration: 360
   - type: AbominationAssimilate
     doAfter: 8
-  # Adds the private Mimicnet alongside the general Abomination band
-  # inherited from AU14AbominationBase.
-  - type: IntrinsicRadioReceiver
-  - type: IntrinsicRadioTransmitter
-    channels:
-    - Abomination
-    - AbominationMimic
-  - type: ActiveRadio
-    channels:
-    - Abomination
-    - AbominationMimic
   - type: UserInterface
     interfaces:
       enum.AbominationMimicUiKey.Key:
         type: AbominationMimicBui
-  - type: CMArmor
-    xenoArmor: 18
-    explosionArmor: 15
   - type: MeleeWeapon
     damage:
       groups:
@@ -52,5 +40,3 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 2.6
     baseSprintSpeed: 4.4
-  - type: RMCSize
-    size: Humanoid

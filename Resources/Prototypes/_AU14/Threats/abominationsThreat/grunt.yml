@@ -1,6 +1,6 @@
 # Grunt: hulking front-line abomination.
-# - ApeLeap = slam (jump + knockdown)
-# - Long melee range (MeleeWeapon.range) so it can swing across multiple tiles
+# - AbominationLeap = slam (long pounce + knockdown)
+# - Long melee range so it can swing across multiple tiles
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationGrunt
@@ -9,6 +9,9 @@
   components:
   - type: Sprite
     sprite: _AU14/Mobs/Abominations/grunt.rsi
+    layers:
+    - map: ["enum.DamageStateVisualLayers.Base"]
+      state: alive
   - type: GhostRole
     name: Grunt Abomination
     description: A heavy slam-melee abomination. Crush colonists with overwhelming reach.
@@ -20,19 +23,15 @@
   - type: MobStateActions
     actions:
       Alive:
-      - ActionAbominationRest
       - ActionAbominationGruntSlam
-  - type: ApeLeap
-    delay: 1.2
+  - type: AbominationLeap
+    range: 5
+    strength: 22
+    flightDuration: 1.0
     knockdownTime: 3
-    leapSound: /Audio/_AU14/Ape/aperoarshort.ogg
     damage:
       types:
         Blunt: 35
-  - type: CMArmor
-    xenoArmor: 30
-    explosionArmor: 35
-  # Long-reach punch: angle:0 + range:2 lets it hit one tile farther than a normal swing
   - type: MeleeWeapon
     soundHit:
       path: /Audio/Weapons/punch1.ogg
@@ -42,14 +41,6 @@
     damage:
       groups:
         Brute: 50
-  - type: XenoPunch
-    damage:
-      types:
-        Blunt: 35
   - type: MovementSpeedModifier
     baseWalkSpeed: 1.8
     baseSprintSpeed: 2.8
-  - type: Tackle
-    max: 3
-  - type: RMCSize
-    size: Big
