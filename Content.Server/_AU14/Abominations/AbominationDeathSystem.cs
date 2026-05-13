@@ -1,6 +1,5 @@
 using Content.Shared._AU14.Abominations;
 using Content.Shared.Body.Systems;
-using Content.Shared.Coordinates;
 using Content.Shared.Mobs;
 using Robust.Shared.Prototypes;
 
@@ -15,6 +14,7 @@ public sealed class AbominationDeathSystem : EntitySystem
     public static readonly EntProtoId FleshKudzuSource = "AU14AbominationFleshKudzuSource";
 
     [Dependency] private readonly SharedBodySystem _body = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
 
     public override void Initialize()
     {
@@ -26,7 +26,16 @@ public sealed class AbominationDeathSystem : EntitySystem
         if (args.NewMobState != MobState.Dead)
             return;
 
-        Spawn(FleshKudzuSource, ent.Owner.ToCoordinates());
+        // Capture the corpse coordinates *before* gibbing — once the body is
+        // gibbed the entity is deleted and ToCoordinates returns an invalid map.
+        var xform = Transform(ent.Owner);
+        var coords = _transform.GetMapCoordinates(ent.Owner, xform);
+
         _body.GibBody(ent.Owner);
+
+        if (coords.MapId == default)
+            return;
+
+        Spawn(FleshKudzuSource, coords);
     }
 }

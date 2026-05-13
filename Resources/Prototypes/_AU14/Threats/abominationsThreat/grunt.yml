@@ -26,17 +26,17 @@
       - ActionAbominationGruntSlam
       - ActionAbominationGruntCharge
   - type: AbominationLeap
-    range: 9
-    strength: 28
-    flightDuration: 1.0
+    range: 4
+    strength: 18
+    flightDuration: 0.9
     knockdownTime: 3
     damage:
       types:
         Blunt: 35
   - type: AbominationCharge
-    range: 14
-    strength: 40
-    flightDuration: 1.4
+    range: 8
+    strength: 28
+    flightDuration: 1.2
     knockdownTime: 4
     mobDamage:
       types:

@@ -1,9 +1,19 @@
-# Standalone abomination action prototypes. Do NOT parent any ActionXeno*
-# or ActionApe* — abominations don't share a chassis with either.
+# Abstract base — all abomination actions parent this so they get the
+# cooldown-sweep background visual (matches the xeno action chrome).
+- type: entity
+  abstract: true
+  id: ActionAbominationBase
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Action
+    backgroundOn:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: template_active_big
 
 # --- Spider ---
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationSpiderLeap
   name: Pounce
   description: Pounce onto a target, knocking them down briefly.
@@ -15,12 +25,13 @@
       state: pounce
     useDelay: 5
   - type: TargetAction
-    range: 7
+    range: 5
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationSpiderSpit
   name: Acid Spit
   description: Spit a glob of acid at a target.
@@ -40,6 +51,7 @@
 # --- Grunt ---
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationGruntSlam
   name: Slam
   description: Leap to a position and slam down, knocking enemies prone.
@@ -51,12 +63,13 @@
       state: pounce
     useDelay: 8
   - type: TargetAction
-    range: 9
+    range: 4
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationGruntCharge
   name: Charge
   description: Wind up and barrel forward, smashing through anything in your path.
@@ -68,7 +81,7 @@
       state: ready_charge
     useDelay: 18
   - type: TargetAction
-    range: 14
+    range: 8
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationChargeActionEvent
@@ -76,6 +89,7 @@
 # --- Skitter ---
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationPlantKudzu
   name: Spread Kudzu
   description: Vomit out a fast-spreading kudzu source under yourself.
@@ -90,6 +104,7 @@
     event: !type:Content.Shared._AU14.Abominations.AbominationPlantKudzuActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationChooseStructure
   name: Choose Flesh Structure
   description: Pick which structure you'll secrete with the Secrete Flesh action.
@@ -104,6 +119,7 @@
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationConstructionChooseActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationSecreteStructure
   name: Secrete Flesh
   description: Secrete the chosen flesh structure on the targeted tile.
@@ -123,6 +139,7 @@
 # --- Mimic ---
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationAssimilate
   name: Assimilate
   description: Begin assimilating an incapacitated humanoid. They will become a mimic too.
@@ -141,6 +158,7 @@
     event: !type:Content.Shared._AU14.Abominations.AbominationAssimilateActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationMimicTransform
   name: Mimic
   description: Take the shape of one of your assimilated victims for a limited time.
@@ -155,6 +173,7 @@
     event: !type:Content.Shared._AU14.Abominations.AbominationMimicTransformActionEvent
 
 - type: entity
+  parent: ActionAbominationBase
   id: ActionAbominationMimicRevert
   name: Drop Disguise
   description: Burst out of your current form and return to your combat shape.

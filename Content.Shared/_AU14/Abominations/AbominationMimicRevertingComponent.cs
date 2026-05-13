@@ -15,8 +15,12 @@ public sealed partial class AbominationMimicRevertingComponent : Component
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan RevertAt;
 
+    /// <summary>
+    /// How long the shake/scream/knockdown sequence runs before the
+    /// polymorph revert actually fires.
+    /// </summary>
     [DataField, AutoNetworkedField]
-    public TimeSpan JitterDuration = TimeSpan.FromSeconds(2.5);
+    public TimeSpan JitterDuration = TimeSpan.FromSeconds(7);
 }
 
 public sealed partial class AbominationMimicRevertActionEvent : InstantActionEvent;

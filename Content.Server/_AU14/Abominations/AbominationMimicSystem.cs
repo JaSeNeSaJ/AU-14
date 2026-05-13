@@ -11,6 +11,7 @@ using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Jittering;
 using Content.Shared.Mobs;
+using Content.Shared.Stunnable;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Polymorph;
@@ -52,6 +53,7 @@ public sealed class AbominationMimicSystem : EntitySystem
     [Dependency] private readonly SkillsSystem _skills = default!;
     [Dependency] private readonly SharedHumanoidAppearanceSystem _humanoid = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
+    [Dependency] private readonly SharedStunSystem _stun = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
@@ -168,7 +170,11 @@ public sealed class AbominationMimicSystem : EntitySystem
         reverting.RevertAt = _timing.CurTime + reverting.JitterDuration;
         Dirty(mimic, reverting);
 
-        _jitter.DoJitter(mimic, reverting.JitterDuration, refresh: true, amplitude: 16, frequency: 16);
+        // Fall over, scream and shake for the entire 7s wind-down before the
+        // polymorph revert fires. Jitter amplitude is high so the seizure is
+        // visible at a glance.
+        _jitter.DoJitter(mimic, reverting.JitterDuration, refresh: true, amplitude: 20, frequency: 18);
+        _stun.TryParalyze(mimic, reverting.JitterDuration, true);
         _chat.TryEmoteWithChat(mimic, ScreamEmote);
         _popup.PopupClient(Loc.GetString("abomination-mimic-transform-revert"), mimic, mimic);
     }

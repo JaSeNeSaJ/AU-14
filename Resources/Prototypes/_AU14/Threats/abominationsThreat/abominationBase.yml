@@ -43,6 +43,11 @@
   - type: NoSlip
   - type: Climbing
   - type: ComplexInteraction
+  - type: Emoting
+  - type: TypingIndicator
+    proto: alien
+  - type: MobCollision
+  - type: RMCMobCollision
   - type: StatusEffects
     allowed:
     - Stun

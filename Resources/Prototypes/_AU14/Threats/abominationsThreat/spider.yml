@@ -26,9 +26,9 @@
       - ActionAbominationSpiderLeap
       - ActionAbominationSpiderSpit
   - type: AbominationLeap
-    range: 10
-    strength: 35
-    flightDuration: 0.8
+    range: 5
+    strength: 22
+    flightDuration: 0.6
     knockdownTime: 2
     damage:
       groups:
