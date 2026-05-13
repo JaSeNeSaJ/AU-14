@@ -85,17 +85,18 @@ public sealed class AbominationMimicSystem : EntitySystem
         if (HasComp<AbominationMimicTransformedComponent>(mimic))
             return;
 
-        if (mimic.Comp.NextTransformAt is { } cd && _timing.CurTime < cd)
-        {
-            _popup.PopupClient(Loc.GetString("abomination-mimic-on-cooldown"), mimic, mimic);
-            return;
-        }
-
         if (mimic.Comp.AssimilatedPool.Count == 0)
         {
             _popup.PopupClient(Loc.GetString("abomination-mimic-transform-no-profiles"), mimic, mimic);
             return;
         }
+
+        // Remember the action entity (per-mimic by construction) so FinishRevert
+        // can stamp the cooldown back onto THIS mimic only. The SharedActions
+        // system enforces the cooldown on the action entity itself, so the
+        // grey-out + timer rendering Just Work.
+        mimic.Comp.TransformActionEntity = args.Action.Owner;
+        Dirty(mimic);
 
         args.Handled = true;
         _ui.TryOpenUi(mimic.Owner, AbominationMimicUiKey.Key, args.Performer);
@@ -105,10 +106,6 @@ public sealed class AbominationMimicSystem : EntitySystem
     private void OnSelectForm(Entity<AbominationMimicComponent> mimic, ref AbominationMimicSelectFormMessage args)
     {
         if (args.Index < 0 || args.Index >= mimic.Comp.AssimilatedPool.Count)
-            return;
-
-        // Cooldown re-check in case they sat on the picker.
-        if (mimic.Comp.NextTransformAt is { } cd && _timing.CurTime < cd)
             return;
 
         var profile = mimic.Comp.AssimilatedPool[args.Index];
@@ -249,13 +246,17 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     private void FinishRevert(EntityUid disguisedUid, PolymorphedEntityComponent polymorphed)
     {
-        // Stamp the cooldown on the ORIGINAL mimic so the next transform is gated.
+        // Carry pool changes back, then stamp the cooldown on the original
+        // mimic's transform action entity. SetCooldown grays out only THAT
+        // action; other mimics' action entities are untouched.
         if (TryComp<AbominationMimicComponent>(disguisedUid, out var disguisedMimic) &&
             TryComp<AbominationMimicComponent>(polymorphed.Parent, out var originalMimic))
         {
             originalMimic.AssimilatedPool = new List<AbominationAssimilationProfile>(disguisedMimic.AssimilatedPool);
-            originalMimic.NextTransformAt = _timing.CurTime + disguisedMimic.TransformCooldown;
             Dirty(polymorphed.Parent, originalMimic);
+
+            if (originalMimic.TransformActionEntity is { } actionEnt && Exists(actionEnt))
+                _actions.SetCooldown(actionEnt, disguisedMimic.TransformCooldown);
         }
 
         _polymorph.Revert((disguisedUid, null));
