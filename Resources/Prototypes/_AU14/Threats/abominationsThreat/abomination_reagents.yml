@@ -3,7 +3,6 @@
 - type: reagent
   id: AbominationVenom
   name: reagent-name-abomination-venom
-  parent: BaseReagent
   group: Biological
   desc: reagent-desc-abomination-venom
   physicalDesc: reagent-physical-desc-viscous
