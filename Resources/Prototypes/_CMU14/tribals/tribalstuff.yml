@@ -1,0 +1,95 @@
+- type: entity
+  save: false
+  parent: RMCBaseMobSpeciesOrganic
+  id: CMUMobTribal
+  name: Tribal
+  suffix: CMU14
+  components:
+  - type: Tribal
+
+- type: entity
+  save: false
+  parent: CMMobSlimePerson
+  id: TribalSlime
+  name: Urist C.M McSlime
+  suffix: RMC14
+  components:
+  - type: Tribal
+
+# Tribal Weapons
+
+- type: entity
+  name: tribal spear
+  parent: Spear
+  id: TribalSpear
+  description: A spear crafted by tribal warriors. Only usable by tribals.
+  components:
+  - type: Tag
+    tags:
+    - Spear
+    - tribe
+  - type: Sprite
+    sprite: Objects/Weapons/Melee/bone_spear.rsi
+  - type: MeleeWeapon
+    wideAnimationRotation: -135
+    damage:
+      types:
+        Piercing: 12
+    angle: 0
+    animation: WeaponArcThrust
+    soundHit:
+      path: /Audio/Weapons/bladeslice.ogg
+  - type: DamageOtherOnHit
+    damage:
+      types:
+        Piercing: 15
+
+- type: entity
+  name: tribal bow
+  parent: BaseBow
+  id: TribalBow
+  description: A crude bow made by tribal warriors. Only usable by tribals.
+  components:
+  - type: Tag
+    tags:
+    - tribe
+  - type: Sprite
+    layers:
+    - state: unwielded
+      map: [ base ]
+    - state: unwielded-arrow
+      map: [ arrow ]
+      visible: false
+    - state: unwielded-plunger
+      map: [ plunger ]
+      visible: false
+  - type: Appearance
+  - type: ItemMapper
+    spriteLayers:
+    - arrow
+    - plunger
+    mapLayers:
+      arrow:
+        whitelist:
+          tags:
+          - Arrow
+      plunger:
+        whitelist:
+          tags:
+          - Plunger
+  - type: GenericVisualizer
+    visuals:
+      enum.WieldableVisuals.Wielded:
+        arrow:
+          True: { state: wielded-arrow }
+          False: { state: unwielded-arrow }
+        plunger:
+          True: { state: wielded-plunger }
+          False: { state: unwielded-plunger }
+        base:
+          True: { state: wielded }
+          False: { state: unwielded }
+
+
+- type: Tag
+  id: tribe
