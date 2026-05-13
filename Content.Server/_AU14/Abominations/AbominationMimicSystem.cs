@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared.Actions;
 using Content.Shared.Chat.Prototypes;
+using Content.Shared._RMC14.Xenonids.Parasite;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Jittering;
@@ -134,6 +135,10 @@ public sealed class AbominationMimicSystem : EntitySystem
         Dirty(disguisedUid, tracker);
 
         ApplyProfile(disguisedUid, profile);
+
+        // Mimics wearing human or animal skin are immune to xeno parasites —
+        // the flesh underneath isn't compatible host material.
+        RemComp<InfectableComponent>(disguisedUid);
 
         _actions.AddAction(disguisedUid, RevertAction);
         return disguisedUid;

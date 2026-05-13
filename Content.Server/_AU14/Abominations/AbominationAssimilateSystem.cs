@@ -15,16 +15,17 @@ namespace Content.Server._AU14.Abominations;
 
 public sealed class AbominationAssimilateSystem : EntitySystem
 {
-    /// <summary>
-    /// Polymorph prototype used to turn the assimilated humanoid into an
-    /// AU14AbominationMimic. One-way — does not revert on crit/death.
-    /// </summary>
-    public static readonly ProtoId<PolymorphPrototype> AssimilationPolymorph = "AbominationAssimilationToMimic";
+    /// <summary>Polymorph used when a humanoid victim turns.</summary>
+    public static readonly ProtoId<PolymorphPrototype> HumanoidTurnPolymorph = "AbominationAssimilationToMimic";
+
+    /// <summary>Polymorph used when an animal victim turns — they become a spider, not a mimic.</summary>
+    public static readonly ProtoId<PolymorphPrototype> AnimalTurnPolymorph = "AbominationAssimilationToSpider";
 
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly IPrototypeManager _proto = default!;
 
     public override void Initialize()
     {
@@ -73,24 +74,22 @@ public sealed class AbominationAssimilateSystem : EntitySystem
 
         args.Handled = true;
 
+        var isHumanoid = HasComp<HumanoidAppearanceComponent>(target);
         var profile = BuildProfile(target);
-
-        // Share the new profile with every existing mimic so the pool is
-        // global to the threat ("any mimic can transform into any assimilated").
         AddProfileToAllMimics(profile);
 
         _popup.PopupEntity(Loc.GetString("abomination-assimilate-complete", ("target", Name(target))), target, mimic);
 
-        // The victim becomes a mimic themselves. Polymorph swaps the entity
-        // for an AU14AbominationMimic and transfers the player's mind.
-        var newMimic = _polymorph.PolymorphEntity(target, AssimilationPolymorph);
-        if (newMimic is { } newMimicUid)
+        // Humanoid victims become mimics; animal victims become spiders.
+        var polymorphId = isHumanoid ? HumanoidTurnPolymorph : AnimalTurnPolymorph;
+        var newAbomination = _polymorph.PolymorphEntity(target, polymorphId);
+        if (newAbomination is { } newUid && isHumanoid)
         {
-            // The freshly-spawned mimic starts with the full current pool so
-            // it can immediately impersonate any prior victim, including itself.
-            var newMimicComp = EnsureComp<AbominationMimicComponent>(newMimicUid);
+            // Fresh mimics start with the full current pool so they can
+            // immediately impersonate any prior victim, including themselves.
+            var newMimicComp = EnsureComp<AbominationMimicComponent>(newUid);
             newMimicComp.AssimilatedPool = new List<AbominationAssimilationProfile>(GatherCurrentPool());
-            Dirty(newMimicUid, newMimicComp);
+            Dirty(newUid, newMimicComp);
         }
     }
 
@@ -104,7 +103,8 @@ public sealed class AbominationAssimilateSystem : EntitySystem
             return false;
         }
 
-        if (!HasComp<HumanoidAppearanceComponent>(target))
+        // Humanoid OR a tagged-infectable animal — both are valid prey.
+        if (!HasComp<HumanoidAppearanceComponent>(target) && !HasComp<AbominationInfectableComponent>(target))
         {
             reason = Loc.GetString("abomination-assimilate-not-humanoid");
             return false;
@@ -134,10 +134,22 @@ public sealed class AbominationAssimilateSystem : EntitySystem
 
     public AbominationAssimilationProfile BuildProfile(EntityUid target)
     {
+        var isHumanoid = HasComp<HumanoidAppearanceComponent>(target);
+
+        // Animals key off the entity prototype id so all rats group as one
+        // "rat" entry; humanoids stay per-victim by display name.
+        var protoId = MetaData(target).EntityPrototype?.ID;
+        var displayName = isHumanoid
+            ? Name(target)
+            : (protoId is not null && _proto.TryIndex<EntityPrototype>(protoId, out var proto)
+                ? proto.Name
+                : Name(target));
+
         var profile = new AbominationAssimilationProfile
         {
-            Name = Name(target),
+            Name = displayName,
             SourceEntity = GetNetEntity(target),
+            SourceProtoId = isHumanoid ? null : protoId,
         };
 
         if (TryComp<NpcFactionMemberComponent>(target, out var npcFaction))
@@ -178,6 +190,14 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         var query = EntityQueryEnumerator<AbominationMimicComponent>();
         while (query.MoveNext(out var uid, out var mimic))
         {
+            // Animal profiles dedupe by SourceProtoId — only the first rat ever
+            // assimilated goes in the pool, every subsequent rat is a no-op.
+            if (profile.SourceProtoId is not null &&
+                mimic.AssimilatedPool.Exists(p => p.SourceProtoId == profile.SourceProtoId))
+            {
+                continue;
+            }
+
             mimic.AssimilatedPool.Add(profile);
             Dirty(uid, mimic);
         }

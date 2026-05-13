@@ -26,3 +26,16 @@
     transferDamage: false
     revertOnCrit: false
     revertOnDeath: false
+
+# Non-humanoid (animal) assimilation/turn-on-death — they become a spider
+# instead of a humanoid mimic. Same one-way semantics.
+- type: polymorph
+  id: AbominationAssimilationToSpider
+  configuration:
+    entity: AU14AbominationSpider
+    forced: true
+    inventory: Drop
+    transferName: false
+    transferDamage: false
+    revertOnCrit: false
+    revertOnDeath: false

@@ -55,6 +55,14 @@ public sealed partial class AbominationAssimilationProfile
 
     [DataField]
     public AbominationAppearanceSnapshot? Appearance;
+
+    /// <summary>
+    /// Set for non-humanoid (animal) sources. The picker dedupes by this so
+    /// every rat appears as a single "rat" entry, not one per assimilation.
+    /// Null for humanoids — they're always unique entries by name.
+    /// </summary>
+    [DataField]
+    public string? SourceProtoId;
 }
 
 /// <summary>

@@ -32,6 +32,7 @@ public sealed class AbominationInfectionSystem : EntitySystem
 {
     public static readonly EntProtoId FleshKudzuSource = "AU14AbominationFleshKudzuSource";
     public static readonly ProtoId<PolymorphPrototype> TurnIntoMimic = "AbominationAssimilationToMimic";
+    public static readonly ProtoId<PolymorphPrototype> TurnIntoSpider = "AbominationAssimilationToSpider";
     public static readonly ProtoId<EmotePrototype> CoughEmote = "Cough";
     public static readonly ProtoId<EmotePrototype> ScreamEmote = "Scream";
 
@@ -57,11 +58,7 @@ public sealed class AbominationInfectionSystem : EntitySystem
     private void OnExecuteCauseInfection(ref ExecuteEntityEffectEvent<CauseAbominationInfection> args)
     {
         var target = args.Args.TargetEntity;
-        if (HasComp<AbominationComponent>(target) || HasComp<AbominationInfectionComponent>(target))
-            return;
-        if (HasComp<SynthComponent>(target))
-            return;
-        if (!HasComp<HumanoidAppearanceComponent>(target))
+        if (!IsValidInfectionTarget(target))
             return;
 
         ApplyInfection(target);
@@ -74,17 +71,23 @@ public sealed class AbominationInfectionSystem : EntitySystem
 
         foreach (var hit in args.HitEntities)
         {
-            if (!HasComp<HumanoidAppearanceComponent>(hit))
-                continue;
-            if (HasComp<AbominationComponent>(hit) || HasComp<AbominationInfectionComponent>(hit))
-                continue;
-            if (HasComp<SynthComponent>(hit))
+            if (!IsValidInfectionTarget(hit))
                 continue;
             if (!_random.Prob(abomination.Comp.InfectionChance))
                 continue;
 
             ApplyInfection(hit);
         }
+    }
+
+    private bool IsValidInfectionTarget(EntityUid target)
+    {
+        if (HasComp<AbominationComponent>(target) || HasComp<AbominationInfectionComponent>(target))
+            return false;
+        if (HasComp<SynthComponent>(target))
+            return false;
+        // Humanoids OR tagged-infectable animals are valid.
+        return HasComp<HumanoidAppearanceComponent>(target) || HasComp<AbominationInfectableComponent>(target);
     }
 
     private void ApplyInfection(EntityUid target)
@@ -125,11 +128,16 @@ public sealed class AbominationInfectionSystem : EntitySystem
 
         // Snapshot the victim's identity FIRST while the original entity still
         // exists — polymorph would otherwise delete/banish it before we can
-        // read its appearance + factions.
+        // read its appearance + factions. Even animal victims add their
+        // (prototype-keyed) profile to the pool so mimics can wear their form.
         var profile = _assimilate.BuildProfile(ent.Owner);
         _assimilate.AddProfileToAllMimics(profile);
 
-        _polymorph.PolymorphEntity(ent.Owner, TurnIntoMimic);
+        // Humanoids turn into a mimic; animals turn into a spider abomination.
+        var polymorphId = HasComp<HumanoidAppearanceComponent>(ent.Owner)
+            ? TurnIntoMimic
+            : TurnIntoSpider;
+        _polymorph.PolymorphEntity(ent.Owner, polymorphId);
     }
 
     public override void Update(float frameTime)
