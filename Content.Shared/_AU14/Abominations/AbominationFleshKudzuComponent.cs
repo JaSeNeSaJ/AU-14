@@ -25,6 +25,13 @@ public sealed partial class AbominationFleshKudzuComponent : Component
     [DataField, AutoNetworkedField]
     public DamageSpecifier Heal = new();
 
+    /// <summary>How often the tendons attempt to infect incapacitated contacts.</summary>
+    [DataField, AutoNetworkedField]
+    public TimeSpan InfectInterval = TimeSpan.FromSeconds(3);
+
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
+    public TimeSpan NextInfectAt;
+
     /// <summary>Minimum delay between vocal emotes on this tile (3x rarer than the original tuning).</summary>
     [DataField, AutoNetworkedField]
     public TimeSpan EmoteIntervalMin = TimeSpan.FromSeconds(60);

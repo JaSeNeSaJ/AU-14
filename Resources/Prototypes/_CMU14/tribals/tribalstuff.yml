@@ -1,5 +1,8 @@
+# Abstract base for every tribal mob variant. The three concrete variants
+# (leader / spear / bowman) parent this and slot a job + starting-gear.
 - type: entity
   save: false
+  abstract: true
   parent: RMCBaseMobSpeciesOrganic
   id: CMUMobTribal
   name: Tribal
@@ -17,6 +20,138 @@
     - NamesTribalFirst
     - NamesTribalClan
     nameFormat: name-format-tribal
+  # Override the base species faction — tribals defend the homeworld, they
+  # aren't on the AUColonist team. Their own Tribe faction is hostile to
+  # everyone else so they fight invaders on sight.
+  - type: NpcFactionMember
+    factions:
+    - Tribe
+
+# --- Job + role prototypes -----------------------------------------------
+
+- type: job
+  abstract: true
+  parent: CMJobBase
+  id: AU14JobTribalBase
+  setPreference: false
+  playTimeTracker: AU14JobTribal
+  icon: "CMJobIconEmpty"
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-tribal
+  roleWeight: 0.25
+  hidden: true
+
+- type: job
+  parent: AU14JobTribalBase
+  id: AU14JobTribalLeader
+  name: au14-job-name-tribal-leader
+  description: au14-job-description-tribal-leader
+  startingGear: AU14GearTribalLeader
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillCqc: 2
+        RMCSkillFireman: 1
+        RMCSkillEndurance: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-tribal-leader
+
+- type: job
+  parent: AU14JobTribalBase
+  id: AU14JobTribalSpear
+  name: au14-job-name-tribal-spear
+  description: au14-job-description-tribal-spear
+  startingGear: AU14GearTribalSpear
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillCqc: 1
+        RMCSkillFireman: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-tribal-spear
+
+- type: job
+  parent: AU14JobTribalBase
+  id: AU14JobTribalBowman
+  name: au14-job-name-tribal-bowman
+  description: au14-job-description-tribal-bowman
+  startingGear: AU14GearTribalBowman
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillFirearms: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-tribal-bowman
+
+- type: playTimeTracker
+  id: AU14JobTribal
+  isHumanoid: true
+
+# --- Mob variants --------------------------------------------------------
+
+- type: entity
+  parent: CMUMobTribal
+  id: AU14MobTribalLeader
+  suffix: CMU14, Leader
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tribal-leader
+    description: au14-job-description-tribal-leader
+    reregister: false
+    job: AU14JobTribalLeader
+    raffle:
+      settings: short
+    rules: au14-job-description-tribal-leader
+
+- type: entity
+  parent: CMUMobTribal
+  id: AU14MobTribalSpear
+  suffix: CMU14, Spear
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tribal-spear
+    description: au14-job-description-tribal-spear
+    reregister: false
+    job: AU14JobTribalSpear
+    raffle:
+      settings: short
+    rules: au14-job-description-tribal-spear
+
+- type: entity
+  parent: CMUMobTribal
+  id: AU14MobTribalBowman
+  suffix: CMU14, Bowman
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tribal-bowman
+    description: au14-job-description-tribal-bowman
+    reregister: false
+    job: AU14JobTribalBowman
+    raffle:
+      settings: short
+    rules: au14-job-description-tribal-bowman
 
 - type: entity
   save: false
@@ -104,3 +239,75 @@
 
 - type: Tag
   id: tribe
+
+# Tribal faction — hostile to colony, marines, xenos, abominations, etc.
+# Mirrors the threat lists used by CMUAPE / RMCXeno.
+- type: npcFaction
+  id: Tribe
+  hostile:
+  - UNMC
+  - NanoTrasen
+  - SPP
+  - GOVFOR
+  - OPFOR
+  - Halcyon
+  - WeYa
+  - Civilian
+  - CLF
+  - TSE
+  - AUColonist
+  - CMUAPE
+  - RMCXeno
+  - Abomination
+
+# --- Starting gear ------------------------------------------------------
+
+# Common bits — sandals + quiver of arrows. Variants slot a weapon on top.
+- type: startingGear
+  id: AU14GearTribalBase
+  abstract: true
+  equipment:
+    shoes: RMCShoesSandals
+    belt: ClothingBeltQuiver
+  storage:
+    belt:
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+    - ArrowImprovised
+
+- type: startingGear
+  id: AU14GearTribalLeader
+  parent: AU14GearTribalBase
+  equipment:
+    shoes: RMCShoesSandals
+    belt: ClothingBeltQuiver
+    back: TribalBow
+  inhand:
+  - TribalSpear
+
+- type: startingGear
+  id: AU14GearTribalSpear
+  parent: AU14GearTribalBase
+  equipment:
+    shoes: RMCShoesSandals
+    belt: ClothingBeltQuiver
+  inhand:
+  - TribalSpear
+
+- type: startingGear
+  id: AU14GearTribalBowman
+  parent: AU14GearTribalBase
+  equipment:
+    shoes: RMCShoesSandals
+    belt: ClothingBeltQuiver
+  inhand:
+  - TribalBow

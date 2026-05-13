@@ -39,9 +39,11 @@
     damage:
       types:
         Slash: 35
+  # Doubled sprint speed — spider is the chase caste, it should run people
+  # down at xeno-runner pace.
   - type: MovementSpeedModifier
     baseWalkSpeed: 3.2
-    baseSprintSpeed: 5.5
+    baseSprintSpeed: 11.0
   - type: Fixtures
     fixtures:
       fix1:

@@ -3,6 +3,7 @@ using Content.Shared._AU14.Abominations;
 using Content.Shared._RMC14.Synth;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared.DoAfter;
+using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Markings;
 using Content.Shared.Mobs.Systems;
@@ -31,6 +32,23 @@ public sealed class AbominationAssimilateSystem : EntitySystem
     {
         SubscribeLocalEvent<AbominationAssimilateComponent, AbominationAssimilateActionEvent>(OnAssimilateAction);
         SubscribeLocalEvent<AbominationAssimilateComponent, AbominationAssimilateDoAfterEvent>(OnAssimilateDoAfter);
+        // Defensive cleanup — entities are normally destroyed on restart, but
+        // if any AbominationMimicComponent leaks across the round boundary
+        // (e.g. an admin-restart that doesn't reload the map), this resets
+        // the pool so last round's faces don't bleed in.
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestartCleanup);
+    }
+
+    private void OnRoundRestartCleanup(RoundRestartCleanupEvent _)
+    {
+        var query = EntityQueryEnumerator<AbominationMimicComponent>();
+        while (query.MoveNext(out var uid, out var mimic))
+        {
+            if (mimic.AssimilatedPool.Count == 0)
+                continue;
+            mimic.AssimilatedPool.Clear();
+            Dirty(uid, mimic);
+        }
     }
 
     private void OnAssimilateAction(Entity<AbominationAssimilateComponent> mimic, ref AbominationAssimilateActionEvent args)
@@ -85,7 +103,7 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         var newAbomination = _polymorph.PolymorphEntity(target, polymorphId);
         if (newAbomination is { } newUid && isHumanoid)
         {
-            // Fresh mimics start with the full current pool so they can
+            // Fresh mimics inherit the full current pool so they can
             // immediately impersonate any prior victim, including themselves.
             var newMimicComp = EnsureComp<AbominationMimicComponent>(newUid);
             newMimicComp.AssimilatedPool = new List<AbominationAssimilationProfile>(GatherCurrentPool());
@@ -185,6 +203,12 @@ public sealed class AbominationAssimilateSystem : EntitySystem
         };
     }
 
+    /// <summary>
+    /// Push a profile into every living mimic's pool. The library is
+    /// teamwide on purpose — once one mimic sees a face, the whole flesh-pod
+    /// can wear it. Pool data lives on each mimic's component so it dies with
+    /// the entity (and the round); there is no static cache.
+    /// </summary>
     public void AddProfileToAllMimics(AbominationAssimilationProfile profile)
     {
         var query = EntityQueryEnumerator<AbominationMimicComponent>();
@@ -205,8 +229,6 @@ public sealed class AbominationAssimilateSystem : EntitySystem
 
     private List<AbominationAssimilationProfile> GatherCurrentPool()
     {
-        // First mimic with a non-empty pool acts as the source of truth.
-        // AddProfileToAllMimics keeps them in lockstep, so any one will do.
         var query = EntityQueryEnumerator<AbominationMimicComponent>();
         while (query.MoveNext(out _, out var mimic))
         {

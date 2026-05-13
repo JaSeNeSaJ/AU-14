@@ -39,3 +39,17 @@
     transferDamage: false
     revertOnCrit: false
     revertOnDeath: false
+
+# Infected death sometimes spawns a skitter instead of a mimic — see the
+# 50/50 roll in AbominationInfectionSystem.
+- type: polymorph
+  id: AbominationAssimilationToSkitter
+  configuration:
+    entity: AU14AbominationSkitter
+    forced: true
+    inventory: Drop
+    transferName: false
+    transferDamage: false
+    revertOnCrit: false
+    revertOnDeath: false
+

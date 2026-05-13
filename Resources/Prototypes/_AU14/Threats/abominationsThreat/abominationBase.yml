@@ -30,6 +30,7 @@
 # do not share any xeno systems (no plasma, no hive, no evolution).
 - type: entity
   abstract: true
+  save: false
   parent:
   - BaseMob
   - MobDamageable
@@ -40,6 +41,25 @@
   name: abomination
   components:
   - type: Abomination
+  # Weak to fire (Heat x2). Tendons + flesh forms catch and burn fast — fire
+  # is the intended counter to abomination area denial.
+  - type: Damageable
+    damageContainer: Biological
+    damageModifierSet: AbominationFireWeak
+  # Bloodstream is inherited from MobBloodstream so it can be examined as a
+  # mob, but we kill bleed entirely — abominations don't have circulating
+  # blood, they ARE the blood. No bleed-out, no bleed damage.
+  - type: Bloodstream
+    bloodMaxVolume: 0
+    maxBleedAmount: 0
+    bleedReductionAmount: 0
+    bloodRefreshAmount: 0
+    bloodlossDamage:
+      types:
+        Bloodloss: 0
+    bloodlossHealDamage:
+      types:
+        Bloodloss: 0
   - type: NoSlip
   - type: Climbing
   - type: ComplexInteraction
@@ -118,6 +138,22 @@
   - type: MovementSpeedModifier
     baseWalkSpeed: 3
     baseSprintSpeed: 4
+  # Fixture override on top of BaseMob — adds XenoProjectileImpassable to the
+  # collision layer so xeno-style projectiles (including abomination spit)
+  # actually register hits on abominations. Without this the projectile
+  # passes straight through MobLayer-only fixtures.
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeCircle
+          radius: 0.35
+        density: 50
+        mask:
+        - MobMask
+        layer:
+        - MobLayer
+        - XenoProjectileImpassable
   - type: NameIdentifier
     group: Abomination
 
@@ -125,3 +161,9 @@
   id: Abomination
   maxValue: 999
   prefix: Abomination
+
+# Heat x2 = burns down twice as fast. Other damage types pass through normal.
+- type: damageModifierSet
+  id: AbominationFireWeak
+  coefficients:
+    Heat: 2.0

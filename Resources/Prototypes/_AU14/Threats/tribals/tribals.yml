@@ -16,9 +16,15 @@
 - type: partySpawn
   id: tribalsParty
   leadersToSpawn:
-    CMUMobTribal: 8
+    AU14MobTribalLeader: 1
+  gruntsToSpawn:
+    AU14MobTribalSpear: 4
+    AU14MobTribalBowman: 3
   scaling:
-    CMUMobTribal:
+    AU14MobTribalSpear:
+      scale: 0.1
+      whenToBeginScaling: 45
+    AU14MobTribalBowman:
       scale: 0.1
       whenToBeginScaling: 45
   spawnTogether: false

@@ -2,6 +2,7 @@ using Content.Server.Chat.Systems;
 using Content.Shared._AU14.Abominations;
 using Content.Shared.Damage;
 using Content.Shared.Interaction.Events;
+using Content.Shared.Mobs.Systems;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics.Components;
@@ -23,6 +24,8 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly ChatSystem _chat = default!;
     [Dependency] private readonly DamageableSystem _damageable = default!;
+    [Dependency] private readonly AbominationInfectionSystem _infection = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -52,6 +55,14 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
             {
                 kudzu.NextHealAt = now + kudzu.HealInterval;
                 HealContacts((uid, kudzu, physics));
+            }
+
+            // Anyone knocked out / critted while on the tendons gets seeded
+            // with the infection. Drag-and-dump play is intended.
+            if (kudzu.NextInfectAt <= now)
+            {
+                kudzu.NextInfectAt = now + kudzu.InfectInterval;
+                InfectIncapacitatedContacts((uid, kudzu, physics));
             }
 
             if (kudzu.NextEmoteAt <= now)
@@ -89,6 +100,17 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
                 continue;
 
             _damageable.TryChangeDamage(contact, ent.Comp1.Heal, true);
+        }
+    }
+
+    private void InfectIncapacitatedContacts(Entity<AbominationFleshKudzuComponent, PhysicsComponent> ent)
+    {
+        foreach (var contact in _physics.GetContactingEntities(ent.Owner, ent.Comp2))
+        {
+            if (!_mobState.IsIncapacitated(contact))
+                continue;
+
+            _infection.TryInfect(contact);
         }
     }
 }

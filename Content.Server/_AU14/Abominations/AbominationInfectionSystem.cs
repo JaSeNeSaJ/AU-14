@@ -12,6 +12,7 @@ using Content.Shared.EntityEffects;
 using Content.Shared.Humanoid;
 using Content.Shared.Jittering;
 using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Polymorph;
 using Content.Shared.StatusEffect;
 using Content.Shared.Weapons.Melee.Events;
@@ -32,6 +33,7 @@ public sealed class AbominationInfectionSystem : EntitySystem
 {
     public static readonly EntProtoId FleshKudzuSource = "AU14AbominationFleshKudzuSource";
     public static readonly ProtoId<PolymorphPrototype> TurnIntoMimic = "AbominationAssimilationToMimic";
+    public static readonly ProtoId<PolymorphPrototype> TurnIntoSkitter = "AbominationAssimilationToSkitter";
     public static readonly ProtoId<PolymorphPrototype> TurnIntoSpider = "AbominationAssimilationToSpider";
     public static readonly ProtoId<EmotePrototype> CoughEmote = "Cough";
     public static readonly ProtoId<EmotePrototype> ScreamEmote = "Scream";
@@ -41,6 +43,7 @@ public sealed class AbominationInfectionSystem : EntitySystem
     [Dependency] private readonly DamageableSystem _damageable = default!;
     [Dependency] private readonly SharedDrunkSystem _drunk = default!;
     [Dependency] private readonly SharedJitteringSystem _jitter = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly StatusEffectsSystem _statusEffects = default!;
@@ -86,8 +89,19 @@ public sealed class AbominationInfectionSystem : EntitySystem
             return false;
         if (HasComp<SynthComponent>(target))
             return false;
+        // Dead targets can't be infected — the corpse has nothing left to host.
+        if (_mobState.IsDead(target))
+            return false;
         // Humanoids OR tagged-infectable animals are valid.
         return HasComp<HumanoidAppearanceComponent>(target) || HasComp<AbominationInfectableComponent>(target);
+    }
+
+    public bool TryInfect(EntityUid target)
+    {
+        if (!IsValidInfectionTarget(target))
+            return false;
+        ApplyInfection(target);
+        return true;
     }
 
     private void ApplyInfection(EntityUid target)
@@ -107,11 +121,12 @@ public sealed class AbominationInfectionSystem : EntitySystem
     }
 
     /// <summary>
-    /// Once the victim has shown any symptoms, dying turns them into a mimic
-    /// regardless of cause — the threat reclaims the body. Flesh kudzu is
-    /// seeded at the corpse coords before polymorph swaps the entity, and
-    /// the victim's identity profile is pushed into the shared mimic pool so
-    /// other mimics can wear their face.
+    /// Once the victim has shown any symptoms, dying turns them into an
+    /// abomination regardless of cause — the threat reclaims the body.
+    /// Flesh kudzu is seeded at the corpse coords before polymorph swaps the
+    /// entity, and the victim's identity profile is pushed into the shared
+    /// mimic pool so other mimics can wear their face. Humanoids 50/50 roll
+    /// between mimic and skitter; animals always turn into a spider.
     /// </summary>
     private void OnInfectedMobStateChanged(Entity<AbominationInfectionComponent> ent, ref MobStateChangedEvent args)
     {
@@ -133,10 +148,18 @@ public sealed class AbominationInfectionSystem : EntitySystem
         var profile = _assimilate.BuildProfile(ent.Owner);
         _assimilate.AddProfileToAllMimics(profile);
 
-        // Humanoids turn into a mimic; animals turn into a spider abomination.
-        var polymorphId = HasComp<HumanoidAppearanceComponent>(ent.Owner)
-            ? TurnIntoMimic
-            : TurnIntoSpider;
+        ProtoId<PolymorphPrototype> polymorphId;
+        if (HasComp<HumanoidAppearanceComponent>(ent.Owner))
+        {
+            // 50/50 — sometimes the host body collapses into a builder caste
+            // (skitter) instead of yet another mimic. Keeps the threat from
+            // being a pure mimic-snowball.
+            polymorphId = _random.Prob(0.5f) ? TurnIntoMimic : TurnIntoSkitter;
+        }
+        else
+        {
+            polymorphId = TurnIntoSpider;
+        }
         _polymorph.PolymorphEntity(ent.Owner, polymorphId);
     }
 
