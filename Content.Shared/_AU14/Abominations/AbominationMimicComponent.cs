@@ -14,4 +14,11 @@ public sealed partial class AbominationMimicComponent : Component
 
     [DataField, AutoNetworkedField]
     public TimeSpan TransformDuration = TimeSpan.FromSeconds(360);
+
+    /// <summary>
+    /// Probability that a successful melee hit on a humanoid infects them with
+    /// AbominationInfectionComponent. 0 = never, 1 = every hit.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public float InfectionChance = 0.25f;
 }
