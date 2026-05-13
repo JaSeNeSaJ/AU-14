@@ -62,9 +62,17 @@ public sealed class AbominationMimicSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<AbominationMimicComponent, AbominationMimicTransformActionEvent>(OnTransformAction);
-        SubscribeLocalEvent<AbominationMimicComponent, AbominationMimicSelectFormMessage>(OnSelectForm);
         SubscribeLocalEvent<AbominationMimicTransformedComponent, AbominationMimicRevertActionEvent>(OnRevertAction);
         SubscribeLocalEvent<AbominationMimicTransformedComponent, MobStateChangedEvent>(OnDisguisedMobStateChanged);
+
+        // BUI message — modern Subs.BuiEvents pattern filters by UI key so the
+        // handler only fires for messages addressed to AbominationMimicUiKey.Key.
+        // The previous plain SubscribeLocalEvent<TComp, BoundUserInterfaceMessage>
+        // never dispatched on this codebase's UI plumbing.
+        Subs.BuiEvents<AbominationMimicComponent>(AbominationMimicUiKey.Key, subs =>
+        {
+            subs.Event<AbominationMimicSelectFormMessage>(OnSelectForm);
+        });
     }
 
     private void OnTransformAction(Entity<AbominationMimicComponent> mimic, ref AbominationMimicTransformActionEvent args)

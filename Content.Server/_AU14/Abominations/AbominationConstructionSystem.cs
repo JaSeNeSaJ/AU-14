@@ -15,8 +15,13 @@ public sealed class AbominationConstructionSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<AbominationConstructionComponent, AbominationConstructionChooseActionEvent>(OnChooseAction);
-        SubscribeLocalEvent<AbominationConstructionComponent, AbominationConstructionChooseMessage>(OnChooseMessage);
         SubscribeLocalEvent<AbominationConstructionComponent, AbominationConstructionSecreteActionEvent>(OnSecreteAction);
+
+        // Modern BUI subscription pattern — auto-filters by UI key.
+        Subs.BuiEvents<AbominationConstructionComponent>(AbominationConstructionUiKey.Key, subs =>
+        {
+            subs.Event<AbominationConstructionChooseMessage>(OnChooseMessage);
+        });
     }
 
     private void OnChooseAction(Entity<AbominationConstructionComponent> ent, ref AbominationConstructionChooseActionEvent args)
