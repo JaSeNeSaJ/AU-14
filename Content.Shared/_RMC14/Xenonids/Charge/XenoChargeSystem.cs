@@ -631,29 +631,6 @@ public sealed partial class XenoChargeSystem : EntitySystem
 
     private void OnXenoToggleChargingAction(Entity<XenoToggleChargingComponent> ent, ref XenoToggleChargingActionEvent args)
     {
-        if (_timing.ApplyingState)
-            return;
-
-        // Cursor steering prototype - redirect to cursor system if component present
-        if (HasComp<XenoCursorSteeringComponent>(ent))
-        {
-            if (RemComp<ActiveXenoCursorSteeringComponent>(ent))
-            {
-                if (TryComp(ent, out XenoCursorSteeringComponent? steering))
-                {
-                    steering.Stage = 0;
-                    steering.DistanceTraveled = 0f;
-                    Dirty(ent, steering);
-                }
-                foreach (var action in _rmcActions.GetActionsWithEvent<XenoToggleChargingActionEvent>(ent))
-                    _actions.SetToggled((action, action), false);
-                return;
-            }
-
-            AddComp<ActiveXenoCursorSteeringComponent>(ent);
-            return;
-        }
-
         // Original behavior preserved below
         if (RemComp<ActiveXenoToggleChargingComponent>(ent))
             return;

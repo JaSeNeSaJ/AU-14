@@ -18,13 +18,13 @@ public sealed class XenoCursorSteeringOverlay : Overlay
 
     private readonly IPlayerManager _player;
     private readonly SharedTransformSystem _transform;
-    private readonly EntityQuery<XenoCursorSteeringComponent> _steeringQuery;
+    private readonly EntityQuery<XenoChargerComponent> _steeringQuery;
 
     public XenoCursorSteeringOverlay(IEntityManager ents)
     {
         _player = IoCManager.Resolve<IPlayerManager>();
         _transform = ents.System<SharedTransformSystem>();
-        _steeringQuery = ents.GetEntityQuery<XenoCursorSteeringComponent>();
+        _steeringQuery = ents.GetEntityQuery<XenoChargerComponent>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -33,6 +33,9 @@ public sealed class XenoCursorSteeringOverlay : Overlay
             return;
 
         if (!_steeringQuery.TryComp(player, out var steering))
+            return;
+
+        if (steering.MoveState != XenoChargerMoveState.Charging)
             return;
 
         var origin = _transform.GetMapCoordinates(player);

@@ -22,18 +22,18 @@ public sealed class XenoCursorSteeringClientSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<XenoCursorSteeringComponent, LocalPlayerAttachedEvent>(OnAttached);
-        SubscribeLocalEvent<XenoCursorSteeringComponent, LocalPlayerDetachedEvent>(OnDetached);
+        SubscribeLocalEvent<XenoChargerComponent, LocalPlayerAttachedEvent>(OnAttached);
+        SubscribeLocalEvent<XenoChargerComponent, LocalPlayerDetachedEvent>(OnDetached);
     }
 
-    private void OnAttached(Entity<XenoCursorSteeringComponent> ent, ref LocalPlayerAttachedEvent args)
+    private void OnAttached(Entity<XenoChargerComponent> ent, ref LocalPlayerAttachedEvent args)
     {
         _lastSentAngle = default;
         _overlay = new XenoCursorSteeringOverlay(EntityManager);
         _overlayManager.AddOverlay(_overlay);
     }
 
-    private void OnDetached(Entity<XenoCursorSteeringComponent> ent, ref LocalPlayerDetachedEvent args)
+    private void OnDetached(Entity<XenoChargerComponent> ent, ref LocalPlayerDetachedEvent args)
     {
         _lastSentAngle = default;
         if (_overlay != null)
@@ -48,7 +48,10 @@ public sealed class XenoCursorSteeringClientSystem : EntitySystem
         if (_player.LocalEntity is not { } controlled)
             return;
 
-        if (!TryComp(controlled, out XenoCursorSteeringComponent? steering))
+        if (!TryComp(controlled, out XenoChargerComponent? comp))
+            return;
+
+        if (comp.MoveState != XenoChargerMoveState.Charging)
             return;
 
         var screenPos = _input.MouseScreenPosition;

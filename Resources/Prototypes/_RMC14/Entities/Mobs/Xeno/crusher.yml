@@ -183,7 +183,6 @@
     - ActionXenoTailStab
     - ActionXenoToggleCharging
     - ActionXenoStomp
-    - ActionXenoChargerLunge
     - ActionXenoRam
     - ActionXenoDevolve
   - type: CMArmor
@@ -221,9 +220,7 @@
     damage:
       types:
         Blunt: 75
-  - type: XenoToggleCharging
-  - type: XenoCursorSteering
-  - type: XenoChargerLunge
+  - type: XenoCharger
   - type: XenoHidden
   - type: RMCActionOrder
     id: RMCXenoCrusherCharger

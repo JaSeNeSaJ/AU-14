@@ -5,7 +5,7 @@ using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 namespace Content.Shared._RMC14.Xenonids.Charge;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
-[Access(typeof(XenoChargeSystem), typeof(XenoCursorSteeringSystem))]
+[Access(typeof(XenoChargeSystem))]
 public sealed partial class XenoToggleChargingRecentlyHitComponent : Component
 {
     [DataField, AutoNetworkedField] public TimeSpan Cooldown = TimeSpan.FromSeconds(1);
