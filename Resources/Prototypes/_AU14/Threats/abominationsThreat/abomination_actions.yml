@@ -90,9 +90,23 @@
     event: !type:Content.Shared._AU14.Abominations.AbominationPlantKudzuActionEvent
 
 - type: entity
-  id: ActionAbominationSecreteWall
-  name: Secrete Flesh Wall
-  description: Vomit a wall of fused sinew on the tile beneath you.
+  id: ActionAbominationChooseStructure
+  name: Choose Flesh Structure
+  description: Pick which structure you'll secrete with the Secrete Flesh action.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: place_resin
+    useDelay: 1
+  - type: InstantAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationConstructionChooseActionEvent
+
+- type: entity
+  id: ActionAbominationSecreteStructure
+  name: Secrete Flesh
+  description: Secrete the chosen flesh structure on the targeted tile.
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -100,8 +114,11 @@
       sprite: _RMC14/Actions/xeno_actions.rsi
       state: secrete_resin
     useDelay: 10
-  - type: InstantAction
-    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationSecreteWallActionEvent
+  - type: TargetAction
+    range: 1
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationConstructionSecreteActionEvent
 
 # --- Mimic ---
 

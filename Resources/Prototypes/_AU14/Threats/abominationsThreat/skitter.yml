@@ -24,8 +24,16 @@
     actions:
       Alive:
       - ActionAbominationPlantKudzu
-      - ActionAbominationSecreteWall
-  - type: AbominationSecreteWall
+      - ActionAbominationChooseStructure
+      - ActionAbominationSecreteStructure
+  - type: AbominationConstruction
+    canBuild:
+    - AU14AbominationFleshWall
+    - AU14AbominationFleshNest
+  - type: UserInterface
+    interfaces:
+      enum.AbominationConstructionUiKey.Key:
+        type: AbominationConstructionBui
   - type: MeleeWeapon
     damage:
       groups:
