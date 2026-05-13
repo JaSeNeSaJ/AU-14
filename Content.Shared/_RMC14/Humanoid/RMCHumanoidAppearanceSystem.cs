@@ -18,6 +18,7 @@ public sealed partial class RMCHumanoidAppearanceSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private EntityWhitelistSystem _entityWhitelist = default!;
+    [Dependency] private GrammarSystem _grammarSystem = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private ISharedPlayerManager _player = default!;
     [Dependency] private SharedRMCStationSpawningSystem _rmcStationSpawning = default!;
