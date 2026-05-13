@@ -64,7 +64,7 @@
     range: 2
     damage:
       types:
-        Slash: 50
+        Slash: 90
   - type: MovementSpeedModifier
     baseWalkSpeed: 1.8
     baseSprintSpeed: 2.8

@@ -25,30 +25,47 @@ public sealed partial class AbominationFleshKudzuComponent : Component
     [DataField, AutoNetworkedField]
     public DamageSpecifier Heal = new();
 
-    /// <summary>Minimum delay between vocal emotes on this tile.</summary>
+    /// <summary>Minimum delay between vocal emotes on this tile (3x rarer than the original tuning).</summary>
     [DataField, AutoNetworkedField]
-    public TimeSpan EmoteIntervalMin = TimeSpan.FromSeconds(20);
+    public TimeSpan EmoteIntervalMin = TimeSpan.FromSeconds(60);
 
     [DataField, AutoNetworkedField]
-    public TimeSpan EmoteIntervalMax = TimeSpan.FromSeconds(60);
+    public TimeSpan EmoteIntervalMax = TimeSpan.FromSeconds(180);
+
+    /// <summary>Probability that an emote tick fires the Crying emote specifically.
+    /// Below this roll a Crying emote + cry sound; above, picks from <see cref="Emotes"/>.</summary>
+    [DataField, AutoNetworkedField]
+    public float CryChance = 0.7f;
+
+    /// <summary>Audio volume offset (dB) applied to the emote sound. Negative is quieter.</summary>
+    [DataField, AutoNetworkedField]
+    public float EmoteVolume = -8f;
 
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextEmoteAt;
 
     /// <summary>
-    /// Emotes the kudzu can vent — picked from at random. Defaults are the
-    /// existing speech emotes so the kudzu sobs / gasps audibly.
+    /// Non-cry emotes the kudzu can vent — picked from at random when the cry
+    /// roll fails. Defaults are existing speech emotes.
     /// </summary>
     [DataField, AutoNetworkedField]
     public List<ProtoId<EmotePrototype>> Emotes = new()
     {
-        "Crying",
         "Gasp",
         "Scream",
     };
 
+    [DataField, AutoNetworkedField]
+    public ProtoId<EmotePrototype> CryEmote = "Crying";
+
     /// <summary>
-    /// Sound collections played alongside the emote (the emote system itself
+    /// Cry sound collection — played when the Crying emote fires.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier CrySound = new SoundCollectionSpecifier("HumanCry");
+
+    /// <summary>
+    /// Sound collections played alongside non-cry emotes (the emote system itself
     /// doesn't play sound for non-humanoid emitters). Pulled at random.
     /// </summary>
     [DataField, AutoNetworkedField]

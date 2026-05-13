@@ -51,6 +51,7 @@ public sealed class AbominationMimicSystem : EntitySystem
     [Dependency] private readonly SharedJitteringSystem _jitter = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly MetaDataSystem _metaData = default!;
+    [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly SkillsSystem _skills = default!;
     [Dependency] private readonly SharedHumanoidAppearanceSystem _humanoid = default!;
     [Dependency] private readonly PolymorphSystem _polymorph = default!;
@@ -114,12 +115,39 @@ public sealed class AbominationMimicSystem : EntitySystem
     }
 
     /// <summary>
-    /// Polymorph the mimic into a real MobHuman, patch the disguise on top,
-    /// and grant the disguised entity the Revert action.
+    /// Polymorph the mimic into the right entity for this profile:
+    ///  - Humanoid profile -> MobHuman (via the AbominationMimicDisguise prototype).
+    ///  - Animal profile -> the source entity prototype itself (rat, monkey, …),
+    ///    using a runtime PolymorphConfiguration so we don't need one prototype
+    ///    per animal kind.
+    /// Then patch the disguise on top and grant the Revert action.
     /// </summary>
     public EntityUid? StartDisguise(Entity<AbominationMimicComponent> mimic, AbominationAssimilationProfile profile, TimeSpan duration)
     {
-        var disguised = _polymorph.PolymorphEntity(mimic.Owner, DisguisePolymorph);
+        EntityUid? disguised;
+        // Animal profiles carry a SourceProtoId — polymorph straight into that
+        // prototype so the mimic actually BECOMES that animal, instead of
+        // becoming a human named "rat".
+        if (profile.SourceProtoId is { } animalProto &&
+            _proto.HasIndex<EntityPrototype>(animalProto))
+        {
+            var config = new PolymorphConfiguration
+            {
+                Entity = animalProto,
+                Forced = true,
+                Inventory = PolymorphInventoryChange.Drop,
+                TransferName = false,
+                TransferDamage = true,
+                RevertOnCrit = false,
+                RevertOnDeath = false,
+            };
+            disguised = _polymorph.PolymorphEntity(mimic.Owner, config);
+        }
+        else
+        {
+            disguised = _polymorph.PolymorphEntity(mimic.Owner, DisguisePolymorph);
+        }
+
         if (disguised is not { } disguisedUid)
             return null;
 

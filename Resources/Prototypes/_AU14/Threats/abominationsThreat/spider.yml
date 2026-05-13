@@ -38,7 +38,7 @@
   - type: MeleeWeapon
     damage:
       types:
-        Slash: 18
+        Slash: 35
   - type: MovementSpeedModifier
     baseWalkSpeed: 3.2
     baseSprintSpeed: 5.5

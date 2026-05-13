@@ -2,6 +2,7 @@ using Content.Server.Chat.Systems;
 using Content.Shared._AU14.Abominations;
 using Content.Shared.Damage;
 using Content.Shared.Interaction.Events;
+using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
@@ -59,19 +60,23 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
                     kudzu.EmoteIntervalMin.TotalSeconds,
                     kudzu.EmoteIntervalMax.TotalSeconds));
 
-                if (kudzu.Emotes.Count > 0)
-                {
-                    // forceEmote + ignoreActionBlocker so the kudzu (which has no
-                    // Speech/Vocal) can still emit the chat + sound; without
-                    // these the emote silently fails AllowedToUseEmote.
-                    _chat.TryEmoteWithChat(uid, _random.Pick(kudzu.Emotes), ignoreActionBlocker: true, forceEmote: true);
-                }
+                var audioParams = AudioParams.Default.WithVolume(kudzu.EmoteVolume);
 
-                // The emote system won't pick a sound for non-humanoid emitters,
-                // so play one of the configured human-scream/cry collections
-                // directly. This is what makes the tendons actually audible.
-                if (kudzu.EmoteSounds.Count > 0)
-                    _audio.PlayPvs(_random.Pick(kudzu.EmoteSounds), uid);
+                // Most of the time the kudzu cries; the rest of the time it
+                // picks a non-cry emote (gasp, scream, etc.). forceEmote +
+                // ignoreActionBlocker so the kudzu (no Speech/Vocal) can still
+                // emit the chat + sound.
+                if (_random.Prob(kudzu.CryChance))
+                {
+                    _chat.TryEmoteWithChat(uid, kudzu.CryEmote, ignoreActionBlocker: true, forceEmote: true);
+                    _audio.PlayPvs(kudzu.CrySound, uid, audioParams);
+                }
+                else if (kudzu.Emotes.Count > 0)
+                {
+                    _chat.TryEmoteWithChat(uid, _random.Pick(kudzu.Emotes), ignoreActionBlocker: true, forceEmote: true);
+                    if (kudzu.EmoteSounds.Count > 0)
+                        _audio.PlayPvs(_random.Pick(kudzu.EmoteSounds), uid, audioParams);
+                }
             }
         }
     }

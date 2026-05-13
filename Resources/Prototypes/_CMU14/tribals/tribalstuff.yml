@@ -6,6 +6,17 @@
   suffix: CMU14
   components:
   - type: Tribal
+  # RandomHumanoidAppearance rolls a fresh humanoid profile on map-init; we
+  # tell it not to set the entity name because RandomMetadata is responsible
+  # for the Na'vi-flavoured first-name + clan name combo. Skin is applied
+  # after the roll by TribalAppearanceSystem.
+  - type: RandomHumanoidAppearance
+    randomizeName: false
+  - type: RandomMetadata
+    nameSegments:
+    - NamesTribalFirst
+    - NamesTribalClan
+    nameFormat: name-format-tribal
 
 - type: entity
   save: false

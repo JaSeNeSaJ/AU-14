@@ -1,12 +1,14 @@
 using System.Linq;
 using Content.Shared._AU14.Abominations.Abilities;
 using Content.Shared.Popups;
+using Robust.Shared.Timing;
 
 namespace Content.Server._AU14.Abominations;
 
 public sealed class AbominationConstructionSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly SharedUserInterfaceSystem _ui = default!;
 
@@ -49,10 +51,26 @@ public sealed class AbominationConstructionSystem : EntitySystem
             return;
         }
 
+        // Flesh nests have their own 40s cooldown on top of the action's
+        // useDelay. Other structures (walls, etc.) are gated only by the action.
+        if (choice == ent.Comp.NestProto &&
+            ent.Comp.NextNestAt is { } nestReady &&
+            _timing.CurTime < nestReady)
+        {
+            _popup.PopupClient(Loc.GetString("abomination-secrete-nest-cooldown"), ent, ent);
+            return;
+        }
+
         args.Handled = true;
 
         var target = _transform.ToMapCoordinates(args.Target);
         Spawn(choice, target);
+
+        if (choice == ent.Comp.NestProto)
+        {
+            ent.Comp.NextNestAt = _timing.CurTime + ent.Comp.NestCooldown;
+            Dirty(ent);
+        }
     }
 
     private void PushBuiState(Entity<AbominationConstructionComponent> ent)

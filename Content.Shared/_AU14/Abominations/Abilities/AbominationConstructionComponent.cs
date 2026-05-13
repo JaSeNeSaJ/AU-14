@@ -2,6 +2,7 @@ using Content.Shared.Actions;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared._AU14.Abominations.Abilities;
 
@@ -11,7 +12,7 @@ namespace Content.Shared._AU14.Abominations.Abilities;
 /// choice. The choose action opens a BUI; the secrete action spawns the
 /// stored choice at the target tile.
 /// </summary>
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class AbominationConstructionComponent : Component
 {
     /// <summary>Structures the builder can secrete.</summary>
@@ -21,6 +22,20 @@ public sealed partial class AbominationConstructionComponent : Component
     /// <summary>Currently-selected structure to place. null = nothing chosen yet.</summary>
     [DataField, AutoNetworkedField]
     public EntProtoId? BuildChoice;
+
+    /// <summary>
+    /// Specific prototype that gets a per-placement cooldown — defaults to the
+    /// flesh nest spawner. Other structures are gated only by the action's
+    /// useDelay.
+    /// </summary>
+    [DataField, AutoNetworkedField]
+    public EntProtoId NestProto = "AU14AbominationFleshNest";
+
+    [DataField, AutoNetworkedField]
+    public TimeSpan NestCooldown = TimeSpan.FromSeconds(40);
+
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
+    public TimeSpan? NextNestAt;
 }
 
 public sealed partial class AbominationConstructionChooseActionEvent : InstantActionEvent;
