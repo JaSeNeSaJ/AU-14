@@ -25,8 +25,8 @@
       Alive:
       - ActionAbominationGruntSlam
   - type: AbominationLeap
-    range: 5
-    strength: 22
+    range: 9
+    strength: 28
     flightDuration: 1.0
     knockdownTime: 3
     damage:

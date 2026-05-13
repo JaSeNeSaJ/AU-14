@@ -82,8 +82,9 @@
   - type: Speech
     speechVerb: Abomination
     speechSounds: Bass
-  - type: ReplacementAccent
-    accent: genericAggressive
+  # No ReplacementAccent — abominations speak cleanly on their radio
+  # (replacement accents fire on AccentGetEvent, which runs through the
+  # radio chat path; an accent here would garble their hivemind comms).
   # Abomination radio channel — see abominationRoles.yml.
   - type: IntrinsicRadioReceiver
   - type: IntrinsicRadioTransmitter
