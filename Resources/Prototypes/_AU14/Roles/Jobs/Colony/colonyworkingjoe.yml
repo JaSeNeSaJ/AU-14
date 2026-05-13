@@ -12,7 +12,8 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
-  icon: "AU14JobIconColonySynth"
+  startingGear: AU14GearColonyWorkingJoe
+  icon: "AU14JobIconColonyWorkingJoe"
   spawnMenuRoleName: Working Joe (Colony)
   supervisors: au14-job-supervisors-workingjoe-colony
   accessGroups:
