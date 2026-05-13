@@ -6,7 +6,7 @@ namespace Content.Server._AU14.Abominations;
 
 public sealed class AbominationKudzuSystem : EntitySystem
 {
-    public static readonly EntProtoId KudzuSource = "CMUXenoKudzuSource";
+    public static readonly EntProtoId KudzuSource = "AU14AbominationFleshKudzuSource";
 
     public override void Initialize()
     {
