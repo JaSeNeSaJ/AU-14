@@ -51,10 +51,27 @@
       state: pounce
     useDelay: 8
   - type: TargetAction
-    range: 6
+    range: 9
     checkCanAccess: false
   - type: WorldTargetAction
     event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationLeapActionEvent
+
+- type: entity
+  id: ActionAbominationGruntCharge
+  name: Charge
+  description: Wind up and barrel forward, smashing through anything in your path.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: ready_charge
+    useDelay: 18
+  - type: TargetAction
+    range: 14
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._AU14.Abominations.Abilities.AbominationChargeActionEvent
 
 # --- Skitter ---
 

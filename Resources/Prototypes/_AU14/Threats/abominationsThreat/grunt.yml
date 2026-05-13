@@ -24,6 +24,7 @@
     actions:
       Alive:
       - ActionAbominationGruntSlam
+      - ActionAbominationGruntCharge
   - type: AbominationLeap
     range: 9
     strength: 28
@@ -32,6 +33,19 @@
     damage:
       types:
         Blunt: 35
+  - type: AbominationCharge
+    range: 14
+    strength: 40
+    flightDuration: 1.4
+    knockdownTime: 4
+    mobDamage:
+      types:
+        Blunt: 60
+        Structural: 50
+    structureDamage:
+      types:
+        Blunt: 250
+        Structural: 750
   - type: MeleeWeapon
     soundHit:
       path: /Audio/Weapons/punch1.ogg
