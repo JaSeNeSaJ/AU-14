@@ -40,26 +40,24 @@
     baseSprintSpeed: 7.5
 
 # --- Job + role prototypes -----------------------------------------------
+# Three tribal jobs, each parented directly to CMJobBase like the cultist
+# and WYHT roles. No abstract intermediary — every field is inline so the
+# standard GhostRoleApplySpecial pipe finds everything it needs.
 
 - type: job
-  abstract: true
   parent: CMJobBase
-  id: AU14JobTribalBase
+  id: AU14JobTribalLeader
+  name: au14-job-name-tribal-leader
+  description: au14-job-description-tribal-leader
   setPreference: false
   playTimeTracker: AU14JobTribal
+  startingGear: AU14GearTribalLeader
   icon: "CMJobIconEmpty"
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-tribal
   roleWeight: 0.25
   hidden: true
-
-- type: job
-  parent: AU14JobTribalBase
-  id: AU14JobTribalLeader
-  name: au14-job-name-tribal-leader
-  description: au14-job-description-tribal-leader
-  startingGear: AU14GearTribalLeader
   special:
   - !type:AddComponentSpecial
     components:
@@ -72,11 +70,19 @@
       prefix: au14-job-prefix-tribal-leader
 
 - type: job
-  parent: AU14JobTribalBase
+  parent: CMJobBase
   id: AU14JobTribalSpear
   name: au14-job-name-tribal-spear
   description: au14-job-description-tribal-spear
+  setPreference: false
+  playTimeTracker: AU14JobTribal
   startingGear: AU14GearTribalSpear
+  icon: "CMJobIconEmpty"
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-tribal
+  roleWeight: 0.25
+  hidden: true
   special:
   - !type:AddComponentSpecial
     components:
@@ -88,11 +94,19 @@
       prefix: au14-job-prefix-tribal-spear
 
 - type: job
-  parent: AU14JobTribalBase
+  parent: CMJobBase
   id: AU14JobTribalBowman
   name: au14-job-name-tribal-bowman
   description: au14-job-description-tribal-bowman
+  setPreference: false
+  playTimeTracker: AU14JobTribal
   startingGear: AU14GearTribalBowman
+  icon: "CMJobIconEmpty"
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-tribal
+  roleWeight: 0.25
+  hidden: true
   special:
   - !type:AddComponentSpecial
     components:
@@ -300,16 +314,20 @@
   - Abomination
 
 # --- Starting gear ------------------------------------------------------
+# Inline per-variant — no abstract parent, matches the cultist/WYHT
+# starting-gear pattern. Every tribal slots a brown jumpsuit (their
+# rough leather wrap), sandals, leather satchel, and a quiver of 12
+# tribal arrows; the weapon in-hand is the only per-variant difference.
 
-# Common bits — sandals, leather satchel for stowage, quiver of tribal
-# arrows. Variants slot a weapon on top.
 - type: startingGear
-  id: AU14GearTribalBase
-  abstract: true
+  id: AU14GearTribalLeader
   equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
     shoes: RMCShoesSandals
     back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
+  inhand:
+  - TribalSpear
   storage:
     belt:
     - TribalArrow
@@ -326,31 +344,49 @@
     - TribalArrow
 
 - type: startingGear
-  id: AU14GearTribalLeader
-  parent: AU14GearTribalBase
-  equipment:
-    shoes: RMCShoesSandals
-    back: ClothingBackpackSatchelLeather
-    belt: ClothingBeltQuiver
-  inhand:
-  - TribalSpear
-
-- type: startingGear
   id: AU14GearTribalSpear
-  parent: AU14GearTribalBase
   equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
     shoes: RMCShoesSandals
     back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
   inhand:
   - TribalSpear
+  storage:
+    belt:
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
 
 - type: startingGear
   id: AU14GearTribalBowman
-  parent: AU14GearTribalBase
   equipment:
+    jumpsuit: ClothingUniformJumpsuitColorBrown
     shoes: RMCShoesSandals
     back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
   inhand:
   - TribalBow
+  storage:
+    belt:
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
