@@ -324,11 +324,13 @@
         startingItem: null
       primary:
         startingItem: VehicleSPPAPCTurret
+        disableEject: true
         whitelist:
           components:
           - HardpointItem
       wheel-1:
         startingItem: VehicleSPPAPCWheel
+        disableEject: true
         whitelist:
           components:
           - VehicleWheelItem
