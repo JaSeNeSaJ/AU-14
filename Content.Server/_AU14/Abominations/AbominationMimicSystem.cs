@@ -27,7 +27,7 @@ namespace Content.Server._AU14.Abominations;
 ///
 /// Flow:
 ///  1. Transform action -> picker BUI -> StartDisguise polymorphs into a real
-///     MobHuman, patches name/factions/IFF/skills/appearance, and grants the
+///     CMMobHuman, patches name/factions/IFF/skills/appearance, and grants the
 ///     disguised entity an explicit Revert button.
 ///  2. Disguise lasts <see cref="AbominationMimicComponent.TransformDuration"/>
 ///     (default 4.5min). Expiry, crit/death, and pressing the Revert button
@@ -135,7 +135,7 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     /// <summary>
     /// Polymorph the mimic into the right entity for this profile:
-    ///  - Humanoid profile -> MobHuman (via the AbominationMimicDisguise prototype).
+    ///  - Humanoid profile -> CMMobHuman (via the AbominationMimicDisguise prototype).
     ///  - Animal profile -> the source entity prototype itself (rat, monkey, …),
     ///    using a runtime PolymorphConfiguration so we don't need one prototype
     ///    per animal kind.

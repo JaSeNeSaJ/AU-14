@@ -133,7 +133,7 @@
     # severance scales with Brute (Slash) damage in CMUBodyPartHealthSystem.
     damage:
       types:
-        Slash: 30
+        Slash: 48
   # Heavy footsteps for every caste (skitter/grunt/mimic/spider). Reuses the
   # xeno large-footstep collection.
   - type: FootstepModifier
