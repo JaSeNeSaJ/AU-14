@@ -17,7 +17,8 @@ namespace Content.Server._AU14.Abominations;
 /// occasional sob/cry/scream emotes. Damage tick for non-abominations is
 /// handled by upstream DamageContacts on the kudzu prototype. Abomination
 /// melee attacks on tendons are rejected here so the threat can't trash its
-/// own coverage.
+/// own coverage. Also drives the tiny everywhere-passive heal on every
+/// abomination (see AbominationComponent.PassiveHeal).
 /// </summary>
 public sealed class AbominationFleshKudzuSystem : EntitySystem
 {
@@ -48,6 +49,19 @@ public sealed class AbominationFleshKudzuSystem : EntitySystem
     public override void Update(float frameTime)
     {
         var now = _timing.CurTime;
+
+        // Passive heal — applies to every abomination everywhere, separate
+        // from the much stronger tendon-contact heal below.
+        var passive = EntityQueryEnumerator<AbominationComponent>();
+        while (passive.MoveNext(out var passiveUid, out var abom))
+        {
+            if (abom.NextPassiveHealAt > now)
+                continue;
+
+            abom.NextPassiveHealAt = now + abom.PassiveHealInterval;
+            _damageable.TryChangeDamage(passiveUid, abom.PassiveHeal, true);
+        }
+
         var query = EntityQueryEnumerator<AbominationFleshKudzuComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var kudzu, out var physics))
         {

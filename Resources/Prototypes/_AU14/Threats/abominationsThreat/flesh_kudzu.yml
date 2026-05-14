@@ -84,12 +84,14 @@
       - IgnoreKudzu
       - Abomination
   # Periodic sob/gasp + heal-abominations-in-contact tick. Server-side.
+  # Heal values doubled from the original tuning so tendons are a real
+  # rally point for the threat to retreat to.
   - type: AbominationFleshKudzu
     heal:
       types:
-        Blunt: -3
-        Slash: -3
-        Piercing: -3
+        Blunt: -6
+        Slash: -6
+        Piercing: -6
   - type: UserIFF
     factions:
     - FactionAbomination
