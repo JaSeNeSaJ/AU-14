@@ -1,5 +1,4 @@
 # Spider: a skittering severed-head abomination.
-# - AbominationLeap = short pounce
 # - AbominationSpit = ranged acid projectile
 - type: entity
   parent: AU14AbominationBase
@@ -14,7 +13,7 @@
       state: alive
   - type: GhostRole
     name: Spider Abomination
-    description: A skittering severed head. Pounce onto prey and bury them in acid.
+    description: A skittering severed head. Run prey down and bury them in acid.
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -22,17 +21,7 @@
   - type: MobStateActions
     actions:
       Alive:
-      - ActionAbominationSpiderLeap
       - ActionAbominationSpiderSpit
-  - type: AbominationLeap
-    # Range matches the xeno runner (XenoLeapComponent.Range default).
-    range: 6
-    strength: 25
-    flightDuration: 0.6
-    knockdownTime: 2
-    damage:
-      groups:
-        Brute: 12
   - type: AbominationSpit
   - type: MeleeWeapon
     damage:

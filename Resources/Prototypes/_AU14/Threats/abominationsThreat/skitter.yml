@@ -1,6 +1,6 @@
 # Skitter: 4-legged support abomination.
 # - AbominationPlantKudzu spawns a kudzu source under itself.
-# - AbominationSecreteWall spawns a flesh wall on its current tile.
+# - AbominationSecreteStructure plants a flesh nest (only build option).
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationSkitter
@@ -14,7 +14,7 @@
       state: alive
   - type: GhostRole
     name: Skitter Abomination
-    description: A support abomination. Spread kudzu and secrete flesh walls to lock down corridors.
+    description: A support abomination. Spread kudzu and plant flesh nests to grow the threat.
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -23,12 +23,14 @@
     actions:
       Alive:
       - ActionAbominationPlantKudzu
-      - ActionAbominationChooseStructure
       - ActionAbominationSecreteStructure
+  # Nest is the only build option now. BuildChoice is pre-set so the skitter
+  # doesn't need to open the picker. Cooldown is 2 minutes per skitter.
   - type: AbominationConstruction
     canBuild:
-    - AU14AbominationFleshWall
     - AU14AbominationFleshNest
+    buildChoice: AU14AbominationFleshNest
+    nestCooldown: 120
   - type: UserInterface
     interfaces:
       enum.AbominationConstructionUiKey.Key:

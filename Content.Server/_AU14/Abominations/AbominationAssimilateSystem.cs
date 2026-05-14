@@ -32,11 +32,30 @@ public sealed class AbominationAssimilateSystem : EntitySystem
     {
         SubscribeLocalEvent<AbominationAssimilateComponent, AbominationAssimilateActionEvent>(OnAssimilateAction);
         SubscribeLocalEvent<AbominationAssimilateComponent, AbominationAssimilateDoAfterEvent>(OnAssimilateDoAfter);
+        // Any fresh AbominationMimicComponent — partyspawn, ghost takeover,
+        // infection-death polymorph, admin spawn — inherits the current global
+        // pool on map-init. Without this, only assimilation-spawned mimics
+        // ended up with the library.
+        SubscribeLocalEvent<AbominationMimicComponent, MapInitEvent>(OnMimicMapInit);
         // Defensive cleanup — entities are normally destroyed on restart, but
         // if any AbominationMimicComponent leaks across the round boundary
         // (e.g. an admin-restart that doesn't reload the map), this resets
         // the pool so last round's faces don't bleed in.
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestartCleanup);
+    }
+
+    private void OnMimicMapInit(Entity<AbominationMimicComponent> ent, ref MapInitEvent args)
+    {
+        // Skip if this mimic was already seeded (e.g. by OnAssimilateDoAfter).
+        if (ent.Comp.AssimilatedPool.Count > 0)
+            return;
+
+        var pool = GatherCurrentPool();
+        if (pool.Count == 0)
+            return;
+
+        ent.Comp.AssimilatedPool = pool;
+        Dirty(ent);
     }
 
     private void OnRoundRestartCleanup(RoundRestartCleanupEvent _)

@@ -1,6 +1,6 @@
 # Grunt: hulking front-line abomination.
-# - AbominationLeap = slam (long pounce + knockdown)
 # - Long melee range so it can swing across multiple tiles
+# - AbominationSpit + AbominationAcidSpray for ranged area-denial
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationGrunt
@@ -22,33 +22,8 @@
   - type: MobStateActions
     actions:
       Alive:
-      - ActionAbominationGruntSlam
-      - ActionAbominationGruntCharge
       - ActionAbominationGruntSpit
       - ActionAbominationGruntAcidSpray
-  - type: AbominationLeap
-    # Same distance as the spider / runner pounce; grunt's signature
-    # distance attack is Charge, not Slam.
-    range: 6
-    strength: 22
-    flightDuration: 0.9
-    knockdownTime: 3
-    damage:
-      types:
-        Blunt: 35
-  - type: AbominationCharge
-    range: 8
-    strength: 28
-    flightDuration: 1.2
-    knockdownTime: 4
-    mobDamage:
-      types:
-        Blunt: 60
-        Structural: 50
-    structureDamage:
-      types:
-        Blunt: 250
-        Structural: 750
   # Acid spit + cone spray. Same projectile as the spider, but the grunt
   # gets the boiler-style fan to lay down area denial.
   - type: AbominationSpit
