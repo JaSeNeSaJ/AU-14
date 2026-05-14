@@ -22,9 +22,9 @@
 
 - files:
   - tank_engine_loop.wav
-  license: "Royalty-free"
-  copyright: "T-34-85 Russian World War II Tank audio by Pole Position Production, loop extracted from user-provided source"
-  source: "https://sonniss.com/sound-effects/t-34-85-russian-world-war-ii-tank/"
+  license: "Custom"
+  copyright: "Sonniss.com - GDC 2020 - Game Audio Bundle / Pole Position - Tankietka TKS 1936 by Pole Position Production, loop extracted from user-provided source"
+  source: "https://sonniss.com/gdc-bundle-license/"
 
 - files:
   - weapons/autocannon_fire.ogg
