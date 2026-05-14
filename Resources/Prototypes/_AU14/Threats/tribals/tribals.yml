@@ -41,8 +41,8 @@
   partyspawn: tribalsParty
   entrymethod: ground
   weight: 5
-  minplayers: 20
+  minplayers: 0
   maxplayers: 200
-  GhostsNeeded: 4
+  GhostsNeeded: 0
   roundstart: true
   announcearrival: "Native warriors have been spotted in the area of operation."
