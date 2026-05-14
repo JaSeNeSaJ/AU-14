@@ -10,7 +10,7 @@ species-name-moth = Moth Person
 species-name-skeleton = Skeleton
 species-name-vox = Vox
 species-name-gingerbread = delicious baked good
-species-name-tribal = Na'vi
+species-name-tribal = tribal
 
 ## Misc species things
 
