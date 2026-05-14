@@ -26,6 +26,18 @@
   - type: NpcFactionMember
     factions:
     - Tribe
+  # Doubled health from the human baseline (200/275 -> 400/550). Stone-age
+  # warriors are tough; you don't drop them with a sidearm.
+  - type: MobThresholds
+    thresholds:
+      0: Alive
+      400: Critical
+      550: Dead
+  # 1.5x speed from the human baseline (2.7/5 -> 4.05/7.5). Tribals
+  # outrun invaders so they can close the gap with spears/bows.
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 4.05
+    baseSprintSpeed: 7.5
 
 # --- Job + role prototypes -----------------------------------------------
 

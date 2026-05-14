@@ -18,11 +18,13 @@
           types:
             Toxin: 0.5
 
-# Pre-filled syringe used by mimics / admins to inject the venom directly.
+# Pre-filled syringe used by mimics / admins / Weyland-Yutani researchers
+# to inject the venom directly. Player-facing name is "clotted syringe"
+# so it doesn't telegraph what it actually is on examine.
 - type: entity
   parent: BaseSyringe
   id: AU14AbominationVenomSyringe
-  name: abomination venom syringe
+  name: clotted syringe
   description: A syringe filled with a viscous, dark fluid that smells like rotted flesh.
   components:
   - type: SolutionContainerManager
