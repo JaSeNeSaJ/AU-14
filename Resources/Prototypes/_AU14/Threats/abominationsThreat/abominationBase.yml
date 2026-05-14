@@ -107,14 +107,18 @@
   # Heavy slash melee — Slash damage routes through the CMU bodypart system's
   # BruteGroup -> SeveranceDamage path, so all abominations have a high
   # built-in limb-sever chance. Individual mobs override the damage value.
+  # soundHit / soundSwing pull from the xeno emote pool — abominations
+  # growl/hiss/roar on attack instead of using clean weapon SFX.
   - type: MeleeWeapon
     soundHit:
-      collection: RCMXenoClaw
-    soundSwing:
-      path: /Audio/_RMC14/Weapons/alien_claw_swipe.ogg
+      collection: XenoGrowl
       params:
-        variation: 0.1
-        volume: -5
+        variation: 0.15
+    soundSwing:
+      collection: XenoHiss
+      params:
+        variation: 0.15
+        volume: -3
     angle: 0
     animation: RMCWeaponArcXenoClaw
     # Big base value — guarantees a strong sever push on every hit, since
@@ -122,6 +126,13 @@
     damage:
       types:
         Slash: 30
+  # Heavy footsteps for every caste (skitter/grunt/mimic/spider). Reuses the
+  # xeno large-footstep collection.
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: XenoFootstepLarge
+      params:
+        volume: -2
   - type: Speech
     speechVerb: Abomination
     speechSounds: Bass

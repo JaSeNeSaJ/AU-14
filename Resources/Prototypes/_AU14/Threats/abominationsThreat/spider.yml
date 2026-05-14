@@ -38,7 +38,7 @@
   - type: MeleeWeapon
     damage:
       types:
-        Slash: 35
+        Slash: 30
   # Doubled sprint speed — spider is the chase caste, it should run people
   # down at xeno-runner pace.
   - type: MovementSpeedModifier
