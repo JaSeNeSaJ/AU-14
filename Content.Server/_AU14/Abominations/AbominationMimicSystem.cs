@@ -105,12 +105,21 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     private void OnSelectForm(Entity<AbominationMimicComponent> mimic, ref AbominationMimicSelectFormMessage args)
     {
+        // Diagnostic popups — visible to the picker user, server-authoritative.
+        // Lets us confirm the message routed to the right mimic and that the
+        // polymorph actually took. Will be removed once playtest is clean.
+        _popup.PopupEntity($"[mimic] OnSelectForm fired on {Name(mimic)} (idx={args.Index}, pool={mimic.Comp.AssimilatedPool.Count})", mimic, mimic);
+
         if (args.Index < 0 || args.Index >= mimic.Comp.AssimilatedPool.Count)
+        {
+            _popup.PopupEntity("[mimic] index out of range", mimic, mimic);
             return;
+        }
 
         var profile = mimic.Comp.AssimilatedPool[args.Index];
         _ui.CloseUi(mimic.Owner, AbominationMimicUiKey.Key, args.Actor);
-        StartDisguise(mimic, profile, mimic.Comp.TransformDuration);
+        var result = StartDisguise(mimic, profile, mimic.Comp.TransformDuration);
+        _popup.PopupEntity(result is { } r ? $"[mimic] disguise spawned: {r}" : "[mimic] disguise FAILED (polymorph returned null)", mimic, mimic);
     }
 
     private void PushBuiState(Entity<AbominationMimicComponent> mimic)
@@ -255,11 +264,25 @@ public sealed class AbominationMimicSystem : EntitySystem
             originalMimic.AssimilatedPool = new List<AbominationAssimilationProfile>(disguisedMimic.AssimilatedPool);
             Dirty(polymorphed.Parent, originalMimic);
 
-            if (originalMimic.TransformActionEntity is { } actionEnt && Exists(actionEnt))
+            // Resolve the action entity at revert time — scan the original mimic's
+            // action container for the transform action. Stored UIDs could go
+            // stale if MobStateActions re-grants the action mid-disguise.
+            var foundAction = FindTransformAction(polymorphed.Parent);
+            if (foundAction is { } actionEnt)
                 _actions.SetCooldown(actionEnt, disguisedMimic.TransformCooldown);
         }
 
         _polymorph.Revert((disguisedUid, null));
+    }
+
+    private EntityUid? FindTransformAction(EntityUid mimic)
+    {
+        foreach (var (actionId, _) in _actions.GetActions(mimic))
+        {
+            if (_actions.GetEvent(actionId) is AbominationMimicTransformActionEvent)
+                return actionId;
+        }
+        return null;
     }
 
     private void ApplyProfile(EntityUid disguised, AbominationAssimilationProfile profile)
