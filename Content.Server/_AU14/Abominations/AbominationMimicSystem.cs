@@ -159,6 +159,9 @@ public sealed class AbominationMimicSystem : EntitySystem
                 Inventory = PolymorphInventoryChange.Drop,
                 TransferName = false,
                 TransferDamage = true,
+                // Mimics from assimilation already have PolymorphedEntityComponent;
+                // allow stacking the disguise polymorph on top.
+                AllowRepeatedMorphs = true,
                 RevertOnCrit = false,
                 RevertOnDeath = false,
             };
