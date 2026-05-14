@@ -187,6 +187,7 @@ public sealed class AbominationAssimilateSystem : EntitySystem
             Name = displayName,
             SourceEntity = GetNetEntity(target),
             SourceProtoId = isHumanoid ? null : protoId,
+            IsTribal = HasComp<Content.Shared.AU14.TribalComponent>(target),
         };
 
         if (TryComp<NpcFactionMemberComponent>(target, out var npcFaction))

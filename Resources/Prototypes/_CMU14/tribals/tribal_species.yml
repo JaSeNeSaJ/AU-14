@@ -1,0 +1,13 @@
+# Tribal species — sprite/marking-wise identical to Human, but with a
+# distinct species name so examine / identity strings call them out as
+# Na'vi instead of "Human". TribalAppearanceSystem forces this species
+# id onto every Tribal mob on map-init.
+- type: species
+  id: Tribal
+  name: species-name-tribal
+  roundStart: false
+  prototype: CMMobHuman
+  sprites: MobHumanSprites
+  markingLimits: MobHumanMarkingLimits
+  dollPrototype: MobHumanDummy
+  skinColoration: HumanToned

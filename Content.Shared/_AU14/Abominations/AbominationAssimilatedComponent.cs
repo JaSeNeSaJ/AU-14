@@ -63,6 +63,15 @@ public sealed partial class AbominationAssimilationProfile
     /// </summary>
     [DataField]
     public string? SourceProtoId;
+
+    /// <summary>
+    /// True if the source had TribalComponent. The mimic disguise re-adds it
+    /// on the polymorphed entity so KillAllTribeRule (and anything else that
+    /// scans for tribals) still counts the disguised mimic correctly, and
+    /// other tribals won't aggro them.
+    /// </summary>
+    [DataField]
+    public bool IsTribal;
 }
 
 /// <summary>

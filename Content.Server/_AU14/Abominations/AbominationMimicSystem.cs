@@ -307,6 +307,12 @@ public sealed class AbominationMimicSystem : EntitySystem
         ApplyIffFactions(disguised, profile.IffFactions);
         CopySkillsFromSource(disguised, profile);
         ApplyAppearance(disguised, profile.Appearance);
+
+        // Carry over marker components from the source. Currently just
+        // TribalComponent — mimics wearing a tribal's face need to count as
+        // tribals for win rules and faction-target picks.
+        if (profile.IsTribal)
+            EnsureComp<Content.Shared.AU14.TribalComponent>(disguised);
     }
 
     private void ApplyFactions(EntityUid disguised, IEnumerable<string> factions)
