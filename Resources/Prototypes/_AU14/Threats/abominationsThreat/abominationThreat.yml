@@ -1,0 +1,43 @@
+# Abomination threat — starts with a small core (mimics + skitter + a nest)
+# and scales upward with pop count. Win condition is killing all colonists;
+# the threat is wiped if every abomination dies (KillAllAbominationRule
+# does not exist yet, fall through to KillAllColonist only).
+- type: threat
+  id: abominationsThreat
+  lorePrimer: AU14PrimerThreatAbomination
+  roundstartspawns: abominationsParty
+  whitelistedgamemodes:
+  - DistressSignal
+  - ColonyFall
+  winconditions:
+  - KillAllColonistRule
+  minplayers: 0
+
+- type: partySpawn
+  id: abominationsParty
+  leadersToSpawn:
+    AU14AbominationMimic: 2
+  gruntsToSpawn:
+    AU14AbominationMimic: 1
+    AU14AbominationSkitter: 1
+  # NOTE: PartySpawnPrototype field name in YAML is `entsToSpsawn` (sic).
+  # Drops the seed flesh nest at the spawn point so the threat has somewhere
+  # to retreat to from the very start.
+  entsToSpsawn:
+    AU14AbominationFleshNest: 1
+  scaling:
+    AU14AbominationMimic:
+      scale: 0.05
+      whenToBeginScaling: 30
+    AU14AbominationSkitter:
+      scale: 0.04
+      whenToBeginScaling: 45
+  spawnTogether: true
+
+- type: lorePrimer
+  id: AU14PrimerThreatAbomination
+  threattext: "You are an abomination. Spread the flesh, drag the prey, wear their faces."
+  KnowledgeLevelsGovforThreat:
+    "Threat Unknown": 1
+    "Reports of colonists turning on their own and bodies vanishing from the morgue.": 2
+    "Pulsing 'tendons' growing through colony infrastructure. Burn everything.": 3

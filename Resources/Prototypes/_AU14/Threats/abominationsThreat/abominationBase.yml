@@ -186,8 +186,9 @@
   maxValue: 999
   prefix: Abomination
 
-# Heat x2 = burns down twice as fast. Other damage types pass through normal.
+# Heat x3.5 = burns down 3.5x as fast. Fire is the hard counter to the
+# threat's area denial; flamers should melt them in seconds.
 - type: damageModifierSet
   id: AbominationFireWeak
   coefficients:
-    Heat: 2.0
+    Heat: 3.5

@@ -168,7 +168,7 @@
   name: tribal spear
   parent: Spear
   id: TribalSpear
-  description: A spear crafted by tribal warriors. Only usable by tribals.
+  description: A spear crafted by tribal warriors. Vicious when stabbed, lethal when thrown.
   components:
   - type: Tag
     tags:
@@ -176,19 +176,46 @@
     - tribe
   - type: Sprite
     sprite: Objects/Weapons/Melee/bone_spear.rsi
+  # Stab — 50 piercing.
   - type: MeleeWeapon
     wideAnimationRotation: -135
     damage:
       types:
-        Piercing: 12
+        Piercing: 50
     angle: 0
     animation: WeaponArcThrust
     soundHit:
       path: /Audio/Weapons/bladeslice.ogg
+  # Throw — 140 piercing on impact via DamageOtherOnHit.
   - type: DamageOtherOnHit
     damage:
       types:
-        Piercing: 15
+        Piercing: 140
+
+# Tribal arrow — 130 piercing on hit. Goes in the quiver, fired from
+# TribalBow / BowImprovised.
+- type: entity
+  parent: ArrowImprovised
+  id: TribalArrow
+  name: bone arrow
+  description: A barbed bone-tipped shaft fletched with feathers. Hits like a bus.
+  components:
+  - type: Sprite
+    sprite: Objects/Weapons/Guns/Projectiles/arrows.rsi
+    layers:
+    - state: tail
+      color: tan
+    - state: rod
+      color: brown
+    - state: tip
+      color: ivory
+    - state: solution1
+      map: ["enum.SolutionContainerLayers.Fill"]
+      visible: false
+  - type: Projectile
+    damage:
+      types:
+        Piercing: 130
 
 - type: entity
   name: tribal bow
@@ -262,35 +289,37 @@
 
 # --- Starting gear ------------------------------------------------------
 
-# Common bits — sandals + quiver of arrows. Variants slot a weapon on top.
+# Common bits — sandals, leather satchel for stowage, quiver of tribal
+# arrows. Variants slot a weapon on top.
 - type: startingGear
   id: AU14GearTribalBase
   abstract: true
   equipment:
     shoes: RMCShoesSandals
+    back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
   storage:
     belt:
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
-    - ArrowImprovised
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
+    - TribalArrow
 
 - type: startingGear
   id: AU14GearTribalLeader
   parent: AU14GearTribalBase
   equipment:
     shoes: RMCShoesSandals
+    back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
-    back: TribalBow
   inhand:
   - TribalSpear
 
@@ -299,6 +328,7 @@
   parent: AU14GearTribalBase
   equipment:
     shoes: RMCShoesSandals
+    back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
   inhand:
   - TribalSpear
@@ -308,6 +338,7 @@
   parent: AU14GearTribalBase
   equipment:
     shoes: RMCShoesSandals
+    back: ClothingBackpackSatchelLeather
     belt: ClothingBeltQuiver
   inhand:
   - TribalBow

@@ -34,3 +34,15 @@
   threattext: "Protect your home and repel the invaders"
   KnowledgeLevelsGovforThreat:
     "Intelligent stone age society dedicated to protecting its homeworld, secure those crystals at all costs": 1
+
+# Tribal third-party — drops a roundstart party of natives onto the map.
+- type: auThirdParty
+  id: tribalThirdParty
+  partyspawn: tribalsParty
+  entrymethod: ground
+  weight: 5
+  minplayers: 20
+  maxplayers: 200
+  GhostsNeeded: 4
+  roundstart: true
+  announcearrival: "Native warriors have been spotted in the area of operation."
