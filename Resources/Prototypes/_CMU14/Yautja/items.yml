@@ -136,7 +136,7 @@
     - belt
     clothingVisuals:
       belt:
-      - state: beltbag_w
+      - state: equipped-BELT-hunting_pouch
   - type: Item
     size: Large
     sprite: _CMU14/Yautja/yautja_items.rsi
