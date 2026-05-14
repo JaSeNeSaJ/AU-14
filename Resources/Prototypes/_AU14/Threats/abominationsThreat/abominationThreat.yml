@@ -15,7 +15,7 @@
 - type: partySpawn
   id: abominationsParty
   leadersToSpawn:
-    AU14AbominationMimic: 2
+    AU14AbominationMimic: 1
   gruntsToSpawn:
     AU14AbominationMimic: 1
     AU14AbominationSkitter: 1
