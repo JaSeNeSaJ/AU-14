@@ -77,13 +77,18 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     private void OnTransformAction(Entity<AbominationMimicComponent> mimic, ref AbominationMimicTransformActionEvent args)
     {
+        Log.Info($"[mimic] OnTransformAction fired on {ToPrettyString(mimic)} performer={ToPrettyString(args.Performer)} action={ToPrettyString(args.Action.Owner)} pool={mimic.Comp.AssimilatedPool.Count}");
+
         if (args.Handled)
             return;
 
         // Disguised mimics already have the Revert button; the Transform action
         // on the disguised form is a no-op so they don't double-pick.
         if (HasComp<AbominationMimicTransformedComponent>(mimic))
+        {
+            Log.Info($"[mimic] OnTransformAction rejected: {ToPrettyString(mimic)} already transformed");
             return;
+        }
 
         if (mimic.Comp.AssimilatedPool.Count == 0)
         {
@@ -105,21 +110,21 @@ public sealed class AbominationMimicSystem : EntitySystem
 
     private void OnSelectForm(Entity<AbominationMimicComponent> mimic, ref AbominationMimicSelectFormMessage args)
     {
-        // Diagnostic popups — visible to the picker user, server-authoritative.
-        // Lets us confirm the message routed to the right mimic and that the
-        // polymorph actually took. Will be removed once playtest is clean.
-        _popup.PopupEntity($"[mimic] OnSelectForm fired on {Name(mimic)} (idx={args.Index}, pool={mimic.Comp.AssimilatedPool.Count})", mimic, mimic);
+        Log.Info($"[mimic] OnSelectForm fired on {ToPrettyString(mimic)} actor={ToPrettyString(args.Actor)} idx={args.Index} pool={mimic.Comp.AssimilatedPool.Count}");
 
         if (args.Index < 0 || args.Index >= mimic.Comp.AssimilatedPool.Count)
         {
-            _popup.PopupEntity("[mimic] index out of range", mimic, mimic);
+            Log.Warning($"[mimic] OnSelectForm rejected: index {args.Index} out of range for pool {mimic.Comp.AssimilatedPool.Count}");
             return;
         }
 
         var profile = mimic.Comp.AssimilatedPool[args.Index];
         _ui.CloseUi(mimic.Owner, AbominationMimicUiKey.Key, args.Actor);
         var result = StartDisguise(mimic, profile, mimic.Comp.TransformDuration);
-        _popup.PopupEntity(result is { } r ? $"[mimic] disguise spawned: {r}" : "[mimic] disguise FAILED (polymorph returned null)", mimic, mimic);
+        if (result is { } r)
+            Log.Info($"[mimic] disguise spawned: {ToPrettyString(r)}");
+        else
+            Log.Warning($"[mimic] disguise FAILED (PolymorphEntity returned null) for {ToPrettyString(mimic)}");
     }
 
     private void PushBuiState(Entity<AbominationMimicComponent> mimic)
@@ -138,6 +143,8 @@ public sealed class AbominationMimicSystem : EntitySystem
     /// </summary>
     public EntityUid? StartDisguise(Entity<AbominationMimicComponent> mimic, AbominationAssimilationProfile profile, TimeSpan duration)
     {
+        Log.Info($"[mimic] StartDisguise mimic={ToPrettyString(mimic)} profile={profile.Name} sourceProto={profile.SourceProtoId ?? "(humanoid)"}");
+
         EntityUid? disguised;
         // Animal profiles carry a SourceProtoId — polymorph straight into that
         // prototype so the mimic actually BECOMES that animal, instead of
@@ -163,7 +170,10 @@ public sealed class AbominationMimicSystem : EntitySystem
         }
 
         if (disguised is not { } disguisedUid)
+        {
+            Log.Warning($"[mimic] StartDisguise: PolymorphEntity returned null for {ToPrettyString(mimic)} - HasPolymorphedEntityComponent={HasComp<PolymorphedEntityComponent>(mimic)}");
             return null;
+        }
 
         var carried = EnsureComp<AbominationMimicComponent>(disguisedUid);
         carried.AssimilatedPool = new List<AbominationAssimilationProfile>(mimic.Comp.AssimilatedPool);
