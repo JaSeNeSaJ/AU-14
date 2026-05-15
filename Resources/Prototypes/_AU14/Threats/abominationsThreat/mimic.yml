@@ -25,7 +25,7 @@
       - ActionAbominationAssimilate
       - ActionAbominationMimicTransform
   - type: AbominationMimic
-    transformDuration: 360
+    transformDuration: 960
   - type: AbominationAssimilate
     doAfter: 8
   - type: UserInterface
