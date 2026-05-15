@@ -50,7 +50,7 @@ public sealed class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubvertedSyn
     {
         base.Initialize();
         //TargetBeforeDefibrillatorZapsEvent doesn't work for some godawful reason
-        SubscribeLocalEvent<CLFSubverterComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRevive);
+        SubscribeLocalEvent<CLFSubverterComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRevive, after: [typeof(RMCDefibrillatorSystem)]);
         SubscribeLocalEvent<SynthRepairerComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRepair, after: [typeof(RMCDefibrillatorSystem)]);
     }
 
