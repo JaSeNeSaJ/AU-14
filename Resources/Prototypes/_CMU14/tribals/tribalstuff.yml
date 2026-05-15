@@ -265,6 +265,17 @@
     damage:
       types:
         Piercing: 140
+  # Infinite durability — base Spear has a Destructible threshold at 30
+  # damage that shatters the haft. Override it with an absurdly high cap
+  # so the bone spear never breaks no matter what hits it.
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 99999999
+      behaviors:
+      - !type:DoActsBehavior
+        acts: [ "Destruction" ]
 
 # Tribal arrow — 130 piercing on hit. Goes in the quiver, fired from
 # TribalBow / BowImprovised.
