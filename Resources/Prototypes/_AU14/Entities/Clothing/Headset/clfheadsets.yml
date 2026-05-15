@@ -7,8 +7,8 @@
   - type: EncryptionKey
     channels:
     - Colony
-    - CLF
-    defaultChannel: CLF
+    - radioCLF
+    defaultChannel: radioCLF
   - type: Sprite
     state: we_ya_key
 
@@ -35,5 +35,5 @@
   - type: AccessoryHeadset
     channels:
     - Colony
-    - CLF
-    defaultChannel: CLF
+    - radioCLF
+    defaultChannel: radioCLF
