@@ -1,6 +1,6 @@
 # ├──[ ENCRYPTIONKEYS ]──────────────────────────────────────────────┤
 - type: entity
-  parent: CMEncryptionKey
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyOpfor
   name: OPFOR encryption key
   description: An encryption key used to communicate on the OPFOR channel, it is automatically assigned the right channel.
@@ -11,8 +11,6 @@
     - SquadLeader
     - FireteamLeader
     - BattleBuddy
-  - type: Sprite
-    state: we_ya_key
 
 - type: entity
   parent: AU14EncryptionKeyOpfor

@@ -1,20 +1,26 @@
 # ├──[ ENCRYPTIONKEYS ]──────────────────────────────────────────────┤
 - type: entity
+  abstract: true
   parent: CMEncryptionKey
+  id: AU14EncryptionKey
+  components:
+  - type: Sprite
+    state: we_ya_key
+
+- type: entity
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyAdmin
   name: colony admin encryption key
-  description: An encryption key used to communicate on colony, weyu and CMB radio channels.
+  description: An encryption key used to communicate on colony and CMB radio channels.
   components:
   - type: EncryptionKey
     channels:
     - Colony
     - radioCMB
     defaultChannel: Colony
-  - type: Sprite
-    state: we_ya_key
 
 - type: entity
-  parent: CMEncryptionKey
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyWEYU
   name: Weyland colonial encryption key
   description: An encryption key used to communicate on colony and weyland radio channels.
@@ -24,13 +30,12 @@
     - Colony
     - radioWEYU
     defaultChannel: Colony
-  - type: Sprite
-    state: we_ya_key
 
 - type: entity
-  parent: CMEncryptionKey
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyCMB
   name: CMB encryption key
+  suffix: Colony, CMB
   description: An encryption key used to communicate on colony and CMB radio channels.
   components:
   - type: EncryptionKey
@@ -38,21 +43,17 @@
     - Colony
     - radioCMB
     defaultChannel: Colony
-  - type: Sprite
-    state: we_ya_key
 
 - type: entity
-  parent: CMEncryptionKey
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyCMBOnly
   name: CMB encryption key
-  description: An encryption key used to communicate on colony and CMB radio channels.
+  description: An encryption key used to communicate the CMB radio channel.
   components:
   - type: EncryptionKey
     channels:
     - radioCMB
     defaultChannel: Colony
-  - type: Sprite
-    state: we_ya_key
 
 # ├─[ HEADSETS ]────────────────────────────────────────────────────┤
 - type: entity
@@ -72,7 +73,7 @@
   id: AU14ColonyWeylandHeadset
   name: colony weyland yutani headset
   description: A headset used by weyland yutani to communicate.
-  suffix: Colony
+  suffix: Colony, WEYU
   components:
   - type: ContainerFill
     containers:

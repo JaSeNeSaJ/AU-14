@@ -1,5 +1,5 @@
 - type: entity
-  parent: CMEncryptionKey
+  parent: AU14EncryptionKey
   id: AU14EncryptionKeyMob
   name: Mob Family encryption key
   description: An encryption key used to communicate on the Family channel.
@@ -8,8 +8,6 @@
     channels:
     - radioMobFamily
     defaultChannel: radioMobFamily
-  - type: Sprite
-    state: we_ya_key
 
 - type: entity
   parent: RMCHeadsetMarine
