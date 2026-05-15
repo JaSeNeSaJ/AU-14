@@ -53,7 +53,7 @@ public sealed class CMUBandageInterceptionSystem : EntitySystem
             && _cfg.GetCVar(CMUMedicalCCVars.WoundsEnabled);
     }
 
-    public void HandleAfterInteract(Entity<CMUHumanMedicalComponent> medic, ref AfterInteractEvent args)
+    public void HandleAfterInteract(EntityUid medic, ref AfterInteractEvent args)
     {
         if (args.Handled || !args.CanReach || args.Target is not { } patient)
             return;
