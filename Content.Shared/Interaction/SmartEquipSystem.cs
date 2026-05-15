@@ -78,7 +78,7 @@ public sealed partial class SmartEquipSystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    private sealed class SmartEquipEvent(string equipmentSlot) : EntityEventArgs
+    private sealed partial class SmartEquipEvent(string equipmentSlot) : EntityEventArgs
     {
         public readonly string EquipmentSlot = equipmentSlot;
     }

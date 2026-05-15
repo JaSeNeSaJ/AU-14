@@ -249,7 +249,7 @@ namespace Content.Client.Inventory
             }
         }
 
-        public sealed class SlotData
+        public sealed partial class SlotData
         {
             public SlotDefinition SlotDef;
             public EntityUid? HeldEntity => Container?.ContainedEntity;

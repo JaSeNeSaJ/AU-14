@@ -93,4 +93,4 @@ public sealed partial class RMCDazedSystem : EntitySystem
 public record struct DazedEvent(TimeSpan Duration);
 
 [NetSerializable, Serializable]
-public sealed class DazedComponentShutdownEvent: EntityEventArgs;
+public sealed partial class DazedComponentShutdownEvent: EntityEventArgs;

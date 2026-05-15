@@ -12,8 +12,8 @@ namespace Content.Server.Humanoid.Systems;
 /// </summary>
 public sealed partial class RandomHumanoidSystem : EntitySystem
 {
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly MetaDataSystem _metaData = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
 
     [Dependency] private HumanoidAppearanceSystem _humanoid = default!;
 
@@ -57,7 +57,7 @@ public sealed partial class RandomHumanoidSystem : EntitySystem
     }
 }
 
-public sealed class RandomHumanoidSpawnedEvent(string settingsPrototypeId, string species) : EntityEventArgs
+public sealed partial class RandomHumanoidSpawnedEvent(string settingsPrototypeId, string species) : EntityEventArgs
 {
     public readonly string SettingsPrototypeId = settingsPrototypeId;
     public readonly string Species = species;

@@ -187,7 +187,7 @@ public sealed partial class RMCSpawnerSystem : EntitySystem
                     else
                     {
                         Spawn(protoId, spawnerCoords);
-                        Logger.Warning($"Random spawner {ToPrettyString(ent)} was unable to find valid coordinates");
+                        Logger.GetSawmill("content").Warning($"Random spawner {ToPrettyString(ent)} was unable to find valid coordinates");
                     }
                 }
             }

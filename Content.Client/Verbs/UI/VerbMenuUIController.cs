@@ -30,8 +30,8 @@ namespace Content.Client.Verbs.UI
         [Dependency] private IPlayerManager _playerManager = default!;
         [Dependency] private ContextMenuUIController _context = default!;
 
-        [UISystemDependency] private readonly CombatModeSystem _combatMode = default!;
-        [UISystemDependency] private readonly VerbSystem _verbSystem = default!;
+        [UISystemDependency] private CombatModeSystem _combatMode = default!;
+        [UISystemDependency] private VerbSystem _verbSystem = default!;
 
         public NetEntity CurrentTarget;
         public SortedSet<Verb> CurrentVerbs = new();

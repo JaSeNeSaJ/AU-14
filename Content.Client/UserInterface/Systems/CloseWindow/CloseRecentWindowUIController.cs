@@ -64,7 +64,7 @@ public sealed partial class CloseRecentWindowUIController : UIController
         if (window != null)
         {
             // And move to top of recent stack
-            //Logger.Debug("Most recent window is " + window.Name);
+            //Logger.GetSawmill("content").Debug("Most recent window is " + window.Name);
             SetMostRecentlyInteractedWindow(window);
         }
     }

@@ -355,7 +355,7 @@ public record struct CrashLandStartedEvent;
 public record struct CrashLandedEvent(bool ShouldDamage);
 
 [Serializable, NetSerializable]
-public abstract class FallAnimationEventArgs : EntityEventArgs
+public abstract partial class FallAnimationEventArgs : EntityEventArgs
 {
     public NetEntity Entity;
     public NetCoordinates Coordinates;
@@ -363,7 +363,7 @@ public abstract class FallAnimationEventArgs : EntityEventArgs
 }
 
 [Serializable, NetSerializable]
-public abstract class CrashAnimationMsg : FallAnimationEventArgs
+public abstract partial class CrashAnimationMsg : FallAnimationEventArgs
 {
 
 }

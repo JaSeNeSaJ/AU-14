@@ -928,7 +928,7 @@ sealed class Explosion
 /// <summary>
 /// Data needed to spawn an explosion with <see cref="ExplosionSystem.SpawnExplosion"/>.
 /// </summary>
-public sealed class QueuedExplosion(ExplosionPrototype proto)
+public sealed partial class QueuedExplosion(ExplosionPrototype proto)
 {
     public MapCoordinates Epicenter;
     public ExplosionPrototype Proto = proto;

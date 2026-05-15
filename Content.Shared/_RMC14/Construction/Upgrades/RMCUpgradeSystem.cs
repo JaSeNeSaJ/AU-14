@@ -171,7 +171,7 @@ public sealed partial class RMCUpgradeSystem : EntitySystem
 /// <summary>
 ///     This event that is raised when an entity is ugraded
 /// </summary>
-public sealed class RMCConstructionUpgradedEvent : EntityEventArgs
+public sealed partial class RMCConstructionUpgradedEvent : EntityEventArgs
 {
     public readonly EntityUid New;
     public readonly EntityUid Old;

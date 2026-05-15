@@ -365,7 +365,7 @@ namespace Content.Server.Preferences.Managers
             return loginType.HasStaticUserId();
         }
 
-        private sealed class PlayerPrefData
+        private sealed partial class PlayerPrefData
         {
             public bool PrefsLoaded;
             public PlayerPreferences? Prefs;

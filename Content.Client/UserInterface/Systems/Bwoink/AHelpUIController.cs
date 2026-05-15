@@ -39,7 +39,7 @@ public sealed partial class AHelpUIController: UIController, IOnSystemChanged<Bw
     [Dependency] private IClyde _clyde = default!;
     [Dependency] private IUserInterfaceManager _uiManager = default!;
     [Dependency] private StaffHelpUIController _staffHelp = default!;
-    [UISystemDependency] private readonly AudioSystem _audio = default!;
+    [UISystemDependency] private AudioSystem _audio = default!;
 
     private BwoinkSystem? _bwoinkSystem;
     public MenuButton? GameAHelpButton => UIManager.GetActiveUIWidgetOrNull<GameTopMenuBar>()?.AHelpButton;
@@ -332,7 +332,7 @@ public interface IAHelpUIHandler : IDisposable
     public Action<NetUserId, string, bool, bool>? SendMessageAction { get; set; }
     public event Action<NetUserId, string>? InputTextChanged;
 }
-public sealed class AdminAHelpUIHandler : IAHelpUIHandler
+public sealed partial class AdminAHelpUIHandler : IAHelpUIHandler
 {
     private readonly NetUserId _ownerId;
     public AdminAHelpUIHandler(NetUserId owner)
@@ -493,7 +493,7 @@ public sealed class AdminAHelpUIHandler : IAHelpUIHandler
     }
 }
 
-public sealed class UserAHelpUIHandler : IAHelpUIHandler
+public sealed partial class UserAHelpUIHandler : IAHelpUIHandler
 {
     private readonly NetUserId _ownerId;
     public UserAHelpUIHandler(NetUserId owner)

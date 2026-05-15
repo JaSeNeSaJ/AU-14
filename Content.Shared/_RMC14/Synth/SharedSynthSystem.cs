@@ -376,7 +376,7 @@ public abstract partial class SharedSynthSystem : EntitySystem
 [Serializable, NetSerializable]
 public sealed partial class RMCSynthRepairEvent : SimpleDoAfterEvent;
 
-public sealed class RMCSynthRepairToolUseAttemptEvent(EntityUid user, EntityUid used, EntityUid target) : HandledEntityEventArgs
+public sealed partial class RMCSynthRepairToolUseAttemptEvent(EntityUid user, EntityUid used, EntityUid target) : HandledEntityEventArgs
 {
     public EntityUid User { get; } = user;
     public EntityUid Used { get; } = used;

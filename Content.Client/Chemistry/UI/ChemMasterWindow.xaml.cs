@@ -417,7 +417,7 @@ namespace Content.Client.Chemistry.UI
         }
     }
 
-    public sealed class ReagentButton : Button
+    public sealed partial class ReagentButton : Button
     {
         public ChemMasterReagentAmount Amount { get; set; }
         public bool IsBuffer = true;

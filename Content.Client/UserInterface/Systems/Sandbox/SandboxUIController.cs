@@ -36,9 +36,9 @@ public sealed partial class SandboxUIController : UIController, IOnStateChanged<
     [Dependency] private IClientAdminManager _admin = default!;
     [Dependency] private IPlayerManager _player = default!;
 
-    [UISystemDependency] private readonly DebugPhysicsSystem _debugPhysics = default!;
-    [UISystemDependency] private readonly MarkerSystem _marker = default!;
-    [UISystemDependency] private readonly SandboxSystem _sandbox = default!;
+    [UISystemDependency] private DebugPhysicsSystem _debugPhysics = default!;
+    [UISystemDependency] private MarkerSystem _marker = default!;
+    [UISystemDependency] private SandboxSystem _sandbox = default!;
 
     private SandboxWindow? _window;
 

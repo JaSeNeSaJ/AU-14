@@ -100,7 +100,7 @@ public sealed partial class NetworkConfiguratorSystem : SharedNetworkConfigurato
         _overlay.RemoveOverlay(overlay);
     }
 
-    private sealed class StatusControl : Control
+    private sealed partial class StatusControl : Control
     {
         private readonly RichTextLabel _label;
         private readonly NetworkConfiguratorComponent _configurator;

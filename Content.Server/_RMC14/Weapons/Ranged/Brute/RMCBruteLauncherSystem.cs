@@ -74,7 +74,7 @@ public sealed partial class RMCBruteLauncherSystem : EntitySystem
     [Dependency] private ThrowingSystem _throwing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
-    private sealed class BruteWaveState
+    private sealed partial class BruteWaveState
     {
         public BruteWaveState(int structureDamage)
         {

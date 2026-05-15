@@ -145,7 +145,7 @@ namespace Content.Server.Voting.Managers
             var remQueue = new RemQueue<int>();
             foreach (var v in _votes.Values)
             {
-                // Logger.Debug($"{_timing.ServerTime}");
+                // Logger.GetSawmill("content").Debug($"{_timing.ServerTime}");
                 if (_timing.RealTime >= v.EndTime)
                     EndVote(v);
 
@@ -592,7 +592,7 @@ namespace Content.Server.Voting.Managers
 
         #region Vote Data
 
-        private sealed class VoteReg
+        private sealed partial class VoteReg
         {
             public readonly int Id;
             public readonly Dictionary<ICommonSession, int> CastVotes = new();
@@ -670,7 +670,7 @@ namespace Content.Server.Voting.Managers
 
         #region IVoteHandle API surface
 
-        private sealed class VoteHandle : IVoteHandle
+        private sealed partial class VoteHandle : IVoteHandle
         {
             private readonly VoteManager _mgr;
             private readonly VoteReg _reg;
@@ -719,7 +719,7 @@ namespace Content.Server.Voting.Managers
                 _mgr.CancelVote(_reg);
             }
 
-            private sealed class VoteDict : IReadOnlyDictionary<object, int>
+            private sealed partial class VoteDict : IReadOnlyDictionary<object, int>
             {
                 private readonly VoteReg _reg;
 

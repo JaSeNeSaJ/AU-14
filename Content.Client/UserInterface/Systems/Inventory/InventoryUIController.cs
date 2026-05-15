@@ -32,10 +32,10 @@ public sealed partial class InventoryUIController : UIController, IOnStateEntere
 {
     [Dependency] private IEntityManager _entities = default!;
 
-    [UISystemDependency] private readonly ClientInventorySystem _inventorySystem = default!;
-    [UISystemDependency] private readonly HandsSystem _handsSystem = default!;
-    [UISystemDependency] private readonly ContainerSystem _container = default!;
-    [UISystemDependency] private readonly SpriteSystem _sprite = default!;
+    [UISystemDependency] private ClientInventorySystem _inventorySystem = default!;
+    [UISystemDependency] private HandsSystem _handsSystem = default!;
+    [UISystemDependency] private ContainerSystem _container = default!;
+    [UISystemDependency] private SpriteSystem _sprite = default!;
 
     private EntityUid? _playerUid;
     private InventorySlotsComponent? _playerInventory;

@@ -101,7 +101,7 @@ public sealed partial class AccessibilityTab
         return list;
     }
 
-    private sealed class AnnouncementPresetOverrideOption : BaseOption
+    private sealed partial class AnnouncementPresetOverrideOption : BaseOption
     {
         private readonly IConfigurationManager _cfg;
         private readonly OptionDropDown _dropDown;

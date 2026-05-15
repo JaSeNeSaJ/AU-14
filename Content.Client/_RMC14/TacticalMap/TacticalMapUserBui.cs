@@ -61,7 +61,7 @@ public sealed partial class TacticalMapUserBui(EntityUid owner, Enum uiKey) : RM
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to load tactical map user settings for map '{_currentMapName}': {ex}");
+            Logger.GetSawmill("content").Error($"Failed to load tactical map user settings for map '{_currentMapName}': {ex}");
         }
 
         Refresh();
@@ -97,7 +97,7 @@ public sealed partial class TacticalMapUserBui(EntityUid owner, Enum uiKey) : RM
             }
             catch (Exception ex)
             {
-                Logger.Error($"Failed to save tactical map user settings during disposal for map '{_currentMapName}': {ex}");
+                Logger.GetSawmill("content").Error($"Failed to save tactical map user settings during disposal for map '{_currentMapName}': {ex}");
             }
         }
 

@@ -15,7 +15,7 @@ public sealed partial class GhostUIController : UIController, IOnSystemChanged<G
     [Dependency] private IEntityNetworkManager _net = default!;
     [Dependency] private IClientConsoleHost _consoleHost = default!;
 
-    [UISystemDependency] private readonly GhostSystem? _system = default;
+    [UISystemDependency] private GhostSystem? _system = default;
 
     private GhostGui? Gui => UIManager.GetActiveUIWidgetOrNull<GhostGui>();
 

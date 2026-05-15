@@ -372,7 +372,7 @@ public sealed partial class DefusableSystem : SharedDefusableSystem
     #endregion
 }
 
-public sealed class BombDefusedEvent : EntityEventArgs
+public sealed partial class BombDefusedEvent : EntityEventArgs
 {
     public EntityUid Entity;
 
@@ -381,7 +381,7 @@ public sealed class BombDefusedEvent : EntityEventArgs
         Entity = entity;
     }
 }
-public sealed class BombArmedEvent : EntityEventArgs
+public sealed partial class BombArmedEvent : EntityEventArgs
 {
     public EntityUid Entity;
 
@@ -390,7 +390,7 @@ public sealed class BombArmedEvent : EntityEventArgs
         Entity = entity;
     }
 }
-public sealed class BombDetonatedEvent : EntityEventArgs
+public sealed partial class BombDetonatedEvent : EntityEventArgs
 {
     public EntityUid Entity;
 

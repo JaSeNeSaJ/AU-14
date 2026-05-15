@@ -219,7 +219,7 @@ public abstract partial class SharedGrapplingGunSystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    protected sealed class RequestGrapplingReelMessage : EntityEventArgs
+    protected sealed partial class RequestGrapplingReelMessage : EntityEventArgs
     {
         public bool Reeling;
 

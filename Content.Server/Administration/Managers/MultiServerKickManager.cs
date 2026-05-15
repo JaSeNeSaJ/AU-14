@@ -103,7 +103,7 @@ public sealed partial class MultiServerKickManager
         _netManager.DisconnectChannel(player.Channel, _loc.GetString("multi-server-kick-reason"));
     }
 
-    private sealed class NotificationData
+    private sealed partial class NotificationData
     {
         [JsonPropertyName("player_id")]
         public Guid PlayerId { get; set; }

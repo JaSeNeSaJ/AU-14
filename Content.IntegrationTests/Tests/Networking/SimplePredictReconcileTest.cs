@@ -423,7 +423,7 @@ namespace Content.IntegrationTests.Tests.Networking
         }
 
         [Serializable, NetSerializable]
-        public sealed class SetFooMessage : EntityEventArgs
+        public sealed partial class SetFooMessage : EntityEventArgs
         {
             public SetFooMessage(NetEntity uid, bool newFoo)
             {

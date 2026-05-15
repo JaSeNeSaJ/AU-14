@@ -189,7 +189,7 @@ public sealed partial class StoreSystem : EntitySystem
     }
 }
 
-public sealed class CurrencyInsertAttemptEvent : CancellableEntityEventArgs
+public sealed partial class CurrencyInsertAttemptEvent : CancellableEntityEventArgs
 {
     public readonly EntityUid User;
     public readonly EntityUid Target;

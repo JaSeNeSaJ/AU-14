@@ -93,7 +93,7 @@ public sealed partial class AnnouncementValidator
     }
 }
 
-public sealed class ValidationResult
+public sealed partial class ValidationResult
 {
     private readonly List<string> _errors = new();
     private readonly List<string> _warnings = new();

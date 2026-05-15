@@ -841,7 +841,7 @@ namespace Content.Server.Administration.Systems
         /// <summary>
         ///  Class specifically for holding information regarding existing Discord embeds
         /// </summary>
-        public sealed class DiscordRelayInteraction
+        public sealed partial class DiscordRelayInteraction
         {
             public string? Id;
 
@@ -866,7 +866,7 @@ namespace Content.Server.Administration.Systems
         }
     }
 
-    public sealed class AHelpMessageParams
+    public sealed partial class AHelpMessageParams
     {
         public string Username { get; set; }
         public string Message { get; set; }

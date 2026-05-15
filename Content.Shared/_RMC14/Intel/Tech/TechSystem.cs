@@ -165,7 +165,7 @@ public sealed partial class TechSystem : EntitySystem
             {
                 if (string.IsNullOrEmpty(partySpawnEv.ThirdPartyId))
                 {
-                    Logger.Warning($"[TechSystem] TechPartySpawnEvent in tech option has empty ThirdPartyId; skipping (team={team}).");
+                    Logger.GetSawmill("content").Warning($"[TechSystem] TechPartySpawnEvent in tech option has empty ThirdPartyId; skipping (team={team}).");
                 }
                 else
                 {
@@ -191,13 +191,13 @@ public sealed partial class TechSystem : EntitySystem
     {
         if (string.IsNullOrEmpty(thirdPartyId))
         {
-            Logger.Warning("[TechSystem] ExecuteTechPartySpawn called with null/empty thirdPartyId.");
+            Logger.GetSawmill("content").Warning("[TechSystem] ExecuteTechPartySpawn called with null/empty thirdPartyId.");
             return false;
         }
         if (!proto.TryIndex<AuThirdPartyPrototype>(thirdPartyId, out var partyProto))
         {
             proto.TryIndex(thirdPartyId, out var _); // keep for debug if needed
-            Logger.Warning($"[TechSystem] Requested third party id '{thirdPartyId}' not found in prototypes.");
+            Logger.GetSawmill("content").Warning($"[TechSystem] Requested third party id '{thirdPartyId}' not found in prototypes.");
             return false;
         }
 

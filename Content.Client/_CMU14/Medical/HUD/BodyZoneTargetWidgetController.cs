@@ -26,7 +26,7 @@ public sealed partial class BodyZoneTargetWidgetController :
     [Dependency] private IInputManager _input = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
-    [UISystemDependency] private readonly ClientBodyZoneTargetingSystem _bodyZone = default!;
+    [UISystemDependency] private ClientBodyZoneTargetingSystem _bodyZone = default!;
 
     private BodyZoneTargetWidget? _widget;
 

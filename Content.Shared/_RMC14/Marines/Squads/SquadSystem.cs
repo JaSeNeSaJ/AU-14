@@ -905,7 +905,7 @@ public sealed partial class SquadSystem : EntitySystem
         if (squadOrder.Count == 0)
         {
             // The dataset cannot be empty, the person forgot to add values ​​to it
-            Logger.Error($"The squad hierarchy dataset '{squadHierarchyId}' has an invalid value: empty. The highest squad cannot be determined.");
+            Logger.GetSawmill("content").Error($"The squad hierarchy dataset '{squadHierarchyId}' has an invalid value: empty. The highest squad cannot be determined.");
             return null;
         }
 

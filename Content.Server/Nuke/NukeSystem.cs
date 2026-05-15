@@ -671,7 +671,7 @@ public sealed partial class NukeSystem : EntitySystem
     }
 }
 
-public sealed class NukeExplodedEvent : EntityEventArgs
+public sealed partial class NukeExplodedEvent : EntityEventArgs
 {
     public EntityUid? OwningStation;
 }
@@ -680,7 +680,7 @@ public sealed class NukeExplodedEvent : EntityEventArgs
 ///     Raised directed on the nuke when its disarm doafter is successful.
 ///     So the game knows not to end.
 /// </summary>
-public sealed class NukeDisarmSuccessEvent : EntityEventArgs
+public sealed partial class NukeDisarmSuccessEvent : EntityEventArgs
 {
 
 }

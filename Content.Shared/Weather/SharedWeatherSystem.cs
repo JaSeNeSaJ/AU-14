@@ -240,7 +240,7 @@ public abstract partial class SharedWeatherSystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    protected sealed class WeatherComponentState : ComponentState
+    protected sealed partial class WeatherComponentState : ComponentState
     {
         public Dictionary<ProtoId<WeatherPrototype>, WeatherData> Weather;
 

@@ -1001,7 +1001,7 @@ public enum XenoParasiteGhostUI
 }
 
 [Serializable, NetSerializable]
-public sealed class XenoParasiteGhostBuiMsg() : BoundUserInterfaceMessage
+public sealed partial class XenoParasiteGhostBuiMsg() : BoundUserInterfaceMessage
 {
 
 }

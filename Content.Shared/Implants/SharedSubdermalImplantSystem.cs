@@ -191,7 +191,7 @@ public abstract partial class SharedSubdermalImplantSystem : EntitySystem
     }
 }
 
-public sealed class ImplantRelayEvent<T> where T : notnull
+public sealed partial class ImplantRelayEvent<T> where T : notnull
 {
     public readonly T Event;
 

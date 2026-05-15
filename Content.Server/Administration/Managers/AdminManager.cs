@@ -664,7 +664,7 @@ namespace Content.Server.Administration.Managers
             OnPermsChanged?.Invoke(new AdminPermsChangedEventArgs(session, flags));
         }
 
-        private sealed class AdminReg
+        private sealed partial class AdminReg
         {
             public readonly ICommonSession Session;
 

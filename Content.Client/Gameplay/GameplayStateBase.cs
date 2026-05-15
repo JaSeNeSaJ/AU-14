@@ -167,7 +167,7 @@ namespace Content.Client.Gameplay
             return foundEntities.Select(a => a.Item1);
         }
 
-        private sealed class ClickableEntityComparer : IComparer<(EntityUid clicked, int depth, uint renderOrder, float bottom)>
+        private sealed partial class ClickableEntityComparer : IComparer<(EntityUid clicked, int depth, uint renderOrder, float bottom)>
         {
             public int Compare((EntityUid clicked, int depth, uint renderOrder, float bottom) x,
                 (EntityUid clicked, int depth, uint renderOrder, float bottom) y)

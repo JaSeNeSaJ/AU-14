@@ -49,10 +49,10 @@ public sealed partial class ActionUIController : UIController, IOnStateChanged<G
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IInputManager _input = default!;
 
-    [UISystemDependency] private readonly ActionsSystem? _actionsSystem = default;
-    [UISystemDependency] private readonly InteractionOutlineSystem? _interactionOutline = default;
-    [UISystemDependency] private readonly TargetOutlineSystem? _targetOutline = default;
-    [UISystemDependency] private readonly SpriteSystem _spriteSystem = default!;
+    [UISystemDependency] private ActionsSystem? _actionsSystem = default;
+    [UISystemDependency] private InteractionOutlineSystem? _interactionOutline = default;
+    [UISystemDependency] private TargetOutlineSystem? _targetOutline = default;
+    [UISystemDependency] private SpriteSystem _spriteSystem = default!;
 
     private ActionButtonContainer? _container;
     private readonly List<EntityUid?> _actions = new();

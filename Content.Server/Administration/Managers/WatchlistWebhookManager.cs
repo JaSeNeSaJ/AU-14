@@ -129,7 +129,7 @@ public sealed partial class WatchlistWebhookManager : IWatchlistWebhookManager
         watchlistConnections.Clear();
     }
 
-    private sealed class WatchlistConnection
+    private sealed partial class WatchlistConnection
     {
         public string PlayerName;
         public List<AdminWatchlistRecord> Watchlists;

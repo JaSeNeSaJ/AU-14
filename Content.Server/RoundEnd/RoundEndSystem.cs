@@ -383,7 +383,7 @@ namespace Content.Server.RoundEnd
         }
     }
 
-    public sealed class RoundEndSystemChangedEvent : EntityEventArgs
+    public sealed partial class RoundEndSystemChangedEvent : EntityEventArgs
     {
         public static RoundEndSystemChangedEvent Default { get; } = new();
     }

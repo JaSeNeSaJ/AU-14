@@ -816,7 +816,7 @@ public sealed partial class VehicleTurretSystem : EntitySystem
 }
 
 [Serializable, NetSerializable]
-public sealed class VehicleTurretRotateEvent : EntityEventArgs
+public sealed partial class VehicleTurretRotateEvent : EntityEventArgs
 {
     public NetEntity Turret;
     public NetCoordinates Coordinates;

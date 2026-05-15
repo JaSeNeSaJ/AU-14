@@ -22,8 +22,8 @@ public sealed partial class HandsUIController : UIController, IOnStateEntered<Ga
     [Dependency] private IEntityManager _entities = default!;
     [Dependency] private IPlayerManager _player = default!;
 
-    [UISystemDependency] private readonly HandsSystem _handsSystem = default!;
-    [UISystemDependency] private readonly UseDelaySystem _useDelay = default!;
+    [UISystemDependency] private HandsSystem _handsSystem = default!;
+    [UISystemDependency] private UseDelaySystem _useDelay = default!;
 
     private readonly List<HandsContainer> _handsContainers = new();
     private readonly Dictionary<string, int> _handContainerIndices = new();

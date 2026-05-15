@@ -210,13 +210,13 @@ public sealed partial class AlertLevelSystem : EntitySystem
     }
 }
 
-public sealed class AlertLevelDelayFinishedEvent : EntityEventArgs
+public sealed partial class AlertLevelDelayFinishedEvent : EntityEventArgs
 {}
 
-public sealed class AlertLevelPrototypeReloadedEvent : EntityEventArgs
+public sealed partial class AlertLevelPrototypeReloadedEvent : EntityEventArgs
 {}
 
-public sealed class AlertLevelChangedEvent : EntityEventArgs
+public sealed partial class AlertLevelChangedEvent : EntityEventArgs
 {
     public EntityUid Station { get; }
     public string AlertLevel { get; }

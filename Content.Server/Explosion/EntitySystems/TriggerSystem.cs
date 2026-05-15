@@ -40,7 +40,7 @@ namespace Content.Server.Explosion.EntitySystems
     /// <summary>
     /// Raised whenever something is Triggered on the entity.
     /// </summary>
-    public sealed class TriggerEvent : HandledEntityEventArgs
+    public sealed partial class TriggerEvent : HandledEntityEventArgs
     {
         public EntityUid Triggered { get; }
         public EntityUid? User { get; }

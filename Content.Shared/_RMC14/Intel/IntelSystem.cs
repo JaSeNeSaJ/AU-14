@@ -619,7 +619,7 @@ public sealed partial class IntelSystem : EntitySystem
             }
 
             // Feedback to the user for debugging/verification: which team got credited.
-            Logger.Debug($"[IntelSystem] AddPoints: credited  to team='{teamKey}");
+            Logger.GetSawmill("content").Debug($"[IntelSystem] AddPoints: credited  to team='{teamKey}");
         }
     }
 
@@ -714,7 +714,7 @@ public sealed partial class IntelSystem : EntitySystem
         }
 
         // Log which prototype id we're about to spawn for visibility during testing.
-        Logger.Info($"[IntelSystem] Spawning tech tree for team='{team}' using prototype='{(string)protoId}'");
+        Logger.GetSawmill("content").Info($"[IntelSystem] Spawning tech tree for team='{team}' using prototype='{(string)protoId}'");
 
         var treeId = Spawn(protoId);
         var treeComp = EnsureComp<IntelTechTreeComponent>(treeId);
@@ -980,7 +980,7 @@ public sealed partial class IntelSystem : EntitySystem
         tree.Comp.Tree.TotalEarned += points;
         var after = tree.Comp.Tree.Points;
         // Log every credit so uploads from consoles or any code path are visible in server logs.
-        Logger.Debug($"[IntelSystem] AddPoints: credited {points.Double()} to team='{teamkey}' before={before.Double()} after={after.Double()}");
+        Logger.GetSawmill("content").Debug($"[IntelSystem] AddPoints: credited {points.Double()} to team='{teamkey}' before={before.Double()} after={after.Double()}");
         Dirty(tree);
         UpdateTree(tree);
     }

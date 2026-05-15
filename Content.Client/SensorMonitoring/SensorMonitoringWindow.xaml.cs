@@ -198,7 +198,7 @@ public sealed partial class SensorMonitoringWindow : FancyWindow, IComputerWindo
         }
     }
 
-    private sealed class SensorData
+    private sealed partial class SensorData
     {
         public string Name = "";
         public string Address = "";
@@ -207,14 +207,14 @@ public sealed partial class SensorMonitoringWindow : FancyWindow, IComputerWindo
         public readonly Dictionary<int, SensorStream> Streams = new();
     }
 
-    private sealed class SensorStream
+    private sealed partial class SensorStream
     {
         public string Name = "";
         public SensorUnit Unit;
         public readonly Queue<SensorSample> Samples = new();
     }
 
-    private sealed class GraphView : Control
+    private sealed partial class GraphView : Control
     {
         private readonly Queue<SensorSample> _samples;
         private readonly TimeSpan _startTime;
@@ -279,7 +279,7 @@ public sealed partial class SensorMonitoringWindow : FancyWindow, IComputerWindo
 }
 
 [UsedImplicitly]
-public sealed class
+public sealed partial class
     SensorMonitoringConsoleBoundUserInterface : ComputerBoundUserInterface<SensorMonitoringWindow, ConsoleUIState>
 {
     public SensorMonitoringConsoleBoundUserInterface(EntityUid owner, Enum uiKey) : base(owner, uiKey)

@@ -22,7 +22,7 @@ namespace Content.Client.UserInterface.Systems.Guidebook;
 
 public sealed partial class GuidebookUIController : UIController, IOnStateEntered<LobbyState>, IOnStateEntered<GameplayState>, IOnStateExited<LobbyState>, IOnStateExited<GameplayState>, IOnSystemChanged<GuidebookSystem>
 {
-    [UISystemDependency] private readonly GuidebookSystem _guidebookSystem = default!;
+    [UISystemDependency] private GuidebookSystem _guidebookSystem = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IConfigurationManager _configuration = default!;
     [Dependency] private JobRequirementsManager _jobRequirements = default!;

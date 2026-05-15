@@ -40,8 +40,8 @@ public sealed partial class StorageUIController : UIController, IOnSystemChanged
     [Dependency] private IInputManager _input = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private CloseRecentWindowUIController _closeRecentWindowUIController = default!;
-    [UISystemDependency] private readonly StorageSystem _storage = default!;
-    [UISystemDependency] private readonly UserInterfaceSystem _ui = default!;
+    [UISystemDependency] private StorageSystem _storage = default!;
+    [UISystemDependency] private UserInterfaceSystem _ui = default!;
 
     private readonly DragDropHelper<ItemGridPiece> _menuDragHelper;
 

@@ -291,7 +291,7 @@ public abstract partial class SharedTetherGunSystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    protected sealed class RequestTetherMoveEvent : EntityEventArgs
+    protected sealed partial class RequestTetherMoveEvent : EntityEventArgs
     {
         public NetCoordinates Coordinates;
     }

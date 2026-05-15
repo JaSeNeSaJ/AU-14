@@ -47,10 +47,10 @@ namespace Content.Client.ContextMenu.UI
         [Dependency] private ContextMenuUIController _context = default!;
         [Dependency] private VerbMenuUIController _verb = default!;
 
-        [UISystemDependency] private readonly VerbSystem _verbSystem = default!;
-        [UISystemDependency] private readonly ExamineSystem _examineSystem = default!;
-        [UISystemDependency] private readonly TransformSystem _xform = default!;
-        [UISystemDependency] private readonly CombatModeSystem _combatMode = default!;
+        [UISystemDependency] private VerbSystem _verbSystem = default!;
+        [UISystemDependency] private ExamineSystem _examineSystem = default!;
+        [UISystemDependency] private TransformSystem _xform = default!;
+        [UISystemDependency] private CombatModeSystem _combatMode = default!;
 
         private bool _updating;
 

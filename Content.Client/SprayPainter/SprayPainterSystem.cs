@@ -43,7 +43,7 @@ public sealed partial class SprayPainterSystem : SharedSprayPainterSystem
     }
 }
 
-public sealed class SprayPainterEntry
+public sealed partial class SprayPainterEntry
 {
     public string Name;
     public Texture? Icon;

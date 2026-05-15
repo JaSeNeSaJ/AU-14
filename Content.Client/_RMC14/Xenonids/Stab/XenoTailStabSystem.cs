@@ -137,7 +137,7 @@ public sealed partial class XenoTailStabSystem : SharedXenoTailStabSystem
         }
     }
 
-    private sealed class TailStabOverlay : Overlay
+    private sealed partial class TailStabOverlay : Overlay
     {
         public override OverlaySpace Space => OverlaySpace.WorldSpace;
 

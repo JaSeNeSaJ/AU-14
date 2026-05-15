@@ -396,7 +396,7 @@ namespace Content.Shared.Damage
     ///
     ///     For example, armor.
     /// </summary>
-    public sealed class DamageModifyEvent : EntityEventArgs, IInventoryRelayEvent
+    public sealed partial class DamageModifyEvent : EntityEventArgs, IInventoryRelayEvent
     {
         // Whenever locational damage is a thing, this should just check only that bit of armour.
         public SlotFlags TargetSlots { get; } = ~SlotFlags.POCKET;
@@ -417,7 +417,7 @@ namespace Content.Shared.Damage
         }
     }
 
-    public sealed class DamageChangedEvent : EntityEventArgs
+    public sealed partial class DamageChangedEvent : EntityEventArgs
     {
         /// <summary>
         ///     This is the component whose damage was changed.

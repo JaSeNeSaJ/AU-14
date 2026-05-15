@@ -207,7 +207,7 @@ public abstract partial class SharedFultonSystem : EntitySystem
     /// Tells clients to play the fulton animation.
     /// </summary>
     [Serializable, NetSerializable]
-    protected sealed class FultonAnimationMessage : EntityEventArgs
+    protected sealed partial class FultonAnimationMessage : EntityEventArgs
     {
         public NetEntity Entity;
         public NetCoordinates Coordinates;

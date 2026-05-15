@@ -312,7 +312,7 @@ public sealed partial class HolopadWindow : FancyWindow
         }
     }
 
-    private sealed class HolopadContactButton : Button
+    private sealed partial class HolopadContactButton : Button
     {
         public NetEntity NetEntity;
 

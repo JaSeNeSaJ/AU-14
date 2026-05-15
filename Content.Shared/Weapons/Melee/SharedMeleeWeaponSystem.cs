@@ -76,9 +76,9 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
     [Dependency] private   SharedStaminaSystem _stamina = default!;
 
     // RMC14
-    [Dependency] private readonly IConfigurationManager _configuration = default!;
-    [Dependency] private readonly SharedRMCMeleeWeaponSystem _rmcMelee = default!;
-    [Dependency] private readonly RMCReagentSystem _reagent = default!;
+    [Dependency] private IConfigurationManager _configuration = default!;
+    [Dependency] private SharedRMCMeleeWeaponSystem _rmcMelee = default!;
+    [Dependency] private RMCReagentSystem _reagent = default!;
 
     private static readonly ProtoId<ReagentPrototype> YautjaBloodReagent = "CMUYautjaBlood";
     private const int AttackMask = (int) (CollisionGroup.MobMask | CollisionGroup.Opaque);

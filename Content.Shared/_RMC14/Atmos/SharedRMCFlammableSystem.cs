@@ -1132,7 +1132,7 @@ public abstract partial class SharedRMCFlammableSystem : EntitySystem
 }
 
 [ByRefEvent]
-public sealed class GetIgnitionImmunityEvent : EntityEventArgs, IInventoryRelayEvent
+public sealed partial class GetIgnitionImmunityEvent : EntityEventArgs, IInventoryRelayEvent
 {
     public SlotFlags TargetSlots { get; } = ~SlotFlags.POCKET;
 

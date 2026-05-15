@@ -33,7 +33,7 @@ public sealed partial class StaffHelpUIController : UIController, IOnSystemChang
     [Dependency] private INetManager _net = default!;
     [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [UISystemDependency] private readonly AudioSystem? _audio = default!;
+    [UISystemDependency] private AudioSystem? _audio = default!;
 
     private readonly Dictionary<NetUserId, List<MentorMessage>> _messages = new();
     private readonly Dictionary<NetUserId, string> _destinationNames = new();

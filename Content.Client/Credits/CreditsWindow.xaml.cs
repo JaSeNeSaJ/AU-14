@@ -382,7 +382,7 @@ public sealed partial class CreditsWindow : DefaultWindow
             contributeButton.Visible = false;
     }
 
-    private sealed class PatronEntry
+    private sealed partial class PatronEntry
     {
         public string Name { get; }
         public string Tier { get; }

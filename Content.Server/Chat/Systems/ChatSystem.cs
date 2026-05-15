@@ -1071,7 +1071,7 @@ public record ExpandICChatRecipientsEvent(EntityUid Source, float VoiceRange, Di
 /// <summary>
 ///     Raised broadcast in order to transform speech.transmit
 /// </summary>
-public sealed class TransformSpeechEvent : EntityEventArgs
+public sealed partial class TransformSpeechEvent : EntityEventArgs
 {
     public EntityUid Sender;
     public string Message;
@@ -1083,7 +1083,7 @@ public sealed class TransformSpeechEvent : EntityEventArgs
     }
 }
 
-public sealed class CheckIgnoreSpeechBlockerEvent : EntityEventArgs
+public sealed partial class CheckIgnoreSpeechBlockerEvent : EntityEventArgs
 {
     public EntityUid Sender;
     public bool IgnoreBlocker;
@@ -1098,7 +1098,7 @@ public sealed class CheckIgnoreSpeechBlockerEvent : EntityEventArgs
 /// <summary>
 ///     Raised on an entity when it speaks, either through 'say' or 'whisper'.
 /// </summary>
-public sealed class EntitySpokeEvent : EntityEventArgs
+public sealed partial class EntitySpokeEvent : EntityEventArgs
 {
     public readonly EntityUid Source;
     public readonly string Message;

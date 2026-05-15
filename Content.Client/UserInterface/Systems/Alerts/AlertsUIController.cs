@@ -15,7 +15,7 @@ public sealed partial class AlertsUIController : UIController, IOnStateEntered<G
 {
     [Dependency] private IPlayerManager _player = default!;
 
-    [UISystemDependency] private readonly ClientAlertsSystem? _alertsSystem = default;
+    [UISystemDependency] private ClientAlertsSystem? _alertsSystem = default;
 
     private AlertsUI? UI => UIManager.GetActiveUIWidgetOrNull<AlertsUI>();
 

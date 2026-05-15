@@ -347,7 +347,7 @@ public sealed partial class WiresSystem : SharedWiresSystem
         }
     }
 
-    private sealed class ActiveWireAction
+    private sealed partial class ActiveWireAction
     {
         /// <summary>
         ///     The wire action's ID. This is so that once the action is finished,
@@ -861,7 +861,7 @@ public sealed partial class WiresSystem : SharedWiresSystem
     #endregion
 }
 
-public sealed class Wire
+public sealed partial class Wire
 {
     /// <summary>
     /// The entity that registered the wire.
@@ -921,7 +921,7 @@ public delegate void WireActionDelegate(Wire wire);
 
 // callbacks over the event bus,
 // because async is banned
-public sealed class TimedWireEvent : EntityEventArgs
+public sealed partial class TimedWireEvent : EntityEventArgs
 {
     /// <summary>
     ///     The function to be called once
@@ -941,7 +941,7 @@ public sealed class TimedWireEvent : EntityEventArgs
     }
 }
 
-public sealed class WireLayout
+public sealed partial class WireLayout
 {
     // why is this an <int, WireData>?
     // List<T>.Insert panics,
@@ -954,7 +954,7 @@ public sealed class WireLayout
         Specifications = specifications;
     }
 
-    public sealed class WireData
+    public sealed partial class WireData
     {
         public WireLetter Letter { get; }
         public WireColor Color { get; }

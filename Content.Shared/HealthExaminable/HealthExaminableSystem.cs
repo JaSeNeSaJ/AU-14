@@ -105,7 +105,7 @@ public sealed partial class HealthExaminableSystem : EntitySystem
 ///     in order to add special text that is not handled by the
 ///     damage thresholds.
 /// </summary>
-public sealed class HealthBeingExaminedEvent
+public sealed partial class HealthBeingExaminedEvent
 {
     public FormattedMessage Message;
 

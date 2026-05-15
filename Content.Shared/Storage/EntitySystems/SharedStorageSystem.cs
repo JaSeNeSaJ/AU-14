@@ -2004,7 +2004,7 @@ public abstract partial class SharedStorageSystem : EntitySystem
     }
 
     [Serializable, NetSerializable]
-    protected sealed class StorageComponentState : ComponentState
+    protected sealed partial class StorageComponentState : ComponentState
     {
         public Dictionary<NetEntity, ItemStorageLocation> StoredItems = new();
 

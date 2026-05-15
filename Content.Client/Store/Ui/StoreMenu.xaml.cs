@@ -286,7 +286,7 @@ public sealed partial class StoreMenu : DefaultWindow
         RefundButton.Visible = allowRefund;
     }
 
-    private sealed class StoreCategoryButton : Button
+    private sealed partial class StoreCategoryButton : Button
     {
         public string? Id;
     }

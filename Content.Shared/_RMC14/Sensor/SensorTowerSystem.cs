@@ -463,7 +463,7 @@ public sealed partial class SensorTowerWipeDoAfterEvent : SimpleDoAfterEvent;
 public sealed partial class SensorTowerAddDoAfterEvent : SimpleDoAfterEvent;
 
 // Local event for sensor tower state changes. Not net-serializable to avoid serializing Entity<T>.
-public sealed class SensorTowerStateChangedEvent : EntityEventArgs
+public sealed partial class SensorTowerStateChangedEvent : EntityEventArgs
 {
     public EntityUid TowerUid;
     public SensorTowerStateChangedEvent(EntityUid towerUid) { TowerUid = towerUid; }

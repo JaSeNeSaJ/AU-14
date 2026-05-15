@@ -291,7 +291,7 @@ namespace Content.Client.Wires.UI
             return false;
         }
 
-        private sealed class WireControl : Control
+        private sealed partial class WireControl : Control
         {
             private IResourceCache _resourceCache;
 
@@ -380,7 +380,7 @@ namespace Content.Client.Wires.UI
                 return base.HasPoint(point) && point.Y <= 80;
             }
 
-            private sealed class WireRender : Control
+            private sealed partial class WireRender : Control
             {
                 private readonly WireColor _color;
                 private readonly bool _isCut;
@@ -459,7 +459,7 @@ namespace Content.Client.Wires.UI
             }
         }
 
-        private sealed class StatusLight : Control
+        private sealed partial class StatusLight : Control
         {
             private static readonly Animation _blinkingFast = new()
             {
@@ -584,7 +584,7 @@ namespace Content.Client.Wires.UI
             }
         }
 
-        private sealed class HelpPopup : Popup
+        private sealed partial class HelpPopup : Popup
         {
             public HelpPopup()
             {

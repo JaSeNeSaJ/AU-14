@@ -116,7 +116,7 @@ public sealed partial class MoverController : SharedMoverController
 
     public override void SetSprinting(Entity<InputMoverComponent> entity, ushort subTick, bool walking)
     {
-        // Logger.Info($"[{_gameTiming.CurTick}/{subTick}] Sprint: {enabled}");
+        // Logger.GetSawmill("content").Info($"[{_gameTiming.CurTick}/{subTick}] Sprint: {enabled}");
         base.SetSprinting(entity, subTick, walking);
 
         if (walking && _cfg.GetCVar(CCVars.ToggleWalk))

@@ -37,7 +37,7 @@ public sealed partial class DamageUserOnTriggerSystem : EntitySystem
     }
 }
 
-public sealed class BeforeDamageUserOnTriggerEvent : EntityEventArgs
+public sealed partial class BeforeDamageUserOnTriggerEvent : EntityEventArgs
 {
     public DamageSpecifier Damage { get; set;  }
     public EntityUid Tripper { get; }

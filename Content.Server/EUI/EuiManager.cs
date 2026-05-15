@@ -21,7 +21,7 @@ namespace Content.Server.EUI
         private readonly Queue<(ICommonSession player, uint id)> _stateUpdateQueue =
             new Queue<(ICommonSession, uint id)>();
 
-        private sealed class PlayerEuiData
+        private sealed partial class PlayerEuiData
         {
             public uint NextId = 1;
             public readonly Dictionary<uint, BaseEui> OpenUIs = new();

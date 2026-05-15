@@ -116,7 +116,7 @@ public sealed partial class PlayerRateLimitManager : SharedPlayerRateLimitManage
             _rateLimitData.Remove(e.Session);
     }
 
-    private sealed class RegistrationData
+    private sealed partial class RegistrationData
     {
         public required RateLimitRegistration Registration { get; init; }
         public TimeSpan LimitPeriod { get; set; }

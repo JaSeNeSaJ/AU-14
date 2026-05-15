@@ -63,14 +63,14 @@ public sealed partial class ServerTechSystem : EntitySystem
     {
         if (string.IsNullOrEmpty(ev.ThirdPartyId))
         {
-            Logger.Warning("[ServerTechSystem] Received TechPartySpawnEvent with null/empty ThirdPartyId; ignoring.");
+            Logger.GetSawmill("content").Warning("[ServerTechSystem] Received TechPartySpawnEvent with null/empty ThirdPartyId; ignoring.");
             return;
         }
         TechSystem.ExecuteTechPartySpawn(_proto, ev.ThirdPartyId, proto =>
         {
             if (!_proto.TryIndex(proto.PartySpawn, out var spawnProto))
             {
-                Logger.Warning($"[ServerTechSystem] PartySpawn prototype '{proto.PartySpawn}' not found for third party '{proto.ID}'.");
+                Logger.GetSawmill("content").Warning($"[ServerTechSystem] PartySpawn prototype '{proto.PartySpawn}' not found for third party '{proto.ID}'.");
                 return;
             }
 

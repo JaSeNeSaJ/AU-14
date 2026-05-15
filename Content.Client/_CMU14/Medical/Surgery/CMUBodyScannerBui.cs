@@ -1436,7 +1436,7 @@ public sealed partial class CMUBodyScannerBui : BoundUserInterface
     }
 }
 
-public sealed class CMUUprightSpriteView : SpriteView
+public sealed partial class CMUUprightSpriteView : SpriteView
 {
     protected override void Draw(IRenderHandle renderHandle)
     {

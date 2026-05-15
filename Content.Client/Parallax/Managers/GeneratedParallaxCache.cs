@@ -189,7 +189,7 @@ public sealed partial class GeneratedParallaxCache : IPostInjectInit
         _sawmill = _logManager.GetSawmill("parallax.generated");
     }
 
-    private sealed class CacheDatum
+    private sealed partial class CacheDatum
     {
         public required ResPath ConfigPath;
         public required Task<Texture> LoadTask;

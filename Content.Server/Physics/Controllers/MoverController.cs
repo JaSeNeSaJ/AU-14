@@ -128,7 +128,7 @@ public sealed partial class MoverController : SharedMoverController
 
         ApplyTick(component, remainingFraction);
 
-        // Logger.Info($"{curDir}{walk}{sprint}");
+        // Logger.GetSawmill("content").Info($"{curDir}{walk}{sprint}");
         return (component.CurTickStrafeMovement, component.CurTickRotationMovement, component.CurTickBraking);
     }
 

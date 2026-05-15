@@ -238,7 +238,7 @@ public abstract partial class SharedRMCActionsSystem : EntitySystem
 }
 
 [Serializable, NetSerializable]
-public sealed class RMCMissedTargetActionEvent : EntityEventArgs
+public sealed partial class RMCMissedTargetActionEvent : EntityEventArgs
 {
     public readonly NetEntity Action;
     public RMCMissedTargetActionEvent(NetEntity actionId)

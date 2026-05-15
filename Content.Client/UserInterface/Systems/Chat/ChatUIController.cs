@@ -64,13 +64,13 @@ public sealed partial class ChatUIController : UIController
     [Dependency] private IReplayRecordingManager _replayRecording = default!;
     [Dependency] private StaffHelpUIController _staffHelpUI = default!;
 
-    [UISystemDependency] private readonly ExamineSystem? _examine = default;
-    [UISystemDependency] private readonly GhostSystem? _ghost = default;
-    [UISystemDependency] private readonly TypingIndicatorSystem? _typingIndicator = default;
-    [UISystemDependency] private readonly ChatSystem? _chatSys = default;
-    [UISystemDependency] private readonly TransformSystem? _transform = default;
-    [UISystemDependency] private readonly MindSystem? _mindSystem = default!;
-    [UISystemDependency] private readonly RoleCodewordSystem? _roleCodewordSystem = default!;
+    [UISystemDependency] private ExamineSystem? _examine = default;
+    [UISystemDependency] private GhostSystem? _ghost = default;
+    [UISystemDependency] private TypingIndicatorSystem? _typingIndicator = default;
+    [UISystemDependency] private ChatSystem? _chatSys = default;
+    [UISystemDependency] private TransformSystem? _transform = default;
+    [UISystemDependency] private MindSystem? _mindSystem = default!;
+    [UISystemDependency] private RoleCodewordSystem? _roleCodewordSystem = default!;
 
     private static readonly ProtoId<ColorPalettePrototype> ChatNamePalette = "ChatNames";
     private string[] _chatNameColors = default!;
@@ -672,7 +672,7 @@ public sealed partial class ChatUIController : UIController
         }
         catch (Exception e)
         {
-            Logger.Error($"Error deleting chat history:\n{e}");
+            Logger.GetSawmill("content").Error($"Error deleting chat history:\n{e}");
         }
     }
 
@@ -1051,7 +1051,7 @@ public sealed partial class ChatUIController : UIController
 
     private readonly record struct SpeechBubbleData(ChatMessage Message, SpeechBubble.SpeechType Type);
 
-    private sealed class SpeechBubbleQueueData
+    private sealed partial class SpeechBubbleQueueData
     {
         /// <summary>
         ///     Time left until the next speech bubble can appear.

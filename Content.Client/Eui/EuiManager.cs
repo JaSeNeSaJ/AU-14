@@ -67,7 +67,7 @@ namespace Content.Client.Eui
             _openUis.Add(message.Id, new EuiData(instance));
         }
 
-        private sealed class EuiData
+        private sealed partial class EuiData
         {
             public readonly BaseEui Eui;
 

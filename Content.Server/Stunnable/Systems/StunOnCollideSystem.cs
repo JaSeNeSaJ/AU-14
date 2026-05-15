@@ -16,8 +16,8 @@ namespace Content.Server.Stunnable
     {
         private static readonly ProtoId<TagPrototype> TaserTag = "Taser";
 
-        [Dependency] private readonly StunSystem _stunSystem = default!;
-        [Dependency] private readonly TagSystem _tag = default!;
+        [Dependency] private StunSystem _stunSystem = default!;
+        [Dependency] private TagSystem _tag = default!;
 
         public override void Initialize()
         {

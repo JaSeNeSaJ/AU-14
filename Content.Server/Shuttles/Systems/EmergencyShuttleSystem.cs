@@ -670,7 +670,7 @@ public sealed partial class EmergencyShuttleSystem : EntitySystem
     /// A result of a shuttle dock operation done by <see cref="EmergencyShuttleSystem.DockSingleEmergencyShuttle"/>.
     /// </summary>
     /// <seealso cref="ShuttleDockResultType"/>
-    public sealed class ShuttleDockResult
+    public sealed partial class ShuttleDockResult
     {
         /// <summary>
         /// The station for which the emergency shuttle got docked.

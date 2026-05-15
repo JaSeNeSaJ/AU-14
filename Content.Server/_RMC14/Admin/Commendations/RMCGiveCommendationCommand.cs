@@ -202,7 +202,7 @@ public sealed partial class RMCGiveCommendationCommand : LocalizedCommands
         }
         catch (Exception e)
         {
-            Logger.Error($"Error saving commendation: {e}");
+            Logger.GetSawmill("content").Error($"Error saving commendation: {e}");
         }
     }
 

@@ -17,8 +17,8 @@ namespace Content.Server._RMC14.Rules
     /// </summary>
     public sealed partial class ColonyJobOverrideSystem : EntitySystem
     {
-        [Dependency] private readonly RMCPlanetSystem _planetSystem = default!;
-        [Dependency] private readonly GameTicker _gameTicker = default!;
+        [Dependency] private RMCPlanetSystem _planetSystem = default!;
+        [Dependency] private GameTicker _gameTicker = default!;
 
         public override void Initialize()
         {

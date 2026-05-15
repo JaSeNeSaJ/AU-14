@@ -152,7 +152,7 @@ namespace Content.Shared.Gravity
         }
 
         [Serializable, NetSerializable]
-        private sealed class GravityComponentState : ComponentState
+        private sealed partial class GravityComponentState : ComponentState
         {
             public bool Enabled { get; }
 

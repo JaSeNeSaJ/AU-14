@@ -894,19 +894,19 @@ public sealed partial class XenoPlaceResinTunnelDestroyWeedSourceDoAfterEvent : 
 public sealed partial class XenoCollapseTunnelDoAfterEvent : SimpleDoAfterEvent;
 
 [Serializable, NetSerializable]
-public sealed class TraverseXenoTunnelMessage(NetEntity destinationTunnel) : BoundUserInterfaceMessage
+public sealed partial class TraverseXenoTunnelMessage(NetEntity destinationTunnel) : BoundUserInterfaceMessage
 {
     public NetEntity DestinationTunnel = destinationTunnel;
 }
 
 [Serializable, NetSerializable]
-public sealed class NameTunnelMessage(string tunnelName) : BoundUserInterfaceMessage
+public sealed partial class NameTunnelMessage(string tunnelName) : BoundUserInterfaceMessage
 {
     public string TunnelName = tunnelName;
 }
 
 [Serializable, NetSerializable]
-public sealed class SelectDestinationTunnelInterfaceState(Dictionary<string, NetEntity> hiveTunnels) : BoundUserInterfaceState
+public sealed partial class SelectDestinationTunnelInterfaceState(Dictionary<string, NetEntity> hiveTunnels) : BoundUserInterfaceState
 {
     public Dictionary<string, NetEntity> HiveTunnels = hiveTunnels;
 }

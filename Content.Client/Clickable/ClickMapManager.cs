@@ -127,7 +127,7 @@ namespace Content.Client.Clickable
             return false;
         }
 
-        private sealed class RsiClickMapData
+        private sealed partial class RsiClickMapData
         {
             public readonly ClickMap ClickMap;
             public readonly Dictionary<RSI.StateId, Vector2i[][]> Offsets;
@@ -139,7 +139,7 @@ namespace Content.Client.Clickable
             }
         }
 
-        internal sealed class ClickMap
+        internal sealed partial class ClickMap
         {
             [ViewVariables] private readonly byte[] _data;
 

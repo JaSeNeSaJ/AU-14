@@ -437,7 +437,7 @@ public sealed partial class PlayTimeTrackingManager : ISharedPlaytimeManager, IP
     /// <summary>
     /// Play time info for a particular player.
     /// </summary>
-    private sealed class PlayTimeData
+    private sealed partial class PlayTimeData
     {
         // Queued update flags
         public bool IsDirty;

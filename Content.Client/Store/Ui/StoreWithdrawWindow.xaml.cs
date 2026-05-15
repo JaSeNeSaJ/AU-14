@@ -86,7 +86,7 @@ public sealed partial class StoreWithdrawWindow : DefaultWindow
         }
     }
 
-    private sealed class CurrencyWithdrawButton : Button
+    private sealed partial class CurrencyWithdrawButton : Button
     {
         public string? Id;
         public FixedPoint2 Amount = FixedPoint2.Zero;

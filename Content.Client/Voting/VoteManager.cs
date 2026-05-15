@@ -187,7 +187,7 @@ namespace Content.Client.Voting
             existingVote.DisplayVotes = message.DisplayVotes;
             existingVote.TargetEntity = message.TargetEntity;
 
-            // Logger.Debug($"{existingVote.StartTime}, {existingVote.EndTime}, {_gameTiming.RealTime}");
+            // Logger.GetSawmill("content").Debug($"{existingVote.StartTime}, {existingVote.EndTime}, {_gameTiming.RealTime}");
 
             for (var i = 0; i < message.Options.Length; i++)
             {
@@ -236,7 +236,7 @@ namespace Content.Client.Voting
             _console.LocalShell.RemoteExecuteCommand($"vote {voteId} {option}");
         }
 
-        public sealed class ActiveVote
+        public sealed partial class ActiveVote
         {
             public VoteEntry[] Entries = default!;
 
@@ -255,7 +255,7 @@ namespace Content.Client.Voting
             }
         }
 
-        public sealed class VoteEntry
+        public sealed partial class VoteEntry
         {
             public string Text { get; }
             public int Votes { get; set; }

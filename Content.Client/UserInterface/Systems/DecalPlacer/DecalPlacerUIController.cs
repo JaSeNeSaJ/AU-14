@@ -13,7 +13,7 @@ namespace Content.Client.UserInterface.Systems.DecalPlacer;
 public sealed partial class DecalPlacerUIController : UIController, IOnStateExited<GameplayState>, IOnSystemChanged<SandboxSystem>
 {
     [Dependency] private IPrototypeManager _prototypes = default!;
-    [UISystemDependency] private readonly SandboxSystem _sandbox = default!;
+    [UISystemDependency] private SandboxSystem _sandbox = default!;
 
     private DecalPlacerWindow? _window;
 

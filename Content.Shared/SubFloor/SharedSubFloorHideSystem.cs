@@ -205,7 +205,7 @@ namespace Content.Shared.SubFloor
         }
 
         [Serializable, NetSerializable]
-        protected sealed class ShowSubfloorRequestEvent : EntityEventArgs
+        protected sealed partial class ShowSubfloorRequestEvent : EntityEventArgs
         {
             public bool Value;
         }

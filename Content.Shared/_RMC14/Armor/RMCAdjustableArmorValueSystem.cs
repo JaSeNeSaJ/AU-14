@@ -124,7 +124,7 @@ public enum AdjustableArmorUiKey : byte
 
 
 [Serializable, NetSerializable]
-public sealed class AdjustableArmorBoundUserInterfaceState : BoundUserInterfaceState
+public sealed partial class AdjustableArmorBoundUserInterfaceState : BoundUserInterfaceState
 {
     public string MeleeArmor { get; }
     public string BulletArmor { get; }
@@ -145,7 +145,7 @@ public sealed class AdjustableArmorBoundUserInterfaceState : BoundUserInterfaceS
 }
 
 [Serializable, NetSerializable]
-public sealed class AdjustableArmorSetValueMessage : BoundUserInterfaceMessage
+public sealed partial class AdjustableArmorSetValueMessage : BoundUserInterfaceMessage
 {
     public ArmorType Type { get; }
     public string Value { get; }

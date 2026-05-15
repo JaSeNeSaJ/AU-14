@@ -442,7 +442,7 @@ public sealed partial class StationRecordsSystem : SharedStationRecordsSystem
 /// <summary>
 /// Base event for station record events
 /// </summary>
-public abstract class StationRecordEvent : EntityEventArgs
+public abstract partial class StationRecordEvent : EntityEventArgs
 {
     public readonly StationRecordKey Key;
     public EntityUid Station => Key.OriginStation;
@@ -459,7 +459,7 @@ public abstract class StationRecordEvent : EntityEventArgs
 ///     listening to this event, as it contains the character's record key.
 ///     Also stores the general record reference, to save some time.
 /// </summary>
-public sealed class AfterGeneralRecordCreatedEvent : StationRecordEvent
+public sealed partial class AfterGeneralRecordCreatedEvent : StationRecordEvent
 {
     public readonly GeneralStationRecord Record;
     /// <summary>
@@ -483,7 +483,7 @@ public sealed class AfterGeneralRecordCreatedEvent : StationRecordEvent
 ///     that store record keys can then remove the key from their internal
 ///     fields.
 /// </summary>
-public sealed class RecordRemovedEvent : StationRecordEvent
+public sealed partial class RecordRemovedEvent : StationRecordEvent
 {
     public RecordRemovedEvent(StationRecordKey key) : base(key)
     {
@@ -495,7 +495,7 @@ public sealed class RecordRemovedEvent : StationRecordEvent
 ///     inform other systems that records stored in this key
 ///     may have changed.
 /// </summary>
-public sealed class RecordModifiedEvent : StationRecordEvent
+public sealed partial class RecordModifiedEvent : StationRecordEvent
 {
     public RecordModifiedEvent(StationRecordKey key) : base(key)
     {

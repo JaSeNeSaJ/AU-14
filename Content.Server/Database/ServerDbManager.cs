@@ -1487,7 +1487,7 @@ namespace Content.Server.Database
             builder.UseLoggerFactory(_msLoggerFactory);
         }
 
-        private sealed class LoggingProvider : ILoggerProvider
+        private sealed partial class LoggingProvider : ILoggerProvider
         {
             private readonly ILogManager _logManager;
 
@@ -1506,7 +1506,7 @@ namespace Content.Server.Database
             }
         }
 
-        private sealed class MSLogger : ILogger
+        private sealed partial class MSLogger : ILogger
         {
             private readonly ISawmill _sawmill;
 
@@ -1549,7 +1549,7 @@ namespace Content.Server.Database
 
     public sealed record PlayTimeUpdate(NetUserId User, string Tracker, TimeSpan Time);
 
-    internal sealed class SyncAsyncEnumerable<T> : IAsyncEnumerable<T>
+    internal sealed partial class SyncAsyncEnumerable<T> : IAsyncEnumerable<T>
     {
         private readonly IAsyncEnumerable<T> _enumerable;
 
@@ -1563,7 +1563,7 @@ namespace Content.Server.Database
             return new Enumerator(_enumerable.GetAsyncEnumerator(cancellationToken));
         }
 
-        private sealed class Enumerator : IAsyncEnumerator<T>
+        private sealed partial class Enumerator : IAsyncEnumerator<T>
         {
             private readonly IAsyncEnumerator<T> _enumerator;
 

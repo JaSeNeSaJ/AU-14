@@ -2079,7 +2079,7 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
     }
 }
 
-public sealed class Spawners
+public sealed partial class Spawners
 {
     public readonly Dictionary<EntProtoId, Dictionary<ProtoId<JobPrototype>, List<EntityUid>>> Squad = new();
     public readonly Dictionary<EntProtoId, List<EntityUid>> SquadAny = new();

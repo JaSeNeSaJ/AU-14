@@ -355,7 +355,7 @@ public abstract partial class SharedMobCollisionSystem : EntitySystem
     /// Raised from client -> server indicating mob push direction OR server -> server for NPC mob pushes.
     /// </summary>
     [Serializable, NetSerializable]
-    protected sealed class MobCollisionMessage : EntityEventArgs
+    protected sealed partial class MobCollisionMessage : EntityEventArgs
     {
         public Vector2 Direction;
         public float SpeedModifier;

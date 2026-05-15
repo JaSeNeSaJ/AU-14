@@ -285,7 +285,7 @@ public record struct GeneratorUseFuel(float FuelUsed);
 /// <summary>
 /// Raised by <see cref="GeneratorSystem"/> to empty a generator of its fuel contents.
 /// </summary>
-public sealed class GeneratorEmpty
+public sealed partial class GeneratorEmpty
 {
     public static readonly GeneratorEmpty Instance = new();
 }
