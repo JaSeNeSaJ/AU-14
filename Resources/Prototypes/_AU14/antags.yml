@@ -15,19 +15,14 @@
         color: CornflowerBlue
         sound: "/Audio/Ambience/Antag/headrev_start.ogg"
       components:
-      - type: NightVision
-        innate: true
       - type: RunawaySynth
-      - type: EyeProtection
-      - type: Insulated
-      - type: RMCLeapProtection
       - type: Synth
         changeBrain: false
         canUseGuns: true
         hideGeneration: true
         useHumanHealthIcons: true
-  #    mindRoles:
-   #   - MindRoleRunawaySynth
+#     mindRoles:
+#     - MindRoleRunawaySynth
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -39,7 +34,6 @@
     exclusiveAntag: true
     roleType: TeamAntagonist
 
-
 - type: antag
   id: RunawaySynthRole
   name: roles-antag-runaway-synth-name
@@ -50,7 +44,6 @@
   isCM: true
 
 ## CLF subverted synth
-
 - type: entity
   id: CLFSubvertedSynth
   parent: BaseGameRule
@@ -60,7 +53,6 @@
     selectionTime: PostPlayerSpawn
     definitions:
     - prefRoles: [ CLFSubvertedSynthRole ]
-
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -100,7 +92,6 @@
   isCM: true
 
 ## fugitive
-
 - type: entity
   id: Fugitive
   parent: BaseGameRule
@@ -127,7 +118,6 @@
   id: AU14GearFugitive
   equipment:
     pocket1: AU14ObjectiveItemWYLaptop
-
 
 - type: entity
   parent: BaseMindRoleAntag
@@ -166,6 +156,7 @@
   objective: monster-traitor-objective
   isCM: true
 
+## Druggo
 - type: entity
   id: DrugDealer
   parent: BaseGameRule
@@ -207,12 +198,31 @@
   objective: roles-antag-dealer-objective
   isCM: true
 
-
 - type: startingGear
   id: AU14GearDrugDealer
   equipment:
     back: AU14DrugDealerDrugBackpack
 
+- type: entity
+  parent: RMCSatchelBlack
+  id: AU14DrugDealerDrugBackpack
+  name: drug dealer's satchel
+  description: A black satchel filled with illicit substances.
+  components:
+  - type: StorageFill
+    contents:
+    - id: Joint
+      amount: 3
+    - id: AU14DrugDealerDrugBottle
+      amount: 4
+    - id: AU14PillBottleSpaceDrugs
+      amount: 3
+    - id: RMCSyringeDrugs
+      amount: 2
+    - id: AU14PillBottleRMCPsilocybin
+      amount: 2
+
+## Spy
 - type: entity
   id: CorporateSpy
   parent: BaseGameRule
@@ -258,27 +268,7 @@
   equipment:
     pocket1: AU14IDCardCorporateSpy
 
-- type: entity
-  parent: RMCSatchelBlack
-  id: AU14DrugDealerDrugBackpack
-  name: drug dealer's satchel
-  description: A black satchel filled with illicit substances.
-  components:
-  - type: StorageFill
-    contents:
-    - id: Joint
-      amount: 3
-    - id: AU14DrugDealerDrugBottle
-      amount: 4
-    - id: AU14PillBottleSpaceDrugs
-      amount: 3
-    - id: RMCSyringeDrugs
-      amount: 2
-    - id: AU14PillBottleRMCPsilocybin
-      amount: 2
-
 ## CLF Veteran
-
 - type: entity
   id: CLFVeteran
   parent: BaseGameRule
@@ -329,8 +319,6 @@
           RMCSkillMedical: 3
           RMCSkillPolice: 1
           RMCSkillSurgery: 3
-
-
       mindRoles:
       - MindRoleCLFVeteran
 
@@ -359,7 +347,6 @@
     suitstorage: AU14WeaponRevolverM44Inscribed
 
 ## Strike Organizer
-
 - type: entity
   id: StrikeOrganizer
   parent: BaseGameRule
@@ -419,7 +406,6 @@
       amount: 2
 
 ## Cannibal
-
 - type: entity
   id: Cannibal
   parent: BaseGameRule
@@ -463,7 +449,6 @@
   isCM: true
 
 ## Serial Killer
-
 - type: entity
   id: SerialKiller
   parent: BaseGameRule
@@ -503,4 +488,3 @@
   setPreference: true
   objective: roles-antag-serialkiller-objective
   isCM: true
-

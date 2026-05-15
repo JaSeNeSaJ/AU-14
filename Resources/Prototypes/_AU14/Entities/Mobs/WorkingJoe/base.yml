@@ -162,7 +162,6 @@
     icon:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
       state: synth
-  - type: EyeProtection
   - type: Actions
   - type: GrantAreaInfo
   - type: GrantMarineIcons
@@ -183,7 +182,7 @@
   - type: HumanoidAppearance
     species: WorkingJoe
 
-- type: entity
+- type: entity # dead code
   parent: RMCSynthRemoveComponents
   id: AU14WorkingJoeRemoveComponents
   categories: [ HideSpawnMenu ]
