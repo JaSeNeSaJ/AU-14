@@ -12,6 +12,10 @@
     components:
     - type: Yautja
     - type: IgnoreXenoWeedsSlowdown
+    - type: Skills
+      skills:
+        RMCSkillMedical: 3
+        RMCSkillSurgery: 2
 
 - type: startingGear
   id: CMUYautjaHunterGear
@@ -79,6 +83,10 @@
   components:
   - type: Yautja
   - type: IgnoreXenoWeedsSlowdown
+  - type: Skills
+    skills:
+      RMCSkillMedical: 3
+      RMCSkillSurgery: 2
   - type: MovementSpeedModifier
     baseWalkSpeed: 4.4
     baseSprintSpeed: 8.4

@@ -7,6 +7,10 @@
   components:
   - type: Yautja
   - type: IgnoreXenoWeedsSlowdown
+  - type: Skills
+    skills:
+      RMCSkillMedical: 3
+      RMCSkillSurgery: 2
   - type: Loadout
     prototypes:
     - CMUYautjaHunterGear

@@ -74,7 +74,7 @@
     id: AU14IDCardCLFCellLeader
     eyes: RMCGlassesAviators
   inhand:
-  - RMCWeaponRifleType71
+  - AU14CLFCellKit
   - AU14CLFHeadset
 
 - type: entity
