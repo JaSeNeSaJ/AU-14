@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared._RMC14.Chemistry.Reagent;
 using Content.Shared._RMC14.Projectiles.Penetration;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared._RMC14.Weapons.Ranged;
@@ -41,6 +42,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 {
     public const string ProjectileFixture = "projectile";
     private static readonly ProtoId<ReagentPrototype> BloodReagent = "Blood";
+    private static readonly ProtoId<ReagentPrototype> YautjaBloodReagent = "CMUYautjaBlood";
     private static readonly FixedPoint2 BloodImpactPiercingThreshold = FixedPoint2.New(45);
     private static readonly string[] BloodImpactEffects =
     {
@@ -48,21 +50,28 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         "CMUBloodImpactEffect1",
         "CMUBloodImpactEffect2",
     };
+    private static readonly string[] YautjaBloodImpactEffects =
+    {
+        "CMUYautjaBloodImpactEffect",
+        "CMUYautjaBloodImpactEffect1",
+        "CMUYautjaBloodImpactEffect2",
+    };
 
-    [Dependency] private INetManager _net = default!;
-    [Dependency] private SharedAudioSystem _audio = default!;
-    [Dependency] private SharedDestructibleSystem _destructible = default!;
-    [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private SharedHandsSystem _hands = default!;
-    [Dependency] private SharedContainerSystem _container = default!;
-    [Dependency] private SharedPhysicsSystem _physics = default!;
-    [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private ISharedAdminLogManager _adminLogger = default!;
-    [Dependency] private SharedColorFlashEffectSystem _color = default!;
-    [Dependency] private DamageableSystem _damageableSystem = default!;
-    [Dependency] private SharedGunSystem _guns = default!;
-    [Dependency] private SharedCameraRecoilSystem _sharedCameraRecoil = default!;
-    [Dependency] private IRobustRandom _random = default!;
+    [Dependency] private readonly INetManager _net = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly SharedDestructibleSystem _destructible = default!;
+    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private readonly SharedHandsSystem _hands = default!;
+    [Dependency] private readonly SharedContainerSystem _container = default!;
+    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
+    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
+    [Dependency] private readonly SharedColorFlashEffectSystem _color = default!;
+    [Dependency] private readonly DamageableSystem _damageableSystem = default!;
+    [Dependency] private readonly SharedGunSystem _guns = default!;
+    [Dependency] private readonly SharedCameraRecoilSystem _sharedCameraRecoil = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly RMCReagentSystem _reagent = default!;
 
     public override void Initialize()
     {
@@ -159,7 +168,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         {
             if (modifiedDamage.AnyPositive() && !deleted)
             {
-                _color.RaiseEffect(Color.Red, new List<EntityUid> { target }, filter);
+                _color.RaiseEffect(GetDamageEffectColor(target), new List<EntityUid> { target }, filter);
             }
 
             var shooterOrWeapon = Exists(component.Shooter) ? component.Shooter!.Value : component.Weapon!.Value;
@@ -261,13 +270,30 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (damage == null ||
             !damage.DamageDict.TryGetValue("Piercing", out var piercing) ||
             piercing < BloodImpactPiercingThreshold ||
-            !TryComp(target, out BloodstreamComponent? bloodstream) ||
-            bloodstream.BloodReagent != BloodReagent)
+            !TryComp(target, out BloodstreamComponent? bloodstream))
         {
             return fallback;
         }
 
-        return _random.Pick(BloodImpactEffects);
+        if (bloodstream.BloodReagent == BloodReagent)
+            return _random.Pick(BloodImpactEffects);
+
+        if (bloodstream.BloodReagent == YautjaBloodReagent)
+            return _random.Pick(YautjaBloodImpactEffects);
+
+        return fallback;
+    }
+
+    private Color GetDamageEffectColor(EntityUid target)
+    {
+        if (TryComp(target, out BloodstreamComponent? bloodstream) &&
+            bloodstream.BloodReagent == YautjaBloodReagent &&
+            _reagent.TryIndex(bloodstream.BloodReagent, out var reagent))
+        {
+            return reagent.SubstanceColor;
+        }
+
+        return Color.Red;
     }
 
     private void OnEmbedActivate(Entity<EmbeddableProjectileComponent> embeddable, ref ActivateInWorldEvent args)

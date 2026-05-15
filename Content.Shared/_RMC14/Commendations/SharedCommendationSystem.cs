@@ -22,20 +22,20 @@ public abstract partial class SharedCommendationSystem : EntitySystem
     /// List of entity prototype IDs for medals that can be awarded.
     /// This is the single source of truth for standard awardable medals.
     /// </summary>
-    protected static readonly IReadOnlyList<EntProtoId> AwardableMedalIds = new[]
+    protected static readonly IReadOnlyList<EntProtoId> AwardableMedalIds = new EntProtoId[]
     {
-        new EntProtoId("RMCMedalGoldExceptionalHeroism"),
-        new EntProtoId("RMCMedalSilverValor"),
-        new EntProtoId("RMCMedalBronzeDistinguishedConduct"),
-        new EntProtoId("RMCMedalBronzeHeart")
+        "RMCMedalGoldExceptionalHeroism",
+        "RMCMedalSilverValor",
+        "RMCMedalBronzeDistinguishedConduct",
+        "RMCMedalBronzeHeart"
     };
 
     /// <summary>
     /// List of entity prototype IDs for special medals that can be awarded.
     /// </summary>
-    protected static readonly IReadOnlyList<EntProtoId> SpecialMedalIds = new[]
+    protected static readonly IReadOnlyList<EntProtoId> SpecialMedalIds = new EntProtoId[]
     {
-        new EntProtoId("RMCMedalHighCommandHonor")
+        "RMCMedalHighCommandHonor"
     };
 
     /// <summary>
