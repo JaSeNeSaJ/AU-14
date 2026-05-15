@@ -9,7 +9,6 @@
     id: fetchcrystalobjective
     finalType: InstantWin
     factioneutral: false
-    winMessage: "By harvesting the rare crystals"
     applicableModes:
     - DistressSignal
     possiblefactions:
