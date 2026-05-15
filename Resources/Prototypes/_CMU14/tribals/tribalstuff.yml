@@ -246,12 +246,16 @@
     - tribe
   - type: Sprite
     sprite: Objects/Weapons/Melee/bone_spear.rsi
-  # Stab — 50 piercing.
+  # Base 100, light click halved to 50 via clickDamageModifier. Heavy
+  # wide swing keeps the full 100 (engine quirk: light damage pipes
+  # through ClickDamageModifier, heavy path bypasses it), so wide swing
+  # is exactly double the stab.
   - type: MeleeWeapon
     wideAnimationRotation: -135
     damage:
       types:
-        Piercing: 50
+        Piercing: 100
+    clickDamageModifier: 0.5
     angle: 0
     animation: WeaponArcThrust
     soundHit:
