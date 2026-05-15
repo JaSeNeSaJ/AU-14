@@ -208,6 +208,8 @@ namespace Content.Client.Administration.UI.Bwoink
 
         public void SelectChannel(NetUserId channel)
         {
+            ChannelSelector.PopulateList();
+
             if (!ChannelSelector.PlayerInfo.TryFirstOrDefault(
                 i => i.SessionId == channel, out var info))
                 return;

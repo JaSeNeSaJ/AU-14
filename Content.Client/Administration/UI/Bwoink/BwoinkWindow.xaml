@@ -4,5 +4,5 @@
             HeaderClass="windowHeaderAlert"
             TitleClass="windowTitleAlert"
             Title="{Loc 'bwoink-user-title'}" >
-    <cc:BwoinkControl Name="Bwoink" Access="Public"/>
+    <cc:BwoinkControl Name="Bwoink" Access="Public" HorizontalExpand="True" VerticalExpand="True"/>
 </DefaultWindow>
