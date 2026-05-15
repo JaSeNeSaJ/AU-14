@@ -16,7 +16,7 @@
       - !type:HealthChange
         damage:
           types:
-            Toxin: 0.5
+            Poison: 0.5
 
 # Pre-filled syringe used by mimics / admins / Weyland-Yutani researchers
 # to inject the venom directly. Player-facing name is "clotted syringe"
