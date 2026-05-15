@@ -182,7 +182,7 @@
   - type: HumanoidAppearance
     species: WorkingJoe
 
-- type: entity # dead code
+- type: entity
   parent: RMCSynthRemoveComponents
   id: AU14WorkingJoeRemoveComponents
   categories: [ HideSpawnMenu ]
