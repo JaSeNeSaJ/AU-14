@@ -16,9 +16,10 @@ using Robust.Shared.Log;
 
 namespace Content.Server._CMU14.Medical.Telemetry;
 
-public sealed class CMUMedicalTelemetrySystem : EntitySystem
+public sealed partial class CMUMedicalTelemetrySystem : EntitySystem
 {
-    [Dependency] private readonly ILogManager _log = default!;
+    [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private ILogManager _log = default!;
 
     private ISawmill _sawmill = default!;
 
