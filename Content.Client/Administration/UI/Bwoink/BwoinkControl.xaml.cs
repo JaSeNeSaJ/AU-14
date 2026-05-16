@@ -26,7 +26,6 @@ namespace Content.Client.Administration.UI.Bwoink
         [Dependency] private IClientConsoleHost _console = default!;
         [Dependency] private IUserInterfaceManager _ui = default!;
         [Dependency] private IConfigurationManager _cfg = default!;
-        [Dependency] private IStylesheetManager _stylesheetManager = default!;
         public AdminAHelpUIHandler AHelpHelper = default!;
 
         private PlayerInfo? _currentPlayer;

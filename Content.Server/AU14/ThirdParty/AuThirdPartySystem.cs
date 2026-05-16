@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server.Access.Systems;
 using Content.Server.IdentityManagement;
 using Content.Server.Preferences.Managers;
 using Content.Server.AU14.Round;
@@ -18,6 +19,7 @@ using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using Robust.Server.GameObjects;
 using Content.Server.AU14.VendorMarker;
 using Content.Shared.Ghost;
 using Content.Shared.Humanoid;
@@ -41,6 +43,10 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     [Dependency] private ChatSystem _chat = default!;
     [Dependency] private SharedDropshipSystem _sharedDropshipSystem = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private IServerPreferencesManager _preferences = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private IdCardSystem _idCard = default!;
+    [Dependency] private IdentitySystem _identity = default!;
 
     // --- State for round third party spawning ---
     private ThreatPrototype? _currentThreat;

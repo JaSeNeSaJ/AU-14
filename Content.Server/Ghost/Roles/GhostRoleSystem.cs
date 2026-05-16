@@ -1,5 +1,6 @@
 using System.Linq;
 using Content.Server._RMC14.Ghost.Roles;
+using Content.Server.Access.Systems;
 using Content.Server.IdentityManagement;
 using Content.Server.Administration.Logs;
 using Content.Server.Preferences.Managers;
@@ -58,6 +59,10 @@ public sealed partial class GhostRoleSystem : EntitySystem
     [Dependency] private PopupSystem _popupSystem = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private Content.Server.GameTicking.GameTicker _gameTicker = default!;
+    [Dependency] private IServerPreferencesManager _preferences = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private IdCardSystem _idCard = default!;
+    [Dependency] private IdentitySystem _identity = default!;
 
     private uint _nextRoleIdentifier;
     private bool _needsUpdateGhostRoleCount = true;

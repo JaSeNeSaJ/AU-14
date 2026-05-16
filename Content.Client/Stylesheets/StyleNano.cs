@@ -360,7 +360,7 @@ namespace Content.Client.Stylesheets
 
                 Color Hsv(float sat, float val)
                 {
-                    return Color.FromHsv(new Robust.Shared.Maths.Vector4(
+                    return Color.FromHsv(new Vector4(
                         hue,
                         Clamp(sat, 0f, 1f),
                         Clamp(val, 0f, 1f),

@@ -50,7 +50,6 @@ public sealed partial class LobbyUIController : UIController, IOnStateEntered<Lo
     [Dependency] private LinkAccountManager _linkAccount = default!;
     [UISystemDependency] private HumanoidAppearanceSystem _humanoid = default!;
     [UISystemDependency] private ClientInventorySystem _inventory = default!;
-    [UISystemDependency] private StationSpawningSystem _spawn = default!;
     [UISystemDependency] private GuidebookSystem _guide = default!;
     [UISystemDependency] private CMArmorSystem _armorSystem = default!;
 
