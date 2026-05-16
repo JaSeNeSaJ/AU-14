@@ -22,6 +22,7 @@ public sealed partial class StatusIconSystem : SharedStatusIconSystem
     [Dependency] private IOverlayManager _overlay = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private EntityWhitelistSystem _entityWhitelist = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private bool _globalEnabled;
     private bool _localEnabled;

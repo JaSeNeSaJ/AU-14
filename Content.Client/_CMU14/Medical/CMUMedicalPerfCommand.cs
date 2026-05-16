@@ -16,6 +16,7 @@ namespace Content.Client._CMU14.Medical;
 public sealed partial class CMUMedicalPerfCommand : IConsoleCommand
 {
     [Dependency] private IEntityManager _entities = default!;
+    [Dependency] private IConfigurationManager _configuration = default!;
 
     private readonly HashSet<EntityUid> _nearby = new();
     private readonly HashSet<Entity<StatusIconComponent>> _statusIcons = new();

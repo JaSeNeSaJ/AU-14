@@ -34,6 +34,7 @@ public sealed partial class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubv
     [Dependency] private IAdminLogManager _adminLogManager = default!;
     [Dependency] private MindSystem _mind = default!;
     [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private MobThresholdSystem _mobThreshold = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private RoleSystem _role = default!;
@@ -110,8 +111,12 @@ public sealed partial class CLFSubvertedSynthRuleSystem : GameRuleSystem<CLFSubv
     {
         if (!HasComp<SynthComponent>(target) ||
             !_mobState.IsDead(target) ||
-            heal.DamageDict.Count == 0 ||
-            !_mobThreshold.TryGetThresholdForState(target, MobState.Dead, out var deadThreshold) ||
+            heal.DamageDict.Count == 0)
+        {
+            return;
+        }
+
+        if (!_mobThreshold.TryGetThresholdForState(target, MobState.Dead, out var deadThreshold) ||
             !TryComp<DamageableComponent>(target, out var damageable))
         {
             return;

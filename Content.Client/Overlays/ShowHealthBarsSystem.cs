@@ -14,6 +14,7 @@ public sealed partial class ShowHealthBarsSystem : EquipmentHudSystem<ShowHealth
 {
     [Dependency] private IOverlayManager _overlayMan = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private EntityHealthBarOverlay _overlay = default!;
 

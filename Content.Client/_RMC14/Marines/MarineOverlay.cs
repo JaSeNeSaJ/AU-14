@@ -28,6 +28,7 @@ public sealed partial class MarineOverlay : Overlay
     [Dependency] private IPlayerManager _players = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private IConfigurationManager _configuration = default!;
 
     private static readonly SpriteSpecifier.Rsi FireteamOneRsi = new(new ResPath("_RMC14/Interface/marine_hud.rsi"), "hudsquad_ft1");
     private static readonly SpriteSpecifier.Rsi FireteamTwoRsi = new(new ResPath("_RMC14/Interface/marine_hud.rsi"), "hudsquad_ft2");
