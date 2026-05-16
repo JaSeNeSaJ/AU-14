@@ -23,7 +23,8 @@
 - type: entity
   parent: RMCCrateHydro
   id: AU14CrateHydroponics
-  compontents:
+  suffix: Filled
+  components:
   - type: StorageFill
     contents:
     - id: ChemistryBottleEZNutrient
@@ -86,4 +87,3 @@
       amount: 1
     - id: BoxMouthSwab
       amount: 1
-
