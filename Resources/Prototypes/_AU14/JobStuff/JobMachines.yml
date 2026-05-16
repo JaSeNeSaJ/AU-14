@@ -398,7 +398,7 @@
     colonyManaged: false
     asrsFaction: corporate
   - type: AccessReader
-    access: [["AU14AccessColonyCorporateLiaison"]]
+    access: [["AU14AccessCorporateWEYULiaison"]]
 
 - type: entity
   parent: AUDepartmentConsoleBase
