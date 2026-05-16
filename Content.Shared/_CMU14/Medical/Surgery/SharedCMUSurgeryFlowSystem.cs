@@ -32,21 +32,21 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._CMU14.Medical.Surgery;
 
-public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
+public abstract partial class SharedCMUSurgeryFlowSystem : EntitySystem
 {
-    [Dependency] protected readonly IConfigurationManager Cfg = default!;
-    [Dependency] protected readonly INetManager Net = default!;
-    [Dependency] protected readonly IPrototypeManager Prototypes = default!;
-    [Dependency] protected readonly IGameTiming Timing = default!;
-    [Dependency] protected readonly SharedBodySystem Body = default!;
-    [Dependency] protected readonly SharedDoAfterSystem DoAfter = default!;
-    [Dependency] protected readonly SharedHandsSystem Hands = default!;
-    [Dependency] protected readonly ItemToggleSystem ItemToggle = default!;
-    [Dependency] protected readonly SharedPopupSystem Popup = default!;
-    [Dependency] protected readonly SharedPainShockSystem Pain = default!;
-    [Dependency] protected readonly SharedStatusEffectsSystem Status = default!;
-    [Dependency] protected readonly SharedUserInterfaceSystem UserInterface = default!;
-    [Dependency] protected readonly SharedCMSurgerySystem RmcSurgery = default!;
+    [Dependency] protected IConfigurationManager Cfg = default!;
+    [Dependency] protected INetManager Net = default!;
+    [Dependency] protected IPrototypeManager Prototypes = default!;
+    [Dependency] protected IGameTiming Timing = default!;
+    [Dependency] protected SharedBodySystem Body = default!;
+    [Dependency] protected SharedDoAfterSystem DoAfter = default!;
+    [Dependency] protected SharedHandsSystem Hands = default!;
+    [Dependency] protected ItemToggleSystem ItemToggle = default!;
+    [Dependency] protected SharedPopupSystem Popup = default!;
+    [Dependency] protected SharedPainShockSystem Pain = default!;
+    [Dependency] protected SharedStatusEffectsSystem Status = default!;
+    [Dependency] protected SharedUserInterfaceSystem UserInterface = default!;
+    [Dependency] protected SharedCMSurgerySystem RmcSurgery = default!;
 
     private readonly Dictionary<string, CMUSurgeryStepMetadataPrototype> _bySurgery = new();
 
@@ -493,7 +493,7 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
                 return true;
             }
 
-            if (RequiresActivatedCautery(used, armed.RequiredToolCategory))
+            if (RequiresActivatedSurgeryTool(used, armed.RequiredToolCategory))
             {
                 Popup.PopupEntity(Loc.GetString("cmu-medical-surgery-welder-not-lit"), patient, user, PopupType.SmallCaution);
                 return true;
@@ -549,9 +549,9 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
         return true;
     }
 
-    private bool RequiresActivatedCautery(EntityUid tool, string? requiredToolCategory)
+    private bool RequiresActivatedSurgeryTool(EntityUid tool, string? requiredToolCategory)
     {
-        if (requiredToolCategory != "cautery")
+        if (requiredToolCategory is not ("cautery" or "blowtorch"))
             return false;
 
         if (TryComp<SmokableComponent>(tool, out var smokable))
@@ -820,15 +820,23 @@ public abstract class SharedCMUSurgeryFlowSystem : EntitySystem
     private bool TryResolveReattachNextStep(EntityUid patient, EntityUid targetPart, string surgeryId, out CMUResolvedStep resolved)
     {
         resolved = default!;
-        if (surgeryId != "CMUSurgeryReattachLimb" || targetPart == default)
+        if (targetPart == default)
             return false;
 
-        if (HasComp<CMUReattachCompleteComponent>(targetPart))
-            return TryResolveStepAt(surgeryId, 3, out resolved, targetPart);
-        if (HasComp<CMUReattachPreppedComponent>(targetPart))
-            return TryResolveStepAt(surgeryId, 2, out resolved, targetPart);
-        if (HasComp<CMUStumpRemovedComponent>(targetPart))
-            return TryResolveStepAt(surgeryId, 1, out resolved, targetPart);
+        if (surgeryId == "RMCSynthSurgeryReattachLimb")
+        {
+            if (HasComp<CMUReattachCompleteComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 3, out resolved, targetPart);
+            if (HasComp<CMUReattachPreppedComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 2, out resolved, targetPart);
+            if (HasComp<CMUStumpRemovedComponent>(targetPart))
+                return TryResolveStepAt(surgeryId, 1, out resolved, targetPart);
+
+            return TryResolveStepAt(surgeryId, 0, out resolved, targetPart);
+        }
+
+        if (surgeryId != "CMUSurgeryReattachLimb")
+            return false;
 
         if (!HasComp<CMIncisionOpenComponent>(targetPart))
             return TryResolveGatedStep("CMUSurgeryOpenSoftTissue", 0, targetPart, out resolved);

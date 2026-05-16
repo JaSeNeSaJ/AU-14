@@ -29,22 +29,22 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._RMC14.Synth;
 
-public abstract class SharedSynthSystem : EntitySystem
+public abstract partial class SharedSynthSystem : EntitySystem
 {
     private static readonly TimeSpan UnableUsePopupCooldown = TimeSpan.FromSeconds(1);
 
-    [Dependency] private readonly RMCRepairableSystem _repairable = default!;
-    [Dependency] private readonly SharedActionsSystem _actions = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
-    [Dependency] private readonly DamageableSystem _damageable = default!;
-    [Dependency] private readonly SharedToolSystem _tool = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private readonly SharedStackSystem _stack = default!;
-    [Dependency] private readonly RMCStatusEffectSystem _rmcStatusEffects = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private readonly EntityWhitelistSystem _whitelist = default!;
-    [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private RMCRepairableSystem _repairable = default!;
+    [Dependency] private SharedActionsSystem _actions = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
+    [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private SharedToolSystem _tool = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedDoAfterSystem _doAfter = default!;
+    [Dependency] private SharedStackSystem _stack = default!;
+    [Dependency] private RMCStatusEffectSystem _rmcStatusEffects = default!;
+    [Dependency] private MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private EntityWhitelistSystem _whitelist = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Initialize()
     {
@@ -123,8 +123,10 @@ public abstract class SharedSynthSystem : EntitySystem
         }
 
         if (TryComp<MobThresholdsComponent>(ent.Owner, out var thresholds))
+        {
             _mobThreshold.SetMobStateThreshold(ent.Owner, ent.Comp.CritThreshold, MobState.Critical, thresholds);
-
+            _mobThreshold.SetMobStateThreshold(ent.Owner, ent.Comp.DeadThreshold, MobState.Dead, thresholds);
+        }
         if (TryComp<RMCHealthIconsComponent>(ent.Owner, out var healthIcons))
         {
             if (ent.Comp.UseHumanHealthIcons)
@@ -217,6 +219,14 @@ public abstract class SharedSynthSystem : EntitySystem
         var used = args.Used;
         var user = args.User;
         var selfRepair = args.User == synth.Owner;
+
+        var attemptEv = new RMCSynthRepairToolUseAttemptEvent(user, used, synth.Owner);
+        RaiseLocalEvent(synth.Owner, attemptEv);
+        if (attemptEv.Handled)
+        {
+            args.Handled = true;
+            return;
+        }
 
         var ev = new RMCSynthRepairEvent();
         var repairTime = selfRepair ? synth.Comp.SelfRepairTime : synth.Comp.RepairTime;
@@ -365,3 +375,10 @@ public abstract class SharedSynthSystem : EntitySystem
 
 [Serializable, NetSerializable]
 public sealed partial class RMCSynthRepairEvent : SimpleDoAfterEvent;
+
+public sealed partial class RMCSynthRepairToolUseAttemptEvent(EntityUid user, EntityUid used, EntityUid target) : HandledEntityEventArgs
+{
+    public EntityUid User { get; } = user;
+    public EntityUid Used { get; } = used;
+    public EntityUid Target { get; } = target;
+}
