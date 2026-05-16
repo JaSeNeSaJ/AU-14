@@ -10,6 +10,9 @@ namespace Content.Client.Administration.UI.Bwoink
     [GenerateTypedNameReferences]
     public sealed partial class BwoinkPanel : BoxContainer
     {
+        [Dependency] private IConfigurationManager _cfg = default!;
+        [Dependency] private IStylesheetManager _stylesheetManager = default!;
+
         private readonly Action<string> _messageSender;
 
         public int Unread { get; private set; } = 0;
