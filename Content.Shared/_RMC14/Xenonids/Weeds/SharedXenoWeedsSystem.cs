@@ -304,7 +304,7 @@ public abstract partial class SharedXenoWeedsSystem : EntitySystem
             contactHive = _hive.GetHive(contacting);
             if (_slowResinQuery.TryComp(contacting, out var slowResin))
             {
-                if (!ignoreWeedSlowdown(stepperHive == null || !_hive.IsMember(contacting, stepperHive.Hive)) && !_hive.IsAllyOfHive(ent, contactHive))
+                if (!ignoreWeedSlowdown && (stepperHive == null || !_hive.IsMember(contacting, stepperHive.Hive)) && !_hive.IsAllyOfHive(ent, contactHive))
                 {
                     if (HasComp<RMCArmorSpeedTierUserComponent>(contacting))
                         speedResin += slowResin.OutsiderSpeedModifierArmor;

@@ -92,12 +92,9 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
                     _toRemove.Add(session);
             }
         }
-        
-
-            foreach (var session in _toRemove)
-            {
-                args.Recipients.Remove(session);
-            }
+        foreach (var session in _toRemove)
+        {
+            args.Recipients.Remove(session);
         }
     }
 
