@@ -146,8 +146,9 @@ public abstract class SharedChatSystem : EntitySystem
         {
             output = SanitizeMessageCapital(input[1..].TrimStart());
             // AU14: abominations get their own threat channel as their default,
-            // same way xenos get Hivemind.
-            if (HasComp<AbominationComponent>(source))
+            // same way xenos get Hivemind. Disguised mimics route there too
+            // so the flesh-hivemind stays reachable while wearing a face.
+            if (HasComp<AbominationComponent>(source) || HasComp<AbominationMimicTransformedComponent>(source))
             {
                 channel = _prototypeManager.Index<RadioChannelPrototype>("Abomination");
                 return true;
