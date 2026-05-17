@@ -94,7 +94,8 @@ public abstract partial class SharedProjectileSystem : EntitySystem
     {
         if (_net.IsClient &&
             _timing.ApplyingState &&
-            HasComp<PredictedProjectileClientComponent>(uid))
+            (HasComp<PredictedProjectileClientComponent>(uid) ||
+             HasComp<XenoClientProjectileShotComponent>(uid)))
         {
             return;
         }
