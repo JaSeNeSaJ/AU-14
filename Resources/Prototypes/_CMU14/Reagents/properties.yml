@@ -1,0 +1,184 @@
+
+
+#Negative
+- type: reagentProperty
+  abstract: true
+  id: CMUProcgenChemNegative
+  name: procgen chemical negative parent YOU SHOULD NOT SEE THIS!
+  rarity: disabled
+  category: toxicant
+  hint: negative
+  value: -2
+
+- type: reagentProperty
+  id: CMUProcgenChemHypoxemic
+  parent: CMUProcgenChemNegative
+  name: hypoxemic
+  code: HPX
+  description: Reacts with hemoglobin in red blood cells preventing oxygen from being absorbed, resulting in hypoxemia.
+  rarity: common
+  value: -1
+  
+- type: reagentProperty
+  id: CMUProcgenChemToxic
+  parent: CMUProcgenChemNegative
+  name: toxic
+  description: Poisonous substance which causes harm on contact with or through absorption by organic tissue, resulting in bad health, severe illness, or plant death.
+  rarity: common
+  starter: true
+  value: -1
+  code: TXC
+
+- type: reagentProperty
+  id: CMUProcgenChemCorrosive
+  parent: CMUProcgenChemNegative
+  name: corrosive
+  description: Damages or destroys other substances on contact through a chemical reaction. Causes chemical burns on contact with living tissue. Reduces pest and weed populations.
+  code: CRS
+  starter: true
+  rarity: common
+  value: 1
+  costPenalty: false
+
+- type: reagentProperty
+  id: CMUProcgenChemBiocidic
+  parent: CMUProcgenChemNegative
+  name: biocidic
+  description: Ruptures cell membranes on contact, destroying most types of organic tissue. Reduces pest and weed populations.
+  code: BCD
+  rarity: common
+  starter: true
+  value: -1
+
+- type: reagentProperty
+  id: CMUProcgenChemNeuropathic
+  parent: CMUProcgenChemNegative
+  name: neuropathic
+  code: NPT
+  description: Activates the somatosensory system causing neuropathic pain all over the body. Unlike nociceptive pain, this is not caused to any tissue damage and is solely perceptive.
+  rarity: uncommon
+  category: stimulant
+  value: -1
+
+- type: reagentProperty
+  id: CMUProcgenChemHemolytic
+  parent: CMUProcgenChemNegative
+  name: hemolytic
+  description: Causes intravascular hemolysis, resulting in the destruction of erythrocytes (red blood cells) in the bloodstream. This can result in Hemoglobinemia, where a high concentration of hemoglobin is released into the blood plasma.
+  rarity: uncommon
+  code: HML
+
+- type: reagentProperty
+  id: CMUProcgenChemHemorrhaging
+  parent: CMUProcgenChemNegative
+  name: hemorrhaging
+  code: HMR
+  description: Ruptures endothelial cells making up blood vessels, causing blood to escape from the circulatory system. Persistent mutagen to plants.
+  rarity: uncommon
+  value: 1
+  costPenalty: false
+
+- type: reagentProperty
+  id: CMUProcgenChemCarcinogenic
+  parent: CMUProcgenChemNegative
+  name: carcinogenic
+  description: Penetrates the cell nucleus causing direct damage to the deoxyribonucleic acid in cells resulting in cancer, abnormal cell proliferation, and mutation in plants. In extreme cases causing hyperactive apoptosis, potentially atrophy.
+  rarity: common
+  code: CRG
+
+- type: reagentProperty
+  id: CMUProcgenChemHepatotoxic
+  parent: CMUProcgenChemNegative
+  name: hepatotoxic
+  description: Damages hepatocytes in the liver, resulting in liver deterioration and eventually liver failure. Prevents some negative mutations in plants.
+  rarity: uncommon
+  code: HPT
+
+- type: reagentProperty
+  id: CMUProcgenChemIntravenous
+  code: INV
+  parent: CMUProcgenChemNegative
+  name: intravenous
+  description: Due to chemical composition, this chemical can only be administered intravenously.
+  rarity: common
+  category: metabolite
+
+- type: reagentProperty
+  id: CMUProcgenChemNephrotoxic
+  name: nephrotoxic
+  code: NPT
+  parent: CMUProcgenChemNegative
+  description: Causes deterioration and damage to podocytes in the kidney resulting in potential kidney failure. Prevents the tolerance to light, weeds, and toxins from mutating in plants.
+  rarity: uncommon
+
+- type: reagentProperty
+  id: CMUProcgenChemPneumotoxic
+  name: pneumotoxic
+  code: PNT
+  parent: CMUProcgenChemNegative
+  description: Toxic substance which causes damage to connective tissue that forms the support structure (the interstitium) of the alveoli in the lungs. Prevents growth speed and health from mutation in plants.
+  rarity: uncommon
+
+- type: reagentProperty
+  id: CMUProcgenChemOculotoxic
+  name: oculotoxic
+  code: OCT
+  parent: CMUProcgenChemNegative
+  description: Damages the photoreceptive cells in the eyes impairing neural transmissions to the brain, resulting in loss of sight or blindness. Prevents potency from mutation in plants.
+  rarity: uncommon
+
+- type: reagentProperty
+  id: CMUProcgenChemCardiotoxic
+  name: cardiotoxic
+  parent: CMUProcgenChemNegative
+  code: CDT
+  description: Attacks cardiomyocytes when passing through the heart in the bloodstream. This disrupts the cardiac cycle and can lead to cardiac arrest. Prevents produced chemicals from mutation in plants.
+  rarity: common
+
+- type: reagentProperty
+  id: CMUProcgenChemNeurotoxic
+  parent: CMUProcgenChemNegative
+  name: neurotoxic
+  code: NRT
+  description: Breaks down neurons causing widespread damage to the central nervous system and brain functions. Exposure may cause disorientation or unconsciousness to affected persons.
+  rarity: common
+  category: toxicant, stimulant
+  costPenalty: false
+
+- type: reagentProperty
+  id: CMUProcgenChemHypermetabolic
+  parent: CMUProcgenChemNegative
+  name: hypermetabolic
+  code: EMB
+  rarity: uncommon
+  category: metabolite
+  description: Takes less time for this chemical to metabolize, resulting in it being in the bloodstream for less time per unit. Accelerates plant growth.
+
+- type: reagentProperty
+  parent: CMUProcgenChemNegative
+  id: CMUProcgenChemAddictive
+  name: addictive
+  code: ADT
+  description: Causes addiction. Higher potency results in a higher chance of causing an addiction when metabolized.
+  rarity: rare
+  category: stimulant
+
+- type: reagentProperty
+  parent: CMUProcgenChemNegative
+  id: CMUProcgenChemHemositic
+  name: hemositic
+  code: HST
+  description: The chemical shows parasitic behavior towards live erythrocytes (red blood cells) in order to produce more of itself.
+  rarity: disabled
+  value: 2
+  category: reactant, anomalous
+
+- type: reagentProperty
+  parent: CMUProcgenChemNegative
+  id: CMUProcgenChemIgniting
+  name: igniting
+  code: IGT
+  description: The chemical appears capable of self-igniting on contact with most materials.
+  rarity: disabled
+  value: 1
+  category: reactant, combustible
