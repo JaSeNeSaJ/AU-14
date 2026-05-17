@@ -7,9 +7,9 @@ using Robust.Client.GameObjects;
 
 namespace Content.Client._AU14.Xeno;
 
-public sealed class XenoHiveColorVisualizerSystem : VisualizerSystem<HiveMemberComponent>
+public sealed partial class XenoHiveColorVisualizerSystem : VisualizerSystem<HiveMemberComponent>
 {
-    [Dependency] private readonly SpriteSystem _sprite = default!;
+    [Dependency] private SpriteSystem _sprite = default!;
     protected override void OnAppearanceChange(EntityUid uid, HiveMemberComponent component, ref AppearanceChangeEvent args)
     {
         base.OnAppearanceChange(uid, component, ref args);
