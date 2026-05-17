@@ -11,7 +11,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared._RMC14.Marines;
 
-public abstract class SharedMarineSystem : EntitySystem
+public abstract partial class SharedMarineSystem : EntitySystem
 {
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly ISerializationManager _serialization = default!;

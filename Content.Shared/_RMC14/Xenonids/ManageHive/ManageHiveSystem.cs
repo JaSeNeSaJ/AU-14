@@ -34,7 +34,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._RMC14.Xenonids.ManageHive;
 
-public sealed class ManageHiveSystem : EntitySystem
+public sealed partial class ManageHiveSystem : EntitySystem
 {
     [Dependency] private readonly ISharedAdminLogManager _adminLog = default!;
     [Dependency] private readonly SharedCommendationSystem _commendation = default!;
