@@ -336,11 +336,11 @@ public sealed partial class ManageHiveSystem : EntitySystem
         foreach (var item in factions)
         {
             if (item.Name is null)
-                return;
+                continue;
 
             string text = item.Name;
             ProtoId<NpcFactionPrototype> facId = item.ID;
-            bool state = false;
+            bool state;
             if (_hive.HasFaction(hivem.Hive.Value, facId))
             {
                 text += " (+)";
