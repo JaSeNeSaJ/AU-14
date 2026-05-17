@@ -10,7 +10,6 @@ public sealed partial class RMCDoAfterSystem : EntitySystem
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly ExamineSystemShared _examine = default!;
 
-    [Dependency] private SharedDoAfterSystem _doAfter = default!;
 
 
     public bool ShouldCancel(Shared.DoAfter.DoAfter doAfter)
