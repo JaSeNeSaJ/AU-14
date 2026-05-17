@@ -1,11 +1,15 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using Content.Server.Chat.Managers;
 using Content.Server.Chat.Systems;
 using Content.Server.Speech.EntitySystems;
 using Content.Server.Speech.Prototypes;
+using Content.Shared._AU14.Xeno;
 using Content.Shared._RMC14.Chat;
 using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Hive;
+using Content.Shared._RMC14.Xenonids.ManageHive;
+using Content.Shared.AU14;
 using Content.Shared.Chat;
 using Content.Shared.Inventory;
 using Content.Shared.Popups;
@@ -25,6 +29,7 @@ public sealed class CMChatSystem : SharedCMChatSystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ReplacementAccentSystem _wordreplacement = default!;
+    [Dependency] private readonly SharedXenoHiveSystem _hive = default!;
 
     private static readonly ProtoId<ReplacementAccentPrototype> ChatSanitize = "CMChatSanitize";
     private static readonly ProtoId<ReplacementAccentPrototype> MarineChatSanitize = "CMChatSanitizeMarine";
@@ -44,13 +49,22 @@ public sealed class CMChatSystem : SharedCMChatSystem
     {
         _toRemove.Clear();
 
+        if (HasComp<CultistComponent>(ent.Owner))
+            return;
+
         foreach (var (session, data) in args.Recipients)
         {
             if (data.Observer)
                 continue;
 
             if (HasComp<XenoComponent>(session.AttachedEntity))
+            {
+                if ((TryComp<HiveMemberComponent>(session.AttachedEntity, out var hivem) &&
+                    TryComp<HiveComponent>(hivem.Hive, out var hive) && hive.Corrupted == true))
+                    continue;
                 _toRemove.Add(session);
+            }
+                
         }
 
         foreach (var session in _toRemove)
@@ -62,13 +76,14 @@ public sealed class CMChatSystem : SharedCMChatSystem
     private void OnXenoAfterGetRecipients(Entity<XenoComponent> ent, ref ChatMessageAfterGetRecipients args)
     {
         _toRemove.Clear();
-
+        var hive = _hive.GetHive(ent.Owner);
         foreach (var (session, data) in args.Recipients)
         {
             if (data.Observer)
                 continue;
-
-            if (!HasComp<XenoComponent>(session.AttachedEntity))
+            if (!HasComp<XenoComponent>(session.AttachedEntity) &&
+                !HasComp<HasKnowledgeOfXenoLanguageComponent>(session.AttachedEntity) &&
+                !(HasComp<ManageHiveComponent>(ent) && hive is not null && hive.Value.Comp.Corrupted))
                 _toRemove.Add(session);
         }
 

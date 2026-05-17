@@ -35,23 +35,26 @@ public sealed partial class HiveComponent : Component
     [DataField, AutoNetworkedField]
     public List<TimeSpan> AnnouncementsLeft = [];
 
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField, ViewVariables]
     public Color HiveColor = Color.White;
 
-    //lets them understand marines
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField, ViewVariables]
+    public Color HiveUIColor = Color.FromHex("#921992");
+
+    //lets them understand humans
+    [DataField, AutoNetworkedField, ViewVariables]
     public bool Corrupted = false;
 
     //whether or not the queen can make alliances
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField, ViewVariables]
     public bool CanMakeAlliances = false;
 
-    [AutoNetworkedField]
-    public Dictionary<ProtoId<NpcFactionPrototype>, bool> Allies = [];
+    [AutoNetworkedField, ViewVariables]
+    public HashSet<ProtoId<NpcFactionPrototype>> Allies = [];
 
     //for specific people
-    [AutoNetworkedField]
-    public List<EntityUid> IndividualAllies = [];
+    [AutoNetworkedField, ViewVariables]
+    public HashSet<EntityUid> IndividualAllies = [];
 
     [DataField, AutoNetworkedField]
     public bool AnnouncedQueenDeathCooldownOver;

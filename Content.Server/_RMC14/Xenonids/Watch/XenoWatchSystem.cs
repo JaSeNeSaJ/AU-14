@@ -1,4 +1,4 @@
-﻿using Content.Server.Chat.Systems;
+using Content.Server.Chat.Systems;
 using Content.Server.Popups;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Evolution;
@@ -187,7 +187,8 @@ public sealed class XenoWatchSystem : SharedXenoWatchSystem
 
     private bool HasQueenPopup(EntityUid xeno)
     {
-        if (_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1))
+
+        if (_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1, null, _hive.GetHive(xeno)))
             return true;
 
         _popup.PopupEntity(Loc.GetString("rmc-no-queen-hivemind-chat"), xeno, xeno, PopupType.MediumCaution);

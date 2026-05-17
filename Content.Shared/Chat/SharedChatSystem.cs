@@ -9,6 +9,7 @@ using Content.Shared.Radio;
 using Content.Shared.Speech;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared._RMC14.Xenonids.Hive;
 
 namespace Content.Shared.Chat;
 
@@ -38,6 +39,7 @@ public abstract class SharedChatSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly XenoEvolutionSystem _xenoEvolution = default!;
+    [Dependency] private readonly SharedXenoHiveSystem _hive = default!;
 
     /// <summary>
     /// Cache of the keycodes for faster lookup.
@@ -140,6 +142,7 @@ public abstract class SharedChatSystem : EntitySystem
         if (input.Length == 0)
             return false;
 
+        var hive = _hive.GetHive(source);
         // TODO RMC14 replace all of this with something else when chat code isnt a joke
         if (input.StartsWith(RadioCommonPrefix))
         {
@@ -148,8 +151,9 @@ public abstract class SharedChatSystem : EntitySystem
                 ? _prototypeManager.Index<RadioChannelPrototype>(HivemindChannel)
                 : _prototypeManager.Index<RadioChannelPrototype>(CommonChannel);
 
+
             if (channel.ID == HivemindChannel &&
-                !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1))
+                !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1, null, hive))
             {
                 if (!quiet)
                     _popup.PopupEntity(Loc.GetString("rmc-no-queen-hivemind-chat"), source, source, PopupType.LargeCaution);
@@ -185,7 +189,7 @@ public abstract class SharedChatSystem : EntitySystem
             RaiseLocalEvent(source, ev);
 
             if (ev.Channel == HivemindChannel.Id &&
-                !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1))
+                !_xenoEvolution.HasLiving<XenoEvolutionGranterComponent>(1, null, hive))
             {
                 if (!quiet)
                     _popup.PopupEntity(Loc.GetString("rmc-no-queen-hivemind-chat"), source, source, PopupType.LargeCaution);

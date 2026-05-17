@@ -274,7 +274,7 @@ public abstract class SharedXenoWeedsSystem : EntitySystem
         //Checks hive for applying slows now
         //Weed speedup only effects xenos, but slowdown does not hurt hive mems
         //Fast resin speedup only effect xenos, but sticky also doesn't hurt hive mems
-        _hiveMemberQuery.TryComp(ent, out var hive);
+        _hiveMemberQuery.TryComp(ent, out var stepperHive);
 
         var anyWeeds = false;
         var anySlowResin = false;
@@ -295,12 +295,13 @@ public abstract class SharedXenoWeedsSystem : EntitySystem
                 _intersecting.Add(anchored);
             }
         }
-
+        Entity<HiveComponent>? contactHive;
         foreach (var contacting in _intersecting)
         {
+            contactHive = _hive.GetHive(contacting);
             if (_slowResinQuery.TryComp(contacting, out var slowResin))
             {
-                if (hive == null || !_hive.IsMember(contacting, hive.Hive))
+                if ((stepperHive == null || !_hive.IsMember(contacting, stepperHive.Hive)) && !_hive.IsAllyOfHive(ent, contactHive))
                 {
                     if (HasComp<RMCArmorSpeedTierUserComponent>(contacting))
                         speedResin += slowResin.OutsiderSpeedModifierArmor;
@@ -315,7 +316,8 @@ public abstract class SharedXenoWeedsSystem : EntitySystem
 
             if (_fastResinQuery.TryComp(contacting, out var fastResin))
             {
-                if (isXeno && hive != null && _hive.IsMember(contacting, hive.Hive))
+                if (isXeno && stepperHive != null && (_hive.IsMember(contacting, stepperHive.Hive) | _hive.IsAllyOfHive(ent,
+                    contactHive)))
                 {
                     speedResin += fastResin.HiveSpeedModifier;
                     entriesResin++;
@@ -329,13 +331,13 @@ public abstract class SharedXenoWeedsSystem : EntitySystem
 
             anyWeeds = true;
 
-            if (isXeno && hive != null && _hive.IsMember(contacting, hive.Hive))
+            if (isXeno && stepperHive != null && _hive.IsMember(contacting, stepperHive.Hive))
             {
                 speedWeeds += weeds.SpeedMultiplierXeno;
                 friendlyWeeds = true;
                 entriesWeeds++;
             }
-            else if (hive == null || !_hive.IsMember(contacting, hive.Hive))
+            else if ((stepperHive == null || !_hive.IsMember(contacting, stepperHive.Hive)) && !_hive.IsAllyOfHive(ent, contactHive))
             {
                 if (HasComp<RMCArmorSpeedTierUserComponent>(contacting))
                     speedWeeds += weeds.SpeedMultiplierOutsiderArmor;
