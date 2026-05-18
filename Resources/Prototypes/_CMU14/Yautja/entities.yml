@@ -326,6 +326,8 @@
     hitDelay: 0.45
     activeTime: 10
     retargetDelay: 0.35
+  - type: Corrodible
+    isCorrodible: False
   - type: Fixtures
     fixtures:
       fix1:
