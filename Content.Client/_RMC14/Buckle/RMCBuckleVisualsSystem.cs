@@ -14,13 +14,24 @@ public sealed partial class RMCBuckleVisualsSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<BuckleComponent, AfterAutoHandleStateEvent>(OnBuckleState);
+        SubscribeLocalEvent<BuckleComponent, AfterAutoHandleStateEvent>(UpdateDrawDepth);
+        SubscribeLocalEvent<StrapComponent, AfterAutoHandleStateEvent>(UpdateDrawDepth);
+
         SubscribeLocalEvent<RMCBuckleDrawDepthComponent, GetDrawDepthEvent>(OnGetDrawDepth, after: [typeof(XenoVisualizerSystem)]);
+        SubscribeLocalEvent<RMCStrapDrawDepthComponent, GetDrawDepthEvent>(OnGetDrawDepth, after: [typeof(XenoVisualizerSystem)]);
     }
 
-    private void OnBuckleState(Entity<BuckleComponent> ent, ref AfterAutoHandleStateEvent args)
+    private void UpdateDrawDepth<T>(Entity<T> ent, ref AfterAutoHandleStateEvent args) where T : IComponent?
     {
         _rmcSprite.UpdateDrawDepth(ent.Owner);
+    }
+
+    private void OnGetDrawDepth(Entity<RMCStrapDrawDepthComponent> ent, ref GetDrawDepthEvent args)
+    {
+        if (TryComp(ent, out StrapComponent? strap) && strap.BuckledEntities.Count > 0)
+            args.DrawDepth = ent.Comp.StrappedDepth;
+        else
+            args.DrawDepth = ent.Comp.UnstrappedDepth;
     }
 
     private void OnGetDrawDepth(Entity<RMCBuckleDrawDepthComponent> ent, ref GetDrawDepthEvent args)
