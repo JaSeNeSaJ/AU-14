@@ -3,6 +3,8 @@
   id: CMUYautjaWeaponBase
   abstract: true
   components:
+  - type: Corrodible
+    isCorrodible: false
   - type: YautjaTechItem
   - type: Sprite
     sprite: _CMU14/Yautja/weapons.rsi
