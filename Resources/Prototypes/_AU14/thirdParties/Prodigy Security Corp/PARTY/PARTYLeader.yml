@@ -1,0 +1,110 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobProdigyPartyLeader #m41a/2
+  name: Prodigy Leader
+  description: au14-prodigyparty-description
+  playTimeTracker: AU14JobProdigyPartyLeader
+  ranks:
+    AU14RankWeYuEnforcerLead: []
+  spawnMenuRoleName: Prodigy Leader (3rd party, M41A/2)
+  startingGear: AU14GearPARTPartyLeader
+  greeting: au14-prodigyparty-greeting
+  icon: "RMCJobIconPMCLeader"
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-wy
+  accessGroups:
+  - auwy
+  - AUPrisonStaff
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillConstruction: 2
+        RMCSkillCqc: 1
+        RMCSkillEndurance: 2
+        RMCSkillEngineer: 3
+        RMCSkillFirearms: 2
+        RMCSkillFireman: 1
+        RMCSkillIntel: 1
+        RMCSkillJtac: 2
+        RMCSkillLeadership: 1
+        RMCSkillMedical: 1
+        RMCSkillVehicles: 1
+        RMCSkillPolice: 1
+    - type: JobPrefix
+      prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantWYPMC
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: synth
+    - type: MarineOrders
+  hidden: false
+
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicProdigy
+  id: AU14JobProdigyPartyLeader
+  name: Prodigy PARTY Party Leader (3rd party, M41A/2)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: SquadPARTY
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: PART Leader
+    description: au14-prodigyparty-description
+    reregister: false
+    job: AU14JobPARTPartyLeader
+    raffle:
+      settings: short
+    rules: au14-prodigyparty-description
+
+- type: startingGear
+  id: AU14GearPARTPartyLeader
+  equipment:
+    id: AU14IDCardColonyCorporateLiaison
+    outerClothing: AU14ArmorProdigyXAS23
+    jumpsuit: AU14ProdigyFatigues
+    shoes: RMCBootsSPPBlackFilled
+    mask: RMCMaskCoifPMC
+    eyes: RMCGlassesMedicalHUDGlasses
+    head: AU14ProdigyBeret
+    gloves: RMCHandsProdigyRU
+    belt: AU14BeltUtilityCombatProdigyRUFilled
+    pocket1: RMCPouchMagazineLargePMC
+    pocket2: AU14PouchIFAKProdigyFill
+    back: RMCSatchelWelderRU #21 slots
+    ears: RMCM5CameraGear
+    ears2: RMCHeadsetDistressWeYa
+    suitstorage: RMCWeaponRifleM54C2
+  storage:
+    pocket1:
+    - CMMagazineRifleM54CAP
+    - CMMagazineRifleM54CAP
+    - CMMagazineRifleM54CAP
+    - CMMagazineRifleM54CAP
+    pocket2:
+    - AU14Tourniquet
+    back:
+    - CMSurgicalLine
+    - CMSynthGraft
+    - CMMRE
+    - RMCLaserDesignatorPVE
+    - CMStunbaton
+    - RMCHandcuffs
+    - RMCHandcuffs
+    - RMCHandcuffs
+    - AU14PacketGrenadeFragM12Filled
+    jumpsuit:
+    - id: RMCSynthResetKeyProdigy
+    - id: RMCSynthResetKeyProdigy
+    outerClothing:
+    - id: RMCMK80
+    - id: RMCMK80
+    - id: RMCMK80
+
+- type: playTimeTracker
+  id: AAU14JobProdigyPartyLeader

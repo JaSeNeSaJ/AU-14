@@ -1,0 +1,36 @@
+- type: entity
+  parent: CMArmorM4
+  id: AU14ArmorProdigyXAS23
+  name: PRU-XAS-23 pattern battle armor
+  description: Tougher than steel, quieter than whispers, the XM4 Intel Armor provides capable protection combined with an experimental integrated motion tracker. It took an R&D team a weekend to develop and costs more than the Chinook Station... probably. When worn, uniform accessories such as webbing cannot be attached due to the motion sensors occupying the clips, although the expanded storage on the physical armor makes ip for it
+  components:
+  - type: ClothingSpeedModifier
+    walkModifier: 1.3
+    sprintModifier: 1.3
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/OuterClothing/Armor/io/urban.rsi
+  - type: Storage
+    maxItemSize: Small
+    grid:
+    - 0,0,9,1 # 5 slots
+  - type: ClothingRequireEquipped
+    autoUnequip: true
+    denyReason: au14-xas23-not-prodigy-ru-jumpsuit
+    whitelist:
+      tags:
+      - RMCUniformIntel
+  - type: MotionDetector
+    handToggleable: false
+  - type: ToggleableMotionDetector
+    slots:
+    - OUTERCLOTHING
+    batteryDrain: 0
+  #- type: ItemCamouflage
+    #camouflageVariations:
+      #Jungle: _RMC14/Objects/Clothing/OuterClothing/Armor/io/jungle.rsi
+      #Desert: _RMC14/Objects/Clothing/OuterClothing/Armor/io/desert.rsi
+      #Snow: _RMC14/Objects/Clothing/OuterClothing/Armor/io/snow.rsi
+      #Classic: _RMC14/Objects/Clothing/OuterClothing/Armor/io/classic.rsi
+      #Urban: _RMC14/Objects/Clothing/OuterClothing/Armor/io/urban.rsi
+  - type: RMCLoreExaminable
+    content: rmc-lore-examinable-armor-xm4-pattern-intel-armor
