@@ -8,9 +8,9 @@ using DrawDepth = Content.Shared.DrawDepth.DrawDepth;
 
 namespace Content.Client._RMC14.Buckle;
 
-public sealed class RMCBuckleVisualsSystem : EntitySystem
+public sealed partial class RMCBuckleVisualsSystem : EntitySystem
 {
-    [Dependency] private readonly RMCSpriteSystem _rmcSprite = default!;
+    [Dependency] private RMCSpriteSystem _rmcSprite = default!;
 
     public override void Initialize()
     {
@@ -23,6 +23,14 @@ public sealed class RMCBuckleVisualsSystem : EntitySystem
         _rmcSprite.UpdateDrawDepth(ent.Owner);
     }
 
+    private void OnGetDrawDepth(Entity<RMCStrapDrawDepthComponent> ent, ref GetDrawDepthEvent args)
+    {
+        if (TryComp(ent, out StrapComponent? strap) && strap.BuckledEntities.Count > 0)
+            args.DrawDepth = ent.Comp.StrappedDepth;
+        else
+            args.DrawDepth = ent.Comp.UnstrappedDepth;
+    }
+
     private void OnGetDrawDepth(Entity<RMCBuckleDrawDepthComponent> ent, ref GetDrawDepthEvent args)
     {
         if (TryComp(ent, out BuckleComponent? buckle) &&
@@ -31,14 +39,6 @@ public sealed class RMCBuckleVisualsSystem : EntitySystem
         {
             args.DrawDepth = (DrawDepth) drawDepth;
         }
-    }
-
-    private void OnGetDrawDepth(Entity<RMCStrapDrawDepthComponent> ent, ref GetDrawDepthEvent args)
-    {
-        if (TryComp(ent, out StrapComponent? strap) && strap.BuckledEntities.Count > 0)
-            args.DrawDepth = ent.Comp.StrappedDepth;
-        else
-            args.DrawDepth = ent.Comp.UnstrappedDepth;
     }
 
     private int? GetDrawDepth(Entity<BuckleComponent> buckle, Entity<StrapComponent> strap)

@@ -12,8 +12,9 @@ using Robust.Shared.Physics.Events;
 
 namespace Content.Shared._RMC14.Buckle;
 
-public sealed class RMCBuckleSystem : EntitySystem
+public sealed partial class RMCBuckleSystem : EntitySystem
 {
+    [Dependency] private readonly SharedAppearanceSystem _appearance = default!;
     [Dependency] private SharedBuckleSystem _buckle = default!;
     [Dependency] private SharedCrashLandSystem _crashLand = default!;
     [Dependency] private EntityLookupSystem _entityLookup = default!;
