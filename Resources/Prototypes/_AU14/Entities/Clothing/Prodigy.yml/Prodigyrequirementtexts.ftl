@@ -13,3 +13,5 @@ rmc-job-description-part-synth = No description!
 rmc-job-name-part-combat-synth = PART Combat Synthetic
 
 rmc-job-description-part-synth = No description!
+
+au14-job-supervisors-psc = No Supervisor!
