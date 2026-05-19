@@ -63,7 +63,7 @@
     - FullAuto
     recoilWielded: 3
     scatterWielded: 10
-    baseFireRate: 10
+    baseFireRate: 8.6
     burstScatterMult: 4
     modifiers:
       FullAuto:
@@ -98,7 +98,7 @@
           components:
           - SmartGunBattery
   - type: GunDamageModifier
-    multiplier: 0.5
+    multiplier: 0.75
   - type: GunToggleableAmmo
     settings:
     - damage:
