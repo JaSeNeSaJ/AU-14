@@ -202,7 +202,7 @@
   parent: CMPacketBase
   id: AU14PacketGrenadeFragM12
   name: M12 frag grenade packet
-  description: It contains three M12 fragmentation grenades. DONT Handle with care, we need to get rid of this crap.
+  description: It contains six M12 fragmentation grenades. DONT Handle with care, we need to get rid of this crap.
   components:
   - type: Sprite
     layers:
@@ -212,7 +212,7 @@
       map: [ "openLayer", "emptyLayer" ]
 
 - type: entity
-  parent: AU14PacketGrenadeFragOld
+  parent: AU14PacketGrenadeFragM12
   id: AU14PacketGrenadeFragM12Filled
   suffix: Filled
   components:
