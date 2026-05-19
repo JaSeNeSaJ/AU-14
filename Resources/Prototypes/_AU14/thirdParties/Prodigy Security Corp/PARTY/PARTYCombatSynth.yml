@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobProdigyPARTCombatSynth
-  name: rmc-job-name-part-synth
+  name: au14-job-name-part-synth
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobProdigyPARTCombatSynth
   ranks:
@@ -96,7 +96,7 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: rmc-job-name-part-combat-synth
+    name: au14-job-name-part-combat-synth
     description: au14-prodigyparty-description
     reregister: false
     job: AU14JobProdigyPARTCombatSynth
