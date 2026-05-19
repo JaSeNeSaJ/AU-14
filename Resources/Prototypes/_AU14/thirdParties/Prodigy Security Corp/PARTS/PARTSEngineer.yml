@@ -68,24 +68,24 @@
     suitstorage: RMCSmartGunPMC
   storage:
     back:
-    - id: CMMRE
-    - id: RMCBinocularsPVE
-    - id: AU14PacketGrenadeFragM12Filled
-    - id: RMCMagazineSmartGunirradiated
-    - id: RMCMagazineSmartGunirradiated
-    - id: RMCMagazineSmartGunirradiated
-    - id: RMCMagazineSmartGunirradiated
-    - id: RMCMagazineSmartGunirradiated
+    - CMMRE
+    - RMCBinocularsPVE
+    - AU14PacketGrenadeFragM12Filled
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
     jumpsuit:
-    - id: RMCSynthResetKeyProdigy
-    - id: RMCSynthResetKeyProdigy
-    - id: AU14ProdigyLaptop
+    - RMCSynthResetKeyProdigy
+    - RMCSynthResetKeyProdigy
+    - AU14ProdigyLaptop
     # 2 empty slots
     outerClothing:
-    - id: CMMagazinePistolMK80
-    - id: CMMagazinePistolMK80
-    - id: CMMagazinePistolMK80
-    - id: RMCVisorMedical
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - RMCVisorMedical
     # 1 empty slots
 
 - type: playTimeTracker

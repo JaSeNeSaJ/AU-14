@@ -126,27 +126,26 @@
     #- AU14Tourniquet
     # no need, pouch already has 13 slots and is filled with med supplies
     back:
-    - id: AU14PacketGrenadeFragM12Filled
-    - id: AU14PacketGrenadeFragM12Filled
-    - id: AU14MagazineRifleM20A
-    - id: CMShellShotgunBuckshot
-    - id: AU14MagazineRifleM20A
-    - id: CMShellShotgunBuckshot
-    - id: AU14MagazineRifleM20A
-    - id: CMShellShotgunBuckshot
+    - AU14PacketGrenadeFragM12Filled
+    - AU14PacketGrenadeFragM12Filled
+    - AU14MagazineRifleM20A
+    - CMShellShotgunBuckshot
+    - AU14MagazineRifleM20A
+    - CMShellShotgunBuckshot
+    - AU14MagazineRifleM20A
+    - CMShellShotgunBuckshot
     jumpsuit:
-    - id: RMCSynthResetKeyProdigy
-    - id: RMCSynthResetKeyProdigy
-    - id: AU14ProdigyLaptop
-    - id: RMCHandcuffs
-    - id: RMCHandcuffs
+    - RMCSynthResetKeyProdigy
+    - RMCSynthResetKeyProdigy
+    - AU14ProdigyLaptop
+    - RMCHandcuffs
+    - RMCHandcuffs
     # 0 empty slots
     outerClothing:
-    - id: CMOintment10
-    - id: CMOintment10
-    - id: CMSyringe
-    - id: AU14Tourniquet
-    - id: AU14Tourniquet
+    - CMOintment10
+    - CMSyringe
+    - AU14Tourniquet
+    - AU14Tourniquet
     # 0 empty slots
 
 - type: playTimeTracker

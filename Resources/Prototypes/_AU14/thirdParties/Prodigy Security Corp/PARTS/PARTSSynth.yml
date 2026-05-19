@@ -121,26 +121,25 @@
     suitstorage: RMCSynthBreachingHammer
   storage:
     back:
-    - id: AU14CMDefibrillator
-    - id: AU14CMDefibrillator
-    - id: CMSheetMetal50
-    - id: CMSheetMetal50
-    - id: CMSheetMetal50
-    - id: CMSheetPlasteel50
-    - id: CMSheetPlasteel50
-    - id: CMSheetPlasteel50
+    - AU14CMDefibrillator
+    - AU14CMDefibrillator
+    - CMSheetMetal50
+    - CMSheetMetal50
+    - CMSheetMetal50
+    - CMSheetPlasteel50
+    - CMSheetPlasteel50
+    - CMSheetPlasteel50
     jumpsuit:
-    - id: RMCSynthResetKeyProdigy
-    - id: RMCSynthResetKeyProdigy
-    - id: AU14ProdigyLaptop
-    - id: RMCHandcuffs
-    - id: RMCHandcuffs
+    - RMCSynthResetKeyProdigy
+    - RMCSynthResetKeyProdigy
+    - AU14ProdigyLaptop
+    - RMCHandcuffs
+    - RMCHandcuffs
     outerClothing:
-    - id: CMOintment10
-    - id: CMOintment10
-    - id: CMSyringe
-    - id: AU14Tourniquet
-    - id: AU14Tourniquet
+    - CMOintment10
+    - CMSyringe
+    - AU14Tourniquet
+    - AU14Tourniquet
 
 - type: playTimeTracker
   id: AU14JobPARTSPartySynthetic

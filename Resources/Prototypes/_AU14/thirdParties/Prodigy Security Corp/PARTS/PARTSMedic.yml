@@ -77,30 +77,28 @@
     suitstorage: RMCWeaponShotgunM3717
   storage:
     back:
-    - id: RMCGrenadeBlastM12
-    - id: RMCGrenadeBlastM12
-    - id: CMMRE
-    - id: RMCBinocularsPVE
-    - id: AU14CMDefibrillator
-    - id: CMShellShotgunBuckshot
-    - id: CMShellShotgunBuckshot
-    - id: CMShellShotgunBuckshot
-    - id: CMShellShotgunBuckshot
-    - id: CMShellShotgunBuckshot
-    - id: CMShellShotgunIncendiary
+    - RMCGrenadeBlastM12
+    - CMMRE
+    - RMCBinocularsPVE
+    - AU14CMDefibrillator
+    - CMShellShotgunBuckshot
+    - CMShellShotgunBuckshot
+    - CMShellShotgunBuckshot
+    - CMShellShotgunBuckshot
+    - CMShellShotgunIncendiary
     jumpsuit:
-    - id: RMCSynthResetKeyProdigy
-    - id: RMCSynthResetKeyProdigy
-    - id: AU14ProdigyLaptop
-    - id: RMCHandcuffs
-    - id: RMCHandcuffs
+    - RMCSynthResetKeyProdigy
+    - RMCSynthResetKeyProdigy
+    - AU14ProdigyLaptop
+    - RMCHandcuffs
+    - RMCHandcuffs
     # 0 empty slots
     outerClothing:
-    - id: CMOintment10
-    - id: CMOintment10
-    - id: CMSyringe
-    - id: AU14Tourniquet
-    - id: AU14Tourniquet
+    - CMOintment10
+    - CMOintment10
+    - CMSyringe
+    - AU14Tourniquet
+    - AU14Tourniquet
     # 0 empty slots
 
 - type: playTimeTracker
