@@ -23,14 +23,6 @@ public sealed partial class RMCBuckleVisualsSystem : EntitySystem
         _rmcSprite.UpdateDrawDepth(ent.Owner);
     }
 
-    private void OnGetDrawDepth(Entity<RMCStrapDrawDepthComponent> ent, ref GetDrawDepthEvent args)
-    {
-        if (TryComp(ent, out StrapComponent? strap) && strap.BuckledEntities.Count > 0)
-            args.DrawDepth = ent.Comp.StrappedDepth;
-        else
-            args.DrawDepth = ent.Comp.UnstrappedDepth;
-    }
-
     private void OnGetDrawDepth(Entity<RMCBuckleDrawDepthComponent> ent, ref GetDrawDepthEvent args)
     {
         if (TryComp(ent, out BuckleComponent? buckle) &&
