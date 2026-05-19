@@ -38,7 +38,6 @@
   id: AU14PouchMagazineLargePARTDual
   name: Prodigy dual large magazine pouch
   description: A large pouch designed to hold four large magazines, and 4 handfulls of shotgun shells. The pouch is designed for the Prodigy Armed Repair Teams, and is often used by their engineers and medics to hold extra magazines and shotgun shells.
-  components: 
   suffix: PART
   components:
   - type: Storage
