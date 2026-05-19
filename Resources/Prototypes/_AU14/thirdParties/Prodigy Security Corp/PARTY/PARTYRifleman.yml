@@ -1,25 +1,25 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobWYPMCPartyContractorBase
-  name: PMC Contractor
+  id: AU14JobProdigyPartyRUBase
+  name: PMC Contractor Base
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobWYPMCPartyContractor
+  playTimeTracker: AU14JobProdigyPartyRU
   basePlaytimeTracker: true
   hidden: true
 
 - type: job
-  parent: AU14JobWYPMCPartyContractorBase
-  id: AU14JobWYPMCPartyContractor #m41a/2
-  name: PMC Contractor
+  parent: AU14JobProdigyPartyRUBase
+  id: AU14JobProdigyPartyRU #m41a/2
+  name: PART Response Unit (M41A/2)
   description: au14-prodigyparty-description
   ranks:
     AU14RankWeYuRecruit: []
-  spawnMenuRoleName: WY PMC Contractor (3rd party, M41A/2)
-  startingGear: AU14GearWYPMCPartyContractor
-  greeting: au14-pmcparty-greeting
+  spawnMenuRoleName: Prodigy PART (3rd party, M41A/2)
+  startingGear: AU14GearProdigyPartyRU
+  greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconPMCStandard"
   joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
+  supervisors: au14-job-supervisors-psc
   accessGroups:
   - auwy
   - AUPrisonStaff
@@ -42,209 +42,24 @@
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
   hidden: false
-
-- type: job
-  parent: AU14JobWYPMCPartyContractorBase
-  id: AU14JobWYPMCPartyContractorM39B2
-  name: PMC Contractor
-  description: au14-prodigyparty-description
-  ranks:
-    AU14RankWeYuRecruit: []
-  spawnMenuRoleName: WY PMC Contractor (3rd party, M39B/2)
-  startingGear: AU14GearWYPMCPartyContractorM39B2
-  greeting: au14-pmcparty-greeting
-  icon: "RMCJobIconPMCStandard"
-  joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
-  accessGroups:
-  - auwy
-  - AUPrisonStaff
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Skills
-      skills:
-        RMCSkillEndurance: 1
-        RMCSkillFirearms: 2
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFireman: 1
-        RMCSkillVehicles: 1
-        RMCSkillPolice: 1
-    - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC
-    - type: TacticalMapIcon
-      icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: synth
-  hidden: false
-
-- type: job
-  parent: AU14JobWYPMCPartyContractorBase
-  id: AU14JobWYPMCPartyContractorNSG23
-  name: PMC Contractor
-  description: au14-prodigyparty-description
-  ranks:
-    AU14RankWeYuRecruit: []
-  spawnMenuRoleName: WY PMC Contractor (3rd party, NSG-23)
-  startingGear: AU14GearWYPMCPartyContractorNSG23
-  greeting: au14-pmcparty-greeting
-  icon: "RMCJobIconPMCStandard"
-  joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
-  accessGroups:
-  - auwy
-  - AUPrisonStaff
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Skills
-      skills:
-        RMCSkillEndurance: 1
-        RMCSkillFirearms: 2
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFireman: 1
-        RMCSkillVehicles: 1
-        RMCSkillPolice: 1
-    - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC
-    - type: TacticalMapIcon
-      icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: synth
-  hidden: false
-
-- type: job
-  parent: AU14JobWYPMCPartyContractorBase
-  id: AU14JobWYPMCPartyContractorM42A # m42a
-  name: PMC Sniper
-  description: au14-prodigyparty-description
-  ranks:
-    AU14RankWeYuOperator: []
-  spawnMenuRoleName: WY PMC Sniper (3rd party, M42A)
-  startingGear: AU14GearWYPMCPartyContractorM42A
-  greeting: au14-pmcparty-greeting
-  icon: "RMCJobIconPMCSniper"
-  joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
-  accessGroups:
-  - auwy
-  - AUPrisonStaff
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Skills
-      skills:
-        RMCSkillEndurance: 1
-        RMCSkillFirearms: 2
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFireman: 1
-        RMCSkillVehicles: 1
-        RMCSkillPolice: 1
-    - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC
-    - type: TacticalMapIcon
-      icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: synth
-  hidden: false
-
-- type: entity
-  parent: AU14BaseMobSpeciesOrganicWeYu
-  id: AU14JobWYPMCPartyContractor
-  name: WY PMC Party Contractor (3rd party, M41A/2)
-  components:
-  - type: GhostTakeoverAvailable
-  - type: GhostRoleApplySpecial
-    squad: SquadPMC
-  - type: GhostRole
-    makeSentient: true
-    allowSpeech: true
-    allowMovement: true
-    name: PMC Contractor
-    description: au14-prodigyparty-description
-    reregister: false
-    job: AU14JobWYPMCPartyContractor
-    raffle:
-      settings: short
-    rules: au14-prodigyparty-description
-
-- type: entity
-  parent: AU14BaseMobSpeciesOrganicWeYu
-  id: AU14JobWYPMCPartyContractorM39B2
-  name: WY PMC Party Contractor (3rd party, M39B/2)
-  components:
-  - type: GhostTakeoverAvailable
-  - type: GhostRoleApplySpecial
-    squad: SquadPMC
-  - type: GhostRole
-    makeSentient: true
-    allowSpeech: true
-    allowMovement: true
-    name: PMC Contractor
-    description: au14-prodigyparty-description
-    reregister: false
-    job: AU14JobWYPMCPartyContractorM39B2
-    raffle:
-      settings: short
-    rules: au14-prodigyparty-description
-
-- type: entity
-  parent: AU14BaseMobSpeciesOrganicWeYu
-  id: AU14JobWYPMCPartyContractorNSG23
-  name: WY PMC Party Contractor (3rd party, NSG-23)
-  components:
-  - type: GhostTakeoverAvailable
-  - type: GhostRoleApplySpecial
-    squad: SquadPMC
-  - type: GhostRole
-    makeSentient: true
-    allowSpeech: true
-    allowMovement: true
-    name: PMC Contractor
-    description: au14-prodigyparty-description
-    reregister: false
-    job: AU14JobWYPMCPartyContractorNSG23
-    raffle:
-      settings: short
-    rules: au14-prodigyparty-description
-
-- type: entity
-  parent: AU14BaseMobSpeciesOrganicWeYu
-  id: AU14JobWYPMCPartyContractorM42A
-  name: WY PMC Party Sniper (3rd party, M42A)
-  components:
-  - type: GhostTakeoverAvailable
-  - type: GhostRoleApplySpecial
-    squad: SquadPMC
-  - type: GhostRole
-    makeSentient: true
-    allowSpeech: true
-    allowMovement: true
-    name: PMC Sniper
-    description: au14-prodigyparty-description
-    reregister: false
-    job: AU14JobWYPMCPartyContractorM42A
-    raffle:
-      settings: short
-    rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearWYPMCPartyContractor
+  id: AU14GearPARTPartyRifleman
   equipment:
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: AU14WYPMCArmor
-    jumpsuit: AU14WYPMCFatigues
-    shoes: RMCBootsPMCFilled
-    head: AU14ArmorHelmetPMCTactical
-    gloves: AU14PVEHandsInsulatedBlackMarine
-    belt: RMCMK80BeltPMCFilled
+    outerClothing: AU14ArmorProdigyXAS23
+    jumpsuit: AU14ProdigyFatigues
+    shoes: RMCBootsSPPBlackFilled
+    mask: RMCMaskCoifPMC
+    eyes: RMCGlassesMedicalHUDGlasses
+    head: AU14ProdigyBeret
+    gloves: RMCHandsProdigyRU
+    belt: AU14BeltUtilityCombatProdigyRUFilled
     pocket1: RMCPouchMagazineLargePMC
-    pocket2: RMCPouchFirstAidPMCFill
-    back: RMCSatchelLightpackWeYa
-    ears2: RMCHeadsetDistressWeYa
+    pocket2: AU14PouchIFAKProdigyFill
+    back: RMCSatchelWelderRU #21 slots
+    ears: RMCM5CameraGear
+    ears2: AU14HeadsetPART
     suitstorage: RMCWeaponRifleM54C2
   storage:
     pocket1:
@@ -252,85 +67,29 @@
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
-    pocket2:
-    - AU14Tourniquet
+    #pocket2:
+    #- AU14Tourniquet
+    # no need, pouch already has 6 slots and is filled with med supplies
     back:
-    - RMCMREWeYa
-    - CMCanteen
+    - CMMRE
+    - RMCBinocularsPVE
+    - AU14PacketGrenadeFragM12Filled
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
-    - RMCGrenadeBlastM12
-    - RMCGrenadeBlastM12
-
-- type: startingGear
-  id: AU14GearWYPMCPartyContractorM39B2
-  parent: AU14GearWYPMCPartyContractor
-  equipment:
-    outerClothing: AU14WYPMCArmorMin
-    suitstorage: RMCWeaponSMGM63B2
-  storage:
-    pocket1:
-    - CMMagazineSMGM63AP
-    - CMMagazineSMGM63AP
-    - CMMagazineSMGM63AP
-    - CMMagazineSMGM63AP
-    pocket2:
-    - AU14Tourniquet
-    back:
-    - RMCMREWeYa
-    - CMCanteen
-    - CMMagazineSMGM63AP
-    - CMMagazineSMGM63AP
-    - CMMagazineSMGM63AP
-    - RMCGrenadeBlastM12
-    - RMCGrenadeBlastM12
-
-- type: startingGear
-  id: AU14GearWYPMCPartyContractorNSG23
-  parent: AU14GearWYPMCPartyContractor
-  equipment:
-    suitstorage: RMCWeaponRifleSSG45
-  storage:
-    pocket1:
-    - RMCMagazineRifleSSG45AP
-    - RMCMagazineRifleSSG45AP
-    - RMCMagazineRifleSSG45AP
-    - RMCMagazineRifleSSG45AP
-    pocket2:
-    - AU14Tourniquet
-    back:
-    - RMCMREWeYa
-    - CMCanteen
-    - RMCMagazineRifleSSG45AP
-    - RMCMagazineRifleSSG45AP
-    - RMCMagazineRifleSSG45AP
-    - RMCGrenadeBlastM12
-    - RMCGrenadeBlastM12
-
-- type: startingGear
-  id: AU14GearWYPMCPartyContractorM42A
-  parent: AU14GearWYPMCPartyContractor
-  equipment:
-    outerClothing: AU14WYPMCArmorMin
-    head: AU14WYPMCSniperHat
-    suitstorage: CMM96SSniperRifle
-  storage:
-    pocket1:
-    - CMMagazineSniperM96S
-    - CMMagazineSniperM96S
-    - CMMagazineSniperM96S
-    - CMMagazineSniperM96S
-    pocket2:
-    - AU14Tourniquet
-    back:
-    - RMCMREWeYa
-    - CMCanteen
-    - CMMagazineSniperM96S
-    - CMMagazineSniperM96S
-    - CMMagazineSniperM96S
-    - RMCGrenadeBlastM12
-    - RMCGrenadeBlastM12
+    - CMMagazineRifleM54CAP
+    - CMMagazineRifleM54CAP
+    jumpsuit:
+    - RMCSynthResetKeyProdigy
+    - RMCSynthResetKeyProdigy
+    - AU14ProdigyLaptop
+    - RMCHandcuffs
+    # 1 empty slots
+    outerClothing:
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    # 2 empty slots
 
 - type: playTimeTracker
-  id: AU14JobWYPMCPartyContractor
+  id: AU14JobProdigyPartyRU

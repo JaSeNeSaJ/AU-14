@@ -29,15 +29,3 @@
     blacklist:
       components:
       - Xeno
-
-- type: entity
-  parent: [RMCSatchelPMC, RMCSatchelWelder]
-  id: RMCSatchelWelderRU
-  name: Prodigy response unit technician welderpack
-  description: Ergonomic, protected, high capacity backpack, designed for Prodigy Armed Repair Teams. Features a small fueltank for quick blowtorch refueling.
-  components:
-  - type: Storage
-    grid:
-    - 0,0,20,1 # 21
-  - type: Sprite
-    sprite: _RMC14/Objects/Clothing/Back/Backpacks/PMC/welder.rsi

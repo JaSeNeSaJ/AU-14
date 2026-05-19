@@ -70,3 +70,45 @@
     - id: RMCSynthResetKeyProdigy
     - id: RMCMK80
     - id: CMMagazinePistolMK80
+
+- type: entity
+  parent: RMCBeltMedicBagSPP
+  id: AU14BeltMedicBagProdigy
+  name: PSC-TM626 pattern medical bag
+  description: The PSC-TM626 is the standard load-bearing equipment of the Prodigy security forces. This configuration mounts a duffel bag filled with a range of injectors and light medical supplies, and is common among medics, sources say its just a W-Y TM625 bag, but Prodigy denies this claim.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Belt/medicbag/snow-urban.rsi
+  - type: Clothing
+    sprite: _RMC14/Objects/Clothing/Belt/medicbag/snow-urban.rsi
+
+- type: entity
+  parent: AU14BeltMedicBagProdigy
+  id: AU14BeltMedicBagProdigyFilled
+  name: PSC-TM626 pattern medical bag
+  description: The PSC-TM626 is the standard load-bearing equipment of the Prodigy security forces. This configuration mounts a duffel bag filled with a range of injectors and light medical supplies, and is common among medics, sources say its just a W-Y TM625 bag, but Prodigy denies this claim.
+  components:
+  - type: Storagefill
+    contents:
+    - id: CMPillCanisterDexalin
+    - id: CMPillCanisterDylovene
+    - id: CMPillCanisterInaprovaline
+    - id: CMPillCanisterKelotane
+    - id: CMPillCanisterBicaridine
+    - id: CMPillCanisterKelotane
+    - id: CMPillCanisterTricordrazine
+    - id: RMCPillCanisterIron
+    - id: AU14PillCanisterCryoxadone
+    - id: AU14PillCanisterLeporazine
+    - id: AU14PillCanisterImidazoline
+    - id: AU14PillCanisterEthylredoxrazine
+    - id: AU14PillCanisterParacetamol
+    - id: AU14PillCanisterTramadol
+    - id: AU14PillCanisterOxycodone
+    - id: AU14PillCanisterCardiocaine
+    - id: AU14PillCanisterHepatocytin
+    - id: AU14PillCanisterNephronate
+    - id: AU14PillCanisterOsteoCalc
+    - id: AU14PillCanisterPulmovine
+    - id: CMEpinephrineAutoInjector
+    - id: AU14NaloxoneAutoInjector

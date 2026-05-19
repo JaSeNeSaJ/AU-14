@@ -1,1 +1,0 @@
-au14-xas23-not-prodigy-ru-jumpsuit = You're not wearing a "PART" Jumpsuit!

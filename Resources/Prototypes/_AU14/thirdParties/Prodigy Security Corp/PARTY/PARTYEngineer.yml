@@ -8,10 +8,10 @@
     AU14RankWeYuOperator: []
   spawnMenuRoleName: WY PMC Combat Engineer (3rd party, M41A/2)
   startingGear: AU14GearWYPMCPartyEngineer
-  greeting: au14-pmcparty-greeting
+  greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconPMCEngineer"
   joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
+  supervisors: au14-job-supervisors-psc
   accessGroups:
   - auwy
   - AUPrisonStaff
@@ -50,38 +50,50 @@
     rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearWYPMCPartyEngineer
+  id: AU14GearPARTPartyLeader
   equipment:
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: AU14WYPMCArmorEngineer
-    jumpsuit: AU14WYPMCFatiguesEngineer
-    shoes: RMCBootsPMCFilled
-    head: AU14ArmorHelmetPMCTacticalEngi
-    gloves: AU14PVEHandsInsulatedBlackMarine
-    belt: AU14BeltUtilityFilled
-    pocket1: RMCPouchMagazineLargePMC
-    pocket2: RMCPouchFirstAidPMCFill
-    back: RMCSatchelLightpackWeYa
-    ears2: RMCHeadsetDistressWeYa
-    suitstorage: RMCWeaponRifleM54C2
+    outerClothing: AU14ArmorProdigyXAS23
+    jumpsuit: AU14ProdigyFatigues
+    shoes: RMCBootsSPPBlackFilled
+    mask: RMCMaskCoifPMC
+    eyes: RMCGlassesMedicalHUDGlasses
+    head: AU14ProdigyBeret
+    gloves: RMCHandsProdigyRU
+    belt: AU14BeltUtilityCombatProdigyRUFilled
+    pocket1: AU14PouchMagazineLargePARTDualFilled
+    pocket2: AU14PouchIFAKProdigyFill
+    back: RMCSatchelWelderRU #21 slots
+    ears: RMCM5CameraGear
+    ears2: AU14HeadsetPART
+    suitstorage: AUWeaponRifleM20A
   storage:
-    belt:
-    - AU14MaintenanceJack
-    pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    pocket2:
-    - AU14Tourniquet
+    #pocket1:
+    #- comes opre-filled with ammo, no need to fill it here
+    #pocket2:
+    #- AU14Tourniquet
+    # no need, pouch already has 6 slots and is filled with med supplies
     back:
-    - RMCMREWeYa
-    - CMCanteen
-    - AU14CMDefibrillator
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - RMCExplosivePlastic
-    - RMCExplosivePlastic
+    - CMMRE
+    - RMCBinocularsPVE
+    - AU14PacketGrenadeFragM12Filled
+    - CMSheetMetal50
+    - CMSheetMetal50
+    - CMSheetMetal50
+    - CMSheetMetal50
+    - CMSheetPlasteel50
+    jumpsuit:
+    - id: RMCSynthResetKeyProdigy
+    - id: RMCSynthResetKeyProdigy
+    - id: AU14ProdigyLaptop
+    # 2 empty slots
+    outerClothing:
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - BarbedWire15
+    - BarbedWire15
+    # 0 empty slots
 
 - type: playTimeTracker
-  id: AU14JobWYPMCPartyEngineer
+  id: AU14JobWYProdigyPartyEngineer

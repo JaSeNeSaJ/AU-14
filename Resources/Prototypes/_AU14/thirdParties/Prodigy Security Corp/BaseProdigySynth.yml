@@ -5,37 +5,10 @@
   suffix: AU14, Prodigy
   components:
   - type: GhostTakeoverAvailable
+  - type: RMCSetGenderOnMapInit
+    gender: female
   - type: RandomHumanoidAppearance
   - type: RandomHumanoidAppearanceWhitelisted
-    allowedMaleHairStyles:
-    - RMCHumanHairCrew
-    - RMCHumanHairAviator
-    - RMCHumanHairJensen
-    - RMCHumanHairAverageJoe
-    - AU14HumanHairCIA5
-    - RMCHumanHairCombover
-    - RMCHumanHairCombover2
-    - RMCHumanHairCplDietrich
-    - RMCHumanHairCut
-    - RMCHumanHairHeadStubble
-    - RMCHumanHairHighAndTight
-    - RMCHumanHairHighfade
-    - RMCHumanHairHighlight
-    - AU14HumanHairIRS
-    - RMCHumanHairLtRasczak
-    - RMCHumanHairMarineFade
-    - RMCHumanHairMarineFlatTop
-    - RMCHumanHairMedfade
-    - RMCHumanHairNofade
-    - RMCHumanHairShavedpart
-    - RMCHumanHairShavedHead
-    - RMCHumanHairShort
-    - RMCHumanHairSideUndercutHang
-    - RMCHumanHairSkinhead
-    - RMCHumanHairTaper
-    - RMCHumanHairWardaddy
-    - RMCHumanHairUndercut
-    - RMCHumanHairUndercutTop
     allowedFemaleHairStyles:
     - RMCHumanHairShortbangs
     - RMCHumanHairBobcurl
@@ -66,4 +39,3 @@
     - "#4A1F12"
     - "#7A5E42"
     allowedEyeColorsHex: [ "#000000" ]
-    beardChance: 0.1

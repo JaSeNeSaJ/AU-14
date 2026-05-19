@@ -59,6 +59,38 @@
   prefix: RU. SrCDR.
   paygrade: PSC-S3
 
+# synthetic
+
+- type: rank
+  id: AU14RankPrDSynth1
+  name: Response Unit Synthetic Grade 1
+  prefix: RU. SYN.
+  paygrade: PSC-RUSYN1
+
+- type: rank
+  id: AU14RankPrDSynth2
+  name: Response Unit Synthetic Grade 2
+  prefix: RU. SYN. Grade 2
+  paygrade: PSC-RUSYN2
+
+- type: rank
+  id: AU14RankPrDSynth3
+  name: Response Unit Synthetic Grade 3
+  prefix: RU. SYN. Grade 3
+  paygrade: PSC-RUSYN3
+
+- type: rank
+  id: AU14RankPrDSynth4
+  name: Response Unit Synthetic Grade 4
+  prefix: RU. SYN. Grade 4
+  paygrade: PSC-RUSYN4
+
+- type: rank
+  id: AU14RankPrDSynth5
+  name: Response Unit Synthetic Grade 5
+  prefix: RU. SYN. Grade 5
+  paygrade: PSC-RUSYN5
+
 #aviation
 - type: rank
   id: AU14RankPrDPilot

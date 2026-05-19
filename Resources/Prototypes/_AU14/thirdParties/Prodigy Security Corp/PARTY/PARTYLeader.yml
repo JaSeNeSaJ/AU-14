@@ -11,7 +11,7 @@
   greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconPMCLeader"
   joinNotifyCrew: false
-  supervisors: au14-job-supervisors-wy
+  supervisors: au14-job-supervisors-psc
   accessGroups:
   - auwy
   - AUPrisonStaff
@@ -57,7 +57,7 @@
     name: PART Leader
     description: au14-prodigyparty-description
     reregister: false
-    job: AU14JobPARTPartyLeader
+    job: AU14JobProdigyPartyLeader
     raffle:
       settings: short
     rules: au14-prodigyparty-description
@@ -78,7 +78,7 @@
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
     ears: RMCM5CameraGear
-    ears2: RMCHeadsetDistressWeYa
+    ears2: AU14HeadsetPART
     suitstorage: RMCWeaponRifleM54C2
   storage:
     pocket1:
@@ -86,8 +86,9 @@
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
     - CMMagazineRifleM54CAP
-    pocket2:
-    - AU14Tourniquet
+    #pocket2:
+    #- AU14Tourniquet
+    # no need, pouch already has 6 slots and is filled with med supplies
     back:
     - CMSurgicalLine
     - CMSynthGraft
@@ -101,10 +102,13 @@
     jumpsuit:
     - id: RMCSynthResetKeyProdigy
     - id: RMCSynthResetKeyProdigy
+    - id: AU14ProdigyLaptop
+    # 2 empty slots
     outerClothing:
-    - id: RMCMK80
-    - id: RMCMK80
-    - id: RMCMK80
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    - CMMagazinePistolMK80
+    # 2 empty slots
 
 - type: playTimeTracker
-  id: AAU14JobProdigyPartyLeader
+  id: AU14JobProdigyPartyLeader
