@@ -14,14 +14,11 @@ public sealed class RMCBuckleVisualsSystem : EntitySystem
 
     public override void Initialize()
     {
-        SubscribeLocalEvent<BuckleComponent, AfterAutoHandleStateEvent>(UpdateDrawDepth);
-        SubscribeLocalEvent<StrapComponent, AfterAutoHandleStateEvent>(UpdateDrawDepth);
-
+        SubscribeLocalEvent<BuckleComponent, AfterAutoHandleStateEvent>(OnBuckleState);
         SubscribeLocalEvent<RMCBuckleDrawDepthComponent, GetDrawDepthEvent>(OnGetDrawDepth, after: [typeof(XenoVisualizerSystem)]);
-        SubscribeLocalEvent<RMCStrapDrawDepthComponent, GetDrawDepthEvent>(OnGetDrawDepth, after: [typeof(XenoVisualizerSystem)]);
     }
 
-    private void UpdateDrawDepth<T>(Entity<T> ent, ref AfterAutoHandleStateEvent args) where T : IComponent?
+    private void OnBuckleState(Entity<BuckleComponent> ent, ref AfterAutoHandleStateEvent args)
     {
         _rmcSprite.UpdateDrawDepth(ent.Owner);
     }
