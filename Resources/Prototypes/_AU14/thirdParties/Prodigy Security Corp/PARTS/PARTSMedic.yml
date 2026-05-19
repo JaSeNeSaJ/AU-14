@@ -38,13 +38,13 @@
   hidden: false
 
 - type: entity
-  parent: AU14BaseMobSpeciesOrganicWeYu
+  parent: AU14BaseMobSpeciesOrganicProdigy
   id: AU14JobPARTSPartyMedic
   name: Prodigy Sierra Party Combat Lifesaver (3rd party, M41A/2)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPMC
+    squad: SquadPARTS
   - type: GhostRole
     makeSentient: true
     allowSpeech: true

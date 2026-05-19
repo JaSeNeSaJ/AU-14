@@ -91,7 +91,7 @@
   - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPARTY
+    squad: SquadPARTS
   - type: GhostRole
     makeSentient: true
     allowSpeech: true

@@ -35,7 +35,7 @@
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPMC
+    squad: SquadPARTS
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
