@@ -63,32 +63,32 @@
     suitstorage: RMCWeaponRifleM54C2
   storage:
     pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
     #pocket2:
     #- AU14Tourniquet
     # no need, pouch already has 6 slots and is filled with med supplies
     back:
-    - CMMRE
-    - RMCBinocularsPVE
-    - AU14PacketGrenadeFragM12Filled
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    - id: CMMRE
+    - id: RMCBinocularsPVE
+    - id: AU14PacketGrenadeFragM12Filled
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
+    - id: CMMagazineRifleM54CAP
     jumpsuit:
-    - RMCSynthResetKeyProdigy
-    - RMCSynthResetKeyProdigy
-    - AU14ProdigyLaptop
-    - RMCHandcuffs
+    - id: RMCSynthResetKeyProdigy
+    - id: RMCSynthResetKeyProdigy
+    - id: AU14ProdigyLaptop
+    - id: RMCHandcuffs
     # 1 empty slots
     outerClothing:
-    - CMMagazinePistolMK80
-    - CMMagazinePistolMK80
-    - CMMagazinePistolMK80
+    - id: CMMagazinePistolMK80
+    - id: CMMagazinePistolMK80
+    - id: CMMagazinePistolMK80
     # 2 empty slots
 
 - type: playTimeTracker

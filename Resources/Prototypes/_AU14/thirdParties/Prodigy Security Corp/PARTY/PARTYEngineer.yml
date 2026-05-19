@@ -74,25 +74,25 @@
     #- AU14Tourniquet
     # no need, pouch already has 6 slots and is filled with med supplies
     back:
-    - CMMRE
-    - RMCBinocularsPVE
-    - AU14PacketGrenadeFragM12Filled
-    - CMSheetMetal50
-    - CMSheetMetal50
-    - CMSheetMetal50
-    - CMSheetMetal50
-    - CMSheetPlasteel50
+    - id: CMMRE
+    - id: RMCBinocularsPVE
+    - id: AU14PacketGrenadeFragM12Filled
+    - id: CMSheetMetal50
+    - id: CMSheetMetal50
+    - id: CMSheetMetal50
+    - id: CMSheetMetal50
+    - id: CMSheetPlasteel50
     jumpsuit:
     - id: RMCSynthResetKeyProdigy
     - id: RMCSynthResetKeyProdigy
     - id: AU14ProdigyLaptop
     # 2 empty slots
     outerClothing:
-    - CMMagazinePistolMK80
-    - CMMagazinePistolMK80
-    - CMMagazinePistolMK80
-    - BarbedWire15
-    - BarbedWire15
+    - id: CMMagazinePistolMK80
+    - id: CMMagazinePistolMK80
+    - id: CMMagazinePistolMK80
+    - id: BarbedWire15
+    - id: BarbedWire15
     # 0 empty slots
 
 - type: playTimeTracker

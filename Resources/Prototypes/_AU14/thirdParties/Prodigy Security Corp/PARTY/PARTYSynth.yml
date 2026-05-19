@@ -126,27 +126,27 @@
     #- AU14Tourniquet
     # no need, pouch already has 13 slots and is filled with med supplies
     back:
-    - AU14CMDefibrillator
-    - AU14CMDefibrillator
-    - CMSheetMetal50
-    - CMSheetMetal50
-    - CMSheetMetal50
-    - CMSheetPlasteel50
-    - CMSheetPlasteel50
-    - CMSheetPlasteel50
+    - id: AU14CMDefibrillator
+    - id: AU14CMDefibrillator
+    - id: CMSheetMetal50
+    - id: CMSheetMetal50
+    - id: CMSheetMetal50
+    - id: CMSheetPlasteel50
+    - id: CMSheetPlasteel50
+    - id: CMSheetPlasteel50
     jumpsuit:
-    - RMCSynthResetKeyProdigy
-    - RMCSynthResetKeyProdigy
-    - AU14ProdigyLaptop
-    - RMCHandcuffs
-    - RMCHandcuffs
+    - id: RMCSynthResetKeyProdigy
+    - id: RMCSynthResetKeyProdigy
+    - id: AU14ProdigyLaptop
+    - id: RMCHandcuffs
+    - id: RMCHandcuffs
     # 0 empty slots
     outerClothing:
-    - CMOintment10
-    - CMOintment10
-    - CMSyringe
-    - AU14Tourniquet
-    - AU14Tourniquet
+    - id: CMOintment10
+    - id: CMOintment10
+    - id: CMSyringe
+    - id: AU14Tourniquet
+    - id: AU14Tourniquet
     # 0 empty slots
 
 - type: playTimeTracker
