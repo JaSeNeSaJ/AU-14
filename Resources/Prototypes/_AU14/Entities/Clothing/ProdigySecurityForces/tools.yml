@@ -10,7 +10,7 @@
     - state: sentrycomp_cl
       map: ["enum.SentryLaptopVisualLayers.Base"]
   - type: Item
-    size: small
+    size: Small
     sprite: _RMC14/Objects/Devices/sentrycomp.rsi
   - type: Clickable
   - type: InteractionOutline

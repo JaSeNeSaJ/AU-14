@@ -23,7 +23,7 @@
       time: 18000 #5 hours
     AU14RankPrDSynth1: []
   spawnMenuRoleName: Prodigy Support Synthetic (AU14, 3rd Party)
-  startingGear: AU14GearProdigySynth
+  startingGear: AU14GearPARTPartySynth
   greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconReconSynthetic"
   joinNotifyCrew: false
@@ -135,8 +135,8 @@
     - CMSheetPlasteel50
     - CMSheetPlasteel50
     jumpsuit:
-    - RMCSynthResetKeyProdigy
-    - RMCSynthResetKeyProdigy
+    - AU14SynthResetKeyProdigy
+    - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
     - RMCHandcuffs
     - RMCHandcuffs

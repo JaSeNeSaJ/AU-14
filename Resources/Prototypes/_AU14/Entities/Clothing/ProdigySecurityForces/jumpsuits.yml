@@ -32,3 +32,12 @@
   - type: Tag
     tags:
     - ProdigyUniformSynth
+
+
+# TAGS
+
+- type: Tag
+  id: ProdigyUniformSynth
+
+- type: Tag
+  id: ProdigyUniform

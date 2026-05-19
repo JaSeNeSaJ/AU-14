@@ -15,7 +15,7 @@
   ranks:
     AU14RankWeYuRecruit: []
   spawnMenuRoleName: Prodigy PART (3rd party, M41A/2)
-  startingGear: AU14GearProdigyPartyRU
+  startingGear: AU14GearPARTYPartyRifleman
   greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconPMCStandard"
   joinNotifyCrew: false
@@ -44,7 +44,7 @@
   hidden: false
 
 - type: startingGear
-  id: AU14GearPARTPartyRifleman
+  id: AU14GearPARTYPartyRifleman
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23

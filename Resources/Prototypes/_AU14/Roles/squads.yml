@@ -292,7 +292,7 @@
     - Goggles
     - Armor
     - Gloves
-    radio: radioPART
+    radio: PART
     minimapBackground:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
       state: background_pmc
