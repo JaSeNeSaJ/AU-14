@@ -68,7 +68,7 @@
     mask: RMCMaskCoifPMC
     eyes: RMCGlassesMedicalHUDGlasses
     head: AU14ProdigyBeret
-    gloves: RMCHandsProdigyRU
+    gloves: AU14HandsProdigyRU
     belt: AU14BeltMedicBagProdigyFilled
     pocket1: RMCPouchShotgunLargeBuckshot
     pocket2: AU14PouchMedicalProdigyFilled

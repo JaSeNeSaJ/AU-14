@@ -68,7 +68,7 @@
     mask: RMCMaskCoifPMC
     eyes: RMCGlassesSmartGunSight
     head: AU14ProdigyBeret
-    gloves: RMCHandsProdigyRU
+    gloves: AU14HandsProdigyRU
     belt: RMCBeltSmartGunOperatorPistolPMCFilled
     pocket1: RMCPouchDrumPMCFill
     pocket2: AU14PouchIFAKProdigyFill

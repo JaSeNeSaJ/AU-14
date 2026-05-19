@@ -79,3 +79,55 @@
     - id: CMShellShotgunBuckshot
     - id: CMShellShotgunBuckshot
     - id: CMShellShotgunBuckshot
+
+- type: entity
+  parent: RMCPouchFirstAidPMC
+  id: AU14PouchIFAKProdigy
+  name: Prodigy first-aid pouch
+  suffix: Filled
+  components:
+  - type: Storage
+    maxItemSize: Large
+    grid:
+    - 0,0,13,1 #7 slots
+    whitelist:
+      tags:
+      - DiscreteHealthAnalyzer
+      - Dropper
+      - Pill
+      - Bottle
+      - Syringe
+      - PillCanister
+      - CMTraumaKit
+      - CMBurnKit
+      - CMOintment
+      - Brutepack
+      - CMBloodPack
+      - CMUSplintItem
+      - RMCPenlight
+      - CMAutoInjector
+      - CMFireExtinguisherPortable
+      - RMCSyringeCase
+      - CMSurgicalLine
+      - CMSynthGraft
+      - PillPacket
+      - Hypospray
+      components:
+      - Hypospray
+      - CMUSplintItem
+      - SpawnItemsOnUse
+
+- type: entity
+  parent: AU14PouchIFAKProdigy
+  id: AU14PouchIFAKProdigyFill
+  suffix: Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14HemostaticGauzePacket
+    - id: AU14Tourniquet
+    - id: CMPacketPillsTricordrazine
+    - id: AU14PacketPillsTramadol
+    - id: CMUSplintItem
+    - id: CMBicaridineAutoInjector
+    - id: CMKelotaneAutoInjector
