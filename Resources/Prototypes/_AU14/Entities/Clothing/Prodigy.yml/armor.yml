@@ -18,7 +18,8 @@
     denyReason: au14-xas23-not-prodigy-ru-jumpsuit
     whitelist:
       tags:
-      - RMCUniformIntel
+      - ProdigyUniform
+      - ProdigyUniformSynth
   - type: MotionDetector
     handToggleable: false
   - type: ToggleableMotionDetector
