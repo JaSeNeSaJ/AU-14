@@ -32,7 +32,6 @@
       - PillPacket
       - Hypospray
       - CMUSplintItem
-      - SpawnItemsOnUse
 
 - type: entity
   parent: AU14PouchMedicalProdigy

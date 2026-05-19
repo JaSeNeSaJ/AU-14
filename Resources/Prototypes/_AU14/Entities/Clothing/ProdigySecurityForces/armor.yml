@@ -45,7 +45,7 @@
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/OuterClothing/Armor/io/urban.rsi
   - type: Storage
-    maxItemSize: Medium
+    maxItemSize: Normal
     grid:
     - 0,0,9,1 # 5 slots
   - type: ClothingRequireEquipped

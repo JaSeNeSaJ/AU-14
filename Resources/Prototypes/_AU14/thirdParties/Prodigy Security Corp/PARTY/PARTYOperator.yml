@@ -1,6 +1,6 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobWYProdigyPartySmartgunner
+  id: AU14JobProdigyPartySmartgunner
   name: Prodigy PARTY Smartgun Operator
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobWYProdigyPartySmartgunner
