@@ -16,7 +16,7 @@
   id: ProdigyPARTSParty
   partyspawn: ProdigyPARTSSpawn
   entrymethod: shuttle
-  weight: 20
+  weight: 45
   minplayers: 30
   maxplayers: 400
   GhostsNeeded: 8
