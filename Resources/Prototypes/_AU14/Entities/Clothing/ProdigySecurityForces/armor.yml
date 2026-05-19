@@ -47,7 +47,7 @@
   - type: Storage
     maxItemSize: Normal
     grid:
-    - 0,0,9,1 # 5 slots
+    - 0,0,9,1 # 5 slots.
   - type: ClothingRequireEquipped
     autoUnequip: true
     denyReason: au14-xas23-not-prodigy-ru-jumpsuit
