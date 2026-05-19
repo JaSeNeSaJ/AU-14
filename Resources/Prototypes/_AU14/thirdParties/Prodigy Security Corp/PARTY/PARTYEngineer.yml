@@ -50,7 +50,7 @@
     rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearPARTPartyLeader
+  id: AU14GearPARTPartyEngineer
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
