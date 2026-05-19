@@ -1,6 +1,6 @@
 - type: entity
-  parent: AU14SynthResetKeyProdigy
-  id: RMCSynthResetKeyProdigy
+  parent: RMCSynthResetKey
+  id: AU14SynthResetKeyProdigy
   name: Prodigy synthetic reset key
   description: A Prodigy-pattern reset key for rebooting synthetic units after critical failure. It must be recharged after use.
   components:
