@@ -83,7 +83,7 @@
       entries:
       - id: RMCM5CameraGear
         amount: 30
-      - id: AU14HeadsetSectionMarine
+      - id: AU14HeadsetGovforMarine
         name: empty headset
         amount: 20
     - name: Heads Up Display
@@ -629,7 +629,9 @@
         amount: 5
     - name: Headsets
       entries:
-      - id: AU14HeadsetSectionLeader
+      - id: AU14HeadsetGovforCommand
+        amount: 2
+      - id: AU14HeadsetGovforAuxiliary
         amount: 2
     - name: Backpack
       entries:
@@ -1063,12 +1065,13 @@
       takeAll: CMEngineerSet
       entries:
       - id: AU14VendorBundleCombatTechnicianEssentials
-    - name: Automated Sentry Gun
+    - name: Support Equipment
       choices:  { CMHandheldDefense : 1 }
       entries:
       - id: AU14CaseSentry
       - id: AU14CaseSentryMini
       - id: AU14CaseSentrySniper
+      - id: RMCM271A2BruteLauncherRigFilled
     - name: Tool Storage
       choices: { CMUCTToolStorage: 1 }
       entries:
@@ -1359,6 +1362,8 @@
         amount: 8
       - id: RMCWeaponLauncherDisposableFolded
         amount: 2
+      - id: RMCRocketM5510Brute
+        amount: 12
     - name: Barrel Attachments
       entries:
       - id: RMCAttachmentExtendedBarrel
