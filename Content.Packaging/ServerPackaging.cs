@@ -134,7 +134,7 @@ public static class ServerPackaging
             {
                 "publish",
                 "--runtime", runtime,
-                "--no-self-contained",
+                "--no-self-contained"," "true",
                 "-c", configuration,
                 $"/p:TargetOs={targetOs}",
                 "/p:FullRelease=True",
