@@ -19,6 +19,7 @@
   - AUPlanetStableGarrison
   - AUPlanetTrijent
   - CMUPlanetLament
+  - CMUPlanetRetreat
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -39,6 +40,7 @@
     - AUPlanetShepherdsPride
     #- AUPlanetLV624
     - CMUPlanetLament
+    - CMUPlanetRetreat
     - AUPlanetStableGarrison
     #- AUPlanetLV747
     #- AUPlanetSorokyne
@@ -69,6 +71,7 @@
 #  - AuPlanetFiorina -removed due to load errors
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
+ - CMUPlanetRetreat
 #  - CMUPlanetLament
   rules:
   - AuVoteRule
@@ -95,6 +98,7 @@
    # - AUPlanetSorokyne
     - AUPlanetStableGarrison
     - CMUPlanetLament
+    - CMUPlanetRetreat
 
 - type: gamePreset
   id: Jailbreak
