@@ -89,7 +89,7 @@
     OB: false
     supplyDrop: false
     weatherEnabled: false
-    
+
 ### Entities
 
 - type: entity
@@ -101,7 +101,7 @@
     state: oob
   - type: Area
     minimapColor: '#573e19'
-    
+
 ## Fort Beauregard
 
 - type: entity
@@ -113,7 +113,7 @@
     state: fb_req
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBCommandIntelOffice
@@ -123,7 +123,7 @@
     state: fb_cm_inteloffice
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBCommandCommandCenter
@@ -133,7 +133,7 @@
     state: fb_cm_cc
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBarracks
@@ -143,7 +143,7 @@
     state: fb_barracks
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBarracksMessHall
@@ -153,7 +153,7 @@
     state: fb_barracks_messhall
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBEngineeringMaintenanceBay
@@ -163,7 +163,7 @@
     state: fb_engi_maint
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBrigProcessing
@@ -173,7 +173,7 @@
     state: fb_brig_processing
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBrig
@@ -183,7 +183,7 @@
     state: fb_brig
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBrigHoldingCells
@@ -193,7 +193,7 @@
     state: fb_brig_cell
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatFBBrigLongTermConfinement
@@ -492,7 +492,7 @@
   name: Octanis Complex Powerplant - Turbine Room
   components:
   - type: Sprite
-    state: oc_engi_turbineroom
+    state: oc_engi_turbine
   - type: Area
     minimapColor: '#573e19'
 
@@ -610,7 +610,7 @@
     state: oc_starport_north
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatOutdoors
   id: CMUAreaRetreatOCStarportExteriorSouth
@@ -620,7 +620,7 @@
     state: oc_starport_south
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatOutdoors
   id: CMUAreaRetreatOCStarportExteriorLZ2
@@ -630,7 +630,7 @@
     state: oc_starport_lz2
   - type: Area
     minimapColor: '#573e19'
-    
+
 - type: entity
   parent: CMUAreaRetreatOutdoors
   id: CMUAreaRetreatOCStarportExteriorServiceArea
@@ -662,7 +662,7 @@
     state: caves_southeast
   - type: Area
     minimapColor: '#714401CC'
-    
+
 - type: entity
   parent: CMUAreaRetreatFullProtection
   id: CMUAreaRetreatCavesSouthWest
