@@ -18,6 +18,8 @@
     healingCapsuleCost: 350
     stabilisingCrystalCooldown: 60
     healingCapsuleCooldown: 90
+    huntingTrapCost: 200
+    huntingTrapCooldown: 60
   - type: YautjaGearContainer
   - type: UserInterface
     interfaces:
