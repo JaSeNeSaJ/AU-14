@@ -263,6 +263,7 @@
     state: icon
   - type: Item
     sprite: _CMU14/Yautja/cape_full.rsi
+    size: Large
   - type: Clothing
     sprite: _CMU14/Yautja/cape_full.rsi
     quickEquip: false
@@ -283,7 +284,7 @@
     uncloakSound:
       path: /Audio/_CMU14/Yautja/pred_cloakoff.wav
   - type: Storage
-    maxItemSize: Ginormous
+    maxItemSize: Large
     grid:
     - 0,0,15,5
 
@@ -837,7 +838,7 @@
     size: Small
     sprite: _CMU14/Yautja/yautja_items.rsi
   - type: Storage
-    maxItemSize: Normal
+    maxItemSize: Small
     grid:
     - 0,0,11,3
   - type: FixedItemSizeStorage
