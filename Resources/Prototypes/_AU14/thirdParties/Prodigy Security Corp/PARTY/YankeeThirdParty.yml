@@ -13,7 +13,7 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: ProdigyPARTY
+  id: ProdigyPARTYParty
   partyspawn: ProdigyPARTYSpawn
   entrymethod: shuttle
   weight: 20
