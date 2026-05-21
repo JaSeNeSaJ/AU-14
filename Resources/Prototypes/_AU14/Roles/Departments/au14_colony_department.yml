@@ -25,7 +25,6 @@
     - AU14JobCivilianFoodServiceWorker
     - AU14JobCivilianShopkeep
     - AU14JobCivilianWasteManagementSpecialist
-    - AU14JobCivilianEntertainmentServiceWorker
   departmentRadio: null
   headOfDepartment: AU14JobCivilianColonyAdministrator
   faction: colonist
@@ -55,7 +54,6 @@
     - AU14JobCivilianFoodServiceWorker
     - AU14JobCivilianShopkeep
     - AU14JobCivilianWasteManagementSpecialist
-    - AU14JobCivilianEntertainmentServiceWorker
   departmentRadio: null
   headOfDepartment: AU14JobCivilianHeadOfService
   faction: colonist

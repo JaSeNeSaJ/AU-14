@@ -48,20 +48,6 @@
   - SmokablesRMC
 
 - type: roleLoadout
-  id: JobAU14JobCivilianEntertainmentServiceWorker
-  points: 7
-  groups:
-  - CMUESWMask
-  - CMUESWFootwear
-  - CMUESWJumpsuit
-  - CMUESWBackpack
-  - CMUESWToys
-  - PaperworkRMC
-  - RecreationalRMC
-  - CannedDrinksAU14
-  - SmokablesRMC
-
-- type: roleLoadout
   id: JobAU14JobCivilianJournalist
   points: 7
   groups:
