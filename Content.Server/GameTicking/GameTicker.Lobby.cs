@@ -46,7 +46,7 @@ namespace Content.Server.GameTicking
             RaiseNetworkEvent(GetRoundStatusMsg(), filter);
         }
 
-        private string GetPlanetMapName()
+        public string GetPlanetMapName()
         {
             var selectedPlanet = _auRoundSystem.GetSelectedPlanet();
             if (!string.IsNullOrWhiteSpace(selectedPlanet?.VoteName))
