@@ -1,0 +1,13 @@
+- type: entity
+  parent: ClothingMaskBase
+  id: CMUMaskEntertainmentServiceWorkerClown
+  name: Clown Wig and Mask
+  description: A dark, foreboding feeling overtakes you. You know this face. You thought you were safe from it. It has followed you even here. There is no escape.
+  components:
+  - type: IdentityBlocker
+  - type: Appearance
+  - type: Sprite
+    sprite: _AU14/Clothing/Civilian/Face/clown.rsi
+  - type: Tag
+    tags:
+    - ClownMask

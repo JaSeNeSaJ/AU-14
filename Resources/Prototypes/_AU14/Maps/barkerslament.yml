@@ -16,6 +16,7 @@
           availableJobs:
             AU14JobCivilianColonist: [ -1, -1 ]
             AU14JobCivilianFoodServiceWorker: [3, 3]
+            AU14JobCivilianEntertainmentServiceWorker: [2, 2]
             AU14JobCivilianJournalist: [2, 2]
             AU14JobCivilianScientist: [6, 6]
             AU14JobCivilianColonySynthetic: [2, 2]
