@@ -182,6 +182,17 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             var jobEntity = Spawn(prototype.JobEntity, coordinates);
             MakeSentientCommand.MakeSentient(jobEntity, EntityManager);
 
+            if (profile != null && TryComp(jobEntity, out HumanoidAppearanceComponent? humanoid))
+            {
+                _humanoidSystem.LoadProfile(jobEntity, profile.WithSpecies(humanoid.Species), humanoid);
+                _metaSystem.SetEntityName(jobEntity, profile.Name);
+
+                if (profile.FlavorText != "" && _configurationManager.GetCVar(CCVars.FlavorText))
+                {
+                    AddComp<DetailExaminableComponent>(jobEntity).Content = profile.FlavorText;
+                }
+            }
+
             // Make sure custom names get handled, what is gameticker control flow whoopy.
             if (loadout != null)
             {
