@@ -685,6 +685,14 @@ namespace Content.Server.GameTicking
             _replayRoundText = roundEndText;
         }
 
+        private string GetDiscordMapName()
+        {
+            var mapName = GetPlanetMapName();
+            return mapName == Loc.GetString("game-ticker-no-map-selected-plain")
+                ? Loc.GetString("discord-round-notifications-unknown-map")
+                : mapName;
+        }
+
         private async void SendRoundEndDiscordMessage()
         {
             try
@@ -692,7 +700,7 @@ namespace Content.Server.GameTicking
                 if (_webhookIdentifier == null) return;
 
                 var duration = RoundDuration();
-                var mapName = GetPlanetMapName();
+                var mapName = GetDiscordMapName();
                 var content = Loc.GetString("discord-round-notifications-end",
                     ("id", RoundId),
                     ("map", mapName),
@@ -703,7 +711,7 @@ namespace Content.Server.GameTicking
                 // if (_distressSignal.SelectedPlanetMapName is { } planet
                 //     && _distressSignal.OperationName is { } operation)
                 // {
-                //     var mapName = GetPlanetMapName();
+                //     var mapName = GetDiscordMapName();
                 //     content = Loc.GetString("rmc-discord-round-notifications-end",
                 //         ("id", RoundId),
                 //         ("operation", operation),
@@ -912,7 +920,7 @@ namespace Content.Server.GameTicking
                 if (_webhookIdentifier == null)
                     return;
 
-                var mapName = GetPlanetMapName();
+                var mapName = GetDiscordMapName();
                 var content = Loc.GetString("discord-round-notifications-started", ("id", RoundId), ("map", mapName));
 
                 // if (_distressSignal.SelectedPlanetMapName is { } planet &&
