@@ -13,7 +13,6 @@ using Content.Shared._RMC14.Marines.Squads;
 using Content.Shared._RMC14.Radio;
 using Content.Shared._RMC14.Tracker.SquadLeader;
 using Content.Shared._RMC14.Xenonids;
-// RMC14
 using Content.Shared.Chat;
 using Content.Shared.Database;
 using Content.Shared.Ghost;
