@@ -729,6 +729,9 @@ public abstract partial class SharedDropshipSystem : EntitySystem
         if (!TryComp(grid, out FTLComponent? ftl) || !TryComp(grid, out DropshipComponent? dropship))
             return;
 
+        if (dropship.WithdrawEvacuating)
+            return;
+
         if (dropship.Destination != dropship.DepartureLocation ||
             _timing.CurTime + dropship.CancelFlightTime >= ftl.StateTime.End)
             return;
