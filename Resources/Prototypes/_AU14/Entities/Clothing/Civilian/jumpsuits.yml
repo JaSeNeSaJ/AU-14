@@ -192,6 +192,15 @@
     sprite: _AU14/Clothing/Civilian/Uniforms/cuppajoesuniform.rsi
 
 - type: entity
+  parent: RMCMarineUniformBase
+  id: CMUEntertainmentServiceWorkerClown
+  name: Clown Uniform
+  description: A red and white striped shirt, complete with a pair of ridiculously wide slacks.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Civilian/Uniforms/clown.rsi
+
+- type: entity
   parent: CMScrubsGreen
   id: AU14ScrubsGreenDoctorSurgical
   components:

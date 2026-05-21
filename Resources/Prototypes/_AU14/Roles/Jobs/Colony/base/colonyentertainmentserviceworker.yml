@@ -1,0 +1,55 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobCivilianEntertainmentServiceWorker
+  name: au14-job-name-civilianentertainmentserviceworker
+  description: au14-job-description-civilianentertainmentserviceworker
+  setPreference: true
+  playTimeTracker: AU14JobCivilianEntertainmentServiceWorker
+  ranks:
+    RMCRankCivilian: []
+  startingGear: AU14GearCivilianEntertainmentServiceWorker
+  icon: "AU14JobIconColonyColonist"
+  hasIcon: false
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-colonycivilian
+  whitelisted: true # only the worthy may wield the bikehorn
+  whitelistParent: AU14JobGeneralWhitelist
+  accessGroups:
+  - Colonist
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillFireman: 1
+        RMCSkillVehicles: 1
+        RMCSkillDomestics: 2
+        RMCSkillFirearms: 2
+    - type: JobPrefix
+      prefix: au14-job-prefix-civilianentertainmentserviceworker
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: synth
+  hidden: false
+
+- type: startingGear
+  id: AU14GearCivilianEntertainmentServiceWorker
+  equipment:
+    id: AU14IDCardEntertainmentServiceWorker
+    
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointCivilianEntertainmentServiceWorker
+  name: Spawn Point Entertainment Service Worker
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobCivilianEntertainmentServiceWorker
+  - type: Sprite
+    state: syn_spawn
+
+- type: playTimeTracker
+  id: AU14JobCivilianEntertainmentServiceWorker
+  isHumanoid: true

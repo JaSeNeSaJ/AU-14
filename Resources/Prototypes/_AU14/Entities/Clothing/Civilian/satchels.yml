@@ -29,3 +29,12 @@
     blacklist:
       components:
       - Xeno
+
+- type: entity
+  parent: CMBackpack
+  id: CMUBackpackEntertainmentServiceWorkerClown
+  name: Giggles Von Honkerton
+  description: This, this thing. It fills you with the dread of a bygone age. A land of grey coveralls and mentally unstable crewmen. Of traitors and hooligans. Thank god you're in the Marines now.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Civilian/Back/clown.rsi

@@ -1,0 +1,49 @@
+- type: loadout
+  id: MaskESWCMU
+  equipment:
+    mask: CMUMaskEntertainmentServiceWorkerClown
+
+- type: loadout
+  id: ShoesESWCMU
+  equipment:
+    shoes: CMUShoesEntertainmentServiceWorkerClown
+
+- type: loadout
+  id: JumpsuitESWCMU
+  equipment:
+    jumpsuit: CMUEntertainmentServiceWorkerClown
+
+- type: loadout
+  id: BackpackESWCMU
+  equipment:
+    back: CMUBackpackEntertainmentServiceWorkerClown
+
+- type: loadout
+  id: HornESWCMU
+  storage:
+    back:
+    - BikeHorn
+
+- type: loadout
+  id: AntiHornESWCMU
+  storage:
+    back: 
+    - CluwneHorn
+
+- type: loadout
+  id: CrayonsESWCMU
+  storage:
+    back: 
+    - CrayonBox
+ 
+- type: loadout
+  id: LaughboxESWCMU
+  storage:
+    back: 
+    - ClownRecorder
+
+- type: loadout
+  id: HammerESWCMU
+  storage:
+    back: 
+    - ToyHammer

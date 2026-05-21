@@ -416,6 +416,14 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
+  id: AU14IDCardEntertainmentServiceWorker
+  name: entertainment service worker ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobCivilianEntertainmentServiceWorker
+
+- type: entity
+  parent: AU14IDCardBaseCivilianNoIFF
   id: AU14IDCardColonyShopkeep
   name: shopkeep ID card
   components:

@@ -1,0 +1,30 @@
+- type: entity
+  parent: ClothingShoesBase
+  id: CMUShoesEntertainmentServiceWorkerClown
+  name: Clown Shoes
+  description: The prankster's standard-issue clowning shoes. Damn they're huge!
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/Civilian/Shoes/clown.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/Civilian/Shoes/clown.rsi
+  - type: ContainerContainer
+    containers:
+      item: !type:ContainerSlot
+  - type: ItemSlots
+    slots:
+      item:
+        name: holdout
+        insertSound: /Audio/_RMC14/Weapons/Guns/Reload/m42a2.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/Reload/m42a2.ogg
+        whitelist:
+          tags:
+          - Holdout
+        startingItem: RMCSpaceCash1
+  - type: CMItemSlots
+    startingItem: RMCSpaceCash1
+  - type: FootstepModifier
+    footstepSoundCollection:
+      collection: FootstepClown
+      params:
+        variation: 0.17
