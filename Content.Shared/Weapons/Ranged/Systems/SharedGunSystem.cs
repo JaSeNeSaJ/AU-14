@@ -9,6 +9,7 @@ using Content.Shared._RMC14.Weapons.Ranged;
 using Content.Shared._RMC14.Weapons.Ranged.Flamer;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared._RMC14.Vehicle;
+using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
@@ -88,6 +89,7 @@ public abstract partial class SharedGunSystem : EntitySystem
     [Dependency] private   SharedStaminaSystem _stamina = default!;
     [Dependency] private   SharedStunSystem _stun = default!;
     [Dependency] private   SharedColorFlashEffectSystem _color = default!;
+    [Dependency] private   CMUZLevelShootingSystem _zLevelShooting = default!;
     [Dependency] private   SharedCameraRecoilSystem _recoil = default!;
     [Dependency] private   IConfigurationManager _config = default!;
     [Dependency] private   INetConfigurationManager _netConfig = default!;
@@ -341,6 +343,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         // First shot
         // Previously we checked shotcounter but in some cases all the bullets got dumped at once
         // curTime - fireRate is insufficient because if you time it just right you can get a 3rd shot out slightly quicker.
+        var nextFireBeforeAttempt = gun.NextFire;
         if (gun.NextFire < curTime - fireRate || gun.ShotCounter == 0 && gun.NextFire < curTime)
             gun.NextFire = curTime;
 
@@ -400,6 +403,15 @@ public abstract partial class SharedGunSystem : EntitySystem
         toCoordinates = attemptEv.ToCoordinates;
         if (toCoordinates == null)
             return null;
+
+        if (!_zLevelShooting.TryAdjustShotCoordinates(user, fromCoordinates, toCoordinates.Value, out fromCoordinates, out var adjustedToCoordinates))
+        {
+            gun.NextFire = nextFireBeforeAttempt;
+            DirtyField(gunUid, gun, nameof(GunComponent.NextFire));
+            return null;
+        }
+
+        toCoordinates = adjustedToCoordinates;
 
         // Remove ammo
         var ev = new TakeAmmoEvent(shots, new List<(EntityUid? Entity, IShootable Shootable)>(), fromCoordinates, user);

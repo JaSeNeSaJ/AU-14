@@ -1,4 +1,3 @@
-using System.Linq;
 using Content.Client.Projectiles;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared.Projectiles;
@@ -90,7 +89,8 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
 
         if (!TryComp(ent, out ProjectileComponent? projectile) ||
             !TryComp(ent, out PhysicsComponent? physics) ||
-            _ignorePredictionHitQuery.HasComp(args.OtherEntity))
+            _ignorePredictionHitQuery.HasComp(args.OtherEntity) ||
+            !IsSameMap(ent.Owner, args.OtherEntity))
         {
             return;
         }
@@ -138,23 +138,28 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
                 continue;
 
             var hit = new HashSet<(NetEntity, MapCoordinates)>();
+            EntityUid? firstHit = null;
             foreach (var contact in contacts)
             {
-                if (_ignorePredictionHitQuery.HasComp(contact))
+                if (_ignorePredictionHitQuery.HasComp(contact) ||
+                    !IsSameMap(uid, contact))
+                {
                     continue;
+                }
 
                 var netEnt = GetNetEntity(contact);
                 var pos = _transform.GetMapCoordinates(contact);
                 hit.Add((netEnt, pos));
+                firstHit ??= contact;
             }
 
-            if (hit.Count == 0)
+            if (firstHit is not { } firstHitEntity)
                 continue;
 
             var ev = new PredictedProjectileHitEvent(uid.Id, hit);
             RaiseNetworkEvent(ev);
 
-            _projectile.ProjectileCollide((uid, projectile, physics), contacts.First());
+            _projectile.ProjectileCollide((uid, projectile, physics), firstHitEntity);
         }
 
         var predictedQuery = EntityQueryEnumerator<PredictedProjectileHitComponent, SpriteComponent, TransformComponent>();

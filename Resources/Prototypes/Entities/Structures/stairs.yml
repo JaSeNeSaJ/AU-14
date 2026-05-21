@@ -13,6 +13,12 @@
     drawdepth: FloorTiles
   - type: Transform
     anchored: true
+  - type: CMUZLevelHighGround
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+    stick: true
   - type: Damageable
     damageContainer: StructuralInorganic
     damageModifierSet: Metallic
