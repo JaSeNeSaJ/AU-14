@@ -38,6 +38,9 @@ public abstract partial class SharedDeafnessSystem : EntitySystem
 
     private void OnDeafenWhileCritMobState(Entity<DeafenWhileCritComponent> ent, ref MobStateChangedEvent args)
     {
+        if (_timing.ApplyingState)
+            return;
+
         if (args.NewMobState != MobState.Critical)
             return;
 
@@ -46,6 +49,9 @@ public abstract partial class SharedDeafnessSystem : EntitySystem
 
     private void OnActiveDeafenWhileCritMobState(Entity<ActiveDeafenWhileCritComponent> ent, ref MobStateChangedEvent args)
     {
+        if (_timing.ApplyingState)
+            return;
+
         if (args.NewMobState != MobState.Critical)
             RemCompDeferred<ActiveDeafenWhileCritComponent>(ent);
     }
