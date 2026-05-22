@@ -292,6 +292,11 @@ public sealed partial class GhostRoleSystem : EntitySystem
 
 
 
+    private bool CanUseGhostRoleUi(ICommonSession player)
+    {
+        return CanRequestGhostRole(player);
+    }
+
     private bool CanRequestGhostRole(ICommonSession player)
     {
         if (player.Status is SessionStatus.Disconnected or SessionStatus.Zombie)
