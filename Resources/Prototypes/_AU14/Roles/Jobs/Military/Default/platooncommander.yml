@@ -83,7 +83,7 @@
     id: AU14IDCardGOVFORPlatCo
     ears: AU14HeadsetGovforCommand
   inhand:
-    -  RMCTabletGovfor
+    -  AU14TabletGovfor
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORPlatCo

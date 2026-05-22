@@ -26,7 +26,7 @@
       - CommandTablet
       - RMCHeadset
   - type: AccessReader
-    access: [["RMCAccessSeniorCommand"]]
+    access: [["RMCAccessSeniorCommand"], ["AU14AccessGovforCommand"], ["AU14AccessOpforCommand"]]
   - type: RMCMesonsNonviewable
 
 - type: entity
@@ -45,5 +45,12 @@
   id: CMLockerFillCMDCabinet
   table: !type:AllSelector
     children:
-    - id: RMCTabletCO
-    - id: CMHeadsetSeniorCommand
+    - id: AU14Scissors
+    - id: CMPen
+    - id: CMPaperBin30
+    - id: CMFolderRedEmpty
+    - id: CMFolderBlueEmpty
+    - id: CMStampApproved
+    - id: CMStampDenied
+    - id: RMCSynthResetKey
+    - id: RMCMegaphone
