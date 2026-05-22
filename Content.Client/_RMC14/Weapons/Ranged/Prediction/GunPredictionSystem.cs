@@ -88,7 +88,8 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
 
         if (!TryComp(ent, out ProjectileComponent? projectile) ||
             !TryComp(ent, out PhysicsComponent? physics) ||
-            _ignorePredictionHitQuery.HasComp(args.OtherEntity))
+            _ignorePredictionHitQuery.HasComp(args.OtherEntity) ||
+            !IsSameMap(ent.Owner, args.OtherEntity))
         {
             return;
         }
@@ -133,17 +134,22 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
                 continue;
 
             var hit = new HashSet<(NetEntity, MapCoordinates)>();
+            EntityUid? firstHit = null;
             foreach (var contact in contacts)
             {
-                if (_ignorePredictionHitQuery.HasComp(contact))
+                if (_ignorePredictionHitQuery.HasComp(contact) ||
+                    !IsSameMap(uid, contact))
+                {
                     continue;
+                }
 
                 var netEnt = GetNetEntity(contact);
                 var pos = _transform.GetMapCoordinates(contact);
                 hit.Add((netEnt, pos));
+                firstHit ??= contact;
             }
 
-            if (hit.Count == 0)
+            if (firstHit is not { } firstHitEntity)
                 continue;
 
             PredictHit((uid, predicted), projectile, hit);
