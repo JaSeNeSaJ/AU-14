@@ -138,6 +138,13 @@ public sealed partial class GhostRoleSystem : EntitySystem
 
     public void OpenEui(ICommonSession session)
     {
+        if (!CanUseGhostRoleUi(session))
+        {
+            LeaveAllRaffles(session);
+            CloseEui(session);
+            return;
+        }
+
         if (_openUis.ContainsKey(session))
             CloseEui(session);
 
@@ -289,6 +296,11 @@ public sealed partial class GhostRoleSystem : EntitySystem
         // If a player has spawned into a normal body, purge stale raffle membership so
         // the raffle cannot pull them out of the round later.
         return player.AttachedEntity is not { } entity || HasComp<GhostComponent>(entity);
+    }
+
+    private bool CanUseGhostRoleUi(ICommonSession player)
+    {
+        return CanRequestGhostRole(player);
     }
 
     private bool TryTakeover(ICommonSession player, uint identifier)
@@ -580,6 +592,13 @@ public sealed partial class GhostRoleSystem : EntitySystem
 
     public void Follow(ICommonSession player, uint identifier)
     {
+        if (!CanUseGhostRoleUi(player))
+        {
+            LeaveAllRaffles(player);
+            CloseEui(player);
+            return;
+        }
+
         if (!_ghostRoles.TryGetValue(identifier, out var role))
             return;
 
@@ -666,6 +685,13 @@ public sealed partial class GhostRoleSystem : EntitySystem
     /// </param>
     public GhostRoleInfo[] GetGhostRolesInfo(ICommonSession? player)
     {
+        if (player != null && !CanUseGhostRoleUi(player))
+        {
+            LeaveAllRaffles(player);
+            CloseEui(player);
+            return [];
+        }
+
         var roles = new List<GhostRoleInfo>();
         var metaQuery = GetEntityQuery<MetaDataComponent>();
 
