@@ -38,8 +38,8 @@ command-description-marine-randomizewithjob = Deletes and then spawns a marine o
 
 command-description-removeinvalidweeds = Removes any weeds that should not have normally spread to where they are from the map.
 
-command-description-requisitions-addbudget = Adds budget to the provided faction (govfor, opfor, colony, corporate)
-command-description-requisitions-removebudget = Removes budget from the provided faction (govfor, opfor, colony, corporate)
+command-description-requisitions-addbudget = Adds budget to the provided faction (govfor, opfor, colony, corporate, unassigned, all)
+command-description-requisitions-removebudget = Removes budget from the provided faction (govfor, opfor, colony, corporate, unassigned, all)
 
 command-description-rmcrejuvenate-marineplayersinrange = Rejuvenates all marines within a specific range, restoring them to full health, clearing status effects, etc.
 

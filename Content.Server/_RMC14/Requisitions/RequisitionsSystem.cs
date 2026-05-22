@@ -257,7 +257,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     private Entity<RequisitionsAccountComponent> GetAccount(string? faction = null)
      {
         var factionKey = string.IsNullOrEmpty(faction) || faction == "none"
-            ? "global" // use the shared global account so we're not stealing from a faction
+            ? "unassigned" // use the shared global account so we're not stealing from a faction
             : faction;
         var query = EntityQueryEnumerator<RequisitionsAccountComponent>();
         while (query.MoveNext(out var uid, out var account))
@@ -800,7 +800,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
             reqAccount = GetAccount(faction);
         else
         {
-            Log.Debug($"[Requisitions] No faction specified for GetAccount, faction: {faction}, using \"global\" account.");
+            Log.Debug($"[Requisitions] No faction specified for GetAccount, faction: {faction}, using \"unassigned\" account.");
             reqAccount = GetAccount();
         }
 

@@ -98,6 +98,8 @@ public abstract partial class SharedRequisitionsSystem : EntitySystem
         UpdateRailing(railing);
     }
 
+    // ChangeBudget with a null faction, will apply to ALL factions/accounts.
+    // If you want to use the shared account, pass the "unassigned" faction.
     public void ChangeBudget(int amount, string? faction = null)
     {
         var accountQuery = EntityQueryEnumerator<RequisitionsAccountComponent>();

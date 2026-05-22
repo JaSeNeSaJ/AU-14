@@ -10,12 +10,12 @@ public sealed class RequisitionsCommand : ToolshedCommand
     [CommandImplementation("addbudget")]
     public async void AddBudget([CommandArgument] int money, [CommandArgument] string faction)
     {
-        Sys<RequisitionsSystem>().ChangeBudget(money, faction);
+        Sys<RequisitionsSystem>().ChangeBudget(money, faction == "all" ? null : faction);
     }
 
     [CommandImplementation("removebudget")]
     public async void RemoveBudget([CommandArgument] int money, [CommandArgument] string faction)
     {
-        Sys<RequisitionsSystem>().ChangeBudget(-money, faction);
+        Sys<RequisitionsSystem>().ChangeBudget(-money, faction == "all" ? null : faction);
     }
 }
