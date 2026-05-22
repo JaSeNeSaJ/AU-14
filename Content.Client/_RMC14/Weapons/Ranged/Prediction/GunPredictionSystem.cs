@@ -1,5 +1,4 @@
 using System.Linq;
-using Content.Client.Projectiles;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Ranged.Events;
@@ -18,7 +17,6 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
 {
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private IPlayerManager _player = default!;
-    [Dependency] private ProjectileSystem _projectile = default!;
     [Dependency] private SpriteSystem _sprite = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -98,10 +96,7 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
         var netEnt = GetNetEntity(args.OtherEntity);
         var pos = _transform.GetMapCoordinates(args.OtherEntity);
         var hit = new HashSet<(NetEntity, MapCoordinates)> { (netEnt, pos) };
-        var ev = new PredictedProjectileHitEvent(ent.Owner.Id, hit);
-        RaiseNetworkEvent(ev);
-
-        _projectile.ProjectileCollide((ent, projectile, physics), args.OtherEntity);
+        PredictHit(ent, projectile, hit);
     }
 
     private void OnServerProjectileStartup(Entity<PredictedProjectileServerComponent> ent, ref ComponentStartup args)
@@ -151,21 +146,18 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
             if (hit.Count == 0)
                 continue;
 
-            var ev = new PredictedProjectileHitEvent(uid.Id, hit);
-            RaiseNetworkEvent(ev);
-
-            _projectile.ProjectileCollide((uid, projectile, physics), contacts.First());
+            PredictHit((uid, predicted), projectile, hit);
         }
 
         var predictedQuery = EntityQueryEnumerator<PredictedProjectileHitComponent, SpriteComponent, TransformComponent>();
-        while (predictedQuery.MoveNext(out var hit, out var sprite, out var xform))
+        while (predictedQuery.MoveNext(out var uid, out var hit, out var sprite, out var xform))
         {
             var origin = hit.Origin;
             var coordinates = xform.Coordinates;
             if (!origin.TryDistance(EntityManager, _transform, coordinates, out var distance) ||
                 distance >= hit.Distance)
             {
-                sprite.Visible = false;
+                _sprite.SetVisible((uid, sprite), false);
             }
         }
     }
@@ -180,5 +172,34 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
         {
             xform.ActivelyLerping = false;
         }
+    }
+
+    private void PredictHit(
+        Entity<PredictedProjectileClientComponent> ent,
+        ProjectileComponent projectile,
+        HashSet<(NetEntity Id, MapCoordinates Coordinates)> hit)
+    {
+        if (ent.Comp.Hit)
+            return;
+
+        ent.Comp.Hit = true;
+
+        var ev = new PredictedProjectileHitEvent(ent.Owner.Id, hit);
+        RaiseNetworkEvent(ev);
+
+        if (projectile.ImpactEffect != null)
+        {
+            var coordinates = Transform(ent).Coordinates;
+            RaiseLocalEvent(new ImpactEffectEvent(projectile.ImpactEffect, GetNetCoordinates(coordinates)));
+        }
+
+        if (projectile.DeleteOnCollide && IsClientSide(ent.Owner))
+        {
+            QueueDel(ent.Owner);
+            return;
+        }
+
+        if (_spriteQuery.TryComp(ent, out var sprite))
+            _sprite.SetVisible((ent, sprite), false);
     }
 }
