@@ -124,13 +124,13 @@
   paygrade: PSC-C10
 
 - type: rank
-  id: AU14RankPrDSiteDirector
+  id: AU14RankPrDOperationsDirector
   name: PSC Director of Operations
   prefix: PSC-DO
   paygrade: PSC-C11
 
 - type: rank
-  id: AU14RankPrDSiteDirector
+  id: AU14RankPrDRegionDirector
   name: PSC RegionalDirector
   prefix: PSC-RD
   paygrade: PSC-C12
