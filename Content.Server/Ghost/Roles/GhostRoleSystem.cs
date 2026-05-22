@@ -552,6 +552,7 @@ public sealed partial class GhostRoleSystem : EntitySystem
         if (!CanRequestGhostRole(player, role.Comp))
             return false;
 
+        var playerNotInGame = player.Status != SessionStatus.InGame;
         var ev = new TakeGhostRoleEvent(player);
         RaiseLocalEvent(role, ref ev);
 
@@ -563,13 +564,13 @@ public sealed partial class GhostRoleSystem : EntitySystem
 
         // Try to get the mind we just created/transferred and attach the session directly to its entity.
         // This forces the client out of the lobby UI into the game view if takeover succeeded while in preview.
-        // Try to get the mind we just created/transferred and attach the session directly to its entity.
-        if (_mindSystem.TryGetMind(player.UserId, out var mid, out var mindComp) && mindComp?.CurrentEntity != null)
+        if (playerNotInGame
+            && _mindSystem.TryGetMind(player.UserId, out var mid, out var mindComp)
+            && mindComp?.CurrentEntity != null)
         {
             var entity = mindComp.CurrentEntity.Value;
 
-            // First ensure the session is marked InGame so GameTicker/client expect gameplay state.
-            if (player.Status != SessionStatus.InGame && player.Status != SessionStatus.Disconnected && player.Status != SessionStatus.Zombie)
+            if (player.Status != SessionStatus.Disconnected && player.Status != SessionStatus.Zombie)
             {
                 try
                 {
