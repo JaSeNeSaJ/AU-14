@@ -8,7 +8,7 @@ namespace Content.Server._RMC14.Requisitions;
 public sealed class RequisitionsCommand : ToolshedCommand
 {
     [CommandImplementation("addbudget")]
-    public async void AddBudget([CommandArgument] int money, [CommandArgument string faction])
+    public async void AddBudget([CommandArgument] int money, [CommandArgument] string faction)
     {
         Sys<RequisitionsSystem>().ChangeBudget(money, faction);
     }

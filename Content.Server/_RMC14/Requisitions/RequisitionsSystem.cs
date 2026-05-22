@@ -266,7 +266,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                 return (uid, account);
         }
 
-        return CreateAccount(factionKey)
+        return CreateAccount(factionKey);
      }
 
     private Entity<RequisitionsAccountComponent> CreateAccount(string faction)
