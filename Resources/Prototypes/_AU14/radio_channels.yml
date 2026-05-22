@@ -190,7 +190,7 @@
   id: radioMobFamily
   name: chat-radio-mob
   keycode: "f"
-  frequency: 1431
+  frequency: 1467
   color: "#318779"
   longRange: true
   # tower: true
@@ -254,5 +254,14 @@
   keycode: "z"
   frequency: 1559
   color: "#e3580e"
+  longRange: true
+  tower: true
+
+- type: radioChannel
+  id: PART
+  name: chat-radio-part
+  keycode: "1"
+  frequency: 5571
+  color: "#92969A"
   longRange: true
   tower: true

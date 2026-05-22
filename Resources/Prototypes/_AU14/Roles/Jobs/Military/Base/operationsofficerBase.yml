@@ -13,7 +13,7 @@
     time: 72000 # 20 hours
   - !type:RoleTimeRequirement
     role: AU14JobGOVFORSectionSergeant
-    time: 36000 # 20 hours
+    time: 36000 # 10 hours
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatOp

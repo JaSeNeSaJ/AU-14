@@ -21,6 +21,26 @@
         canUseGuns: true
         hideGeneration: true
         useHumanHealthIcons: true
+      - type: Skills
+        skills:
+          RMCSkillCqc: 4
+          RMCSkillEngineer: 4
+          RMCSkillConstruction: 3
+          RMCSkillOverwatch: 1
+          RMCSkillMedical: 4
+          RMCSkillSurgery: 3
+          RMCSkillResearch: 1
+          RMCSkillMeleeWeapons: 2
+          RMCSkillPilot: 2
+          RMCSkillPolice: 2
+          RMCSkillFireman: 5
+          RMCSkillFirearms: 2
+          RMCSkillPowerLoader: 2
+          RMCSkillVehicles: 2
+          RMCSkillJtac: 3
+          RMCSkillIntel: 2
+          RMCSkillDomestics: 2
+          RMCSkillNavigations: 1
 #     mindRoles:
 #     - MindRoleRunawaySynth
 
@@ -89,6 +109,92 @@
   antagonist: true
   setPreference: false
   objective: roles-antag-clf-recruit-objective
+  isCM: true
+
+## CLF guerrilla
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFGuerrilla
+  name: CLF Guerrilla Role
+  components:
+  - type: MindRole
+    antagPrototype: CLFGuerrillaRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFGuerrillaRole
+  name: roles-antag-clf-guerrilla-name
+  setPreference: false #already done by the job thing
+  objective: roles-antag-clf-guerrilla-objective
+  isCM: true
+
+## CLF Physician
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFPhysician
+  components:
+  - type: MindRole
+    antagPrototype: CLFPhysicianRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFPhysicianRole
+  name: roles-antag-clf-physician-name
+  setPreference: false #already done by the job thing
+  objective: roles-antag-clf-doctor-objective
+  isCM: true
+
+## CLF Surgeon
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFSurgeon
+  components:
+  - type: MindRole
+    antagPrototype: CLFSurgeonRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFSurgeonRole
+  name: roles-antag-clf-surgeon-name
+  setPreference: false #yada yada job thing
+  objective: roles-antag-clf-doctor-objective
+  isCM: true
+
+## CLF Leader
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCLFLeader
+  components:
+  - type: MindRole
+    antagPrototype: CLFLeaderRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CLFLeaderRole
+  name: roles-antag-clf-leader-name
+  setPreference: false #job thing
+  objective: roles-antag-clf-leader-objective
+  isCM: true
+
+## cultist
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRoleCultist
+  components:
+  - type: MindRole
+    antagPrototype: CultistRole
+    exclusiveAntag: true
+    roleType: TeamAntagonist
+
+- type: antag
+  id: CultistRole
+  name: roles-antag-cultist-name
+  setPreference: false
+  objective: roles-antag-cultist-objective
   isCM: true
 
 ## fugitive

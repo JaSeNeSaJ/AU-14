@@ -18,6 +18,8 @@
     healingCapsuleCost: 350
     stabilisingCrystalCooldown: 60
     healingCapsuleCooldown: 90
+    huntingTrapCost: 200
+    huntingTrapCooldown: 60
   - type: YautjaGearContainer
   - type: UserInterface
     interfaces:
@@ -261,6 +263,7 @@
     state: icon
   - type: Item
     sprite: _CMU14/Yautja/cape_full.rsi
+    size: Large
   - type: Clothing
     sprite: _CMU14/Yautja/cape_full.rsi
     quickEquip: false
@@ -281,9 +284,13 @@
     uncloakSound:
       path: /Audio/_CMU14/Yautja/pred_cloakoff.wav
   - type: Storage
-    maxItemSize: Ginormous
+    maxItemSize: Large
     grid:
     - 0,0,15,5
+  - type: IgnoreContentsSize
+    items:
+      tags:
+      - CMUYautjaToolbelt
 
 - type: entity
   parent: BaseItem
@@ -835,9 +842,13 @@
     size: Small
     sprite: _CMU14/Yautja/yautja_items.rsi
   - type: Storage
-    maxItemSize: Normal
+    maxItemSize: Small
     grid:
-    - 0,0,11,3
+    - 0,0,15,3
+  - type: IgnoreContentsSize
+    items:
+      tags:
+      - CMSurgicalCase
   - type: FixedItemSizeStorage
   - type: GenericVisualizer
     visuals:
