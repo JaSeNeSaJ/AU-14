@@ -7,11 +7,14 @@
   - type: Sprite
     drawdepth: Effects
     scale: 0.75, 0.75
+    color: "#b40000"
     layers:
     - shader: unshaded
       map: ["enum.EffectLayers.Unshaded"]
       sprite: _CMU14/Effects/blood_impact.rsi
       state: cm_bloodsplatter
+  - type: SpriteColor
+    color: "#b40000"
   - type: EffectVisuals
   - type: Tag
     tags:
@@ -25,6 +28,7 @@
   - type: Sprite
     drawdepth: Effects
     scale: 0.75, 0.75
+    color: "#b40000"
     layers:
     - shader: unshaded
       map: ["enum.EffectLayers.Unshaded"]
@@ -39,6 +43,7 @@
   - type: Sprite
     drawdepth: Effects
     scale: 0.75, 0.75
+    color: "#b40000"
     layers:
     - shader: unshaded
       map: ["enum.EffectLayers.Unshaded"]
@@ -59,6 +64,8 @@
       map: ["enum.EffectLayers.Unshaded"]
       sprite: _CMU14/Effects/blood_impact.rsi
       state: cm_bloodsplatter
+  - type: SpriteColor
+    color: "#2cf274"
 
 - type: entity
   parent: CMUYautjaBloodImpactEffect
