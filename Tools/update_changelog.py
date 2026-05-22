@@ -103,7 +103,7 @@ def main():
 
     print(f"Have {len(entries_list)} changelog entries")
 
-    entries_list.sort(key=lambda e: e["id"])
+    entries_list.sort(key=lambda e: e["time"])
 
     overflow = len(entries_list) - MAX_ENTRIES
     if overflow > 0:

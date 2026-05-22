@@ -159,7 +159,8 @@ def main():
 
     sess = make_session(token)
 
-    since = start if start else get_last_run_time(sess, repo, run_id)
+    since = "2025-06-01T00:00:00.0000000+00:00"  # temp override
+    # since = start if start else get_last_run_time(sess, repo, run_id)
     print(f"Fetching PRs merged since {since}")
 
     prs = get_merged_prs(sess, repo, since)

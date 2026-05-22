@@ -5,17 +5,12 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  # push:
-  #   branches: [ master ]
-  #   paths:
-  #     - 'Resources/Changelog/Parts/**.yml'
   workflow_run:
     workflows: ["Publish"]
     types: [completed]    # Publish
   schedule:
-    - cron: "0 10 * * 1"  # Monday
-    - cron: "0 10 * * 4"  # Thursday
-  workflow_dispatch:      # Manual
+    - cron: "0 10 * * *"    # Daily
+  workflow_dispatch:        # Manual
     inputs:
       start_date:
         description: "Backfill from date (ISO 8601), automatic when empty"
