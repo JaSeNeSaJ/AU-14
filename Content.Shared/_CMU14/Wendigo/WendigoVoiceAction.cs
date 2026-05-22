@@ -1,6 +1,6 @@
 ﻿using Content.Shared.Actions;
 
-namespace Content.Shared._AU14.Wendigo;
+namespace Content.Shared._CMU14.Wendigo;
 
 public sealed partial class WendigoVoiceActionEvent : InstantActionEvent
 {
