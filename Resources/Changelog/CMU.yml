@@ -1413,5 +1413,12 @@
   id: 131
   time: '2026-05-22T16:40:36.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1025
+- author: troytroy400
+  changes:
+  - message: Added plantable flags to requisitions vendors.
+    type: Add
+  id: 132
+  time: '2026-05-22T17:14:47.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1077
 Name: CMU
 Order: -1
