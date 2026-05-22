@@ -3,7 +3,7 @@
   id: AU14JobProdigyPartySpecialist
   name: Prodigy PARTY Weapon Specialist
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobWYProdigyPartySpecialist
+  playTimeTracker: AU14JobProdigyPartySpecialistTracker
   ranks:
     AU14RankPrDEnforcerSenior: []
   spawnMenuRoleName: Prodigy PARTY Specialist (3rd party)
@@ -108,4 +108,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobWYProdigyPartySmartgunner
+  id: AU14JobProdigyPartySpecialistTracker

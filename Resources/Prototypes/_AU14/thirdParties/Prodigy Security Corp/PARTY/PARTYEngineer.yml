@@ -3,7 +3,7 @@
   id: AU14JobPARTYPartyEngineer #m41a/2
   name: Prodigy Yankee Combat Engineer
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTYPartyEngineer
+  playTimeTracker: AU14JobPARTYPartyEngineerTracker
   ranks:
     AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Yankee Combat Engineer (3rd party, M41A/2)
@@ -98,4 +98,4 @@
     # 0 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTPartyEngineer
+  id: AU14JobPARTYPartyEngineerTracker
