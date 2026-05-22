@@ -29,10 +29,6 @@
     AU14JobGOVFORPlatoonCorpsman:
       scale: 0.2
       whenToBeginScaling: 50
-    AU14JobGOVFORSquadSergeant:
-      scale: 0.025
-      whenToBeginScaling: 50
-      maximum: 4
     AU14JobGOVFORSquadCombatTech:
       scale: 0.15
       whenToBeginScaling: 50
@@ -51,10 +47,6 @@
     AU14JobOpforPlatoonCorpsman:
       scale: 0.2
       whenToBeginScaling: 50
-    AU14JobOpforSquadSergeant:
-      scale: 0.1
-      whenToBeginScaling: 50
-      maximum: 4
     AU14JobOPFORSquadCombatTech:
       scale: 0.15
       whenToBeginScaling: 50
@@ -70,10 +62,6 @@
     AU14JobGOVFORPlatoonCorpsman:
       scale: 0.2
       whenToBeginScaling: 30
-    AU14JobGOVFORSquadSergeant:
-      scale: 0.05
-      whenToBeginScaling: 50
-      maximum: 4
     AU14JobGOVFORSquadCombatTech:
       scale: 0.2
       whenToBeginScaling: 30
