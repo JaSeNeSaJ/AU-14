@@ -42,8 +42,8 @@ public sealed class XenoCursorSteeringOverlay : Overlay
         if (origin.MapId != args.MapId)
             return;
 
-        var currentVec = AngleToVec(steering.CurrentHeading) * VectorLength;
-        var targetVec = AngleToVec(steering.TargetHeading) * VectorLength;
+        var currentVec = steering.CurrentHeading.ToVec() * VectorLength;
+        var targetVec = steering.TargetHeading.ToVec() * VectorLength;
 
         DrawThickLine(args.WorldHandle, origin.Position, origin.Position + (System.Numerics.Vector2)currentVec, CurrentHeadingColor, 0.1f);
         DrawThickLine(args.WorldHandle, origin.Position, origin.Position + (System.Numerics.Vector2)targetVec, TargetHeadingColor, 0.1f);
@@ -65,11 +65,6 @@ public sealed class XenoCursorSteeringOverlay : Overlay
         var rect = new Box2(-length / 2f, -half, length / 2f, half);
         var rotated = new Box2Rotated(rect.Translated(mid), angle, mid);
         handle.DrawRect(rotated, color);
-    }
-
-    private static System.Numerics.Vector2 AngleToVec(Angle angle)
-    {
-        return new System.Numerics.Vector2((float)Math.Cos(angle.Theta), (float)Math.Sin(angle.Theta));
     }
 
 }

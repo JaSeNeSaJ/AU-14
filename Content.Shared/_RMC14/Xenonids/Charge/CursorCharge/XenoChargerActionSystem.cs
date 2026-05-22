@@ -35,6 +35,10 @@ public sealed class XenoChargerActionSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (_net.IsClient)
+            return;
+        Log.Debug($"OnToggleCharge: MoveState={ent.Comp.MoveState} IsClient={_net.IsClient}");
+
         args.Handled = true;
 
         switch (ent.Comp.MoveState)
@@ -68,7 +72,6 @@ public sealed class XenoChargerActionSystem : EntitySystem
                 break;
 
             case XenoChargerMoveState.Lunging:
-                // Ignore input while lunge is executing.
                 break;
         }
     }

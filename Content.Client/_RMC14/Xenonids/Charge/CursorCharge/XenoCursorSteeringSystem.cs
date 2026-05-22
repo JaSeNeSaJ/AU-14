@@ -51,30 +51,12 @@ public sealed class XenoCursorSteeringClientSystem : EntitySystem
         if (!TryComp(controlled, out XenoChargerComponent? comp))
             return;
 
-        if (comp.MoveState != XenoChargerMoveState.Charging)
-            return;
-
         var screenPos = _input.MouseScreenPosition;
         var mapCoords = _eye.PixelToMap(screenPos);
 
         if (mapCoords.MapId == MapId.Nullspace)
             return;
 
-        var entityPos = _transform.GetMapCoordinates(controlled);
-
-        if (entityPos.MapId != mapCoords.MapId)
-            return;
-
-        var diff = mapCoords.Position - entityPos.Position;
-        if (diff.LengthSquared() < 0.01f)
-            return;
-
-        var angle = diff.ToAngle();
-
-        if (Math.Abs((angle - _lastSentAngle).Reduced().Degrees) < 2.0)
-            return;
-
-        _lastSentAngle = angle;
-        RaiseNetworkEvent(new XenoCursorSteeringMessage { CursorAngle = angle });
+        RaiseNetworkEvent(new XenoCursorSteeringMessage { CursorWorldPosition = mapCoords.Position });
     }
 }

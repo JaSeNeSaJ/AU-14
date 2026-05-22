@@ -26,7 +26,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
 
         SubscribeNetworkEvent<XenoCursorSteeringMessage>(OnCursorSteeringMessage);
-        SubscribeLocalEvent<XenoChargerComponent, MoveInputEvent>(OnMoveInput);
+        SubscribeLocalEvent<XenoChargerActiveComponent, MoveInputEvent>(OnMoveInput);
+
     }
 
     // -------------------------------------------------------------------------
@@ -35,28 +36,34 @@ public sealed class XenoChargerMovementSystem : EntitySystem
 
     public void StartCharge(Entity<XenoChargerComponent> ent)
     {
+        EnsureComp<XenoChargerActiveComponent>(ent);
+
         var comp = ent.Comp;
         comp.MoveState = XenoChargerMoveState.Charging;
         comp.Stage = 0;
         comp.DistanceTraveled = 0f;
         comp.SoundDistanceAccumulator = 0f;
         comp.HitEntities.Clear();
-
-        // Seed current heading from target so there's no snap on first frame.
         comp.CurrentHeading = comp.TargetHeading;
+
+        // Zero velocity so old player movement doesn't fight the first charge tick
+        if (_physicsQuery.TryGetComponent(ent, out var physics))
+            _physics.SetLinearVelocity(ent, Vector2.Zero, body: physics);
 
         Dirty(ent, comp);
     }
 
     public void StartLunge(Entity<XenoChargerComponent> ent)
     {
+        EnsureComp<XenoChargerActiveComponent>(ent);
+
         var comp = ent.Comp;
         var stage = comp.Stage;
 
         // Lock lunge direction from current charge heading, or target heading if idle.
         var direction = comp.MoveState == XenoChargerMoveState.Charging
-            ? AngleToVec(comp.CurrentHeading)
-            : AngleToVec(comp.TargetHeading);
+            ? comp.CurrentHeading.ToVec()
+            : comp.TargetHeading.ToVec();
 
         // Zero velocity before taking over — clean handoff.
         if (_physicsQuery.TryGetComponent(ent, out var physics))
@@ -73,6 +80,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
 
     public void ResetToIdle(Entity<XenoChargerComponent> ent)
     {
+        RemComp<XenoChargerActiveComponent>(ent);
+
         var comp = ent.Comp;
         comp.MoveState = XenoChargerMoveState.Idle;
         comp.Stage = 0;
@@ -91,6 +100,9 @@ public sealed class XenoChargerMovementSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
+        if (_net.IsClient)
+            return;
+
         var query = EntityQueryEnumerator<XenoChargerComponent, PhysicsComponent>();
         while (query.MoveNext(out var uid, out var comp, out var physics))
         {
@@ -109,6 +121,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     private void UpdateCharging(Entity<XenoChargerComponent> ent, PhysicsComponent physics, float frameTime)
     {
         var comp = ent.Comp;
+
+        Log.Debug($"UpdateCharging: CurrentHeading={comp.CurrentHeading} TargetHeading={comp.TargetHeading}");
 
         // Accumulate distance and increment stage.
         var distThisFrame = physics.LinearVelocity.Length() * frameTime;
@@ -135,14 +149,18 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         var turnAmount = (float)Math.Clamp(delta, -maxTurnRate * frameTime, maxTurnRate * frameTime);
         comp.CurrentHeading = new Angle(comp.CurrentHeading.Theta + turnAmount);
 
+        Log.Debug($"UpdateCharging: target={comp.TargetHeading.Degrees:F1} current={comp.CurrentHeading.Degrees:F1} delta={delta:F3} turnAmount={turnAmount:F3} stage={comp.Stage}");
+
         // Speed scales up with stage.
         var speed = comp.BaseSpeed + comp.Stage * comp.SpeedPerStage;
-        var vel = AngleToVec(comp.CurrentHeading) * speed;
+        var vel = comp.CurrentHeading.ToVec() * speed;
 
         _physics.SetAwake((ent.Owner, physics), true);
         _physics.SetLinearVelocity(ent, vel, body: physics);
 
         _transform.SetWorldRotation(ent, comp.CurrentHeading.GetDir().ToAngle());
+
+        Log.Debug($"UpdateCharging: stage={comp.Stage} distanceTraveled={comp.DistanceTraveled:F2} distancePerStage={comp.DistancePerStage} vel={physics.LinearVelocity.Length():F2}");
 
         // Stomp sound.
         comp.SoundDistanceAccumulator += distThisFrame;
@@ -183,24 +201,24 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         if (!TryComp(controlled, out XenoChargerComponent? comp))
             return;
 
-        comp.TargetHeading = msg.CursorAngle;
-        comp.LastCursorUpdate = _timing.CurTime;
-        Dirty(controlled, comp);
+        if (comp.MoveState == XenoChargerMoveState.Idle)
+            return;
+
+        var playerPos = _transform.GetMapCoordinates(controlled).Position;
+        var diff = msg.CursorWorldPosition - playerPos;
+        if (diff.LengthSquared() < 0.01f)
+            return;
+
+        comp.TargetHeading = diff.ToAngle();
     }
 
-    private void OnMoveInput(Entity<XenoChargerComponent> ent, ref MoveInputEvent args)
+    private void OnMoveInput(Entity<XenoChargerActiveComponent> ent, ref MoveInputEvent args)
     {
-        // Suppress directional input while charge or lunge controls movement.
-        if (ent.Comp.MoveState != XenoChargerMoveState.Idle)
-            args.Entity.Comp.HeldMoveButtons &= ~MoveButtons.AnyDirection;
+        args.Entity.Comp.HeldMoveButtons &= ~MoveButtons.AnyDirection;
     }
 
     // -------------------------------------------------------------------------
     // Helpers
     // -------------------------------------------------------------------------
 
-    public static Vector2 AngleToVec(Angle angle)
-    {
-        return new Vector2((float)Math.Cos(angle.Theta), (float)Math.Sin(angle.Theta));
-    }
 }

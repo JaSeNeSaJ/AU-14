@@ -4,26 +4,25 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
 public sealed partial class XenoChargerComponent : Component
 {
     // --- State ---
-    [DataField] public XenoChargerMoveState MoveState = XenoChargerMoveState.Idle;
+    [DataField] [AutoNetworkedField] public XenoChargerMoveState MoveState = XenoChargerMoveState.Idle;
 
     // --- Cursor steering ---
-    [DataField] public Angle TargetHeading = Angle.Zero;
-    [DataField] public Angle CurrentHeading = Angle.Zero;
-    [DataField] public TimeSpan LastCursorUpdate = TimeSpan.Zero;
+    public Angle TargetHeading = Angle.Zero;
+    public Angle CurrentHeading = Angle.Zero;
 
     // --- Charge tuning ---
     [DataField] public int Stage = 0;
     [DataField] public int MaxStage = 8;
     [DataField] public float DistanceTraveled = 0f;
     [DataField] public float DistancePerStage = 3f;
-    [DataField] public float BaseSpeed = 4f;
-    [DataField] public float SpeedPerStage = 0.5f;
-    [DataField] public float BaseTurnRate = 3.5f;
-    [DataField] public float MinTurnRate = 0.4f;
+    [DataField] public float BaseSpeed = 3.5f;
+    [DataField] public float SpeedPerStage = 1.5f;
+    [DataField] public float BaseTurnRate = 4f;
+    [DataField] public float MinTurnRate = 0.8f;
     [DataField] public float SoundDistanceAccumulator = 0f;
     [DataField] public float SoundEveryDistance = 2f;
     [DataField] public SoundSpecifier? ChargeSound;

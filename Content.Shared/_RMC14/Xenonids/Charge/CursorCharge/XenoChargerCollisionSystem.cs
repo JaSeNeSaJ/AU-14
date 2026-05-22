@@ -15,6 +15,7 @@ using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Random;
 
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 
@@ -32,6 +33,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly MobStateSystem _mobState = default!;
     [Dependency] private readonly ThrowingSystem _throwing = default!;
     [Dependency] private readonly XenoChargerMovementSystem _movement = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private readonly HashSet<(EntityUid Charger, EntityUid Target)> _hits = new();
@@ -161,16 +163,28 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             return;
         }
 
+        // Raw wall — check stage and impact angle.
         if (_physicsQuery.TryGetComponent(target, out var wallPhysics) &&
             wallPhysics.Hard && wallPhysics.BodyType == BodyType.Static)
         {
-            _movement.ResetToIdle((ent.Owner, comp));
+            if (stage == 0)
+                return; // Hug the wall at stage 0.
+
+            if (stage <= 4)
+                return; // Not fast enough to care, continue freely.
+
+            // Check impact angle — stop only if roughly head-on (>45 degrees from glancing).
+            var chargeDir = comp.CurrentHeading.ToVec();
+            var wallNormal = GetWallNormal(ent, target);
+            var dot = Vector2.Dot(chargeDir, wallNormal);
+
+            // dot close to -1 = head-on, dot close to 0 = glancing
+            // Stop if more than 45 degrees from glancing (dot < -cos(45) ≈ -0.707)
+            if (dot < -0.707f)
+                _movement.ResetToIdle((ent.Owner, comp));
+            // Otherwise continue freely
         }
     }
-
-    // -------------------------------------------------------------------------
-    // Lunging collisions
-    // -------------------------------------------------------------------------
 
     private void HandleLungingCollision(Entity<XenoChargerComponent> ent, EntityUid target)
     {
@@ -218,7 +232,6 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
                 );
             }
 
-            // Bowling ball — plow through mobs.
             return;
         }
 
@@ -231,15 +244,16 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             if (_net.IsServer)
                 _audio.PlayPvs(comp.CadeHitSound, target);
 
-            if (stage >= comp.MaxStage)
+            if (stage >= 7)
             {
-                // Max stage: unanchor, throw, plow through.
                 if (_net.IsServer)
                 {
                     _transform.Unanchor(target);
                     _throwing.TryThrow(target, comp.LungeDirection, 5f + stage * 1.5f, compensateFriction: true);
                 }
 
+                comp.Stage = Math.Max(0, comp.Stage - 1);
+                Dirty(ent, comp);
                 return;
             }
 
@@ -247,27 +261,61 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             return;
         }
 
-        if (HasComp<DamageableComponent>(target))
-        {
-            var damage = new DamageSpecifier();
-            damage.DamageDict[_blunt] = (stage + 1) * comp.ChargedDamageBase * 0.75f;
-            _damageable.TryChangeDamage(target, damage);
-
-            if (!TerminatingOrDeleted(target) &&
-                !EntityManager.IsQueuedForDeletion(target) &&
-                _physicsQuery.TryGetComponent(target, out var tp) &&
-                tp.Hard && tp.BodyType == BodyType.Static)
-            {
-                _movement.ResetToIdle((ent.Owner, comp));
-            }
-
-            return;
-        }
-
+        // Walls — same penetration logic as barricades.
         if (_physicsQuery.TryGetComponent(target, out var wallPhysics) &&
             wallPhysics.Hard && wallPhysics.BodyType == BodyType.Static)
         {
+            if (HasComp<DamageableComponent>(target))
+            {
+                var damage = new DamageSpecifier();
+                damage.DamageDict[_blunt] = (stage + 1) * comp.ChargedDamageBase * 0.75f;
+                _damageable.TryChangeDamage(target, damage);
+            }
+
+            if (stage >= 7)
+            {
+                if (_net.IsServer)
+                    SpawnWallDebris(target, comp.LungeDirection, stage);
+
+                comp.Stage = Math.Max(0, comp.Stage - 1);
+                Dirty(ent, comp);
+
+                if (_physicsQuery.TryGetComponent(ent, out var physics))
+                {
+                    var speed = comp.LungeSpeed + comp.Stage * comp.LungeSpeedPerStage;
+                    _physics.SetLinearVelocity(ent, comp.LungeDirection * speed, body: physics);
+                }
+                return;
+            }
+
             _movement.ResetToIdle((ent.Owner, comp));
         }
+    }
+
+    private void SpawnWallDebris(EntityUid wall, Vector2 direction, int stage)
+    {
+        var wallPos = _transform.GetMapCoordinates(wall);
+        var count = 2 + stage / 2; // More debris at higher stages.
+
+        QueueDel(wall);
+
+        for (var i = 0; i < count; i++)
+        {
+            // TODO: replace with real metal sheet prototype
+            var sheet = Spawn("SheetSteel1", wallPos);
+            var spread = direction + new Vector2(
+                (_random.NextFloat() - 0.5f) * 0.8f,
+                (_random.NextFloat() - 0.5f) * 0.8f
+            );
+            _throwing.TryThrow(sheet, spread, 4f + stage * 0.5f, compensateFriction: true);
+        }
+    }
+
+    private Vector2 GetWallNormal(Entity<XenoChargerComponent> charger, EntityUid wall)
+    {
+        var chargerPos = _transform.GetMapCoordinates(charger).Position;
+        var wallPos = _transform.GetMapCoordinates(wall).Position;
+        var diff = chargerPos - wallPos;
+        return diff.LengthSquared() > 0.001f ? Vector2.Normalize(diff) : Vector2.UnitX;
     }
 }
