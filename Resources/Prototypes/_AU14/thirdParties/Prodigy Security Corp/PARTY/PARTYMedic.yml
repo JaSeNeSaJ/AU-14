@@ -5,9 +5,9 @@
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobWYProdigyPartyMedic
   ranks:
-    AU14RankWeYuOperator: []
-  spawnMenuRoleName: WY PMC Combat Lifesaver (3rd party, M41A/2)
-  startingGear: AU14GearWYPMCPartyMedic
+    AU14RankPrDOperator: []
+  spawnMenuRoleName: Prodigy Yankee Combat Lifesaver (3rd party, M37-17)
+  startingGear: AU14GearPARTYPartyMedic
   greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconPMCMedic"
   joinNotifyCrew: false
@@ -94,9 +94,9 @@
     - CMShellShotgunIncendiary
     jumpsuit:
     - AU14SynthResetKeyProdigy
-    - AU14SynthResetKeyProdigy
+    - RMCVisorMedical
     - AU14ProdigyLaptop
-    - RMCHandcuffs
+    - AU14ProdigyWeldingGoggles
     - RMCHandsLatexMarine
     # 0 empty slots
     outerClothing:

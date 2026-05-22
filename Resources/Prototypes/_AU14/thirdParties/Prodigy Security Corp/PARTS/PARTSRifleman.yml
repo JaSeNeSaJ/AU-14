@@ -13,7 +13,7 @@
   name: PARTS Response Unit (M41A/2)
   description: au14-prodigyparty-description
   ranks:
-    AU14RankWeYuRecruit: []
+    AU14RankPrDAssociate: []
   spawnMenuRoleName: Prodigy Sierra Contractor (3rd party, M41A/2)
   startingGear: AU14GearPARTSPartyContractor
   greeting: au14-prodigyparty-greeting
@@ -71,8 +71,8 @@
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    eyes: RMCGlassesMedicalHUDGlasses
-    head: AU14ProdigyBeret
+    eyes: AU14ProdigyWeldingGoggles
+    head: AU14ProdigyBallisticHelmet
     gloves: AU14HandsProdigyRU
     belt: AU14BeltUtilityCombatProdigyRUFilled
     pocket1: RMCPouchMagazineLargePMC
@@ -106,7 +106,8 @@
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
-    # 2 empty slots
+    - RMCVisorMedical
+    # 1 empty slots
 
 - type: playTimeTracker
   id: AU14JobPARTSPartyContractor

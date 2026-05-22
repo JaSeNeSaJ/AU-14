@@ -1,15 +1,15 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobProdigyPartyLeader #m41a/2
-  name: Prodigy Leader
+  id: AU14JobProdigyPartySpecialist
+  name: Prodigy PARTY Weapon Specialist
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobProdigyPartyLeader
+  playTimeTracker: AU14JobWYProdigyPartySpecialist
   ranks:
-    AU14RankPrDEnforcerLead: []
-  spawnMenuRoleName: Prodigy Leader (3rd party, M41A/2)
-  startingGear: AU14GearPARTPartyLeader
+    AU14RankPrDEnforcerSenior: []
+  spawnMenuRoleName: Prodigy PARTY Specialist (3rd party)
+  startingGear: AU14GearPARTPartyOperator
   greeting: au14-prodigyparty-greeting
-  icon: "RMCJobIconPMCLeader"
+  icon: "RMCJobIconPMCGunner"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-psc
   accessGroups:
@@ -20,32 +20,32 @@
     components:
     - type: Skills
       skills:
-        RMCSkillConstruction: 2
-        RMCSkillCqc: 1
-        RMCSkillEndurance: 2
-        RMCSkillEngineer: 3
-        RMCSkillFirearms: 2
+        RMCSkillEndurance: 3
+        RMCSkillFirearms: 4
         RMCSkillFireman: 1
-        RMCSkillIntel: 1
-        RMCSkillJtac: 2
-        RMCSkillLeadership: 1
-        RMCSkillMedical: 1
-        RMCSkillVehicles: 1
+        RMCSkillJtac: 1
+        RMCSkillSmartGun: 1
+        RMCSkillSpecialistWeapons: 2
+        RMCSkillConstruction: 2
+        RMCSkillEngineer: 3
         RMCSkillPolice: 1
+    - type: DemoSpecWhitelist
+    - type: SniperWhitelist
+    - type: PyroWhitelist
+    - type: SquadArmorWearer
     - type: JobPrefix
-      prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantWYPMC
+      prefix: au14-job-prefix-AU14JobGOVFORSquadAutomaticRiflemanWYPMC
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: synth
-    - type: MarineOrders
+        state: smartgunner
   hidden: false
 
 
 - type: entity
-  parent: AU14BaseMobSpeciesOrganicProdigy
-  id: AU14JobProdigyPartyLeader
-  name: Prodigy Yankee Party Leader (3rd party, M41A/2)
+  parent: AU14BaseMobSpeciesOrganicWeYu
+  id: AU14JobWYProdigyPartySpecialist
+  name: Prodigy Yankee Weapon Specialist (3rd party)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
@@ -54,62 +54,58 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: PART Leader
+    name: Prodigy Weapon Specialist
     description: au14-prodigyparty-description
     reregister: false
-    job: AU14JobProdigyPartyLeader
+    job: AU14JobProdigyPartySpecialist
     raffle:
       settings: short
     rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearPARTPartyLeader
+  id: AU14GearPARTPartySpecialist
   equipment:
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: AU14ArmorProdigyXAS23
+    outerClothing: AU14ArmorProdigyXAS23G
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    eyes: RMCGlassesMedicalHUDGlasses
-    head: AU14ProdigyBeret
+    eyes: RMCGlassesSmartGunSight
+    head: AU14PARTOperatorHelmetHeavy
     gloves: AU14HandsProdigyRU
-    belt: AU14BeltUtilityCombatProdigyRUFilled
-    pocket1: RMCPouchMagazineLargePMC
+    belt: RMCBeltSmartGunOperatorPistolPMCFilled
+    pocket1: RMCPouchDrumPMCFill
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
     ears: RMCM5CameraGear
     ears2: AU14HeadsetPART
-    suitstorage: RMCWeaponRifleM54C2
+    suitstorage: RMCSmartGunPMC
   storage:
-    pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    #pocket1:
+    #- no need to fill, already comes pre-filled with 3 magazines
     #pocket2:
     #- AU14Tourniquet
     # no need, pouch already has 6 slots and is filled with med supplies
     back:
-    - CMSurgicalLine
-    - CMSynthGraft
     - CMMRE
-    - RMCLaserDesignatorPVE
-    - CMStunbaton
-    - RMCHandcuffs
-    - RMCHandcuffs
+    - RMCBinocularsPVE
     - AU14PacketGrenadeFragM12Filled
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
+    - RMCMagazineSmartGunirradiated
     jumpsuit:
     - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
-    - AU14ProdigyWeldingGoggles
-    - AU14VisorNightVisionProdigy
-    # 0 empty slots
+    # 2 empty slots
     outerClothing:
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
-    # 2 empty slots
+    - RMCVisorMedical
+    # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobProdigyPartyLeader
+  id: AU14JobWYProdigyPartySmartgunner

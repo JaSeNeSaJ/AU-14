@@ -5,7 +5,7 @@
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobPARTSPartyEngineer
   ranks:
-    AU14RankWeYuOperator: []
+    AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Sierra Combat Engineer (3rd party, M41A/2)
   startingGear: AU14GearPARTSPartyEngineer
   greeting: au14-prodigyparty-greeting
@@ -56,8 +56,8 @@
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    eyes: RMCGlassesMedicalHUDGlasses
-    head: AU14ProdigyBeret
+    eyes: AU14ProdigyWeldingGoggles
+    head: AU14ProdigyBallisticHelmet
     gloves: AU14HandsProdigyRU
     belt: RMCBeltSmartGunOperatorPistolPMCFilled
     pocket1: RMCPouchDrumPMCFill
@@ -80,7 +80,9 @@
     - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
-    # 2 empty slots
+    - CMMagazinePistolMK80
+    - RMCVisorMedical
+    # 0 empty slots
     outerClothing:
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80

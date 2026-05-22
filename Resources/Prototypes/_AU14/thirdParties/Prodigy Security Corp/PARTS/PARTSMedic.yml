@@ -5,7 +5,7 @@
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobPARTSPartyMedic
   ranks:
-    AU14RankWeYuOperator: []
+    AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Sierra Combat Lifesaver (3rd party, M41A/2)
   startingGear: AU14GearPARTSPartyMedic
   greeting: au14-prodigyparty-greeting
@@ -90,8 +90,8 @@
     - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
-    - RMCHandcuffs
-    - RMCHandcuffs
+    - AU14ProdigyWeldingGoggles
+    - RMCHandsLatexMarine
     # 0 empty slots
     outerClothing:
     - CMOintment10

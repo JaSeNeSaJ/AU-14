@@ -86,7 +86,7 @@
 - type: entity
   parent: AU14BaseMobSpeciesSyntheticProdigy
   id: AU14JobPARTSPartySynthetic
-  name: Prodigy Synthetic (AU14, 3rd Party)
+  name: Prodigy Sierra Support Synthetic (AU14, 3rd Party)
   components:
   - type: Threat
   - type: GhostTakeoverAvailable

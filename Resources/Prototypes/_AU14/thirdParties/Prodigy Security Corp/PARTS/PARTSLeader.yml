@@ -5,7 +5,7 @@
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobPARTSPartyLeader
   ranks:
-    AU14RankWeYuEnforcerLead: []
+    AU14RankPrDEnforcerLead: []
   spawnMenuRoleName: Prodigy Sierra Leader (3rd party, M41A/2)
   startingGear: AU14GearPARTSPartyLeader
   greeting: au14-prodigyparty-greeting
@@ -99,7 +99,9 @@
     - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
-    # 2 empty slots
+    - AU14ProdigyWeldingGoggles
+    - AU14VisorNightVisionProdigy
+    # 0 empty slots
     outerClothing:
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
