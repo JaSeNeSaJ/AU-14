@@ -345,9 +345,6 @@ public sealed partial class RMCPullingSystem : EntitySystem
         if (args.PullerUid != ent.Owner)
             return;
 
-        if (ent.Comp.NextAttack > _timing.CurTime)
-            args.Cancelled = true;
-
         var pulledUid = args.PulledUid;
         var attackEvent = new LightAttackEvent(GetNetEntity(pulledUid), GetNetEntity(ent), GetNetCoordinates(pulledUid.ToCoordinates()));
         if (_rmcMelee.AttemptOverrideAttack(pulledUid, ent, ent, attackEvent, out var attack, out var cancelled, BarricadeCheckRange))

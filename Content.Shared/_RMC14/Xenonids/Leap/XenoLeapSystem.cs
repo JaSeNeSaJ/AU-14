@@ -157,7 +157,8 @@ public sealed partial class XenoLeapSystem : EntitySystem
         {
             BreakOnMove = true,
             BreakOnDamage = true,
-            DamageThreshold = FixedPoint2.New(10)
+            DamageThreshold = FixedPoint2.New(10),
+            Hidden = true,
         };
 
         _doAfter.TryStartDoAfter(doAfter);

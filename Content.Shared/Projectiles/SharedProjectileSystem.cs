@@ -42,20 +42,27 @@ namespace Content.Shared.Projectiles;
 public abstract partial class SharedProjectileSystem : EntitySystem
 {
     public const string ProjectileFixture = "projectile";
-    private static readonly ProtoId<ReagentPrototype> BloodReagent = "Blood";
-    private static readonly ProtoId<ReagentPrototype> YautjaBloodReagent = "CMUYautjaBlood";
     private static readonly FixedPoint2 BloodImpactPiercingThreshold = FixedPoint2.New(45);
+    private static readonly ProtoId<ReagentPrototype> BloodReagent = "Blood";
     private static readonly string[] BloodImpactEffects =
     {
         "CMUBloodImpactEffect",
         "CMUBloodImpactEffect1",
         "CMUBloodImpactEffect2",
     };
+    private static readonly ProtoId<ReagentPrototype> YautjaBloodReagent = "CMUYautjaBlood";
     private static readonly string[] YautjaBloodImpactEffects =
     {
         "CMUYautjaBloodImpactEffect",
         "CMUYautjaBloodImpactEffect1",
         "CMUYautjaBloodImpactEffect2",
+    };
+    private static readonly ProtoId<ReagentPrototype> SynthBloodReagent = "RMCSynthBlood";
+    private static readonly string[] SynthBloodImpactEffects =
+    {
+        "CMUSynthBloodImpactEffect",
+        "CMUSynthBloodImpactEffect1",
+        "CMUSynthBloodImpactEffect2",
     };
 
     [Dependency] private INetManager _net = default!;
@@ -292,17 +299,18 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         if (bloodstream.BloodReagent == YautjaBloodReagent)
             return _random.Pick(YautjaBloodImpactEffects);
 
+        if (bloodstream.BloodReagent == SynthBloodReagent)
+            return _random.Pick(SynthBloodImpactEffects);
+
         return fallback;
     }
 
     private Color GetDamageEffectColor(EntityUid target)
     {
-        if (TryComp(target, out BloodstreamComponent? bloodstream) &&
-            bloodstream.BloodReagent == YautjaBloodReagent &&
-            _reagent.TryIndex(bloodstream.BloodReagent, out var reagent))
-        {
+        if (TryComp(target, out BloodstreamComponent? bloodstream)
+            && bloodstream.BloodReagent != BloodReagent
+            && _reagent.TryIndex(bloodstream.BloodReagent, out var reagent))
             return reagent.SubstanceColor;
-        }
 
         return Color.Red;
     }
