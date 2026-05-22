@@ -568,47 +568,17 @@ public sealed partial class GhostRoleSystem : EntitySystem
         if (player.AttachedEntity != null)
             _adminLogger.Add(LogType.GhostRoleTaken, LogImpact.Low, $"{player:player} took the {role.Comp.RoleName:roleName} ghost role {ToPrettyString(player.AttachedEntity.Value):entity}");
 
-        // Try to get the mind we just created/transferred and attach the session directly to its entity.
-        // This forces the client out of the lobby UI into the game view if takeover succeeded while in preview.
-        // Try to get the mind we just created/transferred and attach the session directly to its entity.
-        if (_mindSystem.TryGetMind(player.UserId, out var mid, out var mindComp) && mindComp?.CurrentEntity != null)
+        // Lobby player has SessionStatus.InGame, but also PlayerGameStatus.NotReadyToPlay
+        if (_gameTicker.PlayerGameStatuses.TryGetValue(player.UserId, out var status)
+                && status != PlayerGameStatus.JoinedGame) // skip ghosts
         {
-            var entity = mindComp.CurrentEntity.Value;
-
-            // First ensure the session is marked InGame so GameTicker/client expect gameplay state.
-            if (player.Status != SessionStatus.InGame && player.Status != SessionStatus.Disconnected && player.Status != SessionStatus.Zombie)
-            {
-                try
-                {
-                    _playerManager.SetStatus(player, SessionStatus.InGame);
-                    Log.Debug($"Takeover: SetStatus(InGame) called for {player.Name}");
-                }
-                catch (Exception e)
-                {
-                    Log.Error($"Failed to set player session to InGame after ghost role takeover for {player.Name}: {e}");
-                }
-            }
-
             try
             {
-                var attached = _playerManager.SetAttachedEntity(player, entity, true);
-                Log.Debug($"Takeover: SetAttachedEntity result for {player.Name} -> {entity}: {attached}");
-                if (attached)
-                {
-                    // Inform GameTicker to run its join logic which will send the client JoinGame event and update server state
-                    try
-                    {
-                        _gameTicker.PlayerJoinGame(player);
-                    }
-                    catch (Exception e)
-                    {
-                        Log.Warning($"Failed to call GameTicker.PlayerJoinGame for takeover winner {player.Name}: {e}");
-                    }
-                }
+                _gameTicker.PlayerJoinGame(player);
             }
             catch (Exception e)
             {
-                Log.Warning($"Failed to SetAttachedEntity for takeover winner {player.Name}: {e}");
+                Log.Warning($"Failed to call GameTicker.PlayerJoinGame for takeover winner {player.Name}: {e}");
             }
         }
 
