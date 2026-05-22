@@ -2,8 +2,8 @@
   id: CMULV376BarkersLament
   mapName: LV-376 Ulixes
   mapPath: /Maps/_CMU14/lament.yml
-  minPlayers: 0
-  maxPlayers: 75
+  minPlayers: 40
+  maxPlayers: 140
   maxRandomOffset: 0
   randomRotation: false
   stations:
