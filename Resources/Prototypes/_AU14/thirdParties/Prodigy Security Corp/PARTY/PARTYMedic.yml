@@ -3,7 +3,7 @@
   id: AU14JobWYProdigyPartyMedic #m41a/2
   name: PMC Combat Lifesaver
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobWYProdigyPartyMedic
+  playTimeTracker: AU14JobProdigyPartyMedicTracker
   ranks:
     AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Yankee Combat Lifesaver (3rd party, M37-17)
@@ -59,7 +59,7 @@
     rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearPARTPartyMedic
+  id: AU14GearPARTYPartyMedic
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
@@ -108,4 +108,4 @@
     # 0 empty slots
 
 - type: playTimeTracker
-  id: AU14GearPARTYPartyMedic
+  id: AU14JobProdigyPartyMedicTracker
