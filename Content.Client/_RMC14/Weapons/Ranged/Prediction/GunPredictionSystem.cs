@@ -158,14 +158,14 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
         }
 
         var predictedQuery = EntityQueryEnumerator<PredictedProjectileHitComponent, SpriteComponent, TransformComponent>();
-        while (predictedQuery.MoveNext(out var hit, out var sprite, out var xform))
+        while (predictedQuery.MoveNext(out var uid, out var hit, out var sprite, out var xform))
         {
             var origin = hit.Origin;
             var coordinates = xform.Coordinates;
             if (!origin.TryDistance(EntityManager, _transform, coordinates, out var distance) ||
                 distance >= hit.Distance)
             {
-                sprite.Visible = false;
+                _sprite.SetVisible((uid, sprite), false);
             }
         }
     }

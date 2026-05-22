@@ -10,7 +10,7 @@ namespace Content.Shared._RMC14.Deafness;
 
 public abstract partial class SharedDeafnessSystem : EntitySystem
 {
-    [Dependency] private StatusEffectsSystem _statusEffect = default!;
+    [Dependency] private StatusEffectQuerySystem _statusEffect = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private InventorySystem _inventory = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
