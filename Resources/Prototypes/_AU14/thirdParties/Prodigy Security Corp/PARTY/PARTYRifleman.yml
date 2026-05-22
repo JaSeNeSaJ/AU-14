@@ -10,7 +10,7 @@
 - type: job
   parent: AU14JobPARTYPartyContractorBase
   id: AU14JobPARTYPartyContractor
-  name: PARTY Response Unit (M41A/2)
+  name: Prodigy Yankee Contractor (M41A/2)
   description: au14-prodigyparty-description
   ranks:
     AU14RankPrDAssociate: []
@@ -110,4 +110,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartyContractor
+  id: AU14JobPARTYPartyContractor
