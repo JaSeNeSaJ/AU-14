@@ -92,10 +92,11 @@ public abstract partial class SharedProjectileSystem : EntitySystem
 
     private void OnStartCollide(EntityUid uid, ProjectileComponent component, ref StartCollideEvent args)
     {
+        var predictedClientProjectile = HasComp<PredictedProjectileClientComponent>(uid);
+        var xenoClientProjectile = HasComp<XenoClientProjectileShotComponent>(uid);
         if (_net.IsClient &&
-            _timing.ApplyingState &&
-            (HasComp<PredictedProjectileClientComponent>(uid) ||
-             HasComp<XenoClientProjectileShotComponent>(uid)))
+            (predictedClientProjectile ||
+             _timing.ApplyingState && xenoClientProjectile))
         {
             return;
         }
