@@ -107,8 +107,7 @@ namespace Content.Server.GameTicking
             var maps = new List<GameMapPrototype>();
 
             // Check for voted planet from AuRoundSystem
-            var auRoundSystem = EntitySystem.Get<Content.Server.AU14.Round.AuRoundSystem>();
-            var selectedPlanet = auRoundSystem?.GetSelectedPlanet();
+            var selectedPlanet = _auRoundSystem.GetSelectedPlanet();
             if (selectedPlanet != null)
             {
                 // Use the voted planet's map as the primary map
@@ -174,7 +173,7 @@ namespace Content.Server.GameTicking
                     if (selectedPlanet != null)
                     {
                         // Get the map entity from the MapId
-                        var mapEntity = _mapManager.GetMapEntityId(mapId);
+                        var mapEntity = _map.GetMap(mapId);
                         if (!HasComp<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity))
                             AddComp<Content.Shared._RMC14.Rules.RMCPlanetComponent>(mapEntity);
                         if (!HasComp<TacticalMapComponent>((EntityUid)mapEntity))
@@ -185,9 +184,9 @@ namespace Content.Server.GameTicking
 
             // --- AU14 SHIP SPAWNING LOGIC ---
             // After planet map is loaded, spawn selected ships for govfor and opfor
-            if (auRoundSystem != null)
+            if (_auRoundSystem != null)
             {
-                var govforShipId = auRoundSystem.GetSelectedGovforShip();
+                var govforShipId = _auRoundSystem.GetSelectedGovforShip();
                 if (!string.IsNullOrEmpty(govforShipId) && _prototypeManager.TryIndex<GameMapPrototype>(govforShipId, out var govforShipProto))
                 {
                     var govforGrids = LoadGameMap(govforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });
@@ -204,7 +203,7 @@ namespace Content.Server.GameTicking
                         }
                     }
                 }
-                var opforShipId = auRoundSystem.GetSelectedOpforShip();
+                var opforShipId = _auRoundSystem.GetSelectedOpforShip();
                 if (!string.IsNullOrEmpty(opforShipId) && _prototypeManager.TryIndex<GameMapPrototype>(opforShipId, out var opforShipProto))
                 {
                     var opforGrids = LoadGameMap(opforShipProto, out var _, new DeserializationOptions { InitializeMaps = true });

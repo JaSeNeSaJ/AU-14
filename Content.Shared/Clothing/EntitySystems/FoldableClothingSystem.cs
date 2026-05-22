@@ -1,5 +1,6 @@
 using Content.Shared.Clothing.Components;
 using Content.Shared.Foldable;
+using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
 using Content.Shared.Item;
 
@@ -66,7 +67,7 @@ public sealed partial class FoldableClothingSystem : EntitySystem
             // Or at the very least it should stash the old layers and restore them when unfolded.
             // TODO CLOTHING fix this.
             if (ent.Comp.FoldedHideLayers.Count != 0 && TryComp<HideLayerClothingComponent>(ent.Owner, out var hideLayerComp))
-                hideLayerComp.Slots = ent.Comp.FoldedHideLayers;
+                SetHiddenLayers(hideLayerComp, ent.Comp.FoldedHideLayers, clothingComp.Slots);
 
         }
         else
@@ -85,13 +86,24 @@ public sealed partial class FoldableClothingSystem : EntitySystem
                 return;
 
             if (ent.Comp.UnfoldedHideLayers.Count != 0)
-                hideLayerComp.Slots = ent.Comp.UnfoldedHideLayers;
+                SetHiddenLayers(hideLayerComp, ent.Comp.UnfoldedHideLayers, clothingComp.Slots);
             else
-                hideLayerComp.Slots = null;
+                hideLayerComp.Layers.Clear();
 
             Dirty(ent.Owner, hideLayerComp);
             // RMC14 end
-                hideLayerComp.Slots = ent.Comp.UnfoldedHideLayers;
+        }
+    }
+
+    private static void SetHiddenLayers(
+        HideLayerClothingComponent hideLayer,
+        HashSet<HumanoidVisualLayers> layers,
+        SlotFlags slots)
+    {
+        hideLayer.Layers.Clear();
+        foreach (var layer in layers)
+        {
+            hideLayer.Layers[layer] = slots;
         }
     }
 }

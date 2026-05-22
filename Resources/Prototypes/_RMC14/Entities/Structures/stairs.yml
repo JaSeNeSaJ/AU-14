@@ -12,6 +12,12 @@
     sprite: _RMC14/Structures/stairs.rsi
     state: p_stair_full
     drawdepth: FloorTiles
+  - type: CMUZLevelHighGround
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.1
+    stick: true
   - type: Tag
     tags:
     - RMCStairs
@@ -34,6 +40,13 @@
   components:
   - type: Sprite
     state: p_stair_full_corner
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCStairsLeft
@@ -89,6 +102,13 @@
   components:
   - type: Sprite
     state: p_stair_kutjevo_full_corner
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCStairsKutjevoLeft
@@ -144,6 +164,13 @@
   components:
   - type: Sprite
     state: p_stair_ice_full_corner
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCStairsIceLeft
@@ -201,6 +228,13 @@
   - type: Sprite
     state: p_stair_full_corner
     color: "#6b675e"
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCHunterStairsLeft
@@ -277,6 +311,13 @@
   - type: Sprite
     state: p_stair_full_corner
     color: "#b29082"
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCTempleStairsLeft
@@ -320,6 +361,13 @@
   - type: Sprite
     state: p_stair_full_corner
     color: "#6e6e6e"
+  - type: CMUZLevelHighGround
+    corner: true
+    heightCurve:
+    - 1.05
+    - 1.05
+    - 0.5
+    - 0.1
 
 - type: entity
   id: RMCSoroStairsLeft
