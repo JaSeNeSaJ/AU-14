@@ -75,7 +75,7 @@
     id: AU14IDCardopforPlatCo
     ears: AU14HeadsetOpforCommand
   inhand:
-   -  RMCTabletOpfor
+   -  AU14TabletOpfor
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointopforPlatCo
