@@ -47,7 +47,7 @@
   - type: Corrodible
     isCorrodible: false
   - type: Sprite
-    sprite: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi/armor.png
+    sprite: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
   - type: Storage
     maxItemSize: Small
     grid:
