@@ -59,6 +59,7 @@ public abstract partial class SharedRMCFlammableSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private RMCReagentSystem _reagent = default!;
     [Dependency] private RMCMapSystem _rmcMap = default!;
     [Dependency] private SharedRMCMeleeWeaponSystem _rmcMelee = default!;
     [Dependency] private SharedSolutionContainerSystem _solutionContainer = default!;
@@ -671,7 +672,7 @@ public abstract partial class SharedRMCFlammableSystem : EntitySystem
         intensity = FixedPoint2.Zero;
         foreach (var solutionReagent in solution)
         {
-            if (!_prototype.TryIndexReagent(solutionReagent.Reagent.Prototype, out ReagentPrototype? reagent))
+            if (!_reagent.TryIndex(solutionReagent.Reagent.Prototype, out var reagent))
                 continue;
 
             intensity += reagent.IntensityMod * solutionReagent.Quantity;

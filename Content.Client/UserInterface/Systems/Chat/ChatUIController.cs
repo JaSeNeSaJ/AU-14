@@ -545,6 +545,7 @@ public sealed partial class ChatUIController : UIController
 
     public void RemoveSpeechBubble(EntityUid entityUid, SpeechBubble bubble)
     {
+        bubble.OnDied -= SpeechBubbleDied;
         bubble.Orphan();
 
         if (!_activeSpeechBubbles.TryGetValue(entityUid, out var list))

@@ -66,6 +66,9 @@ namespace Content.Client.Chat.UI
         /// </summary>
         private TimeSpan _deathTime;
 
+        private bool _dying;
+        private bool _dead;
+
         public float VerticalOffset { get; set; }
         private float _verticalOffsetAchieved;
 
@@ -128,7 +131,12 @@ namespace Content.Client.Chat.UI
             if (_entityManager.Deleted(_senderEntity) || timeLeft <= 0)
             {
                 // Timer spawn to prevent concurrent modification exception.
-                Timer.Spawn(0, Die);
+                if (!_dying)
+                {
+                    _dying = true;
+                    Timer.Spawn(0, Die);
+                }
+
                 return;
             }
 
@@ -203,13 +211,14 @@ namespace Content.Client.Chat.UI
 
         private void Die()
         {
-            if (Disposed || _dying)
+            if (Disposed || _dead)
             {
                 return;
             }
 
-            _dying = true;
+            _dead = true;
             OnDied?.Invoke(_senderEntity, this);
+            OnDied = null;
         }
 
         /// <summary>
