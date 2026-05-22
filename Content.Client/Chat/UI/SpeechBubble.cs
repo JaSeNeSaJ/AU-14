@@ -73,7 +73,6 @@ namespace Content.Client.Chat.UI
         private float _verticalOffsetAchieved;
 
         public Vector2 ContentSize { get; private set; }
-        private bool _dying;
 
         // man down
         public event Action<EntityUid, SpeechBubble>? OnDied;
