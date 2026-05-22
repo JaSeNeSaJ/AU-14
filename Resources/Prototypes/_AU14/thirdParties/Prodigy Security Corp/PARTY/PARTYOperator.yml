@@ -1,9 +1,9 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobWYProdigyPartySmartgunner
+  id: AU14JobProdigyPartySmartgunner
   name: PMC Smartgun Operator
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobWYProdigyPartySmartgunner
+  playTimeTracker: AU14JobProdigyPartySmartgunnerTracker
   ranks:
     AU14RankPrDEnforcer: []
   spawnMenuRoleName: Prodigy PARTY Smartgun Operator (3rd party)
@@ -40,7 +40,7 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicProdigy
-  id: AU14JobWYProdigyPartySmartgunner
+  id: AU14JobProdigyPartySmartgunner
   name: Prodigy Yankee Smartgun Operator (3rd party)
   components:
   - type: GhostTakeoverAvailable
@@ -53,7 +53,7 @@
     name: PMC Smartgun Operator
     description: au14-prodigyparty-description
     reregister: false
-    job: AU14JobWYProdigyPartySmartgunner
+    job: AU14JobProdigyPartySmartgunner
     raffle:
       settings: short
     rules: au14-prodigyparty-description
@@ -104,4 +104,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobWYProdigyPartySmartgunner
+  id: AU14JobProdigyPartySmartgunnerTracker
