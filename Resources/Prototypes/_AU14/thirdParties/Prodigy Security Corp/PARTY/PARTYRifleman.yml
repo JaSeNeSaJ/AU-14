@@ -64,7 +64,7 @@
     rules: au14-prodigyparty-description
 
 - type: startingGear
-  id: AU14GearPARTSPartyContractor
+  id: AU14GearPARTYPartyContractor
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
