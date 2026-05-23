@@ -46,11 +46,14 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: Marine
+      Faction: govfor
     - type: NpcFactionMember
       factions:
       - GOVFOR
-    - type: Marine
-      Faction: govfor
+    - type: UserIFF
+      factions:
+      - GOVFOR
     - type: Skills
       preset: AU14SkillPresetPlatoonSergeant
     - type: JobPrefix
@@ -72,10 +75,31 @@
         collection: AU14MaleHoldOrder
       holdOrderSoundFemale:
         collection: AU14FemaleHoldOrder
-    - type: UserIFF
-      factions:
-      - GOVFOR
 
 - type: playTimeTracker
   id: AU14JobGOVFORSquadSergeant
   isHumanoid: true
+
+- type: startingGear
+  id: AU14GearGOVFORSquadSergeant
+  equipment:
+    id: AU14IDCardSquadSergeant
+    ears: AU14HeadsetGovforCommand
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointGOVFORSquadSergeant
+  name: Spawn Point GOVFOR Squad Sergeant
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobGOVFORSquadSergeant
+  - type: Sprite
+    state: syn_spawn
+
+- type: startingGear
+  id: AU14GearGOVFORSquadSergantDummy
+  equipment:
+    outerClothing: AU14ArmorM3JungleOne
+    shoes: CMBootsBrown
+    head: AU14JungleBoonieHat
+    jumpsuit: AU14JungleFatigues
+    earss: AU14HeadsetGovforCommand

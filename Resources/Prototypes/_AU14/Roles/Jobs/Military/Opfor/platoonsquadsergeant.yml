@@ -18,16 +18,25 @@
       - OPFOR
     - type: Marine
       Faction: opfor
-    - type: JobPrefix
-      prefix: au14-job-prefix-opforsquadsergeant
     - type: UserIFF
       factions:
       - OPFOR
+    - type: JobPrefix
+      prefix: au14-job-prefix-opforsquadsergeant
 
 - type: startingGear
   id: AU14GearOpforSquadSergeant
   equipment:
     id: AU14IDCardopforSquadSergeant
+    ears: AU14HeadsetOpforCommand
+
+- type: startingGear
+  id: AU14GearOpforSquadSergeantDummy
+  equipment:
+    outerClothing: AU14ArmorM3JungleOne
+    shoes: CMBootsBrown
+    head: AU14JungleBoonieHat
+    jumpsuit: AU14JungleFatigues
     ears: AU14HeadsetOpforCommand
 
 - type: entity
@@ -39,12 +48,3 @@
     job_id: AU14JobOpforSquadSergeant
   - type: Sprite
     state: syn_spawn
-
-- type: startingGear
-  id: AU14GearOpforSquadSergeantDummy
-  equipment:
-    outerClothing: AU14ArmorM3JungleOne
-    shoes: CMBootsBrown
-    head: AU14JungleBoonieHat
-    jumpsuit: AU14JungleFatigues
-    ears: AU14HeadsetOpforCommand
