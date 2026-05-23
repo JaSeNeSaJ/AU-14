@@ -158,10 +158,10 @@
 - type: entity
   id: ActionWendigoVoice
   name: Voice Mimicry
-  parent: BaseAction
+  parent: ActionXenoBase
   components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon: /Textures/Interface/Actions/scream.png
   - type: InstantAction
-    icon:
-      sprite: _AU14/Interface/actions.rsi
-      state: scream
     event: !type:WendigoVoiceActionEvent {}

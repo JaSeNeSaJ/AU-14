@@ -264,7 +264,7 @@
     - Wendigo
 
 - type: emote
-  id: WendigoSoAfraid
+  id: WendigoWeCantGetOut
   name: emote-name-wendigo-we-cant-get-out
   category: General
   icon: Interface/Emotes/scream.png
@@ -274,7 +274,7 @@
   whitelist:
     tags:
     - Wendigo
-    -
+
 - type: emote
   id: WendigoWhereAreYou
   name: emote-name-wendigo-where-are-you
