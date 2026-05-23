@@ -125,7 +125,11 @@ public sealed class RMCCameraBui : RMCPopOutBui<RMCCameraWindow>
         _currentCamera = null;
 
         if (computer.CurrentCamera is not { } camera)
+        {
+            Window.Viewport.Eye = new FixedEye();
+            Window.CameraName.Text = string.Empty;
             return;
+        }
 
         if (!camera.IsValid() ||
             !EntMan.EntityExists(camera) ||
@@ -137,6 +141,7 @@ public sealed class RMCCameraBui : RMCPopOutBui<RMCCameraWindow>
         }
 
         _eyeLerping.AddEye(camera, eye);
+        Window.Viewport.Eye = eye.Eye;
         _currentCamera = camera;
         if (_system.GetComputerCameraName((Owner, computer), camera, out var name))
             Window.CameraName.Text = name;
