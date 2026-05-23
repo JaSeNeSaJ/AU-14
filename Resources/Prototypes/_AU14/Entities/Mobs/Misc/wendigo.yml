@@ -163,5 +163,5 @@
   - type: InstantAction
     icon:
       sprite: _AU14/Interface/actions.rsi
-      state: voice_mimicry
+      state: scream
     event: !type:WendigoVoiceActionEvent {}

@@ -52,7 +52,6 @@ public sealed partial class WendigoVoiceSystem : EntitySystem
     private static readonly Dictionary<string, string> EmoteToSound = new()
     {
         // Voice lines
-        { "WendigoSaveMe",           "/Audio/_AU14/Wendigo/mimicry/save_me.ogg" },
         { "WendigoAllYourFault",     "/Audio/_AU14/Wendigo/mimicry/all_your_fault.ogg" },
         { "WendigoCloser",           "/Audio/_AU14/Wendigo/mimicry/closer.ogg" },
         { "WendigoComeCloser",       "/Audio/_AU14/Wendigo/mimicry/come_closer.ogg" },
@@ -63,6 +62,7 @@ public sealed partial class WendigoVoiceSystem : EntitySystem
         { "WendigoHungry",           "/Audio/_AU14/Wendigo/mimicry/hungry.ogg" },
         { "WendigoImComingToHelp",   "/Audio/_AU14/Wendigo/mimicry/im_coming_to_help.ogg" },
         { "WendigoItsAlive",         "/Audio/_AU14/Wendigo/mimicry/its_alive.ogg" },
+        { "WendigoItsInTheHouse",    "/Audio/_AU14/Wendigo/mimicry/its_in_the_house.ogg" },
         { "WendigoItsStillOutThere", "/Audio/_AU14/Wendigo/mimicry/its_still_out_there.ogg" },
         { "WendigoJustAStory",       "/Audio/_AU14/Wendigo/mimicry/just_a_story.ogg" },
         { "WendigoLetMeIn",          "/Audio/_AU14/Wendigo/mimicry/let_me_in.ogg" },
@@ -71,7 +71,11 @@ public sealed partial class WendigoVoiceSystem : EntitySystem
         { "WendigoNoNo",             "/Audio/_AU14/Wendigo/mimicry/no_no.ogg" },
         { "WendigoOpenTheDoor",      "/Audio/_AU14/Wendigo/mimicry/open_the_door.ogg" },
         { "WendigoPleaseNo",         "/Audio/_AU14/Wendigo/mimicry/please_no.ogg" },
-        { "WendigoWhereAreYou",         "/Audio/_AU14/Wendigo/mimicry/WHERE_ARE_YOU.ogg" },
+        { "WendigoSaveMe",           "/Audio/_AU14/Wendigo/mimicry/save_me.ogg" },
+        { "WendigoSecrets",          "/Audio/_AU14/Wendigo/mimicry/secrets.ogg" },
+        { "WendigoSoAfraid",         "/Audio/_AU14/Wendigo/mimicry/so_afraid.ogg" },
+        { "WendigoWeCantGetOut",     "/Audio/_AU14/Wendigo/mimicry/we_cant_get_out.ogg" },
+        { "WendigoWhereAreYou",      "/Audio/_AU14/Wendigo/mimicry/where_are_you.ogg" },
     };
 
     private void OnPlayLine(Entity<WendigoVoiceComponent> ent, ref WendigoPlayLineMessage args)
