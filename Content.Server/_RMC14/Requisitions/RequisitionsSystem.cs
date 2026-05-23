@@ -262,30 +262,8 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         var query = EntityQueryEnumerator<RequisitionsAccountComponent>();
         while (query.MoveNext(out var uid, out var account))
         {
-            while (query.MoveNext(out var uid, out var account))
-            {
-                if (account.Faction == faction)
-                    return (uid, account);
-            }
-            // No matching account found, spawn a new faction account
-            var newAccount = Spawn(AccountId, MapCoordinates.Nullspace);
-            var newAccountComp = EnsureComp<RequisitionsAccountComponent>(newAccount);
-            newAccountComp.Faction = faction;
-
-            // Set faction-specific starting balance
-            if (faction == "govfor" || faction == "opfor")
-            {
-                newAccountComp.Balance = 8000;
-            }
-            else if (faction == "colony")
-            {
-                newAccountComp.Balance = 450;
-                // Colony accounts should not receive random military deliveries (flares, batteries, etc.)
-                newAccountComp.RandomCrates.Clear();
-            }
-
-            return (newAccount, newAccountComp);
-
+            if (account.Faction == factionKey)
+                return (uid, account);
         }
 
         return CreateAccount(factionKey);
@@ -302,7 +280,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         {
             case "govfor":
             case "opfor":
-                comp.Balance = 20000;
+                comp.Balance = 8000;
                 break;
             case "colony":
                 comp.Balance = 450;
