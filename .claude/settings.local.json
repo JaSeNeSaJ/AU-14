@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(xargs grep -l \"faction\\\\|access\")",
+      "Bash(dotnet build *)",
+      "Bash(Get-ChildItem *)",
+      "Bash(Select-Object Name)"
+    ]
+  }
+}

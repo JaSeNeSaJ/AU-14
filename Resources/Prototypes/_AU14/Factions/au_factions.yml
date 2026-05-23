@@ -133,6 +133,15 @@
   - Abomination
 
 - type: npcFaction
+  id: AUUnitedAmericas
+  name: United Americas
+  hostile:
+  - RMCXeno
+  - CLF
+  - AUGoo
+  - Abomination
+
+- type: npcFaction
   id: THREAT
   hostile:
    - GOVFOR

@@ -24,9 +24,6 @@
     - AU14JobCivilianJournalist
     - AU14JobCivilianUSASFRecruiter
     - AU14JobCivilianColonySynthetic
-    - AU14JobCivilianFoodServiceWorker
-    - AU14JobCivilianShopkeep
-    - AU14JobCivilianWasteManagementSpecialist
   departmentRadio: null
   headOfDepartment: AU14JobCivilianColonyAdministrator
   faction: colonist
