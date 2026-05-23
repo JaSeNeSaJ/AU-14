@@ -126,6 +126,11 @@
         volume: -4
   - type: RMCSize
     size: Big
+  - type: WendigoVoice
+  - type: UserInterface
+    interfaces:
+      enum.WendigoVoiceUiKey.Key:
+        type: WendigoVoiceBui
 
 - type: entity
   parent: ActionXenoDoom
@@ -149,3 +154,14 @@
 - type: playTimeTracker
   id: CMJobXenoWendigo
   isXeno: true
+
+- type: entity
+  id: ActionWendigoVoice
+  name: Voice Mimicry
+  parent: BaseAction
+  components:
+  - type: InstantAction
+    icon:
+      sprite: _AU14/Interface/actions.rsi
+      state: voice_mimicry
+    event: !type:WendigoVoiceActionEvent {}
