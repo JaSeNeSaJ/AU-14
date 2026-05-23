@@ -405,6 +405,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         if (toCoordinates == null)
             return null;
 
+        var sourceFromCoordinates = fromCoordinates;
         if (!_zLevelShooting.TryAdjustShotCoordinates(user, fromCoordinates, toCoordinates.Value, out fromCoordinates, out var adjustedToCoordinates))
         {
             gun.NextFire = nextFireBeforeAttempt;
@@ -412,6 +413,7 @@ public abstract partial class SharedGunSystem : EntitySystem
             return null;
         }
 
+        _zLevelShooting.TryGetProjectileVisualOffset(user, sourceFromCoordinates, fromCoordinates, out var projectileVisualOffset);
         toCoordinates = adjustedToCoordinates;
 
         // Remove ammo
@@ -484,6 +486,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         if (Timing.IsFirstTimePredicted)
         {
             projectiles = Shoot(gunUid, gun, ev.Ammo, fromCoordinates, toCoordinates.Value, out userImpulse, user, throwItems: attemptEv.ThrowItems, predictedProjectiles, userSession);
+            _zLevelShooting.ApplyProjectileVisualOffset(projectiles, projectileVisualOffset);
         }
 
         var shotEv = new GunShotEvent(user, ev.Ammo, fromCoordinates, toCoordinates.Value);

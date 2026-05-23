@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared._RMC14.Chemistry.Reagent;
 using Content.Shared._RMC14.Projectiles.Penetration;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
@@ -81,6 +82,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private RMCReagentSystem _reagent = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private CMUSharedZLevelsSystem _zLevels = default!;
 
     public override void Initialize()
     {
@@ -165,12 +167,15 @@ public abstract partial class SharedProjectileSystem : EntitySystem
         //
 
         var filter = Filter.Pvs(coordinates, entityMan: EntityManager);
+        ICommonSession? predictedShooter = null;
+        ICommonSession? predictedXenoShooter = null;
         if (_guns.GunPrediction)
         {
             // TODO RMC14 clean this up once gun prediction is using new lag compensation
             if (TryComp(projectile, out PredictedProjectileServerComponent? serverProjectile) &&
                 serverProjectile.Shooter is { } shooter)
             {
+                predictedShooter = shooter;
                 filter = filter.RemovePlayer(shooter);
             }
 
@@ -178,15 +183,28 @@ public abstract partial class SharedProjectileSystem : EntitySystem
                 TryComp(projectile, out XenoProjectileShotComponent? shot) &&
                 shot.Shooter is { } xenoShooter)
             {
+                predictedXenoShooter = xenoShooter;
                 filter = filter.RemovePlayer(xenoShooter);
             }
         }
+
+        // Only widen the damage flash for multi-Z viewers. Widening impact effects here
+        // previously broke unrelated hit visuals, while predicted shooters get a local flash.
+        var damageEffectFilter = _zLevels.AddZLevelViewers(
+            filter.Clone(),
+            _transform.ToMapCoordinates(coordinates));
+
+        if (predictedShooter is { } removedShooter)
+            damageEffectFilter = damageEffectFilter.RemovePlayer(removedShooter);
+
+        if (predictedXenoShooter is { } removedXenoShooter)
+            damageEffectFilter = damageEffectFilter.RemovePlayer(removedXenoShooter);
 
         if (modifiedDamage is not null && (Exists(component.Shooter) || Exists(component.Weapon)))
         {
             if (modifiedDamage.AnyPositive() && !deleted)
             {
-                _color.RaiseEffect(GetDamageEffectColor(target), new List<EntityUid> { target }, filter);
+                _color.RaiseEffect(GetDamageEffectColor(target), new List<EntityUid> { target }, damageEffectFilter);
             }
 
             var shooterOrWeapon = Exists(component.Shooter) ? component.Shooter!.Value : component.Weapon!.Value;
