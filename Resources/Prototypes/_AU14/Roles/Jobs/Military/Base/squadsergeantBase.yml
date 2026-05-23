@@ -27,6 +27,9 @@
   parent: AU14JobSquadSergeantBaseAbstract
   id: AU14JobSquadSergeantBase # Squad Leader Base
   requirements:
+  - !type:DepartmentTimeRequirement
+    department: AU14DepartmentGovernmentForces
+    time: 36000 # 10 hours
   - !type:TraitsRequirement
     inverted: true
     traits:
@@ -35,14 +38,6 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-    #RMCRankMasterSergeant:
-    #- !type:RoleTimeRequirement
-    #  role: AU14JobGOVFORSquadSergeant
-    #  time: 360000 # 100 hours
-    #RMCRankGunnerySergeant:
-    #- !type:RoleTimeRequirement
-    #  role: AU14JobGOVFORSquadSergeant
-    #  time: 180000 # 50 hours
     RMCRankStaffSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobGOVFORSquadSergeant

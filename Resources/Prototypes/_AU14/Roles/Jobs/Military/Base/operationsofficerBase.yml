@@ -12,7 +12,7 @@
     department: AU14DepartmentGovernmentForces
     time: 72000 # 20 hours
   - !type:RoleTimeRequirement
-    role: AU14JobGOVFORSectionSergeant
+    role: AU14JobGOVFORSquadSergeant
     time: 36000 # 10 hours
 
 - type: playTimeTracker
