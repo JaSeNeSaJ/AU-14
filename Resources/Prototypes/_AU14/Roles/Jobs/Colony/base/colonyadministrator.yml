@@ -8,7 +8,7 @@
   requirements:
   - !type:DepartmentTimeRequirement
     department: AU14DepartmentCivilian
-    time: 32000 # 10 hours
+    time: 36000 # 10 hours
   - !type:DepartmentTimeRequirement
     department: AU14DepartmentColonySecurity
     time: 18000 # 5 hours
