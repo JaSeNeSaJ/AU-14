@@ -10,6 +10,17 @@
     sprite: _AU14/Clothing/ProdigySecurityForces/helmet.rsi
 
 - type: entity
+  parent: RMCMarineHelmetBase
+  id: AU14ProdigyBallisticHelmetPART
+  name: PART ballistic helmet
+  description: A more robust ballistic helmet used by PART operatives.
+  components:
+  - type: Sprite
+    sprite: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/parthelmet.rsi
+  - type: Clothing
+    sprite: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/parthelmet.rsi
+
+- type: entity
   parent: AU14WYPMCHelmetHeavy
   id: AU14PARTOperatorHelmetHeavy
   name: PART Gunner Operator Ballistic Helmet

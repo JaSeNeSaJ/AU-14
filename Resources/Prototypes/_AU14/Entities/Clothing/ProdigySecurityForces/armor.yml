@@ -65,13 +65,13 @@
     slots:
     - OUTERCLOTHING
     batteryDrain: 0
-  #- type: ItemCamouflage
-    #camouflageVariations:
-      #Jungle: _RMC14/Objects/Clothing/OuterClothing/Armor/io/jungle.rsi
-      #Desert: _RMC14/Objects/Clothing/OuterClothing/Armor/io/desert.rsi
-      #Snow: _RMC14/Objects/Clothing/OuterClothing/Armor/io/snow.rsi
-      #Classic: _RMC14/Objects/Clothing/OuterClothing/Armor/io/classic.rsi
-      #Urban: _RMC14/Objects/Clothing/OuterClothing/Armor/io/urban.rsi
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
+      Desert: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
+      Snow: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
+      Classic: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
+      Urban: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor1.rsi
   - type: RMCLoreExaminable
     content: au14-lore-examinable-armor-PRU-XAS-23-PBA-new
 
@@ -92,6 +92,13 @@
   #- type: CMArmor
   #  melee: 30 # CLOTHING_ARMOR_HIGH (melee)
   #  bullet: 40 # CLOTHING_ARMOR_ULTRAHIGH (bullets)
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor3.rsi
+      Desert: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor3.rsi
+      Snow: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor3.rsi
+      Classic: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor3.rsi
+      Urban: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor3.rsi
 
 - type: entity
   parent: AU14ArmorProdigyXAS23
@@ -109,3 +116,10 @@
     bullet: 0 # CLOTHING_ARMOR_NONE (bullets)
     bio: 0 # CLOTHING_ARMOR_NONE
     explosionArmor: 0 # CLOTHING_ARMOR_NONE
+  - type: ItemCamouflage
+    camouflageVariations:
+      Jungle: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor2.rsi
+      Desert: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor2.rsi
+      Snow: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor2.rsi
+      Classic: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor2.rsi
+      Urban: _AU14/Clothing/ProdigySecurityForces/ArmedRepairTeam/PARTArmors/partarmor2.rsi

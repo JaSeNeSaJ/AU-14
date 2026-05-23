@@ -66,20 +66,18 @@
   id: AU14GearPARTPartySpecialist
   equipment:
     id: AU14IDCardColonyCorporateLiaison
-    outerClothing: AU14ArmorProdigyXAS23G
+    outerClothing: AU14ArmorProdigyXAS23
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    eyes: RMCGlassesSmartGunSight
     head: AU14PARTOperatorHelmetHeavy
     gloves: AU14HandsProdigyRU
-    belt: RMCBeltSmartGunOperatorPistolPMCFilled
-    pocket1: RMCPouchDrumPMCFill
+    #belt: RMCBeltSmartGunOperatorPistolPMCFilled
+    #pocket1: RMCPouchDrumPMCFill
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
     ears: RMCM5CameraGear
     ears2: AU14HeadsetPART
-    suitstorage: RMCSmartGunPMC
   storage:
     #pocket1:
     #- no need to fill, already comes pre-filled with 3 magazines
