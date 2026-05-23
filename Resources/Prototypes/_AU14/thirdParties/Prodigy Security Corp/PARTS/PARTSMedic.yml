@@ -3,7 +3,7 @@
   id: AU14JobPARTSPartyMedic
   name: Prodigy Sierra Combat Lifesaver
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTSPartyMedic
+  playTimeTracker: AU14JobPARTSPartyMedicTracker
   ranks:
     AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Sierra Combat Lifesaver (3rd party, M41A/2)
@@ -102,4 +102,4 @@
     # 0 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartyMedic
+  id: AU14JobPARTSPartyMedicTracker

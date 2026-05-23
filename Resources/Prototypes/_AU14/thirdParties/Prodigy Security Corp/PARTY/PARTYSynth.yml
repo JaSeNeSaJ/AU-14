@@ -4,6 +4,7 @@
   name: rmc-job-name-part-synth
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobProdigyPARTYSynth
+  whitelisted: true
   ranks:
     AU14RankPrDSynth5:
     - !type:RoleTimeRequirement

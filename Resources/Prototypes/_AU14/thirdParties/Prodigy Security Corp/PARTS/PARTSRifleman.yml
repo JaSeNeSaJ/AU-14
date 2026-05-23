@@ -3,7 +3,7 @@
   id: AU14JobPARTSPartyContractorBase
   name: PMC Contractor Base
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTSPartyContractor
+  playTimeTracker: AU14JobPARTSPartyContractorTracker
   basePlaytimeTracker: true
   hidden: true
 
@@ -110,4 +110,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartyContractor
+  id: AU14JobPARTSPartyContractorTracker

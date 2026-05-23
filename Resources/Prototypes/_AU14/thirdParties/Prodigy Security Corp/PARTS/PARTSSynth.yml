@@ -3,7 +3,8 @@
   id: AU14JobPARTSPartySynthetic
   name: au14-job-name-part-synth
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTSPartySynthetic
+  playTimeTracker: AU14JobPARTSPartySyntheticTracker
+  whitelisted: true
   ranks:
     AU14RankPrDSynth5:
     - !type:RoleTimeRequirement
@@ -142,4 +143,4 @@
     - AU14Tourniquet
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartySynthetic
+  id: AU14JobPARTSPartySyntheticTracker

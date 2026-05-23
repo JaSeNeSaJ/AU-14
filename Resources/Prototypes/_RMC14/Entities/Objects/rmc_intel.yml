@@ -622,7 +622,7 @@
             state: cryotroops
         - name: Prodigy Armed Repair Team Sierra
           description: Summon a PART Sierra Squad to the area
-          cost: 30
+          cost: 60
           events:
           - !type:TechPartySpawnEvent
             thirdPartyId: ProdigyPARTSParty
@@ -719,7 +719,7 @@
 
         - name: Prodigy Armed Repair Team Sierra
           description: Summon a PART Sierra Squad to the area
-          cost: 30
+          cost: 60
           events:
           - !type:TechPartySpawnEvent
             thirdPartyId: ProdigyPARTSParty
