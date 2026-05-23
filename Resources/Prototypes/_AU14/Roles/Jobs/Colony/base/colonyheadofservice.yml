@@ -11,7 +11,7 @@
     department: AU14DepartmentServices
     time: 36000 # 10 hours
   - !type:OverallPlaytimeRequirement
-    time: 72000 # 20 hours
+    time: 86400 # 24 hours
   - !type:AgeRequirement
     requiredAge: 23
   - !type:TraitsRequirement
