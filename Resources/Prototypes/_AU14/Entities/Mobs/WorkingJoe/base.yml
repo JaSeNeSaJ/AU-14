@@ -167,6 +167,9 @@
   - type: GrantMarineIcons
     factions:
     - UNMC
+  - type: NpcFactionMember
+    factions:
+    - AUWeYu
   - type: Tag
     tags:
     - WorkingJoe
