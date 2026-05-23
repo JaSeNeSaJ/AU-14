@@ -1,9 +1,11 @@
 using Content.Shared._CMU14.Medical.BodyPart.Events;
+using Content.Shared._RMC14.Armor;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Melee;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
+using Content.Shared.Inventory;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Weapons.Melee.Events;
 using Robust.Shared.Random;
@@ -40,7 +42,11 @@ public sealed class XenoMeleeSeverSystem : EntitySystem
             if (!TryComp<BodyComponent>(target, out _))
                 continue;
 
-            if (!_random.Prob(xeno.Comp.Chance))
+            var armorEv = new CMGetArmorEvent(SlotFlags.OUTERCLOTHING);
+            RaiseLocalEvent(target, ref armorEv);
+            var chance = armorEv.Melee > 0 ? xeno.Comp.ArmoredChance : xeno.Comp.Chance;
+
+            if (!_random.Prob(chance))
                 continue;
 
             TrySeverRandomLimb(target);
@@ -49,18 +55,30 @@ public sealed class XenoMeleeSeverSystem : EntitySystem
 
     private void TrySeverRandomLimb(EntityUid body)
     {
-        var candidates = new List<(EntityUid Id, BodyPartComponent Part)>();
+        var arms = new List<(EntityUid Id, BodyPartComponent Part)>();
+        var legs = new List<(EntityUid Id, BodyPartComponent Part)>();
 
         foreach (var (partUid, part) in _body.GetBodyChildren(body))
         {
-            if (part.PartType is BodyPartType.Arm or BodyPartType.Leg)
-                candidates.Add((partUid, part));
+            if (part.PartType is BodyPartType.Arm)
+                arms.Add((partUid, part));
+            else if (part.PartType is BodyPartType.Leg)
+                legs.Add((partUid, part));
         }
 
-        if (candidates.Count == 0)
+        if (arms.Count == 0 && legs.Count == 0)
             return;
 
-        var (severedPartUid, severedPart) = _random.Pick(candidates);
+        List<(EntityUid Id, BodyPartComponent Part)> chosen;
+
+        if (arms.Count > 0 && legs.Count > 0)
+            chosen = _random.Prob(0.6f) ? arms : legs;
+        else if (arms.Count > 0)
+            chosen = arms;
+        else
+            chosen = legs;
+
+        var (severedPartUid, severedPart) = _random.Pick(chosen);
         var ev = new BodyPartSeveredEvent(body, severedPartUid, severedPart.PartType);
         RaiseLocalEvent(severedPartUid, ref ev);
     }
