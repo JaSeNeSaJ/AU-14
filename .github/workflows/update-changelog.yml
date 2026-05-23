@@ -5,9 +5,9 @@ concurrency:
   cancel-in-progress: false
 
 on:
-  workflow_run:
-    workflows: ["Publish"]
-    types: [completed]    # Publish
+  # workflow_run:
+  #   workflows: ["Publish"]
+  #   types: [completed]    # Publish
   schedule:
     - cron: "0 10 * * *"    # Daily
   workflow_dispatch:        # Manual

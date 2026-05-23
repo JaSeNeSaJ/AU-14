@@ -2,6 +2,7 @@ using System.Linq;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
 using Content.Shared.AU14;
+using Content.Shared.AU14.ColonyEvacuation;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
@@ -118,6 +119,15 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
             return; // nothing to count
 
         var percentDead = (int) ((double)dead / total * 100.0);
+
+        if (!ruleComp.ColonyEvacTriggered &&
+            ruleComp.ColonyEvacThreshold > 0 &&
+            percentDead >= ruleComp.ColonyEvacThreshold)
+        {
+            ruleComp.ColonyEvacTriggered = true;
+            var evacEv = new ColonyWithdrawEvacEnabledEvent();
+            RaiseLocalEvent(ref evacEv);
+        }
 
         if (percentDead >= requiredPercent)
         {

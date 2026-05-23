@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Client.Projectiles;
 using Content.Shared._RMC14.Weapons.Ranged.Prediction;
 using Content.Shared.Projectiles;
 using Content.Shared.Weapons.Ranged.Events;
@@ -17,6 +18,7 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
 {
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private ProjectileSystem _projectile = default!;
     [Dependency] private SpriteSystem _sprite = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
@@ -97,7 +99,7 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
         var netEnt = GetNetEntity(args.OtherEntity);
         var pos = _transform.GetMapCoordinates(args.OtherEntity);
         var hit = new HashSet<(NetEntity, MapCoordinates)> { (netEnt, pos) };
-        PredictHit(ent, projectile, hit);
+        PredictHit(ent, projectile, physics, args.OtherEntity, hit);
     }
 
     private void OnServerProjectileStartup(Entity<PredictedProjectileServerComponent> ent, ref ComponentStartup args)
@@ -152,7 +154,7 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
             if (firstHit is not { } firstHitEntity)
                 continue;
 
-            PredictHit((uid, predicted), projectile, hit);
+            PredictHit((uid, predicted), projectile, physics, firstHitEntity, hit);
         }
 
         var predictedQuery = EntityQueryEnumerator<PredictedProjectileHitComponent, SpriteComponent, TransformComponent>();
@@ -183,6 +185,8 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
     private void PredictHit(
         Entity<PredictedProjectileClientComponent> ent,
         ProjectileComponent projectile,
+        PhysicsComponent physics,
+        EntityUid firstHit,
         HashSet<(NetEntity Id, MapCoordinates Coordinates)> hit)
     {
         if (ent.Comp.Hit)
@@ -193,19 +197,8 @@ public sealed partial class GunPredictionSystem : SharedGunPredictionSystem
         var ev = new PredictedProjectileHitEvent(ent.Owner.Id, hit);
         RaiseNetworkEvent(ev);
 
-        if (projectile.ImpactEffect != null)
-        {
-            var coordinates = Transform(ent).Coordinates;
-            RaiseLocalEvent(new ImpactEffectEvent(projectile.ImpactEffect, GetNetCoordinates(coordinates)));
-        }
-
-        if (projectile.DeleteOnCollide && IsClientSide(ent.Owner))
-        {
-            QueueDel(ent.Owner);
-            return;
-        }
-
-        if (_spriteQuery.TryComp(ent, out var sprite))
-            _sprite.SetVisible((ent, sprite), false);
+        // Keep predicted hits on the normal collision path. A previous manual effect path
+        // skipped local damage flashes and made shooter feedback wait for server state.
+        _projectile.ProjectileCollide((ent, projectile, physics), firstHit);
     }
 }

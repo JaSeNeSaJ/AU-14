@@ -13,13 +13,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          submodules: false
+
       - name: Setup submodule
         run: |
-          git submodule update --init --recursive
-      - name: Update Engine Submodules
-        run: |
-          cd RobustToolbox/
-          git submodule update --init --recursive
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
+      # - name: update engine submodules
+      #   run: |
+      #     cd robusttoolbox/
+      #     git submodule update --init --recursive
+
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v5
         with:
