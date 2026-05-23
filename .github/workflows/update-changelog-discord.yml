@@ -10,7 +10,7 @@ permissions:
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Update Changelog"]
+    workflows: ["Changelog"]
     types: [completed]
 
 jobs:

@@ -19,6 +19,7 @@ jobs:
       - name: Check for Merge Conflicts
         uses: actions/github-script@v9
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const label = 'S: Merge Conflict';
             const repo = {

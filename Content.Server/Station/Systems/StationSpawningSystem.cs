@@ -520,6 +520,8 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 {
                     _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), addFaction);
                 }
+                if (selectedPlatoon.NpcFaction is { } platoonNpcFaction)
+                    _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), platoonNpcFaction);
             }
         }
         return entity.Value;
