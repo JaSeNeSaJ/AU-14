@@ -11,7 +11,6 @@
   dummyStartingGear: AU14GearGOVFORPlatOpDummy
   playTimeTracker: AU14JobGOVFORPlatOp
   requireAdminNotify: true
-  joinNotifyCrew: false
   setPreference: false
   canBeAntag: false
   accessGroups:

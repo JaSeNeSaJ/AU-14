@@ -16,6 +16,7 @@
   - AU14AccessColonyHeadEngineer
   - AU14AccessColonyHeadOfService
   requirements:
+  - !type:DepartmentTimeRequirement
     department: AU14DepartmentColonySecurity
     time: 36000 # 10 hours
   - !type:OverallPlaytimeRequirement

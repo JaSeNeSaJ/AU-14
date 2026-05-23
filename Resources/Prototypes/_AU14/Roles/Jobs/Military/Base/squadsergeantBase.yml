@@ -14,8 +14,6 @@
   overwatchRoleName: Squad Lead
   overwatchShowName: true
   overwatchSortPriority: -5
-  requireAdminNotify: false
-  joinNotifyCrew: false
   setPreference: false
   canBeAntag: false
   accessGroups:
@@ -85,6 +83,7 @@
   equipment:
     id: AU14IDCardSquadSergeant
     ears: AU14HeadsetGovforCommand
+
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORSquadSergeant
@@ -96,7 +95,7 @@
     state: syn_spawn
 
 - type: startingGear
-  id: AU14GearGOVFORSquadSergantDummy
+  id: AU14GearGOVFORSquadSergeantDummy
   equipment:
     outerClothing: AU14ArmorM3JungleOne
     shoes: CMBootsBrown

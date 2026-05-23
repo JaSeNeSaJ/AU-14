@@ -134,7 +134,6 @@
     skills:
       RMCSkillLeadership: 3
       RMCSkillJtac: 3
-      RMCSkillConstruction: 2
       RMCSkillNavigations: 1
       RMCSkillOverwatch: 1
       RMCSkillIntel: 2
@@ -143,6 +142,7 @@
       RMCSkillEndurance: 1
       RMCSkillPilot: 1
       RMCSkillEngineer: 2
+      RMCSkillConstruction: 2
       RMCSkillPowerLoader: 1
       RMCSkillVehicles: 1
       RMCSkillFireman: 1 #fat second el-tee
@@ -157,23 +157,23 @@
   components:
   - type: SkillPreset
     skills:
-      RMCSkillConstruction: 3
-      RMCSkillCqc: 2
-      RMCSkillEndurance: 3
-      RMCSkillEngineer: 3
-      RMCSkillFirearms: 2
-      RMCSkillFireman: 2
-      RMCSkillVehicles: 1
-      RMCSkillOverwatch: 1
-      RMCSkillPilot: 1
       RMCSkillLeadership: 4
-      RMCSkillIntel: 2
-      RMCSkillPowerLoader: 1
-      RMCSkillMedical: 1
-      RMCSkillSurgery: 1
+      RMCSkillJtac: 4
       RMCSkillNavigations: 1
+      RMCSkillOverwatch: 1
+      RMCSkillIntel: 2
+      RMCSkillCqc: 2
+      RMCSkillFirearms: 2
+      RMCSkillEndurance: 3
+      RMCSkillPilot: 1
+      RMCSkillEngineer: 3
+      RMCSkillConstruction: 3
+      RMCSkillPowerLoader: 2
+      RMCSkillVehicles: 1
+      RMCSkillFireman: 2
+      RMCSkillMedical: 3
+      RMCSkillSurgery: 1
       RMCSkillPolice: 2
-      RMCSkillJtac: 3
 
 - type: entity
   id: AU14SkillPresetPlatoonAdvisor
