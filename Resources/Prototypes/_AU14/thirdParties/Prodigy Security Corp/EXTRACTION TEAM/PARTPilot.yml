@@ -70,12 +70,12 @@
     head: AU14ProdigyBeretPART
     gloves: AU14HandsProdigyRU
     belt: AU14BeltMedicBagProdigyFilled
-    pocket1: AU14ExtractionTeamBeacon
+    pocket1: AU14PouchMagazineLargePARTDualFilled
     pocket2: AU14PouchMedicalProdigyFilled
     back: RMCSatchelWelderRU #21 slots
     ears: RMCM5CameraGear
     ears2: AU14HeadsetPART
-    #suitstorage: 
+    suitstorage: AUWeaponRifleM20A
   storage:
     back:
     - RMCGrenadeBlastM12
