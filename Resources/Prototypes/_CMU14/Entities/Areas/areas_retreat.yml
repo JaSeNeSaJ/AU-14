@@ -986,6 +986,16 @@
     state: hr_misc_southerndorms
   - type: Area
     minimapColor: '#573e19'
+    
+- type: entity
+  parent: CMUAreaRetreatIndoors
+  id: CMUAreaRetreatHRMiscNorthernWarehouse
+  name: Hope's Retreat - Northern Warehouse
+  components:
+  - type: Sprite
+    state: hr_misc_northernwarehouse
+  - type: Area
+    minimapColor: '#573e19'
 
 - type: entity
   parent: CMUAreaRetreatIndoors
