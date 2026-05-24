@@ -292,22 +292,27 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         }
     }
 
-    private void SpawnWallDebris(EntityUid wall, Vector2 direction, int stage)
+    private void SpawnWallDebris(EntityUid wall, Vector2 lungeDirection, int stage)
     {
         var wallPos = _transform.GetMapCoordinates(wall);
-        var count = 2 + stage / 2; // More debris at higher stages.
+        var count = 3 + stage / 2;
 
         QueueDel(wall);
 
+        if (!_net.IsServer)
+            return;
+
+        var baseAngle = new Angle(Math.Atan2(lungeDirection.Y, lungeDirection.X));
+        var halfCone = MathHelper.DegreesToRadians(30f); // 60 degree cone total
+
         for (var i = 0; i < count; i++)
         {
-            // TODO: replace with real metal sheet prototype
-            var sheet = Spawn("SheetSteel1", wallPos);
-            var spread = direction + new Vector2(
-                (_random.NextFloat() - 0.5f) * 0.8f,
-                (_random.NextFloat() - 0.5f) * 0.8f
-            );
-            _throwing.TryThrow(sheet, spread, 4f + stage * 0.5f, compensateFriction: true);
+            var spread = _random.NextFloat(-halfCone, halfCone);
+            var shotAngle = new Angle(baseAngle.Theta + spread);
+            var direction = shotAngle.ToVec().Normalized() * 10;
+
+            var shrapnel = Spawn("RMCShrapnel", wallPos);
+            _throwing.TryThrow(shrapnel, direction, 4f + stage * 0.5f, compensateFriction: true);
         }
     }
 
