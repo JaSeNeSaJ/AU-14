@@ -363,7 +363,7 @@
     - abominationThirdParty
     - tribalThirdParty
     joboverrides:
-      AU14JobLEOLeaderBase: AU14JobCiviliannspaConstable
+      AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
       AU14JobLEOBase: AU14JobCiviliannspaConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
