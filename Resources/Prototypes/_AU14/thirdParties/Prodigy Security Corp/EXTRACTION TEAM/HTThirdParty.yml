@@ -13,7 +13,7 @@
   partyspawn: ProdigyExtractionSpawn
   entrymethod: shuttle
   weight: 10
-  minplayers: 3
+  minplayers: 0
   maxplayers: 400
-  GhostsNeeded: 5
+  GhostsNeeded: 3
   roundstart: false
