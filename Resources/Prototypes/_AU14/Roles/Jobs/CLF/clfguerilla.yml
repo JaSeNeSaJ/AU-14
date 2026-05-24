@@ -8,7 +8,7 @@
   playTimeTracker: AU14JobCLFGuerilla
   requirements:
   - !type:DepartmentTimeRequirement
-    department: AU14DepartmentCivilian
+    department: AU14DepartmentLabor
     time: 18000 # 5 hours
   - !type:OverallPlaytimeRequirement
     time: 36000 # 10 hours
