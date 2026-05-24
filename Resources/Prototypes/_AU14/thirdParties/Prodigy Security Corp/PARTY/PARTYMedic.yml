@@ -25,7 +25,7 @@
         RMCSkillFireman: 1
         RMCSkillJtac: 1
         RMCSkillMedical: 2
-        RMCSkillSurgery: 1
+        RMCSkillSurgery: 3
         RMCSkillConstruction: 2
         RMCSkillEngineer: 3
         RMCSkillPolice: 1
@@ -83,9 +83,8 @@
     #- AU14Tourniquet
     # no need, pouch already has 13 slots and is filled with med supplies
     back:
-    - RMCGrenadeBlastM12
-    - CMMRE
-    - RMCBinocularsPVE
+    - CMPortableSurgicalBedSpawnFolded
+    - CMSurgicalCaseFilled
     - AU14CMDefibrillator
     - CMShellShotgunBuckshot
     - CMShellShotgunBuckshot

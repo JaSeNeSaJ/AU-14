@@ -25,7 +25,7 @@
         RMCSkillFireman: 1
         RMCSkillJtac: 1
         RMCSkillMedical: 2
-        RMCSkillSurgery: 1
+        RMCSkillSurgery: 3
         RMCSkillConstruction: 2
         RMCSkillEngineer: 3
         RMCSkillPolice: 1
@@ -77,9 +77,8 @@
     suitstorage: RMCWeaponShotgunM3717
   storage:
     back:
-    - RMCGrenadeBlastM12
-    - CMMRE
-    - RMCBinocularsPVE
+    - CMPortableSurgicalBedSpawnFolded
+    - CMSurgicalCaseFilled
     - AU14CMDefibrillator
     - CMShellShotgunBuckshot
     - CMShellShotgunBuckshot

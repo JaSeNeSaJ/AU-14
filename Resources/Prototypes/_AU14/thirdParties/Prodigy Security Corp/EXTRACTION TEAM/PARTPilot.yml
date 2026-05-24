@@ -8,7 +8,7 @@
     AU14RankPrDOperator: []
   spawnMenuRoleName: Prodigy Extraction Crewchief (3rd party, M41A/2)
   startingGear: AU14GearPARTExtractionDCC
-  greeting: au14-prodigyparty-greeting
+  greeting: au14-prodigyextract-greeting
   icon: "RMCJobIconPMCMedic"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-psc
@@ -21,15 +21,15 @@
     - type: Skills
       skills:
         RMCSkillFirearms: 2
-        RMCSkillFireman: 1
+        RMCSkillFireman: 3
         RMCSkillIntel: 1
         RMCSkillJtac: 2
         RMCSkillLeadership: 1
-        RMCSkillMedical: 2
+        RMCSkillMedical: 3
         RMCSkillOverwatch: 1
-        RMCSkillPilot: 2
+        RMCSkillPilot: 3
         RMCSkillPowerLoader: 2
-        RMCSkillSurgery: 1
+        RMCSkillSurgery: 4
         RMCSkillPolice: 1
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORPlatoonCorpsmanWYPMC
@@ -52,12 +52,12 @@
     allowSpeech: true
     allowMovement: true
     name: Prodigy Extraction CrewCgeuf
-    description: au14-prodigyparty-description
+    description: au14-prodigyextract-descriptionn
     reregister: false
     job: AU14JobPARTDCC
     raffle:
       settings: short
-    rules: au14-prodigyparty-description
+    rules: au14-prodigyextract-description
 
 - type: startingGear
   id: AU14GearPARTExtractionDCC
@@ -83,6 +83,8 @@
     - CMMRE
     - RMCBinocularsPVE
     - AU14CMDefibrillator
+    - CMPortableSurgicalBedSpawnFolded
+    - CMSurgicalCaseFilled
     jumpsuit:
     # 5 empty slots
     outerClothing:
