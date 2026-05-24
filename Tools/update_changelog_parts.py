@@ -158,9 +158,15 @@ def main():
     start = os.environ.get("START_DATE")
 
     sess = make_session(token)
+    with open("Resources/Changelog/CMU.yml", "r") as f:
+        current = yaml.safe_load(f)
+    entries = (current or {}).get("Entries", [])
+    since = (
+        "2025-06-01T00:00:00Z"  # start date when changelog is empty
+        if not entries
+        else (start if start else get_last_run_time(sess, repo, run_id))
+    )
 
-    since = "2025-06-01T00:00:00.0000000+00:00"  # temp override
-    # since = start if start else get_last_run_time(sess, repo, run_id)
     print(f"Fetching PRs merged since {since}")
 
     prs = get_merged_prs(sess, repo, since)
