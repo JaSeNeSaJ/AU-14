@@ -50,7 +50,7 @@
   description: A disposable uplink used to call the Prodigy extraction team. It's useless after activation. What do you mean its just an expensive laser pointer? (OOC Note, if this fails to work please ahelp and ask them to spawn ProdigyExtractionParty)
   components:
   - type: Sprite
-    state: lasersight_micro
+    sprite: _RMC14/Objects/Devices/sentrycomp.rsi
   - type: Item
     size: Small
   - type: Clickable
