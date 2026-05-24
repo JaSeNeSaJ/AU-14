@@ -60,7 +60,7 @@
   - type: Action
     icon:
       sprite: _CMU14/Structures/Vehicles/Blackfoot/interiors/blackfoot.rsi
-      state: rear door open
+      state: rear-door-open
     itemIconStyle: BigItem
 
 - type: entity
