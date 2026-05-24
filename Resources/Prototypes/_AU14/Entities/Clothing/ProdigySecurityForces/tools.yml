@@ -47,11 +47,10 @@
   parent: BaseItem
   id: AU14ExtractionTeamBeacon
   name: Prodigy Extraction Team Beacon
-  description: A disposable uplink used to call the Prodigy extraction team. It's useless after activation.
+  description: A disposable uplink used to call the Prodigy extraction team. It's useless after activation. What do you mean its just an expensive laser pointer? (OOC Note, if this fails to work please ahelp and ask them to spawn ProdigyExtractionParty)
   components:
   - type: Sprite
-    sprite: _RMC14/Objects/Devices/sentrycomp.rsi
-    state: sentrycomp_cl
+    state: lasersight_micro
   - type: Item
     size: Small
   - type: Clickable
