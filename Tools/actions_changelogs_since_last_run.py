@@ -68,8 +68,8 @@ def get_most_recent_workflow(
         # First past successful run that isn't our current run.
         if run["id"] == workflow_run["id"]:
             continue
-
         return run
+    return None  # no previous successful run
 
 
 def get_current_run(
@@ -103,6 +103,10 @@ def get_last_changelog() -> str:
     session.headers["X-GitHub-Api-Version"] = "2022-11-28"
 
     most_recent = get_most_recent_workflow(session, github_repository, github_run)
+    if most_recent is None:
+        print("No previous successful run found, skipping discord send")
+        exit(0)  # exit with status: success for re-run
+
     last_sha = most_recent["head_commit"]["id"]
     print(f"Last successful publish job was {most_recent['id']}: {last_sha}")
     last_changelog_stream = get_last_changelog_by_sha(

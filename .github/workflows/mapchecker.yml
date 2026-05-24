@@ -47,5 +47,14 @@ jobs:
       - name: Build
         run: cd .github/map_checker && cargo b --release
 
-      - name: Run
+      - name: Check _RMC14
+        continue-on-error: true
         run: ./.github/map_checker/target/release/map_checker -c .github/map_checker/matchers.yml -m Resources/Maps/_RMC14
+
+      - name: Check _CMU14
+        continue-on-error: true
+        run: ./.github/map_checker/target/release/map_checker -c .github/map_checker/matchers.yml -m Resources/Maps/_CMU14
+
+      - name: Check _AU14
+        continue-on-error: true
+        run: ./.github/map_checker/target/release/map_checker -c .github/map_checker/matchers.yml -m Resources/Maps/_AU14

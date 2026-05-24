@@ -14,11 +14,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          submodules: false
+
       - name: Setup Submodule
-        run: git submodule update --init
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
       - name: Install Python dependencies
         run: |
           pip3 install --ignore-installed --user pillow jsonschema
+
       - name: Validate RSIs
         run: |
           python3 RobustToolbox/Schemas/validate_rsis.py Resources/
