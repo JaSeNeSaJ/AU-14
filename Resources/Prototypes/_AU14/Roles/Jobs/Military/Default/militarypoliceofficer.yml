@@ -5,6 +5,7 @@
   description: au14-job-description-govformilitarypoliceman
   setPreference: true
   canBeAntag: false
+  hasSquad: false
   requirements:
   - !type:AgeRequirement
     requiredAge: 21
