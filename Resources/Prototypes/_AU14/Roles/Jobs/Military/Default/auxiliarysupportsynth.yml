@@ -1,11 +1,23 @@
 - type: job
   parent: AU14JobAuxSupportSynthBase
-  id: AU14JobGOVFORAuxSupportSynth
+  id: AU14JobGOVFORSquadCombatTech
   name: au14-job-name-govforauxsupportsynth
   description: au14-job-description-govforauxsupportsynth
   setPreference: true
   canBeAntag: false
   requirements:
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORSquadCombatTech
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatoonCorpsman
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatCo
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORMilitaryDoctor
+    time: 3600 # 1 hour
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
   - !type:TraitsRequirement
