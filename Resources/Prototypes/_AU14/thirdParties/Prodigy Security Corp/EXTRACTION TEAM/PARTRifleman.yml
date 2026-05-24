@@ -1,13 +1,4 @@
 - type: job
-  parent: CMJobBase
-  id: AU14JobPARTSPartyContractorBase
-  name: Extraction Contractor Base
-  description: au14-prodigyextract-description
-  playTimeTracker: AU14JobPARTPartyContractorTracker
-  basePlaytimeTracker: true
-  hidden: true
-
-- type: job
   parent: AU14JobPARTSPartyContractorBase
   id: AU14JobPARTExtractionContractor
   name: PART Extraction Response Unit (M41A/2)
