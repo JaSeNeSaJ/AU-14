@@ -2,7 +2,7 @@ using Content.Server.AU14.ThirdParty;
 using Content.Server.GameTicking;
 using Content.Shared.AU14.Threats;
 using Content.Shared.Interaction;
-using Content.Shared.Popups;
+using Content.Server.Popups;
 using Robust.Server.GameObjects;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
