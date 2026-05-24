@@ -43,3 +43,36 @@
     skills:
       RMCSkillEngineer: 2
 
+- type: entity
+  parent: BaseItem
+  id: AU14ExtractionTeamBeacon
+  name: Prodigy Extraction Team Beacon
+  description: A disposable uplink used to call the Prodigy extraction team. It disappears after activation.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Devices/sentrycomp.rsi
+    state: sentrycomp_cl
+  - type: Item
+    size: Small
+  - type: Clickable
+  - type: InteractionOutline
+  - type: Physics
+    bodyType: Dynamic
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.15,0.25,0.15"
+        density: 50
+        mask:
+        - ItemMask
+        restitution: 0.3
+        friction: 0.2
+  - type: Appearance
+  - type: SpawnThirdPartyTool
+    party: ProdigyExtractionParty
+    dropship: true
+  - type: UseDelay
+    delay: 0.5
+

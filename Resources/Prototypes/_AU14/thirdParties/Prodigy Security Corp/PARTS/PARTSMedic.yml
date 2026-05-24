@@ -49,7 +49,7 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: PMC Combat Lifesaver
+    name: Prodigy Sierra Party Combat Lifesaver
     description: au14-prodigyparty-description
     reregister: false
     job: AU14JobPARTSPartyMedic

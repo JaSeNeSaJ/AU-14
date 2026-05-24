@@ -106,7 +106,8 @@
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
-    # 2 empty slots
+    - AU14ExtractionTeamBeacon
+    # 1 empty slots
 
 - type: playTimeTracker
   id: AU14JobPARTSPartyLeaderTracker
