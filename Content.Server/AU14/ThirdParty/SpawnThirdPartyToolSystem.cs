@@ -51,29 +51,29 @@ public sealed partial class SpawnThirdPartyToolSystem : EntitySystem
             return false;
         }
 
-        if (!_prototype.TryIndex(component.Party, out AuThirdPartyPrototype? party))
+        if (!_prototype.TryIndex(component.Comp.Party, out AuThirdPartyPrototype? party))
         {
-            _popup.PopupEntity($"No third party prototype found with ID: {component.Party.Id}", component.Owner, user);
+            _popup.PopupEntity($"No third party prototype found with ID: {component.Comp.Party.Id}", component.Owner, user);
             return false;
         }
 
         if (!_prototype.TryIndex<PartySpawnPrototype>(party.PartySpawn, out var partySpawnProto))
         {
-            _popup.PopupEntity($"No PartySpawn prototype found for third party {component.Party.Id}.", component.Owner, user);
+            _popup.PopupEntity($"No PartySpawn prototype found for third party {component.Comp.Party.Id}.", component.Owner, user);
             return false;
         }
 
         var thirdPartySystem = EntitySystem.Get<AuThirdPartySystem>();
-        var spawned = thirdPartySystem.SpawnThirdParty(party, partySpawnProto, false, null, component.Dropship);
+        var spawned = thirdPartySystem.SpawnThirdParty(party, partySpawnProto, false, null, component.Comp.Dropship);
 
         if (!spawned)
         {
-            _popup.PopupEntity($"Failed to spawn third party {component.Party.Id}.", component.Owner, user);
+            _popup.PopupEntity($"Failed to spawn third party {component.Comp.Party.Id}.", component.Owner, user);
             return false;
         }
 
         EntityManager.DeleteEntity(component.Owner);
-        _popup.PopupEntity($"Called in third party {component.Party.Id}.", user, user);
+        _popup.PopupEntity($"Called in third party {component.Comp.Party.Id}.", user, user);
         return true;
     }
 }
