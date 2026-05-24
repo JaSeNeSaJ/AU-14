@@ -41,8 +41,8 @@
     - CMUPlanetLament
     - AUPlanetStableGarrison
     #- AUPlanetLV747
-    - AUPlanetSorokyne
-    - AUPlanetLV759
+    #- AUPlanetSorokyne
+    #- AUPlanetLV759
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -58,18 +58,14 @@
   description: Investigate a mysterious distress signal as government forces.
   requiresGovforVote: true
   supportedPlanets:
-  - AUPlanetShepherdsPride
 #  - AUPlanetLV747
   - AUPlanetFlight
-  - AUPlanetLV327
   - AUPlanetSorokyne
   - AUPlanetCorsatStation
-  - AUPlanetStableGarrison
   - AUPlanetTrijent
   #- AuPlanetFiorina -removed due to load errors
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
-  - CMUPlanetLament
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -85,11 +81,8 @@
   minPlayers: 0
   description: Live in an offworld colony as it falls into chaos.
   supportedPlanets:
-    - AUPlanetLV747
     - AUPlanetShepherdsPride
    # - AUPlanetLV624
-    - AUPlanetLV327
-    - AUPlanetSorokyne
     - AUPlanetStableGarrison
     - CMUPlanetLament
 
