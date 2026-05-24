@@ -38,25 +38,32 @@ class NoDatesSafeLoader(yaml.SafeLoader):
 NoDatesSafeLoader.remove_implicit_resolver("tag:yaml.org,2002:timestamp")
 
 
+def sort_and_renumber(data):
+    if "Entries" not in data:
+        return data
+    data["Entries"].sort(key=lambda e: e.get("time", ""))
+    for i, entry in enumerate(data["Entries"], start=1):
+        entry["id"] = i
+    return data
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("changelog_file")
     parser.add_argument("parts_dir")
     parser.add_argument("--category", default=CATEGORY_MAIN)
-
     args = parser.parse_args()
-
     category = args.category
 
     with open(args.changelog_file, "r", encoding="utf-8-sig") as f:
-        current_data = yaml.load(f, Loader=NoDatesSafeLoader)
+        raw = yaml.load(f, Loader=NoDatesSafeLoader)
 
-    entries_list: List[Any]
-    if current_data is None:
-        entries_list = []
-    else:
-        entries_list = current_data["Entries"]
+    if raw is None:
+        raw = {}
+    current_data: dict[str, Any] = raw
 
+    # Get the existing entries, or an empty list if the key is missing.
+    entries_list: List[Any] = current_data.get("Entries", [])
     max_id = max(map(lambda e: e["id"], entries_list), default=0)
 
     for partname in os.listdir(args.parts_dir):
@@ -98,12 +105,8 @@ def main():
                     "url": url,
                 }
             )
-
         os.remove(partpath)
-
     print(f"Have {len(entries_list)} changelog entries")
-
-    entries_list.sort(key=lambda e: e["time"])
 
     overflow = len(entries_list) - MAX_ENTRIES
     if overflow > 0:
@@ -114,6 +117,9 @@ def main():
     for key, value in current_data.items():
         if key != "Entries":
             new_data[key] = value
+
+    # why yes, this is slightly cursed but- path of least resistance
+    new_data = sort_and_renumber(new_data)
 
     with open(args.changelog_file, "w", encoding="utf-8-sig") as f:
         yaml.safe_dump(new_data, f)
