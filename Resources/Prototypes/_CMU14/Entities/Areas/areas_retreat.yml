@@ -923,7 +923,7 @@
   name: Hope's Retreat - Turbine Room
   components:
   - type: Sprite
-    state: hr_engi_turbine
+    state: hr_engi_turbineroom
   - type: Area
     minimapColor: '#573e19'
 
