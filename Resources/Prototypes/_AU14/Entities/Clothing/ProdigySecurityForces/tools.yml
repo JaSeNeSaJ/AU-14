@@ -47,7 +47,7 @@
   parent: BaseItem
   id: AU14ExtractionTeamBeacon
   name: Prodigy Extraction Team Beacon
-  description: A disposable uplink used to call the Prodigy extraction team. It disappears after activation.
+  description: A disposable uplink used to call the Prodigy extraction team. It's useless after activation.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Devices/sentrycomp.rsi
