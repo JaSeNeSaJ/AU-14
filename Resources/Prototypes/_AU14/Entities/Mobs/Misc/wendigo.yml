@@ -131,6 +131,9 @@
     interfaces:
       enum.WendigoVoiceUiKey.Key:
         type: WendigoVoiceBui
+  - type: Tag
+    tags:
+    - Wendigo
 
 - type: entity
   parent: ActionXenoDoom
