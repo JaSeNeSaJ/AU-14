@@ -228,7 +228,7 @@ public sealed partial class XenoSystem : EntitySystem
 
         // TODO RMC14 this still falsely plays the hit red flash effect on xenos if others are hit in a wide swing
         if ((_xenoFriendlyQuery.HasComp(target) && _hive.FromSameHive(xeno.Owner, target)) ||
-            _mobState.IsDead(target))
+            _mobState.IsDead(target) || _hive.IsAllyOfHive(target, _hive.GetHive(xeno.Owner)))
         {
             if (!args.Disarm)
                 args.Cancel();
@@ -247,7 +247,8 @@ public sealed partial class XenoSystem : EntitySystem
     {
         if (!TryComp<XenoNestComponent>(GetEntity(args.Target), out var nest) ||
             nest.Nested == null ||
-            !_hive.FromSameHive(xeno.Owner, GetEntity(args.Target)))
+            !_hive.FromSameHive(xeno.Owner, GetEntity(args.Target)) ||
+            !_hive.IsAllyOfHive(GetEntity(args.Target), _hive.GetHive(xeno.Owner)))
         {
             return;
         }
