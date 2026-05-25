@@ -59,7 +59,7 @@
     rules: au14-prodigyrescue-description
 
 - type: startingGear
-  id: AU14GearPARTYPartyMedic
+  id: AU14GearTARSPartyMedic
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
