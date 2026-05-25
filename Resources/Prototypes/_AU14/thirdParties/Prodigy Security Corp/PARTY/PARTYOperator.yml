@@ -45,12 +45,12 @@
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPMC
+    squad: SquadPARTY
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: PMC Smartgun Operator
+    name: Prodigy Yankee Smartgun Operator
     description: au14-prodigyparty-description
     reregister: false
     job: AU14JobProdigyPartySmartgunner

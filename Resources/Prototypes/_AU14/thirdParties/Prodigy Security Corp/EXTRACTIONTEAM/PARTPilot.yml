@@ -46,7 +46,7 @@
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPARTS
+    squad: SquadPET
   - type: GhostRole
     makeSentient: true
     allowSpeech: true

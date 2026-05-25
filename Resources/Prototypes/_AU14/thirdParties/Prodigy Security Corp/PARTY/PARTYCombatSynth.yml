@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobProdigyPARTCombatSynth
-  name: PART Yankee Combat Synthetic
+  name: Prodigy Yankee Combat Synthetic
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobProdigyPARTCombatSynth
   whitelisted: true
@@ -89,7 +89,6 @@
   id: AU14JobProdigyPARTCombatSynth
   name: Prodigy Yankee Combat Synthetic (AU14, 3rd Party)
   components:
-  - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
     squad: SquadPARTY

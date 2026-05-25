@@ -1,14 +1,14 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobProdigyPartyLeader #m41a/2
-  name: Prodigy Yankee Party Leader
-  description: au14-prodigyparty-description
-  playTimeTracker: AU14JobProdigyPartyLeader
+  id: AU14JobProdigyTARSPartyLeader #m41a/2
+  name: Prodigy TARS Leader
+  description: au14-prodigyrescue-description
+  playTimeTracker: AU14JobProdigyTARSPartyLeaderTracker
   ranks:
     AU14RankPrDEnforcerLead: []
-  spawnMenuRoleName: Prodigy Yankee Party Leader (3rd party, M41A/2)
+  spawnMenuRoleName: Prodigy TARS Leader (3rd party, M20a)
   startingGear: AU14GearPARTPartyLeader
-  greeting: au14-prodigyparty-greeting
+  greeting: au14-prodigyrescue-greeting
   icon: "RMCJobIconPMCLeader"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-psc
@@ -44,48 +44,45 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicProdigy
-  id: AU14JobProdigyPartyLeader
-  name: Prodigy Yankee Party Leader (3rd party, M41A/2)
+  id: AU14JobProdigyTARSPartyLeader
+  name: Prodigy TARS Leader (3rd party, M20a)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPARTY
+    squad: SquadTARS
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: PART Leader
-    description: au14-prodigyparty-description
+    name: TARS Leader
+    description: au14-prodigyrescue-description
     reregister: false
-    job: AU14JobProdigyPartyLeader
+    job: AU14JobProdigyTARSPartyLeader
     raffle:
       settings: short
-    rules: au14-prodigyparty-description
+    rules: au14-prodigyrescue-description
 
 - type: startingGear
-  id: AU14GearPARTPartyLeader
+  id: AU14GearTARSPartyLeader
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
-    mask: RMCMaskCoifPMC
+    #mask: RMCMaskCoifPMC
     eyes: RMCGlassesMedicalHUDGlasses
-    head: AU14ProdigyBeretPART
-    gloves: AU14HandsProdigyRU
+    #head: AU14ProdigyBeretTARS
+    #gloves: AU14HandsProdigyRU
     belt: AU14BeltUtilityCombatProdigyRUFilled
-    pocket1: RMCPouchMagazineLargePMC
+    pocket1: AU14PouchMagazineLargePARTDualFilled
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
     ears: AU14HeadsetPART
     ears2: RMCM5CameraGear
-    suitstorage: RMCWeaponRifleM54C2
+    suitstorage: AUWeaponRifleM20A
   storage:
-    pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    #pocket1:
+    # comes pre-filled with rifle mags, no need to fill it here
     #pocket2:
     #- AU14Tourniquet
     # no need, pouch already has 6 slots and is filled with med supplies
@@ -113,4 +110,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobProdigyPartyLeader
+  id: AU14JobProdigyTARSPartyLeaderTracker

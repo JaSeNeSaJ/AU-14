@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobProdigyPartySpecialist
-  name: Prodigy PARTY Weapon Specialist
+  name: Prodigy Yankee Weapon Specialist
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobProdigyPartySpecialistTracker
   ranks:
@@ -54,7 +54,7 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: Prodigy Weapon Specialist
+    name: Prodigy Yankee Weapon Specialist
     description: au14-prodigyparty-description
     reregister: false
     job: AU14JobProdigyPartySpecialist
@@ -88,13 +88,7 @@
     - CMMRE
     - RMCBinocularsPVE
     - AU14PacketGrenadeFragM12Filled
-    - RMCMagazineSmartGunirradiated
-    - RMCMagazineSmartGunirradiated
-    - RMCMagazineSmartGunirradiated
-    - RMCMagazineSmartGunirradiated
-    - RMCMagazineSmartGunirradiated
     jumpsuit:
-    - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
     - AU14ProdigyLaptop
     # 2 empty slots

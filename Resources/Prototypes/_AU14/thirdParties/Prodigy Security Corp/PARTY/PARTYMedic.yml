@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobWYProdigyPartyMedic #m41a/2
-  name: PMC Combat Lifesaver
+  name: Prodigy Yankee Combat Lifesaver
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobProdigyPartyMedicTracker
   ranks:
@@ -41,11 +41,11 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicWeYu
   id: AU14JobWYProdigyPartyMedic
-  name: WY PMC Party Combat Lifesaver (3rd party, M41A/2)
+  name: Prodigy Yankee Combat Lifesaver (3rd party, M41A/2)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPMC
+    squad: SquadPARTY
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -103,8 +103,8 @@
     - CMOintment10
     - CMOintment10
     - CMSyringe
-    - AU14Tourniquet
-    - AU14Tourniquet
+    - CMPortableSurgicalBedSpawnFolded
+    - CMSurgicalCaseFilled
     # 0 empty slots
 
 - type: playTimeTracker

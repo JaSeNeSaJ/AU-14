@@ -1,14 +1,14 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobPARTSPartyMedic
-  name: Prodigy Sierra Combat Lifesaver
-  description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTSPartyMedicTracker
+  id: AU14JobHRTPartyMedic
+  name: Prodigy Hazard Combat Lifesaver
+  description: au14-prodigyhazard-description
+  playTimeTracker: AU14JobHRTPartyMedicTracker
   ranks:
     AU14RankPrDOperator: []
-  spawnMenuRoleName: Prodigy Sierra Combat Lifesaver (3rd party, M41A/2)
-  startingGear: AU14GearPARTSPartyMedic
-  greeting: au14-prodigyparty-greeting
+  spawnMenuRoleName: Prodigy Hazard Combat Lifesaver (3rd party, M41A/2)
+  startingGear: AU14GearHRTPartyMedic
+  greeting: au14-prodigyhazard-greeting
   icon: "RMCJobIconPMCMedic"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-psc
@@ -39,8 +39,8 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicProdigy
-  id: AU14JobPARTSPartyMedic
-  name: Prodigy Sierra Party Combat Lifesaver (3rd party, M41A/2)
+  id: AU14JobHRTPartyMedic
+  name: Prodigy Hazard Party Combat Lifesaver (3rd party, M41A/2)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
@@ -49,16 +49,16 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: Prodigy Sierra Party Combat Lifesaver
-    description: au14-prodigyparty-description
+    name: Prodigy Hazard Party Combat Lifesaver
+    description: au14-prodigyhazard-description
     reregister: false
-    job: AU14JobPARTSPartyMedic
+    job: AU14JobHRTPartyMedic
     raffle:
       settings: short
-    rules: au14-prodigyparty-description
+    rules: au14-prodigyhazard-description
 
 - type: startingGear
-  id: AU14GearPARTSPartyMedic
+  id: AU14GearHRTPartyMedic
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23

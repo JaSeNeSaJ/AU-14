@@ -1,13 +1,22 @@
 - type: job
-  parent: AU14JobPARTSPartyContractorBase
-  id: AU14JobPARTExtractionContractor
-  name: PART Extraction Response Unit (M41A/2)
-  description: au14-prodigyextract-description
+  parent: CMJobBase
+  id: AU14JobTARSPartyContractorBase
+  name: Prodigy TARS Contractor Base
+  description: au14-prodigyrescue-description
+  playTimeTracker: AU14JobTARSPartyContractorTracker
+  basePlaytimeTracker: true
+  hidden: true
+
+- type: job
+  parent: AU14JobTARSPartyContractorBase
+  id: AU14JobTARSPartyContractor
+  name: Prodigy TARS Contractor (M41A/2)
+  description: au14-prodigyrescue-description
   ranks:
     AU14RankPrDAssociate: []
-  spawnMenuRoleName: Prodigy Extraction Contractor (3rd party, M41A/2)
-  startingGear: AU14GearPARTExtractionContractor
-  greeting: au14-prodigyextract-greeting
+  spawnMenuRoleName: Prodigy TARS Contractor (3rd party, M20a)
+  startingGear: AU14GearTARSPartyContractor
+  greeting: au14-prodigyrescue-greeting
   icon: "RMCJobIconPMCStandard"
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-psc
@@ -19,15 +28,13 @@
     components:
     - type: Skills
       skills:
-        RMCSkillEndurance: 2
+        RMCSkillEndurance: 1
         RMCSkillFirearms: 2
         RMCSkillConstruction: 2
         RMCSkillEngineer: 3
-        RMCSkillFireman: 2
+        RMCSkillFireman: 1
         RMCSkillVehicles: 1
         RMCSkillPolice: 1
-        RMCSkillSurgery: 1
-        RMCSkillMedical: 1
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC
     - type: TacticalMapIcon
@@ -38,64 +45,59 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicProdigy
-  id: AU14JobPARTExtractionRifleman
-  name: Prodigy Extraction Rifleman (3rd party, M41A/2)
+  id: AU14JobTARSPartyRifleman
+  name: Prodigy TARS Party Rifleman (3rd party, M20a)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: SquadPARTS
+    squad: SquadTARS
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: Prodigy Rifleman
-    description: au14-prodigyextract-description
+    name: Prodigy TARS Rifleman
+    description: au14-prodigyrescue-description
     reregister: false
-    job: AU14JobPARTExtractionContractor
+    job: AU14JobPARTSPartyContractor
     raffle:
       settings: short
-    rules: au14-prodigyextract-description
+    rules: au14-prodigyrescue-description
 
 - type: startingGear
-  id: AU14GearPARTExtractionContractor
+  id: AU14GearTARSPartyContractor
   equipment:
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: AU14ArmorProdigyXAS23
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
-    mask: RMCMaskCoifPMC
-    eyes: AU14ProdigyWeldingGoggles
-    head: AU14ProdigyBallisticHelmetPART
-    gloves: AU14HandsProdigyRU
+    #mask: RMCMaskCoifPMC
+    #eyes: AU14ProdigyWeldingGoggles
+    #head: AU14ProdigyBallisticHelmetPART
+    #gloves: AU14HandsProdigyRU
     belt: AU14BeltUtilityCombatProdigyRUFilled
-    pocket1: RMCPouchMagazineLargePMC
+    pocket1: AU14PouchMagazineLargePARTDualFilled
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
-    ears: RMCM5CameraGear
-    ears2: AU14HeadsetPART
-    suitstorage: RMCWeaponRifleM54C2
+    ears: AU14HeadsetPART
+    ears2: RMCM5CameraGear
+    suitstorage: AUWeaponRifleM20A
   storage:
-    pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    #pocket1:
+    #comes filled with rifle mags, no need to fill it here
     back:
     - CMMRE
     - RMCBinocularsPVE
     - AU14PacketGrenadeFragM12Filled
-    - CMPortableSurgicalBedSpawnFolded
-    - CMSurgicalCaseFilled
+
     jumpsuit:
-    - AU14ProdigyLaptop
+    - AU14SynthResetKeyProdigy
     - RMCHandcuffs
-    # 6 empty slots
+    # 3 empty slots
     outerClothing:
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
-    - RMCVisorMedical
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTPartyContractorTracker
+  id: AU14JobTARSPartyContractorTracker

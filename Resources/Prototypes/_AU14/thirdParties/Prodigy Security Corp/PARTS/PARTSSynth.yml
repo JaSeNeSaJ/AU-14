@@ -1,7 +1,7 @@
 - type: job
   parent: CMJobBase
   id: AU14JobPARTSPartySynthetic
-  name: au14-job-name-part-synth
+  name: Prodigy Sierra Support Synthetic
   description: au14-prodigyparty-description
   playTimeTracker: AU14JobPARTSPartySyntheticTracker
   whitelisted: true
@@ -23,7 +23,7 @@
       role: AU14JobPARTSPartySyntheticTracker
       time: 18000 #5 hours
     AU14RankPrDSynth1: []
-  spawnMenuRoleName: Prodigy Support Synthetic (AU14, 3rd Party)
+  spawnMenuRoleName: Prodigy Sierra Support Synthetic (AU14, 3rd Party)
   startingGear: AU14GearPARTSPartySynth
   greeting: au14-prodigyparty-greeting
   icon: "RMCJobIconReconSynthetic"
