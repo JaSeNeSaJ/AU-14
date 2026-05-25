@@ -100,7 +100,7 @@
     name: rmc-job-name-part-synth
     description: au14-prodigyrescue-description
     reregister: false
-    job: AU14JobProdigyPARTYSynth
+    job: AU14JobProdigyTARSPartySynth
     raffle:
       settings: short
     rules: au14-prodigyrescue-description
