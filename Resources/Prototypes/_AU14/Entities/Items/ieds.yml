@@ -25,7 +25,7 @@
   id: AU14IED
   components:
   - type: Item
-    size: huge
+    size: Huge
   - type: Sprite
     sprite: Objects/Weapons/Bombs/c4.rsi
     state: icon
@@ -61,7 +61,7 @@
   id: AU14IEDLarge
   components:
   - type: Item
-    size: huge
+    size: Huge
   - type: Sprite
     sprite: Objects/Weapons/Bombs/c4.rsi
     state: icon
