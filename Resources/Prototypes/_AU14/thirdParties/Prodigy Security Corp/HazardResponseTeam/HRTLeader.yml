@@ -110,4 +110,4 @@
     # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartyLeaderTracker
+  id: AU14JobHRTPartyLeaderTracker
