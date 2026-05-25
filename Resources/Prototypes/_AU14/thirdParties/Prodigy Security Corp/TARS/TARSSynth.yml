@@ -3,7 +3,7 @@
   id: AU14JobProdigyTARSPartySynth
   name: Prodigy TARS Support Synthetic
   description: au14-prodigyrescue-description
-  playTimeTracker: AU14JobProdigyTARSPartySynth
+  playTimeTracker: AU14JobProdigyTARSPartySynthTracker
   whitelisted: true
   ranks:
     AU14RankPrDSynth5:
@@ -151,4 +151,4 @@
     # 0 empty slots
 
 - type: playTimeTracker
-  id: AU14JobProdigyPARTYSynth
+  id: AU14JobProdigyTARSPartySynthTracker
