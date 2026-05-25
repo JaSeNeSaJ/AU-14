@@ -3,24 +3,24 @@
   id: AU14JobHRTPartySynthetic
   name: Prodigy Hazard Support Synthetic
   description: au14-prodigyhazard-description
-  playTimeTracker: AU14JobHazardPartySyntheticTracker
+  playTimeTracker: AU14JobHRTPartySyntheticTracker
   whitelisted: true
   ranks:
     AU14RankPrDSynth5:
     - !type:RoleTimeRequirement
-      role: AU14JobHazardPartySyntheticTracker
+      role: AU14JobHRTPartySynthetic
       time: 252000 #70 hours
     AU14RankPrDSynth4:
     - !type:RoleTimeRequirement
-      role: AU14JobHazardPartySyntheticTracker
+      role: AU14JobHRTPartySyntheticTracker
       time: 180000 #50 hours
     AU14RankPrDSynth3:
     - !type:RoleTimeRequirement
-      role: AU14JobHazardPartySyntheticTracker
+      role: AU14JobHRTPartySyntheticTracker
       time: 36000 #10 hours
     AU14RankPrDSynth2:
     - !type:RoleTimeRequirement
-      role: AU14JobHazardPartySyntheticTracker
+      role: AU14JobHRTPartySyntheticTracker
       time: 18000 #5 hours
     AU14RankPrDSynth1: []
   spawnMenuRoleName: Prodigy Hazard Support Synthetic (AU14, 3rd Party)
@@ -143,4 +143,4 @@
     - AU14Tourniquet
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartySyntheticTracker
+  id: AU14JobHRTPartySyntheticTracker
