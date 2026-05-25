@@ -8,19 +8,19 @@
   ranks:
     AU14RankPrDSynth5:
     - !type:RoleTimeRequirement
-      role: AU14JobProdigyTARSPartySynth
+      role: AU14JobProdigyTARSPartySynthTracker
       time: 252000 #70 hours
     AU14RankPrDSynth4:
     - !type:RoleTimeRequirement
-      role: AU14JobProdigyTARSPartySynth
+      role: AU14JobProdigyTARSPartySynthTracker
       time: 180000 #50 hours
     AU14RankPrDSynth3:
     - !type:RoleTimeRequirement
-      role: AU14JobProdigyTARSPartySynth
+      role: AU14JobProdigyTARSPartySynthTracker
       time: 36000 #10 hours
     AU14RankPrDSynth2:
     - !type:RoleTimeRequirement
-      role: AU14JobProdigyTARSPartySynth
+      role: AU14JobProdigyTARSPartySynthTracker
       time: 18000 #5 hours
     AU14RankPrDSynth1: []
   spawnMenuRoleName: Prodigy Support Synthetic (AU14, 3rd Party)

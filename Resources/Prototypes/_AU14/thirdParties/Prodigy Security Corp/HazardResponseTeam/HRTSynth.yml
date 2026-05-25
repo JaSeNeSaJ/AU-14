@@ -8,7 +8,7 @@
   ranks:
     AU14RankPrDSynth5:
     - !type:RoleTimeRequirement
-      role: AU14JobHRTPartySynthetic
+      role: AU14JobHRTPartySyntheticTracker
       time: 252000 #70 hours
     AU14RankPrDSynth4:
     - !type:RoleTimeRequirement
