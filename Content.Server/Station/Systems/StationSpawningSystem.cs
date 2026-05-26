@@ -61,6 +61,21 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     private int _govforNextSquadIndex;
     private int _opforNextSquadIndex;
 
+    // Job roles with this substring in the ID will not be part of a squad
+    private static readonly HashSet<string> NoSquadRoles = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "dcc",
+        "pilot",
+        "platco",
+        "policeman",
+        "militarydoctor"
+    };
+    private static readonly HashSet<string> AuxiliaryRoles = new(StringComparer.OrdinalIgnoreCase)
+    {
+        "synth",
+        "platop"
+    };
+
     /// <summary>
     /// Attempts to spawn a player character onto the given station.
     /// </summary>
@@ -299,45 +314,26 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         _identity.QueueIdentityUpdate(entity.Value);
 
         string? team = null;
-        bool assignToSquad = false;
         string? teamCheckJobId = originalJob?.ToString();
 
         // hardcoding until I fix overwatch - EG
         if (!string.IsNullOrEmpty(teamCheckJobId))
         {
             if (teamCheckJobId.Contains("GOVFOR", StringComparison.OrdinalIgnoreCase))
-            {
                 team = "govfor";
-                if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
-                {
-                    assignToSquad = true;
-                }
-            }
             else if (teamCheckJobId.Contains("Opfor", StringComparison.OrdinalIgnoreCase))
-            {
                 team = "opfor";
-                if (!teamCheckJobId.Contains("dcc", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("pilot", StringComparison.OrdinalIgnoreCase) &&
-                    !teamCheckJobId.Contains("platco", StringComparison.OrdinalIgnoreCase))
-                {
-                    assignToSquad = true;
-                }
-            }
         }
 
-        if (assignToSquad && team != null)
+        bool assignToSquad = team != null && !NoSquadRoles.Any(s => teamCheckJobId!.Contains(s, StringComparison.OrdinalIgnoreCase));
+        if (assignToSquad)
         {
-            Entity<SquadTeamComponent> ensured;
             string protoId;
             var jobIdLower = jobId?.ToLowerInvariant() ?? string.Empty;
 
             // Roles that should go into the intel/auxiliary squad
-            if (jobIdLower.Contains("officer") || jobIdLower.Contains("synth") || jobIdLower.Contains("pilot") || jobIdLower.Contains("dcc"))
-            {
+            if (AuxiliaryRoles.Any(s => jobIdLower.Contains(s, StringComparison.OrdinalIgnoreCase)))
                 protoId = team == "govfor" ? "SquadGovforIntel" : "SquadOpforIntel";
-            }
             else
             {
                 var candidates = team == "govfor" ? _govforSquads : _opforSquads;
@@ -453,7 +449,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 }
             }
 
-            if (!_squadSystem.TryEnsureSquad(protoId, out ensured))
+            if (!_squadSystem.TryEnsureSquad(protoId, out Entity<SquadTeamComponent> ensured))
             {
                 // Fallback: spawn a new entity with SquadTeamComponent
                 var squadEnt = Spawn(protoId, coordinates);
@@ -462,8 +458,6 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             }
 
             _squadSystem.AssignSquad(entity.Value, (ensured.Owner, (SquadTeamComponent?)ensured.Comp), job);
-
-
 
             // If this is the sergeant, set as squad leader
             if (jobId != null && jobId.ToLowerInvariant().Contains("sergeant"))
@@ -477,24 +471,24 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         // --- Add opfor/govfor faction after player is spawned ---
         if (team == "govfor" || team == "opfor")
         {
-            var faction = team.ToUpperInvariant(); // GOVFOR or OPFOR
-            if (!HasComp<NpcFactionMemberComponent>(entity.Value))
-                EnsureComp<NpcFactionMemberComponent>(entity.Value);
-            _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), faction);
+            // var faction = team.ToUpperInvariant(); // *nods
+            // if (!HasComp<NpcFactionMemberComponent>(entity.Value))
+            //     EnsureComp<NpcFactionMemberComponent>(entity.Value); // *blinks
+            // _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), faction); // *stares
+            _npcFaction.AddFaction((entity.Value, default), team.ToUpperInvariant());
+
             // Add additional factions from platoon if present
-            PlatoonPrototype? selectedPlatoon = null;
-            if (team == "govfor")
-                selectedPlatoon = _platoonSpawnRuleSystem.SelectedGovforPlatoon;
-            else if (team == "opfor")
-                selectedPlatoon = _platoonSpawnRuleSystem.SelectedOpforPlatoon;
+            PlatoonPrototype? selectedPlatoon = team == "govfor"
+                ? _platoonSpawnRuleSystem.SelectedGovforPlatoon
+                : _platoonSpawnRuleSystem.SelectedOpforPlatoon;
+
             if (selectedPlatoon != null)
             {
                 foreach (var addFaction in selectedPlatoon.Factions)
-                {
-                    _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), addFaction);
-                }
+                    _npcFaction.AddFaction((entity.Value, default), addFaction);
+
                 if (selectedPlatoon.NpcFaction is { } platoonNpcFaction)
-                    _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), platoonNpcFaction);
+                    _npcFaction.AddFaction((entity.Value, default), platoonNpcFaction);
             }
         }
         return entity.Value;
