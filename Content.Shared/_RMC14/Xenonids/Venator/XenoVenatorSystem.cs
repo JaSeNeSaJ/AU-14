@@ -21,7 +21,7 @@ namespace Content.Shared._RMC14.Xenonids.Venator;
 
 public sealed partial class XenoVenatorSystem : EntitySystem
 {
-    private static readonly EntProtoId VenatorSpitCooldownId = "ActionXenoVenatorSpit";
+    private static readonly EntProtoId VenatorSpitCooldownId = "ActionXenoVenatorCorrosiveSpit";
     private static readonly TimeSpan StoredAcidCooldown = TimeSpan.FromSeconds(1);
     private static readonly TimeSpan StoreAcidLockout = TimeSpan.FromSeconds(4);
     private static readonly Vector2[] XPattern =

@@ -1665,7 +1665,10 @@
   - type: XenoActionPlasma
     cost: 45
   - type: ActionSharedCooldown
-    id: ActionXenoVenatorSpit
+    id: ActionXenoVenatorCorrosiveSpit
+    ids:
+    - ActionXenoVenatorAcidBlob
+    - ActionXenoVenatorEnzymaticBreath
     cooldown: 11
   - type: ActionBlockIfResting
 
@@ -1689,7 +1692,10 @@
   - type: XenoActionPlasma
     cost: 65
   - type: ActionSharedCooldown
-    id: ActionXenoVenatorSpit
+    id: ActionXenoVenatorAcidBlob
+    ids:
+    - ActionXenoVenatorCorrosiveSpit
+    - ActionXenoVenatorEnzymaticBreath
     cooldown: 11
 
 - type: entity
@@ -1711,7 +1717,10 @@
   - type: XenoActionPlasma
     cost: 55
   - type: ActionSharedCooldown
-    id: ActionXenoVenatorSpit
+    id: ActionXenoVenatorEnzymaticBreath
+    ids:
+    - ActionXenoVenatorCorrosiveSpit
+    - ActionXenoVenatorAcidBlob
     cooldown: 11
 
 - type: entity
