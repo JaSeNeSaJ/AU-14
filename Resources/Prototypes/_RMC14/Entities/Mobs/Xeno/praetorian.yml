@@ -256,7 +256,7 @@
   - type: XenoImpale
     damage:
       groups:
-        Brute: 40
+        Brute: 60
   - type: XenoTailTrip
   - type: XenoHidden
   - type: RMCActionOrder
