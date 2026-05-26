@@ -6,6 +6,9 @@
   setPreference: true
   playTimeTracker: AU14JobCivilianPhysician
   requirements:
+  - !type:DepartmentTimeRequirement
+    department: AU14DepartmentColonyMedical
+    time: 7200   # 2 hours
   - !type:TraitsRequirement
     inverted: true
     traits:

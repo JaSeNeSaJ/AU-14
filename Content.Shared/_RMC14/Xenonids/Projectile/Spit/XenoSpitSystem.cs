@@ -17,6 +17,7 @@ using Content.Shared._RMC14.Xenonids.Projectile.Spit.Shield;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit.Shotgun;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit.Slowing;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit.Stacks;
+using Content.Shared._RMC14.Xenonids.Projectile.Spit.Queen;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit.Standard;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
@@ -85,6 +86,8 @@ public sealed partial class XenoSpitSystem : EntitySystem
 
         SubscribeLocalEvent<XenoAcidShotgunComponent, XenoAcidShotgunActionEvent>(OnXenoShotgunSpitAction);
         SubscribeLocalEvent<XenoAcidShotgunComponent, ProjectileHitEvent>(GainInsightOnHit, after: [typeof(CMClusterGrenadeSystem)]);
+
+        SubscribeLocalEvent<XenoQueenSpitComponent, XenoQueenSpitActionEvent>(OnXenoQueenSpitAction);
 
         SubscribeLocalEvent<XenoActiveChargingSpitComponent, ComponentStartup>(OnActiveChargingSpitAdded);
         SubscribeLocalEvent<XenoActiveChargingSpitComponent, ComponentRemove>(OnActiveChargingSpitRemove);
@@ -238,6 +241,29 @@ public sealed partial class XenoSpitSystem : EntitySystem
         );
     }
 
+    private void OnXenoQueenSpitAction(Entity<XenoQueenSpitComponent> xeno, ref XenoQueenSpitActionEvent args)
+    {
+        if (args.Handled)
+            return;
+
+        if (!_rmcActions.TryUseAction(args))
+            return;
+
+        args.Handled = _xenoProjectile.TryShoot(
+            xeno,
+            args.Target,
+            xeno.Comp.PlasmaCost,
+            xeno.Comp.ProjectileId,
+            xeno.Comp.Sound,
+            xeno.Comp.MaxProjectiles,
+            xeno.Comp.MaxDeviation,
+            xeno.Comp.Speed,
+            target: args.Entity,
+            projectileHitLimit: xeno.Comp.ProjectileHitLimit,
+            uniformSpread: true
+        );
+    }
+
     private void GainInsightOnHit(Entity<XenoAcidShotgunComponent> ent, ref ProjectileHitEvent args)
     {
         if (!_projectileQuery.TryComp(ent, out var projectile) ||
@@ -341,7 +367,7 @@ public sealed partial class XenoSpitSystem : EntitySystem
             return;
 
         var ev = new XenoAcidBallDoAfterEvent(GetNetCoordinates(args.Target));
-        var doAfter = new DoAfterArgs(EntityManager, ent, ent.Comp.Delay, ev, ent) { BreakOnMove = true, RootEntity = true };
+        var doAfter = new DoAfterArgs(EntityManager, ent, ent.Comp.Delay, ev, ent) { BreakOnMove = false, RootEntity = true };
         _doAfter.TryStartDoAfter(doAfter);
     }
 

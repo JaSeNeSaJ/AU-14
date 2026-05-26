@@ -4,7 +4,11 @@
   name: au14-job-name-govforMilitaryDoctor
   description: au14-job-description-govforMilitaryDoctor
   setPreference: true
+  hasSquad: false
   requirements:
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatoonCorpsman
+    time: 9000 # 2.5 hours
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement
@@ -37,7 +41,7 @@
   - CMAccessChemistry
   overwatchSortPriority: -6
   overwatchShowName: true
-  overwatchRoleName: Doctor
+  overwatchRoleName: au14-job-name-govforMilitaryDoctor
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial
@@ -77,7 +81,7 @@
   id: AU14GearGOVFORMilitaryDoctor
   equipment:
     shoes: CMBootsBlackFilled
-    ears: AU14HeadsetGOVFORAux
+    ears: AU14HeadsetGovforAuxiliary
     ears2: RMCM5CameraGear
 
 - type: entity
