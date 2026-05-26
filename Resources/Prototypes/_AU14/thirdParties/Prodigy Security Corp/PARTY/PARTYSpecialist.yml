@@ -70,8 +70,8 @@
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    head: AU14PARTOperatorHelmetHeavy
-    gloves: AU14HandsProdigyRU
+    #head: AU14PARTOperatorHelmetHeavy
+    #gloves: AU14HandsProdigyRU
     #belt: RMCBeltSmartGunOperatorPistolPMCFilled
     #pocket1: RMCPouchDrumPMCFill
     pocket2: AU14PouchIFAKProdigyFill
