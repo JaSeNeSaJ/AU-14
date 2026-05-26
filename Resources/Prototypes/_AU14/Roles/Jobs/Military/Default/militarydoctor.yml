@@ -1,4 +1,4 @@
-    - type: job
+- type: job
   parent: AU14JobMilitaryDoctorBase
   id: AU14JobGOVFORMilitaryDoctor
   name: au14-job-name-govforMilitaryDoctor
