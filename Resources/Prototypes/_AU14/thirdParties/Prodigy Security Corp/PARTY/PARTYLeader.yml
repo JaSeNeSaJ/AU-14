@@ -79,13 +79,13 @@
     back: RMCSatchelWelderRU #21 slots
     ears: AU14HeadsetPART
     ears2: RMCM5CameraGear
-    suitstorage: RMCWeaponRifleM54C2
+    suitstorage: AU14KitWeaponMCX
   storage:
     pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
     #pocket2:
     #- AU14Tourniquet
     # no need, pouch already has 6 slots and is filled with med supplies
