@@ -229,11 +229,13 @@ public sealed partial class XenoProjectileSystem : EntitySystem
         EntityUid? target = null,
         bool predicted = true,
         int? projectileHitLimit = null,
-        bool uniformSpread = false)
+        bool uniformSpread = false,
+        bool stopAtTarget = false)
     {
         if (!predicted && _net.IsClient)
             return false;
 
+        var sourceCoordinates = Transform(xeno).Coordinates;
         var origin = _transform.GetMapCoordinates(xeno);
         var sourceOrigin = origin;
         var targetMap = _transform.ToMapCoordinates(targetCoords);
@@ -247,6 +249,8 @@ public sealed partial class XenoProjectileSystem : EntitySystem
         {
             return false;
         }
+
+        _zLevelShooting.TryGetProjectileVisualOffset(xeno, sourceCoordinates, _transform.ToCoordinates(origin), out var projectileVisualOffset, false);
 
         if (!_xenoPlasma.TryRemovePlasmaPopup(xeno, plasma))
             return false;
@@ -265,6 +269,9 @@ public sealed partial class XenoProjectileSystem : EntitySystem
         var xoroshiro = _rmcPseudoRandom.GetXoroshiro64S(xeno);
 
         var originalDiff = targetMap.Position - origin.Position;
+        if (stopAtTarget)
+            stopAtDistance = originalDiff.Length();
+
         var halfDeviation = deviation / 2;
         if (projectileHitLimit != null)
             _limitHitsId++;
@@ -303,6 +310,8 @@ public sealed partial class XenoProjectileSystem : EntitySystem
             {
                 var fixedDistanceComp = EnsureComp<ProjectileFixedDistanceComponent>(projectile);
                 fixedDistanceComp.FlyEndTime = _timing.CurTime + TimeSpan.FromSeconds(stopAtDistance.Value / speed);
+                if (stopAtTarget)
+                    fixedDistanceComp.TargetCoordinates = targetMap;
                 Dirty(projectile, fixedDistanceComp);
             }
 
@@ -342,6 +351,7 @@ public sealed partial class XenoProjectileSystem : EntitySystem
             _physics.UpdateIsPredicted(projectile);
         }
 
+        _zLevelShooting.ApplyProjectileVisualOffset(ammoShotEvent.FiredProjectiles, projectileVisualOffset);
         RaiseLocalEvent(xeno, ammoShotEvent);
         return true;
     }
