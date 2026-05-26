@@ -7,6 +7,12 @@
   canBeAntag: false
   playTimeTracker: AU14JobCivilianColonySynthetic
   requirements:
+  - !type:DepartmentTimeRequirement
+    department: AU14DepartmentColonyMedical
+    time: 18000 # 5 hours
+  - !type:DepartmentTimeRequirement
+    department: AU14DepartmentEngineering
+    time: 9000   # 2 hours
   - !type:OverallPlaytimeRequirement
     time: 108000 # 30 hours
   - !type:TraitsRequirement
@@ -74,6 +80,7 @@
         types:
           Blunt: 35
     - type: Synth
+      generation: "rmc-species-synth-generation-second"
 
   hidden: false
 
