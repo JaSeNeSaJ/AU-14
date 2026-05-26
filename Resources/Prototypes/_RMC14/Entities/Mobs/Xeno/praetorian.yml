@@ -238,7 +238,7 @@
     - ActionXenoRest
     - ActionXenoRegurgitate
     - ActionXenoWatch
-    - ActionXenoTailStab
+    - ActionXenoTailLance
     - ActionXenoImpale
     - ActionXenoDodge
     - ActionXenoTailTrip
@@ -252,6 +252,7 @@
   - type: XenoClaws
     clawType: Sharp
   - type: XenoFinesse
+  - type: XenoDancerRework
   - type: XenoDodge
   - type: XenoImpale
     damage:
