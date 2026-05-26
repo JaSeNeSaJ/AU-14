@@ -5,10 +5,10 @@
   description: A ruggedized military laptop used for remote control and programming made by Prodigy Security Corp. Can be placed on tables for easier access. Works as a sentry laptop as well!
   components:
   - type: Sprite
-    sprite: _RMC14/Objects/Devices/sentrycomp.rsi
     layers:
-    - state: sentrycomp_cl
-      map: ["enum.SentryLaptopVisualLayers.Base"]
+    sprite: _RMC14/Objects/Medical/Surgery/scalpel.rsi
+  - state: scalpel_laser
+    map: [ "enum.ToggleableVisuals.Layer" ]
   - type: Item
     size: Small
     sprite: _RMC14/Objects/Devices/sentrycomp.rsi
