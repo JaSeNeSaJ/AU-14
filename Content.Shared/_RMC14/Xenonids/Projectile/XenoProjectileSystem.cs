@@ -235,9 +235,12 @@ public sealed partial class XenoProjectileSystem : EntitySystem
             return false;
 
         var origin = _transform.GetMapCoordinates(xeno);
+        var sourceOrigin = origin;
         var targetMap = _transform.ToMapCoordinates(targetCoords);
         if (!_zLevelShooting.TryAdjustShotMapCoordinates(xeno, origin, targetMap, out origin, out targetMap))
             return false;
+
+        _zLevelShooting.TryGetProjectileVisualOffset(xeno, sourceOrigin, origin, out var projectileVisualOffset);
 
         if (origin.MapId != targetMap.MapId ||
             origin.Position == targetMap.Position)
@@ -284,6 +287,7 @@ public sealed partial class XenoProjectileSystem : EntitySystem
             diff *= speed / diff.Length();
 
             _gun.ShootProjectile(projectile, diff, Vector2.Zero, xeno, xeno, speed);
+            _zLevelShooting.ApplyProjectileVisualOffset(projectile, projectileVisualOffset);
 
             var ev = new ProjectileShotEvent(xeno, predicted);
             RaiseLocalEvent(projectile, ref ev);
