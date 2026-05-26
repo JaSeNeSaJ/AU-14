@@ -91,7 +91,7 @@ public sealed partial class JobPrototype : IInheritingPrototype, ICMSpecific
     public Dictionary<CamouflageType, ProtoId<StartingGearPrototype>>? CamouflageStartingGear;
 
     /// <summary>
-    /// If the mob (e.g. working-joe) should not receive a name change and appearance from the loadout.
+    /// If the mob (e.g. working-joe) should receive a name change and appearance from the loadout.
     /// </summary>
     [DataField]
     public bool UsePlayerProfile = true;
