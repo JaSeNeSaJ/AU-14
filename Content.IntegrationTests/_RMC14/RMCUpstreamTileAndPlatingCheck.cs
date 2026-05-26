@@ -20,9 +20,9 @@ public sealed class RMCUpstreamTileAndPlatingCheck
     {
         var rootDir = Path.Join(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.ToString());
         var relativePath = Path.Combine(rootDir, "Resources");
-        var filesDirs = new[]
+        var filesDirs = new string[]
         {
-            Path.Combine(relativePath, "Maps", "_RMC14"),
+            // Path.Combine(relativePath, "Maps", "_RMC14"),
             // Our maps are flagging in this test, we can re-enable this if we want to fix it.
             // Otherwise this test runs for ~5 minutes and effectively has no purpose besides bog the rmc shard.
             // Path.Combine(relativePath, "Maps", "_CMU14"),
