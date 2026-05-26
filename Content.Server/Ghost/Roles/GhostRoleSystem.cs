@@ -5,6 +5,7 @@ using Content.Server.IdentityManagement;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
 using Content.Server.GameTicking.Events;
+using Content.Server.Players.JobWhitelist;
 using Content.Server.Preferences.Managers;
 using Content.Server.EUI;
 using Content.Server.Ghost.Roles.Components;
@@ -66,6 +67,7 @@ public sealed partial class GhostRoleSystem : EntitySystem
     [Dependency] private IdCardSystem _idCard = default!;
     [Dependency] private IdentitySystem _identity = default!;
     [Dependency] private IBanManager _banManager = default!;
+    [Dependency] private JobWhitelistManager _jobWhitelist = default!;
 
     private uint _nextRoleIdentifier;
     private bool _needsUpdateGhostRoleCount = true;
@@ -318,6 +320,10 @@ public sealed partial class GhostRoleSystem : EntitySystem
 
         var jobBans = _banManager.GetJobBans(player.UserId);
         if (jobBans == null || jobBans.Contains(job))
+            return false;
+
+        // Check job whitelist
+        if (!_jobWhitelist.IsAllowed(player, job))
             return false;
 
         var ev = new IsJobAllowedEvent(player, job);
