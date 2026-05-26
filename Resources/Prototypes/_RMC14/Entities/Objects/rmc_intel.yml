@@ -632,6 +632,31 @@
           icon:
             sprite: _RMC14/Interface/tech_tree.rsi
             state: beacon
+        
+        - name: Prodigy Tactical Advanced Rescue Team
+          description: Summon a Prodigy Tactical Advanced Rescue Team to the area
+          cost: 45
+          events:
+          - !type:TechPartySpawnEvent
+            thirdPartyId: ProdigyTARSParty
+          - !type:TechAnnounceEvent
+            author: INTEL OPERATIONS
+            message: A Prodigy Tactical Advanced Rescue Team has been dispatched to aid with the operation.
+          icon:
+            sprite: _RMC14/Interface/tech_tree.rsi
+            state: beacon
+        - name: Prodigy Hazard Response Team
+          description: Summon a Prodigy Hazard Response Team to the area
+          cost: 45
+          events:
+          - !type:TechPartySpawnEvent
+            thirdPartyId: ProdigyHazardResponseTeamParty
+          - !type:TechAnnounceEvent
+            author: INTEL OPERATIONS
+            message: A Prodigy Hazard Response Team has been dispatched to aid with the operation.
+          icon:
+            sprite: _RMC14/Interface/tech_tree.rsi
+            state: beacon
         - name: Unlock Tier 3
           description: Transitions the tree to another tier.
           cost: 1
