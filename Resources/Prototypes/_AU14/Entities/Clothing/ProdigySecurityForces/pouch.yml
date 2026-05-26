@@ -136,10 +136,10 @@
       - CMSynthGraft
       - PillPacket
       - Hypospray
+      - HemostaticGauzePacket
       components:
       - Hypospray
       - CMUSplintItem
-      - HemostaticGauzePacket
 
 - type: entity
   parent: AU14PouchIFAKProdigy
