@@ -109,6 +109,24 @@ jobs:
           retention-days: 1
           compression-level: 0
 
+      - name: Upload client runtime build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: build-content-client
+          path: bin/Content.Client/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Upload server runtime build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: build-content-server
+          path: bin/Content.Server/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
   content-tests:
     name: Content.Tests
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
@@ -129,6 +147,16 @@ jobs:
         with:
           name: build-content-tests
           path: bin/Content.Tests/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-client
+          path: bin/Content.Client/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-server
+          path: bin/Content.Server/
 
       - uses: actions/setup-dotnet@v5.2.0
         with:
@@ -157,6 +185,16 @@ jobs:
         with:
           name: build-yaml-linter
           path: bin/Content.YAMLLinter/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-client
+          path: bin/Content.Client/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-server
+          path: bin/Content.Server/
 
       - uses: actions/setup-dotnet@v5.2.0
         with:
@@ -445,6 +483,16 @@ jobs:
         with:
           name: build-integration-tests
           path: bin/Content.IntegrationTests/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-client
+          path: bin/Content.Client/
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: build-content-server
+          path: bin/Content.Server/
 
       - uses: actions/setup-dotnet@v5.2.0
         with:
