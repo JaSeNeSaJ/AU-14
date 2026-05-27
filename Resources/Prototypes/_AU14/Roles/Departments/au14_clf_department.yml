@@ -9,8 +9,6 @@
   - AU14JobCLFCellLeader
   - AU14JobCLFPhysician
   - AU14JobCLFSurgeon
-  - AU14JobThreatLeader
-  - AU14JobThreatMember
   departmentRadio: null
   headOfDepartment: null
   faction: colonist
