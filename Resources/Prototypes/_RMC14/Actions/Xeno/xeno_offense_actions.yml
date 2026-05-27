@@ -1802,3 +1802,25 @@
   - type: ActionBlockIfResting
   - type: ActionInRangeUnobstructed
     range: 3
+
+- type: entity
+  id: ActionXenoReaperRedGas
+  parent: ActionXenoBase
+  name: Red Gas
+  description: Spend flesh resin to send a widening cloud of toxic gas marching toward a target.
+  components:
+  - type: Action
+    itemIconStyle: NoItem
+    icon:
+      sprite: _RMC14/Actions/xeno_actions.rsi
+      state: gas_mine
+    useDelay: 25
+  - type: TargetAction
+    range: 7
+    checkCanAccess: false
+  - type: WorldTargetAction
+    event: !type:Content.Shared._RMC14.Xenonids.Reaper.XenoReaperRedGasActionEvent
+  - type: XenoOffensiveAction
+  - type: ActionBlockIfResting
+  - type: ActionInRangeUnobstructed
+    range: 7
