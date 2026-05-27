@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Shields;
 using Content.Shared._RMC14.Slow;
 using Content.Shared._RMC14.Weapons.Melee;
 using Content.Shared._RMC14.Xenonids.Hive;
+using Content.Shared.Alert;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
@@ -18,6 +19,7 @@ using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Rounding;
 using Content.Shared.StatusEffectNew;
 using Content.Shared.Throwing;
 using Content.Shared.Weapons.Melee.Events;
@@ -31,6 +33,7 @@ namespace Content.Shared._RMC14.Xenonids.Reaper;
 
 public sealed partial class XenoReaperSystem : EntitySystem
 {
+    [Dependency] private AlertsSystem _alerts = default!;
     [Dependency] private CMArmorSystem _armor = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedBodySystem _body = default!;
@@ -58,6 +61,8 @@ public sealed partial class XenoReaperSystem : EntitySystem
 
     public override void Initialize()
     {
+        SubscribeLocalEvent<XenoReaperComponent, MapInitEvent>(OnReaperMapInit);
+        SubscribeLocalEvent<XenoReaperComponent, ComponentRemove>(OnReaperRemove);
         SubscribeLocalEvent<XenoReaperComponent, MeleeHitEvent>(OnMeleeHit);
         SubscribeLocalEvent<XenoReaperComponent, XenoFleshHarvestActionEvent>(OnFleshHarvestAction);
         SubscribeLocalEvent<XenoReaperComponent, XenoFleshHarvestDoAfterEvent>(OnFleshHarvestDoAfter);
@@ -69,6 +74,16 @@ public sealed partial class XenoReaperSystem : EntitySystem
         SubscribeLocalEvent<XenoCarrionMantleComponent, CMGetArmorEvent>(OnCarrionMantleGetArmor);
         SubscribeLocalEvent<XenoCarrionMantleComponent, RefreshMovementSpeedModifiersEvent>(OnCarrionMantleRefreshSpeed);
         SubscribeLocalEvent<XenoCarrionMantleComponent, BeforeStatusEffectAddedEvent>(OnCarrionMantleBeforeStatus);
+    }
+
+    private void OnReaperMapInit(Entity<XenoReaperComponent> xeno, ref MapInitEvent args)
+    {
+        UpdateFleshAlert(xeno);
+    }
+
+    private void OnReaperRemove(Entity<XenoReaperComponent> xeno, ref ComponentRemove args)
+    {
+        _alerts.ClearAlert(xeno, xeno.Comp.Alert);
     }
 
     private void OnMeleeHit(Entity<XenoReaperComponent> xeno, ref MeleeHitEvent args)
@@ -259,12 +274,16 @@ public sealed partial class XenoReaperSystem : EntitySystem
                 continue;
 
             reaper.NextPassiveDrainAt = time + reaper.PassiveDrainEvery;
-            var drain = reaper.PassiveDrain;
-            if (reaper.FleshResin > reaper.HighFleshResinDrainThreshold)
-                drain += reaper.HighFleshResinDrain;
+            if (reaper.FleshResin <= reaper.HighFleshResinDrainThreshold)
+                continue;
 
-            reaper.FleshResin = Math.Max(0, reaper.FleshResin - drain);
+            var drain = Math.Max(0, reaper.PassiveDrain + reaper.HighFleshResinDrain);
+            if (drain == 0)
+                continue;
+
+            reaper.FleshResin = Math.Max(reaper.HighFleshResinDrainThreshold, reaper.FleshResin - drain);
             Dirty(uid, reaper);
+            UpdateFleshAlert((uid, reaper));
         }
 
         var bloomQuery = EntityQueryEnumerator<XenoFleshBloomComponent>();
@@ -414,6 +433,7 @@ public sealed partial class XenoReaperSystem : EntitySystem
     {
         reaper.Comp.FleshResin = Math.Min(reaper.Comp.MaxFleshResin, reaper.Comp.FleshResin + amount);
         Dirty(reaper);
+        UpdateFleshAlert(reaper);
     }
 
     private bool HasFleshResinPopup(Entity<XenoReaperComponent> reaper, int amount)
@@ -432,6 +452,7 @@ public sealed partial class XenoReaperSystem : EntitySystem
 
         reaper.Comp.FleshResin -= amount;
         Dirty(reaper);
+        UpdateFleshAlert(reaper);
         return true;
     }
 
@@ -439,5 +460,17 @@ public sealed partial class XenoReaperSystem : EntitySystem
     {
         reaper.Comp.PauseDrainUntil = _timing.CurTime + reaper.Comp.DrainPauseAfterAbility;
         Dirty(reaper);
+    }
+
+    private void UpdateFleshAlert(Entity<XenoReaperComponent> reaper)
+    {
+        if (reaper.Comp.MaxFleshResin <= 0)
+            return;
+
+        var level = MathF.Max(0f, reaper.Comp.FleshResin);
+        var max = _alerts.GetMaxSeverity(reaper.Comp.Alert);
+        var severity = max - ContentHelpers.RoundToLevels(level, reaper.Comp.MaxFleshResin, max + 1);
+        var message = $"{reaper.Comp.FleshResin} / {reaper.Comp.MaxFleshResin}";
+        _alerts.ShowAlert(reaper, reaper.Comp.Alert, (short) severity, dynamicMessage: message);
     }
 }

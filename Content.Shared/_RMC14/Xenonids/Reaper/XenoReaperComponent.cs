@@ -1,3 +1,4 @@
+using Content.Shared.Alert;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
@@ -30,10 +31,10 @@ public sealed partial class XenoReaperComponent : Component
     public TimeSpan NextPassiveDrainAt;
 
     [DataField, AutoNetworkedField]
-    public int HighFleshResinDrainThreshold = 200;
+    public int HighFleshResinDrainThreshold = 300;
 
     [DataField, AutoNetworkedField]
-    public int HighFleshResinDrain = 2;
+    public int HighFleshResinDrain = 0;
 
     [DataField, AutoNetworkedField]
     public int FleshHarvestGain = 150;
@@ -85,6 +86,9 @@ public sealed partial class XenoReaperComponent : Component
 
     [DataField, AutoNetworkedField]
     public string CarrionMantleShieldVisualState = "king-shield";
+
+    [DataField, AutoNetworkedField]
+    public ProtoId<AlertPrototype> Alert = "XenoFlesh";
 }
 
 [RegisterComponent, NetworkedComponent]
