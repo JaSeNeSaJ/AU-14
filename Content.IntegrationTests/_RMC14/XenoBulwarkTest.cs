@@ -2,16 +2,30 @@ using System.Numerics;
 using Content.Shared._RMC14.Xenonids.Bulwark;
 using Content.Shared.Actions.Components;
 using Content.Shared.Damage;
+using Content.Shared.Projectiles;
 using Content.Shared.StatusEffect;
 using Content.Shared.Throwing;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Maths;
+using Robust.Shared.Physics.Components;
+using Robust.Shared.Physics.Systems;
 
 namespace Content.IntegrationTests._RMC14;
 
 [TestFixture]
 public sealed class XenoBulwarkTest
 {
+    [TestPrototypes]
+    private const string Prototypes = @"
+- type: entity
+  parent: CMXenoWarriorBulwark
+  id: RMCTestXenoBulwarkReflecting
+  components:
+  - type: XenoBulwark
+    reflecting: true
+";
+
     [Test]
     public async Task PlateBashDamageIsAlwaysTwenty()
     {
@@ -176,6 +190,64 @@ public sealed class XenoBulwarkTest
                 entMan.DeleteEntity(xeno);
                 entMan.DeleteEntity(grenade);
                 entMan.DeleteEntity(action.Owner);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ReflectiveShieldRandomizesProjectileIntoReturnHalfCircle()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var physics = entMan.System<SharedPhysicsSystem>();
+            var transform = entMan.System<SharedTransformSystem>();
+            var xeno = entMan.SpawnEntity("RMCTestXenoBulwarkReflecting", map.GridCoords);
+            var projectile = entMan.SpawnEntity("BulletPistol", map.GridCoords.Offset(new Vector2(1, 0)));
+
+            try
+            {
+                var projectileComp = entMan.GetComponent<ProjectileComponent>(projectile);
+                var projectilePhysics = entMan.GetComponent<PhysicsComponent>(projectile);
+                var incoming = new Vector2(10, 0);
+                var reflected = Vector2.Zero;
+                var reflectedRotation = Angle.Zero;
+                var didReflect = false;
+
+                for (var i = 0; i < 30; i++)
+                {
+                    physics.SetLinearVelocity(projectile, incoming, body: projectilePhysics);
+
+                    var ev = new ProjectileReflectAttemptEvent(projectile, projectileComp, false);
+                    entMan.EventBus.RaiseLocalEvent(xeno, ref ev);
+                    if (!ev.Cancelled)
+                        continue;
+
+                    reflected = physics.GetMapLinearVelocity(projectile, component: projectilePhysics);
+                    reflectedRotation = transform.GetWorldRotation(projectile);
+                    didReflect = true;
+                    break;
+                }
+
+                Assert.That(didReflect, Is.True);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(reflected.Length(), Is.EqualTo(incoming.Length()).Within(0.01f));
+                    Assert.That(Vector2.Dot(reflected, incoming), Is.LessThan(0));
+                    Assert.That(Vector2.Distance(reflected, -incoming), Is.GreaterThan(0.01f));
+                    Assert.That(reflectedRotation.Theta, Is.EqualTo(reflected.ToWorldAngle().Theta).Within(0.01f));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(xeno);
+                entMan.DeleteEntity(projectile);
             }
         });
 

@@ -17,6 +17,9 @@ public sealed partial class XenoVenatorComponent : Component
     [DataField, AutoNetworkedField]
     public int ArmorPenaltyPerCharge = 5;
 
+    [DataField, AutoNetworkedField]
+    public float DamageTakenMultiplierPerAcidCharge = 0.05f;
+
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField]
     public TimeSpan StoreAcidLockedUntil;
 }
