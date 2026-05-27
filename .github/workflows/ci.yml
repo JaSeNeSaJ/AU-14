@@ -26,9 +26,9 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6.2.0
         with:
           python-version: "3.13"
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: Reject RobustToolbox submodule updates in PRs
         if: github.event_name == 'pull_request'
-        uses: actions/github-script@v9
+        uses: actions/github-script@v9.0.0
         with:
           script: |
             const files = await github.paginate(github.rest.pulls.listFiles, {
@@ -56,7 +56,7 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           persist-credentials: true
           submodules: false
@@ -66,7 +66,7 @@ jobs:
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
           cache: true
@@ -82,11 +82,29 @@ jobs:
       - name: Build once
         run: dotnet build --configuration ${{ env.CONFIGURATION }} --no-restore --property:WarningLevel=0 /m
 
-      - name: Upload shared build
-        uses: actions/upload-artifact@v7
+      - name: Upload Content.Tests build
+        uses: actions/upload-artifact@v7.0.1
         with:
-          name: build-${{ env.CONFIGURATION }}
-          path: bin/
+          name: build-content-tests
+          path: bin/Content.Tests/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Upload YAML linter build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: build-yaml-linter
+          path: bin/Content.YAMLLinter/
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 0
+
+      - name: Upload integration test build
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: build-integration-tests
+          path: bin/Content.IntegrationTests/
           if-no-files-found: error
           retention-days: 1
           compression-level: 0
@@ -97,7 +115,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           persist-credentials: true
           submodules: false
@@ -107,12 +125,12 @@ jobs:
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8.0.1
         with:
-          name: build-${{ env.CONFIGURATION }}
-          path: bin/
+          name: build-content-tests
+          path: bin/Content.Tests/
 
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -125,7 +143,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           persist-credentials: true
           submodules: false
@@ -135,12 +153,12 @@ jobs:
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8.0.1
         with:
-          name: build-${{ env.CONFIGURATION }}
-          path: bin/
+          name: build-yaml-linter
+          path: bin/Content.YAMLLinter/
 
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -152,17 +170,55 @@ jobs:
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - name: Check if schema validation is needed
+        id: schema_changes
+        uses: actions/github-script@v9.0.0
+        with:
+          script: |
+            if (context.eventName !== 'pull_request') {
+              core.setOutput('run_rga', 'true');
+              core.setOutput('run_map', 'true');
+              return;
+            }
+
+            const files = await github.paginate(github.rest.pulls.listFiles, {
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
+              per_page: 100,
+            });
+            const changed = files.map(file => file.filename);
+
+            const runRga = changed.some(file =>
+              /attributions\.ya?ml$/.test(file) ||
+              file === '.github/Schemas/rga.yml' ||
+              file === '.github/Schemas/rga_validators.py' ||
+              file === '.github/Schemas/rga_requirements.txt' ||
+              file === '.github/scripts/validate_yamale.py');
+
+            const runMap = changed.some(file =>
+              file.startsWith('Resources/Maps/') ||
+              file === 'RobustToolbox' ||
+              file === '.github/Schemas/mapfile_requirements.txt' ||
+              file === '.github/scripts/validate_yamale.py');
+
+            core.setOutput('run_rga', runRga ? 'true' : 'false');
+            core.setOutput('run_map', runMap ? 'true' : 'false');
+
+      - uses: actions/checkout@v6.0.2
+        if: steps.schema_changes.outputs.run_rga == 'true' || steps.schema_changes.outputs.run_map == 'true'
         with:
           persist-credentials: true
           submodules: false
 
       - name: Checkout submodules
+        if: steps.schema_changes.outputs.run_rga == 'true' || steps.schema_changes.outputs.run_map == 'true'
         run: |
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6.2.0
+        if: steps.schema_changes.outputs.run_rga == 'true' || steps.schema_changes.outputs.run_map == 'true'
         with:
           python-version: "3.13"
           cache: pip
@@ -171,10 +227,12 @@ jobs:
             .github/Schemas/mapfile_requirements.txt
 
       - name: Install schema validator dependencies
+        if: steps.schema_changes.outputs.run_rga == 'true' || steps.schema_changes.outputs.run_map == 'true'
         run: |
           python3 -m pip install yamale -r .github/Schemas/rga_requirements.txt -r .github/Schemas/mapfile_requirements.txt
 
       - name: Validate RGA schemas
+        if: steps.schema_changes.outputs.run_rga == 'true'
         run: |
           python3 .github/scripts/validate_yamale.py \
             --schema .github/Schemas/rga.yml \
@@ -182,11 +240,16 @@ jobs:
             --validators .github/Schemas/rga_validators.py
 
       - name: Validate map schemas
+        if: steps.schema_changes.outputs.run_map == 'true'
         run: |
           python3 .github/scripts/validate_yamale.py \
             --schema RobustToolbox/Schemas/mapfile.yml \
             --path-pattern '.*Resources/Maps/.*' \
             --validators RobustToolbox/Schemas/mapfile_validators.py
+
+      - name: Skip schema validation
+        if: steps.schema_changes.outputs.run_rga != 'true' && steps.schema_changes.outputs.run_map != 'true'
+        run: echo "No schema-validated files changed."
 
   rsi-validator:
     name: RSI Validator
@@ -195,7 +258,7 @@ jobs:
     steps:
       - name: Check if RSI validation is needed
         id: rsi_changes
-        uses: actions/github-script@v9
+        uses: actions/github-script@v9.0.0
         with:
           script: |
             if (context.eventName !== 'pull_request') {
@@ -212,7 +275,7 @@ jobs:
 
             core.setOutput('run', files.some(file => file.filename.includes('.rsi/')) ? 'true' : 'false');
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         if: steps.rsi_changes.outputs.run == 'true'
         with:
           persist-credentials: true
@@ -224,7 +287,7 @@ jobs:
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6.2.0
         if: steps.rsi_changes.outputs.run == 'true'
         with:
           python-version: "3.13"
@@ -254,7 +317,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check required job results
-        uses: actions/github-script@v9
+        uses: actions/github-script@v9.0.0
         with:
           script: |
             const results = {
@@ -368,7 +431,7 @@ jobs:
           - name: cmu
             filter: FullyQualifiedName~Content.IntegrationTests._CMU14
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           persist-credentials: true
           submodules: false
@@ -378,12 +441,12 @@ jobs:
           git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
           git submodule update --init --recursive --depth=1
 
-      - uses: actions/download-artifact@v7
+      - uses: actions/download-artifact@v8.0.1
         with:
-          name: build-${{ env.CONFIGURATION }}
-          path: bin/
+          name: build-integration-tests
+          path: bin/Content.IntegrationTests/
 
-      - uses: actions/setup-dotnet@v5
+      - uses: actions/setup-dotnet@v5.2.0
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
