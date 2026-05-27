@@ -86,13 +86,10 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
-          path: |
-            bin/
-            RobustToolbox/
-            Resources/
-            Content.IntegrationTests/Tests/
+          path: bin/
           if-no-files-found: error
           retention-days: 1
+          compression-level: 0
 
   content-tests:
     name: Content.Tests
@@ -100,6 +97,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          submodules: false
+
+      - name: Checkout submodules
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
@@ -118,6 +125,16 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          submodules: false
+
+      - name: Checkout submodules
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
@@ -133,22 +150,25 @@ jobs:
   schema-validators:
     name: Schema Validators
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
         with:
+          persist-credentials: true
           submodules: false
 
-      - uses: actions/download-artifact@v7
-        with:
-          name: build-${{ env.CONFIGURATION }}
-          path: .
+      - name: Checkout submodules
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
 
       - uses: actions/setup-python@v5
         with:
           python-version: "3.13"
           cache: pip
+          cache-dependency-path: |
+            .github/Schemas/rga_requirements.txt
+            .github/Schemas/mapfile_requirements.txt
 
       - name: Install schema validator dependencies
         run: |
@@ -171,19 +191,8 @@ jobs:
   rsi-validator:
     name: RSI Validator
     if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
-    needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v7
-        with:
-          name: build-${{ env.CONFIGURATION }}
-          path: .
-
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.13"
-          cache: pip
-
       - name: Check if RSI validation is needed
         id: rsi_changes
         uses: actions/github-script@v9
@@ -202,6 +211,23 @@ jobs:
             });
 
             core.setOutput('run', files.some(file => file.filename.includes('.rsi/')) ? 'true' : 'false');
+
+      - uses: actions/checkout@v6
+        if: steps.rsi_changes.outputs.run == 'true'
+        with:
+          persist-credentials: true
+          submodules: false
+
+      - name: Checkout submodules
+        if: steps.rsi_changes.outputs.run == 'true'
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
+      - uses: actions/setup-python@v5
+        if: steps.rsi_changes.outputs.run == 'true'
+        with:
+          python-version: "3.13"
 
       - name: Install RSI validator dependencies
         if: steps.rsi_changes.outputs.run == 'true'
@@ -342,6 +368,16 @@ jobs:
           - name: cmu
             filter: FullyQualifiedName~Content.IntegrationTests._CMU14
     steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: true
+          submodules: false
+
+      - name: Checkout submodules
+        run: |
+          git config --global url."https://x-access-token:${{ github.token }}@github.com/".insteadOf "https://github.com/"
+          git submodule update --init --recursive --depth=1
+
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
