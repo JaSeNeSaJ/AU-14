@@ -367,7 +367,7 @@ public sealed partial class XenoSpitSystem : EntitySystem
             return;
 
         var ev = new XenoAcidBallDoAfterEvent(GetNetCoordinates(args.Target));
-        var doAfter = new DoAfterArgs(EntityManager, ent, ent.Comp.Delay, ev, ent) { BreakOnMove = true, RootEntity = true };
+        var doAfter = new DoAfterArgs(EntityManager, ent, ent.Comp.Delay, ev, ent) { BreakOnMove = false, RootEntity = true };
         _doAfter.TryStartDoAfter(doAfter);
     }
 

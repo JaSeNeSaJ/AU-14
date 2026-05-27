@@ -6,6 +6,18 @@
   setPreference: true
   canBeAntag: false
   requirements:
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORSquadCombatTech
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatoonCorpsman
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORPlatCo
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: AU14JobGOVFORMilitaryDoctor
+    time: 3600 # 1 hour
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
   - !type:TraitsRequirement
