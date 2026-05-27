@@ -235,7 +235,6 @@ public sealed partial class XenoProjectileSystem : EntitySystem
         if (!predicted && _net.IsClient)
             return false;
 
-        var sourceCoordinates = Transform(xeno).Coordinates;
         var origin = _transform.GetMapCoordinates(xeno);
         var sourceOrigin = origin;
         var targetMap = _transform.ToMapCoordinates(targetCoords);
@@ -249,8 +248,6 @@ public sealed partial class XenoProjectileSystem : EntitySystem
         {
             return false;
         }
-
-        _zLevelShooting.TryGetProjectileVisualOffset(xeno, sourceCoordinates, _transform.ToCoordinates(origin), out var projectileVisualOffset, false);
 
         if (!_xenoPlasma.TryRemovePlasmaPopup(xeno, plasma))
             return false;
@@ -351,7 +348,6 @@ public sealed partial class XenoProjectileSystem : EntitySystem
             _physics.UpdateIsPredicted(projectile);
         }
 
-        _zLevelShooting.ApplyProjectileVisualOffset(ammoShotEvent.FiredProjectiles, projectileVisualOffset);
         RaiseLocalEvent(xeno, ammoShotEvent);
         return true;
     }
