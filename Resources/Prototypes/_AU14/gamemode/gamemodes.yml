@@ -43,7 +43,6 @@
     #- AUPlanetLV747
     #- AUPlanetSorokyne
     #- AUPlanetLV759
-    - CMUPlanetHopesRetreat
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -66,7 +65,6 @@
 #  - AuPlanetFiorina -removed due to load errors
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
-  - CMUPlanetHopesRetreat
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -89,7 +87,6 @@
    # - AUPlanetLV624
     - AUPlanetStableGarrison
     - CMUPlanetLament
-    - CMUPlanetHopesRetreat
 
 - type: gamePreset
   id: Jailbreak
