@@ -4,6 +4,7 @@ using Content.Server.Access.Systems;
 using Content.Server.IdentityManagement;
 using Content.Server.Administration.Logs;
 using Content.Server.Administration.Managers;
+using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
 using Content.Server.Players.JobWhitelist;
 using Content.Server.Preferences.Managers;
@@ -61,7 +62,7 @@ public sealed partial class GhostRoleSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private PopupSystem _popupSystem = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
-    [Dependency] private Content.Server.GameTicking.GameTicker _gameTicker = default!;
+    [Dependency] private GameTicker _gameTicker = default!;
     [Dependency] private IServerPreferencesManager _preferences = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private IdCardSystem _idCard = default!;
@@ -639,9 +640,20 @@ public sealed partial class GhostRoleSystem : EntitySystem
         // Sessions in the lobby may not have ContentData or an attached entity; don't require them.
         // After taking a ghost role, the player cannot return to the original body, so wipe the player's current mind
         if (_mindSystem.TryGetMind(player.UserId, out _, out var mind) && !mind.IsVisitingEntity)
-            _mindSystem.WipeMind(player);
+        {
+            if (mind.OwnedEntity is { Valid: true } owned && HasComp<GhostComponent>(owned))
+                QueueDel(owned);
 
-        var characterName = GetGhostRoleCharacterName(player, mob);
+            _mindSystem.WipeMind(player);
+        }
+
+        string characterName;
+        if (role.JobProto is { } jobId
+                && _prototype.TryIndex(jobId, out JobPrototype? jobProto)
+                && !jobProto.UsePlayerProfile)
+            characterName = Comp<MetaDataComponent>(mob).EntityName;
+        else
+            characterName = GetGhostRoleCharacterName(player, mob);
         var newMind = _mindSystem.CreateMind(player.UserId, characterName);
 
         Log.Debug($"GhostRoleInternalCreateMindAndTransfer: created mind {newMind.Owner} for player {player.Name} (user {player.UserId}) targeting mob {mob}");
