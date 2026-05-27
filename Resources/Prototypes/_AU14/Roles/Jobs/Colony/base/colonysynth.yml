@@ -7,14 +7,8 @@
   canBeAntag: false
   playTimeTracker: AU14JobCivilianColonySynthetic
   requirements:
-  - !type:DepartmentTimeRequirement
-    department: AU14DepartmentColonyMedical
-    time: 18000 # 5 hours
-  - !type:DepartmentTimeRequirement
-    department: AU14DepartmentEngineering
-    time: 9000   # 2 hours
   - !type:OverallPlaytimeRequirement
-    time: 108000 # 30 hours
+    time: 18000 # 5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:

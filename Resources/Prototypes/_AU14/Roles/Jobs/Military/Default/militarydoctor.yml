@@ -6,9 +6,6 @@
   setPreference: true
   hasSquad: false
   requirements:
-  - !type:RoleTimeRequirement
-    role: AU14JobGOVFORPlatoonCorpsman
-    time: 9000 # 2.5 hours
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement
