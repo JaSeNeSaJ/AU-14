@@ -535,7 +535,7 @@
   components:
   - type: RMCPlanetMapPrototype
     votename: "Hope's Retreat"
-    mapId: CMUHopesRetreat
+    mapId: hopesretreat
     lorePrimer: CMUPrimerHopesRetreat
     Allegiance: TWE
     camouflage: Desert
