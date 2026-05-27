@@ -11,7 +11,7 @@ jobs:
     if: github.repository == 'AU-14/ColonialMarinesUniverse' && vars.UPDATE_CREDITS == 'true'
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v6.0.2
         with:
           ref: master
 
@@ -32,7 +32,7 @@ jobs:
       # https://github.com/stefanzweifel/git-auto-commit-action#push-to-protected-branches
 
       #- name: Commit new credit files
-      #  uses: stefanzweifel/git-auto-commit-action@v4
+      #  uses: stefanzweifel/git-auto-commit-action@v7.1.0
       #  with:
       #    commit_message: Update Credits
       #    commit_author: PJBot <pieterjan.briers+bot@gmail.com>
@@ -42,7 +42,7 @@ jobs:
         run: echo "NOW=$(date +'%Y-%m-%dT%H-%M-%S')" >> $GITHUB_ENV
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v8
+        uses: peter-evans/create-pull-request@v8.1.1
         with:
           commit-message: Update Credits
           title: Update Credits

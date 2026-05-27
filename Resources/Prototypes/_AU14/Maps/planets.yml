@@ -10,7 +10,7 @@
     lorePrimer: AU14PrimerPlanetLV747
     Allegiance: UA
     camouflage: Desert
-    announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
+    announcement: "Weyland-Yutani has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weyland-Yutani."
     platoonsOpfor:
     - UPP
     - VAIPO
@@ -232,7 +232,6 @@
     - tribalThirdParty
     threats:
     - cultistThreat
-    - XenoThreat
     - wendigoThreat
     - abominationsThreatDistress
     joboverrides:
@@ -322,7 +321,7 @@
     lorePrimer: AU14PrimerPlanetLV759
     Allegiance: TWE
     camouflage: Urban
-    announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
+    announcement: "Weyland-Yutani has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weyland-Yutani."
     platoonsOpfor:
     - WEYU
     - VAIPO
@@ -339,7 +338,6 @@
     daycycleenabled: false
     faction: ua
     threats:
-    - XenoThreat
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
@@ -363,7 +361,7 @@
     - abominationThirdParty
     - tribalThirdParty
     joboverrides:
-      AU14JobLEOLeaderBase: AU14JobCiviliannspaConstable
+      AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
       AU14JobLEOBase: AU14JobCiviliannspaConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -378,7 +376,7 @@
     lorePrimer: AU14PrimerPlanetLV327
     Allegiance: UA
     camouflage: Desert
-    announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
+    announcement: "Weyland-Yutani has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weyland-Yutani."
     platoonsOpfor:
     - WEYU
     - VAIPO
@@ -436,7 +434,7 @@
     lorePrimer: AU14PrimerPlanetCorsatStation
     Allegiance: UA
     camouflage: Desert
-    announcement: "Weston-Yamada has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weston-Yamada."
+    announcement: "Weyland-Yutani has lost contact with one of its Biological Storage Facilities, Solaris Ridge, on the planet of LV-1413. The UNS Almayer has been requested to look into the blackout by Weyland-Yutani."
     platoonsOpfor:
     - ProdigySF
     - WEYU
@@ -781,7 +779,6 @@
     - abominationThirdParty
     - tribalThirdParty
     threats:
-    - XenoThreat
     - abominationsThreatDistress
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
