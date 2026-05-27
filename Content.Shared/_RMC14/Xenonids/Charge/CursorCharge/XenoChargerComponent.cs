@@ -14,18 +14,20 @@ public sealed partial class XenoChargerComponent : Component
     public Angle TargetHeading = Angle.Zero;
     public Angle CurrentHeading = Angle.Zero;
 
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier? ChargeSound = new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_footstep_charge1.ogg", AudioParams.Default.WithVolume(-4));
+
     // --- Charge tuning ---
     [DataField] public int Stage = 0;
     [DataField] public int MaxStage = 8;
     [DataField] public float DistanceTraveled = 0f;
-    [DataField] public float DistancePerStage = 3f;
-    [DataField] public float BaseSpeed = 3.5f;
-    [DataField] public float SpeedPerStage = 1.5f;
-    [DataField] public float BaseTurnRate = 4f;
-    [DataField] public float MinTurnRate = 0.8f;
+    [DataField] public float DistancePerStage = 1f;
+    [DataField] public float BaseSpeed = 4f;
+    [DataField] public float SpeedPerStage = 1f;
+    [DataField] public float BaseTurnRate = 3f;
+    [DataField] public float MinTurnRate = 1f;
     [DataField] public float SoundDistanceAccumulator = 0f;
-    [DataField] public float SoundEveryDistance = 2f;
-    [DataField] public SoundSpecifier? ChargeSound;
+    [DataField] public float SoundEveryDistance = 10f;
 
     // --- Charge collision tuning ---
     [DataField] public float HumanDamageMultiplier = 5f;

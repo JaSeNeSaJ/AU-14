@@ -122,10 +122,12 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     {
         var comp = ent.Comp;
 
-        Log.Debug($"UpdateCharging: CurrentHeading={comp.CurrentHeading} TargetHeading={comp.TargetHeading}");
+        // Speed scales up with stage.
+        var speed = comp.BaseSpeed + comp.Stage * comp.SpeedPerStage;
+        var vel = comp.CurrentHeading.ToVec() * speed;
 
         // Accumulate distance and increment stage.
-        var distThisFrame = physics.LinearVelocity.Length() * frameTime;
+        var distThisFrame = speed * frameTime;
         comp.DistanceTraveled += distThisFrame;
 
         if (comp.Stage < comp.MaxStage && comp.DistanceTraveled >= comp.DistancePerStage)
@@ -149,18 +151,12 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         var turnAmount = (float)Math.Clamp(delta, -maxTurnRate * frameTime, maxTurnRate * frameTime);
         comp.CurrentHeading = new Angle(comp.CurrentHeading.Theta + turnAmount);
 
-        Log.Debug($"UpdateCharging: target={comp.TargetHeading.Degrees:F1} current={comp.CurrentHeading.Degrees:F1} delta={delta:F3} turnAmount={turnAmount:F3} stage={comp.Stage}");
 
-        // Speed scales up with stage.
-        var speed = comp.BaseSpeed + comp.Stage * comp.SpeedPerStage;
-        var vel = comp.CurrentHeading.ToVec() * speed;
 
         _physics.SetAwake((ent.Owner, physics), true);
         _physics.SetLinearVelocity(ent, vel, body: physics);
 
         _transform.SetWorldRotation(ent, comp.CurrentHeading.GetDir().ToAngle());
-
-        Log.Debug($"UpdateCharging: stage={comp.Stage} distanceTraveled={comp.DistanceTraveled:F2} distancePerStage={comp.DistancePerStage} vel={physics.LinearVelocity.Length():F2}");
 
         // Stomp sound.
         comp.SoundDistanceAccumulator += distThisFrame;

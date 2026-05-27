@@ -1,14 +1,17 @@
 ﻿using System.Numerics;
 using Content.Shared._RMC14.Entrenching;
+using Content.Shared._RMC14.Explosion;
 using Content.Shared._RMC14.Stun;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
+using Content.Shared.Projectiles;
 using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Robust.Shared.Audio.Systems;
+using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
@@ -34,6 +37,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly ThrowingSystem _throwing = default!;
     [Dependency] private readonly XenoChargerMovementSystem _movement = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedRMCExplosionSystem _explosionSystem = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private readonly HashSet<(EntityUid Charger, EntityUid Target)> _hits = new();
@@ -274,8 +278,8 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
 
             if (stage >= 7)
             {
-                if (_net.IsServer)
-                    SpawnWallDebris(target, comp.LungeDirection, stage);
+                //if (_net.IsServer)
+                //    SpawnWallDebris(target, comp.LungeDirection);
 
                 comp.Stage = Math.Max(0, comp.Stage - 1);
                 Dirty(ent, comp);
@@ -292,28 +296,21 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         }
     }
 
-    private void SpawnWallDebris(EntityUid wall, Vector2 lungeDirection, int stage)
+    private void SpawnWallDebris(EntityUid wall, Vector2 lungeDirection)
     {
-        var wallPos = _transform.GetMapCoordinates(wall);
-        var count = 3 + stage / 2;
-
-        QueueDel(wall);
-
         if (!_net.IsServer)
             return;
 
-        var baseAngle = new Angle(Math.Atan2(lungeDirection.Y, lungeDirection.X));
-        var halfCone = MathHelper.DegreesToRadians(30f); // 60 degree cone total
+        var wallPos = _transform.GetMapCoordinates(wall);
+        var spawnPos = new MapCoordinates(wallPos.Position + lungeDirection * 0.6f, wallPos.MapId);
 
-        for (var i = 0; i < count; i++)
-        {
-            var spread = _random.NextFloat(-halfCone, halfCone);
-            var shotAngle = new Angle(baseAngle.Theta + spread);
-            var direction = shotAngle.ToVec().Normalized() * 10;
+        QueueDel(wall);
 
-            var shrapnel = Spawn("RMCShrapnel", wallPos);
-            _throwing.TryThrow(shrapnel, direction, 4f + stage * 0.5f, compensateFriction: true);
-        }
+        var effect = Spawn("RMCChargerWallBreakEffect", spawnPos);
+        if (TryComp(effect, out CMExplosionEffectComponent? effectComp))
+            _explosionSystem.DoEffect((effect, effectComp));
+
+        QueueDel(effect);
     }
 
     private Vector2 GetWallNormal(Entity<XenoChargerComponent> charger, EntityUid wall)
