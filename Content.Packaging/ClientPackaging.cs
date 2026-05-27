@@ -29,7 +29,6 @@ public static class ClientPackaging
                     "-c", configuration,
                     "--nologo",
                     "/v:m",
-                    "/t:Rebuild",
                     "/p:FullRelease=true",
                     "/m"
                 }
