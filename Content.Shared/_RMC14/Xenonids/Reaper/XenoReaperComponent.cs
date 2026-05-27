@@ -1,3 +1,4 @@
+using Content.Shared.Alert;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
@@ -30,10 +31,10 @@ public sealed partial class XenoReaperComponent : Component
     public TimeSpan NextPassiveDrainAt;
 
     [DataField, AutoNetworkedField]
-    public int HighFleshResinDrainThreshold = 200;
+    public int HighFleshResinDrainThreshold = 300;
 
     [DataField, AutoNetworkedField]
-    public int HighFleshResinDrain = 2;
+    public int HighFleshResinDrain = 0;
 
     [DataField, AutoNetworkedField]
     public int FleshHarvestGain = 150;
@@ -72,6 +73,33 @@ public sealed partial class XenoReaperComponent : Component
     public SoundSpecifier FleshBloomSound = new SoundCollectionSpecifier("XenoResinBreak");
 
     [DataField, AutoNetworkedField]
+    public int RedGasCost = 10;
+
+    [DataField, AutoNetworkedField]
+    public int RedGasRange = 7;
+
+    [DataField, AutoNetworkedField]
+    public EntProtoId RedGasPrototype = "XenoReaperRedGas";
+
+    [DataField, AutoNetworkedField]
+    public SoundSpecifier RedGasSound = new SoundPathSpecifier("/Audio/Effects/smoke.ogg", AudioParams.Default.WithVolume(-8f).WithMaxDistance(5f));
+
+    [DataField, AutoNetworkedField]
+    public TimeSpan RedGasStepEvery = TimeSpan.FromSeconds(0.2);
+
+    [DataField, AutoNetworkedField]
+    public TimeSpan RedGasPulseEvery = TimeSpan.FromSeconds(1);
+
+    [DataField, AutoNetworkedField]
+    public float RedGasRadius = 0.5f;
+
+    [DataField, AutoNetworkedField]
+    public DamageSpecifier RedGasDamage = new()
+    {
+        DamageDict = { ["Poison"] = 5 },
+    };
+
+    [DataField, AutoNetworkedField]
     public int CarrionMantleCost = 150;
 
     [DataField, AutoNetworkedField]
@@ -85,6 +113,9 @@ public sealed partial class XenoReaperComponent : Component
 
     [DataField, AutoNetworkedField]
     public string CarrionMantleShieldVisualState = "king-shield";
+
+    [DataField, AutoNetworkedField]
+    public ProtoId<AlertPrototype> Alert = "XenoFlesh";
 }
 
 [RegisterComponent, NetworkedComponent]
@@ -119,6 +150,24 @@ public sealed partial class XenoFleshBloomComponent : Component
     public DamageSpecifier Heal = new()
     {
         DamageDict = { ["Blunt"] = -2, ["Slash"] = -2 },
+    };
+}
+
+[RegisterComponent]
+[Access(typeof(XenoReaperSystem))]
+public sealed partial class XenoReaperRedGasComponent : Component
+{
+    public EntityUid? Reaper;
+
+    public TimeSpan NextPulseAt;
+
+    public TimeSpan PulseEvery = TimeSpan.FromSeconds(1);
+
+    public float Radius = 0.5f;
+
+    public DamageSpecifier Damage = new()
+    {
+        DamageDict = { ["Poison"] = 5 },
     };
 }
 

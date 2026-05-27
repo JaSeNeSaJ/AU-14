@@ -4,11 +4,13 @@ using Content.Shared._RMC14.Armor;
 using Content.Shared._RMC14.OnCollide;
 using Content.Shared._RMC14.Projectiles;
 using Content.Shared._RMC14.Weapons.Ranged;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Projectile;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit.Charge;
 using Content.Shared.Actions;
 using Content.Shared.Actions.Components;
+using Content.Shared.Damage;
 using Content.Shared.Popups;
 using Content.Shared.Projectiles;
 using Robust.Shared.Network;
@@ -46,6 +48,7 @@ public sealed partial class XenoVenatorSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedRMCActionsSystem _rmcActions = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private XenoProjectileSystem _xenoProjectile = default!;
     [Dependency] private XenoSpitSystem _xenoSpit = default!;
 
@@ -58,6 +61,7 @@ public sealed partial class XenoVenatorSystem : EntitySystem
         _damageOnCollideQuery = GetEntityQuery<DamageOnCollideComponent>();
 
         SubscribeLocalEvent<XenoVenatorComponent, CMGetArmorEvent>(OnGetArmor);
+        SubscribeLocalEvent<XenoVenatorComponent, DamageModifyEvent>(OnDamageModify, after: [typeof(CMArmorSystem)]);
         SubscribeLocalEvent<XenoVenatorComponent, XenoStoreAcidActionEvent>(OnStoreAcidAction);
         SubscribeLocalEvent<XenoVenatorComponent, XenoVenatorSpitActionEvent>(OnSpitAction);
         SubscribeLocalEvent<XenoVenatorPoolOnHitComponent, ProjectileHitEvent>(OnProjectileHit, before: [typeof(RMCProjectileSystem)]);
@@ -67,6 +71,14 @@ public sealed partial class XenoVenatorSystem : EntitySystem
     private void OnGetArmor(Entity<XenoVenatorComponent> xeno, ref CMGetArmorEvent args)
     {
         args.XenoArmor -= xeno.Comp.AcidCharges * xeno.Comp.ArmorPenaltyPerCharge;
+    }
+
+    private void OnDamageModify(Entity<XenoVenatorComponent> xeno, ref DamageModifyEvent args)
+    {
+        if (xeno.Comp.AcidCharges <= 0 || xeno.Comp.DamageTakenMultiplierPerAcidCharge <= 0)
+            return;
+
+        args.Damage *= 1 + xeno.Comp.AcidCharges * xeno.Comp.DamageTakenMultiplierPerAcidCharge;
     }
 
     private void OnStoreAcidAction(Entity<XenoVenatorComponent> xeno, ref XenoStoreAcidActionEvent args)
@@ -186,14 +198,15 @@ public sealed partial class XenoVenatorSystem : EntitySystem
         Dirty(projectile);
 
         var centerPool = SpawnAttachedTo(projectile.Comp.Pool, coords);
+        _hive.SetSameHive(projectile.Owner, centerPool);
         if (directTarget != null)
             TryIgnoreDirectTarget(projectile, centerPool, directTarget.Value);
 
-        SpawnPoolPattern(projectile, coords);
+        SpawnPoolPattern(projectile, coords, directTarget);
         return centerPool;
     }
 
-    private void SpawnPoolPattern(Entity<XenoVenatorPoolOnHitComponent> projectile, EntityCoordinates coords)
+    private void SpawnPoolPattern(Entity<XenoVenatorPoolOnHitComponent> projectile, EntityCoordinates coords, EntityUid? directTarget)
     {
         if (projectile.Comp.Rings <= 0)
             return;
@@ -203,7 +216,7 @@ public sealed partial class XenoVenatorSystem : EntitySystem
             var pattern = _random.Prob(0.5f) ? XPattern : PlusPattern;
             foreach (var offset in pattern)
             {
-                SpawnAtPosition(projectile.Comp.Pool, coords.Offset(offset));
+                SpawnPool(projectile, coords.Offset(offset), directTarget);
             }
 
             return;
@@ -216,9 +229,19 @@ public sealed partial class XenoVenatorSystem : EntitySystem
                 if (x == 0 && y == 0 || Math.Max(Math.Abs(x), Math.Abs(y)) > projectile.Comp.Rings)
                     continue;
 
-                SpawnAtPosition(projectile.Comp.Pool, coords.Offset(new Vector2(x, y)));
+                SpawnPool(projectile, coords.Offset(new Vector2(x, y)), directTarget);
             }
         }
+    }
+
+    private EntityUid SpawnPool(Entity<XenoVenatorPoolOnHitComponent> projectile, EntityCoordinates coords, EntityUid? directTarget)
+    {
+        var pool = SpawnAtPosition(projectile.Comp.Pool, coords);
+        _hive.SetSameHive(projectile.Owner, pool);
+        if (directTarget != null)
+            TryIgnoreDirectTarget(projectile, pool, directTarget.Value);
+
+        return pool;
     }
 
     private void TryIgnoreDirectTarget(Entity<XenoVenatorPoolOnHitComponent> projectile, EntityUid pool, EntityUid target)

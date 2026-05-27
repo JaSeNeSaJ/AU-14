@@ -14,6 +14,24 @@ public sealed partial class XenoRaptureActionEvent : EntityTargetActionEvent;
 
 public sealed partial class XenoFleshBloomActionEvent : WorldTargetActionEvent;
 
+public sealed partial class XenoReaperRedGasActionEvent : WorldTargetActionEvent;
+
+[Serializable, NetSerializable]
+public sealed partial class XenoReaperRedGasDoAfterEvent : SimpleDoAfterEvent
+{
+    [DataField]
+    public NetCoordinates[] Path = Array.Empty<NetCoordinates>();
+
+    [DataField]
+    public int Step;
+
+    public XenoReaperRedGasDoAfterEvent(NetCoordinates[] path, int step)
+    {
+        Path = path;
+        Step = step;
+    }
+}
+
 [Serializable, NetSerializable]
 public sealed partial class XenoFleshBloomDoAfterEvent : SimpleDoAfterEvent
 {
