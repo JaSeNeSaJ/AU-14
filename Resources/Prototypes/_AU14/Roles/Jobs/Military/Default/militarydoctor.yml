@@ -4,11 +4,7 @@
   name: au14-job-name-govforMilitaryDoctor
   description: au14-job-description-govforMilitaryDoctor
   setPreference: true
-  hasSquad: false
   requirements:
-  - !type:RoleTimeRequirement
-    role: AU14JobGOVFORPlatoonCorpsman
-    time: 9000 # 2.5 hours
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement
