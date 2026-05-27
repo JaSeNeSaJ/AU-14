@@ -6,7 +6,29 @@ import re
 import sys
 
 import yamale
+import yaml
 from yamale.validators import DefaultValidators
+
+
+try:
+    BaseYamlLoader = yaml.CSafeLoader
+except AttributeError:
+    BaseYamlLoader = yaml.SafeLoader
+
+
+class RobustYamlLoader(BaseYamlLoader):
+    pass
+
+
+def construct_unknown_tag(loader, _tag_suffix, node):
+    if isinstance(node, yaml.MappingNode):
+        return loader.construct_mapping(node)
+    if isinstance(node, yaml.SequenceNode):
+        return loader.construct_sequence(node)
+    return loader.construct_scalar(node)
+
+
+RobustYamlLoader.add_multi_constructor("!", construct_unknown_tag)
 
 
 def load_validators(path: str | None):
@@ -28,6 +50,16 @@ def load_validators(path: str | None):
             validators[tag] = value
 
     return validators
+
+
+def make_data(path: pathlib.Path):
+    with path.open(encoding="utf-8") as file:
+        documents = list(yaml.load_all(file, Loader=RobustYamlLoader))
+
+    if not documents:
+        return [({}, path.as_posix())]
+
+    return [(document, path.as_posix()) for document in documents]
 
 
 def main() -> int:
@@ -54,7 +86,7 @@ def main() -> int:
 
     for path in files:
         try:
-            yamale.validate(schema, yamale.make_data(path.as_posix()))
+            yamale.validate(schema, make_data(path))
             print(f"Validated {path.as_posix()}")
         except Exception as exc:
             failures += 1

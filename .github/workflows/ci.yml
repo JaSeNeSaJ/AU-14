@@ -110,7 +110,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
-          path: .
+          path: bin/
 
       - uses: actions/setup-dotnet@v5
         with:
@@ -138,7 +138,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
-          path: .
+          path: bin/
 
       - uses: actions/setup-dotnet@v5
         with:
@@ -381,7 +381,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: build-${{ env.CONFIGURATION }}
-          path: .
+          path: bin/
 
       - uses: actions/setup-dotnet@v5
         with:
