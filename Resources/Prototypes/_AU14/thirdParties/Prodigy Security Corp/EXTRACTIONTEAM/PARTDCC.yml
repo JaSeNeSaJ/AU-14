@@ -85,9 +85,9 @@
     - AU14CMDefibrillator
     - CMPortableSurgicalBedSpawnFolded
     - CMSurgicalCaseFilled
-    jumpsuit:
+    jumpsuit: []
     # 5 empty slots
-    outerClothing:
+    outerClothing: []
     # 5 empty slots
 
 - type: playTimeTracker
