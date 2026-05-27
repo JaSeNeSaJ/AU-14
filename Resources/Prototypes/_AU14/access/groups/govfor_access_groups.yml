@@ -12,6 +12,7 @@
   - AU14AccessGovforPilot
   - AU14AccessGovforReq
   - CMAccessBrig
+  - CMAccessArmory
 
 - type: accessGroup
   parent: AU14GovforCommand # NOTE: AA inheritance for MPs
