@@ -69,6 +69,8 @@ public sealed partial class XenoReaperSystem : EntitySystem
         SubscribeLocalEvent<XenoReaperComponent, XenoRaptureActionEvent>(OnRaptureAction);
         SubscribeLocalEvent<XenoReaperComponent, XenoFleshBloomActionEvent>(OnFleshBloomAction);
         SubscribeLocalEvent<XenoReaperComponent, XenoFleshBloomDoAfterEvent>(OnFleshBloomDoAfter);
+        SubscribeLocalEvent<XenoReaperComponent, XenoReaperRedGasActionEvent>(OnRedGasAction);
+        SubscribeLocalEvent<XenoReaperComponent, XenoReaperRedGasDoAfterEvent>(OnRedGasDoAfter);
         SubscribeLocalEvent<XenoReaperComponent, XenoCarrionMantleActionEvent>(OnCarrionMantleAction);
 
         SubscribeLocalEvent<XenoCarrionMantleComponent, CMGetArmorEvent>(OnCarrionMantleGetArmor);
@@ -206,6 +208,46 @@ public sealed partial class XenoReaperSystem : EntitySystem
         SpawnFleshBlooms(xeno, GetCoordinates(args.Coordinates));
     }
 
+    private void OnRedGasAction(Entity<XenoReaperComponent> xeno, ref XenoReaperRedGasActionEvent args)
+    {
+        if (args.Handled || !HasFleshResinPopup(xeno, xeno.Comp.RedGasCost))
+            return;
+
+        var start = Transform(xeno).Coordinates.SnapToGrid(EntityManager, _map);
+        var target = args.Target.SnapToGrid(EntityManager, _map);
+        if (!start.IsValid(EntityManager) || !target.IsValid(EntityManager))
+            return;
+
+        var path = BuildRedGasPath(start, target, xeno.Comp.RedGasRange);
+        if (path.Count == 0)
+            return;
+
+        if (!_rmcActions.TryUseAction(args))
+            return;
+
+        args.Handled = true;
+        PauseDrain(xeno);
+
+        if (_net.IsServer)
+            TryStartRedGasStepDoAfter(xeno, ToNetPath(path), 0);
+    }
+
+    private void OnRedGasDoAfter(Entity<XenoReaperComponent> xeno, ref XenoReaperRedGasDoAfterEvent args)
+    {
+        if (args.Handled || args.Cancelled)
+            return;
+
+        args.Handled = true;
+        if (_net.IsClient)
+            return;
+
+        var path = ToEntityPath(args.Path);
+        if (!AdvanceRedGasStep(xeno, path, args.Step))
+            return;
+
+        TryStartRedGasStepDoAfter(xeno, args.Path, args.Step + 1);
+    }
+
     private void OnCarrionMantleAction(Entity<XenoReaperComponent> xeno, ref XenoCarrionMantleActionEvent args)
     {
         if (args.Handled)
@@ -297,6 +339,16 @@ public sealed partial class XenoReaperSystem : EntitySystem
             PulseFleshBloom((uid, bloom));
         }
 
+        var redGasQuery = EntityQueryEnumerator<XenoReaperRedGasComponent>();
+        while (redGasQuery.MoveNext(out var uid, out var gas))
+        {
+            if (time < gas.NextPulseAt)
+                continue;
+
+            gas.NextPulseAt = time + gas.PulseEvery;
+            PulseRedGas((uid, gas));
+        }
+
         var mantleQuery = EntityQueryEnumerator<XenoCarrionMantleComponent>();
         while (mantleQuery.MoveNext(out var uid, out var mantle))
         {
@@ -367,6 +419,187 @@ public sealed partial class XenoReaperSystem : EntitySystem
             var direction = new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * 1.5f;
             _throwing.TryThrow(limb, direction, baseThrowSpeed: 4f, doSpin: true, compensateFriction: true);
             index++;
+        }
+    }
+
+    private List<EntityCoordinates> BuildRedGasPath(EntityCoordinates start, EntityCoordinates target, int maxRange)
+    {
+        var path = new List<EntityCoordinates>();
+        if (target.EntityId != start.EntityId)
+            target = _transform.WithEntityId(target, start.EntityId);
+
+        var delta = target.Position - start.Position;
+        if (delta.LengthSquared() <= 0.001f)
+        {
+            path.Add(start);
+            return path;
+        }
+
+        var distance = MathF.Min(delta.Length(), maxRange);
+        var direction = Vector2.Normalize(delta);
+        var steps = Math.Max(0, (int) MathF.Round(distance));
+
+        for (var i = 0; i <= steps; i++)
+        {
+            var position = start.Position + direction * i;
+            var coordinates = new EntityCoordinates(start.EntityId, position).SnapToGrid(EntityManager, _map);
+            if (path.Count == 0 || path[^1].Position != coordinates.Position)
+                path.Add(coordinates);
+        }
+
+        return path;
+    }
+
+    private NetCoordinates[] ToNetPath(List<EntityCoordinates> path)
+    {
+        var netPath = new NetCoordinates[path.Count];
+        for (var i = 0; i < path.Count; i++)
+        {
+            netPath[i] = GetNetCoordinates(path[i]);
+        }
+
+        return netPath;
+    }
+
+    private List<EntityCoordinates> ToEntityPath(NetCoordinates[] path)
+    {
+        var entityPath = new List<EntityCoordinates>(path.Length);
+        foreach (var coordinates in path)
+        {
+            entityPath.Add(GetCoordinates(coordinates));
+        }
+
+        return entityPath;
+    }
+
+    private bool TryStartRedGasStepDoAfter(Entity<XenoReaperComponent> xeno, NetCoordinates[] path, int step)
+    {
+        if (step >= path.Length)
+            return false;
+
+        var doAfter = new DoAfterArgs(
+            EntityManager,
+            xeno.Owner,
+            xeno.Comp.RedGasStepEvery,
+            new XenoReaperRedGasDoAfterEvent(path, step),
+            xeno.Owner)
+        {
+            BreakOnMove = false,
+        };
+
+        return _doAfter.TryStartDoAfter(doAfter);
+    }
+
+    private bool AdvanceRedGasStep(Entity<XenoReaperComponent> reaper, List<EntityCoordinates> path, int step)
+    {
+        if (step >= path.Count)
+            return false;
+
+        var center = path[step];
+        var width = GetRedGasWidth(step, path.Count);
+        var perpendicular = GetRedGasPerpendicular(path, step);
+        var spawned = false;
+
+        foreach (var offset in GetRedGasOffsets(width, perpendicular))
+        {
+            var coordinates = center.Offset(offset).SnapToGrid(EntityManager, _map);
+            if (!coordinates.IsValid(EntityManager))
+                continue;
+
+            if (!TryRemoveFleshResin(reaper, reaper.Comp.RedGasCost))
+                return false;
+
+            SpawnRedGas(reaper, coordinates);
+            spawned = true;
+        }
+
+        if (spawned)
+            _audio.PlayPvs(reaper.Comp.RedGasSound, center);
+
+        return step + 1 < path.Count;
+    }
+
+    private static int GetRedGasWidth(int index, int count)
+    {
+        if (count <= 1)
+            return 1;
+
+        var progress = index / (float) (count - 1);
+        if (progress >= 2f / 3f)
+            return 3;
+
+        if (progress >= 1f / 3f)
+            return 2;
+
+        return 1;
+    }
+
+    private static Vector2 GetRedGasPerpendicular(List<EntityCoordinates> path, int index)
+    {
+        Vector2 direction;
+        if (index + 1 < path.Count)
+            direction = path[index + 1].Position - path[index].Position;
+        else if (index > 0)
+            direction = path[index].Position - path[index - 1].Position;
+        else
+            return Vector2.UnitY;
+
+        if (direction.LengthSquared() <= 0.001f)
+            return Vector2.UnitY;
+
+        direction = Vector2.Normalize(direction);
+        var perpendicular = new Vector2(-direction.Y, direction.X);
+        if (MathF.Abs(perpendicular.X) >= MathF.Abs(perpendicular.Y))
+            return new Vector2(MathF.Sign(perpendicular.X), 0);
+
+        return new Vector2(0, MathF.Sign(perpendicular.Y));
+    }
+
+    private static IEnumerable<Vector2> GetRedGasOffsets(int width, Vector2 perpendicular)
+    {
+        yield return Vector2.Zero;
+
+        if (width >= 2)
+            yield return perpendicular;
+
+        if (width >= 3)
+            yield return -perpendicular;
+    }
+
+    private void SpawnRedGas(Entity<XenoReaperComponent> reaper, EntityCoordinates coordinates)
+    {
+        var gas = SpawnAtPosition(reaper.Comp.RedGasPrototype, coordinates);
+        var gasComp = EnsureComp<XenoReaperRedGasComponent>(gas);
+        gasComp.Reaper = reaper;
+        gasComp.NextPulseAt = _timing.CurTime;
+        gasComp.PulseEvery = reaper.Comp.RedGasPulseEvery;
+        gasComp.Radius = reaper.Comp.RedGasRadius;
+        gasComp.Damage = new DamageSpecifier(reaper.Comp.RedGasDamage);
+    }
+
+    private void PulseRedGas(Entity<XenoReaperRedGasComponent> gas)
+    {
+        if (gas.Comp.Reaper is not { } reaper || !Exists(reaper))
+        {
+            QueueDel(gas);
+            return;
+        }
+
+        _nearbyTargets.Clear();
+        _entityLookup.GetEntitiesInRange(Transform(gas).Coordinates, gas.Comp.Radius, _nearbyTargets);
+
+        foreach (var target in _nearbyTargets)
+        {
+            if (target == gas.Owner || _mobState.IsDead(target))
+                continue;
+
+            if (HasComp<XenoComponent>(target) && _hive.FromSameHive(reaper, target))
+                continue;
+
+            if (!_xeno.CanAbilityAttackTarget(reaper, target))
+                continue;
+
+            _damageable.TryChangeDamage(target, gas.Comp.Damage, armorPiercing: 10, origin: reaper, tool: gas);
         }
     }
 

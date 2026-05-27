@@ -272,7 +272,9 @@ public sealed partial class XenoBulwarkSystem : EntitySystem
         {
             var velocity = _physics.GetMapLinearVelocity(args.ProjUid, component: physics);
             var rotation = _random.NextAngle(-Angle.FromDegrees(90), Angle.FromDegrees(90)).Opposite();
-            _physics.SetLinearVelocity(args.ProjUid, rotation.RotateVec(velocity), body: physics);
+            var reflected = rotation.RotateVec(velocity);
+            _physics.SetLinearVelocity(args.ProjUid, reflected, body: physics);
+            _transform.SetWorldRotationNoLerp(args.ProjUid, reflected.ToWorldAngle() + args.Component.Angle);
         }
 
         ResetReflectedProjectilePrediction(args.ProjUid);
