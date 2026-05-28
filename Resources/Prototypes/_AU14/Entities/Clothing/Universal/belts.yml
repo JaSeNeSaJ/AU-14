@@ -39,8 +39,8 @@
     camouflageVariations: {}
 
 - type: entity
-  parent: CMUBBeltMedicBagSupportSynth
-  id: CMUBeltMediBagSupportSynthBlack
+  parent: CMUBeltMedicBagSupportSynth
+  id: CMUBeltMedicBagSupportSynthBlack
   suffix: Filled, Support Synth, Black
   components:
   - type: Sprite
