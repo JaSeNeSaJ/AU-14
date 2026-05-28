@@ -1628,5 +1628,22 @@
   id: 152
   time: '2026-05-28T00:23:31.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1081
+- author: maertayn
+  changes:
+  - message: Bullets (cartridges), magazines and rations can no longer be sold for
+      profit at the ASRS.
+    type: Remove
+  id: 153
+  time: '2026-05-28T01:58:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1135
+- author: Omonda2
+  changes:
+  - message: Changed most of 3rd party's skillset for sake's of parity
+    type: Tweak
+  - message: Fixed SupportAuxSynth ID.
+    type: Fix
+  id: 154
+  time: '2026-05-28T09:54:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1118
 Name: CMU
 Order: -1
