@@ -1,0 +1,74 @@
+- type: job
+  parent: AU14JobLEOBase
+  id: AU14DrugSmuggler
+  name: Drug Smuggler
+  description: You barely made it out as the CMB raided your old drug lab, luckily you managed to escape with some of the product and they didnt catch your name. Time to try again.
+  setPreference: false
+  startingGear: AU14DrugSmuggler
+  icon: "CMJobIconEmpty"
+  hasIcon: false
+  requireAdminNotify: false
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-loners
+  accessGroups:
+  - colonist
+  roleWeight: 0.25
+  ranks:
+    RMCRankCivilian: []
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillFireman: 1
+        RMCSkillVehicles: 1
+        RMCSkillDomestics: 1
+        RMCSkillFirearms: 2
+    - type: JobPrefix
+      prefix: au14-job-prefix-mobboss
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: synth
+  hidden: false
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicMisc
+  id: AU14DrugSmuggler
+  name: Drug Dealer (Criminal)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: Drug Dealer (Criminal)
+    description:  You barely made it out as the CMB raided your old drug lab, luckily you managed to escape with some of the product and they didnt catch your name. Time to try again.
+    reregister: false
+    job: AU14DrugSmuggler
+    raffle:
+      settings: short
+    rules: You do not know what is going on in the colony.
+
+- type: startingGear
+  id: AU14DrugSmuggler
+  equipment:
+    jumpsuit: CMJumpsuitLiaisonCharcoal
+    shoes: RMCShoesLaceup
+    id: AU14IDCardMobGoon
+    ears: AU14HeadsetMob
+    back: CMSatchel
+  storage:
+    back:
+    - JointRainbow
+    - JointRainbow
+    - Joint
+    - Joint
+    - AU14PillCMUOxycodone
+    - AU14PillCMUOxycodone
+    - AU14PillCMUOxycodone
+
+- type: playTimeTracker
+  id: AU14JobMobGoon
+  isHumanoid: true
