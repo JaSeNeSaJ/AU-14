@@ -1,0 +1,45 @@
+- type: partySpawn
+  id: CMBParoleeTransportPartySpawn
+  leadersToSpawn:
+    AU14JobParoleeReleaseCMBDeputy: 1
+  gruntsToSpawn:
+    AU14JobTransportParolee: 2
+  scalewithpop: false
+  spawnTogether: true
+
+- type: partySpawn
+  id: CMBParoleeTransportBigPartySpawn
+  leadersToSpawn:
+    AU14JobParoleeReleaseCMBDeputy: 1
+  gruntsToSpawn:
+    AU14JobParoleeReleaseCMBDeputy: 1
+    AU14JobTransportParolee: 5
+  scalewithpop: false
+  spawnTogether: true
+
+- type: auThirdParty
+  id: CMBParoleeTransportParty
+  partyspawn: CMBParoleeTransportPartySpawn
+  entrymethod: shuttle
+  weight: 20
+  minplayers: 20
+  maxplayers: 80
+  GhostsNeeded: 3
+  roundstart: false
+  whitelistedgamemodes:
+    - insurgency
+    - colonyfall
+
+- type: auThirdParty
+  id: CMBParoleeTransportBigParty
+  partyspawn: CMBParoleeTransportBigPartySpawn
+  entrymethod: shuttle
+  weight: 20
+  minplayers: 50
+  maxplayers: 600
+  GhostsNeeded: 7
+  roundstart: false
+  whitelistedgamemodes:
+    - insurgency
+    - colonyfall
+
