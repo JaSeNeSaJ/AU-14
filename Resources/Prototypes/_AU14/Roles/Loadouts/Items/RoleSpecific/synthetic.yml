@@ -233,7 +233,7 @@
 - type: loadout
   id: BeltMedicBagBlackSupportSynthAU14
   equipment:
-    belt: CMUBeltMediBagSupportSynthBlack
+    belt: CMUBeltMedicBagSupportSynthBlack
 
 - type: loadout
   id: BeltHolsterNailgunFillAU14
