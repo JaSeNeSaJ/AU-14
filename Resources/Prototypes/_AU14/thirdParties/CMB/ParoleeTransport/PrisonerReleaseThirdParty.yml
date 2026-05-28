@@ -12,8 +12,7 @@
   leadersToSpawn:
     AU14JobParoleeReleaseCMBDeputy: 1
   gruntsToSpawn:
-    AU14JobParoleeReleaseCMBDeputy: 1
-    AU14JobTransportParolee: 5
+    AU14JobTransportParolee: 3
   scalewithpop: false
   spawnTogether: true
 
@@ -35,8 +34,8 @@
   partyspawn: CMBParoleeTransportBigPartySpawn
   entrymethod: shuttle
   weight: 20
-  minplayers: 50
-  maxplayers: 600
+  minplayers: 60
+  maxplayers: 120
   GhostsNeeded: 7
   roundstart: false
   whitelistedgamemodes:
