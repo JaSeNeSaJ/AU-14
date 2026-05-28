@@ -1,6 +1,6 @@
 - type: job
   abstract: true
-  parent: AU14JobPARTYPartyContractorBase
+  parent: CMJobBase
   id: AU14JobPARTYPartyContractorBase
   name: Prodigy Yankee Contractor Base
   description: au14-prodigyparty-description
