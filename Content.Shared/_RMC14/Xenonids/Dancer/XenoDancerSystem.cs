@@ -1,3 +1,4 @@
+using System.Numerics;
 using Content.Shared._RMC14.Actions;
 using Content.Shared._RMC14.Xenonids.Dodge;
 using Content.Shared._RMC14.Xenonids.Impale;
@@ -23,9 +24,11 @@ public sealed partial class XenoDancerSystem : EntitySystem
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedRMCActionsSystem _rmcActions = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private XenoSystem _xeno = default!;
 
     private readonly HashSet<EntityUid> _nearbyTargets = new();
+    private readonly List<EntityUid> _yellowSpreadTargets = new();
 
     public override void Initialize()
     {
@@ -128,9 +131,9 @@ public sealed partial class XenoDancerSystem : EntitySystem
         Dirty(dancer);
 
         _nearbyTargets.Clear();
+        _yellowSpreadTargets.Clear();
         _entityLookup.GetEntitiesInRange(Transform(center).Coordinates, dancer.Comp.YellowSpreadRange, _nearbyTargets);
 
-        var marked = 0;
         foreach (var target in _nearbyTargets)
         {
             if (target == dancer.Owner ||
@@ -142,18 +145,37 @@ public sealed partial class XenoDancerSystem : EntitySystem
                 continue;
             }
 
+            _yellowSpreadTargets.Add(target);
+        }
+
+        var centerPosition = _transform.GetWorldPosition(center);
+        _yellowSpreadTargets.Sort((a, b) =>
+        {
+            var aDistance = Vector2.DistanceSquared(_transform.GetWorldPosition(a), centerPosition);
+            var bDistance = Vector2.DistanceSquared(_transform.GetWorldPosition(b), centerPosition);
+            var distanceComparison = aDistance.CompareTo(bDistance);
+
+            return distanceComparison != 0
+                ? distanceComparison
+                : a.Id.CompareTo(b.Id);
+        });
+
+        var maxTargets = Math.Min(dancer.Comp.YellowSpreadMaxTargets, _yellowSpreadTargets.Count);
+        for (var i = 0; i < maxTargets; i++)
+        {
+            var target = _yellowSpreadTargets[i];
             var mark = EnsureComp<XenoYellowMarkedComponent>(target);
             mark.ExpiresAt = _timing.CurTime + dancer.Comp.YellowDuration;
             Dirty(target, mark);
 
             _popup.PopupEntity(Loc.GetString("cm-xeno-dancer-yellow-spread-target"), target, target, PopupType.MediumCaution);
-            marked++;
-            if (marked >= dancer.Comp.YellowSpreadMaxTargets)
-                break;
         }
 
-        if (marked > 0)
+        if (maxTargets > 0)
             _popup.PopupClient(Loc.GetString("cm-xeno-dancer-yellow-spread-self"), dancer, dancer);
+
+        _yellowSpreadTargets.Clear();
+        _nearbyTargets.Clear();
     }
 
     private void ConsumeYellowTailMark(EntityUid dancer, EntityUid target, bool actionHandled)

@@ -43,7 +43,6 @@
     #- AUPlanetLV747
     #- AUPlanetSorokyne
     #- AUPlanetLV759
-    - CMUPlanetHopesRetreat
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -66,7 +65,6 @@
 #  - AuPlanetFiorina -removed due to load errors
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
-  - CMUPlanetHopesRetreat
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -89,7 +87,6 @@
    # - AUPlanetLV624
     - AUPlanetStableGarrison
     - CMUPlanetLament
-    - CMUPlanetHopesRetreat
 
 - type: gamePreset
   id: Jailbreak
@@ -171,15 +168,17 @@
       AU14JobOpforDCC: 1
       AU14JobOpforPlatOp: 5
       AU14JobOpforDSPilot: 2
-      AU14JobOpforRadioTelephoneOperator: 3
+      AU14JobOpforRadioTelephoneOperator: 4
       AU14JobOpforSquadSergeant: 3
       AU14JobOpforSquadAutomaticRifleman: 3
       AU14JobOPFORSquadCombatTech: 6
       AU14JobOpforSquadRifleman: 75
       AU14JobOPFORAuxSupportSynth: 2
       AU14JobOPFORadvisor: 1
-      AU14JobOPFORMilitaryDoctor: 1
+      AU14JobOPFORMilitaryDoctor: 3
       AU14JobOPFORWorkingJoe: 1
+      AU14JobOPFORAuxTech: 1
+#     AU14JobOPFORMilitaryPoliceMan: 2 # TODO
 
 - type: entity
   id: AddClf

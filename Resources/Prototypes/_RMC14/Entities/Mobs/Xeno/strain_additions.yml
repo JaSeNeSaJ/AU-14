@@ -189,6 +189,7 @@
     - ActionXenoFleshBloom
     - ActionXenoCarrionMantle
     - ActionXenoRapture
+    - ActionXenoReaperRedGas
     - ActionXenoDevolve
     tier: 3
     hudOffset: -0.1,0.1

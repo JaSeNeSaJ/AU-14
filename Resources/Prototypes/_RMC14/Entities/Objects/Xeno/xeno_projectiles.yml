@@ -427,7 +427,7 @@
     impactEffect: null
     damage:
       types:
-        Heat: 45
+        Heat: 35
   - type: ModifyTargetOnHit
     removeExisting: false
     add:
@@ -462,7 +462,7 @@
       types:
         Heat: 25
   - type: XenoVenatorPoolOnHit
-    pool: XenoAcidSprayAcidStacks
+    pool: XenoVenatorAcidBlobPool
     rings: 1
     upgradeDirectHit: true
     randomCrossPattern: true
