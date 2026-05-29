@@ -6,7 +6,7 @@
   leadersToSpawn:
     AU14JobMigratingColonist: 1
   gruntsToSpawn:
-    AU14JobMigratingColonist: 4
+    AU14JobMigratingColonist: 2
   scalewithpop: false
   spawnTogether: true
 
@@ -16,7 +16,7 @@
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
   weight: 30
   minplayers: 30
-  maxplayers: 90
+  maxplayers: 60
   GhostsNeeded: 5
   roundstart: false
   whitelistedgamemodes:
@@ -28,7 +28,7 @@
   leadersToSpawn:
     AU14JobMigratingColonist: 1
   gruntsToSpawn:
-    AU14JobMigratingColonist: 6
+    AU14JobMigratingColonist: 4
   scalewithpop: false
   spawnTogether: true
 
@@ -39,7 +39,7 @@
   weight: 30
   minplayers: 50
   maxplayers: 100
-  GhostsNeeded: 7
+  GhostsNeeded: 5
   roundstart: false
   whitelistedgamemodes:
     - insurgency
@@ -50,7 +50,7 @@
   leadersToSpawn:
     AU14JobMigratingColonist: 1
   gruntsToSpawn:
-    AU14JobMigratingColonist: 8
+    AU14JobMigratingColonist: 5
   scalewithpop: false
   spawnTogether: true
 
