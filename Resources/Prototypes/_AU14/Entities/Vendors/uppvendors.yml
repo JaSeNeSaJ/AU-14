@@ -755,8 +755,12 @@
     - name: Essential Equipment
       takeAll: CMUAREssentialEquipment
       entries:
-      - id: AU14SmartGunUPP
       - id: AU14ArmorSmartGunDesertCombatHarnessUPP
+    - name: Weapon System
+      choices: { CMUPlatoonMG: 1 }
+      entries:
+      - id: AU14SmartGunUPP
+      - id: RMCLMGQYJ72
     - name: Belt
       choices: { CMUPlatoonMGBelt: 1 }
       entries:
@@ -767,6 +771,8 @@
       - id: AU14MagazineSmartGunUPP
         amount: 40
       - id: AU14PowerCellSmartgunUPP
+        amount: 40
+      - id: RMCMagazineLMGQYJ72
         amount: 40
 - type: entity
   parent: ColMarTechBase
