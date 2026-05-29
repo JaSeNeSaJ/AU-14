@@ -16,7 +16,7 @@
   entrymethod: shuttle
   weight: 20
   minplayers: 20
-  maxplayers: 80
+  maxplayers: 69
   Ghostneeded: 2
   roundstart: false
   whitelistedgamemodes:
@@ -37,8 +37,8 @@
   partyspawn: MissionariesPartySpawnMid
   entrymethod: shuttle
   weight: 20
-  minplayers: 50
-  maxplayers: 120
+  minplayers: 70
+  maxplayers: 150
   Ghostneeded: 4
   roundstart: false
   whitelistedgamemodes:

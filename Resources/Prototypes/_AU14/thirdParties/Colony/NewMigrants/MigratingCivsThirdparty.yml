@@ -16,7 +16,7 @@
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
   weight: 30
   minplayers: 30
-  maxplayers: 60
+  maxplayers: 54
   GhostsNeeded: 5
   roundstart: false
   whitelistedgamemodes:
@@ -37,7 +37,7 @@
   partyspawn: MigratingCivsMediumSpawn
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
   weight: 30
-  minplayers: 50
+  minplayers: 55
   maxplayers: 100
   GhostsNeeded: 5
   roundstart: false
@@ -61,7 +61,7 @@
   weight: 30
   minplayers: 101
   maxplayers: 400
-  GhostsNeeded: 9
+  GhostsNeeded: 6
   roundstart: false
   whitelistedgamemodes:
     - insurgency

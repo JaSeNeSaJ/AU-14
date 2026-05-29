@@ -22,7 +22,7 @@
   entrymethod: shuttle
   weight: 20
   minplayers: 20
-  maxplayers: 80
+  maxplayers: 79
   GhostsNeeded: 3
   roundstart: false
   whitelistedgamemodes:
@@ -34,7 +34,7 @@
   partyspawn: CMBParoleeTransportBigSpawn
   entrymethod: shuttle
   weight: 20
-  minplayers: 50
+  minplayers: 80
   maxplayers: 600
   GhostsNeeded: 4
   roundstart: false
