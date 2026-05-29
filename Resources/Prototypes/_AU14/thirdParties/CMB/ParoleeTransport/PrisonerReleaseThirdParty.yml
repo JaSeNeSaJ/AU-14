@@ -12,8 +12,7 @@
   leadersToSpawn:
     AU14JobParoleeReleaseCMBDeputy: 1
   gruntsToSpawn:
-    AU14JobParoleeReleaseCMBDeputy: 1
-    AU14JobTransportParolee: 5
+    AU14JobTransportParolee: 3
   scalewithpop: false
   spawnTogether: true
 
@@ -37,7 +36,7 @@
   weight: 20
   minplayers: 50
   maxplayers: 600
-  GhostsNeeded: 7
+  GhostsNeeded: 4
   roundstart: false
   whitelistedgamemodes:
     - insurgency

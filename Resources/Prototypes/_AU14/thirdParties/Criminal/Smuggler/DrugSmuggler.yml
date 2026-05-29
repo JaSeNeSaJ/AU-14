@@ -24,6 +24,8 @@
         RMCSkillVehicles: 1
         RMCSkillDomestics: 1
         RMCSkillFirearms: 2
+    - type: EquipEntityPreset
+      preset: AU14DrugSmugglerPreset
     - type: JobPrefix
       prefix: au14-job-prefix-mobboss
     - type: TacticalMapIcon
@@ -58,17 +60,43 @@
     shoes: RMCShoesLaceup
     id: AU14IDCardMobGoon
     ears: AU14HeadsetMob
-    back: CMSatchel
-  storage:
-    back:
-    - JointRainbow
-    - JointRainbow
-    - Joint
-    - Joint
-    - AU14PillCMUOxycodone
-    - AU14PillCMUOxycodone
-    - AU14PillCMUOxycodone
 
+- type: entity
+  id: AU14DrugSmugglerPreset
+  name: drug smuggler preset
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityPreset
+    randomGearOther:
+    -
+      - [ AU14SatchelFilledDrugs ]
+      - [ AU14SatchelFilledDrugsAlt]
+
+- type: entity
+  parent: CMSatchel
+  id: AU14SatchelFilledDrugs
+  components:
+  - type: StorageFill
+    contents:
+    - id: JointRainbow
+      amount: 4
+    - id: PillSpaceDrugs
+      amount: 3
+    - id: StrangePill
+      amount: 3
+
+- type: entity
+  parent: CMSatchel
+  id: AU14SatchelFilledDrugsAlt
+  components:
+  - type: StorageFill
+    contents:
+    - id: Joint
+      amount: 4
+    - id: StrangePill
+      amount: 3
+    - id: RMCSyringeDrugs
+      amount: 1
 - type: playTimeTracker
   id: AU14JobMobGoon
   isHumanoid: true

@@ -13,7 +13,7 @@
   entrymethod: shuttle #todo au14 entrymethod intel spawn/shipside
   weight: 20
   minplayers: 20
-  maxplayers: 90
+  maxplayers: 120
   GhostsNeeded: 5
   roundstart: false
   whitelistedgamemodes:
