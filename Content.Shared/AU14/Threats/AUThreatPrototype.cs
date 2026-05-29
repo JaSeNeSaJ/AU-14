@@ -78,7 +78,7 @@ public sealed partial class ThreatPrototype : IPrototype
 
     [DataField("thirdpartyinterval", required: false)]
 
-    public int ThirdPartyInterval { get; private set; } = 18000;
+    public int ThirdPartyInterval { get; private set; } = 14000;
 
     [DataField("lorePrimer")]
     public ProtoId<LorePrimerPrototype>? LorePrimer { get; private set; }

@@ -8,7 +8,7 @@
     walkModifier: 0.825
     sprintModifier: 0.825
   - type: CMArmor
-    melee: 10
+    melee: 20
     bullet: 15
     bio: 10
     explosionArmor: 20
@@ -96,7 +96,7 @@
     sprintModifier: 1.5
   - type: SmartGunArmor
   - type: CMArmor
-    melee: 10 # CLOTHING_ARMOR_HIGH (melee)
+    melee: 20 # CLOTHING_ARMOR_HIGH (melee)
     bullet: 10 # CLOTHING_ARMOR_ULTRAHIGH (bullets)
     bio: 5 # CLOTHING_ARMOR_MEDIUM
     explosionArmor: 5 # CLOTHING_ARMOR_VERYHIGH
