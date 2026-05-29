@@ -1645,5 +1645,28 @@
   id: 154
   time: '2026-05-28T09:54:35.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1118
+- author: Piticzu
+  changes:
+  - message: Crusher stomp damage now falls off with distance (80 close, 65 at max
+      range)
+    type: Tweak
+  - message: Crusher stomp cone is now blocked by barricades
+    type: Tweak
+  - message: Crusher frontal armor reduced from 45 to 35
+    type: Tweak
+  id: 155
+  time: '2026-05-28T23:47:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1142
+- author: maertayn
+  changes:
+  - message: Military jobs now use abstraction - this reduces bloat. Use inheritance/parenting,
+      only include overwrites on derived prototypes.
+    type: Code
+  - message: K9 more capable to perform S&R -> skill buffs to medical, surgery, fireman,
+      construction, piloting.
+    type: Add
+  id: 156
+  time: '2026-05-29T03:13:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1145
 Name: CMU
 Order: -1
