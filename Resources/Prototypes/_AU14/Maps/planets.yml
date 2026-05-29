@@ -57,6 +57,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -112,6 +121,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreat
     - XenoThreat
@@ -172,6 +190,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - abominationsThreat
     - abominationsThreatDistress
@@ -230,6 +257,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreat
     - wendigoThreat
@@ -516,6 +552,15 @@
     - USArmy
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreatOnMarker
     - XenoThreat

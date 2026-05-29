@@ -2,7 +2,7 @@
 # To avoid people not knowing anything about mormon or even christian religion doing slop RP
 
 - type: partySpawn
-  id: CIVMissionariesPartySpawn
+  id: MissionariesPartySpawn
   leadersToSpawn:
     AU14JobWanderingMissionary: 1
   gruntsToSpawn:
@@ -11,8 +11,8 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: CIVMissionariesParty
-  partyspawn: CIVMissionariesPartySpawn
+  id: MissionariesParty
+  partyspawn: MissionariesPartySpawn
   entrymethod: shuttle
   weight: 20
   minplayers: 20
@@ -24,7 +24,7 @@
     - colonyfall
 
 - type: partySpawn
-  id: CIVMissionariesPartySpawnMid
+  id: MissionariesPartySpawnMid
   leadersToSpawn:
     AU14JobWanderingMissionary: 1
   gruntsToSpawn:
@@ -33,8 +33,8 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: CIVMissionariesPartyMid
-  partyspawn: CIVMissionariesPartySpawnMid
+  id: MissionariesPartyMedium
+  partyspawn: MissionariesPartySpawnMid
   entrymethod: shuttle
   weight: 20
   minplayers: 50

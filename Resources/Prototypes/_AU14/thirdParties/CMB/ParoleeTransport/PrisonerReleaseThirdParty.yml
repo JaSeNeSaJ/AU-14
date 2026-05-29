@@ -1,5 +1,5 @@
 - type: partySpawn
-  id: CMBParoleeTransportPartySpawn
+  id: CMBParoleeTransportSpawn
   leadersToSpawn:
     AU14JobParoleeReleaseCMBDeputy: 1
   gruntsToSpawn:
@@ -8,7 +8,7 @@
   spawnTogether: true
 
 - type: partySpawn
-  id: CMBParoleeTransportBigPartySpawn
+  id: CMBParoleeTransportBigSpawn
   leadersToSpawn:
     AU14JobParoleeReleaseCMBDeputy: 1
   gruntsToSpawn:
@@ -17,8 +17,8 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: CMBParoleeTransportParty
-  partyspawn: CMBParoleeTransportPartySpawn
+  id: CMBParoleeTransport
+  partyspawn: CMBParoleeTransportSpawn
   entrymethod: shuttle
   weight: 20
   minplayers: 20
@@ -30,8 +30,8 @@
     - colonyfall
 
 - type: auThirdParty
-  id: CMBParoleeTransportBigParty
-  partyspawn: CMBParoleeTransportBigPartySpawn
+  id: CMBParoleeTransportBig
+  partyspawn: CMBParoleeTransportBigSpawn
   entrymethod: shuttle
   weight: 20
   minplayers: 50
