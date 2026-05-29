@@ -155,19 +155,19 @@
     MilitaryPolice: AU14MilitaryPolicemanGenericVendor
     MilitaryDoctor: AU14MilitaryDoctorGenericVendor
     ReqVend: AU14WYPMCRequisitionVendor
-    jobClassOverride:
-      SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
-      PlatCo: AU14JobGOVFORPlatCoWYPMC
-      PlatOp: AU14JobGOVFORPlatOpWYPMC
-      # SectionSergeant: AU14JobGOVFORSectionSergeantWYPMC
-      SquadSergeant: AU14JobGOVFORSquadSergeantWYPMC
-      RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
-      SquadCombatTech: AU14JobGOVFORSquadCombatTechWYPMC
-      SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanWYPMC
-      PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanWYPMC
-      DSPilot: AU14JobGOVFORDSPilotWYPMC
-      DCC: AU14JobGOVFORDCCWYPMC
-      # Synth
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
+    PlatCo: AU14JobGOVFORPlatCoWYPMC
+    PlatOp: AU14JobGOVFORPlatOpWYPMC
+    # SectionSergeant: AU14JobGOVFORSectionSergeantWYPMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantWYPMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorWYPMC
+    SquadCombatTech: AU14JobGOVFORSquadCombatTechWYPMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanWYPMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanWYPMC
+    DSPilot: AU14JobGOVFORDSPilotWYPMC
+    DCC: AU14JobGOVFORDCCWYPMC
+    # Synth
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/lexingtonsmall.yml
@@ -204,7 +204,7 @@
   jobClassOverride:
     SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
     PlatCo: AU14JobGOVFORPlatCoCMBCIU
-    SectionSergeant: AU14JobGOVFORSectionSergeantCMBCIU
+    # SectionSergeant: AU14JobGOVFORSectionSergeantCMBCIU
     SquadSergeant: AU14JobGOVFORSectionSergeantCMBCIU
     PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanCMBCIU
 #  jobSlotOverride:
@@ -350,19 +350,19 @@
     MilitaryPolice: AU14MilitaryPolicemanGenericVendor
     MilitaryDoctor: AU14MilitaryDoctorGenericVendor
     ReqVend: AU14RMCRequisitionVendor
-    jobClassOverride:
-      SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
-      PlatCo: AU14JobGOVFORPlatCoRMC
-      PlatOp: AU14JobGOVFORPlatOpRMC
-      SectionSergeant: AU14JobGOVFORSectionSergeantRMC
-      SquadSergeant: AU14JobGOVFORSquadSergeantRMC
-      RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
-      SquadCombatTech: AU14JobGOVFORSquadCombatTechRMC
-      SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanRMC
-      PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanRMC
-      DSPilot: AU14JobGOVFORDSPilotRMC
-      DCC: AU14JobGOVFORDCCRMC
-      SupportSynth: AU14JobGOVFORAuxSupportSynthRMC
+  jobClassOverride:
+    SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
+    PlatCo: AU14JobGOVFORPlatCoRMC
+    PlatOp: AU14JobGOVFORPlatOpRMC
+    SectionSergeant: AU14JobGOVFORSectionSergeantRMC
+    SquadSergeant: AU14JobGOVFORSquadSergeantRMC
+    RadioTelephoneOperator: AU14JobGOVFORRadioTelephoneOperatorRMC
+    SquadCombatTech: AU14JobGOVFORSquadCombatTechRMC
+    SquadAutomaticRifleman: AU14JobGOVFORSquadAutomaticRiflemanRMC
+    PlatoonCorpsman: AU14JobGOVFORPlatoonCorpsmanRMC
+    DSPilot: AU14JobGOVFORDSPilotRMC
+    DCC: AU14JobGOVFORDCCRMC
+    SupportSynth: AU14JobGOVFORAuxSupportSynthRMC
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/lexingtonsmall.yml
