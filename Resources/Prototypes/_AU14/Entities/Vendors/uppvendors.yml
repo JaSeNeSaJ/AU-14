@@ -756,7 +756,8 @@
       takeAll: CMUAREssentialEquipment
       entries:
       - id: AU14ArmorSmartGunDesertCombatHarnessUPP
-    - name: Weapon System
+      
+    - name: Firearm System
       choices: { CMUPlatoonMG: 1 }
       entries:
       - id: AU14SmartGunUPP
@@ -774,6 +775,7 @@
         amount: 40
       - id: RMCMagazineLMGQYJ72
         amount: 40
+        
 - type: entity
   parent: ColMarTechBase
   id: AU14UPPSectionLeaderVendor
