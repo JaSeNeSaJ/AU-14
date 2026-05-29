@@ -9,7 +9,7 @@
   startingGear: AU14GearGOVFORDCC
   dummyStartingGear: AU14GearGOVFORDCCDummy
   playTimeTracker: AU14JobGOVFORDCC
-  setPreference: false
+  requireAdminNotify: true
   canBeAntag: false
   accessGroups:
   - AU14GovforPilot
