@@ -1,5 +1,6 @@
 - type: job
   parent: AU14JobSectionSergeantBase
   id: AU14JobGOVFORSectionSergeant
-  # setPreference: true
+  # hidden: false # plt. sgt. is disabled
+  # setPreference: true # don't show in loadout menu
   basePlaytimeTracker: true

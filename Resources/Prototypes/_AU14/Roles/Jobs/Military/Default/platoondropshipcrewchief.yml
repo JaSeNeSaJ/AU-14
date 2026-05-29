@@ -1,5 +1,6 @@
 - type: job
   parent: AU14JobDCCBase
   id: AU14JobGOVFORDCC
+  hidden: false
   setPreference: true
   basePlaytimeTracker: true
