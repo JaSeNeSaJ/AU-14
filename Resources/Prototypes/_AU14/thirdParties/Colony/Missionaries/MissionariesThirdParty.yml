@@ -16,7 +16,7 @@
   entrymethod: shuttle
   weight: 20
   minplayers: 20
-  maxplayers: 60
+  maxplayers: 80
   Ghostneeded: 2
   roundstart: false
   whitelistedgamemodes:
@@ -38,7 +38,7 @@
   entrymethod: shuttle
   weight: 20
   minplayers: 50
-  maxplayers: 80
+  maxplayers: 120
   Ghostneeded: 4
   roundstart: false
   whitelistedgamemodes:
