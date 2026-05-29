@@ -15,8 +15,6 @@
   overwatchShowName: true
   accessGroups:
   - AU14GovforCommand
-  setPreference: false  # don't show in loadout menu
-  hidden: true          # plt sgt is disabled
 
 - type: job
   abstract: true

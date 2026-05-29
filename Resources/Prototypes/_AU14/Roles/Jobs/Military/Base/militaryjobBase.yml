@@ -3,7 +3,8 @@
   parent: CMJobBase
   id: AU14JobMilitaryBase
   supervisors: au14-job-supervisors-govfor
-  setPreference: false
+  hidden: true          # abstract hides by default, but for children/factions to remain hidden
+  setPreference: false  # all faction variants are hidden in the loadout menu
   special:
   - !type:AddComponentSpecial
     components:
