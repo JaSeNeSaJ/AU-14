@@ -41,7 +41,7 @@
         unwieldedScatterMultiplier: 2
         shotsToMaxScatter: 4
   - type: RMCWeaponAccuracy
-    accuracyMultiplier: 1
+    accuracyMultiplier: 1.15
     accuracyMultiplierUnwielded: 0.75
   - type: GunDamageModifier
     multiplier: 1.2
