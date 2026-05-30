@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Admin\\\\RiderProjects\\\\AU-14\" -Directory)",
+      "Bash(Select-Object Name)",
+      "Bash(powershell *)",
+      "Bash(dotnet build *)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Admin\\\\RiderProjects\\\\AU-14\" -Recurse -Directory)",
+      "Bash(Select-Object -First 20)",
+      "Bash(xargs grep -l \"coffee\\\\|beverage\\\\|cafe\\\\|tea\")",
+      "Bash(python -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\([s['name'] for s in d['states']]\\)\")",
+      "Bash(python *)",
+      "Bash(Get-ChildItem *)",
+      "Bash(Select-Object -ExpandProperty Name)",
+      "Bash(Sort-Object)",
+      "Bash(git checkout *)",
+      "Bash(xargs basename -a)",
+      "Bash(grep -E \"\\\\.yml$\")",
+      "Bash(xargs grep -l \"chair\\\\|Chair\")",
+      "Bash(xargs grep -l \"KillAll.*RuleComponent\")"
+    ]
+  }
+}
