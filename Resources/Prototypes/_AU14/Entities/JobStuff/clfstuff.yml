@@ -116,7 +116,7 @@
         points: 1
       - id: RMCMagazineRifleType71
         amount: 9
-        points: 3
+        points: 2
       - id: RMCMagazineRifleType71AP
         amount: 2
         points: 6
