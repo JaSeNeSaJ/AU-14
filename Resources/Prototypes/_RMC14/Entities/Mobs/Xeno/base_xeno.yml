@@ -196,6 +196,8 @@
         type: XenoChooseStructureBui
       enum.XenoPheromonesUI.Key:
         type: XenoPheromonesBui
+      enum.XenoAlchemistUI.Key:
+        type: XenoAlchemistBui
       enum.XenoOrderConstructionUI.Key:
         type: XenoOrderConstructionBui
       enum.XenoFruitChooseUI.Key:
@@ -341,6 +343,7 @@
   - type: AssignXenoName
   - type: MobGibbedByExplosionType
   - type: TileFirePatter
+    removeDuration: 3.75
   - type: CanBeFirePatted
   - type: BlockIdExamine
   - type: NoStunOnExit

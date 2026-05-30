@@ -6,8 +6,8 @@
   - /Maps/_CMU14/lament_below.yml
   mapsAbove:
   - /Maps/_CMU14/lament_above.yml
-  minPlayers: 0
-  maxPlayers: 75
+  minPlayers: 40
+  maxPlayers: 140
   maxRandomOffset: 0
   randomRotation: false
   stations:
@@ -48,6 +48,10 @@
             AU14JobCivilianNurse: [3, 3]
             AU14JobCivilianEthicsAndWellnessAdvisor: [1, 1]
             AU14JobCivilianEmergencyResponseOfficer: [2, 2]
+
+            # Orbital
+            AU14JobCivilianOrbitalArbiter: [1, 1]
+            AU14JobCivilianOrbitalLawyer: [2, 3]
 
             # Other
             AU14JobCivilianMiner: [10, 10]

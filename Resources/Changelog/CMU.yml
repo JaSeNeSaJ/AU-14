@@ -17,7 +17,7 @@
     type: Admin
   id: 1
   time: '2025-06-01T06:07:00.0000000+00:00'
-  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/992
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1083
 - author: JaSeNeSaJ
   changes:
   - message: Added SheperdsLACN
@@ -1478,5 +1478,195 @@
   id: 138
   time: '2026-05-24T17:21:55.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1100
+- author: troytroy400
+  changes:
+  - message: MultiZ grate tiles w/ destructible + indestructible versions.
+    type: Add
+  - message: Mapping assets needed for CM13 Navalis port.
+    type: Add
+  id: 139
+  time: '2026-05-25T20:49:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1112
+- author: troytroy400
+  changes:
+  - message: Removed a lot of hairstyles that either don't fit the CM style or are
+      goofily out of place when compared to the game setting (floor length, overly
+      tall or protruding, meme hair, etc).
+    type: Remove
+  id: 140
+  time: '2026-05-26T01:36:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1113
+- author: Arcticular1
+  changes:
+  - message: Dancer Impale, base damage and dodge has been buffed!
+    type: Tweak
+  - message: Base Praetorian can now use acid ball while moving!
+    type: Tweak
+  id: 141
+  time: '2026-05-26T03:08:23.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1101
+- author: KeiKiyomi
+  changes:
+  - message: Added Prodigy Armed Repair Team
+    type: Add
+  id: 142
+  time: '2026-05-26T06:10:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1078
+- author: potatoed6
+  changes:
+  - message: mob id not changing job to colonist
+    type: Fix
+  - message: mob not having civ rank
+    type: Fix
+  - message: requirements for doctors and synths
+    type: Add
+  - message: colony synths are now 2 gen with no mechanical changes
+    type: Tweak
+  id: 143
+  time: '2026-05-26T06:11:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1107
+- author: Berkin101
+  changes:
+  - message: Added dirt mounds.
+    type: Add
+  - message: Added sand mounds.
+    type: Add
+  id: 144
+  time: '2026-05-26T06:12:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/580
+- author: maertayn
+  changes:
+  - message: Victory conditions were broken
+    type: Fix
+  - message: Pilots/CO/MP/Doctors to be without squads & Synths/JO assigned to Auxy
+    type: Fix
+  - message: Working Joes receiving haircuts & ghostrole character names bug
+    type: Fix
+  id: 145
+  time: '2026-05-27T01:12:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1116
+- author: troytroy400
+  changes:
+  - message: Z-Level ladders, manholes and hatches for mapping.
+    type: Add
+  id: 146
+  time: '2026-05-27T01:12:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1122
+- author: sunzu432
+  changes:
+  - message: Hope's Retreat map for INS, CF and DS.
+    type: Add
+  id: 147
+  time: '2026-05-27T03:15:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1125
+- author: maertayn
+  changes:
+  - message: Pilots have squandered their ASRS access in 26 days.
+    type: Remove
+  id: 148
+  time: '2026-05-27T14:01:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1129
+- author: maertayn
+  changes:
+  - message: If you're mapping things you shouldn't, the map checker test will fail.
+    type: Map
+  id: 149
+  time: '2026-05-27T14:19:47.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1102
+- author: mikusssssss
+  changes:
+  - message: Added the good, not absurdly long bedheads back.
+    type: Add
+  id: 150
+  time: '2026-05-27T21:16:04.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1130
+- author: Piticzu
+  changes:
+  - message: Crusher charge now bowls flung marines through other marines in the path,
+      damaging and knocking down each one
+    type: Add
+  - message: "Crusher stomp is now a targeted 90\xB0 cone aimed at your mouse with\
+      \ a preview overlay"
+    type: Add
+  - message: Crusher defensive shield now reflects enemy projectiles (40% front, 30%
+      sides, 25% back)
+    type: Add
+  - message: 'Crusher gains Soak ability: absorb 240 damage in 6 seconds to heal 120
+      HP'
+    type: Add
+  - message: Crusher charge has a path preview overlay
+    type: Add
+  - message: Crusher HP increased to 800/900
+    type: Tweak
+  - message: 'Crusher armor is now directional: 45 front, 30 sides, 25 back'
+    type: Tweak
+  - message: "Crusher wide swing restored: 60\xB0 arc, 2 max targets"
+    type: Tweak
+  - message: 'Crusher charge: faster wind-up, 90 damage, distance-scaled knockback
+      (5-10 tiles)'
+    type: Tweak
+  - message: 'Crusher stomp: 80 damage, 1s paralyze, 2 tile knockback, screen shake'
+    type: Tweak
+  - message: 'Crusher brutalize splash: 20 Blunt with 10 armor piercing'
+    type: Tweak
+  - message: 'Crusher defensive shield: 100 HP (was 200), 8 damage reduction (was
+      10)'
+    type: Tweak
+  - message: Added per-weapon MaxTargets override to MeleeWeaponComponent
+    type: Code
+  id: 151
+  time: '2026-05-27T21:17:38.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1133
+- author: NzzyFk
+  changes:
+  - message: M2C cost reduced
+    type: Tweak
+  - message: Type 73 cost increased
+    type: Tweak
+  - message: Reduced amount of AP mags for Type 71 ( 6 --> 2 )
+    type: Tweak
+  id: 152
+  time: '2026-05-28T00:23:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1081
+- author: maertayn
+  changes:
+  - message: Bullets (cartridges), magazines and rations can no longer be sold for
+      profit at the ASRS.
+    type: Remove
+  id: 153
+  time: '2026-05-28T01:58:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1135
+- author: Omonda2
+  changes:
+  - message: Changed most of 3rd party's skillset for sake's of parity
+    type: Tweak
+  - message: Fixed SupportAuxSynth ID.
+    type: Fix
+  id: 154
+  time: '2026-05-28T09:54:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1118
+- author: Piticzu
+  changes:
+  - message: Crusher stomp damage now falls off with distance (80 close, 65 at max
+      range)
+    type: Tweak
+  - message: Crusher stomp cone is now blocked by barricades
+    type: Tweak
+  - message: Crusher frontal armor reduced from 45 to 35
+    type: Tweak
+  id: 155
+  time: '2026-05-28T23:47:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1142
+- author: maertayn
+  changes:
+  - message: Military jobs now use abstraction - this reduces bloat. Use inheritance/parenting,
+      only include overwrites on derived prototypes.
+    type: Code
+  - message: K9 more capable to perform S&R -> skill buffs to medical, surgery, fireman,
+      construction, piloting.
+    type: Add
+  id: 156
+  time: '2026-05-29T03:13:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1145
 Name: CMU
 Order: -1
