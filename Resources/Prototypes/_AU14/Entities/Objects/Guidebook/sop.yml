@@ -5,40 +5,40 @@
   text: "/ServerInfo/Guidebook/_AU14/SOP/AU14SOP.xml"
   priority: 3
   children:
-  - AI14SOPRulesofEngagement
+  - AU14SOPRulesofEngagement
   - AU14SOPRankStructure
-  - AI14SOPEquipmentAndPersonnel
-  - AI14SOPCommand
-  - AI14SOPDropshipsandAircraft
+  - AU14SOPEquipmentAndPersonnel
+  - AU14SOPCommand
+  - AU14SOPDropshipsandAircraft
   - AU14SOPThirdParty
 
 - type: guideEntry
   parent: RMC
-  id: AI14SOPRulesofEngagement
+  id: AU14SOPRulesofEngagement
   name: Rules of Engagement
   priority: 0
-  text: "/ServerInfo/Guidebook/_AU14/SOP/AI14SOPRulesofEngagement.xml"
+  text: "/ServerInfo/Guidebook/_AU14/SOP/AU14SOPRulesofEngagement.xml"
 
 - type: guideEntry
   parent: RMC
-  id: AI14SOPEquipmentAndPersonnel
+  id: AU14SOPEquipmentAndPersonnel
   name: Equipment and Personnel
   priority: 1
-  text: "/ServerInfo/Guidebook/_AU14/SOP/AI14SOPEquipmentAndPersonnel.xml"
+  text: "/ServerInfo/Guidebook/_AU14/SOP/AU14SOPEquipmentAndPersonnel.xml"
 
 - type: guideEntry
   parent: RMC
-  id: AI14SOPCommand
+  id: AU14SOPCommand
   name: Command Regulations
   priority: 1
-  text: "/ServerInfo/Guidebook/_AU14/SOP/AI14SOPCommand.xml"
+  text: "/ServerInfo/Guidebook/_AU14/SOP/AU14SOPCommand.xml"
 
 - type: guideEntry
   parent: RMC
-  id: AI14SOPDropshipsandAircraft
+  id: AU14SOPDropshipsandAircraft
   name: Dropships and Aircraft
   priority: 1
-  text: "/ServerInfo/Guidebook/_AU14/SOP/AI14SOPDropshipsandAircraft.xml"
+  text: "/ServerInfo/Guidebook/_AU14/SOP/AU14SOPDropshipsandAircraft.xml"
 
 - type: guideEntry
   parent: RMC

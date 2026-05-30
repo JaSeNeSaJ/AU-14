@@ -71,16 +71,10 @@
     neck: AU14MedalLawyerBadge
   storage:
     back:
-    - CMPaperBin30
-    - CMPenFountain
-    - RubberStampLawyer
-    - CMFolderBlack
-    - CMStampApproved
-    - CMStampDenied
-    - CMClipboard
     - RMCRadioHandheldColonyOff
+    - CMPaperBin30
   inhand:
-  - RMCBriefcasePaperPen
+  - AU14BriefcaseLawBundle
 
 - type: entity
   parent: CMSpawnPointJobBase
