@@ -97,6 +97,3 @@
       amount: 3
     - id: RMCSyringeDrugs
       amount: 1
-- type: playTimeTracker
-  id: AU14JobMobGoon
-  isHumanoid: true
