@@ -55,9 +55,6 @@
       maxItemSize: Large
       grid:
         - 0,0,4,1
-      blacklist:
-        tags:
-          - Backpack
     - type: CMStorageVisualizer
       storageClosed: null
       storageOpen: null

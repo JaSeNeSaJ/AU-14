@@ -1,11 +1,11 @@
 - type: job
+  abstract: true
   parent: CMJobBase
   id: AU14JobPARTSPartyContractorBase
   name: PMC Contractor Base
   description: au14-prodigyparty-description
-  playTimeTracker: AU14JobPARTSPartyContractor
+  playTimeTracker: AU14JobPARTSPartyContractorTracker
   basePlaytimeTracker: true
-  hidden: true
 
 - type: job
   parent: AU14JobPARTSPartyContractorBase
@@ -13,7 +13,7 @@
   name: PARTS Response Unit (M41A/2)
   description: au14-prodigyparty-description
   ranks:
-    AU14RankWeYuRecruit: []
+    AU14RankPrDAssociate: []
   spawnMenuRoleName: Prodigy Sierra Contractor (3rd party, M41A/2)
   startingGear: AU14GearPARTSPartyContractor
   greeting: au14-prodigyparty-greeting
@@ -41,7 +41,6 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
-  hidden: false
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicProdigy
@@ -71,31 +70,29 @@
     jumpsuit: AU14ProdigyFatiguesRU
     shoes: RMCBootsSPPBlackFilled
     mask: RMCMaskCoifPMC
-    eyes: RMCGlassesMedicalHUDGlasses
-    head: AU14ProdigyBeret
+    eyes: AU14ProdigyWeldingGoggles
+    head: AU14ProdigyBallisticHelmetPART
     gloves: AU14HandsProdigyRU
     belt: AU14BeltUtilityCombatProdigyRUFilled
     pocket1: RMCPouchMagazineLargePMC
     pocket2: AU14PouchIFAKProdigyFill
     back: RMCSatchelWelderRU #21 slots
-    ears: RMCM5CameraGear
-    ears2: AU14HeadsetPART
-    suitstorage: RMCWeaponRifleM54C2
+    ears: AU14HeadsetPART
+    ears2: RMCM5CameraGear
+    suitstorage: AU14KitWeaponMCX
   storage:
     pocket1:
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
     back:
     - CMMRE
     - RMCBinocularsPVE
     - AU14PacketGrenadeFragM12Filled
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
-    - CMMagazineRifleM54CAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
+    - AU14WeaponRifleprodigyrifleMagazineAP
     jumpsuit:
     - AU14SynthResetKeyProdigy
     - AU14SynthResetKeyProdigy
@@ -106,7 +103,8 @@
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
     - CMMagazinePistolMK80
-    # 2 empty slots
+    - RMCVisorMedical
+    # 1 empty slots
 
 - type: playTimeTracker
-  id: AU14JobPARTSPartyContractor
+  id: AU14JobPARTSPartyContractorTracker
