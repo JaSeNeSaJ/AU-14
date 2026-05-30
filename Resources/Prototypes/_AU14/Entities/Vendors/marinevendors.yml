@@ -1195,8 +1195,8 @@
       - id: CMGlassesSecurity
       - id: CMBeltSecurityMPFilled
       - id: RMCBoxZiptie
-      - id: RMCGuidebookLawMarine
-      - id: RMCGuidebookSOP
+      - id: AU14GuidebookLawMarine
+      - id: AU14GuidebookSOP
       - id: AU14Scissors
     - name: Uniform
       choices: { AU14Uniform: 1 }

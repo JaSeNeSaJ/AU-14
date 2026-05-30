@@ -5,7 +5,7 @@ using Content.Shared.Popups;
 
 namespace Content.Server._RMC14.SupplyDrop;
 
-public sealed class SupplyDropSystem : SharedSupplyDropSystem
+public sealed partial class SupplyDropSystem : SharedSupplyDropSystem
 {
     [Dependency] private RequisitionsSystem _requisitions = default!;
     [Dependency] private SharedPopupSystem _serverPopup = default!;
