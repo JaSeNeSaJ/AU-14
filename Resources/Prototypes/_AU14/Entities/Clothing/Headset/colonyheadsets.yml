@@ -48,14 +48,33 @@
   parent: AU14EncryptionKey
   id: AU14EncryptionKeyCMBOnly
   name: CMB encryption key
-  description: An encryption key used to communicate the CMB radio channel.
+  description: An encryption key used to communicate on the CMB radio channel.
   components:
   - type: EncryptionKey
     channels:
     - radioCMB
     defaultChannel: Colony
 
+- type: entity
+  parent: AU14EncryptionKey
+  id: AU14EncryptionKeyOrbital
+  name: orbital encryption key
+  description: An encryption key used to communicate on colony and Orbital radio channels.
+  components:
+  - type: EncryptionKey
+    channels:
+    - Colony
+#   - radioOrbital
+    defaultChannel: Colony
+
 # ├─[ HEADSETS ]────────────────────────────────────────────────────┤
+- type: entity
+  parent: CMHeadset
+  id: AU14HeadsetColonist
+  abstract: true
+  components:
+  - type: GrantAreaInfo
+
 - type: entity
   parent: RMCHeadsetLiaison
   id: AU14ColonyAdminHeadset
@@ -81,7 +100,7 @@
       - AU14EncryptionKeyWEYU
 
 - type: entity
-  parent: RMCHeadsetMarine
+  parent: AU14HeadsetGovforMarine
   id: AU14CMBHeadset
   name: CMB headset
   description: A headset used by the CMB to communicate.
@@ -93,7 +112,7 @@
       - AU14EncryptionKeyCMB
 
 - type: entity
-  parent: RMCHeadsetMarine
+  parent: AU14HeadsetGovforMarine
   id: AU14CMBHeadsetOnlyCMB
   name: CMB Earpiece
   description: A headset used by the CMB to communicate.
@@ -108,7 +127,7 @@
     state: cmb_headset
 
 - type: entity
-  parent: RMCHeadsetMarine
+  parent: AU14HeadsetColonist
   id: AU14HeadsetWorkingJoe
   name: Working Joe headset
   description: A common headset used by Working Joes.
@@ -161,3 +180,28 @@
   - type: RMCHeadset
     channels:
     - ICSCSOF
+
+# ├──[ ORBITAL HEADSETS ]────────────────────────────────────────────┤
+- type: entity
+  parent: AU14HeadsetColonist
+  id: AU14OrbitalHeadset
+  name: orbital personnel headset
+  description: A headset used by orbital personnel to communicate with the colony and the orbital station.
+  suffix: Orbital, Colony
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - AU14EncryptionKeyOrbital
+
+- type: entity
+  parent: AU14HeadsetColonist
+  id: AU14OrbitalHeadsetManagement
+  name: orbital management headset
+  suffix: Orbital, Colony, Admin
+  components:
+  - type: ContainerFill
+    containers:
+      key_slots:
+      - AU14EncryptionKeyOrbital
+      - AU14EncryptionKeyAdmin
