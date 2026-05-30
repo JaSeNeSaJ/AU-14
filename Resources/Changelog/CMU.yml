@@ -1698,5 +1698,101 @@
   id: 159
   time: '2026-05-29T21:47:20.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1155
+- author: potatoed6
+  changes:
+  - message: XM4RA - carbine based on M4RA, XM4RA1 - full auto carbine, and XM4RA1
+      SOPMOD - basically M4RA with full auto, burst and UGL. Only XM4RA is used right
+      now.
+    type: Add
+  - message: marine security guard for UA ambassador - two guards with XM4RA. Mostly
+      for larp but they also can defend embassy from low threats.
+    type: Add
+  - message: fixes VAISP 3rd party mercenary not spawning with ID nor headset.
+    type: Fix
+  id: 160
+  time: '2026-05-30T21:35:36.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1164
+- author: maertayn
+  changes:
+  - message: Colony Civil Law is here, it's a WIP. Please use the feedback thread
+      for complaints/improvements/addendums. You're not (yet) expected to follow it
+      to the T, it's a base-line currently until some of the unknown quirks are evaluated
+      and ironed out.
+    type: Add
+  - message: JO kit descriptions for IO/EO/AO/SO - differentiate what the roles are
+      meant to do for beginners.
+    type: Add
+  id: 161
+  time: '2026-05-30T21:38:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1163
+- author: potatoed6
+  changes:
+  - message: Tweaked standard issue rifles, SMGs and carbines
+    type: Tweak
+  id: 162
+  time: '2026-05-30T21:39:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1150
+- author: toot621
+  changes:
+  - message: Added CMB Parolee Transport Third Party
+    type: Add
+  - message: Added Wandering Missionaries Third Party
+    type: Add
+  - message: Added Migrating Colonists Third Party
+    type: Add
+  - message: Added Foreign Criminal Gang Third Party
+    type: Add
+  - message: Added Drug Smuggler Third Party
+    type: Add
+  id: 163
+  time: '2026-05-30T21:40:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1138
+- author: NzzyFk
+  changes:
+  - message: SG firerate BOOST (4.3 --> 10, for reference HAZOPS' GAU is somewhere
+      around 9.3)
+    type: Tweak
+  - message: SG damage nuke ( DPS at close range should be mostly the same if not
+      slightly better due to firerate increase)
+    type: Tweak
+  - message: SG damage falloff nuke (significantly decreased, so that the gun ACTUALLY
+      works as a suppressive weapon)
+    type: Tweak
+  - message: SG SFX Volume decrease (LUFS --> -30), minor pitch changes which aren't
+      noticeable
+    type: Tweak
+  id: 164
+  time: '2026-05-30T21:42:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1160
+- author: NzzyFk
+  changes:
+  - message: Smoke nade duration buff AGAIN (14 --> 22 seconds)
+    type: Tweak
+  - message: Smoke nade timer increase (1 - 2.5 seconds)
+    type: Tweak
+  id: 165
+  time: '2026-05-30T21:42:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1161
+- author: NzzyFk
+  changes:
+  - message: Fixed Helmetsprite of Prodigy third party
+    type: Fix
+  id: 166
+  time: '2026-05-30T21:43:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1166
+- author: Kadeo64
+  changes:
+  - message: Lowered chance of abomination toxin spawning in research experiment crates.
+    type: Tweak
+  id: 167
+  time: '2026-05-30T21:43:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1159
+- author: deepdarkdepths
+  changes:
+  - message: Removed weed backgrounds from xeno trap sprites so they are less visible.
+    type: Tweak
+  id: 168
+  time: '2026-05-30T21:44:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1136
 Name: CMU
 Order: -1
