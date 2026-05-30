@@ -1,5 +1,6 @@
 - type: job
   parent: AU14JobSquadRiflemanBase
   id: AU14JobGOVFORSquadRifleman
+  hidden: false
   setPreference: true
   basePlaytimeTracker: true
