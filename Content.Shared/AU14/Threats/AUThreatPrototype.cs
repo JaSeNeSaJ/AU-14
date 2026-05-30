@@ -98,12 +98,12 @@ public sealed partial class ThreatPrototype : IPrototype
     /// Minimum seconds after round start before threat entities spawn and win conditions activate.
     /// </summary>
     [DataField("spawnDelayMin")]
-    public int SpawnDelayMin { get; private set; } = 30;
+    public int SpawnDelayMin { get; private set; } = 1800;
 
     /// <summary>
     /// Maximum seconds after round start before threat entities spawn and win conditions activate.
     /// </summary>
     [DataField("spawnDelayMax")]
-    public int SpawnDelayMax { get; private set; } = 60;
+    public int SpawnDelayMax { get; private set; } = 3800;
 
 }
