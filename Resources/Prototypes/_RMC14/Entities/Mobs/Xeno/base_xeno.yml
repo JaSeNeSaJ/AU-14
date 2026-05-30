@@ -341,6 +341,7 @@
   - type: AssignXenoName
   - type: MobGibbedByExplosionType
   - type: TileFirePatter
+    removeDuration: 3.75
   - type: CanBeFirePatted
   - type: BlockIdExamine
   - type: NoStunOnExit

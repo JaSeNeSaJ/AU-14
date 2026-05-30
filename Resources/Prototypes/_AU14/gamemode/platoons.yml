@@ -36,7 +36,7 @@
   name: LACN Landing Forces
   lorePrimer: AU14PrimerPlatoonLACN
   Allegiance: UA
-  reqlist: USCMCargoCatalog
+  reqlist: LACNCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14LACNclothingequipmentvendor
@@ -108,7 +108,7 @@
   id: WEYU
   name: WY PMC
   lorePrimer: AU14PrimerPlatoonWEYU
-  reqlist: USCMCargoCatalog
+  reqlist: WEYUCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14WYclothingequipmentvendor
@@ -152,7 +152,7 @@
   name: CMB Crisis Intervention
   lorePrimer: AU14PrimerPlatoonCMBCIU
   Allegiance: UA
-  reqlist: USCMCargoCatalog
+  reqlist: CMBCIUCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
@@ -224,7 +224,7 @@
   name: USCM Hazardous Operations Unit
   lorePrimer: AU14PrimerPlatoonHAZOPS
   Allegiance: UA
-  reqlist: USCMCargoCatalog
+  reqlist: HAZOPSCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14HAZOPSclothingequipmentvendor
@@ -256,7 +256,7 @@
   id: ProdigySF
   name: Prodigy Security Forces
   lorePrimer: AU14PrimerPlatoonProdigySF
-  reqlist: UPPCargoCatalog
+  reqlist: ProdigyCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
@@ -291,7 +291,7 @@
   id: VAIPO
   name: VAI Primary Operations
   lorePrimer: AU14PrimerPlatoonVAIPO
-  reqlist: USCMCargoCatalog
+  reqlist: VAIPOCargoCatalog
   VendorToMarker:
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
