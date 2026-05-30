@@ -65,24 +65,18 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonFormal
     outerClothing: RMCJacketCorporateFormal
-    head: AU14CivFedoraTan
     shoes: RMCShoesLaceup
     id: AU14IDCardOrbitalLawyer
     ears: AU14OrbitalHeadsetManagement
     back: CMSatchel
-    pocket1: RMCGuidebookLawMarineProvost
-    pocket2: RMCGuidebookSOP
   storage:
     back:
-    - CMPaperBin30
-    - CMPenFountain
-    - CMFolderBlack
-    - CMStampApproved
-    - CMStampDenied
-    - CMClipboard
     - RMCRadioHandheldColonyOff
+    - CMFolderRed
+    - CMFolderBlack
+    - CMPaperBin30
   inhand:
-  - RMCBriefcasePaperPen
+  - AU14BriefcaseLawBundle
 
 - type: entity
   parent: CMSpawnPointJobBase
