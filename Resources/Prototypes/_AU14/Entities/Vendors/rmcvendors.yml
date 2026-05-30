@@ -381,9 +381,9 @@
         amount: 8
       - id: BedrollFolded
         amount: 20
-      - id: RMCGuidebookSOP
+      - id: AU14GuidebookSOP
         amount: 3
-      - id: RMCGuidebookLawMarine
+      - id: AU14GuidebookLawMarine
         amount: 3
 
 #corpsman
