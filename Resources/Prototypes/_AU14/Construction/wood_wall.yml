@@ -26,7 +26,7 @@
       completed:
       - !type:SnapToGrid
       steps:
-      - material: RMCPlankWood
+      - material: RMCPlankWood1
         amount: 500
         doAfter: 30
 
