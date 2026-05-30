@@ -340,7 +340,6 @@
     - USArmyAlt2
    # - cultistThirdParty
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -395,7 +394,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
       AU14JobLEOBase: AU14JobCiviliannspaConstable
@@ -454,7 +452,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -502,7 +499,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -615,7 +611,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - cultistThreat
     - XenoThreat
@@ -668,7 +663,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
     - abominationsThreatDistress
@@ -719,7 +713,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
     - abominationsThreatDistress
@@ -770,7 +763,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
     - abominationsThreatDistress
@@ -822,7 +814,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - abominationsThreatDistress
     jobScalingFof: DefaultGovforOpforScale
