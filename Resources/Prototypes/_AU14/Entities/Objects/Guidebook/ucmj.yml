@@ -6,11 +6,11 @@
   priority: 3
   children:
   - AU14UCMJLawRankStructure
-  - AI14UCMJRightToAppeal
-  - AI14UCMJNJP
+  - AU14UCMJRightToAppeal
+  - AU14UCMJNJP
   - AU14UCMJArrestingProcedure
-  - AI14UCMJCriminalCode
-  - AI14UCMJDefinitionsandGlossary
+  - AU14UCMJCriminalCode
+  - AU14UCMJDefinitionsandGlossary
 
 - type: guideEntry
   parent: RMC
@@ -21,17 +21,17 @@
 
 - type: guideEntry
   parent: RMC
-  id: AI14UCMJRightToAppeal
+  id: AU14UCMJRightToAppeal
   name: Right to Appeal
   priority: 1
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AI14UCMJRightToAppeal.xml"
+  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AU14UCMJRightToAppeal.xml"
 
 - type: guideEntry
   parent: RMC
-  id: AI14UCMJNJP
+  id: AU14UCMJNJP
   name: Non-Judicial Punishments
   priority: 3
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AI14UCMJNJP.xml"
+  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AU14UCMJNJP.xml"
 
 - type: guideEntry
   parent: RMC
@@ -42,16 +42,16 @@
 
 - type: guideEntry
   parent: RMC
-  id: AI14UCMJDefinitionsandGlossary
+  id: AU14UCMJDefinitionsandGlossary
   name: Definitions and Glossary
   priority: 2
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AI14UCMJDefinitionsandGlossary.xml"
+  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AU14UCMJDefinitionsandGlossary.xml"
 
 - type: guideEntry
   parent: RMC
-  id: AI14UCMJCriminalCode
+  id: AU14UCMJCriminalCode
   name: Criminal Code
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AI14UCMJCriminalCode.xml"
+  text: "/ServerInfo/Guidebook/_AU14/UCMJ/AU14UCMJCriminalCode.xml"
   priority: 3
   children:
   - AU14UCMJOptionalCrimes
