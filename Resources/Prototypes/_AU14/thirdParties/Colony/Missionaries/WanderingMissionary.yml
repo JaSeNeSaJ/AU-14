@@ -3,7 +3,7 @@
 
 - type: job
   parent: AU14JobLEOBase
-  id: AU14JobWanderingMissionary
+  id: AU14JobWanderingMissionaryJob
   name: Wandering Missionary
   description: You have been sent by your church to do missionary work on the frontier. Provide community serivce and humanitarian aid where needed and preach the good word to the hungry souls out here.
   setPreference: true
@@ -53,7 +53,7 @@
     name: Missionary (civilian)
     description:  You have been sent by your church to do missionary work on the frontier. Provide community serivce and humanitarian aid where needed and preach the good word to the hungry souls out here.
     reregister: false
-    job: AU14JobWanderingMissionary
+    job: AU14JobWanderingMissionaryJob
     raffle:
       settings: short
     rules: You do not know what is going on in the colony.

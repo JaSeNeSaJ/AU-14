@@ -1,6 +1,6 @@
 - type: job
   parent: AU14JobLEOBase
-  id: AU14JobParoleeReleaseCMBDeputy
+  id: AU14JobParoleeReleaseCMBDeputyJob
   name: au14-job-name-civiliancmbdeputy
   description: You have been transferred to this planet as the parole officer of a convicted criminal. Report to the local Marshal and ensure the prisoner in your care is reintegrated into civilian life.
   setPreference: false
@@ -8,7 +8,7 @@
   requirements:
   ranks:
     AU14RankCMBDeputy: []
-  startingGear: AU14GearCMBDeputyInvestigation
+  startingGear: AU14JobParoleeReleaseCMBDeputyGear
   icon: "RMCJobIconBureauDeputy"
   spawnMenuRoleName: CMB Deputy (3rd party)
   requireAdminNotify: false
@@ -48,7 +48,7 @@
   hidden: false
 
 - type: startingGear
-  id: AU14GearCMBDeputyInvestigation
+  id: AU14JobParoleeReleaseCMBDeputyGear
   equipment:
     id: AU14IDCardColonyCMBDeputy
     outerClothing: AU14CMBDeputyWindbreaker
@@ -75,7 +75,7 @@
     name: au14-job-name-civiliancmbdeputy
     description: You have been transferred to this planets Bureau by the colonial administration and tasked with transporting a local colonist who has finished his sentence offworld. Report to the local Marshal and ensure the prisoner in your care is reintegrated into the colony.
     reregister: false
-    job: AU14JobParoleeReleaseCMBDeputy
+    job: AU14JobParoleeReleaseCMBDeputyJob
     raffle:
       settings: short
     rules: You do not know what is going on in the colony.

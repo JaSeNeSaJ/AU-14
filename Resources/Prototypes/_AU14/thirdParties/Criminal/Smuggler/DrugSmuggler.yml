@@ -1,10 +1,10 @@
 - type: job
   parent: AU14JobLEOBase
-  id: AU14DrugSmuggler
+  id: AU14DrugSmugglerJob
   name: Drug Smuggler
   description: You barely made it out as the CMB raided your old drug lab, luckily you managed to escape with some of the product and they didnt catch your name. Time to try again.
   setPreference: false
-  startingGear: AU14DrugSmuggler
+  startingGear: AU14DrugSmugglerGear
   icon: "CMJobIconEmpty"
   hasIcon: false
   requireAdminNotify: false
@@ -48,13 +48,13 @@
     name: Drug Dealer (Criminal)
     description:  You barely made it out as the CMB raided your old drug lab, luckily you managed to escape with some of the product and they didnt catch your name. Time to try again.
     reregister: false
-    job: AU14DrugSmuggler
+    job: AU14DrugSmugglerJob
     raffle:
       settings: short
     rules: You do not know what is going on in the colony.
 
 - type: startingGear
-  id: AU14DrugSmuggler
+  id: AU14DrugSmugglerGear
   equipment:
     jumpsuit: CMJumpsuitLiaisonCharcoal
     shoes: RMCShoesLaceup

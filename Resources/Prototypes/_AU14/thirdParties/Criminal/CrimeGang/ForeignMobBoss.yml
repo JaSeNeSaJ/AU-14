@@ -1,11 +1,11 @@
 - type: job
   parent: AU14JobLEOBase
-  id: AU14JobForeignMobBoss
+  id: AU14JobForeignMobBossJob
   name: au14-job-name-mobboss
   description: You have been ousted from your old territory and lost everything. But old habits die hard, move into rival territory with your Family and begin anew.
   setPreference: false
   playTimeTracker: AU14JobMobBoss
-  startingGear: AU14ForeignGearMobBoss
+  startingGear: AU14ForeignGearMobBossGear
   icon: "AU14JobIconColonyMobBoss"
   hasIcon: false
   requireAdminNotify: false
@@ -47,14 +47,14 @@
     name: Mob Boss (Criminal)
     description: You have been ousted from your old territory and lost everything. But old habits die hard, move into rival territory with your Family and begin anew.
     reregister: false
-    job: AU14JobForeignMobBoss
+    job: AU14JobForeignMobBossJob
     raffle:
       settings: short
     rules: You do not know what is going on in the colony.
 
 
 - type: startingGear
-  id: AU14ForeignGearMobBoss
+  id: AU14ForeignGearMobBossGear
   equipment:
     jumpsuit: CMJumpsuitLiaisonCharcoal
     shoes: RMCShoesLaceup

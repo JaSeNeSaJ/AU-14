@@ -1,6 +1,6 @@
 - type: job
   parent: AU14JobLEOBase
-  id: AU14JobTransportParolee
+  id: AU14JobTransportParoleeJob
   name: au14-job-name-civilianprisoner
   description: You are being transported back to your home to be released on parole after serving a sentence for your previous crimes.
   setPreference: false
@@ -8,7 +8,7 @@
   requirements:
   ranks:
     RMCRankCivilian: []
-  startingGear: AU14GearCMBParolee
+  startingGear: AU14GearCMBParoleeGear
   icon: "CMJobIconEmpty"
   spawnMenuRoleName: Colony Parolee (3rd party)
   requireAdminNotify: false
@@ -35,7 +35,7 @@
   hidden: false
 
 - type: startingGear
-  id: AU14GearCMBParolee
+  id: AU14GearCMBParoleeGear
   equipment:
     id: AU14IDCardColonyColonist
     jumpsuit: AU14CivilianPrisonJumpsuit
@@ -55,7 +55,7 @@
     name: Parolee (civilian)
     description: After having served your sentence you are being transported back home to be released on parole.
     reregister: false
-    job: AU14JobTransportParolee
+    job: AU14JobTransportParoleeJob
     raffle:
       settings: short
     rules: You do not know what is going on in the colony.
