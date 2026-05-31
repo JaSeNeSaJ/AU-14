@@ -213,9 +213,7 @@
       amount: 1
     - id: CMUBlackfootFlightComputerCrate
       amount: 1
-  - type: SpawnOnTerminate
-    spawn: CMUBlackfootLandingPadFoldedProp, CMUBlackfootFlightComputerCrate, CMUBlackfootFuelPumpCrate
-    
+
 - type: entity
   parent: RMCCrateAmmo
   id: AU14CrateBlackfootdoorgunAmmo
