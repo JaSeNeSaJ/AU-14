@@ -282,6 +282,30 @@
         crate: VehicleSPPAPCWheel
       - cost: 250
         crate: VehicleSPPVanWheel
+    - name: Vehicle Ammo Crates
+      entries:
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoLTAAAP
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoLTBCannon
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoLZRNFlamer
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoFlareLauncher       
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoSmokeLauncher
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoCupola
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoGrenadeLauncher
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoBoyarsDualCannon
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoFrontalCannon
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoRotaryCannon
+      - cost: 1500
+        crate: RMCCrateVehicleAmmoTowLauncher
     - name: Blackfoot Hardpoints
       entries:
       - cost: 1500
@@ -294,3 +318,13 @@
         crate: VehicleBlackfootReconSystem
       - cost: 2500
         crate: VehicleBlackfootSensorArray
+    - name: Blackfoot Utilites & Ammo
+      entries:
+      - cost: 3500
+        crate: CMUBlackfootAerospaceTug
+      - cost: 5000
+        crate: AU14CrateBlackfootLandingPad
+      - cost: 4500
+        crate: AU14CrateBlackfootflareAmmo
+      - cost: 2500
+        crate: AU14CrateBlackfootdoorgunAmmo
