@@ -51,6 +51,8 @@
         RMCSkillFirearms: 1
         RMCSkillIntel: 1
         RMCSkillOverwatch: 1
+    - type: EquipEntityPreset
+      preset: AU14WeYuSurvPistolPreset
     - type: CMVendorUser
       id: AU14JobCivilianCorporateLiaison
       points: 70
@@ -91,7 +93,6 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonOutingRed
     shoes: RMCBootsCorporate
-    belt: RMCM77BeltPMCFilled
     id: AU14IDCardColonyCorporateLiaison
     outerClothing: RMCBrownWEYACoat
     ears: RMCHeadsetDistressWeYa

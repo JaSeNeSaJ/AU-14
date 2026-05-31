@@ -3,7 +3,7 @@
   leadersToSpawn:
     AU14JobWYSurvLiaison: 1
   gruntsToSpawn:
-    AU14JobWYSurvPMCNSG23: 2
+    AU14JobWYSurvPMC: 2
     AU14JobWYSurvGoon: 2
     AU14JobWYSurvGoonShotgun: 1
     AU14JobWYSurvScientist: 1
@@ -29,7 +29,7 @@
 - type: partySpawn
   id: WEYUSurvSpawnMedium
   leadersToSpawn:
-    AU14JobWYSurvPMCNSG23: 1
+    AU14JobWYSurvPMC: 1
   gruntsToSpawn:
     AU14JobWYSurvGoon: 2
     AU14JobWYSurvGoonShotgun: 1
@@ -56,7 +56,7 @@
 - type: partySpawn
   id: WEYUSurvSpawnSmall
   leadersToSpawn:
-    AU14JobWYSurvPMCNSG23: 1
+    AU14JobWYSurvPMC: 1
   gruntsToSpawn:
     AU14JobWYSurvGoon: 1
     AU14JobWYSurvGoonShotgun: 1

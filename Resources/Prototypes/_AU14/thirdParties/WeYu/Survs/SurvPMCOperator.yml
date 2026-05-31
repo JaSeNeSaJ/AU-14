@@ -1,12 +1,12 @@
 - type: job
   parent: AU14JobWYPMCPartyContractorBase
-  id: AU14JobWYSurvPMCNSG23
+  id: AU14JobWYSurvPMC
   name: au14-job-name-wypmc
   description: au14-wysurv-greeting
   ranks:
     AU14RankWeYuRecruit: []
   spawnMenuRoleName: WY PMC Contractor (Survivor, NSG-23)
-  startingGear: AU14GearWYSurvPMCNSG23
+  startingGear: AU14GearWYSurvPMC
   greeting: au14-wysurv-greeting
   icon: "RMCJobIconPMCStandard"
   joinNotifyCrew: false
@@ -29,6 +29,8 @@
         RMCSkillFireman: 1
         RMCSkillVehicles: 1
         RMCSkillPolice: 1
+    - type: EquipEntityPreset
+      preset: AU14WYSurvRifleBackpackPreset
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORSquadRiflemanWYPMC
     - type: TacticalMapIcon
@@ -43,8 +45,8 @@
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicWeYu
-  id: AU14JobWYSurvPMCNSG23
-  name: WY PMC Contractor (Survivor, NSG-23)
+  id: AU14JobWYSurvPMC
+  name: WY PMC Contractor (Survivor)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
@@ -56,29 +58,23 @@
     name: PMC Contractor
     description: au14-wysurv-description
     reregister: false
-    job: AU14JobWYSurvPMCNSG23
+    job: AU14JobWYSurvPMC
     raffle:
       settings: short
     rules: au14-wysurv-description
 
 - type: startingGear
-  id: AU14GearWYSurvPMCNSG23
-  parent: AU14GearWYPMCPartyContractor
+  id: AU14GearWYSurvPMC
   equipment:
-    suitstorage: RMCWeaponRifleSSG45
+    id: AU14IDCardColonyCorporateLiaison
+    outerClothing: AU14WYPMCArmor
+    jumpsuit: AU14WYPMCFatigues
+    shoes: RMCBootsPMCFilled
+    head: AU14ArmorHelmetPMCTactical
+    gloves: AU14PVEHandsInsulatedBlackMarine
+    belt: RMCMK80BeltPMCFilled
+    pocket2: RMCPouchFirstAidPMCFill
+    ears: RMCHeadsetDistressWeYa
   storage:
-    pocket1:
-    - RMCMagazineRifleSSG45
-    - RMCMagazineRifleSSG45
-    - RMCMagazineRifleSSG45
-    - RMCMagazineRifleSSG45
     pocket2:
     - AU14Tourniquet
-    back:
-    - RMCMREWeYa
-    - CMCanteen
-    - RMCMagazineRifleSSG45
-    - RMCMagazineRifleSSG45
-    - RMCMagazineRifleSSG45
-    - RMCGrenadeBlastM12
-    - RMCGrenadeBlastM12
