@@ -30,6 +30,7 @@
   id: WEYUSurvSpawnMedium
   leadersToSpawn:
     AU14JobWYSurvPMC: 1
+    AU14JobWYSurvLiaison: 1
   gruntsToSpawn:
     AU14JobWYSurvGoon: 2
     AU14JobWYSurvGoonShotgun: 1
@@ -49,7 +50,7 @@
   entrymethod: ground
   weight: 25
   minplayers: 51
-  maxplayers: 100
+  maxplayers: 99
   GhostsNeeded: 0
   roundstart: true
 
