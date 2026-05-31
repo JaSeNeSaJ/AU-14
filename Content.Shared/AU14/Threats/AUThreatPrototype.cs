@@ -59,7 +59,7 @@ public sealed partial class ThreatPrototype : IPrototype
 
 
     [DataField("maxplayers")]
-    public int MaxPlayers { get; private set; } = 100;
+    public int MaxPlayers { get; private set; } = 0;
 
     [DataField("minplayers")]
     public int MinPlayers { get; private set; } = 0;
