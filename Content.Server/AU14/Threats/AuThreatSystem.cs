@@ -22,6 +22,9 @@ namespace Content.Server.AU14.Threats;
 
 public sealed partial class AuThreatSystem : EntitySystem
 {
+    private static readonly ProtoId<JobPrototype> ThreatLeaderJobId = new("AU14JobThreatLeader");
+    private static readonly ProtoId<JobPrototype> ThreatMemberJobId = new("AU14JobThreatMember");
+
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private SharedMindSystem _mindSystem = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
@@ -42,6 +45,31 @@ public sealed partial class AuThreatSystem : EntitySystem
     }
 
     private PendingThreatSpawn? _pendingSpawn;
+
+    internal static bool IsThreatJob(ProtoId<JobPrototype>? job)
+    {
+        return job == ThreatLeaderJobId || job == ThreatMemberJobId;
+    }
+
+    internal static int RemoveThreatJobAssignments(
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
+        IReadOnlySet<NetUserId>? keepPlayers = null)
+    {
+        var removed = 0;
+        foreach (var (player, (job, _)) in assignedJobs.ToArray())
+        {
+            if (!IsThreatJob(job))
+                continue;
+
+            if (keepPlayers != null && keepPlayers.Contains(player))
+                continue;
+
+            assignedJobs.Remove(player);
+            removed++;
+        }
+
+        return removed;
+    }
 
     public override void Update(float frameTime)
     {
@@ -109,12 +137,18 @@ public sealed partial class AuThreatSystem : EntitySystem
         if (string.IsNullOrWhiteSpace(partySpawn))
         {
             Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
+            var removed = RemoveThreatJobAssignments(assignedJobs);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with no roundstart spawn so normal overflow assignment can handle them.");
             return;
         }
         var newpartySpawn = _prototypeManager.TryIndex(partySpawn, out var spawn) ? spawn : null;
         if (newpartySpawn == null)
         {
             Logger.GetSawmill("au14.threat").Error( $"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
+            var removed = RemoveThreatJobAssignments(assignedJobs);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with missing roundstart spawn '{partySpawn}' so normal overflow assignment can handle them.");
             return;
         }
 
@@ -267,6 +301,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             var threatMemberJobId = new ProtoId<JobPrototype>("AU14JobThreatMember");
             var leaderPlayers = assignedJobs.Where(x => x.Value.Item1 == threatLeaderJobId).Select(x => x.Key).ToList();
             var memberPlayers = assignedJobs.Where(x => x.Value.Item1 == threatMemberJobId).Select(x => x.Key).ToList();
+            var spawnedThreatPlayers = new HashSet<NetUserId>();
 
             // Assign leader minds
             for (int i = 0; i < leaderPlayers.Count && i < spawnedLeaders.Count; i++)
@@ -306,6 +341,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 _npcFaction.AddFaction((entity,
                         CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
                     threatnpcfaction);
+                spawnedThreatPlayers.Add(playerNetId);
             }
 
             Logger.GetSawmill("au14.threat").Debug(
@@ -346,10 +382,14 @@ public sealed partial class AuThreatSystem : EntitySystem
                 _npcFaction.AddFaction((entity,
                         CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
                     threatnpcfaction);
+                spawnedThreatPlayers.Add(playerNetId);
             }
 
             Logger.GetSawmill("au14.threat").Debug(
                 $"[DEBUG] Assigned {Math.Min(memberPlayers.Count, spawnedMembers.Count)} member minds");
+            var removed = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} unspawned threat assignment(s) so normal overflow assignment can handle them.");
         }
     }
 }
