@@ -242,3 +242,93 @@
         crate: RMCDropshipAttachmentAmmoGAUAP
       - cost: 2500
         crate: RMCDropshipAttachmentAmmoLaserCannon
+    - name: Vehicle Hardpoints
+      entries:
+      - cost: 3000
+        crate: VehicleTankAceAutocannon
+      - cost: 2200
+        crate: VehicleHumveeARCCannon
+      - cost: 2500
+        crate: VehicleTankDragonFlamer
+      - cost: 3200
+        crate: VehicleSPPAPCHJ35Launcher
+      - cost: 3800
+        crate: VehicleSPPTankHJ35TLauncher
+      - cost: 1800
+        crate: VehicleTankLTAAAPMinigun
+      - cost: 2400
+        crate: VehicleTankLTBCannon
+      - cost: 800
+        crate: VehicleTankM56Cupola
+      - cost: 2800
+        crate: VehicleSPPTankP17702
+      - cost: 4200
+        crate: VehicleTankRERE700
+      - cost: 2600
+        crate: VehicleSPPAPCAutocannon
+      - cost: 600
+        crate: VehicleSPPAPCFlareLauncher
+      - cost: 1400
+        crate: VehicleSPPAPCMinigun
+      - cost: 3500
+        crate: VehicleSPPTankArtilleryModule
+      - cost: 750
+        crate: VehicleSPPTankFlareModule
+      - cost: 1500
+        crate: VehicleSPPTankOverdriveEnhancer
+      - cost: 5000
+        crate: VehicleSPPTankRailgun
+      - cost: 3000
+        crate: VehicleSPPTankRocketLauncher
+      - cost: 1200
+        crate: VehicleSPPTankWarningArray
+      - cost: 800
+        crate: VehicleSPPTankCupola
+      - cost: 3200
+        crate: VehicleTankArtilleryModule
+      - cost: 1800
+        crate: VehicleTankArmorBallistic
+      - cost: 1600
+        crate: VehicleTankArmorCaustic
+      - cost: 400
+        crate: MaintenanceJack
+      - cost: 1000
+        crate: VehicleTankTreads
+      - cost: 500
+        crate: VehicleTankSnowplow
+      - cost: 1800
+        crate: VehicleTankGrenadeLauncher
+      - cost: 2200
+        crate: VehicleTankFlamer
+      - cost: 2600
+        crate: VehicleTankTowLauncher
+      - cost: 2800
+        crate: VehicleTankRocketLauncher
+      - cost: 1600
+        crate: VehicleTankReinforcedTreads
+      - cost: 2200
+        crate: VehicleSPPTankReactiveArmor
+      - cost: 3000
+        crate: VehicleTankArmorPaladin
+      - cost: 1500
+        crate: VehicleTankOverdriveEnhancer
+      - cost: 1200
+        crate: VehicleTankWarningArray
+      - cost: 250
+        crate: VehicleHumveeWheel
+      - cost: 350
+        crate: VehicleHumveeSnowplow
+      - cost: 900
+        crate: VehicleHumveeOverlight
+      - cost: 2400
+        crate: VehicleHumveeLauncher
+      - cost: 1800
+        crate: VehicleHumveeCannon
+      - cost: 750
+        crate: VehicleTankFlareModule
+      - cost: 1600
+        crate: VehicleTankArmorConcussive
+      - cost: 300
+        crate: VehicleSPPAPCWheel
+      - cost: 250
+        crate: VehicleSPPVanWheel
