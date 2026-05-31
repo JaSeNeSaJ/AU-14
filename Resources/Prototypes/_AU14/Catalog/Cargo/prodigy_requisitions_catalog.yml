@@ -250,40 +250,14 @@
         crate: VehicleHumveeARCCannon
       - cost: 2500
         crate: VehicleTankDragonFlamer
-      - cost: 3200
-        crate: VehicleSPPAPCHJ35Launcher
-      - cost: 3800
-        crate: VehicleSPPTankHJ35TLauncher
       - cost: 1800
         crate: VehicleTankLTAAAPMinigun
       - cost: 2400
         crate: VehicleTankLTBCannon
       - cost: 800
         crate: VehicleTankM56Cupola
-      - cost: 2800
-        crate: VehicleSPPTankP17702
       - cost: 4200
         crate: VehicleTankRERE700
-      - cost: 2600
-        crate: VehicleSPPAPCAutocannon
-      - cost: 600
-        crate: VehicleSPPAPCFlareLauncher
-      - cost: 1400
-        crate: VehicleSPPAPCMinigun
-      - cost: 3500
-        crate: VehicleSPPTankArtilleryModule
-      - cost: 750
-        crate: VehicleSPPTankFlareModule
-      - cost: 1500
-        crate: VehicleSPPTankOverdriveEnhancer
-      - cost: 5000
-        crate: VehicleSPPTankRailgun
-      - cost: 3000
-        crate: VehicleSPPTankRocketLauncher
-      - cost: 1200
-        crate: VehicleSPPTankWarningArray
-      - cost: 800
-        crate: VehicleSPPTankCupola
       - cost: 3200
         crate: VehicleTankArtilleryModule
       - cost: 1800
@@ -306,8 +280,6 @@
         crate: VehicleTankRocketLauncher
       - cost: 1600
         crate: VehicleTankReinforcedTreads
-      - cost: 2200
-        crate: VehicleSPPTankReactiveArmor
       - cost: 3000
         crate: VehicleTankArmorPaladin
       - cost: 1500
@@ -328,7 +300,15 @@
         crate: VehicleTankFlareModule
       - cost: 1600
         crate: VehicleTankArmorConcussive
-      - cost: 300
-        crate: VehicleSPPAPCWheel
-      - cost: 250
-        crate: VehicleSPPVanWheel
+    - name: Blackfoot Hardpoints
+      entries:
+      - cost: 1500
+        crate: VehicleBlackfootThrusters
+      - cost: 1000
+        crate: VehicleBlackfootLaunchers
+      - cost: 4500
+        crate: VehicleBlackfootDoorGun
+      - cost: 2500
+        crate: VehicleBlackfootReconSystem
+      - cost: 2500
+        crate: VehicleBlackfootSensorArray
