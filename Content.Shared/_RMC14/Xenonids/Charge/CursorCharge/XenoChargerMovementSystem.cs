@@ -26,7 +26,7 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
 
         SubscribeNetworkEvent<XenoCursorSteeringMessage>(OnCursorSteeringMessage);
-        SubscribeLocalEvent<XenoChargerActiveComponent, MoveInputEvent>(OnMoveInput);
+        SubscribeLocalEvent<XenoChargerStateComponent, MoveInputEvent>(OnMoveInput);
 
     }
 
@@ -34,64 +34,54 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     // Public transition API — the only place MoveState changes
     // -------------------------------------------------------------------------
 
-    public void StartCharge(Entity<XenoChargerComponent> ent)
+    public void StartCharge(EntityUid xeno)
     {
-        EnsureComp<XenoChargerActiveComponent>(ent);
+        var stateComp = EnsureComp<XenoChargerStateComponent>(xeno);
 
-        var comp = ent.Comp;
-        comp.MoveState = XenoChargerMoveState.Charging;
-        comp.Stage = 0;
-        comp.DistanceTraveled = 0f;
-        comp.SoundDistanceAccumulator = 0f;
-        comp.HitEntities.Clear();
-        comp.CurrentHeading = comp.TargetHeading;
-
+        stateComp.MoveState = XenoChargerMoveState.Charging;
+        stateComp.Stage = 0;
+        stateComp.DistanceTraveled = 0f;
+        stateComp.SoundDistanceAccumulator = 0f;
+        stateComp.HitEntities.Clear();
+        stateComp.CurrentHeading = stateComp.TargetHeading;
+/*
         // Zero velocity so old player movement doesn't fight the first charge tick
-        if (_physicsQuery.TryGetComponent(ent, out var physics))
-            _physics.SetLinearVelocity(ent, Vector2.Zero, body: physics);
-
-        Dirty(ent, comp);
+        if (_physicsQuery.TryGetComponent(xeno, out var physics))
+            _physics.SetLinearVelocity(xeno, Vector2.Zero, body: physics);
+*/
+        Dirty(xeno, stateComp);
     }
 
-    public void StartLunge(Entity<XenoChargerComponent> ent)
+    public void StartLunge(EntityUid uid)
     {
-        EnsureComp<XenoChargerActiveComponent>(ent);
+        if (!TryComp(uid, out XenoChargerComponent? xeno))
+            return;
 
-        var comp = ent.Comp;
-        var stage = comp.Stage;
+        // State must exist — can't lunge without having charged first.
+        if (!TryComp(uid, out XenoChargerStateComponent? state))
+            return;
 
-        // Lock lunge direction from current charge heading, or target heading if idle.
-        var direction = comp.MoveState == XenoChargerMoveState.Charging
-            ? comp.CurrentHeading.ToVec()
-            : comp.TargetHeading.ToVec();
+        var direction = state.MoveState == XenoChargerMoveState.Charging
+            ? state.CurrentHeading.ToVec()
+            : state.TargetHeading.ToVec();
 
-        // Zero velocity before taking over — clean handoff.
-        if (_physicsQuery.TryGetComponent(ent, out var physics))
-            _physics.SetLinearVelocity(ent, Vector2.Zero, body: physics);
+        if (_physicsQuery.TryGetComponent(uid, out var physics))
+            _physics.SetLinearVelocity(uid, Vector2.Zero, body: physics);
 
-        comp.MoveState = XenoChargerMoveState.Lunging;
-        comp.LungeDirection = direction;
-        comp.LungeDistanceRemaining = comp.LungeDistance + stage * comp.LungeDistancePerStage;
-        comp.HitEntities.Clear();
+        state.MoveState = XenoChargerMoveState.Lunging;
+        state.LungeDirection = direction;
+        state.LungeDistanceRemaining = xeno.LungeDistance + state.Stage * xeno.LungeDistancePerStage;
+        state.HitEntities.Clear();
 
-        // Stage is preserved in comp.Stage so collision system can read it.
-        Dirty(ent, comp);
+        Dirty(uid, state);
     }
 
-    public void ResetToIdle(Entity<XenoChargerComponent> ent)
+    public void ResetToIdle(EntityUid uid)
     {
-        RemComp<XenoChargerActiveComponent>(ent);
+        if (_physicsQuery.TryGetComponent(uid, out var physics))
+            _physics.SetLinearVelocity(uid, Vector2.Zero, body: physics);
 
-        var comp = ent.Comp;
-        comp.MoveState = XenoChargerMoveState.Idle;
-        comp.Stage = 0;
-        comp.DistanceTraveled = 0f;
-        comp.HitEntities.Clear();
-
-        if (_physicsQuery.TryGetComponent(ent, out var physics))
-            _physics.SetLinearVelocity(ent, Vector2.Zero, body: physics);
-
-        Dirty(ent, comp);
+        RemComp<XenoChargerStateComponent>(uid);
     }
 
     // -------------------------------------------------------------------------
@@ -103,86 +93,89 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         if (_net.IsClient)
             return;
 
-        var query = EntityQueryEnumerator<XenoChargerComponent, PhysicsComponent>();
-        while (query.MoveNext(out var uid, out var comp, out var physics))
+        var query = EntityQueryEnumerator<XenoChargerStateComponent, XenoChargerComponent, PhysicsComponent>();
+        while (query.MoveNext(out var uid, out var stateComp, out var xenoComp, out var physics))
         {
-            switch (comp.MoveState)
+            switch (stateComp.MoveState)
             {
                 case XenoChargerMoveState.Charging:
-                    UpdateCharging((uid, comp), physics, frameTime);
+                    UpdateCharging((uid, stateComp), (uid, xenoComp), physics, frameTime);
                     break;
                 case XenoChargerMoveState.Lunging:
-                    UpdateLunging((uid, comp), physics, frameTime);
+                    UpdateLunging((uid, stateComp), (uid, xenoComp), physics, frameTime);
                     break;
             }
         }
     }
 
-    private void UpdateCharging(Entity<XenoChargerComponent> ent, PhysicsComponent physics, float frameTime)
+    private void UpdateCharging(Entity<XenoChargerStateComponent> state, Entity<XenoChargerComponent> xeno, PhysicsComponent physics, float frameTime)
     {
-        var comp = ent.Comp;
+        var stateComp = state.Comp;
+        var xenoComp = xeno.Comp;
 
         // Speed scales up with stage.
-        var speed = comp.BaseSpeed + comp.Stage * comp.SpeedPerStage;
-        var vel = comp.CurrentHeading.ToVec() * speed;
+        var speed = xenoComp.BaseSpeed + stateComp.Stage * xenoComp.SpeedPerStage;
+        var vel = stateComp.CurrentHeading.ToVec() * speed;
 
         // Accumulate distance and increment stage.
         var distThisFrame = speed * frameTime;
-        comp.DistanceTraveled += distThisFrame;
+        stateComp.DistanceTraveled += distThisFrame;
 
-        if (comp.Stage < comp.MaxStage && comp.DistanceTraveled >= comp.DistancePerStage)
+        if (stateComp.Stage < xenoComp.MaxStage && stateComp.DistanceTraveled >= xenoComp.DistancePerStage)
         {
-            comp.Stage++;
-            comp.DistanceTraveled -= comp.DistancePerStage;
+            stateComp.Stage++;
+            stateComp.DistanceTraveled -= xenoComp.DistancePerStage;
 
-            if (comp.Stage == comp.MaxStage)
-                _rmcEmote.TryEmoteWithChat(ent, "XenoRoar", cooldown: TimeSpan.FromSeconds(20));
+            if (stateComp.Stage == xenoComp.MaxStage)
+                _rmcEmote.TryEmoteWithChat(xeno, "XenoRoar", cooldown: TimeSpan.FromSeconds(20));
         }
 
         // Turn rate scales down as stage increases.
-        var stageRatio = comp.Stage / (float)comp.MaxStage;
-        var maxTurnRate = MathHelper.Lerp(comp.BaseTurnRate, comp.MinTurnRate, stageRatio);
+        var stageRatio = stateComp.Stage / (float)xenoComp.MaxStage;
+        var maxTurnRate = MathHelper.Lerp(xenoComp.BaseTurnRate, xenoComp.MinTurnRate, stageRatio);
 
-        var angleDelta = (comp.TargetHeading - comp.CurrentHeading).Reduced();
+        var angleDelta = (stateComp.TargetHeading - stateComp.CurrentHeading).Reduced();
         var delta = angleDelta.Theta;
         if (delta > Math.PI) delta -= 2 * Math.PI;
         else if (delta < -Math.PI) delta += 2 * Math.PI;
 
         var turnAmount = (float)Math.Clamp(delta, -maxTurnRate * frameTime, maxTurnRate * frameTime);
-        comp.CurrentHeading = new Angle(comp.CurrentHeading.Theta + turnAmount);
+        stateComp.CurrentHeading = new Angle(stateComp.CurrentHeading.Theta + turnAmount);
 
 
 
-        _physics.SetAwake((ent.Owner, physics), true);
-        _physics.SetLinearVelocity(ent, vel, body: physics);
+        _physics.SetAwake((xeno, physics), true);
+        _physics.SetLinearVelocity(xeno, vel, body: physics);
 
-        _transform.SetWorldRotation(ent, comp.CurrentHeading.GetDir().ToAngle());
+        _transform.SetWorldRotation(xeno, stateComp.CurrentHeading.GetDir().ToAngle());
 
         // Stomp sound.
-        comp.SoundDistanceAccumulator += distThisFrame;
-        var soundInterval = comp.SoundEveryDistance / (1f + comp.Stage * 0.15f);
-        if (comp.SoundDistanceAccumulator >= soundInterval && _net.IsServer && comp.ChargeSound != null)
+        stateComp.SoundDistanceAccumulator += distThisFrame;
+        var soundInterval = xenoComp.SoundEveryDistance / (1f + stateComp.Stage * 0.15f);
+        if (stateComp.SoundDistanceAccumulator >= soundInterval && _net.IsServer && xenoComp.ChargeSound != null)
         {
-            comp.SoundDistanceAccumulator = 0f;
-            _audio.PlayPvs(comp.ChargeSound, ent);
+            stateComp.SoundDistanceAccumulator = 0f;
+            _audio.PlayPvs(xenoComp.ChargeSound, xeno);
         }
 
-        Dirty(ent, comp);
+        Dirty(xeno, stateComp);
     }
 
-    private void UpdateLunging(Entity<XenoChargerComponent> ent, PhysicsComponent physics, float frameTime)
+    private void UpdateLunging(Entity<XenoChargerStateComponent> state, Entity<XenoChargerComponent> xeno, PhysicsComponent physics, float frameTime)
     {
-        var comp = ent.Comp;
-        var speed = comp.LungeSpeed + comp.Stage * comp.LungeSpeedPerStage;
+        var stateComp = state.Comp;
+        var xenoComp = xeno.Comp;
 
-        _physics.SetAwake((ent.Owner, physics), true);
-        _physics.SetLinearVelocity(ent, comp.LungeDirection * speed, body: physics);
+        var speed = xenoComp.LungeSpeed + stateComp.Stage * xenoComp.LungeSpeedPerStage;
 
-        comp.LungeDistanceRemaining -= speed * frameTime;
-        Dirty(ent, comp);
+        _physics.SetAwake((xeno, physics), true);
+        _physics.SetLinearVelocity(xeno, stateComp.LungeDirection * speed, body: physics);
 
-        if (comp.LungeDistanceRemaining <= 0f)
-            ResetToIdle((ent.Owner, comp));
+        stateComp.LungeDistanceRemaining -= speed * frameTime;
+        Dirty(xeno, stateComp);
+
+        if (stateComp.LungeDistanceRemaining <= 0f)
+            ResetToIdle(xeno.Owner);
     }
 
     // -------------------------------------------------------------------------
@@ -194,7 +187,7 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         if (args.SenderSession.AttachedEntity is not { } controlled)
             return;
 
-        if (!TryComp(controlled, out XenoChargerComponent? comp))
+        if (!TryComp(controlled, out XenoChargerStateComponent? comp))
             return;
 
         if (comp.MoveState == XenoChargerMoveState.Idle)
@@ -208,13 +201,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         comp.TargetHeading = diff.ToAngle();
     }
 
-    private void OnMoveInput(Entity<XenoChargerActiveComponent> ent, ref MoveInputEvent args)
+    private void OnMoveInput(Entity<XenoChargerStateComponent> ent, ref MoveInputEvent args)
     {
         args.Entity.Comp.HeldMoveButtons &= ~MoveButtons.AnyDirection;
     }
-
-    // -------------------------------------------------------------------------
-    // Helpers
-    // -------------------------------------------------------------------------
-
 }

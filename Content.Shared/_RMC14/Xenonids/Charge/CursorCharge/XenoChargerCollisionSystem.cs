@@ -20,6 +20,7 @@ using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 
+
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 
 public sealed class XenoChargerCollisionSystem : EntitySystem
@@ -40,6 +41,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly SharedRMCExplosionSystem _explosionSystem = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
+    private const float HeadOnDotThreshold = 0.707f; // cos(45°)
     private readonly HashSet<(EntityUid Charger, EntityUid Target)> _hits = new();
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
@@ -50,12 +52,16 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         SubscribeLocalEvent<XenoChargerComponent, StartCollideEvent>(OnCollide);
     }
 
-    private void OnCollide(Entity<XenoChargerComponent> ent, ref StartCollideEvent args)
+    private void OnCollide(Entity<XenoChargerComponent> xeno, ref StartCollideEvent args)
     {
-        if (ent.Comp.MoveState == XenoChargerMoveState.Idle)
+        // Only care if actively moving.
+        if (!TryComp(xeno.Owner, out XenoChargerStateComponent? state))
             return;
 
-        _hits.Add((ent.Owner, args.OtherEntity));
+        if (state.MoveState == XenoChargerMoveState.Idle)
+            return;
+
+        _hits.Add((xeno.Owner, args.OtherEntity));
     }
 
     public override void Update(float frameTime)
@@ -70,20 +76,22 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
                 if (TerminatingOrDeleted(charger) || TerminatingOrDeleted(target))
                     continue;
 
-                if (!TryComp(charger, out XenoChargerComponent? comp))
+                if (!TryComp(charger, out XenoChargerComponent? xeno))
                     continue;
 
-                // Per-lunge bowling ball dedup.
-                if (comp.MoveState == XenoChargerMoveState.Lunging && !comp.HitEntities.Add(target))
+                if (!TryComp(charger, out XenoChargerStateComponent? state))
                     continue;
 
-                switch (comp.MoveState)
+                if (state.MoveState == XenoChargerMoveState.Lunging && !state.HitEntities.Add(target))
+                    continue;
+
+                switch (state.MoveState)
                 {
                     case XenoChargerMoveState.Charging:
-                        HandleChargingCollision((charger, comp), target);
+                        HandleChargingCollision(charger, xeno, state, target);
                         break;
                     case XenoChargerMoveState.Lunging:
-                        HandleLungingCollision((charger, comp), target);
+                        HandleLungingCollision(charger, xeno, state, target);
                         break;
                 }
             }
@@ -98,57 +106,56 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
     // Charging collisions
     // -------------------------------------------------------------------------
 
-    private void HandleChargingCollision(Entity<XenoChargerComponent> ent, EntityUid target)
+    private void HandleChargingCollision(EntityUid charger, XenoChargerComponent xeno, XenoChargerStateComponent state, EntityUid target)
     {
-        var comp = ent.Comp;
-        var stage = comp.Stage;
-        var atMax = stage == comp.MaxStage;
+        var stage = state.Stage;
+        var atMax = stage == xeno.MaxStage;
 
         if (TryComp(target, out MobStateComponent? mobState) && !_mobState.IsDead(target, mobState))
         {
-            if (!_xeno.CanAbilityAttackTarget(ent, target))
+            if (!_xeno.CanAbilityAttackTarget(charger, target))
                 return;
 
-            var mult = atMax ? comp.HumanDamageMultiplierMax : comp.HumanDamageMultiplier;
+            var mult = atMax ? xeno.HumanDamageMultiplierMax : xeno.HumanDamageMultiplier;
             var damage = new DamageSpecifier();
             damage.DamageDict[_blunt] = stage * mult;
-            _damageable.TryChangeDamage(target, damage, origin: ent);
+            _damageable.TryChangeDamage(target, damage, origin: charger);
 
             var knockdown = atMax
-                ? TimeSpan.FromSeconds(comp.HumanKnockdownDuration * 2)
-                : TimeSpan.FromSeconds(comp.HumanKnockdownDuration);
+                ? TimeSpan.FromSeconds(xeno.HumanKnockdownDuration * 2)
+                : TimeSpan.FromSeconds(xeno.HumanKnockdownDuration);
             _stun.TryParalyze(target, knockdown, false);
 
-            var origin = _transform.GetMapCoordinates(ent);
-            _sizeStun.KnockBack(target, origin, 2, 2, knockBackSpeed: stage * 2f);
+            var origin = _transform.GetMapCoordinates(charger);
+            _sizeStun.KnockBack(target, origin, 2, 2, knockBackSpeed: stage * 1f);
 
             if (_net.IsServer)
             {
                 _popup.PopupEntity(
-                    Loc.GetString("rmc-xeno-charge-knockback-others", ("user", ent.Owner), ("target", target)),
+                    Loc.GetString("rmc-xeno-charge-knockback-others", ("user", charger), ("target", target)),
                     target,
                     PopupType.MediumCaution
                 );
             }
 
-            comp.Stage = Math.Max(0, comp.Stage - 1);
-            Dirty(ent, comp);
+            state.Stage = Math.Max(0, state.Stage - 1);
+            Dirty(charger, state);
             return;
         }
 
         if (HasComp<BarricadeComponent>(target))
         {
             var damage = new DamageSpecifier();
-            damage.DamageDict[_blunt] = stage * comp.BarricadeCollisionDamage;
+            damage.DamageDict[_blunt] = stage * xeno.BarricadeCollisionDamage;
             _damageable.TryChangeDamage(target, damage);
-            _movement.ResetToIdle((ent.Owner, comp));
+            _movement.ResetToIdle(charger);
             return;
         }
 
         if (HasComp<DamageableComponent>(target))
         {
             var damage = new DamageSpecifier();
-            damage.DamageDict[_blunt] = stage * comp.StructureDamageMultiplier;
+            damage.DamageDict[_blunt] = stage * xeno.StructureDamageMultiplier;
             _damageable.TryChangeDamage(target, damage);
 
             if (!TerminatingOrDeleted(target) &&
@@ -156,12 +163,12 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
                 _physicsQuery.TryGetComponent(target, out var tp) &&
                 tp.Hard && tp.BodyType == BodyType.Static)
             {
-                _movement.ResetToIdle((ent.Owner, comp));
+                _movement.ResetToIdle(charger);
             }
             else
             {
-                comp.Stage = Math.Max(0, comp.Stage - 1);
-                Dirty(ent, comp);
+                state.Stage = Math.Max(0, state.Stage - 1);
+                Dirty(charger, state);
             }
 
             return;
@@ -171,34 +178,26 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         if (_physicsQuery.TryGetComponent(target, out var wallPhysics) &&
             wallPhysics.Hard && wallPhysics.BodyType == BodyType.Static)
         {
-            if (stage == 0)
-                return; // Hug the wall at stage 0.
-
             if (stage <= 4)
-                return; // Not fast enough to care, continue freely.
+                return;
 
-            // Check impact angle — stop only if roughly head-on (>45 degrees from glancing).
-            var chargeDir = comp.CurrentHeading.ToVec();
-            var wallNormal = GetWallNormal(ent, target);
+            var chargeDir = state.CurrentHeading.ToVec();
+            var wallNormal = GetWallNormal(charger, target);
             var dot = Vector2.Dot(chargeDir, wallNormal);
 
-            // dot close to -1 = head-on, dot close to 0 = glancing
-            // Stop if more than 45 degrees from glancing (dot < -cos(45) ≈ -0.707)
-            if (dot < -0.707f)
-                _movement.ResetToIdle((ent.Owner, comp));
-            // Otherwise continue freely
+            if (dot < -HeadOnDotThreshold)
+                _movement.ResetToIdle(charger);
         }
     }
 
-    private void HandleLungingCollision(Entity<XenoChargerComponent> ent, EntityUid target)
+    private void HandleLungingCollision(EntityUid charger, XenoChargerComponent xeno, XenoChargerStateComponent state, EntityUid target)
     {
-        var comp = ent.Comp;
-        var stage = comp.Stage;
-        var isCharged = stage > 0;
+        var stage = state.Stage;
+        var isCharged = stage > 4;
 
         if (TryComp(target, out MobStateComponent? mobState) && !_mobState.IsDead(target, mobState))
         {
-            if (!_xeno.CanAbilityAttackTarget(ent, target))
+            if (!_xeno.CanAbilityAttackTarget(charger, target))
                 return;
 
             float damageAmount;
@@ -207,30 +206,30 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
 
             if (isCharged)
             {
-                damageAmount = comp.ChargedDamageBase + stage * comp.ChargedDamagePerStage;
-                knockbackPower = comp.ChargedKnockback + stage;
-                knockdown = TimeSpan.FromSeconds(comp.ChargedKnockdownDuration);
+                damageAmount = xeno.ChargedDamageBase + stage * xeno.ChargedDamagePerStage;
+                knockbackPower = xeno.ChargedKnockback + stage;
+                knockdown = TimeSpan.FromSeconds(xeno.ChargedKnockdownDuration);
             }
             else
             {
-                damageAmount = comp.StandaloneDamage;
-                knockbackPower = comp.StandaloneKnockback;
-                knockdown = TimeSpan.FromSeconds(comp.StandaloneKnockdownDuration);
+                damageAmount = xeno.StandaloneDamage;
+                knockbackPower = xeno.StandaloneKnockback;
+                knockdown = TimeSpan.FromSeconds(xeno.StandaloneKnockdownDuration);
             }
 
             var damage = new DamageSpecifier();
             damage.DamageDict[_blunt] = damageAmount;
-            _damageable.TryChangeDamage(target, damage, origin: ent);
+            _damageable.TryChangeDamage(target, damage, origin: charger);
             _stun.TryParalyze(target, knockdown, false);
 
-            var origin = _transform.GetMapCoordinates(ent);
+            var origin = _transform.GetMapCoordinates(charger);
             _sizeStun.KnockBack(target, origin, knockbackPower, knockbackPower + 1f,
-                knockBackSpeed: isCharged ? stage * 2f : 4f);
+                knockBackSpeed: stage);
 
             if (_net.IsServer)
             {
                 _popup.PopupEntity(
-                    Loc.GetString("rmc-xeno-lunge-hit-others", ("user", ent.Owner), ("target", target)),
+                    Loc.GetString("rmc-xeno-lunge-hit-others", ("user", charger), ("target", target)),
                     target,
                     PopupType.MediumCaution
                 );
@@ -242,26 +241,26 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         if (HasComp<BarricadeComponent>(target))
         {
             var damage = new DamageSpecifier();
-            damage.DamageDict[_blunt] = (stage + 1) * comp.ChargedDamageBase;
+            damage.DamageDict[_blunt] = (stage + 1) * xeno.ChargedDamageBase;
             _damageable.TryChangeDamage(target, damage);
 
             if (_net.IsServer)
-                _audio.PlayPvs(comp.CadeHitSound, target);
+                _audio.PlayPvs(xeno.CadeHitSound, target);
 
             if (stage >= 7)
             {
                 if (_net.IsServer)
                 {
                     _transform.Unanchor(target);
-                    _throwing.TryThrow(target, comp.LungeDirection, 5f + stage * 1.5f, compensateFriction: true);
+                    _throwing.TryThrow(target, state.LungeDirection, 5f + stage * 1.5f, compensateFriction: true);
                 }
 
-                comp.Stage = Math.Max(0, comp.Stage - 1);
-                Dirty(ent, comp);
+                state.Stage = Math.Max(0, state.Stage - 1);
+                Dirty(charger, state);
                 return;
             }
 
-            _movement.ResetToIdle((ent.Owner, comp));
+            _movement.ResetToIdle(charger);
             return;
         }
 
@@ -272,7 +271,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             if (HasComp<DamageableComponent>(target))
             {
                 var damage = new DamageSpecifier();
-                damage.DamageDict[_blunt] = (stage + 1) * comp.ChargedDamageBase * 0.75f;
+                damage.DamageDict[_blunt] = (stage + 1) * xeno.ChargedDamageBase;
                 _damageable.TryChangeDamage(target, damage);
             }
 
@@ -281,18 +280,18 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
                 //if (_net.IsServer)
                 //    SpawnWallDebris(target, comp.LungeDirection);
 
-                comp.Stage = Math.Max(0, comp.Stage - 1);
-                Dirty(ent, comp);
+                state.Stage = Math.Max(0, state.Stage - 1);
+                Dirty(charger, state);
 
-                if (_physicsQuery.TryGetComponent(ent, out var physics))
+                if (_physicsQuery.TryGetComponent(charger, out var physics))
                 {
-                    var speed = comp.LungeSpeed + comp.Stage * comp.LungeSpeedPerStage;
-                    _physics.SetLinearVelocity(ent, comp.LungeDirection * speed, body: physics);
+                    var speed = xeno.LungeSpeed + state.Stage * xeno.LungeSpeedPerStage;
+                    _physics.SetLinearVelocity(charger, state.LungeDirection * speed, body: physics);
                 }
                 return;
             }
 
-            _movement.ResetToIdle((ent.Owner, comp));
+            _movement.ResetToIdle(charger);
         }
     }
 
@@ -313,7 +312,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         QueueDel(effect);
     }
 
-    private Vector2 GetWallNormal(Entity<XenoChargerComponent> charger, EntityUid wall)
+    private Vector2 GetWallNormal(EntityUid charger, EntityUid wall)
     {
         var chargerPos = _transform.GetMapCoordinates(charger).Position;
         var wallPos = _transform.GetMapCoordinates(wall).Position;

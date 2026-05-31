@@ -30,44 +30,42 @@ public sealed class XenoChargerActionSystem : EntitySystem
         SubscribeLocalEvent<XenoChargerComponent, XenoToggleChargingActionEvent>(OnToggleCharge);
     }
 
-    private void OnToggleCharge(Entity<XenoChargerComponent> ent, ref XenoToggleChargingActionEvent args)
+    private void OnToggleCharge(Entity<XenoChargerComponent> xeno, ref XenoToggleChargingActionEvent args)
     {
         if (args.Handled)
             return;
 
         if (_net.IsClient)
             return;
-        Log.Debug($"OnToggleCharge: MoveState={ent.Comp.MoveState} IsClient={_net.IsClient}");
 
         args.Handled = true;
 
-        switch (ent.Comp.MoveState)
+        TryComp(xeno.Owner, out XenoChargerStateComponent? stateComp);
+        var moveState = stateComp?.MoveState ??  XenoChargerMoveState.Idle;
+
+
+        switch (moveState)
         {
             case XenoChargerMoveState.Idle:
-                _movement.StartCharge(ent);
-                _actions.SetCooldown(args.Action.Owner, ent.Comp.ChargeCooldown);
+                _movement.StartCharge(xeno.Owner);
+                _actions.SetCooldown(args.Action.Owner, xeno.Comp.ChargeCooldown);
 
                 if (_net.IsServer)
-                {
-                    _popup.PopupEntity(
-                        Loc.GetString("rmc-xeno-charge-start", ("xeno", ent.Owner)),
-                        ent,
-                        PopupType.Small
-                    );
-                }
+                    _popup.PopupEntity(Loc.GetString("rmc-xeno-charge-start", ("xeno", xeno.Owner)),
+                        xeno, PopupType.Small);
                 break;
 
             case XenoChargerMoveState.Charging:
-                var isCharged = ent.Comp.Stage > 0;
-                var cooldown = isCharged ? ent.Comp.LungeChargedCooldown : ent.Comp.LungeCooldown;
-                _movement.StartLunge(ent);
+                var isCharged = (stateComp?.Stage ?? 0) > 0;
+                var cooldown = isCharged ? xeno.Comp.LungeChargedCooldown : xeno.Comp.LungeCooldown;
+                _movement.StartLunge(xeno.Owner);
                 _actions.SetCooldown(args.Action.Owner, cooldown);
 
                 if (_net.IsServer)
                 {
                     var msgKey = isCharged ? "rmc-xeno-lunge-charged-activate" : "rmc-xeno-lunge-activate";
-                    _popup.PopupEntity(Loc.GetString(msgKey, ("xeno", ent.Owner)), ent, PopupType.Small);
-                    _audio.PlayPvs(new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_pounce.ogg"), ent);
+                    _popup.PopupEntity(Loc.GetString(msgKey, ("xeno", xeno.Owner)), xeno, PopupType.Small);
+                    _audio.PlayPvs(new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_pounce.ogg"), xeno);
                 }
                 break;
 
