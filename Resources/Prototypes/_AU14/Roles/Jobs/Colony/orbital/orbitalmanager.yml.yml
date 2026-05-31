@@ -66,6 +66,8 @@
     id: AU14IDCardCivilianOrbitalManager
     ears: AU14OrbitalHeadsetManagement
     outerClothing: RMCJacketCorporateBlue
+  inhand:
+    - AU14BriefcaseLawBundle
 
 - type: entity
   parent: CMSpawnPointJobBase
