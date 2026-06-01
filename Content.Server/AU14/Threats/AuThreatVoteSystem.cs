@@ -75,14 +75,17 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             return false;
         }
 
-        var lowestBodyCount = candidates.Min(candidate => candidate.BodyCount.Total);
+        var heldBodyCount = candidates
+            .OrderBy(candidate => candidate.BodyCount.Total)
+            .Select(candidate => candidate.BodyCount)
+            .First();
         var candidateIds = candidates
             .Select(candidate => new ProtoId<ThreatPrototype>(candidate.Threat.ID))
             .ToList();
         var heldPlayers = _jobSelection.AssignThreatVotePoolJobs(
             profiles,
             candidateIds,
-            lowestBodyCount,
+            heldBodyCount,
             presetId);
 
         _prepared = new PreparedThreatVote
@@ -94,7 +97,7 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
         };
 
         Logger.GetSawmill("au14.threat").Debug(
-            $"[AuThreatVoteSystem] Prepared {candidates.Count} candidate(s), held {heldPlayers.Count} player(s), lowest body count {lowestBodyCount}.");
+            $"[AuThreatVoteSystem] Prepared {candidates.Count} candidate(s), held {heldPlayers.Count} player(s), held body count {heldBodyCount.Total}.");
         return true;
     }
 
