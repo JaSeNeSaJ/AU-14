@@ -14,7 +14,7 @@ public sealed partial class XenoChargerComponent : Component
     [DataField] public float BaseSpeed = 4f;
     [DataField] public float SpeedPerStage = 1f;
     [DataField] public float BaseTurnRate = 3f;
-    [DataField] public float MinTurnRate = 1f;
+    [DataField] public float MinTurnRate = 1.5f;
     [DataField] public float SoundEveryDistance = 10f;
 
     // --- Charge collision tuning ---
@@ -25,10 +25,10 @@ public sealed partial class XenoChargerComponent : Component
     [DataField] public float StructureDamageMultiplier = 15f;
 
     // --- Lunge tuning ---
-    [DataField] public float LungeDistance = 3f;
-    [DataField] public float LungeSpeed = 12f;
-    [DataField] public float LungeSpeedPerStage = 2f;
-    [DataField] public float LungeDistancePerStage = 1.75f;
+    [DataField] public float LungeDistance = 2f;
+    [DataField] public float LungeSpeed = 10f;
+    [DataField] public float LungeSpeedPerStage = 1f;
+    [DataField] public float LungeDistancePerStage = 1f;
 
     // --- Lunge standalone cc ---
     [DataField] public float StandaloneDamage = 30f;
@@ -46,7 +46,7 @@ public sealed partial class XenoChargerComponent : Component
     [DataField, AutoNetworkedField] public SoundSpecifier? ChargeSound = new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_footstep_charge1.ogg", AudioParams.Default.WithVolume(-4));
 
     // --- Cooldowns ---
-    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3);
-    [DataField] public TimeSpan LungeCooldown = TimeSpan.FromSeconds(8);
-    [DataField] public TimeSpan LungeChargedCooldown = TimeSpan.FromSeconds(4);
+    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3); //only add this when we got the wall sliding to work
+    [DataField] public TimeSpan LungeCooldown = TimeSpan.FromSeconds(8); //probably not needed
+    [DataField] public TimeSpan LungeChargedCooldown = TimeSpan.FromSeconds(4); //probably not needed
 }

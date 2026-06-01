@@ -18,6 +18,7 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     [Dependency] private readonly SharedPhysicsSystem _physics = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedRMCEmoteSystem _rmcEmote = default!;
+    [Dependency] private readonly XenoChargerCollisionSystem _collision = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
@@ -38,12 +39,15 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     {
         var stateComp = EnsureComp<XenoChargerStateComponent>(xeno);
 
+        var currentRotation = _transform.GetWorldRotation(xeno);
+        stateComp.TargetHeading = currentRotation;
+        stateComp.CurrentHeading = currentRotation;
+
         stateComp.MoveState = XenoChargerMoveState.Charging;
         stateComp.Stage = 0;
         stateComp.DistanceTraveled = 0f;
         stateComp.SoundDistanceAccumulator = 0f;
         stateComp.HitEntities.Clear();
-        stateComp.CurrentHeading = stateComp.TargetHeading;
 /*
         // Zero velocity so old player movement doesn't fight the first charge tick
         if (_physicsQuery.TryGetComponent(xeno, out var physics))
@@ -106,6 +110,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
                     break;
             }
         }
+
+        _collision.ProcessHits();
     }
 
     private void UpdateCharging(Entity<XenoChargerStateComponent> state, Entity<XenoChargerComponent> xeno, PhysicsComponent physics, float frameTime)

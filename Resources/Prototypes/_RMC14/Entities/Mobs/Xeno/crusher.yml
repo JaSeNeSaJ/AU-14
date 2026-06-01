@@ -216,11 +216,15 @@
     slowTime: 8
   - type: XenoStomp # TODO RMC14 screen shake?
     plasmaCost: 25
-    paralyzeUnderOnly: true
+    knocksBack: true
+    knockbackPower: 2
+    paralyzeTime: 1.5
     range: 3.95
     damage:
       types:
         Blunt: 75
+  - type: XenoChargerJockey
+    maxRiders: 4
   - type: XenoCharger
   - type: XenoHidden
   - type: RMCActionOrder
@@ -230,8 +234,8 @@
   id: RMCChargerWallBreakEffect
   components:
   - type: CMExplosionEffect
-    minShrapnel: 5
-    maxShrapnel: 10
+    minShrapnel: 4
+    maxShrapnel: 6
     shrapnelSpeed: 8
     shrapnelEffects:
     - RMCShrapnel

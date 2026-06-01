@@ -2,8 +2,10 @@
 using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Explosion;
 using Content.Shared._RMC14.Stun;
+using Content.Shared._RMC14.Xenonids.Projectile;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
+using Content.Shared.FixedPoint;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
@@ -19,6 +21,7 @@ using Robust.Shared.Physics.Events;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
@@ -38,7 +41,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly ThrowingSystem _throwing = default!;
     [Dependency] private readonly XenoChargerMovementSystem _movement = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
-    [Dependency] private readonly SharedRMCExplosionSystem _explosionSystem = default!;
+    [Dependency] private readonly XenoProjectileSystem _projectile = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private const float HeadOnDotThreshold = 0.707f; // cos(45°)
@@ -64,7 +67,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         _hits.Add((xeno.Owner, args.OtherEntity));
     }
 
-    public override void Update(float frameTime)
+    public void ProcessHits()
     {
         if (_net.IsClient)
             return;
@@ -127,7 +130,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             _stun.TryParalyze(target, knockdown, false);
 
             var origin = _transform.GetMapCoordinates(charger);
-            _sizeStun.KnockBack(target, origin, 2, 2, knockBackSpeed: stage * 1f);
+            _sizeStun.KnockBack(target, origin, 2, 2, knockBackSpeed: stage);
 
             if (_net.IsServer)
             {
@@ -207,7 +210,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             if (isCharged)
             {
                 damageAmount = xeno.ChargedDamageBase + stage * xeno.ChargedDamagePerStage;
-                knockbackPower = xeno.ChargedKnockback + stage;
+                knockbackPower = xeno.ChargedKnockback;
                 knockdown = TimeSpan.FromSeconds(xeno.ChargedKnockdownDuration);
             }
             else
@@ -268,6 +271,11 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         if (_physicsQuery.TryGetComponent(target, out var wallPhysics) &&
             wallPhysics.Hard && wallPhysics.BodyType == BodyType.Static)
         {
+            if (!HasComp<DamageableComponent>(target))
+            {
+                _movement.ResetToIdle(charger);
+            }
+
             if (HasComp<DamageableComponent>(target))
             {
                 var damage = new DamageSpecifier();
@@ -278,7 +286,7 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
             if (stage >= 7)
             {
                 //if (_net.IsServer)
-                //    SpawnWallDebris(target, comp.LungeDirection);
+                //    SpawnWallDebris(charger, target, state.LungeDirection);
 
                 state.Stage = Math.Max(0, state.Stage - 1);
                 Dirty(charger, state);
@@ -295,21 +303,32 @@ public sealed class XenoChargerCollisionSystem : EntitySystem
         }
     }
 
-    private void SpawnWallDebris(EntityUid wall, Vector2 lungeDirection)
+    private void SpawnWallDebris(EntityUid charger, EntityUid wall, Vector2 lungeDirection)
     {
+        //WIP, very inconsistent and largely just hoping for some sovl, leave it for now.
+
         if (!_net.IsServer)
             return;
 
-        var wallPos = _transform.GetMapCoordinates(wall);
-        var spawnPos = new MapCoordinates(wallPos.Position + lungeDirection * 0.6f, wallPos.MapId);
+        EntityManager.DeleteEntity(wall);
 
-        QueueDel(wall);
+        Timer.Spawn(500, () =>
+        {
+            if (TerminatingOrDeleted(charger))
+                return;
 
-        var effect = Spawn("RMCChargerWallBreakEffect", spawnPos);
-        if (TryComp(effect, out CMExplosionEffectComponent? effectComp))
-            _explosionSystem.DoEffect((effect, effectComp));
-
-        QueueDel(effect);
+            _projectile.TryShoot(
+                charger,
+                new EntityCoordinates(charger, lungeDirection * 1.5f),
+                FixedPoint2.Zero,
+                "XenoHedgehogSpikeProjectileSpread",
+                null,
+                _random.Next(14, 20),
+                new Angle(2 * Math.PI),
+                9f,
+                projectileHitLimit: 6
+            );
+        });
     }
 
     private Vector2 GetWallNormal(EntityUid charger, EntityUid wall)
