@@ -1460,11 +1460,11 @@ namespace Content.Client.Lobby.UI
                 yield return (InsurgencyGovernmentJobList,
                     GamemodeInsurgency,
                     $"insurgency-govfor-{segmentKey}",
-                    $"Government Forces / {segmentTitle}");
+                    Loc.GetString("humanoid-profile-editor-government-forces-label", ("segmentTitle", segmentTitle)));
                 yield return (DistressGovernmentJobList,
                     GamemodeDistressSignal,
                     $"distress-govfor-{segmentKey}",
-                    $"Government Forces / {segmentTitle}");
+                    Loc.GetString("humanoid-profile-editor-government-forces-label", ("segmentTitle", segmentTitle)));
                 yield break;
             }
 
@@ -1563,16 +1563,16 @@ namespace Content.Client.Lobby.UI
             if (job.MarineAuthorityLevel > 0 ||
                 ContainsAny(id, name, "PlatCo", "PlatOp", "Commander", "Command", "Officer", "Leader", "Sergeant", "Advisor"))
             {
-                return ("command", "Command");
+                return ("command", Loc.GetString("humanoid-profile-editor-segment-command"));
             }
 
             if (ContainsAny(id, name, "Pilot", "Dropship", "Crew Chief", "DCC"))
-                return ("flight", "Flight");
+                return ("flight", Loc.GetString("humanoid-profile-editor-segment-flight"));
 
             if (ContainsAny(id, name, "Doctor", "Corpsman", "Medic", "Technician", "Tech", "Police", "Synth", "Working Joe", "Auxiliary"))
-                return ("support", "Support");
+                return ("support", Loc.GetString("humanoid-profile-editor-segment-support"));
 
-            return ("line", "Line Infantry");
+            return ("line", Loc.GetString("humanoid-profile-editor-segment-line"));
         }
 
         private static int GetJobSortGroup(DepartmentPrototype department, JobPrototype job)
