@@ -279,7 +279,7 @@ public sealed partial class RMCCVars : CVars
         CVarDef.Create("rmc.late_joins_burrowed_larva_death_time_ignore_before_minutes", 2.5f, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCLarvaQueueRoundstartDelaySeconds =
-        CVarDef.Create("rmc.larva_queue_roundstart_delay_seconds", 0, CVar.REPLICATED | CVar.SERVER);
+        CVarDef.Create("rmc.larva_queue_roundstart_delay_seconds", 120, CVar.REPLICATED | CVar.SERVER);
 
     public static readonly CVarDef<int> RMCLarvaQueueWaitSeconds =
         CVarDef.Create("rmc.larva_queue_wait_seconds", 0, CVar.REPLICATED | CVar.SERVER);

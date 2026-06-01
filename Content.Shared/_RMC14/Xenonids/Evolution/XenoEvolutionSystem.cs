@@ -612,8 +612,10 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
 
     private EntityUid TransferXeno(EntityUid xeno, EntProtoId proto)
     {
+        EnsureComp<XenoEvolutionTransferComponent>(xeno);
         var coordinates = _transform.GetMoverCoordinates(xeno);
         var newXeno = Spawn(proto, coordinates);
+        EnsureComp<XenoEvolutionTransferComponent>(newXeno);
         _xenoHive.SetSameHive(xeno, newXeno);
 
         if (_mind.TryGetMind(xeno, out var mindId, out _))
@@ -621,6 +623,8 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
             _mind.TransferTo(mindId, newXeno);
             _mind.UnVisit(mindId);
         }
+
+        RemCompDeferred<XenoEvolutionTransferComponent>(newXeno);
 
         foreach (var held in _hands.EnumerateHeld(xeno))
         {
