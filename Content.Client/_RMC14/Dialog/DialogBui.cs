@@ -122,7 +122,7 @@ public sealed class DialogBui(EntityUid owner, Enum uiKey) : BoundUserInterface(
             button.AddChild(contentContainer);
 
             var index = i;
-            button.OnPressed += _ => SendPredictedMessage(new DialogOptionBuiMsg(index));
+            button.OnPressed += _ => SendMessage(new DialogOptionBuiMsg(index));
 
             container.Options.AddChild(button);
         }
