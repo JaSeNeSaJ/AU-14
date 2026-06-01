@@ -255,6 +255,9 @@ namespace Content.Server.GameTicking
                 catch (Exception threatEx)
                 {
                     Log.Error($"SpawnThreatAtRoundStart threw — round will continue without threat spawn. {threatEx}");
+                    var removed = AuThreatSystem.RemoveThreatJobAssignments(assignedJobs);
+                    if (removed > 0)
+                        Log.Warning($"Removed {removed} threat assignment(s) after threat spawning failed so overflow assignment can handle those players.");
                 }
             }
             else {

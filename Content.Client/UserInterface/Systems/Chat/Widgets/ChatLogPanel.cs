@@ -165,11 +165,10 @@ public sealed class ChatLogPanel : PanelContainer
 
     private void OnUserMouseWheel(float deltaY)
     {
-        if (deltaY <= 0)
+        if (deltaY <= 0 || !CanScrollUp())
             return;
 
-        _followingBottom = false;
-        _pendingScrollToBottomFrames = 0;
+        StopFollowingBottom();
     }
 
     private void QueueScrollToBottom()
@@ -191,6 +190,20 @@ public sealed class ChatLogPanel : PanelContainer
         // can be created before the separated chat panel reaches its final width,
         // so keep refreshing briefly until the real width has settled.
         _pendingLayoutRefreshFrames = 8;
+    }
+
+    private bool CanScrollUp()
+    {
+        var hasScrollableContent = _rows.DesiredSize.Y > _scroll.Height + BottomTolerance;
+        return hasScrollableContent && (_scroll.VScroll > 0 || _scroll.VScrollTarget > 0);
+    }
+
+    private void StopFollowingBottom()
+    {
+        _isAtBottom = false;
+        _followingBottom = false;
+        _pendingScrollToBottomFrames = 0;
+        _scrollToLatest.Visible = true;
     }
 
     private void UpdateScrollState()
