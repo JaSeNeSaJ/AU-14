@@ -31,6 +31,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
 
     private TimeSpan _burrowedLarvaDeathTime;
     private TimeSpan _burrowedLarvaDeathIgnoreTime;
+    private TimeSpan _larvaQueueRoundstartDelay;
 
     public override void Initialize()
     {
@@ -54,6 +55,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
 
         Subs.CVar(_config, RMCCVars.RMCLateJoinsBurrowedLarvaDeathTime, v => _burrowedLarvaDeathTime = TimeSpan.FromMinutes(v), true);
         Subs.CVar(_config, RMCCVars.RMCLateJoinsBurrowedLarvaDeathTimeIgnoreBeforeMinutes, v => _burrowedLarvaDeathIgnoreTime = TimeSpan.FromMinutes(v), true);
+        Subs.CVar(_config, RMCCVars.RMCLarvaQueueRoundstartDelaySeconds, v => _larvaQueueRoundstartDelay = TimeSpan.FromSeconds(v), true);
     }
 
     private void OnRoundRestartCleanup(RoundRestartCleanupEvent ev)
@@ -73,20 +75,37 @@ public sealed partial class JoinXenoSystem : EntitySystem
             return;
 
         var user = args.Performer;
-        if (!CanJoinXeno(user))
+        if (!TryComp<GhostComponent>(user, out _))
             return;
+
+        if (!HasComp<JoinXenoCooldownIgnoreComponent>(user))
+        {
+            var remaining = _larvaQueueRoundstartDelay - _gameTicker.RoundDuration();
+            if (remaining > TimeSpan.Zero)
+            {
+                _popup.PopupEntity(
+                    Loc.GetString("rmc-xeno-larva-queue-round-delay", ("seconds", (int) Math.Ceiling(remaining.TotalSeconds))),
+                    user,
+                    user,
+                    PopupType.MediumCaution);
+                return;
+            }
+        }
 
         var options = new List<DialogOption>();
         var hives = EntityQueryEnumerator<HiveComponent>();
-        while (hives.MoveNext(out var hiveId, out var hive))
+        while (hives.MoveNext(out var hiveId, out _))
         {
-            if (hive.BurrowedLarva <= 0)
-                continue;
-
-            options.Add(new DialogOption("Burrowed Larva", new JoinXenoBurrowedLarvaEvent(GetNetEntity(hiveId))));
+            options.Add(new DialogOption(
+                Loc.GetString("rmc-xeno-larva-queue-option", ("hive", Name(hiveId))),
+                new JoinLarvaQueueEvent(GetNetEntity(hiveId))));
         }
 
-        _dialog.OpenOptions(ent, "Join as Xeno", options, "Available Xenonids");
+        _dialog.OpenOptions(
+            ent,
+            Loc.GetString("rmc-xeno-larva-queue-title"),
+            options,
+            Loc.GetString("rmc-xeno-larva-queue-hives"));
     }
 
     public bool CanJoinXeno(EntityUid user)
@@ -115,6 +134,9 @@ public sealed partial class JoinXenoSystem : EntitySystem
 
     private void OnJoinXenoBurrowedLarva(Entity<JoinXenoComponent> ent, ref JoinXenoBurrowedLarvaEvent args)
     {
+        if (!CanJoinXeno(ent.Owner))
+            return;
+
         if (!TryGetEntity(args.Hive, out var hive) ||
             !TryComp(hive, out HiveComponent? hiveComp) ||
             !TryComp(ent, out ActorComponent? actor))
