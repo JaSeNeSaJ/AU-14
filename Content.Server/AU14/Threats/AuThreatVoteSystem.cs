@@ -22,7 +22,7 @@ namespace Content.Server.AU14.Threats;
 
 public sealed partial class AuThreatVoteSystem : EntitySystem
 {
-    private const string VoteTitle = "Threat Vote";
+    private const string VoteTitleLocId = "au14-threat-vote-title";
     private static readonly TimeSpan VoteDuration = TimeSpan.FromSeconds(30);
 
     [Dependency] private AuRoundSystem _auRound = default!;
@@ -108,9 +108,9 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
 
         var voteOptions = new VoteOptions
         {
-            Title = VoteTitle,
+            Title = Loc.GetString(VoteTitleLocId),
             Options = prepared.Candidates
-                .Select(candidate => (ThreatVoteSelection.GetThreatDisplayName(candidate.Threat.ID), (object) candidate.Threat))
+                .Select(candidate => (GetLocalizedThreatDisplayName(candidate.Threat.ID), (object) candidate.Threat))
                 .ToList(),
             Duration = VoteDuration,
             AllowedVoters = prepared.HeldPlayers.ToHashSet(),
@@ -248,5 +248,17 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             .Order(StringComparer.OrdinalIgnoreCase);
 
         return $"au14-threat:{prepared.PresetId}:{string.Join(",", candidateIds)}";
+    }
+
+    private string GetLocalizedThreatDisplayName(string threatId)
+    {
+        var locId = ThreatVoteSelection.GetThreatDisplayNameLocId(threatId);
+        if (locId == ThreatVoteSelection.GenericThreatDisplayNameLocId)
+        {
+            return Loc.GetString(locId,
+                ("threat", ThreatVoteSelection.GetThreatDisplayName(threatId)));
+        }
+
+        return Loc.GetString(locId);
     }
 }

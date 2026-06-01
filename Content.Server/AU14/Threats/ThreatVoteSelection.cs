@@ -21,6 +21,7 @@ public static class ThreatVoteSelection
 {
     public static readonly ProtoId<JobPrototype> ThreatLeaderJobId = new("AU14JobThreatLeader");
     public static readonly ProtoId<JobPrototype> ThreatMemberJobId = new("AU14JobThreatMember");
+    public const string GenericThreatDisplayNameLocId = "au14-threat-vote-option-generic";
 
     public static ThreatVoteBodyCount CalculateBodyCount(
         IReadOnlyDictionary<string, int> leaders,
@@ -188,6 +189,32 @@ public static class ThreatVoteSelection
             words.Add("Threat");
 
         return string.Join(" ", words);
+    }
+
+    public static string GetThreatDisplayNameLocId(string threatId)
+    {
+        if (string.IsNullOrWhiteSpace(threatId))
+            return GenericThreatDisplayNameLocId;
+
+        if (threatId.Contains("cultist", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-cultist-xeno";
+
+        if (threatId.Contains("tribal", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-tribal";
+
+        if (threatId.Contains("abomination", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-abominations";
+
+        if (threatId.Contains("xeno", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-xeno";
+
+        if (threatId.Contains("ape", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-ape";
+
+        if (threatId.Contains("wendigo", StringComparison.OrdinalIgnoreCase))
+            return "au14-threat-vote-option-wendigo";
+
+        return GenericThreatDisplayNameLocId;
     }
 
     private static int CalculateEntries(
