@@ -1794,5 +1794,35 @@
   id: 168
   time: '2026-05-30T21:44:37.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1136
+- author: RomiGur
+  changes:
+  - message: Add localisation support for GOVFOR job segments label and rank prefixes/names.
+    type: Code
+  id: 169
+  time: '2026-05-31T18:29:23.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1154
+- author: NzzyFk
+  changes:
+  - message: L42A SFX uses CM one
+    type: Tweak
+  - message: ABR-40 also uses L42A SFX for aura points
+    type: Tweak
+  id: 170
+  time: '2026-05-31T23:38:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1169
+- author: KeiKiyomi
+  changes:
+  - message: Changed F44AA, removing its bipod
+    type: Tweak
+  id: 171
+  time: '2026-05-31T23:39:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1170
+- author: toot521
+  changes:
+  - message: Weyland Yutani Survivor Third Party
+    type: Add
+  id: 172
+  time: '2026-05-31T23:40:18.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1172
 Name: CMU
 Order: -1
