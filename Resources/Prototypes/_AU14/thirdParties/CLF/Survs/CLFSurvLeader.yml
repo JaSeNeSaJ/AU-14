@@ -78,3 +78,25 @@
     id: AU14IDCardCLFCellLeader
   inhand:
   - AU14CLFHeadset
+  - AU14FlagCarriableCLF
+
+- type: entity
+  id: AU14CLFSurvLeaderPreset
+  name: clf surv leader preset
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityPreset
+    randomGearOther:
+    -
+      - [ ] # gloves
+    -
+      - [ ] # uniform
+    -
+      - [ ] # armor
+     -
+      - [ ] # etc
+     -
+      - [ ] # etc
+    randomWeapon: # Weapon with ammo pouches and stuff
+    - [  ]
+    tryEquipRandomWeapon: true

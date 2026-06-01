@@ -69,3 +69,24 @@
     neck: RMCCLFArmband
   inhand:
   - AU14CLFHeadset
+
+- type: entity
+  id: AU14CLFSurvFighter Preset
+  name: clf surv fighter preset
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: EntityPreset
+    randomGearOther:
+    -
+      - [ ] # gloves
+    -
+      - [ ] # uniform
+    -
+      - [ ] # armor
+     -
+      - [ ] # etc
+     -
+      - [ ] # etc
+    randomWeapon: # Weapon with ammo pouches and stuff
+    - [  ]
+    tryEquipRandomWeapon: true
