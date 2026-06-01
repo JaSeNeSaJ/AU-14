@@ -18,6 +18,14 @@ xeno-ui-select-destination-tunnel-title = Select Destination Tunnel
 xeno-ui-select-destination-tunnel-submit-text = Select Tunnel
 
 rmc-xeno-ui-burrowed-need-time = You ghosted too recently. You cannot become a burrowed larva until 2.5 minutes have passed ({$seconds} seconds remaining).
+rmc-xeno-larva-queue-title = Join as Xeno
+rmc-xeno-larva-queue-hives = Available Hives
+rmc-xeno-larva-queue-option = Join/Leave Larva Queue ({$hive})
+rmc-xeno-larva-queue-round-delay = Joining a hive while observing is disabled at round start ({$seconds} seconds remaining).
+rmc-xeno-larva-queue-removed = You have been removed from the larva queue.
+rmc-xeno-larva-queue-added = You have been added to the larva queue at position {$position}.
+rmc-xeno-larva-prequeue-added = You have been added to the larva pre-queue ({$seconds} seconds remaining).
+rmc-xeno-larva-queue-position = You are now in position {$position} for the larva queue.
 
 rmc-xeno-tracker-target-Queen = Queen
 rmc-xeno-tracker-target-HiveLeader = Hive Leader
