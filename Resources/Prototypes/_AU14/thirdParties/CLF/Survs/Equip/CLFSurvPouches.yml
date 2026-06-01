@@ -1,0 +1,72 @@
+# Ammo Pouches for Random Gear
+# rifles
+- type: entity
+  parent: RMCPouchMagazineLarge
+  id: AU14PouchMagazineLargeFilledM16
+  suffix: Filled, M16
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineRifleM16
+      amount: 4
+
+- type: entity
+  parent: RMCPouchMagazineLarge
+  id: AU14PouchMagazineLargeFilledAR10
+  suffix: Filled, AR10
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineRifleAR10
+      amount: 4
+
+- type: entity
+  parent: RMCPouchMagazineLarge
+  id: AU14PouchMagazineLargeFilledHuntingRifle
+  suffix: Filled, Basira
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineRifleHunting
+      amount: 4
+
+- type: entity
+  parent: RMCPouchMagazineLarge
+  id: AU14PouchMagazineLargeFilledMAR40
+  suffix: Filled, MAR40
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineRifleMAR40
+      amount: 4
+
+- type: entity
+  parent: RMCPouchMagazineLarge
+  id: AU14PouchMagazineLargeFilledType71
+  suffix: Filled, Type71
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineRifleType71
+      amount: 4
+
+# Leader Machine Guns
+- type: entity
+  parent: RMCPouchGeneralLarge
+  id: AU14PouchGeneralLargeFilledM60
+  suffix: Filled, M60
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineLMGM60
+      amount: 2
+
+- type: entity
+  parent: RMCPouchGeneralLarge
+  id: AU14PouchGeneralLargeFilledMAR50
+  suffix: Filled, MAR50
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazineMar50LMG
+      amount: 2
