@@ -1,5 +1,4 @@
 using Content.Shared._RMC14.CCVar;
-using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.GameTicking;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids.Hive;
@@ -18,7 +17,6 @@ namespace Content.Shared._RMC14.Xenonids.JoinXeno;
 public sealed partial class JoinXenoSystem : EntitySystem
 {
     [Dependency] private SharedActionsSystem _actions = default!;
-    [Dependency] private DialogSystem _dialog = default!;
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedRMCGameTickerSystem _rmcGameTicker = default!;
@@ -26,6 +24,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
     [Dependency] private SharedGameTicker _gameTicker = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
     public int ClientBurrowedLarva { get; private set; }
 
@@ -40,6 +39,11 @@ public sealed partial class JoinXenoSystem : EntitySystem
         SubscribeLocalEvent<JoinXenoComponent, MapInitEvent>(OnJoinXenoMapInit);
         SubscribeLocalEvent<JoinXenoComponent, JoinXenoActionEvent>(OnJoinXenoAction);
         SubscribeLocalEvent<JoinXenoComponent, JoinXenoBurrowedLarvaEvent>(OnJoinXenoBurrowedLarva);
+
+        Subs.BuiEvents<JoinXenoComponent>(JoinXenoUIKey.Key, subs =>
+        {
+            subs.Event<JoinXenoHiveChoiceBuiMsg>(OnJoinXenoHiveChoice);
+        });
 
         if (_net.IsClient)
         {
@@ -71,11 +75,14 @@ public sealed partial class JoinXenoSystem : EntitySystem
 
     private void OnJoinXenoAction(Entity<JoinXenoComponent> ent, ref JoinXenoActionEvent args)
     {
+        args.Handled = true;
+
         if (_net.IsClient)
             return;
 
         var user = args.Performer;
-        if (!TryComp<GhostComponent>(user, out _))
+        if (!TryComp<GhostComponent>(user, out _) ||
+            !TryComp(user, out ActorComponent? actor))
             return;
 
         if (!HasComp<JoinXenoCooldownIgnoreComponent>(user))
@@ -92,20 +99,69 @@ public sealed partial class JoinXenoSystem : EntitySystem
             }
         }
 
-        var options = new List<DialogOption>();
-        var hives = EntityQueryEnumerator<HiveComponent>();
-        while (hives.MoveNext(out var hiveId, out _))
+        UpdateJoinXenoUi(ent, actor.PlayerSession.UserId);
+        _ui.TryOpenUi(ent.Owner, JoinXenoUIKey.Key, user);
+    }
+
+    private void OnJoinXenoHiveChoice(Entity<JoinXenoComponent> ent, ref JoinXenoHiveChoiceBuiMsg args)
+    {
+        if (_net.IsClient)
+            return;
+
+        if (args.Actor != ent.Owner ||
+            !TryComp(ent, out ActorComponent? actor) ||
+            !HasComp<GhostComponent>(ent))
         {
-            options.Add(new DialogOption(
-                Loc.GetString("rmc-xeno-larva-queue-option", ("hive", Name(hiveId))),
-                new JoinLarvaQueueEvent(GetNetEntity(hiveId))));
+            _ui.CloseUi(ent.Owner, JoinXenoUIKey.Key);
+            return;
         }
 
-        _dialog.OpenOptions(
-            ent,
-            Loc.GetString("rmc-xeno-larva-queue-title"),
-            options,
-            Loc.GetString("rmc-xeno-larva-queue-hives"));
+        var ev = new JoinLarvaQueueEvent(args.Hive);
+        RaiseLocalEvent(ent.Owner, ev, true);
+
+        if (!TryComp(ent, out actor) ||
+            !HasComp<GhostComponent>(ent))
+        {
+            _ui.CloseUi(ent.Owner, JoinXenoUIKey.Key);
+            return;
+        }
+
+        UpdateJoinXenoUi(ent, actor.PlayerSession.UserId);
+    }
+
+    private void UpdateJoinXenoUi(EntityUid user, NetUserId userId)
+    {
+        var queueStatus = new GetLarvaQueueStatusEvent(userId);
+        RaiseLocalEvent(queueStatus);
+
+        var entries = new List<JoinXenoHiveEntry>();
+        var hives = EntityQueryEnumerator<HiveComponent, MetaDataComponent>();
+        while (hives.MoveNext(out var hiveId, out _, out var metaData))
+        {
+            var status = JoinXenoQueueStatus.NotQueued;
+            var position = 0;
+            if (queueStatus.Queues.TryGetValue(hiveId, out var queueUserStatus))
+            {
+                if (queueUserStatus.Position is { } queuePosition)
+                {
+                    status = JoinXenoQueueStatus.Queued;
+                    position = queuePosition;
+                }
+                else
+                {
+                    status = JoinXenoQueueStatus.Waiting;
+                }
+            }
+
+            entries.Add(new JoinXenoHiveEntry(
+                GetNetEntity(hiveId),
+                Name(hiveId, metaData),
+                status,
+                position));
+        }
+
+        entries.Sort((a, b) => string.Compare(a.HiveName, b.HiveName, StringComparison.Ordinal));
+        _ui.SetUiState(user, JoinXenoUIKey.Key, new JoinXenoBuiState(entries));
     }
 
     public bool CanJoinXeno(EntityUid user)
