@@ -7,6 +7,7 @@ using Content.Shared.Ghost;
 using Content.Shared.Popups;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Timing;
 
 namespace Content.Server._RMC14.Xenonids.Parasite;
 
@@ -18,6 +19,7 @@ public sealed partial class XenoEggRoleSystem : EntitySystem
     [Dependency] private EggMorpherSystem _eggMorpherSystem = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private GhostRoleSystem _ghostRole = default!;
+    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
@@ -119,7 +121,26 @@ public sealed partial class XenoEggRoleSystem : EntitySystem
         if (_net.IsClient)
             return false;
 
-        return HasComp<GhostComponent>(user);
+        if (!TryComp(user, out GhostComponent? ghost))
+            return false;
+
+        if (HasComp<InfectionSuccessComponent>(user))
+            return true;
+
+        var timeSinceDeath = _timing.CurTime - ghost.TimeOfDeath;
+        var requiredTime = TimeSpan.FromMinutes(3);
+        if (timeSinceDeath < requiredTime)
+        {
+            var remaining = (int) Math.Ceiling((requiredTime - timeSinceDeath).TotalSeconds);
+            _popup.PopupEntity(
+                Loc.GetString("rmc-xeno-egg-ghost-need-time", ("seconds", remaining)),
+                user,
+                user,
+                PopupType.MediumCaution);
+            return false;
+        }
+
+        return true;
     }
     private bool SharedChecks(EntityUid ent, EntityUid user)
     {

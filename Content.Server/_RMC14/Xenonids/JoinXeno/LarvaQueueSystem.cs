@@ -5,6 +5,7 @@ using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Evolution;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.JoinXeno;
 using Content.Shared._RMC14.Xenonids.Parasite;
@@ -310,6 +311,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (member.Hive != hive.Owner ||
             TerminatingOrDeleted(uid) ||
             _pendingEntityClaims.ContainsKey(uid) ||
+            HasComp<XenoEvolutionTransferComponent>(uid) ||
             HasComp<ActorComponent>(uid) ||
             _mobState.IsDead(uid) ||
             HasComp<XenoParasiteComponent>(uid) ||
