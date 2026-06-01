@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using Content.Server.Ghost.Roles.Components;
 using Content.Shared.AU14.Threats;
 using Content.Server.AU14.Round;
 using Robust.Shared.Timing;
@@ -12,9 +13,12 @@ using Content.Server.GameTicking;
 using Robust.Shared.Network;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
+using Content.Shared.Ghost;
+using Content.Shared.NPC.Components;
 using Content.Shared.Players;
 using Robust.Server.Player;
 using Robust.Shared.Player;
+using Robust.Shared.Enums;
 using Robust.Shared.Log;
 using Robust.Shared.Random;
 
@@ -42,6 +46,8 @@ public sealed partial class AuThreatSystem : EntitySystem
         public required MapId MapId;
         public required Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> AssignedJobs;
         public required TimeSpan FireAt;
+        public IReadOnlyList<NetUserId>? VoteHeldPlayers;
+        public bool RequireObserverForVotePlayers;
     }
 
     private PendingThreatSpawn? _pendingSpawn;
@@ -83,7 +89,12 @@ public sealed partial class AuThreatSystem : EntitySystem
 
         try
         {
-            ExecuteSpawn(pending.Threat, pending.MapId, pending.AssignedJobs);
+            ExecuteSpawn(
+                pending.Threat,
+                pending.MapId,
+                pending.AssignedJobs,
+                pending.VoteHeldPlayers,
+                pending.RequireObserverForVotePlayers);
             var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
             roundSystem.StartThreatWinConditions(pending.Threat);
         }
@@ -129,9 +140,47 @@ public sealed partial class AuThreatSystem : EntitySystem
         }
     }
 
+    public void SpawnThreatFromVote(
+        ThreatPrototype threat,
+        MapId mapId,
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
+        IReadOnlyList<NetUserId> heldPlayers)
+    {
+        if (threat == null)
+        {
+            Logger.GetSawmill("au14.threat").Debug("[AuThreatSystem] No threat selected from vote, skipping threat spawn.");
+            return;
+        }
+
+        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
+        var isColonyFall = string.Equals(roundSystem.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
+
+        if (isColonyFall)
+        {
+            var delaySeconds = _random.NextDouble() * (threat.SpawnDelayMax - threat.SpawnDelayMin) + threat.SpawnDelayMin;
+            Logger.GetSawmill("au14.threat").Debug($"[AuThreatSystem] Colony Fall voted threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
+            _pendingSpawn = new PendingThreatSpawn
+            {
+                Threat = threat,
+                MapId = mapId,
+                AssignedJobs = assignedJobs,
+                FireAt = _timing.CurTime + TimeSpan.FromSeconds(delaySeconds),
+                VoteHeldPlayers = heldPlayers.ToList(),
+                RequireObserverForVotePlayers = true,
+            };
+        }
+        else
+        {
+            ExecuteSpawn(threat, mapId, assignedJobs, heldPlayers, false);
+            roundSystem.StartThreatWinConditions(threat);
+        }
+    }
+
     private void ExecuteSpawn(ThreatPrototype threat,
         MapId mapId,
-        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
+        IReadOnlyList<NetUserId>? voteHeldPlayers = null,
+        bool requireObserverForVotePlayers = false)
     {
         var partySpawn = threat.RoundStartSpawn;
         if (string.IsNullOrWhiteSpace(partySpawn))
@@ -296,100 +345,168 @@ public sealed partial class AuThreatSystem : EntitySystem
 
             Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Spawned {spawnedEntities} other threat entities.");
 
-            // Assign jobs and minds
-            var threatLeaderJobId = new ProtoId<JobPrototype>("AU14JobThreatLeader");
-            var threatMemberJobId = new ProtoId<JobPrototype>("AU14JobThreatMember");
-            var leaderPlayers = assignedJobs.Where(x => x.Value.Item1 == threatLeaderJobId).Select(x => x.Key).ToList();
-            var memberPlayers = assignedJobs.Where(x => x.Value.Item1 == threatMemberJobId).Select(x => x.Key).ToList();
             var spawnedThreatPlayers = new HashSet<NetUserId>();
 
-            // Assign leader minds
-            for (int i = 0; i < leaderPlayers.Count && i < spawnedLeaders.Count; i++)
+            if (voteHeldPlayers != null)
             {
-                var playerNetId = leaderPlayers[i];
-                var entity = spawnedLeaders[i];
-                // Get session
-                if (!_playerManager.TryGetSessionById(playerNetId, out var session))
-                {
-                    Logger.GetSawmill("content").Error($"[THREAT SPAWN] Could not find session for leader player {playerNetId}");
-                    continue;
-                }
+                var eligibleHeldPlayers = GetEligibleVoteHeldPlayers(voteHeldPlayers, requireObserverForVotePlayers);
+                _random.Shuffle(eligibleHeldPlayers);
+                var voteAssignments = ThreatVoteSelection.BuildSpawnAssignments(
+                    eligibleHeldPlayers,
+                    spawnedLeaders.Count,
+                    spawnedMembers.Count);
 
-                // Ensure player is joined to the round
-                var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
-                ticker.PlayerJoinGame(session, silent: true);
-                // Ensure mind exists
-                var data = session.ContentData();
-                var mind = _mindSystem.GetMind(playerNetId);
-                if (mind == null)
-                {
-                    mind = _mindSystem.CreateMind(playerNetId, data?.Name ?? "Threat Player");
-                    _mindSystem.SetUserId(mind.Value, playerNetId);
-                    Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Created mind for leader player {playerNetId}");
-                }
+                var assignedLeaders = AssignThreatMinds(
+                    voteAssignments.Where(assignment => assignment.Job == ThreatLeaderJobId),
+                    spawnedLeaders,
+                    spawnedThreatPlayers);
+                var assignedMembers = AssignThreatMinds(
+                    voteAssignments.Where(assignment => assignment.Job == ThreatMemberJobId),
+                    spawnedMembers,
+                    spawnedThreatPlayers);
 
-                // Transfer mind to threat entity
-                _mindSystem.TransferTo(mind.Value, entity);
+                AddGhostRolesForUnassigned(spawnedLeaders, assignedLeaders, ThreatLeaderJobId);
+                AddGhostRolesForUnassigned(spawnedMembers, assignedMembers, ThreatMemberJobId);
+
                 Logger.GetSawmill("au14.threat").Debug(
-                    $"[DEBUG] Assigned leader mind {mind.Value} to entity {entity} for player {playerNetId}");
-                // Assign job role
-                _roles.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThreatLeader");
-                // Mark as antagonist so AntagSelectionSystem (e.g. RunawaySynth) won't also pick this player
-                _roles.MindAddRole(mind.Value, "MindRoleThreat", silent: true);
-                // Add to threat NPC faction
-                EnsureComp<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity);
-                _npcFaction.AddFaction((entity,
-                        CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
-                    threatnpcfaction);
-                spawnedThreatPlayers.Add(playerNetId);
+                    $"[DEBUG] Voted threat assigned {assignedLeaders} leader(s), {assignedMembers} member(s), exposed {spawnedLeaders.Count - assignedLeaders + spawnedMembers.Count - assignedMembers} ghost role body/bodies.");
+
+                var removedVoteAssignments = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
+                if (removedVoteAssignments > 0)
+                    Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removedVoteAssignments} unspawned voted threat assignment(s).");
+                return;
             }
 
-            Logger.GetSawmill("au14.threat").Debug(
-                $"[DEBUG] Assigned {Math.Min(leaderPlayers.Count, spawnedLeaders.Count)} leader minds");
-            // Assign member minds
-            for (int i = 0; i < memberPlayers.Count && i < spawnedMembers.Count; i++)
-            {
-                var playerNetId = memberPlayers[i];
-                var entity = spawnedMembers[i];
-                if (!_playerManager.TryGetSessionById(playerNetId, out var session))
-                {
-                    Logger.GetSawmill("content").Error($"[THREAT SPAWN] Could not find session for member player {playerNetId}");
-                    continue;
-                }
-                // Ensure player is joined to the round
-                var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
-                ticker.PlayerJoinGame(session, silent: true);
-                // Ensure mind exists
-                var data = session.ContentData();
-                var mind = _mindSystem.GetMind(playerNetId);
-                if (mind == null)
-                {
-                    mind = _mindSystem.CreateMind(playerNetId, data?.Name ?? "Threat Player");
-                    _mindSystem.SetUserId(mind.Value, playerNetId);
-                    Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Created mind for member player {playerNetId}");
-                }
+            var leaderPlayers = assignedJobs.Where(x => x.Value.Item1 == ThreatLeaderJobId).Select(x => x.Key).ToList();
+            var memberPlayers = assignedJobs.Where(x => x.Value.Item1 == ThreatMemberJobId).Select(x => x.Key).ToList();
+            var leaderAssignments = leaderPlayers
+                .Select(player => new ThreatVoteAssignment(player, ThreatLeaderJobId))
+                .ToList();
+            var memberAssignments = memberPlayers
+                .Select(player => new ThreatVoteAssignment(player, ThreatMemberJobId))
+                .ToList();
 
-                // Transfer mind to threat entity
-                _mindSystem.TransferTo(mind.Value, entity);
-                Logger.GetSawmill("au14.threat").Debug(
-                    $"[DEBUG] Assigned member mind {mind.Value} to entity {entity} for player {playerNetId}");
-                // Assign job role
-                _roles.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThreatMember");
-                // Mark as antagonist so AntagSelectionSystem (e.g. RunawaySynth) won't also pick this player
-                _roles.MindAddRole(mind.Value, "MindRoleThreat", silent: true);
-                // Add to threat NPC faction
-                EnsureComp<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity);
-                _npcFaction.AddFaction((entity,
-                        CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
-                    threatnpcfaction);
-                spawnedThreatPlayers.Add(playerNetId);
-            }
-
+            var assignedRoundstartLeaders = AssignThreatMinds(leaderAssignments, spawnedLeaders, spawnedThreatPlayers);
             Logger.GetSawmill("au14.threat").Debug(
-                $"[DEBUG] Assigned {Math.Min(memberPlayers.Count, spawnedMembers.Count)} member minds");
+                $"[DEBUG] Assigned {assignedRoundstartLeaders} leader minds");
+            var assignedRoundstartMembers = AssignThreatMinds(memberAssignments, spawnedMembers, spawnedThreatPlayers);
+            Logger.GetSawmill("au14.threat").Debug(
+                $"[DEBUG] Assigned {assignedRoundstartMembers} member minds");
             var removed = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
             if (removed > 0)
                 Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} unspawned threat assignment(s) so normal overflow assignment can handle them.");
         }
+    }
+
+    private List<NetUserId> GetEligibleVoteHeldPlayers(
+        IReadOnlyList<NetUserId> heldPlayers,
+        bool requireObserver)
+    {
+        var eligible = new List<NetUserId>(heldPlayers.Count);
+        foreach (var playerId in heldPlayers)
+        {
+            if (!_playerManager.TryGetSessionById(playerId, out var session) ||
+                session.Status == SessionStatus.Disconnected)
+            {
+                continue;
+            }
+
+            if (requireObserver &&
+                !_entityManager.TryGetComponent(session.AttachedEntity, out GhostComponent? _))
+            {
+                continue;
+            }
+
+            eligible.Add(playerId);
+        }
+
+        return eligible;
+    }
+
+    private int AssignThreatMinds(
+        IEnumerable<ThreatVoteAssignment> assignments,
+        IReadOnlyList<EntityUid> entities,
+        HashSet<NetUserId> spawnedThreatPlayers)
+    {
+        var assigned = 0;
+        foreach (var assignment in assignments)
+        {
+            if (assigned >= entities.Count)
+                break;
+
+            if (!TryAssignThreatMind(assignment.Player, entities[assigned], assignment.Job))
+                continue;
+
+            spawnedThreatPlayers.Add(assignment.Player);
+            assigned++;
+        }
+
+        return assigned;
+    }
+
+    private bool TryAssignThreatMind(
+        NetUserId playerNetId,
+        EntityUid entity,
+        ProtoId<JobPrototype> jobId)
+    {
+        if (!_playerManager.TryGetSessionById(playerNetId, out var session))
+        {
+            Logger.GetSawmill("content").Error($"[THREAT SPAWN] Could not find session for player {playerNetId}");
+            return false;
+        }
+
+        var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
+        ticker.PlayerJoinGame(session, silent: true);
+
+        var data = session.ContentData();
+        var mind = _mindSystem.GetMind(playerNetId);
+        if (mind == null)
+        {
+            mind = _mindSystem.CreateMind(playerNetId, data?.Name ?? "Threat Player");
+            _mindSystem.SetUserId(mind.Value, playerNetId);
+            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Created mind for threat player {playerNetId}");
+        }
+
+        _mindSystem.TransferTo(mind.Value, entity);
+        Logger.GetSawmill("au14.threat").Debug(
+            $"[DEBUG] Assigned threat mind {mind.Value} to entity {entity} for player {playerNetId} as {jobId.Id}");
+
+        _roles.MindAddJobRole(mind.Value, silent: true, jobPrototype: jobId);
+        _roles.MindAddRole(mind.Value, "MindRoleThreat", silent: true);
+        AddThreatFaction(entity);
+        return true;
+    }
+
+    private void AddGhostRolesForUnassigned(
+        IReadOnlyList<EntityUid> entities,
+        int assignedCount,
+        ProtoId<JobPrototype> jobId)
+    {
+        for (var i = Math.Max(0, assignedCount); i < entities.Count; i++)
+        {
+            MakeThreatGhostRole(entities[i], jobId);
+        }
+    }
+
+    private void MakeThreatGhostRole(EntityUid entity, ProtoId<JobPrototype> jobId)
+    {
+        AddThreatFaction(entity);
+
+        var ghostRole = EnsureComp<GhostRoleComponent>(entity);
+        ghostRole.RoleName = jobId == ThreatLeaderJobId
+            ? "au14-threat-leader-ghost-role-name"
+            : "au14-threat-ghost-role-name";
+        ghostRole.RoleDescription = "au14-threat-ghost-role-description";
+        ghostRole.RoleRules = "au14-threat-ghost-role-rules";
+        ghostRole.JobProto = jobId;
+        ghostRole.MindRoles = new List<EntProtoId> { "MindRoleThreat" };
+
+        EnsureComp<GhostTakeoverAvailableComponent>(entity);
+    }
+
+    private void AddThreatFaction(EntityUid entity)
+    {
+        EnsureComp<NpcFactionMemberComponent>(entity);
+        _npcFaction.AddFaction((entity, CompOrNull<NpcFactionMemberComponent>(entity)), threatnpcfaction);
     }
 }
