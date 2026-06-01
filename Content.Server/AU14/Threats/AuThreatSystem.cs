@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.Shared.AU14.Threats;
 using Content.Server.AU14.Round;
+using Robust.Shared.Timing;
 using Content.Shared.AU14.util;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Map;
@@ -21,19 +22,80 @@ namespace Content.Server.AU14.Threats;
 
 public sealed partial class AuThreatSystem : EntitySystem
 {
+    private static readonly ProtoId<JobPrototype> ThreatLeaderJobId = new("AU14JobThreatLeader");
+    private static readonly ProtoId<JobPrototype> ThreatMemberJobId = new("AU14JobThreatMember");
+
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private SharedMindSystem _mindSystem = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private IGameTiming _timing = default!;
     public readonly ProtoId<NpcFactionPrototype> threatnpcfaction = "THREAT";
     [Dependency] private SharedRoleSystem _roles = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
 
+    private sealed class PendingThreatSpawn
+    {
+        public required ThreatPrototype Threat;
+        public required MapId MapId;
+        public required Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> AssignedJobs;
+        public required TimeSpan FireAt;
+    }
+
+    private PendingThreatSpawn? _pendingSpawn;
+
+    internal static bool IsThreatJob(ProtoId<JobPrototype>? job)
+    {
+        return job == ThreatLeaderJobId || job == ThreatMemberJobId;
+    }
+
+    internal static int RemoveThreatJobAssignments(
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
+        IReadOnlySet<NetUserId>? keepPlayers = null)
+    {
+        var removed = 0;
+        foreach (var (player, (job, _)) in assignedJobs.ToArray())
+        {
+            if (!IsThreatJob(job))
+                continue;
+
+            if (keepPlayers != null && keepPlayers.Contains(player))
+                continue;
+
+            assignedJobs.Remove(player);
+            removed++;
+        }
+
+        return removed;
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        if (_pendingSpawn == null || _timing.CurTime < _pendingSpawn.FireAt)
+            return;
+
+        var pending = _pendingSpawn;
+        _pendingSpawn = null;
+
+        try
+        {
+            ExecuteSpawn(pending.Threat, pending.MapId, pending.AssignedJobs);
+            var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
+            roundSystem.StartThreatWinConditions(pending.Threat);
+        }
+        catch (Exception ex)
+        {
+            Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Delayed threat spawn threw: {ex}");
+        }
+    }
+
     /// <summary>
-    /// Spawns the chosen threat's leaders, members, and entities at their correct markers at round start.
-    /// Also assigns player minds to spawned threat entities for threat jobs.
+    /// In Colony Fall: schedules threat entity spawning and win condition activation after a random
+    /// delay via the game update loop. In all other presets: spawns and starts win conditions immediately.
     /// </summary>
     public void SpawnThreatAtRoundStart(ThreatPrototype threat,
         MapId mapId,
@@ -41,20 +103,52 @@ public sealed partial class AuThreatSystem : EntitySystem
     {
         if (threat == null)
         {
-            Logger.GetSawmill("au14.threat").Debug( "[AuThreatSystem] No threat selected for round start, skipping threat spawn.");
+            Logger.GetSawmill("au14.threat").Debug("[AuThreatSystem] No threat selected for round start, skipping threat spawn.");
             return;
         }
 
+        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
+        var isColonyFall = string.Equals(roundSystem.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
+
+        if (isColonyFall)
+        {
+            var delaySeconds = _random.NextDouble() * (threat.SpawnDelayMax - threat.SpawnDelayMin) + threat.SpawnDelayMin;
+            Logger.GetSawmill("au14.threat").Debug($"[AuThreatSystem] Colony Fall threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
+            _pendingSpawn = new PendingThreatSpawn
+            {
+                Threat = threat,
+                MapId = mapId,
+                AssignedJobs = assignedJobs,
+                FireAt = _timing.CurTime + TimeSpan.FromSeconds(delaySeconds),
+            };
+        }
+        else
+        {
+            ExecuteSpawn(threat, mapId, assignedJobs);
+            roundSystem.StartThreatWinConditions(threat);
+        }
+    }
+
+    private void ExecuteSpawn(ThreatPrototype threat,
+        MapId mapId,
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
+    {
         var partySpawn = threat.RoundStartSpawn;
         if (string.IsNullOrWhiteSpace(partySpawn))
         {
             Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
+            var removed = RemoveThreatJobAssignments(assignedJobs);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with no roundstart spawn so normal overflow assignment can handle them.");
             return;
         }
         var newpartySpawn = _prototypeManager.TryIndex(partySpawn, out var spawn) ? spawn : null;
         if (newpartySpawn == null)
         {
             Logger.GetSawmill("au14.threat").Error( $"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
+            var removed = RemoveThreatJobAssignments(assignedJobs);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with missing roundstart spawn '{partySpawn}' so normal overflow assignment can handle them.");
             return;
         }
 
@@ -207,6 +301,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             var threatMemberJobId = new ProtoId<JobPrototype>("AU14JobThreatMember");
             var leaderPlayers = assignedJobs.Where(x => x.Value.Item1 == threatLeaderJobId).Select(x => x.Key).ToList();
             var memberPlayers = assignedJobs.Where(x => x.Value.Item1 == threatMemberJobId).Select(x => x.Key).ToList();
+            var spawnedThreatPlayers = new HashSet<NetUserId>();
 
             // Assign leader minds
             for (int i = 0; i < leaderPlayers.Count && i < spawnedLeaders.Count; i++)
@@ -246,6 +341,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 _npcFaction.AddFaction((entity,
                         CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
                     threatnpcfaction);
+                spawnedThreatPlayers.Add(playerNetId);
             }
 
             Logger.GetSawmill("au14.threat").Debug(
@@ -286,10 +382,14 @@ public sealed partial class AuThreatSystem : EntitySystem
                 _npcFaction.AddFaction((entity,
                         CompOrNull<Content.Shared.NPC.Components.NpcFactionMemberComponent>(entity)),
                     threatnpcfaction);
+                spawnedThreatPlayers.Add(playerNetId);
             }
 
             Logger.GetSawmill("au14.threat").Debug(
                 $"[DEBUG] Assigned {Math.Min(memberPlayers.Count, spawnedMembers.Count)} member minds");
+            var removed = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
+            if (removed > 0)
+                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} unspawned threat assignment(s) so normal overflow assignment can handle them.");
         }
     }
 }
