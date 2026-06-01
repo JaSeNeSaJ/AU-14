@@ -133,6 +133,7 @@
     threats:
     - cultistThreat
     - XenoThreat
+    - XenoThreatCF
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
@@ -200,6 +201,9 @@
     - MissionariesParty
     - MissionariesPartyMedium
     threats:
+    - cultistThreat
+    - XenoThreatCF
+    - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
     joboverrides:
@@ -490,7 +494,7 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-    - abominationsThreatDistress
+    - TribalsThreat
     thirdparties:
     - NSPAInvestigationParty
     - UPPGROMAlt
@@ -561,6 +565,8 @@
     threats:
     - cultistThreatOnMarker
     - XenoThreat
+    - XenoThreatCF
+    - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
     joboverrides:
@@ -616,6 +622,7 @@
     - cultistThreat
     - XenoThreat
     - wendigoThreat
+    - TribalsThreat
     - abominationsThreatDistress
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -666,7 +673,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -716,7 +723,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -766,7 +773,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -878,5 +885,4 @@
 
 - type: lorePrimer
   id: AU14PrimerPlanetFiorina
-  planetText: "Date 2181 - Fiorina Prison. Privately owned  and operated by the Weyland-Yutani corporation, Fiorina 161 is a maximum security prison for the most dangerous criminals in the system."
-
+  planetText: "Date 2181 - Fiorina Prison. Privately owned and operated by the Weyland-Yutani corporation, Fiorina 161 is a maximum security prison for the most dangerous criminals in the Neroid sector."
