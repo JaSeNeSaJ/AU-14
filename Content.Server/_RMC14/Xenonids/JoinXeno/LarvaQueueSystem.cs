@@ -68,6 +68,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnCleanup);
         SubscribeLocalEvent<BurrowedLarvaAddedEvent>(OnBurrowedLarvaAdded);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
+        SubscribeLocalEvent<NewXenoEvolvedEvent>(OnNewXenoEvolved);
+        SubscribeLocalEvent<XenoDevolvedEvent>(OnXenoDevolved);
         SubscribeLocalEvent<LarvaQueueableComponent, ComponentStartup>(OnQueueableStartup);
         SubscribeLocalEvent<LarvaQueueableComponent, HiveChangedEvent>(OnQueueableHiveChanged);
         SubscribeLocalEvent<LarvaQueueableComponent, MindRemovedMessage>(OnQueueableMindRemoved);
@@ -173,6 +175,16 @@ public sealed partial class LarvaQueueSystem : EntitySystem
 
         CancelPendingClaim(ev.Player.UserId, timedOut: false);
         RemoveFromAllQueues(ev.Player.UserId);
+    }
+
+    private void OnNewXenoEvolved(ref NewXenoEvolvedEvent args)
+    {
+        CancelPendingClaimForInvalidTarget(args.NewXeno);
+    }
+
+    private void OnXenoDevolved(ref XenoDevolvedEvent args)
+    {
+        CancelPendingClaimForInvalidTarget(args.NewXeno);
     }
 
     private void OnQueueableStartup(Entity<LarvaQueueableComponent> ent, ref ComponentStartup args)
@@ -312,6 +324,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             TerminatingOrDeleted(uid) ||
             _pendingEntityClaims.ContainsKey(uid) ||
             HasComp<XenoEvolutionTransferComponent>(uid) ||
+            HasComp<LarvaQueueClaimBlockedComponent>(uid) ||
+            HasComp<XenoRecentlyDevolvedComponent>(uid) ||
             HasComp<ActorComponent>(uid) ||
             _mobState.IsDead(uid) ||
             HasComp<XenoParasiteComponent>(uid) ||
@@ -537,6 +551,29 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             _pendingBurrowedLarvaClaims.Remove(pending.Hive);
         else
             _pendingBurrowedLarvaClaims[pending.Hive] = burrowed - 1;
+    }
+
+    private void CancelPendingClaimForInvalidTarget(EntityUid target)
+    {
+        if (!_pendingEntityClaims.TryGetValue(target, out var userId) ||
+            !_pendingClaims.TryGetValue(userId, out var pending) ||
+            pending.Target != target)
+        {
+            return;
+        }
+
+        ReleasePendingClaim(userId, pending);
+        QueueFor(pending.Hive).AddReadyFirst(userId);
+
+        if (_player.TryGetSessionById(userId, out var session) &&
+            session.AttachedEntity is { } attached &&
+            _ghostQuery.HasComp(attached))
+        {
+            ClosePendingDialog(attached, pending);
+        }
+
+        NotifyReadyPositions(pending.Hive);
+        TryClaimNextForHive(pending.Hive);
     }
 
     private void ClosePendingDialog(EntityUid attached, PendingLarvaQueueClaim pending)

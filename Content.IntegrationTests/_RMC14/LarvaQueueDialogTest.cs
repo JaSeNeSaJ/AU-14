@@ -11,6 +11,7 @@ using Content.Shared._RMC14.Xenonids.JoinXeno;
 using Content.Shared.DoAfter;
 using Content.Shared.Ghost;
 using Content.Shared.Mind;
+using Content.Shared.Mind.Components;
 using Content.Shared.Tag;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -326,6 +327,83 @@ public sealed class LarvaQueueJoinXenoUiTest
                 BreakOnRest = false,
             };
             Assert.That(doAfter.TryStartDoAfter(args), Is.True);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+
+            OpenJoinXenoUi(entMan, ghost);
+            var state = GetJoinXenoState(entMan, ghost);
+            var entry = state.Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(JoinXenoQueueStatus.Queued));
+            Assert.That(entry.Position, Is.EqualTo(1));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task LarvaQueueIgnoresEvolvedBodyAfterMindRemoval()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        EntityUid runner = default;
+        EntityUid runnerMind = default;
+
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            BypassRoundstartDelay(entMan, ghost);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            entMan.EnsureComponent<XenoRecentlyDevolvedComponent>(runner);
+            hiveSystem.SetHive(runner, hive);
+
+            var ghostMind = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(ghostMind, ghost);
+            mind.SetUserId(ghostMind, player.UserId);
+
+            runnerMind = mind.CreateMind(null, "Evolved Runner");
+            mind.TransferTo(runnerMind, runner);
+
+            entMan.EventBus.RaiseLocalEvent(ghost, new JoinLarvaQueueEvent(entMan.GetNetEntity(hive)));
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+        });
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(entMan.GetComponent<MindContainerComponent>(runner).HasMind, Is.True);
+        });
+
+        await server.WaitAssertion(() =>
+        {
+            mind.TransferTo(runnerMind, null, createGhost: false);
         });
 
         await pair.RunTicksSync(5);

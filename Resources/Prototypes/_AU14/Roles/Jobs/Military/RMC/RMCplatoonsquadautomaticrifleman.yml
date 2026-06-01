@@ -3,6 +3,8 @@
   id: AU14JobGOVFORSquadAutomaticRiflemanRMC
   name: au14-job-name-govforsquadautomaticriflemanRMC
   spawnMenuRoleName: Automatic Rifleman (TWE RMC)
+  startingGear: AU14GearGOVFORSquadAutomaticRifleman
+  dummyStartingGear: AU14GearGOVFORAutoRiflemanDummy
   ranks:
     RMC_Corporal:
     - !type:RoleTimeRequirement
