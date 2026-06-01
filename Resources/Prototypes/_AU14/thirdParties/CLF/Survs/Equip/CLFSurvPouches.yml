@@ -70,3 +70,16 @@
     contents:
     - id: RMCMagazineMar50LMG
       amount: 2
+
+#Pistol Belts
+- type: entity
+  parent: RMCBeltHolsterPistol
+  id: AU14BeltHolsterPistolFilledB92FS
+  suffix: Filled, Beretta
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCMagazinePistolB92FS
+      amount: 6
+    - id: RMCWeaponPistolB92FS
+      amount: 1

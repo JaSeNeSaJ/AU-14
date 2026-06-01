@@ -1,0 +1,80 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobCLFSurvLeader
+  name: au14-job-name-clfcellleader
+  description: au14-clfsurv-greeting
+  setPreference: false
+  ignoreAllegiance: true
+  playTimeTracker: AU14JobCLFGuerilla
+  ranks:
+    RMCRankCivilian: []
+  startingGear: AU14GearCLFCellLeader
+  icon: RMCJobIconCLFCellCommander
+  hasIcon: false
+  requireAdminNotify: true
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-clfcellleader
+  spawnMenuRoleName: CLF Cell Leader (Survivor)
+  accessGroups:
+  - Colonist
+  roleWeight: 0.25
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - CLF
+    - type: CLFMember
+      statusIcon: CLFFactionLeader
+    - type: Skills
+      skills:
+        RMCSkillCqc: 2
+        RMCSkillConstruction: 2
+        RMCSkillEndurance: 2
+        RMCSkillEngineer: 2
+        RMCSkillFirearms: 2
+        RMCSkillFireman: 2
+        RMCSkillIntel: 2
+        RMCSkillJtac: 4
+        RMCSkillLeadership: 3
+        RMCSkillMedical: 1
+        RMCSkillNavigations: 1
+        RMCSkillOverwatch: 1
+        RMCSkillPolice: 1
+        RMCSkillPowerLoader: 1
+        RMCSkillSurgery: 1
+        RMCSkillVehicles: 1
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: synth
+    - type: ShowMarineIcons
+      factions:
+      - CLF
+  hidden: false
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicBaseMilitary
+  id: AU14SurvCLFLeader
+  name: CLF CellLeader (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-clfguerilla
+    description: au14-clfsurv-desription
+    reregister: false
+    job: AU14JobCLFSurvLeader
+    raffle:
+      settings: short
+    rules: au14-clfsurv-desription
+
+- type: startingGear
+  id: AU14GearCLFSurvLeader
+  equipment:
+    neck: RMCCLFArmband
+    id: AU14IDCardCLFCellLeader
+  inhand:
+  - AU14CLFHeadset
