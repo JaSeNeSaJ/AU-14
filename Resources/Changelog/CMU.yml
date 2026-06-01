@@ -1824,5 +1824,21 @@
   id: 172
   time: '2026-05-31T23:40:18.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1172
+- author: 7-62x54r
+  changes:
+  - message: Added regular drone pheromones (tier 1) to burrower.
+    type: Add
+  id: 173
+  time: '2026-06-01T00:24:57.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1144
+- author: troytroy400
+  changes:
+  - message: Potted plants resprited.
+    type: Tweak
+  - message: Palm trees resprited.
+    type: Tweak
+  id: 174
+  time: '2026-06-01T01:08:40.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1173
 Name: CMU
 Order: -1
