@@ -51,9 +51,9 @@
   id: AU14GearCLFGuerilla
   equipment:
     id: AU14IDCardCLFCivilian
+   # neck: RMCCLFArmband
   inhand:
   - AU14CLFHeadset
-  - RMCCLFArmband
 
 - type: entity
   parent: CMSpawnPointJobBase
