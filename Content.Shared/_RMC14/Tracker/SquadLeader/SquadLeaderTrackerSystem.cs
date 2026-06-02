@@ -159,7 +159,7 @@ public sealed partial class SquadLeaderTrackerSystem : EntitySystem
     private void OnRemove(Entity<SquadLeaderTrackerComponent> ent, ref ComponentRemove args)
     {
         _prototypeManager.TryIndex(ent.Comp.Mode, out var trackerMode);
-        if(trackerMode == null)
+        if (trackerMode == null)
             return;
 
         _alerts.ClearAlert(ent, trackerMode.Alert);
@@ -186,10 +186,10 @@ public sealed partial class SquadLeaderTrackerSystem : EntitySystem
 
     private void OnSquadLeaderTrackerChangeMode(Entity<SquadLeaderTrackerComponent> ent, ref SquadLeaderTrackerChangeModeEvent args)
     {
-        if(!_timing.IsFirstTimePredicted)
+        if (!_timing.IsFirstTimePredicted)
             return;
 
-        if(!TryFindTargets(args.Mode, out var options, out var trackingOptions))
+        if (!TryFindTargets(args.Mode, out var options, out var trackingOptions))
             return;
 
         // Remove targets that are not in the same squad as the tracking entity.
@@ -587,9 +587,9 @@ public sealed partial class SquadLeaderTrackerSystem : EntitySystem
                     {
                         if (fireteamLeaderUid != member)
                         {
-                            ProtoId<TrackerModePrototype> mode = "FireteamLeader";
                             SetTarget((member, tempTracker), fireteamLeaderUid);
-                            SetMode((member, tempTracker), mode);
+                            // ProtoId<TrackerModePrototype> mode = "FireteamLeader";
+                            // SetMode((member, tempTracker), mode);
                         }
                     }
                 }
@@ -650,7 +650,7 @@ public sealed partial class SquadLeaderTrackerSystem : EntitySystem
         _alerts.ClearAlertCategory(ent, SquadTrackerCategory);
 
         _prototypeManager.TryIndex(ent.Comp.Mode, out var trackerMode);
-        if(trackerMode == null)
+        if (trackerMode == null)
             return;
 
         var alert = trackerMode.Alert;
