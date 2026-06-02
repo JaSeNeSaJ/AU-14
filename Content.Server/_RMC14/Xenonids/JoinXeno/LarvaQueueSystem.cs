@@ -68,6 +68,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnCleanup);
         SubscribeLocalEvent<BurrowedLarvaAddedEvent>(OnBurrowedLarvaAdded);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
+        SubscribeLocalEvent<NewXenoEvolvedEvent>(OnNewXenoEvolved);
+        SubscribeLocalEvent<XenoDevolvedEvent>(OnXenoDevolved);
         SubscribeLocalEvent<LarvaQueueableComponent, ComponentStartup>(OnQueueableStartup);
         SubscribeLocalEvent<LarvaQueueableComponent, HiveChangedEvent>(OnQueueableHiveChanged);
         SubscribeLocalEvent<LarvaQueueableComponent, MindRemovedMessage>(OnQueueableMindRemoved);
@@ -175,6 +177,16 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         RemoveFromAllQueues(ev.Player.UserId);
     }
 
+    private void OnNewXenoEvolved(ref NewXenoEvolvedEvent args)
+    {
+        CancelPendingClaimForInvalidTarget(args.NewXeno);
+    }
+
+    private void OnXenoDevolved(ref XenoDevolvedEvent args)
+    {
+        CancelPendingClaimForInvalidTarget(args.NewXeno);
+    }
+
     private void OnQueueableStartup(Entity<LarvaQueueableComponent> ent, ref ComponentStartup args)
     {
         TryClaimQueueable(ent.Owner);
@@ -259,8 +271,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             queue.ReadyCount == 0)
             return;
 
-        var offered = TryOfferQueueableXenos(hive, queue, QueueClaimBodyKind.GhostedXeno) ||
-                      TryOfferQueueableXenos(hive, queue, QueueClaimBodyKind.Larva) ||
+        var offered = TryOfferQueueableLarva(hive, queue) ||
                       TryOfferBurrowedLarva(hive, queue);
 
         if (offered)
@@ -269,12 +280,12 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         RemoveIfEmpty(hive.Owner);
     }
 
-    private bool TryOfferQueueableXenos(Entity<HiveComponent> hive, LarvaQueueState queue, QueueClaimBodyKind kind)
+    private bool TryOfferQueueableLarva(Entity<HiveComponent> hive, LarvaQueueState queue)
     {
         var query = EntityQueryEnumerator<LarvaQueueableComponent, HiveMemberComponent>();
         while (queue.ReadyCount > 0 && query.MoveNext(out var uid, out _, out var member))
         {
-            if (!CanQueueBody(uid, member, hive, kind))
+            if (!CanQueueLarva(uid, member, hive))
                 continue;
 
             return TryOfferEntityClaim(uid, hive, queue);
@@ -283,23 +294,12 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         return false;
     }
 
-    private bool CanQueueBody(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive, QueueClaimBodyKind kind)
+    private bool CanQueueLarva(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive)
     {
         if (!CanQueueBodyCommon(uid, member, hive, out var xeno))
             return false;
 
-        return kind switch
-        {
-            QueueClaimBodyKind.GhostedXeno => xeno.Role != LarvaRole,
-            QueueClaimBodyKind.Larva => _tag.HasTag(uid, LarvaTag) && xeno.Role == LarvaRole,
-            _ => false,
-        };
-    }
-
-    private bool CanQueueAnyBody(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive)
-    {
-        return CanQueueBody(uid, member, hive, QueueClaimBodyKind.GhostedXeno) ||
-               CanQueueBody(uid, member, hive, QueueClaimBodyKind.Larva);
+        return _tag.HasTag(uid, LarvaTag) && xeno.Role == LarvaRole;
     }
 
     private bool CanQueueBodyCommon(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive, out XenoComponent xeno)
@@ -312,6 +312,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             TerminatingOrDeleted(uid) ||
             _pendingEntityClaims.ContainsKey(uid) ||
             HasComp<XenoEvolutionTransferComponent>(uid) ||
+            HasComp<LarvaQueueClaimBlockedComponent>(uid) ||
+            HasComp<XenoRecentlyDevolvedComponent>(uid) ||
             HasComp<ActorComponent>(uid) ||
             _mobState.IsDead(uid) ||
             HasComp<XenoParasiteComponent>(uid) ||
@@ -435,7 +437,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         {
             if (_hiveQuery.TryComp(pending.Hive, out var hive) &&
                 TryComp(target, out HiveMemberComponent? member) &&
-                CanQueueAnyBody(target, member, (pending.Hive, hive)))
+                CanQueueLarva(target, member, (pending.Hive, hive)))
             {
                 claimed = ClaimQueueableXeno(target, session);
             }
@@ -539,6 +541,29 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             _pendingBurrowedLarvaClaims[pending.Hive] = burrowed - 1;
     }
 
+    private void CancelPendingClaimForInvalidTarget(EntityUid target)
+    {
+        if (!_pendingEntityClaims.TryGetValue(target, out var userId) ||
+            !_pendingClaims.TryGetValue(userId, out var pending) ||
+            pending.Target != target)
+        {
+            return;
+        }
+
+        ReleasePendingClaim(userId, pending);
+        QueueFor(pending.Hive).AddReadyFirst(userId);
+
+        if (_player.TryGetSessionById(userId, out var session) &&
+            session.AttachedEntity is { } attached &&
+            _ghostQuery.HasComp(attached))
+        {
+            ClosePendingDialog(attached, pending);
+        }
+
+        NotifyReadyPositions(pending.Hive);
+        TryClaimNextForHive(pending.Hive);
+    }
+
     private void ClosePendingDialog(EntityUid attached, PendingLarvaQueueClaim pending)
     {
         if (!TryComp(attached, out DialogComponent? dialog))
@@ -636,12 +661,6 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     {
         if (_queues.TryGetValue(hive, out var queue) && queue.Empty)
             _queues.Remove(hive);
-    }
-
-    private enum QueueClaimBodyKind
-    {
-        GhostedXeno,
-        Larva,
     }
 
     private sealed record PendingLarvaQueueClaim(

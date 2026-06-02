@@ -81,6 +81,7 @@
 - type: startingGear
   id: AU14GearGOVFORAuxSupportSynth
   equipment:
+    id: AU14IDCardGOVFORAuxSupportSynth
     ears: AU14HeadsetGovforCommand
     ears2: RMCM5CameraGear
 
