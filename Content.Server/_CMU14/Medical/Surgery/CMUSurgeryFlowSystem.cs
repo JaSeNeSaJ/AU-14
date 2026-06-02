@@ -246,7 +246,7 @@ public sealed partial class CMUSurgeryFlowSystem : SharedCMUSurgeryFlowSystem
         EntityUid stepPart,
         string leafId)
     {
-        if (!TryResolveNextStep(patient, stepPart, leafId, out var resolved))
+        if (!TryResolveInjectedCleanupStep(stepPart, leafId, out var resolved))
             return false;
         if (ArmedMatchesResolvedStep(armed, resolved))
             return false;
@@ -283,12 +283,20 @@ public sealed partial class CMUSurgeryFlowSystem : SharedCMUSurgeryFlowSystem
         EntityUid stepPart,
         string leafId)
     {
+        var resumeAfterLeafStepIndex = armed.LastCompletedLeafStepIndex;
+        if (armed.SurgeryId == leafId)
+        {
+            resumeAfterLeafStepIndex = armed.StepIndex;
+            armed.LastCompletedLeafStepIndex = resumeAfterLeafStepIndex;
+        }
+
         if (!TryResolveNextStepAfterCompletedStep(
                 patient,
                 stepPart,
                 leafId,
                 armed.SurgeryId,
                 armed.StepIndex,
+                resumeAfterLeafStepIndex,
                 out var next))
         {
             return false;

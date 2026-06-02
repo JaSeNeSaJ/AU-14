@@ -411,6 +411,117 @@ public sealed class ConditionDrivenSurgeryTest
     }
 
     [Test]
+    public async Task ComminutedFractureContaminatedCleanupBeforeFinalSetDoesNotRepeatBoneGel()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var flow = entMan.System<CMUSurgeryFlowSystem>();
+            var fracture = entMan.System<SharedFractureSystem>();
+            var traits = entMan.System<SharedCMUSurgicalTraitSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                entMan.EnsureComponent<BypassSkillChecksComponent>(surgeon);
+                entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+
+                var arm = GetBodyPart(entMan, human, BodyPartType.Arm, BodyPartSymmetry.Right);
+                OpenSoftTissue(entMan, arm);
+
+                var frac = entMan.EnsureComponent<FractureComponent>(arm);
+                fracture.SetSeverity((arm, frac), FractureSeverity.Comminuted);
+                ClearSurgicalTraits(traits, arm);
+
+                var armed = ArmStep(
+                    flow,
+                    surgeon,
+                    human,
+                    arm,
+                    "CMUSurgerySetComminutedFracture",
+                    BodyPartType.Arm,
+                    BodyPartSymmetry.Right,
+                    "comminuted fracture with late contamination");
+
+                armed = CompleteExpectedStep(
+                    entMan,
+                    flow,
+                    human,
+                    surgeon,
+                    armed,
+                    "bone_setter",
+                    "realign comminuted fracture")!;
+                armed = CompleteInjectedCleanupsUntilLeaf(entMan, flow, traits, human, surgeon, arm, armed, "CMUSurgerySetComminutedFracture");
+                ClearSurgicalTraits(traits, arm);
+
+                armed = CompleteExpectedStep(
+                    entMan,
+                    flow,
+                    human,
+                    surgeon,
+                    armed,
+                    "bone_gel",
+                    "apply comminuted bone gel")!;
+                ClearSurgicalTraits(traits, arm);
+
+                armed = CompleteExpectedStep(
+                    entMan,
+                    flow,
+                    human,
+                    surgeon,
+                    armed,
+                    "bone_graft",
+                    "insert bone graft")!;
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(armed.SurgeryId, Is.EqualTo("CMUSurgerySetComminutedFracture"));
+                    Assert.That(armed.StepIndex, Is.EqualTo(3));
+                    Assert.That(armed.RequiredToolCategory, Is.EqualTo("bone_setter"));
+                });
+
+                traits.EnsureTrait(arm, CMUSurgicalTrait.ContaminatedWound);
+
+                Assert.That(flow.TryCompleteAutomatedStep(human, armed, surgeon), Is.True);
+                armed = entMan.GetComponent<CMUSurgeryArmedStepComponent>(human);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(armed.SurgeryId, Is.EqualTo("CMUSurgeryDebrideContaminatedWound"));
+                    Assert.That(armed.RequiredToolCategory, Is.EqualTo("scalpel"));
+                });
+
+                armed = CompleteExpectedStep(
+                    entMan,
+                    flow,
+                    human,
+                    surgeon,
+                    armed,
+                    "scalpel",
+                    "debride contaminated tissue after bone graft")!;
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(traits.HasTrait(arm, CMUSurgicalTrait.ContaminatedWound), Is.False);
+                    Assert.That(armed.SurgeryId, Is.EqualTo("CMUSurgerySetComminutedFracture"));
+                    Assert.That(armed.StepIndex, Is.EqualTo(3));
+                    Assert.That(armed.RequiredToolCategory, Is.EqualTo("bone_setter"));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+                entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task InjectedCleanupReturnsToSelectedSurgeryAfterCompletion()
     {
         await using var pair = await PoolManager.GetServerClient();
@@ -1385,6 +1496,26 @@ public sealed class ConditionDrivenSurgeryTest
         return entMan.TryGetComponent<CMUSurgeryArmedStepComponent>(human, out var next)
             ? next
             : null;
+    }
+
+    private static CMUSurgeryArmedStepComponent CompleteInjectedCleanupsUntilLeaf(
+        IEntityManager entMan,
+        CMUSurgeryFlowSystem flow,
+        SharedCMUSurgicalTraitSystem traits,
+        EntityUid human,
+        EntityUid surgeon,
+        EntityUid part,
+        CMUSurgeryArmedStepComponent armed,
+        string leafSurgeryId)
+    {
+        while (armed.SurgeryId != leafSurgeryId)
+        {
+            Assert.That(flow.TryCompleteAutomatedStep(human, armed, surgeon), Is.True, armed.SurgeryId);
+            ClearSurgicalTraits(traits, part);
+            armed = entMan.GetComponent<CMUSurgeryArmedStepComponent>(human);
+        }
+
+        return armed;
     }
 
     private static void AssertAwaitingClosure(IEntityManager entMan, EntityUid human, EntityUid part, string context)
