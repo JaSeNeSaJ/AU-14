@@ -18,5 +18,7 @@
   special:
   - !type:AddComponentSpecial
     components:
+    - type: Skills
+      preset: AU14SkillPresetPlatoonCombatTechnician
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadcombattechRMC
