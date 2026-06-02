@@ -79,14 +79,13 @@
     eyes: CMGlassesSecurity
     ears: RMCHeadsetDistressWeYa
     suitstorage: RMCWeaponShotgunM3717
-    inhand: RMCFlashlight
   storage:
     back:
     - AU14CBRNKitWeYu
     - RMCMREWeYa
     - CMCanteen
     - CMSheetMetal30
-
+    - RMCFlashlight 
 - type: entity
   parent: AU14JumpsuitVeteranPMCCorporate
   id: AU14JumpsuitVeteranPMCCorporateShotgun
