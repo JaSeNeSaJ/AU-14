@@ -15,7 +15,7 @@
   minplayers: 101
   maxplayers: 400
   GhostsNeeded: 0
-  roundstart: false
+  roundstart: true
 
 - type: partySpawn
   id: CLFSurvsSpawnMedium
@@ -34,7 +34,7 @@
   minplayers: 51
   maxplayers: 100
   GhostsNeeded: 0
-  roundstart: false
+  roundstart: true
 
 - type: partySpawn
   id: CLFSurvsSpawnSmall
@@ -53,4 +53,4 @@
   minplayers: 20
   maxplayers: 50
   GhostsNeeded: 0
-  roundstart: false
+  roundstart: true
