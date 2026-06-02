@@ -1965,5 +1965,19 @@
   id: 178
   time: '2026-06-02T00:37:27.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1184
+- author: troytroy400
+  changes:
+  - message: Xeno spawn rates changed to be more proportional.
+    type: Tweak
+  id: 179
+  time: '2026-06-02T00:50:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1186
+- author: KeiKiyomi
+  changes:
+  - message: Fixed Prodigy spawns (again)
+    type: Fix
+  id: 180
+  time: '2026-06-02T01:47:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1187
 Name: CMU
 Order: -1
