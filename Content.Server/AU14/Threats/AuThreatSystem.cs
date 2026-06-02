@@ -351,8 +351,20 @@ public sealed partial class AuThreatSystem : EntitySystem
             {
                 var eligibleHeldPlayers = GetEligibleVoteHeldPlayers(voteHeldPlayers, requireObserverForVotePlayers);
                 _random.Shuffle(eligibleHeldPlayers);
+                var heldAssignments = eligibleHeldPlayers
+                    .Select(player =>
+                    {
+                        var job = assignedJobs.TryGetValue(player, out var assigned) &&
+                                  assigned.Item1 == ThreatLeaderJobId
+                            ? ThreatLeaderJobId
+                            : ThreatMemberJobId;
+
+                        return new ThreatVoteAssignment(player, job);
+                    })
+                    .ToList();
+
                 var voteAssignments = ThreatVoteSelection.BuildSpawnAssignments(
-                    eligibleHeldPlayers,
+                    heldAssignments,
                     spawnedLeaders.Count,
                     spawnedMembers.Count);
 
