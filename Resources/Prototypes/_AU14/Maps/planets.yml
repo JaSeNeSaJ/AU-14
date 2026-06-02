@@ -57,6 +57,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -112,9 +121,19 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreat
     - XenoThreat
+    - XenoThreatCF
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
@@ -172,7 +191,19 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
+    - cultistThreat
+    - XenoThreatCF
+    - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
     joboverrides:
@@ -230,6 +261,15 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreat
     - wendigoThreat
@@ -304,7 +344,6 @@
     - USArmyAlt2
    # - cultistThirdParty
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -359,7 +398,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
       AU14JobLEOBase: AU14JobCiviliannspaConstable
@@ -418,7 +456,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -456,7 +493,7 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-    - abominationsThreatDistress
+    - TribalsThreat
     thirdparties:
     - NSPAInvestigationParty
     - UPPGROMAlt
@@ -466,7 +503,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -516,9 +552,20 @@
     - USArmy
     - abominationThirdParty
     - tribalThirdParty
+    - DrugSmuggler
+    - CMBParoleeTransport
+    - CMBParoleeTransportBig
+    - ForeignCrimeGang
+    - MigratingCivs
+    - MigratingCivsMedium
+    - MigratingCivsLarge
+    - MissionariesParty
+    - MissionariesPartyMedium
     threats:
     - cultistThreatOnMarker
     - XenoThreat
+    - XenoThreatCF
+    - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
     joboverrides:
@@ -570,11 +617,11 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - cultistThreat
     - XenoThreat
     - wendigoThreat
+    - TribalsThreat
     - abominationsThreatDistress
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -623,10 +670,9 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -674,10 +720,9 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -725,10 +770,9 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - XenoThreat
-    - abominationsThreatDistress
+    - TribalsThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -777,7 +821,6 @@
     - WYPMCParty
     - WYPMCPartyAlt
     - abominationThirdParty
-    - tribalThirdParty
     threats:
     - abominationsThreatDistress
     jobScalingFof: DefaultGovforOpforScale
@@ -841,4 +884,3 @@
 - type: lorePrimer
   id: AU14PrimerPlanetFiorina
   planetText: "Date 2181 - Fiorina Prison. Privately owned  and operated by the weyland-yutani corporation, Fiorina 161 is a maximum security prison for the most dangerous criminals in the system."
-
