@@ -59,6 +59,9 @@
     belt: CMBeltSecurityMarshalFilled
     back: RMCSatchelTSEPA
     ears: AU14CMBHeadset
+  storage:
+    back:
+    - AU14GuidebookLawColonial
 
 - type: entity
   parent: CMSpawnPointJobBase

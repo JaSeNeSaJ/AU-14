@@ -19,6 +19,7 @@ using Content.Shared._RMC14.Xenonids.Stomp;
 using Content.Shared.Actions.Components;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
+using Robust.Shared.Physics;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Client.Input;
@@ -198,7 +199,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
             case XenoDirectionalStompActionEvent:
                 if (!_stompQ.TryComp(player.Value, out var stomp) || !stomp.Directional)
                     return;
-                DrawDirectionalStomp(args, originMap, mousePos, stomp);
+                DrawDirectionalStomp(args, player.Value, originMap, mousePos, stomp);
                 break;
         }
     }
@@ -324,14 +325,32 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
     {
         var direction = mousePos.Position - originMap.Position;
         var distance = Math.Min(direction.Length(), charge.Range);
+
+        // Raycast for walls, doors, and barricades to find where the charge would actually stop.
+        if (direction.Length() > 0.1f)
+        {
+            var mask = (int) (CollisionGroup.Impassable | CollisionGroup.InteractImpassable | CollisionGroup.BarricadeImpassable);
+            var ray = new CollisionRay(originMap.Position, direction.Normalized(), mask);
+            foreach (var result in _physics.IntersectRay(originMap.MapId, ray, distance, player, returnOnFirstHit: true))
+            {
+                distance = Math.Max(0, result.Distance - 0.5f);
+            }
+        }
+
         mousePos = originMap.Offset(direction.Normalized() * distance);
 
         var color = new Color(0.85f, 0.2f, 0.2f).WithAlpha(OutlineAlpha);
-        DrawLinePreview(args, player, xform.Coordinates, mousePos, distance, color);
+        var toCoordinates = _transform.ToCoordinates(player, mousePos);
+        var tiles = _line.DrawLine(xform.Coordinates, toCoordinates, TimeSpan.Zero, distance, out _, hitBlocker: false);
+        if (tiles.Count == 0)
+            return;
+
+        DrawTileBorderFromLineTiles(args, tiles, color);
     }
 
     private void DrawDirectionalStomp(
         in OverlayDrawArgs args,
+        EntityUid player,
         MapCoordinates originMap,
         MapCoordinates mousePos,
         XenoStompComponent stomp)
@@ -360,6 +379,18 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
 
                 var angleDiff = Angle.ShortestDistance(direction, diff.ToWorldAngle());
                 if (Math.Abs(angleDiff.Theta) > halfAngle.Theta)
+                    continue;
+
+                // Raycast for obstacle blocking (walls, windows, doors, barricades).
+                var ray = new CollisionRay(originMap.Position, diff.Normalized(), (int) (CollisionGroup.Impassable | CollisionGroup.InteractImpassable | CollisionGroup.BarricadeImpassable));
+                var blocked = false;
+                foreach (var _ in _physics.IntersectRay(originMap.MapId, ray, diff.Length(), player, returnOnFirstHit: true))
+                {
+                    blocked = true;
+                    break;
+                }
+
+                if (blocked)
                     continue;
 
                 tiles.Add(tilePos);

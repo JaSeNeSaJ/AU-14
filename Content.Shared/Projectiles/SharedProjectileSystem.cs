@@ -434,7 +434,7 @@ public abstract partial class SharedProjectileSystem : EntitySystem
                     var BarricadeBlockCoords = Transform(args.OtherEntity).Coordinates;
 
                     if (shooterCoords.TryDistance(EntityManager, BarricadeBlockCoords, out var distance) &&
-                        distance <= 1.5f)
+                        distance <= BarricadeBlock.Distance)
                     {
                         alwaysPassThrough = true;
                     }
