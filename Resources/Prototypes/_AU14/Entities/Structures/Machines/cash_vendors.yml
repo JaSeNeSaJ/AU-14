@@ -750,10 +750,10 @@
     - id: RMCBoxRegulationTapes
       name: Regulation Tapes
       price: 10
-    - id: RMCGuidebookLawMarine
+    - id: AU14GuidebookLawMarine
       name: Marine Law Guidebook
       price: 5
-    - id: RMCGuidebookSOP
+    - id: AU14GuidebookSOP
       name: SOP Guidebook
       price: 5
 
