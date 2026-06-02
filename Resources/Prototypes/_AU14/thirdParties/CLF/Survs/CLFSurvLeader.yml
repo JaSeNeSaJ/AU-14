@@ -69,10 +69,10 @@
   components:
   - type: EntityPreset
     randomOutfits:
-    - [ CMJumpsuitTShirtGray  ] # uniform
-    - [ CMJumpsuitTShirtWhite ]
-    - [ RMCJumpsuitCivilian  ] 
-    - [ CMJumpsuitColonist ] 
+    - [ CMJumpsuitTShirtWhiteCLFArmband  ] # uniform
+    - [ CMJumpsuitTShirtGrayCLFArmband ]
+    - [ RMCJumpsuitCivilianCLFArmband  ] 
+    - [ CMJumpsuitColonistCLFArmband ]
     randomGearOther:
     -
       - [ AU14ArmorBallisticVest ] # armor
@@ -117,8 +117,10 @@
       - [ AU14BeltUtilityGeneralBlackCLFSurvMedical ]
       - [ AU14BeltUtilityGeneralBlackCLFSurvMetal ]
     randomWeapon: # Weapon with ammo pouches and stuff
-    - [ RMCWeaponLMGM60, AU14PouchGeneralLargeFilledM60, AU14PouchIFAKFill ]
-    - [ AU14WeaponMar50LMGTactical, AU14PouchGeneralLargeFilledMAR50, AU14PouchIFAKFill ]
+    - [ RMCWeaponRifleType71C, AU14PouchMagazineLargeFilledType71, AU14PouchIFAKFill ]
+# lowk debated giving the CLF leader LMGs for aura, decided not to for now
+#    - [ RMCWeaponLMGM60, AU14PouchGeneralLargeFilledM60, AU14PouchIFAKFill ]
+#    - [ AU14WeaponMar50LMGTactical, AU14PouchGeneralLargeFilledMAR50, AU14PouchIFAKFill ]
     tryEquipRandomWeapon: true
 
 
@@ -130,6 +132,7 @@
   inhand:
   - AU14CLFHeadset
   - AU14FlagCarriableCLF
+  - RMCCLFArmband
 
 - type: playTimeTracker
   id: AU14CLFSurvivorLead
