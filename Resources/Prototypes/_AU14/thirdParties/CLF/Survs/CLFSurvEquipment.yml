@@ -114,6 +114,8 @@
       amount: 3
     - id: RMCLighter
       amount: 1
+    - id: RMCFlashlight
+      amount: 1
 
 - type: entity
   parent: AU14BeltUtilityGeneralBlack
@@ -127,6 +129,8 @@
     - id: AU14GrenadeSmokeUPP
       amount: 1
     - id: AU14GrenadeIncendiaryUPP
+      amount: 1
+    - id: RMCFlashlight
       amount: 1
 
 
@@ -157,6 +161,8 @@
       amount: 1
     - id: CMSheetMetal10
       amount: 1
+    - id: RMCFlashlight
+      amount: 1
 
 - type: entity
   parent: AU14BeltUtilityGeneralBlack
@@ -170,6 +176,8 @@
     - id: CMUPipeBomb
       amount: 2
     - id: RMCLighter
+      amount: 1
+    - id: RMCFlashlight
       amount: 1
 
 # Uniforms with Armbands
