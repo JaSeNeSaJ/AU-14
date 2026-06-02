@@ -79,6 +79,7 @@
     back: RMCSatchelLightpackWeYa
     eyes: CMGlassesSecurity
     ears: RMCHeadsetDistressWeYa
+    inhand: RMCFlashlight
   storage:
     pocket2:
     - AU14Tourniquet

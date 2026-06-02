@@ -79,6 +79,7 @@
     eyes: CMGlassesSecurity
     ears: RMCHeadsetDistressWeYa
     suitstorage: RMCWeaponShotgunM3717
+    inhand: RMCFlashlight
   storage:
     back:
     - AU14CBRNKitWeYu

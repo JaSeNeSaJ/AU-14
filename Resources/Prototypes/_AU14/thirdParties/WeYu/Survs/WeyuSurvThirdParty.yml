@@ -66,7 +66,7 @@
   spawnTogether: true
 
 - type: auThirdParty
-  id: WEYUSurvSmall
+  id: 
   displayName: Weyland-Yutani Survivors
   partyspawn: WEYUSurvSpawnSmall
   blacklistedgamemodes:
