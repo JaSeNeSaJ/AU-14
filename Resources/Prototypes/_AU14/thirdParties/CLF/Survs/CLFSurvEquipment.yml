@@ -32,7 +32,7 @@
 
 - type: entity
   parent: RMCPouchMagazineLarge
-  id: AU14PouchMagazineLargeFilledMAR40
+  id: AU14PouchMagazineLargeFilledMAR40normal
   suffix: Filled, MAR40
   components:
   - type: StorageFill
@@ -83,3 +83,93 @@
       amount: 6
     - id: RMCWeaponPistolB92FS
       amount: 1
+
+# random Belts
+- type: entity
+  parent: RMCBeltConstruction
+  id: AU14BeltConstructionCLFSurv
+  suffix: CLF; Survivor
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMSheetMetal50
+      amount: 2
+    - id: CMWelder
+      amount: 1
+    - id: CMCrowbar
+      amount: 1
+    - id: CMWirecutter
+      amount: 1
+    - id: CMWrench
+      amount: 1
+
+- type: entity
+  parent: AU14BeltUtilityGeneralBlack
+  id: AU14BeltUtilityGeneralBlackCLFSurvMolly
+  suffix: CLF; Survivor; Molotov
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCGrenadeMolotov
+      amount: 3
+    - id: RMCLighter
+      amount: 1
+
+- type: entity
+  parent: AU14BeltUtilityGeneralBlack
+  id: AU14BeltUtilityGeneralBlackCLFSurvGrenade
+  suffix: CLF; Survivor; Grenades
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMGrenadeFragOld
+      amount: 2
+    - id: AU14GrenadeSmokeUPP
+      amount: 1
+    - id: AU14GrenadeIncendiaryUPP
+      amount: 1
+
+
+- type: entity
+  parent: AU14BeltUtilityGeneralBlack
+  id: AU14BeltUtilityGeneralBlackCLFSurvMedical
+  suffix: CLF; Survivor; Medical
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMTraumaKit10
+      amount: 2
+    - id: CMBurnKit10
+      amount: 1
+    - id: CMHealthAnalyzer
+      amount: 1
+    - id: AU14OxycodoneAutoInjector
+      amount: 1
+
+- type: entity
+  parent: AU14BeltUtilityGeneralBlack
+  id: AU14BeltUtilityGeneralBlackCLFSurvMetal
+  suffix: CLF; Survivor; Metal
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMSheetMetal50
+      amount: 1
+    - id: CMSheetMetal10
+      amount: 1
+
+- type: entity
+  parent: AU14BeltUtilityGeneralBlack
+  id: AU14BeltUtilityGeneralBlackCLFSurvPipeBomb
+  suffix: CLF; Survivor; Pipebomb
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCGrenadeMolotov
+      amount: 1
+    - id: CMUPipeBomb
+      amount: 2
+    - id: RMCLighter
+      amount: 1
+
+

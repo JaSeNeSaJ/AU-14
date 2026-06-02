@@ -1,9 +1,9 @@
 - type: partySpawn
   id: CLFSurvsSpawnBig
   leadersToSpawn:
-    AU14SurvCLFLeader: 1
+    AU14CLFSurvLeader: 1
   gruntsToSpawn:
-    AU14SurvCLFFighter: 6
+    AU14CLFSurvFighter: 6
   scalewithpop: false
   spawnTogether: true
 
@@ -20,9 +20,9 @@
 - type: partySpawn
   id: CLFSurvsSpawnMedium
   leadersToSpawn:
-    AU14SurvCLFLeader: 1
+    AU14CLFSurvLeader: 1
   gruntsToSpawn:
-    AU14SurvCLFFighter: 5
+    AU14CLFSurvFighter: 5
   scalewithpop: false
   spawnTogether: true
 
@@ -39,9 +39,9 @@
 - type: partySpawn
   id: CLFSurvsSpawnSmall
   leadersToSpawn:
-    AU14SurvCLFLeader: 1
+    AU14CLFSurvLeader: 1
   gruntsToSpawn:
-    AU14SurvCLFFighter: 4
+    AU14JobCLFSurvFighter: 0
   scalewithpop: false
   spawnTogether: true
 
