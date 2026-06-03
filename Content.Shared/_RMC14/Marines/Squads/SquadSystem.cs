@@ -765,6 +765,8 @@ public sealed partial class SquadSystem : EntitySystem
             _marineOrders.StartActionUseDelay((toPromote, orders));
         }
 
+        _marineOrders.EnsureOrderActions((toPromote.Owner, orders));
+
         var slots = _inventory.GetSlotEnumerator(toPromote.Owner, SlotFlags.EARS);
         while (slots.MoveNext(out var slot))
         {
