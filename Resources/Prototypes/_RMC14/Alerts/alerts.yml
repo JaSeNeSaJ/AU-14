@@ -108,6 +108,12 @@
 
 - type: alert
   parent: SquadTracker
+  id: SquadTrackerFallback
+  name: BUG - Fallback Tracker
+  description: BUG. If you see this, please make a bug-report.
+
+- type: alert
+  parent: SquadTracker
   id: SquadTrackerCorporate
 
 - type: alert

@@ -657,7 +657,9 @@ public sealed partial class SquadLeaderTrackerSystem : EntitySystem
         var severity = TrackerSystem.CenterSeverity;
 
         if (ent.Comp.Mode == SquadLeaderMode)
-            alert += squad;
+            alert = _prototypeManager.HasIndex<AlertPrototype>(alert + squad)
+            ? alert + squad
+            : "SquadTrackerFallback"; // this tracker is named: BUG - Fallback Tracker
 
         if (coordinates != null)
             severity = _tracker.GetAlertSeverity(ent.Owner, coordinates.Value);
