@@ -78,9 +78,6 @@
   parent: CMU14TearGas
   name: Tear Gas
   components:
-  - type: EvenSmoke
-    spawn: CMU14TearGas
-    range: 1
   - type: TimedDespawn
     lifetime: 6
   - type: EdgeSpreader
