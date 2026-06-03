@@ -635,6 +635,9 @@
     - CLFSurvsBig
     - CLFSurvsMedium
     - CLFSurvsSmall
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
     - UPPTDLostTeam
     - PAPInvestigationPartyAlt
     - PAPInvestigationParty

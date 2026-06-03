@@ -1028,6 +1028,7 @@
     - name: Equipment
       takeAll: CMStandard
       entries:
+      - id: CMArmorHelmetM12
       - id: RMCLaserDesignator
       - id: RMCWhistle
       - id: RMCPackFlareCAS
