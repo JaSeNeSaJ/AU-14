@@ -78,6 +78,7 @@
     pocket2: RMCPouchMagazineLarge
   inhand:
   - WeaponSMGMAC15  # TODO RMC14 - Make randomized
+  - CMDefibrillator
   storage:
     back:
     - RMCGrenadeIED
@@ -94,7 +95,6 @@
     - RMCMagazineSMGMAC15
     - RMCMagazineSMGMAC15
     belt:
-    - CMDefibrillator
     - CMHealthAnalyzer
     - CMRollerBedSpawnFolded
     outerClothing:
