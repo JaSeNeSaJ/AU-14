@@ -61,12 +61,6 @@
     gloves: CMHandsInsulated
     neck: RMCCLFArmband
     id: AU14IDCardColonyColonist
-    back: RMCSatchelLightpackBlack
-  storage:
-    back:
-    - RMCMagazineLMGM60
-    - RMCMagazineLMGM60
-    - RMCMagazineLMGM60
   inhand:
   - RMCWeaponLMGM60
   - AU14CLFHeadset
