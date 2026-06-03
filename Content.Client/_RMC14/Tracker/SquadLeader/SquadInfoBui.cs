@@ -62,7 +62,7 @@ public sealed partial class SquadInfoBui : BoundUserInterface
             : Loc.GetString("rmc-squad-info-squad-leader-name", ("leader", tracker.Fireteams.SquadLeader));
         _window.SquadLeaderLabel.Text = squadLeader;
         _window.ChangeTrackerButton.Visible = isSquadLeader;
-        if (isSquadLeader)
+        if (isSquadLeader) // || isOverwatchOperator)
         {
             _window.ChangeTrackerButton.OnPressed += _ => SendPredictedMessage(new SquadLeaderTrackerChangeTrackedMsg());
         }
