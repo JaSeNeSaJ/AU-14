@@ -48,7 +48,7 @@
     job: AU14JobCLFSurvFighter
     raffle:
       settings: short
-    rules: au14-clfsurv-desription
+    rules: au14-clfsurv-rules
 
 - type: entity
   id: AU14CLFSurvFighterPreset
