@@ -35,8 +35,13 @@
   - type: WoundTreater
     wound: Burn
     treats: true
+    instantWoundTreatment: true
+    woundsTreatedPerUse: 2
     consumable: true
     group: Burn
+    cmuMechanisms: 16
+    cmuTreatmentQuality: Optimal
+    cmuCleanupClears: 20
     damage: -5
     unskilledDamage: -5
     canUseUnskilled: true
@@ -294,6 +299,9 @@
     treats: true
     instantWoundTreatment: true
     woundsTreatedPerUse: 2
+    cmuMechanisms: 16
+    cmuTreatmentQuality: Optimal
+    cmuCleanupClears: 20
     group: Burn
     consumable: true
     damage: -9
@@ -1088,6 +1096,9 @@
     treats: true
     instantWoundTreatment: true
     woundsTreatedPerUse: 2
+    cmuMechanisms: 16
+    cmuTreatmentQuality: Optimal
+    cmuCleanupClears: 20
     group: Burn
     consumable: true
     damage: -36
