@@ -26,7 +26,7 @@ public sealed partial class WoundTreaterComponent : Component
     [DataField, AutoNetworkedField]
     public bool InstantWoundTreatment;
 
-    [DataField, AutoNetworkedField]
+    [DataField]
     public Dictionary<EntProtoId<SkillDefinitionComponent>, int> InstantWoundTreatmentSkills = new();
 
     [DataField, AutoNetworkedField]

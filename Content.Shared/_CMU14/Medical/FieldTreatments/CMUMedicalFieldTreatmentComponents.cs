@@ -37,6 +37,6 @@ public sealed partial class CMUMedicalMixingBaseComponent : Component
     [DataField, AutoNetworkedField]
     public TimeSpan BleedControlDelay;
 
-    [DataField, AutoNetworkedField]
+    [DataField]
     public Dictionary<EntProtoId<SkillDefinitionComponent>, int> InstantBleedControlSkills = new();
 }
