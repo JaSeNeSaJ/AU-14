@@ -1,0 +1,45 @@
+- type: job
+  parent: CMJobBase
+  id: AU14ParaMarinePilotBase
+  name: au14-job-name-tweiasf-pl
+  playTimeTracker: AU14ParaMarinePilot
+  description: au14-job-description-twepara
+  ranks:
+    RMC_WarrantOfficer2: []
+  spawnMenuRoleName: Paramarine Pilot (Base)
+  joinNotifyCrew: false
+  icon: RMCJobIconParaPilot
+  supervisors: au14-job-name-tweiasf-co
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: rmc_marksman
+    - type: AssignSquad
+      whitelist:
+        tags:
+        - AU14SquadParamarine
+    - type: Skills
+      preset: AU14SkillPresetPlatoonDP
+    - type: JobPrefix
+      prefix: au14-job-prefix-tweiasf-pl
+  hidden: true
+
+- type: startingGear
+  id: AU14RMCGearParaMarinePilot
+  equipment:
+    head: RMCHeadRoyalFlightHelmet
+    jumpsuit: RMCJumpsuitMarineParaPDW90
+    gloves: RMCHandsVeteranRoyalMarine
+    outerClothing: RMCArmorParaVest
+    suitstorage: RMCWeaponSMGPDW90TSE
+    shoes: RMCBootsRoyalFilled
+    ears: RMCHeadsetPara
+    belt: RMCBeltHolsterPistolParaM44Random
+    pocket1: AU14PouchIFAKFill 
+    pocket2: RMCPouchFlareL96Filled
+
+- type: playTimeTracker
+  id: AU14ParaMarinePilot

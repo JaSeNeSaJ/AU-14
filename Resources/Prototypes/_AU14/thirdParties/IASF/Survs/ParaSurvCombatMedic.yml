@@ -1,0 +1,28 @@
+- type: job
+  parent: AU14ParaMarineMedicalTechnicianBase
+  id: AU14IASFParasurvMedicalTechnician
+  spawnMenuRoleName: ParaMarine Medical Technician Survivor
+  playTimeTracker: AU14ParaMarineCombatMedicalTechnician
+  greeting: au14-job-greeting-parasurv
+  basePlaytimeTracker: true
+  accessGroups:
+  - AU14GovforSquad
+  hidden: true
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicTWEIASF
+  id: AU14IASFParasurvMedicalTechnician
+  name: Paramarine Medical Technician (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: AU14SquadParamarine
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tweiasf-paratrooper
+    description: au14-job-description-parasurv
+    job: AU14IASFParasurvMedicalTechnician
+    raffle:
+      settings: short

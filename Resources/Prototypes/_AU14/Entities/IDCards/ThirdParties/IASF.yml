@@ -1,0 +1,8 @@
+- type: entity
+  parent: CMIDCardBase
+  id: AU14IDCardIASFParaMarine
+  categories: [ HideSpawnMenu ]
+  name: para marine ID card
+  components:
+  - type: PresetIdCard
+    job: AU14ParaMarine

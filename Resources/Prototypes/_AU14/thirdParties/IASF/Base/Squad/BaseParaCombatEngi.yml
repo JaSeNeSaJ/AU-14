@@ -1,0 +1,48 @@
+- type: job
+  parent: CMJobBase
+  id: AU14ParaMarineCombatEngineerBase
+  name: au14-job-name-tweiasf-ce
+  playTimeTracker: AU14ParaMarineCombatEngineer
+  description: au14-job-description-tweiasf
+  ranks:
+    RMC_LanceCorporal: []
+  spawnMenuRoleName: Paramarine Cobmbat Engineer (Base)
+  joinNotifyCrew: false
+  icon: RMCJobIconParaAssaultEngineer
+  startingGear: AU14RMCGearParaAssaultEngineer
+  supervisors: au14-job-name-tweiasf-tl
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: rmc_breacher
+      background:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: background_para
+    - type: AssignSquad
+      whitelist:
+        tags:
+        - AU14SquadParamarine
+    - type: Skills
+      preset: AU14SkillPresetPlatoonCombatTechnician
+    - type: EquipEntityPreset
+      preset: AU14GearParaBasePreset
+    - type: JobPrefix
+      prefix: au14-job-prefix-paramarine
+  hidden: true
+  
+- type: startingGear
+  parent: AU14RMCGearParaMarineBase
+  id: AU14RMCGearParaAssaultEngineer
+  equipment:
+    eyes: RMCWeldingGoggles
+    jumpsuit: RMCJumpsuitMarineParaL88
+    suitstorage: RMCWeaponRifleL88A2Filled
+    belt: AU14BeltUtilityCombatRMCFilledSurvivor
+    pocket2: RMCPouchConstructionSurvivor
+
+- type: playTimeTracker
+  id: AU14ParaMarineCombatEngineer
+

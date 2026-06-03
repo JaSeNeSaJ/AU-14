@@ -1,0 +1,28 @@
+- type: job
+  parent: AU14ParaMarineCombatEngineerBase
+  id: AU14IASFSurvCombatEngineer
+  spawnMenuRoleName: ParaMarine CombatEngineer Survivor
+  playTimeTracker: AU14ParaMarineCombatEngineer
+  greeting: au14-job-greeting-parasurv
+  basePlaytimeTracker: true
+  accessGroups:
+  - AU14GovforSquad
+  hidden: true
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicTWEIASF
+  id: AU14IASFSurvCombatEngineer
+  name: Paramarine Combat Engineer (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: AU14SquadParamarine
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tweiasf-paratrooper
+    description: au14-job-description-parasurv
+    job: AU14IASFSurvCombatEngineer
+    raffle:
+      settings: short

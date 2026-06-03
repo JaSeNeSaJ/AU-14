@@ -1,0 +1,44 @@
+- type: job
+  parent: CMJobBase
+  id: AU14ParaMarineRiflemanBase
+  name: au14-job-name-tweiasf-paratrooper
+  icon: RMCJobIconParamarine
+  playTimeTracker: AU14ParaMarineRifleman
+  description: au14-job-description-twepara
+  startingGear: AU14RMCGearParaMarineRifle
+  ranks:
+    RMC_Marine: []
+  spawnMenuRoleName: Royal Paramarine Rifleman (Base)
+  joinNotifyCrew: false
+  supervisors: au14-job-name-tweiasf-tl
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: rmc_rifleman
+      background:
+        sprite: /Textures/_RMC14/Interface/map_blips.rsi
+        state: background_para
+    - type: AssignSquad
+      whitelist:
+        tags:
+        - AU14SquadParamarine
+    - type: Skills
+      preset: AU14SkillPresetPlatoonRifleman
+    - type: EquipEntityPreset
+      preset: AU14GearParaBasePreset
+    - type: JobPrefix
+      prefix: au14-job-prefix-paramarine
+  hidden: true
+
+- type: startingGear
+  parent: AU14RMCGearParaMarineBase
+  id: AU14RMCGearParaMarineRifle
+  equipment:
+    jumpsuit: RMCJumpsuitMarineParaL88
+    suitstorage: RMCWeaponRifleL88A2Filled
+
+- type: playTimeTracker
+  id: AU14ParaMarineRifleman

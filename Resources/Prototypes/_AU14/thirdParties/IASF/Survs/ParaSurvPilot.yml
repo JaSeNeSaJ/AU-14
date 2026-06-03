@@ -1,0 +1,29 @@
+- type: job
+  parent: AU14ParaMarinePilotBase
+  id: AU14IASFParamarineSurvPilot
+  spawnMenuRoleName: ParaMarine Survivor
+  playTimeTracker: AU14ParaMarinePilot
+  greeting: au14-job-greeting-parasurv
+  startingGear: AU14RMCGearParaMarinePilot
+  basePlaytimeTracker: true
+  accessGroups:
+  - AU14GovforSquad
+  hidden: true
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicTWEIASF
+  id: AU14IASFParamarineSurvPilot
+  name: Paramarine Pilot (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: AU14SquadParamarine
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tweiasf-pl
+    description: au14-job-description-parasurv
+    job: AU14IASFParamarineSurvPilot
+    raffle:
+      settings: short
