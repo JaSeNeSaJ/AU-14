@@ -449,11 +449,13 @@ public sealed partial class LarvaQueueSystem : EntitySystem
 
         if (!claimed && session.AttachedEntity is { } stillAttached)
         {
+            QueueFor(pending.Hive).AddReadyFirst(ev.UserId);
             _popup.PopupEntity(
                 Loc.GetString("rmc-xeno-larva-queue-confirm-invalid"),
                 stillAttached,
                 stillAttached,
                 PopupType.MediumCaution);
+            NotifyReadyPositions(pending.Hive);
         }
 
         TryClaimNextForHive(pending.Hive);

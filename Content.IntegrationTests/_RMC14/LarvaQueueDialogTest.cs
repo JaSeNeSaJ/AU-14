@@ -200,6 +200,88 @@ public sealed class LarvaQueueJoinXenoUiTest
         await pair.CleanReturnAsync();
     }
 
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task LarvaQueueInvalidConfirmedClaimKeepsQueueSpot(bool deleteLarva)
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        EntityUid larva = default;
+        NetEntity ghostNet = default;
+        string larvaName = string.Empty;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            BypassRoundstartDelay(entMan, ghost);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(larva, hive);
+            larvaName = entMan.GetComponent<MetaDataComponent>(larva).EntityName;
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+            ghostNet = entMan.GetNetEntity(ghost);
+
+            entMan.EventBus.RaiseLocalEvent(ghost, new JoinLarvaQueueEvent(entMan.GetNetEntity(hive)));
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            AssertConfirmDialog(entMan, ghost, larvaName);
+        });
+
+        await server.WaitAssertion(() =>
+        {
+            if (deleteLarva)
+            {
+                entMan.DeleteEntity(larva);
+            }
+            else
+            {
+                var larvaMind = mind.CreateMind(null, "Claimed Larva");
+                mind.TransferTo(larvaMind, larva);
+                Assert.That(entMan.GetComponent<MindContainerComponent>(larva).HasMind, Is.True);
+            }
+        });
+
+        await pair.RunTicksSync(5);
+        await ConfirmDialog(pair, ghostNet);
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+
+            OpenJoinXenoUi(entMan, ghost);
+            var state = GetJoinXenoState(entMan, ghost);
+            var entry = state.Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(JoinXenoQueueStatus.Queued));
+            Assert.That(entry.Position, Is.EqualTo(1));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [Test]
     public async Task LarvaQueueRoundstartDelayBlocksQueueJoin()
     {
