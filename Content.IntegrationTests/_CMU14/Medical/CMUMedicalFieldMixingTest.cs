@@ -446,6 +446,61 @@ public sealed class CMUMedicalFieldMixingTest
     }
 
     [Test]
+    public async Task PlainTraumaDressingStopsArterialBleedingInstantlyForCorpsman()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var partHealth = entMan.System<SharedBodyPartHealthSystem>();
+            var hands = entMan.System<SharedHandsSystem>();
+            var skills = entMan.System<SkillsSystem>();
+
+            var user = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var patient = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var trauma = entMan.SpawnEntity("CMUPlainTraumaDressing10", MapCoordinates.Nullspace);
+
+            try
+            {
+                skills.SetSkill(user, "RMCSkillMedical", 2);
+                Assert.That(hands.TryPickupAnyHand(user, trauma, checkActionBlocker: false), Is.True);
+
+                var torso = GetBodyPart(entMan, patient, BodyPartType.Torso);
+                Assert.That(partHealth.TryApplyPartDamage(
+                    patient,
+                    torso,
+                    Damage("Slash", 80),
+                    impact: DamageImpact.MeleeSlash), Is.True);
+
+                var wounds = entMan.GetComponent<BodyPartWoundComponent>(torso);
+                Assert.That(wounds.ExternalBleeding, Is.EqualTo(ExternalBleedTier.Arterial));
+
+                var interact = new AfterInteractEvent(user, trauma, patient, default, true);
+                entMan.EventBus.RaiseLocalEvent(trauma, interact);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(interact.Handled, Is.True);
+                    Assert.That(wounds.ExternalBleeding, Is.EqualTo(ExternalBleedTier.None));
+                    Assert.That(wounds.Wounds[0].Treated, Is.False);
+                    Assert.That(wounds.TreatmentQualities[0], Is.EqualTo(WoundTreatmentQuality.Untreated));
+                    Assert.That(entMan.GetComponent<StackComponent>(trauma).Count, Is.EqualTo(49));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(trauma);
+                entMan.DeleteEntity(patient);
+                entMan.DeleteEntity(user);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task PreparedGauzeTreatsWoundAndStopsNonArterialBleeding()
     {
         await using var pair = await PoolManager.GetServerClient();

@@ -11,6 +11,7 @@ using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
+using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.Wounds;
 using Content.Shared._RMC14.Medical.Scanner;
 using Content.Shared.Hands.EntitySystems;
@@ -756,6 +757,36 @@ public sealed class MechanismWoundsFoundationTest
             finally
             {
                 entMan.DeleteEntity(patient);
+                entMan.DeleteEntity(user);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DetailedExamineUsesCorpsmanDelay()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var examine = entMan.System<CMUDetailedMedicalExamineSystem>();
+            var skills = entMan.System<SkillsSystem>();
+            var user = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                skills.SetSkill(user, "RMCSkillMedical", 0);
+                Assert.That(examine.GetExamineDelay(user), Is.EqualTo(TimeSpan.FromSeconds(2)));
+
+                skills.SetSkill(user, "RMCSkillMedical", 2);
+                Assert.That(examine.GetExamineDelay(user), Is.EqualTo(TimeSpan.FromSeconds(0.4)));
+            }
+            finally
+            {
                 entMan.DeleteEntity(user);
             }
         });

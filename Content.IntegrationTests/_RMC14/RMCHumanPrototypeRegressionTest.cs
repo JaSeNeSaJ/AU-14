@@ -194,6 +194,68 @@ public sealed class RMCHumanPrototypeRegressionTest
         await pair.CleanReturnAsync();
     }
 
+    [Test]
+    public async Task CmuPreparedTraumaDressingsAreInstantForCorpsmenOnly()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var skills = entMan.System<SkillsSystem>();
+            var unskilled = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var unskilledTreater = entMan.SpawnEntity("CMUHemostaticTraumaDressing4", MapCoordinates.Nullspace);
+            var corpsman = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var corpsmanTreater = entMan.SpawnEntity("CMUHemostaticTraumaDressing4", MapCoordinates.Nullspace);
+
+            try
+            {
+                skills.SetSkill(unskilled, "RMCSkillMedical", 0);
+                var unskilledPart = GetFirstBodyPart(entMan, unskilled);
+                AddBodyPartWound(entMan, unskilledPart, WoundType.Brute);
+                AddBodyPartWound(entMan, unskilledPart, WoundType.Brute);
+
+                var unskilledInteract = new AfterInteractEvent(unskilled, unskilledTreater, unskilled, default, true);
+                entMan.EventBus.RaiseLocalEvent(unskilledTreater, unskilledInteract);
+
+                var unskilledWounds = entMan.GetComponent<BodyPartWoundComponent>(unskilledPart);
+
+                skills.SetSkill(corpsman, "RMCSkillMedical", 2);
+                var corpsmanPart = GetFirstBodyPart(entMan, corpsman);
+                AddBodyPartWound(entMan, corpsmanPart, WoundType.Brute);
+                AddBodyPartWound(entMan, corpsmanPart, WoundType.Brute);
+
+                var corpsmanInteract = new AfterInteractEvent(corpsman, corpsmanTreater, corpsman, default, true);
+                entMan.EventBus.RaiseLocalEvent(corpsmanTreater, corpsmanInteract);
+
+                var corpsmanWounds = entMan.GetComponent<BodyPartWoundComponent>(corpsmanPart);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(unskilledInteract.Handled, Is.True);
+                    Assert.That(entMan.HasComponent<CMUBandagePendingComponent>(unskilled), Is.True);
+                    Assert.That(CountTreatedWounds(unskilledWounds, WoundType.Brute), Is.EqualTo(0));
+                    Assert.That(entMan.GetComponent<StackComponent>(unskilledTreater).Count, Is.EqualTo(6));
+
+                    Assert.That(corpsmanInteract.Handled, Is.True);
+                    Assert.That(entMan.HasComponent<CMUBandagePendingComponent>(corpsman), Is.False);
+                    Assert.That(CountTreatedWounds(corpsmanWounds, WoundType.Brute), Is.EqualTo(2));
+                    Assert.That(entMan.GetComponent<StackComponent>(corpsmanTreater).Count, Is.EqualTo(5));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(unskilledTreater);
+                entMan.DeleteEntity(unskilled);
+                entMan.DeleteEntity(corpsmanTreater);
+                entMan.DeleteEntity(corpsman);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
     [TestCase("CMSurgicalLine", WoundType.Brute, "Slash")]
     [TestCase("CMSynthGraft", WoundType.Burn, "Heat")]
     public async Task CmuLegacyLineAndGraftHealToWoundCapWithoutTreatingWounds(
@@ -1670,6 +1732,18 @@ public sealed class RMCHumanPrototypeRegressionTest
         GetField<List<Wound>>(wounds, nameof(BodyPartWoundComponent.Wounds)).Add(new Wound(damage ?? FixedPoint2.New(10), FixedPoint2.Zero, 0f, null, type, false));
         GetField<List<WoundSize>>(wounds, nameof(BodyPartWoundComponent.Sizes)).Add(WoundSize.Deep);
         GetField<List<int>>(wounds, nameof(BodyPartWoundComponent.Bandages)).Add(0);
+    }
+
+    private static int CountTreatedWounds(BodyPartWoundComponent comp, WoundType type)
+    {
+        var count = 0;
+        foreach (var wound in GetField<List<Wound>>(comp, nameof(BodyPartWoundComponent.Wounds)))
+        {
+            if (wound.Type == type && wound.Treated)
+                count++;
+        }
+
+        return count;
     }
 
     private static T GetField<T>(BodyPartWoundComponent comp, string name)
