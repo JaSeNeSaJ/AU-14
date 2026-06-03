@@ -27,8 +27,8 @@ public abstract partial class SharedMarineOrdersSystem : EntitySystem
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPainShockSystem _pain = default!;
-    [Dependency] private SkillsSystem _skills = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] protected SkillsSystem _skills = default!;
 
     private readonly HashSet<Entity<MarineComponent>> _receivers = new();
 
@@ -163,14 +163,14 @@ public abstract partial class SharedMarineOrdersSystem : EntitySystem
 
     private bool HandleAction<T>(Entity<MarineOrdersComponent> orders) where T : IOrderComponent, new()
     {
-        if (!TryComp(orders, out TransformComponent? xform) ||
-            _mobState.IsDead(orders))
-        {
+        if (!TryComp(orders, out TransformComponent? xform)
+            || _mobState.IsDead(orders))
             return false;
-        }
 
-        var level = Math.Max(1, _skills.GetSkill(orders.Owner, orders.Comp.Skill));
-        var duration = orders.Comp.Duration * (level + 1);
+        var leadershipSkill = _skills.GetSkill(orders.Owner, orders.Comp.Skill);
+        if (leadershipSkill <= 0)
+            return false;
+        var duration = orders.Comp.Duration * (leadershipSkill + 1);
 
         _actions.SetCooldown(orders.Comp.FocusActionEntity, orders.Comp.Cooldown);
         _actions.SetCooldown(orders.Comp.MoveActionEntity, orders.Comp.Cooldown);
@@ -187,11 +187,11 @@ public abstract partial class SharedMarineOrdersSystem : EntitySystem
             if (HasComp<YautjaComponent>(receiver.Owner))
                 continue;
 
-            AddOrder<T>(receiver, level, duration);
+            AddOrder<T>(receiver, leadershipSkill, duration);
         }
 
         // Order Handler, checks which order should be played - server side only
-        if (_net.IsServer && (typeof(T) == typeof(MoveOrderComponent) || typeof(T) == typeof(FocusOrderComponent)|| typeof(T) == typeof(HoldOrderComponent)))
+        if (_net.IsServer && (typeof(T) == typeof(MoveOrderComponent) || typeof(T) == typeof(FocusOrderComponent) || typeof(T) == typeof(HoldOrderComponent)))
         {
             SoundSpecifier? sound = null;
             if (typeof(T) == typeof(MoveOrderComponent))

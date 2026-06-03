@@ -21,6 +21,7 @@ public sealed partial class MarineOrdersSystem : SharedMarineOrdersSystem
     {
         var comp = ent.Comp;
         if (comp.MoveActionEntity != null || comp.HoldActionEntity != null || comp.FocusActionEntity != null) return;
+        if (_skills.GetSkill(ent.Owner, comp.Skill) <= 0) return;
 
         // All the SetUseDelay calls are required because even tho we set the cooldown on all of them once an order
         // is issued for some reason the order that was pressed uses its delays and does not care about its cooldown
