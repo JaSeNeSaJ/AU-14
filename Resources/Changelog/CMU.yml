@@ -2057,5 +2057,47 @@
   id: 188
   time: '2026-06-03T09:12:26.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1193
+- author: 400Ferrets
+  changes:
+  - message: USS Bush is now weedable.
+    type: Tweak
+  - message: USS Bush now has a thick roof.
+    type: Map
+  id: 189
+  time: '2026-06-03T18:48:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1202
+- author: toot521
+  changes:
+  - message: Weyland Yutani Survivors now have more Flashlights and on average worse
+      guns
+    type: Tweak
+  id: 190
+  time: '2026-06-03T21:12:25.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1198
+- author: toot521
+  changes:
+  - message: 'Added WeYu Survivors to: Corsat Station'
+    type: Add
+  - message: 'Added CLF Survivors to: Sorokyne Strata'
+    type: Add
+  - message: 'Added CLF and WeYu Survivors to: Solaris Gulch, LV624 Green Hell, Hybrisa
+      Metropolitan, Port Neroid, Raijin Hydroelectric, Shiva''s Snowball, Kutjevo
+      Biolab, Fiorina Prison'
+    type: Add
+  id: 191
+  time: '2026-06-03T21:21:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1199
+- author: HotdogMan52
+  changes:
+  - message: M19, a handheld CS grenade
+    type: Add
+  - message: AGM-PDC, a CS Gas canister for the M85A1 Grenade Launcher
+    type: Add
+  - message: teargassmoke.yml which is just boiler gas but non-lethal and different
+      color
+    type: Add
+  id: 192
+  time: '2026-06-03T21:25:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1206
 Name: CMU
 Order: -1
