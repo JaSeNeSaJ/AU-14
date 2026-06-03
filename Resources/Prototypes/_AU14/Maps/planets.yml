@@ -34,6 +34,12 @@
     - wendigoThreat
     - abominationsThreatDistress
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - FORECON
     - FORECONAlt
     - FORECONAlt2
@@ -239,6 +245,12 @@
     opforinship: true
     daycycleenabled: true
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
@@ -381,6 +393,12 @@
     - wendigoThreat
     - abominationsThreatDistress
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -438,6 +456,12 @@
     - wendigoThreat
     - abominationsThreatDistress
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - FORECON
     - FORECONAlt
     - FORECONAlt2
@@ -496,6 +520,9 @@
     - XenoThreatCF
     - TribalsThreat
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
     - NSPAInvestigationParty
     - UPPGROMAlt
     - cultistThirdPartyNoQueen
@@ -605,6 +632,9 @@
     - UPPGROM
     - UPPGROMAlt
     - UPPGROMAlt2
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - WEYUSurvLarge
     - WEYUSurvMedium
     - WEYUSurvSmall
@@ -657,6 +687,12 @@
     daycycleenabled: true
     faction: ua
     thirdparties:
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - ICRCReliefParty
     - cultistThirdParty
     - cultistThirdPartyNoQueen
@@ -708,6 +744,12 @@
     - USArmyAlt
     - USArmyAlt2
     - USArmyTank
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
@@ -759,6 +801,12 @@
     - USArmyAlt
     - USArmyAlt2
     - USArmyTank
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
@@ -807,6 +855,12 @@
     - USArmyAlt
     - USArmyAlt2
     - USArmyTank
+    - WEYUSurvLarge
+    - WEYUSurvMedium
+    - WEYUSurvSmall
+    - CLFSurvsBig
+    - CLFSurvsMedium
+    - CLFSurvsSmall
     - ICRCReliefParty
     - TimeSharesSalesman
     - UACGLostTeam
