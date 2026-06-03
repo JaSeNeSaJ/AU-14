@@ -646,7 +646,14 @@ public sealed partial class GhostRoleSystem : EntitySystem
             _mindSystem.WipeMind(player);
         }
 
-        var newMind = _mindSystem.CreateMind(player.UserId, Comp<MetaDataComponent>(mob).EntityName);
+        string characterName;
+        if (role.JobProto is { } jobId
+            && _prototype.TryIndex(jobId, out JobPrototype? jobProto)
+            && jobProto.UsePlayerProfile)
+            characterName = GetGhostRoleCharacterName(player, mob);
+        else
+            characterName = Comp<MetaDataComponent>(mob).EntityName;
+        var newMind = _mindSystem.CreateMind(player.UserId, characterName);
 
         Log.Debug($"GhostRoleInternalCreateMindAndTransfer: created mind {newMind.Owner} for player {player.Name} (user {player.UserId}) targeting mob {mob}");
 
