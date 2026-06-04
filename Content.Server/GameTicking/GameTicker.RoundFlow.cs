@@ -780,10 +780,7 @@ namespace Content.Server.GameTicking
                 StartRound();
             else
             {
-                if (_playerManager.PlayerCount == 0)
-                    _roundStartCountdownHasNotStartedYetDueToNoPlayers = true;
-                else
-                    _roundStartTime = _gameTiming.CurTime + LobbyDuration;
+                UpdateLobbyCountdownForPlayerCount(false, true);
 
                 SendStatusToAll();
                 UpdateInfoText();
@@ -872,6 +869,12 @@ namespace Content.Server.GameTicking
             if (RunLevel == GameRunLevel.InRound)
             {
                 RoundLengthMetric.Inc(frameTime);
+            }
+
+            if (RunLevel == GameRunLevel.PreRoundLobby && LobbyEnabled && !HasEnoughPlayersForLobbyStart())
+            {
+                UpdateLobbyCountdownForPlayerCount();
+                return;
             }
 
             if (_roundStartTime == TimeSpan.Zero ||

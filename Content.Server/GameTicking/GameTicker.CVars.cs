@@ -1,4 +1,5 @@
 using Content.Server.Discord;
+using Content.Shared._RMC14.CCVar;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
 
@@ -14,6 +15,9 @@ namespace Content.Server.GameTicking
 
         [ViewVariables]
         public TimeSpan LobbyDuration { get; private set; } = TimeSpan.Zero;
+
+        [ViewVariables]
+        public int LobbyMinimumPlayers { get; private set; } = 1;
 
         [ViewVariables]
         public bool DisallowLateJoin { get; private set; } = false;
@@ -49,6 +53,7 @@ namespace Content.Server.GameTicking
             }, true);
             Subs.CVar(_cfg, CCVars.GameDummyTicker, value => DummyTicker = value, true);
             Subs.CVar(_cfg, CCVars.GameLobbyDuration, value => LobbyDuration = TimeSpan.FromSeconds(value), true);
+            Subs.CVar(_cfg, RMCCVars.RMCLobbyMinimumPlayers, value => LobbyMinimumPlayers = value, true);
             Subs.CVar(_cfg, CCVars.GameDisallowLateJoins,
                 value => { DisallowLateJoin = value; UpdateLateJoinStatus(); }, true);
             Subs.CVar(_cfg, CCVars.AdminLogsServerName, value =>
