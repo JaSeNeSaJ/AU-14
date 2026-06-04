@@ -150,7 +150,6 @@
 #      entries: []
     - name: Weapons
       entries:
-
       - cost: 4000
         crate: RMCCrateXM51
       - cost: 3000
