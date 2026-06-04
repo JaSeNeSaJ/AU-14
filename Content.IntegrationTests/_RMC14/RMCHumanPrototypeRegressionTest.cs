@@ -33,6 +33,8 @@ using Content.Shared.Explosion;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
 using Content.Shared.Standing;
 using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
@@ -187,6 +189,68 @@ public sealed class RMCHumanPrototypeRegressionTest
             finally
             {
                 entMan.DeleteEntity(treater);
+                entMan.DeleteEntity(patient);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [TestCase("CMTraumaKit10", true, 9)]
+    [TestCase("CMGauze10", false, 10)]
+    public async Task CmuWoundTreatersPreferDeadShrapnelPatientWoundsOverArmedSurgery(
+        string treaterId,
+        bool instantTreatment,
+        int expectedStackCount)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var flow = entMan.System<CMUSurgeryFlowSystem>();
+            var mobState = entMan.System<MobStateSystem>();
+            var shrapnel = entMan.System<SharedCMUShrapnelSystem>();
+            var patient = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var treater = entMan.SpawnEntity(treaterId, MapCoordinates.Nullspace);
+
+            try
+            {
+                var part = GetFirstBodyPart(entMan, patient);
+                AddBodyPartWound(entMan, part, WoundType.Brute);
+                shrapnel.AddShrapnel(part, 1, 10f);
+                mobState.ChangeMobState(patient, MobState.Dead);
+
+                var armed = flow.TryArmStep(
+                    surgeon,
+                    patient,
+                    part,
+                    "CMUSurgeryExtractForeignBody",
+                    0);
+
+                Assert.That(armed, Is.Not.Null);
+                Assert.That(armed!.RequiredToolCategory, Is.EqualTo("hemostat"));
+
+                var interact = new AfterInteractEvent(surgeon, treater, patient, default, true);
+                entMan.EventBus.RaiseLocalEvent(treater, interact);
+
+                var wounds = entMan.GetComponent<BodyPartWoundComponent>(part);
+                var woundList = GetField<List<Wound>>(wounds, nameof(BodyPartWoundComponent.Wounds));
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(interact.Handled, Is.True);
+                    Assert.That(woundList[0].Treated, Is.EqualTo(instantTreatment));
+                    Assert.That(entMan.HasComponent<CMUBandagePendingComponent>(surgeon), Is.EqualTo(!instantTreatment));
+                    Assert.That(entMan.GetComponent<StackComponent>(treater).Count, Is.EqualTo(expectedStackCount));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(treater);
+                entMan.DeleteEntity(surgeon);
                 entMan.DeleteEntity(patient);
             }
         });
