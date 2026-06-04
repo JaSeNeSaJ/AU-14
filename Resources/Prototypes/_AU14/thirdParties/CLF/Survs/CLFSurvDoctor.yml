@@ -1,0 +1,67 @@
+- type: job
+  parent: CMJobBase
+  id: AU14JobCLFSurvSurgeon
+  name: au14-job-name-clfsurgeon
+  description: au14-clfsurv-desription
+  spawnMenuRoleName: CLF Surgen (Survivor)
+  playTimeTracker: AU14CLFSurvSurgeon
+  startingGear: AU14GearCLFSurvDoctor
+  greeting: au14-clfsurv-greeting
+  icon: "CMJobIconEmpty"
+  joinNotifyCrew: false
+  supervisors: au14-job-supervisors-clflrs
+  ranks:
+    RMCRankCivilian: []
+  accessGroups:
+  - Colonist
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: NpcFactionMember
+      factions:
+      - CLF
+    - type: Skills
+      skills:
+        RMCSkillFireman: 1
+        RMCSkillVehicles: 1
+        RMCSkillDomestics: 1
+        RMCSkillMedical: 3
+        RMCSkillResearch: 1
+        RMCSkillSurgery: 3
+        RMCSkillFirearms: 2
+        RMCSkillPolice: 1
+    - type: EquipEntityPreset
+      preset: AU14CLFSurvMedicPreset
+  hidden: false
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicCLF
+  id: AU14JCLFSurvSurgeon
+  name: CLF Surgeon (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-clfguerilla
+    description: au14-clfsurv-desription
+    reregister: false
+    job: AU14JobCLFSurvSurgeon
+    raffle:
+      settings: short
+    rules: au14-clfsurv-rules
+
+- type: startingGear
+  id: AU14GearCLFSurvDoctor
+  equipment:
+    id: AU14IDCardCLFCivilian
+    shoes: RMCShoesJackboots
+    belt: CMUBeltMedicBagSupportSynth
+    suitstorage: AU14CMDefibrillator
+  inhand:
+  - AU14CLFHeadset
+
+- type: playTimeTracker
+  id: AU14CLFSurvSurgeon
