@@ -65,7 +65,7 @@
     - id: CMCanteen
     - id: RMCMagazineRifleSSG45
     - id: RMCMagazineRifleSSG45
-    - id: RMCMagazineRifleSSG45
+    - id: CMCrowbar
     - id: RMCGrenadeBlastM12
     - id: RMCGrenadeBlastM12
 
@@ -80,7 +80,7 @@
     - id: CMCanteen
     - id: CMMagazineRifleM54C
     - id: CMMagazineRifleM54C
-    - id: CMMagazineRifleM54C
+    - id: CMCrowbar
     - id: RMCGrenadeBlastM12
     - id: RMCGrenadeBlastM12
 
@@ -95,7 +95,7 @@
     - id: CMCanteen
     - id: AU14MagazineRifleF44AA
     - id: AU14MagazineRifleF44AA
-    - id: AU14MagazineRifleF44AA
+    - id: CMCrowbar
     - id: RMCGrenadeBlastM12
     - id: RMCGrenadeBlastM12
   
