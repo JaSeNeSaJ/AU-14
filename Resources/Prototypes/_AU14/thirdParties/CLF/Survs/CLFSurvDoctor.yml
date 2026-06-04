@@ -1,11 +1,11 @@
 - type: job
   parent: CMJobBase
-  id: AU14JobCLFSurvFighter
-  name: au14-job-name-clfguerilla
+  id: AU14JobCLFSurvSurgeon
+  name: au14-job-name-clfsurgeon
   description: au14-clfsurv-desription
-  spawnMenuRoleName: CLF Fighter (Survivor)
-  playTimeTracker: AU14CLFSurvivor
-  startingGear: AU14GearCLFSurvFighter
+  spawnMenuRoleName: CLF Surgen (Survivor)
+  playTimeTracker: AU14CLFSurvSurgeon
+  startingGear: AU14GearCLFSurvDoctor
   greeting: au14-clfsurv-greeting
   icon: "CMJobIconEmpty"
   joinNotifyCrew: false
@@ -22,21 +22,22 @@
       - CLF
     - type: Skills
       skills:
-        RMCSkillEndurance: 1
-        RMCSkillFirearms: 2
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
         RMCSkillFireman: 1
         RMCSkillVehicles: 1
+        RMCSkillDomestics: 1
+        RMCSkillMedical: 3
+        RMCSkillResearch: 1
+        RMCSkillSurgery: 3
+        RMCSkillFirearms: 2
         RMCSkillPolice: 1
     - type: EquipEntityPreset
-      preset: AU14CLFSurvFighterPreset
+      preset: AU14CLFSurvMedicPreset
   hidden: false
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicCLF
-  id: AU14CLFSurvFighter
-  name: CLF Fighter (Survivor)
+  id: AU14JCLFSurvSurgeon
+  name: CLF Surgeon (Survivor)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
@@ -44,17 +45,27 @@
     makeSentient: true
     allowSpeech: true
     allowMovement: true
-    name: au14-job-name-clfguerilla
+    name: au14-job-name-clfsurgeon
     description: au14-clfsurv-desription
     reregister: false
-    job: AU14JobCLFSurvFighter
+    job: AU14JobCLFSurvSurgeon
     raffle:
       settings: short
     rules: au14-clfsurv-rules
 
+- type: startingGear
+  id: AU14GearCLFSurvDoctor
+  equipment:
+    id: AU14IDCardCLFCivilian
+    shoes: RMCShoesJackboots
+    belt: CMUBeltMedicBagSupportSynth
+    suitstorage: AU14CMDefibrillator
+  inhand:
+  - AU14CLFHeadset
+
 - type: entity
-  id: AU14CLFSurvFighterPreset
-  name: clf surv fighter preset
+  id: AU14CLFSurvMedicPreset
+  name: clf surv medic preset
   categories: [ HideSpawnMenu ]
   components:
   - type: EntityPreset
@@ -105,26 +116,6 @@
       - [ ]
       - [ ]
       - [ ]
-    -
-      - [ AU14BeltHolsterPistolFilledB92FS ]
-      - [ RMCM44BeltFilled ]
-      - [ AU14BeltHolsterPistolUPPPAP ]
-      - [ RMCM1984BeltFilled ]
-    -
-      - [ AU14BeltConstructionCLFSurv ]
-      - [ AU14BeltUtilityGeneralBlackCLFSurvPipeBomb ]
-      - [ AU14BeltUtilityGeneralBlackCLFSurvMolly ]
-      - [ AU14BeltUtilityGeneralBlackCLFSurvGrenade ]
-      - [ AU14BeltUtilityGeneralBlackCLFSurvMedical ]
-      - [ AU14BeltUtilityGeneralBlackCLFSurvMetal ]
-
-- type: startingGear
-  id: AU14GearCLFSurvFighter
-  equipment:
-    id: AU14IDCardCLFCivilian
-    shoes: RMCShoesJackboots
-  inhand:
-  - AU14CLFHeadset
 
 - type: playTimeTracker
-  id: AU14CLFSurvivor
+  id: AU14CLFSurvSurgeon
