@@ -35,7 +35,6 @@
     - type: JobPrefix
       prefix: au14-job-prefix-tweiasf-sl
     - type: RMCTrackable
-    - type: SquadLeader
     - type: RMCPointing
     - type: MarineOrders
   hidden: true
