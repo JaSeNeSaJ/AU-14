@@ -795,6 +795,77 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
+    public async Task InspectInjuriesUsesDistinctSiteColorFromOptimalTreatmentHint()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var partHealth = entMan.System<SharedBodyPartHealthSystem>();
+            var examine = entMan.System<CMUMedicalExamineSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                var torso = GetBodyPart(entMan, human, BodyPartType.Torso);
+                var rightArm = GetBodyPart(entMan, human, BodyPartType.Arm, BodyPartSymmetry.Right);
+
+                Assert.That(partHealth.TryApplyPartDamage(human, torso, Damage("Slash", 80), impact: DamageImpact.MeleeSlash), Is.True);
+                Assert.That(partHealth.TryApplyPartDamage(human, rightArm, Damage("Slash", 20), impact: DamageImpact.MeleeSlash), Is.True);
+
+                var text = examine.GetInspectInjuriesText(human);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(text, Does.Contain("[color=#83c9ff]Optimal Treatment: sealing dressing[/color]"));
+                    Assert.That(text, Does.Contain("[color=#ff9f43]Massive Torso, Moderate Right arm[/color]"));
+                    Assert.That(text, Does.Not.Contain("[color=#9fc7ff]Massive Torso, Moderate Right arm[/color]"));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task InspectInjuriesListsArterialBleedsByPart()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var partHealth = entMan.System<SharedBodyPartHealthSystem>();
+            var examine = entMan.System<CMUMedicalExamineSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                var rightArm = GetBodyPart(entMan, human, BodyPartType.Arm, BodyPartSymmetry.Right);
+
+                Assert.That(partHealth.TryApplyPartDamage(human, rightArm, Damage("Slash", 80), impact: DamageImpact.MeleeSlash), Is.True);
+
+                var text = examine.GetInspectInjuriesText(human);
+
+                Assert.That(text, Does.Contain("[bold][color=#ff5f5f]Arterial Bleeding[/color][/bold]\n  [color=#ff5f5f]Right arm[/color]"));
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task BulletWoundsDoNotDefaultToRetainedFragments()
     {
         await using var pair = await PoolManager.GetServerClient();
