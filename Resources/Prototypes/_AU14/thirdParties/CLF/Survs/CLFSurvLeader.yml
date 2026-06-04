@@ -124,11 +124,10 @@
   equipment:
     id: AU14IDCardCLFCellLeader
     shoes: RMCShoesJackboots
-    belt: CMUBeltMedicBagSupportSynth
+    belt: AU14BeltConstructionCLFSurv
   inhand:
   - AU14CLFHeadset
   - AU14FlagCarriableCLF
   - RMCFlashlight
-
 - type: playTimeTracker
   id: AU14CLFSurvivorLead
