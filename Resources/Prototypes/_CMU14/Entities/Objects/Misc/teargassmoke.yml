@@ -82,4 +82,4 @@
     lifetime: 6
   - type: EdgeSpreader
     id: CMU14TearGas
-    updatesPerSecond: 1.5
+    updatesPerSecond: 1
