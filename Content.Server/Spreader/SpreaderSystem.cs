@@ -142,7 +142,16 @@ public sealed partial class SpreaderSystem : EntitySystem
                 continue;
             }
 
-            if (!groupUpdates.TryGetValue(spreader.Id, out var updates) || updates < 1)
+            var updateKey = GetUpdateKey(spreader);
+            if (!groupUpdates.TryGetValue(updateKey, out var updates))
+            {
+                if (spreader.UpdatesPerSecond <= 0)
+                    continue;
+
+                updates = spreader.UpdatesPerSecond;
+            }
+
+            if (updates < 1)
                 continue;
 
             // Edge detection logic is to be handled
@@ -151,10 +160,17 @@ public sealed partial class SpreaderSystem : EntitySystem
             Spread(uid, xform, spreader.Id, ref updates);
 
             if (updates < 1)
-                groupUpdates.Remove(spreader.Id);
+                groupUpdates.Remove(updateKey);
             else
-                groupUpdates[spreader.Id] = updates;
+                groupUpdates[updateKey] = updates;
         }
+    }
+
+    private static string GetUpdateKey(EdgeSpreaderComponent spreader)
+    {
+        return spreader.UpdatesPerSecond > 0
+            ? $"{spreader.Id}:{spreader.UpdatesPerSecond}"
+            : spreader.Id;
     }
 
     private void Spread(EntityUid uid, TransformComponent xform, ProtoId<EdgeSpreaderPrototype> prototype, ref int updates)
