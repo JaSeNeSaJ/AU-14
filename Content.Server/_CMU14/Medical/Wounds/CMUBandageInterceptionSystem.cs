@@ -72,8 +72,11 @@ public sealed partial class CMUBandageInterceptionSystem : EntitySystem
             return;
         }
 
-        if (ShouldYieldToArmedSurgeryTool(args.User, patient, used))
+        if (TryHandleArmedSurgeryTool(args.User, patient, used, out var surgeryHandled))
+        {
+            args.Handled = surgeryHandled;
             return;
+        }
 
         var woundTarget = PickBandageTarget(args.User, patient, treater);
         if (woundTarget is not { } targetPart)
@@ -254,14 +257,21 @@ public sealed partial class CMUBandageInterceptionSystem : EntitySystem
         };
     }
 
-    private bool ShouldYieldToArmedSurgeryTool(EntityUid medic, EntityUid patient, EntityUid used)
+    private bool TryHandleArmedSurgeryTool(EntityUid medic, EntityUid patient, EntityUid used, out bool handled)
     {
+        handled = false;
+
         if (!TryComp<CMUSurgeryArmedStepComponent>(patient, out var armed))
             return false;
 
-        return armed.Surgeon == medic
-            && armed.RequiredToolCategory is { } category
-            && _surgery.ToolMatchesCategory(used, category);
+        if (armed.Surgeon != medic
+            || armed.RequiredToolCategory is not { } category
+            || !_surgery.ToolMatchesCategory(used, category))
+        {
+            return false;
+        }
+
+        return _surgery.TryHandleArmedToolUse(patient, armed, medic, used, patient, out handled, out _);
     }
 
     private EntityUid? PickDamageOnlyTarget(EntityUid medic, EntityUid patient, WoundTreaterComponent treater)
