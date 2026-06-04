@@ -17,5 +17,5 @@ public sealed partial class EdgeSpreaderComponent : Component
     /// rate from the referenced <see cref="EdgeSpreaderPrototype"/> is used.
     /// </summary>
     [DataField]
-    public int UpdatesPerSecond;
+    public float UpdatesPerSecond;
 }
