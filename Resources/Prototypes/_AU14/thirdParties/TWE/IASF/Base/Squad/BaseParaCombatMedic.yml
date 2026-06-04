@@ -42,6 +42,9 @@
     suitstorage: RMCWeaponRifleL88A2Filled
     belt: CMUBeltMedicBagSupportSynthRMC
     pocket2: RMCSurgicalCaseRCMFilled
+  storage:
+    outerClothing:
+    - RMCRadioHandheldColony
 
 - type: playTimeTracker
   id: AU14ParaMarineCombatMedicalTechnician

@@ -163,7 +163,6 @@
     contents:
     - id: AU14BoxMagazineRifleL88
     - id: AU14BoxMagazineRifleL88
-    - id: AU14BoxMagazineRifleL88
 
 - type: entity
   parent: AU14BeltUtilityCombatRMC
@@ -199,7 +198,6 @@
     - type: StorageFill
       contents:
         - id: CMSheetMetal50
-        - id: CMSheetMetal20
         - id: RMCRadioHandheldColony
         - id: RMCPackFlareL96
         - id: RMCPackFlareL96

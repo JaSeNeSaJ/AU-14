@@ -31,10 +31,10 @@
   id: AU14RMCGearParaMarinePilot
   equipment:
     head: RMCHeadRoyalFlightHelmet
-    jumpsuit: RMCJumpsuitMarineParaPDW90
+    jumpsuit: RMCJumpsuitMarineParaL88
     gloves: RMCHandsVeteranRoyalMarine
     outerClothing: RMCArmorParaVest
-    suitstorage: RMCWeaponSMGPDW90TSE
+    suitstorage: RMCWeaponRifleL88A2Filled
     shoes: RMCBootsRoyalFilled
     ears: RMCHeadsetPara
     belt: RMCBeltHolsterPistolParaM44Random
