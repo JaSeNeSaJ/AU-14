@@ -1174,7 +1174,6 @@
         amount: 100
       - id: RMCMagazineSMGType19Drum
         amount: 40
-
     - name: explosives
       entries:
       - id: AU14PacketGrenadeHighExplosiveUPPFilled
@@ -1183,6 +1182,8 @@
         amount: 4
       - id: AU14PacketGrenadeSmokeUPPFilled
         amount: 6
+      - id: AU14PacketGrenadeTearGasFilled
+        amount: 3
       - id: RMCBoxClaymoreMineFilled
         amount: 3
       - id: RMCExplosiveBreachingCharge
