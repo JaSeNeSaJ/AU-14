@@ -5,7 +5,6 @@
   icon: RMCJobIconParamarine
   playTimeTracker: AU14ParaMarineRifleman
   description: au14-job-description-twepara
-  startingGear: AU14RMCGearParaMarineRifle
   ranks:
     RMC_Marine: []
   spawnMenuRoleName: Royal Paramarine Rifleman (Base)
@@ -39,6 +38,15 @@
   equipment:
     jumpsuit: RMCJumpsuitMarineParaL88
     suitstorage: RMCWeaponRifleL88A2Filled
+    back: RMCSatchelLightpackFilledPara
+
+- type: startingGear
+  parent: AU14RMCGearParaMarineBase
+  id: AU14RMCGearParaMarineAmmobackpack
+  equipment:
+    jumpsuit: RMCJumpsuitMarineParaL88
+    suitstorage: RMCWeaponRifleL88A2Filled
+    back: AU14BackpackAmmoRCMSurvL88
 
 - type: playTimeTracker
   id: AU14ParaMarineRifleman

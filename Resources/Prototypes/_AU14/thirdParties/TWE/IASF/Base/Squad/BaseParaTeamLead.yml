@@ -48,10 +48,13 @@
     ears: RMCHeadsetParaTeamLead
     suitstorage: RMCWeaponRifleL88A2Filled
     back: RMCSatchelLightpackFilledParaSL
-    outerClothing: RMCArmorParaVest
+    outerclothing: RMCArmorParaVest
   storage:
-    outerClothing:
+    outerclothing:
     - RMCRangefinder
+    - RMCFlashlight
+
+
 
 - type: playTimeTracker
   id: AU14ParaMarineTeamLead

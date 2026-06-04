@@ -1,0 +1,62 @@
+- type: job
+  parent: AU14ParaMarineRiflemanBase
+  id: AU14IASFSurvRifleman
+  startingGear: AU14RMCGearParaMarineRifle
+  spawnMenuRoleName: ParaMarine Survivor
+  playTimeTracker: AU14ParaMarineRifleman
+  greeting: au14-job-greeting-parasurv
+  basePlaytimeTracker: true
+  accessGroups:
+  - AU14GovforSquad
+  hidden: true
+
+- type: job
+  parent: AU14ParaMarineRiflemanBase
+  id: AU14IASFSurvRiflemanAmmo
+  startingGear: AU14RMCGearParaMarineAmmobackpack
+  spawnMenuRoleName: ParaMarine Survivor
+  playTimeTracker: AU14ParaMarineRifleman
+  greeting: au14-job-greeting-parasurv
+  basePlaytimeTracker: true
+  accessGroups:
+  - AU14GovforSquad
+  hidden: true
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicTWEIASF
+  id: AU14IASFSurvRifleman
+  name: Paramarine Rifleman (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: AU14SquadParamarine
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tweiasf-paratrooper
+    description: au14-job-description-parasurv
+    job: AU14IASFSurvRifleman
+    rules: au14-job-rules-parasurv
+    raffle:
+      settings: short
+
+- type: entity
+  parent: AU14BaseMobSpeciesOrganicTWEIASF
+  id: AU14IASFSurvRiflemanAmmo
+  name: Paramarine Ammocarrier (Survivor)
+  components:
+  - type: GhostTakeoverAvailable
+  - type: GhostRoleApplySpecial
+    squad: AU14SquadParamarine
+  - type: GhostRole
+    makeSentient: true
+    allowSpeech: true
+    allowMovement: true
+    name: au14-job-name-tweiasf-paratrooper
+    description: au14-job-description-parasurv
+    job: AU14IASFSurvRiflemanAmmo
+    rules: au14-job-rules-parasurv
+    raffle:
+      settings: short
+

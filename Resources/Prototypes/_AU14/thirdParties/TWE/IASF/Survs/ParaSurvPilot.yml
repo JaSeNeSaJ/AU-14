@@ -25,5 +25,6 @@
     name: au14-job-name-tweiasf-pl
     description: au14-job-description-parasurv
     job: AU14IASFParamarineSurvPilot
+    rules: au14-job-rules-parasurv
     raffle:
       settings: short

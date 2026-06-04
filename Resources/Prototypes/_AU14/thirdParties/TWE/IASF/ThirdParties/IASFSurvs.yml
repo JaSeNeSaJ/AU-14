@@ -1,0 +1,86 @@
+- type: partySpawn
+  id: ParamarineSurvSpawnLarge
+  leadersToSpawn:
+    AU14IASFSurvTeamLead: 1
+    AU14IASFParamarineSurvCommander: 1
+  gruntsToSpawn:
+    AU14IASFParamarineSurvPilot: 1
+    AU14IASFSurvRifleman: 2
+    AU14IASFSurvRiflemanAmmo: 1
+    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFSurvCombatEngineer: 1
+  scalewithpop: false
+  spawnTogether: true
+
+- type: auThirdParty
+  id: ParamarineSurvLarge
+  displayName: Paramarine Survivors Large
+  partyspawn: ParamarineSurvSpawnLarge
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
+  entrymethod: ground
+  weight: 25
+  minplayers: 101
+  maxplayers: 400
+  GhostsNeeded: 0
+  roundstart: true
+
+- type: partySpawn
+  id: ParamarineSurvSpawnMedium
+  leadersToSpawn:
+    AU14IASFSurvTeamLead: 1
+    AU14IASFParamarineSurvCommander: 1
+  gruntsToSpawn:
+    AU14IASFParamarineSurvPilot: 0
+    AU14IASFSurvRifleman: 0
+    AU14IASFSurvRiflemanAmmo: 1
+    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFSurvCombatEngineer: 1
+  scalewithpop: false
+  spawnTogether: true
+
+- type: auThirdParty
+  id: ParamarineSurvMedium
+  displayName: Paramarine Survivors Medium
+  partyspawn: ParamarineSurvSpawnMedium
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
+  entrymethod: ground
+  weight: 25
+  minplayers: 51
+  maxplayers: 99
+  GhostsNeeded: 0
+  roundstart: true
+
+- type: partySpawn
+  id: ParamarineSurvSpawnSmall
+  leadersToSpawn:
+    AU14IASFSurvTeamLead: 1
+    AU14IASFParamarineSurvCommander: 0
+  gruntsToSpawn:
+    AU14IASFParamarineSurvPilot: 0
+    AU14IASFSurvRifleman: 0
+    AU14IASFSurvRiflemanAmmo: 1
+    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFSurvCombatEngineer: 1
+  scalewithpop: false
+  spawnTogether: true
+
+- type: auThirdParty
+  id: ParamarineSurvSmall
+  displayName: Paramarine Survivors Small
+  partyspawn: ParamarineSurvSpawnSmall
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
+  entrymethod: ground
+  weight: 25
+  minplayers: 25
+  maxplayers: 50
+  GhostsNeeded: 0
+  roundstart: true

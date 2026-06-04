@@ -79,29 +79,14 @@
     gloves: RMCHandsVeteranRoyalMarine
     shoes: RMCBootsRoyalFilled
     id: AU14IDCardIASFParaMarine
+    outerClothing: RMCArmorParaVest
     ears: RMCHeadsetPara
     belt: RMCBeltHolsterPistolParaM44Random
     pocket1: AU14PouchIFAKFill 
     pocket2: RMCPouchFlareL96Filled
-
-- type: entity
-  id: AU14GearParaBasePreset
-  name: para preset
-  categories: [ HideSpawnMenu ]
-  components:
-    - type: EntityPreset
-      randomOutfits:
-        - [ RMCArmorParaVest ]
-        - [ RMCArmorParaVest ]
-        - [ RMCJacketParaCombatJacket ]
-        - []
-      randomGearOther:
-      -
-        - [ RMCSatchelLightpackFilledPara ] # backpack
-        - [ RMCSatchelLightpackFilledPara ]
-        - [ RMCSatchelLightpackFilledPara ]
-        - [ RMCSatchelLightpackFilledPara ]
-        - [ AU14BackpackAmmoRCMSurvL88 ]
+  storage:
+    outerClothing:
+    - RMCFlashlight
 
 # equipment
 - type: entity
@@ -176,6 +161,8 @@
   components:
   - type: StorageFill
     contents:
+    - id: AU14BoxMagazineRifleL88
+    - id: AU14BoxMagazineRifleL88
     - id: AU14BoxMagazineRifleL88
 
 - type: entity

@@ -24,5 +24,6 @@
     name: au14-job-name-tweiasf-paratrooper
     description: au14-job-description-parasurv
     job: AU14IASFParasurvMedicalTechnician
+    rules: au14-job-rules-parasurv
     raffle:
       settings: short

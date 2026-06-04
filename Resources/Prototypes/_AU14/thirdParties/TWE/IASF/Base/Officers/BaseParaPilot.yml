@@ -40,6 +40,10 @@
     belt: RMCBeltHolsterPistolParaM44Random
     pocket1: AU14PouchIFAKFill 
     pocket2: RMCPouchFlareL96Filled
+    back: RMCSatchelLightpackFilledPara
+  storage:
+    outerClothing:
+    - RMCFlashlight
 
 - type: playTimeTracker
   id: AU14ParaMarinePilot
