@@ -70,7 +70,7 @@
 
 - type: edgeSpreader
   id: CMU14TearGas
-  updatesPerSecond: 3
+  updatesPerSecond: 1
 
 
 - type: entity
@@ -82,4 +82,4 @@
     lifetime: 6
   - type: EdgeSpreader
     id: CMU14TearGas
-    updatesPerSecond: 1
+    updatesPerSecond: 3
