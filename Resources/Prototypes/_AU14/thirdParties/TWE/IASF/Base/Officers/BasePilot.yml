@@ -41,7 +41,7 @@
     pocket1: AU14PouchIFAKFill 
     pocket2: AU14IASFPouchMagazineL90A2
     back: RMCSatchelLightpackFilledPara
-    id: AU14IDCardIASF
+    id: AU14IDCardIASFPilot
   storage:
     outerClothing:
     - RMCFlashlight

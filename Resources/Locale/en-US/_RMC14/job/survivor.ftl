@@ -219,7 +219,7 @@ rmc-job-name-iasf = Rifleman
 rmc-job-name-para-pilot = Fleet Air Arm Pilot
 rmc-job-name-para-engineer = Assault Engineer
 rmc-job-name-para-medic =  Medical Technician
-rmc-job-prefix-iasf = 24/PARA
+rmc-job-prefix-paramarine = 24/PARA
 
 rmc-job-name-para-team-leader = Team Leader
 rmc-job-prefix-para-team-leader = 24/PARA TL

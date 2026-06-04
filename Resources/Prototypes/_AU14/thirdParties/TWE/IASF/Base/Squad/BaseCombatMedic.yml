@@ -35,7 +35,7 @@
 
 - type: startingGear
   parent: AU14RMCGearIASFBase
-  id: AU14RMCGearParaMedicalTechnician
+  id: AU14IDCardIASFMedic
   equipment:
     back: AU14CMDefibrillator
     jumpsuit: AU14JumpsuitIASFL90

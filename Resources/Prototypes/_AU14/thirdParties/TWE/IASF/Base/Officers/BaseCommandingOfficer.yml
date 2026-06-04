@@ -2,7 +2,7 @@
   parent: CMJobBase
   id: AU14IASFCommanderBase
   name: au14-job-name-tweiasf-co
-  playTimeTracker: AU14IASFCommandingOfficer
+  playTimeTracker: AU14IASFCommander
   description: au14-job-description-twepara
   ranks:
     RMC_Lieutenant: []
@@ -34,6 +34,7 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearIASFCommander
   equipment:
+    id: AU14IDCardIASFCommander
     jumpsuit: RMCJumpsuitMarineParaService
     shoes: RMCBootsRoyalFilled
     head: RMCHeadCapPeakedPara

@@ -37,6 +37,7 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearParaAssaultEngineer
   equipment:
+    id: AU14IDCardIASFEngineer
     eyes: RMCWeldingGoggles
     jumpsuit: AU14JumpsuitIASFL90
     suitstorage: AU14WeaponRifleL90Full

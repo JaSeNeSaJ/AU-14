@@ -36,6 +36,7 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearIASFRifle
   equipment:
+    id: AU14IDCardIASF
     jumpsuit: AU14JumpsuitIASFL90
     suitstorage: AU14WeaponRifleL90Full
     back: RMCSatchelLightpackFilledPara
@@ -44,6 +45,7 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearIASFAmmobackpack
   equipment:
+    id: AU14IDCardIASF
     jumpsuit: AU14JumpsuitIASFL90
     suitstorage: AU14WeaponRifleL90Full
     back: AU14BackpackAmmoRCMSurvL90

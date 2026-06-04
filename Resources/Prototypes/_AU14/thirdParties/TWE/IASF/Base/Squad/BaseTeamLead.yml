@@ -43,6 +43,7 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearIASFTeamLead
   equipment:
+    id: AU14IDCardIASFTL
     jumpsuit: AU14JumpsuitIASFL90
     ears: RMCHeadsetParaTeamLead
     suitstorage: AU14WeaponRifleL90Full
