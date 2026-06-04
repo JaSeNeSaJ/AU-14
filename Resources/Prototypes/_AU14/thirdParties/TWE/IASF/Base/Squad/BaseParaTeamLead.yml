@@ -1,12 +1,12 @@
 - type: job
   parent: CMJobBase
-  id: AU14ParaMarineTeamLeadBase
+  id: AU14IASFTeamLeadBase
   name: au14-job-name-tweiasf-tl
-  playTimeTracker: AU14ParaMarineTeamLead
+  playTimeTracker: AU14IASFTeamLead
   description: au14-job-description-twepara
   ranks:
     RMC_Sergeant: []
-  spawnMenuRoleName: Paramarine Team Leader (Base)
+  spawnMenuRoleName: IASF Team Leader (Base)
   joinNotifyCrew: false
   supervisors: au14-job-name-tweiasf-co
   icon: RMCJobIconParaTeamLeader
@@ -27,7 +27,7 @@
     - type: AssignSquad
       whitelist:
         tags:
-        - AU14SquadParamarine
+        - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonSergeant
     - type: EquipEntityPreset
@@ -41,8 +41,8 @@
   hidden: true
 
 - type: startingGear
-  parent: AU14RMCGearParaMarineBase
-  id: AU14RMCGearParaMarineTeamLead
+  parent: AU14RMCGearIASFBase
+  id: AU14RMCGearIASFTeamLead
   equipment:
     jumpsuit: RMCJumpsuitMarineParaL88
     ears: RMCHeadsetParaTeamLead
@@ -57,4 +57,4 @@
 
 
 - type: playTimeTracker
-  id: AU14ParaMarineTeamLead
+  id: AU14IASFTeamLead

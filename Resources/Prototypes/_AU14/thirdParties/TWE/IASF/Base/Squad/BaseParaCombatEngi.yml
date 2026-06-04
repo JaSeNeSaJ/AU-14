@@ -1,12 +1,12 @@
 - type: job
   parent: CMJobBase
-  id: AU14ParaMarineCombatEngineerBase
+  id: AU14IASFCombatEngineerBase
   name: au14-job-name-tweiasf-ce
-  playTimeTracker: AU14ParaMarineCombatEngineer
+  playTimeTracker: AU14IASFCombatEngineer
   description: au14-job-description-tweiasf
   ranks:
     RMC_LanceCorporal: []
-  spawnMenuRoleName: Paramarine Cobmbat Engineer (Base)
+  spawnMenuRoleName: IASF Engineer (Base)
   joinNotifyCrew: false
   icon: RMCJobIconParaAssaultEngineer
   startingGear: AU14RMCGearParaAssaultEngineer
@@ -24,17 +24,17 @@
     - type: AssignSquad
       whitelist:
         tags:
-        - AU14SquadParamarine
+        - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonCombatTechnician
     - type: EquipEntityPreset
       preset: AU14GearParaBasePreset
     - type: JobPrefix
-      prefix: au14-job-prefix-paramarine
+      prefix: au14-job-prefix-iasf
   hidden: true
   
 - type: startingGear
-  parent: AU14RMCGearParaMarineBase
+  parent: AU14RMCGearIASFBase
   id: AU14RMCGearParaAssaultEngineer
   equipment:
     eyes: RMCWeldingGoggles
@@ -45,5 +45,5 @@
     back: RMCSatchelLightpackFilledPara
 
 - type: playTimeTracker
-  id: AU14ParaMarineCombatEngineer
+  id: AU14IASFCombatEngineer
 

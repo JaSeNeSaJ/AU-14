@@ -1,13 +1,13 @@
 - type: job
   parent: CMJobBase
-  id: AU14ParaMarineRiflemanBase
+  id: AU14IASFRiflemanBase
   name: au14-job-name-tweiasf-paratrooper
   icon: RMCJobIconParamarine
-  playTimeTracker: AU14ParaMarineRifleman
+  playTimeTracker: AU14IASFRifleman
   description: au14-job-description-twepara
   ranks:
     RMC_Marine: []
-  spawnMenuRoleName: Royal Paramarine Rifleman (Base)
+  spawnMenuRoleName: IASF Rifleman (Base)
   joinNotifyCrew: false
   supervisors: au14-job-name-tweiasf-tl
   special:
@@ -23,30 +23,30 @@
     - type: AssignSquad
       whitelist:
         tags:
-        - AU14SquadParamarine
+        - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonRifleman
     - type: EquipEntityPreset
       preset: AU14GearParaBasePreset
     - type: JobPrefix
-      prefix: au14-job-prefix-paramarine
+      prefix: au14-job-prefix-iasf
   hidden: true
 
 - type: startingGear
-  parent: AU14RMCGearParaMarineBase
-  id: AU14RMCGearParaMarineRifle
+  parent: AU14RMCGearIASFBase
+  id: AU14RMCGearIASFRifle
   equipment:
     jumpsuit: RMCJumpsuitMarineParaL88
     suitstorage: RMCWeaponRifleL88A2Filled
     back: RMCSatchelLightpackFilledPara
 
 - type: startingGear
-  parent: AU14RMCGearParaMarineBase
-  id: AU14RMCGearParaMarineAmmobackpack
+  parent: AU14RMCGearIASFBase
+  id: AU14RMCGearIASFAmmobackpack
   equipment:
     jumpsuit: RMCJumpsuitMarineParaL88
     suitstorage: RMCWeaponRifleL88A2Filled
     back: AU14BackpackAmmoRCMSurvL88
 
 - type: playTimeTracker
-  id: AU14ParaMarineRifleman
+  id: AU14IASFRifleman

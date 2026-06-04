@@ -1,13 +1,13 @@
 - type: job
   parent: CMJobBase
-  id: AU14ParaMarineCommanderBase
+  id: AU14IASFCommanderBase
   name: au14-job-name-tweiasf-co
-  playTimeTracker: AU14ParaMarineCommandingOfficer
+  playTimeTracker: AU14IASFCommandingOfficer
   description: au14-job-description-twepara
   ranks:
     RMC_Lieutenant: []
   icon: RMCJobIconParaCommander
-  spawnMenuRoleName: Royal Paramarine Commander (Base)
+  spawnMenuRoleName: IASF Commander (Base)
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-govforplatco
   special:
@@ -20,7 +20,7 @@
     - type: AssignSquad
       whitelist:
         tags:
-        - AU14SquadParamarine
+        - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonCommander
     - type: JobPrefix
@@ -28,16 +28,11 @@
     - type: RMCTrackable
     - type: RMCPointing
     - type: MarineOrders
-
-    - type: AssignSquad
-      whitelist:
-        tags:
-          - AU14SquadParamarine
   hidden: true
 
 - type: startingGear
-  parent: AU14RMCGearParaMarineBase
-  id: AU14RMCGearParaMarineCommander
+  parent: AU14RMCGearIASFBase
+  id: AU14RMCGearIASFCommander
   equipment:
     jumpsuit: RMCJumpsuitMarineParaService
     shoes: RMCBootsRoyalFilled
@@ -53,4 +48,4 @@
     suitstorage: AU14WeaponRifleL90Full
 
 - type: playTimeTracker
-  id: AU14ParaMarineCommander
+  id: AU14IASFCommander

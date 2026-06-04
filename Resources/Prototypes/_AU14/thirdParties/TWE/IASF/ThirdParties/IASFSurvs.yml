@@ -1,21 +1,21 @@
 - type: partySpawn
-  id: ParamarineSurvSpawnLarge
+  id: IASFSurvSpawnLarge
   leadersToSpawn:
     AU14IASFSurvTeamLead: 1
-    AU14IASFParamarineSurvCommander: 1
+    AU14IASFSurvCommander: 1
   gruntsToSpawn:
-    AU14IASFParamarineSurvPilot: 1
+    AU14IASFSurvPilot: 1
     AU14IASFSurvRifleman: 2
     AU14IASFSurvRiflemanAmmo: 1
-    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFsurvMedicalTechnician: 1
     AU14IASFSurvCombatEngineer: 1
   scalewithpop: false
   spawnTogether: true
 
 - type: auThirdParty
-  id: ParamarineSurvLarge
-  displayName: Paramarine Survivors Large
-  partyspawn: ParamarineSurvSpawnLarge
+  id: IASFSurvLarge
+  displayName: IASF Survivors Large
+  partyspawn: IASFSurvSpawnLarge
   blacklistedgamemodes:
     - insurgency
     - forceonforce
@@ -28,23 +28,23 @@
   roundstart: true
 
 - type: partySpawn
-  id: ParamarineSurvSpawnMedium
+  id: IASFSurvSpawnMedium
   leadersToSpawn:
     AU14IASFSurvTeamLead: 1
-    AU14IASFParamarineSurvCommander: 1
+    AU14IASFSurvCommander: 1
   gruntsToSpawn:
-    AU14IASFParamarineSurvPilot: 0
+    AU14IASFSurvPilot: 0
     AU14IASFSurvRifleman: 0
     AU14IASFSurvRiflemanAmmo: 1
-    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFsurvMedicalTechnician: 1
     AU14IASFSurvCombatEngineer: 1
   scalewithpop: false
   spawnTogether: true
 
 - type: auThirdParty
-  id: ParamarineSurvMedium
-  displayName: Paramarine Survivors Medium
-  partyspawn: ParamarineSurvSpawnMedium
+  id: IASFSurvMedium
+  displayName: IASF Survivors Medium
+  partyspawn: IASFSurvSpawnMedium
   blacklistedgamemodes:
     - insurgency
     - forceonforce
@@ -57,23 +57,23 @@
   roundstart: true
 
 - type: partySpawn
-  id: ParamarineSurvSpawnSmall
+  id: IASFSurvSpawnSmall
   leadersToSpawn:
     AU14IASFSurvTeamLead: 1
-    AU14IASFParamarineSurvCommander: 0
+    AU14IASFSurvCommander: 0
   gruntsToSpawn:
-    AU14IASFParamarineSurvPilot: 0
+    AU14IASFSurvPilot: 0
     AU14IASFSurvRifleman: 0
     AU14IASFSurvRiflemanAmmo: 1
-    AU14IASFParasurvMedicalTechnician: 1
+    AU14IASFsurvMedicalTechnician: 1
     AU14IASFSurvCombatEngineer: 1
   scalewithpop: false
   spawnTogether: true
 
 - type: auThirdParty
-  id: ParamarineSurvSmall
-  displayName: Paramarine Survivors Small
-  partyspawn: ParamarineSurvSpawnSmall
+  id: IASFSurvSmall
+  displayName: IASF Survivors Small
+  partyspawn: IASFSurvSpawnSmall
   blacklistedgamemodes:
     - insurgency
     - forceonforce

@@ -1,22 +1,22 @@
 - type: job
-  parent: AU14ParaMarineRiflemanBase
+  parent: AU14IASFRiflemanBase
   id: AU14IASFSurvRifleman
-  startingGear: AU14RMCGearParaMarineRifle
-  spawnMenuRoleName: ParaMarine Survivor
-  playTimeTracker: AU14ParaMarineRifleman
-  greeting: au14-job-greeting-parasurv
+  startingGear: AU14RMCGearIASFRifle
+  spawnMenuRoleName: IASF Survivor
+  playTimeTracker: AU14IASFRifleman
+  greeting: au14-job-greeting-IASFsurv
   basePlaytimeTracker: true
   accessGroups:
   - AU14GovforSquad
   hidden: true
 
 - type: job
-  parent: AU14ParaMarineRiflemanBase
+  parent: AU14IASFRiflemanBase
   id: AU14IASFSurvRiflemanAmmo
-  startingGear: AU14RMCGearParaMarineAmmobackpack
-  spawnMenuRoleName: ParaMarine Survivor
-  playTimeTracker: AU14ParaMarineRifleman
-  greeting: au14-job-greeting-parasurv
+  startingGear: AU14RMCGearIASFAmmobackpack
+  spawnMenuRoleName: IASF Survivor
+  playTimeTracker: AU14IASFRifleman
+  greeting: au14-job-greeting-IASFsurv
   basePlaytimeTracker: true
   accessGroups:
   - AU14GovforSquad
@@ -25,38 +25,38 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicTWEIASF
   id: AU14IASFSurvRifleman
-  name: Paramarine Rifleman (Survivor)
+  name: IASF Rifleman (Survivor)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: AU14SquadParamarine
+    squad: AU14SquadIASF
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
     name: au14-job-name-tweiasf-paratrooper
-    description: au14-job-description-parasurv
+    description: au14-job-description-IASFsurv
     job: AU14IASFSurvRifleman
-    rules: au14-job-rules-parasurv
+    rules: au14-job-rules-IASFsurv
     raffle:
       settings: short
 
 - type: entity
   parent: AU14BaseMobSpeciesOrganicTWEIASF
   id: AU14IASFSurvRiflemanAmmo
-  name: Paramarine Ammocarrier (Survivor)
+  name: IASF Ammocarrier (Survivor)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: AU14SquadParamarine
+    squad: AU14SquadIASF
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
     name: au14-job-name-tweiasf-paratrooper
-    description: au14-job-description-parasurv
+    description: au14-job-description-IASFsurv
     job: AU14IASFSurvRiflemanAmmo
-    rules: au14-job-rules-parasurv
+    rules: au14-job-rules-IASFsurv
     raffle:
       settings: short
 

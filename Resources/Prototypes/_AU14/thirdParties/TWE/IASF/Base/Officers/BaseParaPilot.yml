@@ -1,12 +1,12 @@
 - type: job
   parent: CMJobBase
-  id: AU14ParaMarinePilotBase
+  id: AU14IASFPilotBase
   name: au14-job-name-tweiasf-pl
-  playTimeTracker: AU14ParaMarinePilot
+  playTimeTracker: AU14IASFPilot
   description: au14-job-description-twepara
   ranks:
     RMC_WarrantOfficer2: []
-  spawnMenuRoleName: Paramarine Pilot (Base)
+  spawnMenuRoleName: IASF Pilot (Base)
   joinNotifyCrew: false
   icon: RMCJobIconParaPilot
   supervisors: au14-job-name-tweiasf-co
@@ -20,7 +20,7 @@
     - type: AssignSquad
       whitelist:
         tags:
-        - AU14SquadParamarine
+        - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonDP
     - type: JobPrefix
@@ -28,7 +28,7 @@
   hidden: true
 
 - type: startingGear
-  id: AU14RMCGearParaMarinePilot
+  id: AU14RMCGearIASFPilot
   equipment:
     head: RMCHeadRoyalFlightHelmet
     jumpsuit: RMCJumpsuitMarineParaL88
@@ -46,4 +46,4 @@
     - RMCFlashlight
 
 - type: playTimeTracker
-  id: AU14ParaMarinePilot
+  id: AU14IASFPilot

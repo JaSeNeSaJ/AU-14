@@ -441,7 +441,7 @@
 
 - type: entity
   parent: SquadBase
-  id: AU14SquadParamarine
+  id: AU14SquadIASF
   name: IASF
   components:
   - type: SquadTeam
@@ -459,7 +459,7 @@
     group: VAIPO
   - type: Tag
     tags:
-    - AU14SquadParamarine
+    - AU14SquadIASF
 
 - type: Tag
   id: SquadHRT
@@ -510,4 +510,4 @@
   id: AU14SquadMSG
 
 - type: Tag
-  id: AU14SquadParamarine
+  id: AU14SquadIASF

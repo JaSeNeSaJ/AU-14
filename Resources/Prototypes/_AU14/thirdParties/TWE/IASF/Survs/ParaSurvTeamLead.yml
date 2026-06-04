@@ -1,10 +1,10 @@
 - type: job
-  parent: AU14ParaMarineTeamLeadBase
+  parent: AU14IASFTeamLeadBase
   id: AU14IASFSurvTeamLead
-  spawnMenuRoleName: ParaMarine Survivor
-  playTimeTracker: AU14ParaMarineTeamLead
-  greeting: au14-job-greeting-parasurv
-  startingGear: AU14RMCGearParaMarineTeamLead
+  spawnMenuRoleName: IASF Survivor
+  playTimeTracker: AU14IASFTeamLead
+  greeting: au14-job-greeting-IASFsurv
+  startingGear: AU14RMCGearIASFTeamLead
   basePlaytimeTracker: true
   accessGroups:
   - AU14GovforSquad
@@ -13,18 +13,18 @@
 - type: entity
   parent: AU14BaseMobSpeciesOrganicTWEIASF
   id: AU14IASFSurvTeamLead
-  name: Paramarine Team Leader (Survivor)
+  name: IASF Team Leader (Survivor)
   components:
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
-    squad: AU14SquadParamarine
+    squad: AU14SquadIASF
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
     allowMovement: true
     name: au14-job-name-tweiasf-tl
-    description: au14-job-description-parasurv
+    description: au14-job-description-IASFsurv
     job: AU14IASFSurvTeamLead
-    rules: au14-job-rules-parasurv
+    rules: au14-job-rules-IASFsurv
     raffle:
       settings: short
