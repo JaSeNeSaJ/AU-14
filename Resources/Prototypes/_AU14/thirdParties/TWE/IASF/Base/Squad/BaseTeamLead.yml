@@ -43,9 +43,9 @@
   parent: AU14RMCGearIASFBase
   id: AU14RMCGearIASFTeamLead
   equipment:
-    jumpsuit: RMCJumpsuitMarineParaL88
+    jumpsuit: AU14JumpsuitIASFL90
     ears: RMCHeadsetParaTeamLead
-    suitstorage: RMCWeaponRifleL88A2Filled
+    suitstorage: AU14WeaponRifleL90Full
     back: RMCSatchelLightpackFilledParaSL
     outerclothing: RMCArmorParaVest
   storage:

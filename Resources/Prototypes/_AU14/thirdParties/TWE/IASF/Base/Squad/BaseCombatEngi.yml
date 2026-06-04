@@ -38,8 +38,8 @@
   id: AU14RMCGearParaAssaultEngineer
   equipment:
     eyes: RMCWeldingGoggles
-    jumpsuit: RMCJumpsuitMarineParaL88
-    suitstorage: RMCWeaponRifleL88A2Filled
+    jumpsuit: AU14JumpsuitIASFL90
+    suitstorage: AU14WeaponRifleL90Full
     belt: AU14BeltUtilityFilled
     pocket2: RMCPouchConstructionSurvivor
     back: RMCSatchelLightpackFilledPara

@@ -81,7 +81,7 @@
     id: AU14IDCardIASF
     outerClothing: RMCArmorParaVest
     ears: RMCHeadsetPara
-    belt: RMCBeltHolsterPistolParaM44Random
+    belt: RMCBeltHolsterPistolFilledL54
     pocket1: AU14PouchIFAKFill 
     pocket2: RMCPouchFlareL96Filled
   storage:
@@ -91,15 +91,15 @@
 # equipment
 - type: entity
   parent: RMCJumpsuitMarinePara
-  id: RMCJumpsuitMarineParaL90
+  id: AU14JumpsuitIASFL90
   suffix: Webbing, L90
   components:
     - type: WebbingClothing
-      startingWebbing: RMCParaWebbingL90
+      startingWebbing: AU14WebbingIASFL90
 
 - type: entity
   parent: RMCParaWebbing
-  id: RMCParaWebbingL90
+  id: AU14WebbingIASFL90
   name: iasf webbing
   suffix: Filled, L90
   components:
@@ -109,11 +109,41 @@
         - id: AU14MagazineRifleL90
         - id: AU14MagazineRifleL90
 
- # ammo box L88
+- type: entity
+  parent: RMCJumpsuitMarinePara
+  id: AU14JumpsuitIASFL90A2
+  suffix: Webbing, L90A2
+  components:
+    - type: WebbingClothing
+      startingWebbing: AU14WebbingIASFL90A2
+
+- type: entity
+  parent: RMCParaWebbing
+  id: AU14WebbingIASFL90A2
+  name: iasf webbing
+  suffix: Filled, L90A2
+  components:
+    - type: StorageFill
+      contents:
+        - id: RMCTacticalPrybar
+        - id: RMCFlashlight
+        - id: AU14MagazineSMGL90A2
+
+- type: entity
+  parent: RMCPouchMagazine
+  id: AU14IASFPouchMagazineL90A2
+  suffix: Filled, IASF, L90A2
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14MagazineSMGL90A2
+      amount: 3
+
+ # ammo box L90
 - type: entity
   parent: RMCBoxMagazineRifleBase
-  id: AU14BoxMagazineRifleL88Empty
-  name: magazine box (L88 x 12)
+  id: AU14BoxMagazineRifleL90Empty
+  name: magazine box (L90 x 12)
   components:
   - type: Sprite
     layers:
@@ -139,30 +169,30 @@
     slot:
       whitelist:
         tags:
-        - AU1MagazineRifleL90
+        - AU14MagazineRifleL90
 
 - type: entity
-  parent: AU14BoxMagazineRifleL88Empty
-  id: AU14BoxMagazineRifleL88
+  parent: AU14BoxMagazineRifleL90Empty
+  id: AU14BoxMagazineRifleL90
   suffix: Full
   components:
   - type: CMItemSlots
-    startingItem: RMCMagazineRifleL88
+    startingItem: AU14MagazineRifleL90
     count: 12
     slot:
       whitelist:
         tags:
-        - RMCMagazineRifleL88
+        - AU14MagazineRifleL90
 
 - type: entity
   parent: RMCBackpackAmmoRCM
-  id: AU14BackpackAmmoRCMSurvL88
-  suffix: Survivor, L88
+  id: AU14BackpackAmmoRCMSurvL90
+  suffix: Survivor, L90
   components:
   - type: StorageFill
     contents:
-    - id: AU14BoxMagazineRifleL88
-    - id: AU14BoxMagazineRifleL88
+    - id: AU14BoxMagazineRifleL90
+    - id: AU14BoxMagazineRifleL90
 
 - type: entity
   parent: AU14BeltUtilityCombatRMC

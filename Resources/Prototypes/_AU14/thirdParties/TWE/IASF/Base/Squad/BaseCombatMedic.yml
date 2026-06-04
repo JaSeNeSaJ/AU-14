@@ -1,14 +1,15 @@
 - type: job
   parent: CMJobBase
-  id: AU14IASFRiflemanBase
-  name: au14-job-name-tweiasf-paratrooper
-  icon: RMCJobIconParamarine
-  playTimeTracker: AU14IASFRifleman
+  id: AU14IASFMedicalTechnicianBase
+  name: au14-job-name-tweiasf-cm
+  playTimeTracker: AU14IASFCombatMedicalTechnician
   description: au14-job-description-twepara
   ranks:
-    RMC_Marine: []
-  spawnMenuRoleName: IASF Rifleman (Base)
+    RMC_LanceCorporal: []
+  spawnMenuRoleName: IASF Medical Technician (Base)
   joinNotifyCrew: false
+  icon: RMCJobIconParaMedicalTechnican
+  startingGear: AU14RMCGearParaMedicalTechnician
   supervisors: au14-job-name-tweiasf-tl
   special:
   - !type:AddComponentSpecial
@@ -16,7 +17,7 @@
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: rmc_rifleman
+        state: rmc_medic
       background:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: background_para
@@ -25,7 +26,7 @@
         tags:
         - AU14SquadIASF
     - type: Skills
-      preset: AU14SkillPresetPlatoonRifleman
+      preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: EquipEntityPreset
       preset: AU14GearParaBasePreset
     - type: JobPrefix
@@ -34,19 +35,16 @@
 
 - type: startingGear
   parent: AU14RMCGearIASFBase
-  id: AU14RMCGearIASFRifle
+  id: AU14RMCGearParaMedicalTechnician
   equipment:
-    jumpsuit: RMCJumpsuitMarineParaL88
-    suitstorage: RMCWeaponRifleL88A2Filled
-    back: RMCSatchelLightpackFilledPara
-
-- type: startingGear
-  parent: AU14RMCGearIASFBase
-  id: AU14RMCGearIASFAmmobackpack
-  equipment:
-    jumpsuit: RMCJumpsuitMarineParaL88
-    suitstorage: RMCWeaponRifleL88A2Filled
-    back: AU14BackpackAmmoRCMSurvL88
+    back: AU14CMDefibrillator
+    jumpsuit: AU14JumpsuitIASFL90
+    suitstorage: AU14WeaponRifleL90Full
+    belt: CMUBeltMedicBagSupportSynthRMC
+    pocket2: RMCSurgicalCaseRCMFilled
+  storage:
+    outerClothing:
+    - RMCRadioHandheldColony
 
 - type: playTimeTracker
-  id: AU14IASFRifleman
+  id: AU14IASFCombatMedicalTechnician

@@ -31,16 +31,17 @@
   id: AU14RMCGearIASFPilot
   equipment:
     head: RMCHeadRoyalFlightHelmet
-    jumpsuit: RMCJumpsuitMarineParaL88
+    jumpsuit: AU14JumpsuitIASFL90A2
     gloves: RMCHandsVeteranRoyalMarine
     outerClothing: RMCArmorParaVest
-    suitstorage: RMCWeaponRifleL88A2Filled
+    suitstorage: AU14WeaponSMGL90A2oldnoattachments
     shoes: RMCBootsRoyalFilled
     ears: RMCHeadsetPara
-    belt: RMCBeltHolsterPistolParaM44Random
+    belt: RMCBeltHolsterPistolFilledL54
     pocket1: AU14PouchIFAKFill 
-    pocket2: RMCPouchFlareL96Filled
+    pocket2: AU14IASFPouchMagazineL90A2
     back: RMCSatchelLightpackFilledPara
+    id: AU14IDCardIASF
   storage:
     outerClothing:
     - RMCFlashlight
