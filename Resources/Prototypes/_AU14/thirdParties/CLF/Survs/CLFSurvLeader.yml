@@ -106,11 +106,6 @@
       - [ ]
       - [ ]
       - [ ]
-    -
-      - [ AU14BeltHolsterPistolFilledB92FS ]
-      - [ RMCM44BeltFilled ]
-      - [ AU14BeltHolsterPistolUPPPAP ]
-      - [ RMCM1984BeltFilled ]
     randomWeapon: # Weapon with ammo pouches and stuff
     - [ RMCWeaponRifleType71C, AU14PouchMagazineLargeFilledType71, AU14PouchIFAKFill ]
 # lowk debated giving the CLF leader LMGs for aura, decided not to for now
@@ -125,6 +120,7 @@
     id: AU14IDCardCLFCellLeader
     shoes: RMCShoesJackboots
     belt: AU14BeltConstructionCLFSurv
+    suitstorage: RMCFlashlight
   inhand:
   - AU14CLFHeadset
   - AU14FlagCarriableCLF
