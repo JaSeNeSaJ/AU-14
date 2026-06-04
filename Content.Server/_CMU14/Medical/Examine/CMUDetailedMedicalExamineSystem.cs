@@ -4,7 +4,6 @@ using Content.Shared._CMU14.Input;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared.ActionBlocker;
 using Content.Shared.DoAfter;
-using Content.Shared.Examine;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
 using Content.Shared.Verbs;
@@ -12,7 +11,6 @@ using Robust.Shared.Input.Binding;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Utility;
 
 namespace Content.Server._CMU14.Medical.Examine;
 
@@ -20,7 +18,6 @@ public sealed partial class CMUDetailedMedicalExamineSystem : EntitySystem
 {
     [Dependency] private ActionBlockerSystem _actionBlocker = default!;
     [Dependency] private CMUMedicalExamineSystem _examine = default!;
-    [Dependency] private ExamineSystemShared _examineShared = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -89,6 +86,15 @@ public sealed partial class CMUDetailedMedicalExamineSystem : EntitySystem
             : ExamineDelay;
     }
 
+    public CMUInspectInjuriesResponseEvent GetInspectInjuriesResponse(EntityUid patient)
+    {
+        return new CMUInspectInjuriesResponseEvent(
+            GetNetEntity(patient),
+            Name(patient),
+            _examine.GetInspectInjuriesText(patient),
+            _examine.GetWorstExternalBleeding(patient));
+    }
+
     private bool HandleInspectInjuries(ICommonSession? session, EntityCoordinates coordinates, EntityUid target)
     {
         if (session?.AttachedEntity is not { Valid: true } user ||
@@ -136,12 +142,6 @@ public sealed partial class CMUDetailedMedicalExamineSystem : EntitySystem
             return;
 
         var user = args.User;
-        var text = _examine.GetDetailedExamineText(patient.Owner);
-        _examineShared.SendExamineTooltip(
-            user,
-            patient.Owner,
-            FormattedMessage.FromMarkupOrThrow(text),
-            false,
-            false);
+        RaiseNetworkEvent(GetInspectInjuriesResponse(patient.Owner), user);
     }
 }
