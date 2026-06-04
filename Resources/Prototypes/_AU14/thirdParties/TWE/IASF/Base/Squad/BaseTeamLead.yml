@@ -30,8 +30,6 @@
         - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonSergeant
-    - type: EquipEntityPreset
-      preset: AU14GearParaBasePreset
     - type: JobPrefix
       prefix: au14-job-prefix-tweiasf-sl
     - type: RMCTrackable

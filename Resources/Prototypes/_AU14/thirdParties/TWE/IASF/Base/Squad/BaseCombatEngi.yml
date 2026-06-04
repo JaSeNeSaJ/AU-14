@@ -27,8 +27,6 @@
         - AU14SquadIASF
     - type: Skills
       preset: AU14SkillPresetPlatoonCombatTechnician
-    - type: EquipEntityPreset
-      preset: AU14GearParaBasePreset
     - type: JobPrefix
       prefix: au14-job-prefix-iasf
   hidden: true
