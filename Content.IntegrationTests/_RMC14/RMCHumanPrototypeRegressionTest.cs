@@ -9,6 +9,7 @@ using Content.Shared._CMU14.Medical.Bones.Events;
 using Content.Shared._CMU14.Medical.Shrapnel;
 using Content.Shared._CMU14.Medical.Wounds;
 using Content.Server._CMU14.Medical.Wounds;
+using Content.Shared._CMU14.Medical.Organs.Heart;
 using Content.Shared._RMC14.Explosion;
 using Content.Shared._CMU14.Medical.Surgery;
 using Content.Shared._CMU14.Medical.Surgery.Markers;
@@ -36,6 +37,7 @@ using Content.Shared.Interaction;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Standing;
+using Content.Shared.StatusEffectNew;
 using Content.Shared.Stacks;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
@@ -48,6 +50,8 @@ namespace Content.IntegrationTests._RMC14;
 [TestFixture]
 public sealed class RMCHumanPrototypeRegressionTest
 {
+    private static readonly EntProtoId CardiacArrestStatus = "StatusEffectCMUCardiacArrest";
+
     [Test]
     public async Task CMMobHumanHasExpectedBuis()
     {
@@ -735,6 +739,67 @@ public sealed class RMCHumanPrototypeRegressionTest
             Assert.That(visibility.Layer & internalLayer, Is.EqualTo(0));
 
             entMan.DeleteEntity(organ);
+            entMan.DeleteEntity(human);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task CmuRemovingHeartCausesCardiacArrestAndAsphyxiation()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        EntityUid human = default;
+        EntityUid heart = default;
+        FixedPoint2 beforeDamage = default;
+        FixedPoint2 firstDamage = default;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var body = entMan.System<SharedBodySystem>();
+            human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            foreach (var organ in body.GetBodyOrganEntityComps<HeartComponent>(human))
+            {
+                heart = organ.Owner;
+                break;
+            }
+
+            Assert.That(heart, Is.Not.EqualTo(default(EntityUid)));
+            beforeDamage = entMan.GetComponent<DamageableComponent>(human).TotalDamage;
+
+            Assert.That(body.RemoveOrgan(heart), Is.True);
+        });
+
+        await server.WaitRunTicks(60);
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var status = entMan.System<SharedStatusEffectsSystem>();
+            var damage = entMan.GetComponent<DamageableComponent>(human);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(status.HasStatusEffect(human, CardiacArrestStatus), Is.True);
+                Assert.That(damage.TotalDamage, Is.GreaterThan(beforeDamage));
+            });
+
+            firstDamage = damage.TotalDamage;
+        });
+
+        await server.WaitRunTicks(60);
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var damage = entMan.GetComponent<DamageableComponent>(human);
+
+            Assert.That(damage.TotalDamage, Is.GreaterThan(firstDamage));
+
+            entMan.DeleteEntity(heart);
             entMan.DeleteEntity(human);
         });
 
