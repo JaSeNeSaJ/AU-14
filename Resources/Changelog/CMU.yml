@@ -2137,5 +2137,19 @@
   id: 194
   time: '2026-06-04T03:46:16.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1210
+- author: KeiKiyomi
+  changes:
+  - message: Fixed "ML79A 'Breaker' smart gun" damage and firerate
+    type: Fix
+  id: 195
+  time: '2026-06-04T03:56:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1190
+- author: 400Ferrets
+  changes:
+  - message: CORSAT weedkiller fog area is now much larger!
+    type: Add
+  id: 196
+  time: '2026-06-04T08:52:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1211
 Name: CMU
 Order: -1
