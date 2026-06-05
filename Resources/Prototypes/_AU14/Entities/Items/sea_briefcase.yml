@@ -101,10 +101,6 @@
       entries:
       - id: AU14ChevronRMCMajor
         amount: 5
-      - id: AU14ChevronRMCLieutenantColonel
-        amount: 5
-      - id: AU14ChevronRMCColonel
-        amount: 5
 
 - type: entity
   parent: RMCPortableVendor
@@ -156,22 +152,6 @@
     - name: Field Officers
       entries:
       - id: AU14ChevronUPPNIMajor
-        amount: 5
-      - id: AU14ChevronUPPNIJuniorColonel
-        amount: 5
-      - id: AU14ChevronUPPNIColonel
-        amount: 5
-    - name: Generals
-      entries:
-      - id: AU14ChevronUPPNIBrigadierGeneral
-        amount: 5
-      - id: AU14ChevronUPPNIDivisionalGeneral
-        amount: 5
-      - id: AU14ChevronUPPNIGeneralOfTheBranch
-        amount: 5
-      - id: AU14ChevronUPPNIMarshal
-        amount: 5
-      - id: AU14ChevronUPPNIChairmanMilitaryCouncil
         amount: 5
 
 - type: entity
@@ -281,8 +261,6 @@
         amount: 5
       - id: AU14ChevronPrDOperationsDirector
         amount: 5
-      - id: AU14ChevronPrDRegionDirector
-        amount: 5
 
 - type: entity
   parent: RMCPortableVendor
@@ -336,8 +314,4 @@
     - name: Flag Officers
       entries:
       - id: AU14ChevronLACNRearAdmiral
-        amount: 5
-      - id: AU14ChevronLACNViceAdmiral
-        amount: 5
-      - id: AU14ChevronLACNAdmiral
         amount: 5
