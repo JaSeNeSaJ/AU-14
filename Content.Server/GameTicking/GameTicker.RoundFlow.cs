@@ -701,7 +701,7 @@ namespace Content.Server.GameTicking
             try
             {
                 await SendRoundStatusDiscordMessage(RoundStatusWebhookKind.Ended, false);
-                await SendRoundStatusRolePingMessage(RoundStatusPingMessageKind.RoundEnd, GetRoundStatusRoleIds(true));
+                await SendRoundStatusRolePingMessage(RoundStatusPingMessageKind.RoundEnd, GetRoundEndRoleIds());
             }
             catch (Exception e)
             {
@@ -988,6 +988,12 @@ namespace Content.Server.GameTicking
                 DiscordRoundStatusDistressSignalRole,
                 DiscordRoundStatusColonyFallRole,
                 DiscordRoundStatusInsurgencyRole);
+        }
+
+        private IEnumerable<string> GetRoundEndRoleIds()
+        {
+            if (DiscordRoundEndRole is { } roundEndRole)
+                yield return roundEndRole;
         }
 
         public void RestartRound()
