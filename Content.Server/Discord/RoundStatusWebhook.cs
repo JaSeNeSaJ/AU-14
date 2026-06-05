@@ -46,10 +46,11 @@ public static class RoundStatusWebhook
         var content = BuildRoleMentions(roleIds);
         var fields = new List<WebhookEmbedField>
         {
-            new() { Name = "Map", Value = UnknownIfEmpty(status.MapName), Inline = true },
-            new() { Name = "Gamemode", Value = UnknownIfEmpty(status.Gamemode), Inline = true },
-            new() { Name = "GOVFOR", Value = UnknownIfEmpty(status.Govfor), Inline = true },
-            new() { Name = "Round", Value = $"#{status.RoundId}", Inline = true },
+            new() { Name = "Current Players", Value = status.PlayerCount.ToString(), Inline = true },
+            new() { Name = "Current Map", Value = UnknownIfEmpty(status.MapName), Inline = true },
+            new() { Name = "Current GOVFOR", Value = UnknownIfEmpty(status.Govfor), Inline = true },
+            new() { Name = "Current Gamemode", Value = UnknownIfEmpty(status.Gamemode), Inline = true },
+            new() { Name = "Round ID", Value = $"#{status.RoundId}", Inline = true },
         };
 
         if (status.Duration is { } duration)
@@ -63,7 +64,7 @@ public static class RoundStatusWebhook
                 new()
                 {
                     Title = GetTitle(kind, status.RoundId),
-                    Description = FormatPlayerCount(status.PlayerCount),
+                    Description = "Server status",
                     Color = GetColor(kind, colors.Value),
                     Fields = fields,
                 },
@@ -190,7 +191,7 @@ public static class RoundStatusWebhook
     {
         return kind switch
         {
-            RoundStatusWebhookKind.Starting => "In lobby",
+            RoundStatusWebhookKind.Starting => "Server starting",
             RoundStatusWebhookKind.Running => $"Round #{roundId} running",
             RoundStatusWebhookKind.Ended => $"Round #{roundId} ended",
             RoundStatusWebhookKind.Shutdown => "Server shutting down",
@@ -227,12 +228,5 @@ public static class RoundStatusWebhook
     private static string FormatDuration(TimeSpan duration)
     {
         return $"{(int) duration.TotalHours}h {duration.Minutes}m {duration.Seconds}s";
-    }
-
-    private static string FormatPlayerCount(int players)
-    {
-        return players == 1
-            ? "1 player online"
-            : $"{players} players online";
     }
 }
