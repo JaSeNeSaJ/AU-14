@@ -114,7 +114,10 @@
       - !type:PlaySoundBehavior
         sound:
           collection: MetalGlassBreak
-  - type: XenoCrusherChargable #TODO RMC14 tip over
+  - type: XenoCrusherChargable
+    setDamage:
+      types:
+        Structural: 750
 
 - type: vendingMachineInventory
   id: CMVendomat
