@@ -41,6 +41,10 @@ namespace Content.Server.GameTicking
 
         private ulong _roundStatusWebhookMessageId;
 
+        private ulong _roundStatusRoundEndPingMessageId;
+
+        private ulong _roundStatusGamemodeVotePingMessageId;
+
         private TimeSpan DiscordRoundStatusUpdateInterval { get; set; } = TimeSpan.FromSeconds(60);
 
         private RoundStatusWebhookColors DiscordRoundStatusColors { get; set; } = RoundStatusWebhook.DefaultColors;
@@ -86,6 +90,8 @@ namespace Content.Server.GameTicking
             {
                 _webhookIdentifier = null;
                 _roundStatusWebhookMessageId = 0;
+                _roundStatusRoundEndPingMessageId = 0;
+                _roundStatusGamemodeVotePingMessageId = 0;
                 _roundStatusWebhookWakeSent = false;
                 if (!string.IsNullOrWhiteSpace(value))
                 {

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json.Nodes;
 
 namespace Content.Server.Discord;
 
@@ -76,6 +77,20 @@ public static class RoundStatusWebhook
         return payload;
     }
 
+    public static WebhookPayload CreateRolePingPayload(IEnumerable<string?> roleIds)
+    {
+        var content = BuildRoleMentions(roleIds);
+        var payload = new WebhookPayload
+        {
+            Content = content,
+        };
+
+        if (!string.IsNullOrWhiteSpace(content))
+            payload.AllowedMentions.AllowRoleMentions();
+
+        return payload;
+    }
+
     public static int ParseColor(string? value, int fallback)
     {
         if (string.IsNullOrWhiteSpace(value))
@@ -109,6 +124,50 @@ public static class RoundStatusWebhook
             return NullIfEmpty(insurgencyRole);
 
         return null;
+    }
+
+    public static IEnumerable<string> GetRoundStatusRoleIds(
+        bool includeRoundEndRole,
+        string? presetId,
+        string? roundEndRole,
+        string? distressSignalRole,
+        string? colonyFallRole,
+        string? insurgencyRole)
+    {
+        if (includeRoundEndRole && NullIfEmpty(roundEndRole) is { } endRole)
+            yield return endRole;
+
+        if (GetGamemodeRole(presetId, distressSignalRole, colonyFallRole, insurgencyRole) is { } gamemodeRole)
+            yield return gamemodeRole;
+    }
+
+    public static bool TryGetMessageId(string? responseContent, out ulong messageId)
+    {
+        messageId = 0;
+
+        if (string.IsNullOrWhiteSpace(responseContent))
+            return false;
+
+        try
+        {
+            var id = JsonNode.Parse(responseContent)?["id"]?.GetValue<string>();
+            return ulong.TryParse(id, out messageId);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    public static bool TryGetMessageIdToDelete(ulong previousMessageId, ulong newMessageId, out ulong messageId)
+    {
+        messageId = 0;
+
+        if (previousMessageId == 0 || previousMessageId == newMessageId)
+            return false;
+
+        messageId = previousMessageId;
+        return true;
     }
 
     public static bool ShouldUpdate(TimeSpan now, TimeSpan nextUpdate, TimeSpan interval, bool hasStatusMessage)
