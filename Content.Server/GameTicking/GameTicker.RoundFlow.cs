@@ -59,6 +59,8 @@ namespace Content.Server.GameTicking
         [ViewVariables]
         private bool _startingRound;
 
+        private readonly List<RoundStatusRecentGamemode> _recentRoundStatusGamemodes = new();
+
         [ViewVariables]
         private GameRunLevel _runLevel;
 
@@ -592,6 +594,7 @@ namespace Content.Server.GameTicking
 
             //Tell every client the round has ended.
             var gamemodeTitle = CurrentPreset != null ? Loc.GetString(CurrentPreset.ModeTitle) : string.Empty;
+            RememberRoundStatusGamemode(RoundId, gamemodeTitle);
 
             // Let things add text here.
             var textEv = new RoundEndTextAppendEvent();
@@ -766,7 +769,26 @@ namespace Content.Server.GameTicking
                 GetDiscordMapName(),
                 govfor,
                 gamemode,
+                _recentRoundStatusGamemodes.ToArray(),
                 duration);
+        }
+
+        private void RememberRoundStatusGamemode(int roundId, string gamemode)
+        {
+            if (roundId <= 0)
+                return;
+
+            if (string.IsNullOrWhiteSpace(gamemode))
+                gamemode = Loc.GetString("ui-escape-status-unknown");
+
+            var existingIndex = _recentRoundStatusGamemodes.FindIndex(round => round.RoundId == roundId);
+            if (existingIndex >= 0)
+                _recentRoundStatusGamemodes.RemoveAt(existingIndex);
+
+            _recentRoundStatusGamemodes.Insert(0, new RoundStatusRecentGamemode(roundId, gamemode));
+
+            if (_recentRoundStatusGamemodes.Count > 3)
+                _recentRoundStatusGamemodes.RemoveRange(3, _recentRoundStatusGamemodes.Count - 3);
         }
 
         private TimeSpan? GetRoundStatusDuration(RoundStatusWebhookKind kind)
@@ -787,7 +809,7 @@ namespace Content.Server.GameTicking
             switch (runLevel)
             {
                 case GameRunLevel.PreRoundLobby:
-                    kind = RoundStatusWebhookKind.Starting;
+                    kind = RoundStatusWebhookKind.Lobby;
                     return true;
                 case GameRunLevel.InRound:
                     kind = RoundStatusWebhookKind.Running;
@@ -815,7 +837,7 @@ namespace Content.Server.GameTicking
             {
                 _roundStatusWebhookWakeSent = true;
                 await DeleteRoundStatusPingMessages();
-                await SendRoundStatusDiscordMessage(RoundStatusWebhookKind.Starting, false);
+                await SendRoundStatusDiscordMessage(RoundStatusWebhookKind.Lobby, false);
             }
             catch (Exception e)
             {
