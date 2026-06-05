@@ -19,6 +19,7 @@ using Content.Shared.Examine;
 using Content.Shared.Verbs;
 using Content.Server.Verbs;
 using Content.Shared._CMU14.Medical.Shrapnel;
+using Content.Shared.Projectiles;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
@@ -934,6 +935,45 @@ public sealed class MechanismWoundsFoundationTest
                 entMan.DeleteEntity(knife);
                 entMan.DeleteEntity(patient);
                 entMan.DeleteEntity(user);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [TestCase("XenoHedgehogSpikeProjectileSpread")]
+    [TestCase("XenoHedgehogSpikeProjectileSpreadShort")]
+    public async Task HedgehogSpikeProjectilesAddShrapnel(string projectilePrototype)
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var partHealth = entMan.System<SharedBodyPartHealthSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var projectile = entMan.SpawnEntity(projectilePrototype, MapCoordinates.Nullspace);
+
+            try
+            {
+                var torso = GetBodyPart(entMan, human, BodyPartType.Torso);
+                var damage = entMan.GetComponent<ProjectileComponent>(projectile).Damage;
+
+                Assert.That(partHealth.TryApplyPartDamage(human, torso, damage, tool: projectile), Is.True);
+                Assert.That(entMan.TryGetComponent<CMUShrapnelComponent>(torso, out var shrapnel), Is.True);
+
+                var wounds = entMan.GetComponent<BodyPartWoundComponent>(torso);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(shrapnel!.Fragments, Is.EqualTo(1));
+                    Assert.That(wounds.Cleanup[0] & WoundCleanupFlags.RetainedFragment, Is.Not.EqualTo(WoundCleanupFlags.None));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(projectile);
+                entMan.DeleteEntity(human);
             }
         });
 

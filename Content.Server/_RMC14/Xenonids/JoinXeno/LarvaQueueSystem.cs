@@ -41,6 +41,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
     private static readonly ProtoId<JobPrototype> LesserDroneRole = "CMXenoLesserDrone";
+    private static readonly ProtoId<JobPrototype> QueenRole = "CMXenoQueen";
     private static readonly ProtoId<TagPrototype> LarvaTag = "RMCXenoLarva";
     private static readonly ProtoId<JobPrototype> LarvaRole = "CMXenoLarva";
     private static readonly TimeSpan ClaimConfirmDuration = TimeSpan.FromSeconds(30);
@@ -361,6 +362,9 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!TryComp(uid, out XenoComponent? xenoComp))
             return false;
 
+        xeno = xenoComp;
+        var isQueen = xeno.Role == QueenRole;
+
         if (member.Hive != hive.Owner ||
             TerminatingOrDeleted(uid) ||
             _pendingEntityClaims.ContainsKey(uid) ||
@@ -370,13 +374,12 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             HasComp<ActorComponent>(uid) ||
             _mobState.IsDead(uid) ||
             HasComp<XenoParasiteComponent>(uid) ||
-            HasComp<DropshipHijackerComponent>(uid) ||
+            HasComp<DropshipHijackerComponent>(uid) && !isQueen ||
             TryComp(uid, out MindContainerComponent? mind) && mind.HasMind)
         {
             return false;
         }
 
-        xeno = xenoComp;
         return xeno.Role != LesserDroneRole;
     }
 
