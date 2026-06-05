@@ -1217,6 +1217,69 @@ public sealed class RMCHumanPrototypeRegressionTest
     }
 
     [Test]
+    public async Task CmuExternalBleedSpawnsBloodPuddle()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var mapManager = server.ResolveDependency<IMapManager>();
+        var tileDefinitionManager = server.ResolveDependency<ITileDefinitionManager>();
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var map = entMan.System<SharedMapSystem>();
+            var solutions = entMan.System<SharedSolutionContainerSystem>();
+            var woundsSystem = entMan.System<CMUWoundsSystem>();
+
+            map.CreateMap(out var mapId);
+            var grid = mapManager.CreateGridEntity(mapId);
+            var tile = Vector2i.Zero;
+            map.SetTile(grid, tile, new Tile(tileDefinitionManager["FloorSteel"].TileId));
+
+            var patient = entMan.SpawnEntity("CMMobHuman", map.GridTileToLocal(grid, grid.Comp, tile));
+
+            try
+            {
+                var rightArm = GetBodyPart(entMan, patient, BodyPartType.Arm, BodyPartSymmetry.Right);
+                AddBodyPartWound(entMan, rightArm, WoundType.Brute);
+
+                var wounds = entMan.GetComponent<BodyPartWoundComponent>(rightArm);
+                SetField(wounds, nameof(BodyPartWoundComponent.ExternalBleeding), ExternalBleedTier.Arterial);
+                entMan.Dirty(rightArm, wounds);
+
+                var bloodstream = entMan.GetComponent<BloodstreamComponent>(patient);
+                typeof(BloodstreamComponent)
+                    .GetField(nameof(BloodstreamComponent.BleedPuddleThreshold), BindingFlags.Instance | BindingFlags.Public)!
+                    .SetValue(bloodstream, FixedPoint2.New(0.1f));
+                Assert.That(
+                    solutions.ResolveSolution(patient, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out var bloodSolution),
+                    Is.True);
+
+                var bloodBefore = bloodSolution.Volume;
+                var puddlesBefore = CountPuddles(entMan);
+
+                woundsSystem.Update(1f);
+
+                Assert.That(
+                    solutions.ResolveSolution(patient, bloodstream.BloodSolutionName, ref bloodstream.BloodSolution, out bloodSolution),
+                    Is.True);
+
+                Assert.Multiple(() =>
+                {
+                    Assert.That(bloodSolution.Volume.Float(), Is.LessThan(bloodBefore.Float()));
+                    Assert.That(CountPuddles(entMan), Is.GreaterThan(puddlesBefore));
+                });
+            }
+            finally
+            {
+                entMan.DeleteEntity(patient);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task CmuSurgeryToolUseOnOtherSurgeonInFlightOpensUiInsteadOfAutoResuming()
     {
         await using var pair = await PoolManager.GetServerClient();
