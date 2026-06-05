@@ -1004,6 +1004,7 @@
   - SynthBreachingHammerAU14
   - MaintenanceJackAU14
   - PortableDialysisAU14
+  - AU14SprayCleanerExperimentalAU14
 
 - type: loadoutGroup
   id: SynthAccesoriesSpecialAU14
