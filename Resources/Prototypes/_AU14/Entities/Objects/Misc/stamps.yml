@@ -95,6 +95,7 @@
     state: stamp-ce
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-eo
+    stampedColor: "#d19f2a"
     stampState: "paper_stamp-ce"
 
 - type: entity
@@ -113,14 +114,14 @@
 
 - type: entity
   parent: AU14StampBase
-  id: AU14StampCLiaison
+  id: AU14StampLiaison
   name: corporate liaison's rubber stamp
   components:
   - type: Sprite
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
+    stampedColor: "#3681bb"
     stampState: "paper_stamp-we_ya"
 
 - type: entity
@@ -132,7 +133,7 @@
     state: stamp-rd
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-ll
-    stampedColor: "#996600"
+    stampedColor: "#3681bb"
     stampState: "paper_stamp-wizard"
 
 - type: entity
@@ -144,7 +145,7 @@
     state: stamp-marine
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
+    stampedColor: "#3681bb"
     stampState: "paper_stamp-cmb"
 
 - type: entity
@@ -156,7 +157,7 @@
     state: stamp-spp
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
+    stampedColor: "##A70707"
     stampState: "paper_stamp-spp"
 
 - type: entity
@@ -168,7 +169,7 @@
     state: stamp-tse
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
+    stampedColor: "#BE601B"
     stampState: "paper_stamp-tse"
 
 - type: entity
@@ -180,7 +181,7 @@
     state: stamp-rd
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
+    stampedColor: "#808080"
     stampState: "paper_stamp-circle"
 
 - type: entity
@@ -192,8 +193,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#ffae00"
+    stampState: "paper_stamp-cca"
 
 # Colony
 
@@ -206,8 +207,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-admin
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#3681bb"
+    stampState: "paper_stamp-circle"
 
 - type: entity
   parent: AU14StampBase
@@ -218,8 +219,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-fore
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#725c0e"
+    stampState: "paper_stamp-ro"
 
 - type: entity
   parent: AU14StampBase
@@ -230,8 +231,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-heng
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#d19f2a"
+    stampState: "paper_stamp-ce"
 
 - type: entity
   parent: AU14StampBase
@@ -242,8 +243,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-hos
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#725c0e"
+    stampState: "paper_stamp-dots"
 
 - type: entity
   parent: AU14StampBase
@@ -254,11 +255,11 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-hphy
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#4e806a"
+    stampState: "paper_stamp-cmo"
 
 - type: entity
-  parent: AU14StampBase
+  parent: U14StampCMB
   id: AU14StampCMBM
   name: CMB Marshal's rubber stamp
   components:
@@ -266,11 +267,9 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cmbm
-    stampedColor: "#996600"
-    stampState: "paper_stamp-cmb"
 
 - type: entity
-  parent: AU14StampBase
+  parent: AU14StampLiaison
   id: AU14StampKelland
   name: Kelland Warden's rubber stamp
   components:
@@ -278,8 +277,7 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-kw
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampState: "paper_stamp-warden"
 
 - type: entity
   parent: AU14StampBase
@@ -290,8 +288,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-joe
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#000000"
+    stampState: "paper_stamp-greytide"
 
 - type: entity
   parent: AU14StampBase
@@ -302,8 +300,8 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-uarec
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#4e806a"
+    stampState: "paper_stamp-marine"
 
 # Orbital
 
@@ -316,32 +314,26 @@
     state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-oman
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#b0901b"
+    stampState: "paper_stamp-cmb"
 
 - type: entity
-  parent: AU14StampBase
+  parent: AU14StampOrbitalMan
   id: AU14StampOrbitalArb
   name: orbital arbiter's rubber stamp
   components:
-  - type: Sprite
-    state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-oarb
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
 
 - type: entity
-  parent: AU14StampBase
+  parent: AU14StampOrbitalMan
   id: AU14StampOrbitalCnsl
   name: orbital counsel's rubber stamp
   components:
-  - type: Sprite
-    state: stamp-we_ya
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-ocnsl
-    stampedColor: "#996600"
-    stampState: "paper_stamp-we_ya"
+    stampedColor: "#cb0000"
+    stampState: "paper_stamp-lawyer"
 
 # Third Parties
 
@@ -354,8 +346,8 @@
     state: stamp-provost
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-ihro
-    stampedColor: "#cb0000"
-    stampState: "paper_stamp-provost-inspector"
+    stampedColor: "#3681bb"
+    stampState: "paper_stamp-trader"
 
 - type: entity
   parent: AU14StampBase
@@ -367,7 +359,7 @@
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-nspa
     stampedColor: "#cb0000"
-    stampState: "paper_stamp-provost-inspector"
+    stampState: "paper_stamp-wizard"
 
 - type: entity
   parent: AU14StampBase
@@ -390,8 +382,8 @@
     state: stamp-provost
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-iccl
-    stampedColor: "#cb0000"
-    stampState: "paper_stamp-provost-inspector"
+    stampedColor: "#3681bb"
+    stampState: "paper_stamp-lawyer"
 
 
 # Simple
