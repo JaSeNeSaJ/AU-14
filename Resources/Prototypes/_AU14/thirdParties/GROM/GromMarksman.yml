@@ -5,11 +5,11 @@
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMMarksman
   ranks:
-    UPP_Chotar:
+    UPP_FirstSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobUPPGROMMarksman
       time: 36000 #10 hours
-    UPP_StaffSergeant:
+    UPP_SeniorSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobUPPGROMMarksman
       time: 18000 #5 hours

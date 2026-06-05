@@ -5,7 +5,7 @@
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMMachinegunner
   ranks:
-    UPP_StaffSergeant:
+    UPP_SeniorSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobUPPGROMMachinegunner
       time: 36000 #10 hours

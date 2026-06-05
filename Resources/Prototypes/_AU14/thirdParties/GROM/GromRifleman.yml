@@ -5,7 +5,7 @@
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMRifleman
   ranks:
-    UPP_StaffSergeant:
+    UPP_SeniorSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobUPPGROMRifleman
       time: 36000 #10 hours

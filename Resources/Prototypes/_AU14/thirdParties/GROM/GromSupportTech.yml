@@ -5,7 +5,7 @@
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMSupportTech
   ranks:
-    UPP_StaffSergeant:
+    UPP_SeniorSergeant:
     - !type:RoleTimeRequirement
       role: AU14JobUPPGROMSupportTech
       time: 36000 #10 hours
