@@ -1,0 +1,15 @@
+- type: entity
+  parent: RMCArmbandBase
+  id: AU14ChevronSecondLT
+  name: second lieutenant chevron
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Accessory/Armbands/clf_armband.rsi
+    state: icon
+  - type: UniformAccessory
+    playerSprite:
+      sprite: _RMC14/Objects/Clothing/Accessory/Armbands/clf_armband.rsi
+      state: armband
+  - type: RankChanger
+    rank: RMCRankSecondLT
+    override: true

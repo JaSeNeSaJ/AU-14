@@ -19,11 +19,11 @@
   parent: AU14JobPlatOpBaseAbstract
   id: AU14JobPlatOpBase
   ranks:
-    RMCRankFirstLT:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatOp
-      time: 86400 # 24 hours
-    RMCRankSecondLT: []
+    RMCRankCivilian: []
+  chevrons:
+    SecondLT:
+      entity: AU14ChevronSecondLT
+      requirements: []
   requirements:
   - !type:AgeRequirement
     requiredAge: 25
