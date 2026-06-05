@@ -40,7 +40,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
-    private static readonly EntProtoId LesserDrone = "CMXenoLesserDrone";
+    private static readonly ProtoId<JobPrototype> LesserDroneRole = "CMXenoLesserDrone";
     private static readonly ProtoId<TagPrototype> LarvaTag = "RMCXenoLarva";
     private static readonly ProtoId<JobPrototype> LarvaRole = "CMXenoLarva";
     private static readonly TimeSpan ClaimConfirmDuration = TimeSpan.FromSeconds(30);
@@ -312,7 +312,27 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!CanQueueBodyCommon(uid, member, hive, out var xeno))
             return false;
 
+        if (IsReservedForParasiteClaim(uid))
+            return false;
+
         return _tag.HasTag(uid, LarvaTag) && xeno.Role == LarvaRole;
+    }
+
+    private bool IsReservedForParasiteClaim(EntityUid uid)
+    {
+        if (!TryComp(uid, out BursterComponent? burster) ||
+            !TryComp(burster.BurstFrom, out VictimInfectedComponent? infected) ||
+            infected.SpawnedLarva != uid ||
+            !infected.InfectorWantsLarva ||
+            infected.InfectorUser is not { } userId)
+        {
+            return false;
+        }
+
+        return _player.TryGetSessionById(userId, out var session) &&
+               session.AttachedEntity is { } attached &&
+               _ghostQuery.HasComp(attached) &&
+               _mind.TryGetMind(session, out _, out _);
     }
 
     private bool TryOfferAbandonedXeno(Entity<HiveComponent> hive, LarvaQueueState queue)
@@ -357,7 +377,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         }
 
         xeno = xenoComp;
-        return !TryPrototype(uid, out var prototype) || prototype.ID != LesserDrone;
+        return xeno.Role != LesserDroneRole;
     }
 
     private bool TryOfferEntityClaim(EntityUid uid, Entity<HiveComponent> hive, LarvaQueueState queue)
