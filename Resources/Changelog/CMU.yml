@@ -2234,5 +2234,50 @@
   id: 197
   time: '2026-06-05T01:03:04.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1208
+- author: OmerF-afk
+  changes:
+  - message: Added Cleaner Sprays in CM13 spritework and Experimental cleaning spray
+    type: Add
+  - message: Added a component that makes synthetics hammers actually heavy.
+    type: Add
+  id: 198
+  time: '2026-06-05T13:59:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1218
+- author: mikusssssss
+  changes:
+  - message: Added 2 new colors of the lifesaver bag to synthetic loadouts
+    type: Add
+  id: 199
+  time: '2026-06-05T14:13:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1140
+- author: KriegersMustDie
+  changes:
+  - message: PO ranks reshuffled until proper overhaul.
+    type: Tweak
+  id: 200
+  time: '2026-06-05T16:09:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1217
+- author: 400Ferrets
+  changes:
+  - message: Colony Physician no longer gets a spare ID.
+    type: Fix
+  id: 201
+  time: '2026-06-05T16:20:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1221
+- author: TheHellFireo
+  changes:
+  - message: Adds back Smart gun damage fall of at 6 tiles
+    type: Tweak
+  - message: Adds use delay to the M34-T Incinerator
+    type: Tweak
+  - message: Bone breaking sound now only plays on simple and above fractures
+    type: Tweak
+  - message: Queen enter ghost queue if they leave
+    type: Fix
+  - message: Adjust xeno scaling by 0.3 for DS and 0.1 For CF
+    type: Tweak
+  id: 202
+  time: '2026-06-05T16:56:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1226
 Name: CMU
 Order: -1
