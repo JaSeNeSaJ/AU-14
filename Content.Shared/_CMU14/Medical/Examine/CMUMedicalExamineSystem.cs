@@ -74,18 +74,28 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             if (includeWounds)
             {
                 var untreated = new List<string>();
-                var adequate = new List<string>();
-                var treated = new List<string>();
+                var adequateWounds = 0;
+                var optimalWounds = 0;
+                var treatedWounds = 0;
                 if (TryComp<BodyPartWoundComponent>(partUid, out var wounds))
                 {
                     for (var i = 0; i < wounds.Wounds.Count; i++)
                     {
-                        if (GetTreatmentQuality(wounds, i) == WoundTreatmentQuality.Adequate)
-                            adequate.Add(DescribeVisibleWound(wounds, i));
-                        else if (IsWoundTreatedForExamine(wounds, i))
-                            treated.Add(DescribeVisibleWound(wounds, i));
-                        else
-                            untreated.Add(DescribeVisibleWound(wounds, i));
+                        switch (GetTreatmentQuality(wounds, i))
+                        {
+                            case WoundTreatmentQuality.Adequate:
+                                adequateWounds++;
+                                break;
+                            case WoundTreatmentQuality.Optimal:
+                                optimalWounds++;
+                                break;
+                            default:
+                                if (wounds.Wounds[i].Treated)
+                                    treatedWounds++;
+                                else
+                                    untreated.Add(DescribeVisibleWound(wounds, i));
+                                break;
+                        }
                     }
 
                     if (wounds.ExternalBleeding != ExternalBleedTier.None)
@@ -98,11 +108,14 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
                 if (untreated.Count > 0)
                     sections.Add($"[color={UntreatedWoundColor}]{ToSentence(untreated)}[/color]");
 
-                if (adequate.Count > 0)
-                    sections.Add($"[color={DetailedAdequateColor}]{ToSentence(adequate)}[/color]");
+                if (adequateWounds > 0)
+                    sections.Add($"[color={DetailedAdequateColor}]{DescribeVisibleTreatedWounds(adequateWounds, "adequately treated")}[/color]");
 
-                if (treated.Count > 0)
-                    sections.Add($"[color={TreatedWoundColor}]{ToSentence(treated)}[/color]");
+                if (optimalWounds > 0)
+                    sections.Add($"[color={TreatedWoundColor}]{DescribeVisibleTreatedWounds(optimalWounds, "optimally treated")}[/color]");
+
+                if (treatedWounds > 0)
+                    sections.Add($"[color={TreatedWoundColor}]{DescribeVisibleTreatedWounds(treatedWounds, "treated")}[/color]");
             }
 
             if (includeFractures
@@ -440,19 +453,13 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             _ => GetVisibleWoundKind(wounds, index),
         };
 
-        var treated = DescribeVisibleTreatment(wounds, index);
-        return $"a {treated}{sizeText} {kind}";
+        return $"a {sizeText} {kind}";
     }
 
-    private static string DescribeVisibleTreatment(BodyPartWoundComponent wounds, int index)
+    private static string DescribeVisibleTreatedWounds(int count, string treatment)
     {
-        var quality = GetTreatmentQuality(wounds, index);
-        return quality switch
-        {
-            WoundTreatmentQuality.Adequate => "adequately treated ",
-            WoundTreatmentQuality.Optimal => "treated ",
-            _ => wounds.Wounds[index].Treated ? "treated " : string.Empty,
-        };
+        var noun = count == 1 ? "wound" : "wounds";
+        return $"{noun} {treatment}";
     }
 
     private static string GetVisibleWoundKind(BodyPartWoundComponent wounds, int index)
@@ -558,11 +565,6 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             details.Add(Color($"optimal: {optimalHint}", DetailedHintColor));
 
         return new DetailedWoundDetails(header, ToDetailedLines(details));
-    }
-
-    private static bool IsWoundTreatedForExamine(BodyPartWoundComponent wounds, int index)
-    {
-        return wounds.Wounds[index].Treated || GetTreatmentQuality(wounds, index) != WoundTreatmentQuality.Untreated;
     }
 
     private static WoundTreatmentQuality GetTreatmentQuality(BodyPartWoundComponent wounds, int index)

@@ -645,7 +645,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task NormalExamineShowsTreatedWoundsAsTreated()
+    public async Task NormalExamineSummarizesTreatedWoundsByTreatmentQuality()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -653,21 +653,17 @@ public sealed class MechanismWoundsFoundationTest
         await server.WaitAssertion(() =>
         {
             var entMan = server.EntMan;
-            var partHealth = entMan.System<SharedBodyPartHealthSystem>();
-            var woundsSystem = entMan.System<CMUWoundsSystem>();
             var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
 
             try
             {
                 var torso = GetBodyPart(entMan, human, BodyPartType.Torso);
+                var wounds = entMan.EnsureComponent<BodyPartWoundComponent>(torso);
 
-                Assert.That(partHealth.TryApplyPartDamage(
-                    human,
-                    torso,
-                    Damage("Slash", 10),
-                    impact: DamageImpact.MeleeSlash), Is.True);
-                Assert.That(woundsSystem.TryTreatWound(torso, out var completed), Is.True);
-                Assert.That(completed, Is.True);
+                AddVisibleWound(wounds, WoundSize.Massive, WoundTreatmentQuality.Adequate);
+                AddVisibleWound(wounds, WoundSize.Deep, WoundTreatmentQuality.Adequate);
+                AddVisibleWound(wounds, WoundSize.Massive, WoundTreatmentQuality.Optimal);
+                AddVisibleWound(wounds, WoundSize.Small, WoundTreatmentQuality.Optimal);
 
                 var examine = new ExaminedEvent(new FormattedMessage(), human, human, true, false);
                 entMan.EventBus.RaiseLocalEvent(human, examine);
@@ -675,9 +671,11 @@ public sealed class MechanismWoundsFoundationTest
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(text, Does.Contain("treated"));
-                    Assert.That(text, Does.Contain("wound"));
-                    Assert.That(text, Does.Not.Contain("[color=#ff4d4d]a small wound[/color]"));
+                    Assert.That(text, Does.Contain("wounds adequately treated"));
+                    Assert.That(text, Does.Contain("wounds optimally treated"));
+                    Assert.That(text, Does.Not.Contain("massive wound"));
+                    Assert.That(text, Does.Not.Contain("moderate wound"));
+                    Assert.That(text, Does.Not.Contain("small wound"));
                 });
             }
             finally
@@ -1041,8 +1039,30 @@ public sealed class MechanismWoundsFoundationTest
     private static List<Wound> WoundsOf(BodyPartWoundComponent comp)
         => GetField<List<Wound>>(comp, nameof(BodyPartWoundComponent.Wounds));
 
+    private static void AddVisibleWound(BodyPartWoundComponent comp, WoundSize size, WoundTreatmentQuality quality)
+    {
+        WoundsOf(comp).Add(new Wound(10, FixedPoint2.Zero, 0f, null, WoundType.Brute, true));
+        SizesOf(comp).Add(size);
+        BandagesOf(comp).Add(WoundSizeProfile.BandagesRequired(size));
+        MechanismsOf(comp).Add(WoundMechanism.Slash);
+        SecondaryMechanismsOf(comp).Add(WoundMechanismFlags.None);
+        TreatmentQualitiesOf(comp).Add(quality);
+        CleanupOf(comp).Add(quality == WoundTreatmentQuality.Adequate
+            ? WoundCleanupFlags.PoorClosure
+            : WoundCleanupFlags.None);
+    }
+
     private static List<WoundSize> SizesOf(BodyPartWoundComponent comp)
         => GetField<List<WoundSize>>(comp, nameof(BodyPartWoundComponent.Sizes));
+
+    private static List<int> BandagesOf(BodyPartWoundComponent comp)
+        => GetField<List<int>>(comp, nameof(BodyPartWoundComponent.Bandages));
+
+    private static List<WoundMechanism> MechanismsOf(BodyPartWoundComponent comp)
+        => GetField<List<WoundMechanism>>(comp, nameof(BodyPartWoundComponent.Mechanisms));
+
+    private static List<WoundMechanismFlags> SecondaryMechanismsOf(BodyPartWoundComponent comp)
+        => GetField<List<WoundMechanismFlags>>(comp, nameof(BodyPartWoundComponent.SecondaryMechanisms));
 
     private static List<WoundTreatmentQuality> TreatmentQualitiesOf(BodyPartWoundComponent comp)
         => GetField<List<WoundTreatmentQuality>>(comp, nameof(BodyPartWoundComponent.TreatmentQualities));
