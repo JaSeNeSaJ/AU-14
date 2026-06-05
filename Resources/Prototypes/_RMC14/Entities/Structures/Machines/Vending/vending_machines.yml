@@ -360,13 +360,12 @@
   parent: CMVendor
   id: CMVendorCigs
   name: Cigarette Machine
+  description: If you want to get cancer, might as well do it in style!
   components:
   - type: XenoCrusherChargable
     setDamage:
       types:
         Structural: 750
-  description: If you want to get cancer, might as well do it in style!
-  components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/cigs.rsi
   - type: VendingMachine
