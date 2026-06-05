@@ -107,7 +107,7 @@
     setDamage:
       types:
         Blunt: 0
-    throwRange: 2
+
   - type: CrashLandable
   - type: ParaDroppable
     dropScatter: 4
