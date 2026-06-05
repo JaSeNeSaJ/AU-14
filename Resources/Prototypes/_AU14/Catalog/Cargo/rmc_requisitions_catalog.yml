@@ -112,6 +112,8 @@
         crate: AU14CrateMedicalVendor
       - cost: 3500
         crate: AU14CrateMedicalBloodVendor
+      - cost: 2000
+        crate: CMUCrateMedicalFieldTreatments
       - cost: 2500
         crate: RMCCrateMedicalSurgery
       - cost: 1000
@@ -165,7 +167,7 @@
       - cost: 500
         crate: AU14CrateAssortedKnives
       - cost: 4500
-        crate: AU14CrateM5A1SLAW
+        crate: AU14CrateL33DAAMSL
       - cost: 6000
         crate: AU14CrateFlamerSpec
       - cost: 9500
