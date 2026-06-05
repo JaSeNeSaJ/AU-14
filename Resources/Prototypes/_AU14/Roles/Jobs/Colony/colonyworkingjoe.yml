@@ -4,10 +4,10 @@
   requirements:
   - !type:RoleTimeRequirement
     role: AU14JobCivilianEngineer
-    time: 1200 # 1 hour
+    time: 3600 # 1 hour
   - !type:RoleTimeRequirement
     role: AU14JobCivilianWasteManagementSpecialist
-    time: 1200 # 1 hour
+    time: 3600 # 1 hour
   - !type:TraitsRequirement
     inverted: true
     traits:
