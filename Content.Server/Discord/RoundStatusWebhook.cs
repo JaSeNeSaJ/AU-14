@@ -30,12 +30,12 @@ public readonly record struct RoundStatusWebhookData(
     IReadOnlyList<RoundStatusRecentGamemode> RecentGamemodes,
     TimeSpan? Duration = null);
 
-public readonly record struct RoundStatusRecentGamemode(int RoundId, string Gamemode);
+public readonly record struct RoundStatusRecentGamemode(int RoundId, string Gamemode, TimeSpan Duration);
 
 public static class RoundStatusWebhook
 {
     private const int InlineValueLength = 24;
-    private const int RecentGamemodeLength = 21;
+    private const int RecentGamemodeLength = 15;
 
     public static readonly RoundStatusWebhookColors DefaultColors = new(
         0xF0C419,
@@ -63,7 +63,7 @@ public static class RoundStatusWebhook
             new() { Name = "Map", Value = Shorten(status.MapName, InlineValueLength), Inline = true },
             new() { Name = "GOVFOR", Value = Shorten(status.Govfor, InlineValueLength), Inline = true },
             new() { Name = "Mode", Value = Shorten(status.Gamemode, InlineValueLength), Inline = true },
-            new() { Name = "Recent Modes", Value = FormatRecentGamemodes(status.RecentGamemodes), Inline = false },
+            new() { Name = "Last 3 Rounds", Value = FormatRecentGamemodes(status.RecentGamemodes), Inline = false },
         };
 
         if (status.Duration is { } duration)
@@ -287,7 +287,7 @@ public static class RoundStatusWebhook
             "\n",
             recentGamemodes
                 .Take(3)
-                .Select(round => $"#{round.RoundId}: {Shorten(round.Gamemode, RecentGamemodeLength)}"));
+                .Select(round => $"#{round.RoundId} {Shorten(round.Gamemode, RecentGamemodeLength)} {FormatShortDuration(round.Duration)}"));
     }
 
     private static string UnknownIfEmpty(string value)
@@ -327,5 +327,12 @@ public static class RoundStatusWebhook
     private static string FormatDuration(TimeSpan duration)
     {
         return $"{(int) duration.TotalHours}h {duration.Minutes}m {duration.Seconds}s";
+    }
+
+    private static string FormatShortDuration(TimeSpan duration)
+    {
+        return duration.TotalHours >= 1
+            ? $"{(int) duration.TotalHours}h{duration.Minutes:D2}m"
+            : $"{duration.Minutes}m{duration.Seconds:D2}s";
     }
 }
