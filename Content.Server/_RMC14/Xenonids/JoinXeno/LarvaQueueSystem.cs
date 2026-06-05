@@ -40,7 +40,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
-    private static readonly EntProtoId LesserDrone = "CMXenoLesserDrone";
+    private static readonly ProtoId<JobPrototype> LesserDroneRole = "CMXenoLesserDrone";
     private static readonly ProtoId<TagPrototype> LarvaTag = "RMCXenoLarva";
     private static readonly ProtoId<JobPrototype> LarvaRole = "CMXenoLarva";
     private static readonly TimeSpan ClaimConfirmDuration = TimeSpan.FromSeconds(30);
@@ -70,6 +70,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<NewXenoEvolvedEvent>(OnNewXenoEvolved);
         SubscribeLocalEvent<XenoDevolvedEvent>(OnXenoDevolved);
+        SubscribeLocalEvent<AbandonedXenoQueueableComponent, ComponentStartup>(OnAbandonedQueueableStartup);
+        SubscribeLocalEvent<AbandonedXenoQueueableComponent, ComponentShutdown>(OnAbandonedQueueableShutdown);
         SubscribeLocalEvent<LarvaQueueableComponent, ComponentStartup>(OnQueueableStartup);
         SubscribeLocalEvent<LarvaQueueableComponent, HiveChangedEvent>(OnQueueableHiveChanged);
         SubscribeLocalEvent<LarvaQueueableComponent, MindRemovedMessage>(OnQueueableMindRemoved);
@@ -187,6 +189,16 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         CancelPendingClaimForInvalidTarget(args.NewXeno);
     }
 
+    private void OnAbandonedQueueableStartup(Entity<AbandonedXenoQueueableComponent> ent, ref ComponentStartup args)
+    {
+        TryClaimQueueable(ent.Owner);
+    }
+
+    private void OnAbandonedQueueableShutdown(Entity<AbandonedXenoQueueableComponent> ent, ref ComponentShutdown args)
+    {
+        CancelPendingClaimForInvalidTarget(ent.Owner);
+    }
+
     private void OnQueueableStartup(Entity<LarvaQueueableComponent> ent, ref ComponentStartup args)
     {
         TryClaimQueueable(ent.Owner);
@@ -272,6 +284,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             return;
 
         var offered = TryOfferQueueableLarva(hive, queue) ||
+                      TryOfferAbandonedXeno(hive, queue) ||
                       TryOfferBurrowedLarva(hive, queue);
 
         if (offered)
@@ -299,7 +312,47 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!CanQueueBodyCommon(uid, member, hive, out var xeno))
             return false;
 
+        if (IsReservedForParasiteClaim(uid))
+            return false;
+
         return _tag.HasTag(uid, LarvaTag) && xeno.Role == LarvaRole;
+    }
+
+    private bool IsReservedForParasiteClaim(EntityUid uid)
+    {
+        if (!TryComp(uid, out BursterComponent? burster) ||
+            !TryComp(burster.BurstFrom, out VictimInfectedComponent? infected) ||
+            infected.SpawnedLarva != uid ||
+            !infected.InfectorWantsLarva ||
+            infected.InfectorUser is not { } userId)
+        {
+            return false;
+        }
+
+        return _player.TryGetSessionById(userId, out var session) &&
+               session.AttachedEntity is { } attached &&
+               _ghostQuery.HasComp(attached) &&
+               _mind.TryGetMind(session, out _, out _);
+    }
+
+    private bool TryOfferAbandonedXeno(Entity<HiveComponent> hive, LarvaQueueState queue)
+    {
+        var query = EntityQueryEnumerator<AbandonedXenoQueueableComponent, LarvaQueueableComponent, HiveMemberComponent>();
+        while (queue.ReadyCount > 0 && query.MoveNext(out var uid, out _, out _, out var member))
+        {
+            if (!CanQueueAbandonedXeno(uid, member, hive))
+                continue;
+
+            return TryOfferEntityClaim(uid, hive, queue);
+        }
+
+        return false;
+    }
+
+    private bool CanQueueAbandonedXeno(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive)
+    {
+        return HasComp<AbandonedXenoQueueableComponent>(uid) &&
+               CanQueueBodyCommon(uid, member, hive, out _);
     }
 
     private bool CanQueueBodyCommon(EntityUid uid, HiveMemberComponent member, Entity<HiveComponent> hive, out XenoComponent xeno)
@@ -324,7 +377,7 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         }
 
         xeno = xenoComp;
-        return !TryPrototype(uid, out var prototype) || prototype.ID != LesserDrone;
+        return xeno.Role != LesserDroneRole;
     }
 
     private bool TryOfferEntityClaim(EntityUid uid, Entity<HiveComponent> hive, LarvaQueueState queue)
@@ -437,7 +490,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         {
             if (_hiveQuery.TryComp(pending.Hive, out var hive) &&
                 TryComp(target, out HiveMemberComponent? member) &&
-                CanQueueLarva(target, member, (pending.Hive, hive)))
+                (CanQueueLarva(target, member, (pending.Hive, hive)) ||
+                 CanQueueAbandonedXeno(target, member, (pending.Hive, hive))))
             {
                 claimed = ClaimQueueableXeno(target, session);
             }
@@ -449,11 +503,13 @@ public sealed partial class LarvaQueueSystem : EntitySystem
 
         if (!claimed && session.AttachedEntity is { } stillAttached)
         {
+            QueueFor(pending.Hive).AddReadyFirst(ev.UserId);
             _popup.PopupEntity(
                 Loc.GetString("rmc-xeno-larva-queue-confirm-invalid"),
                 stillAttached,
                 stillAttached,
                 PopupType.MediumCaution);
+            NotifyReadyPositions(pending.Hive);
         }
 
         TryClaimNextForHive(pending.Hive);
