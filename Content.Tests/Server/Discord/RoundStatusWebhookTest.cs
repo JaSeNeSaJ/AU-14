@@ -19,9 +19,9 @@ public sealed class RoundStatusWebhookTest
             "Distress Signal",
             new[]
             {
-                new RoundStatusRecentGamemode(41, "Colony Fall"),
-                new RoundStatusRecentGamemode(40, "Insurgency"),
-                new RoundStatusRecentGamemode(39, "Distress Signal"),
+                new RoundStatusRecentGamemode(41, "Colony Fall", TimeSpan.FromMinutes(75)),
+                new RoundStatusRecentGamemode(40, "Insurgency", TimeSpan.FromSeconds(2703)),
+                new RoundStatusRecentGamemode(39, "Distress Signal", TimeSpan.FromSeconds(3550)),
             },
             TimeSpan.FromMinutes(91));
 
@@ -45,7 +45,7 @@ public sealed class RoundStatusWebhookTest
         Assert.That(fields["GOVFOR"], Is.EqualTo("5th Platoon"));
         Assert.That(fields["Mode"], Is.EqualTo("Distress Signal"));
         Assert.That(fields["Round"], Is.EqualTo("#42"));
-        Assert.That(fields["Recent Modes"], Is.EqualTo("#41: Colony Fall\n#40: Insurgency\n#39: Distress Signal"));
+        Assert.That(fields["Last 3 Rounds"], Is.EqualTo("#41 Colony Fall 1h15m\n#40 Insurgency 45m03s\n#39 Distress Signal 59m10s"));
         Assert.That(fields["Runtime"], Is.EqualTo("1h 31m 0s"));
     }
 
@@ -97,7 +97,7 @@ public sealed class RoundStatusWebhookTest
             "Distress Signal With An Extremely Long Name",
             new[]
             {
-                new RoundStatusRecentGamemode(42, "Distress Signal With An Extremely Long Name"),
+                new RoundStatusRecentGamemode(42, "Distress Signal With An Extremely Long Name", TimeSpan.FromSeconds(3723)),
             });
 
         var payload = RoundStatusWebhook.CreatePayload(
@@ -109,7 +109,7 @@ public sealed class RoundStatusWebhookTest
         Assert.That(fields["Map"], Is.EqualTo("Fiorina Orbital Penit..."));
         Assert.That(fields["GOVFOR"], Is.EqualTo("United States Colonia..."));
         Assert.That(fields["Mode"], Is.EqualTo("Distress Signal With..."));
-        Assert.That(fields["Recent Modes"], Is.EqualTo("#42: Distress Signal Wi..."));
+        Assert.That(fields["Last 3 Rounds"], Is.EqualTo("#42 Distress Sig... 1h02m"));
     }
 
     [Test]
@@ -123,7 +123,7 @@ public sealed class RoundStatusWebhookTest
             "Some Old Mode",
             new[]
             {
-                new RoundStatusRecentGamemode(43, "Some Old Mode"),
+                new RoundStatusRecentGamemode(43, "Some Old Mode", TimeSpan.FromMinutes(12)),
             },
             TimeSpan.FromSeconds(12));
 

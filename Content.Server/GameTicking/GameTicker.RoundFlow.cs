@@ -594,16 +594,16 @@ namespace Content.Server.GameTicking
 
             //Tell every client the round has ended.
             var gamemodeTitle = CurrentPreset != null ? Loc.GetString(CurrentPreset.ModeTitle) : string.Empty;
-            RememberRoundStatusGamemode(RoundId, gamemodeTitle);
+
+            //Get the timespan of the round.
+            var roundDuration = RoundDuration();
+            RememberRoundStatusGamemode(RoundId, gamemodeTitle, roundDuration);
 
             // Let things add text here.
             var textEv = new RoundEndTextAppendEvent();
             RaiseLocalEvent(textEv);
 
             var roundEndText = $"{text}\n{textEv.Text}";
-
-            //Get the timespan of the round.
-            var roundDuration = RoundDuration();
 
             //Generate a list of basic player info to display in the end round summary.
             var listOfPlayerInfo = new List<RoundEndMessageEvent.RoundEndPlayerInfo>();
@@ -773,7 +773,7 @@ namespace Content.Server.GameTicking
                 duration);
         }
 
-        private void RememberRoundStatusGamemode(int roundId, string gamemode)
+        private void RememberRoundStatusGamemode(int roundId, string gamemode, TimeSpan duration)
         {
             if (roundId <= 0)
                 return;
@@ -785,7 +785,7 @@ namespace Content.Server.GameTicking
             if (existingIndex >= 0)
                 _recentRoundStatusGamemodes.RemoveAt(existingIndex);
 
-            _recentRoundStatusGamemodes.Insert(0, new RoundStatusRecentGamemode(roundId, gamemode));
+            _recentRoundStatusGamemodes.Insert(0, new RoundStatusRecentGamemode(roundId, gamemode, duration));
 
             if (_recentRoundStatusGamemodes.Count > 3)
                 _recentRoundStatusGamemodes.RemoveRange(3, _recentRoundStatusGamemodes.Count - 3);
