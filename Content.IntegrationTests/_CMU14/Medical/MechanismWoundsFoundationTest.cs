@@ -348,7 +348,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task AdequateTreatmentMarksQualityAndLeavesCleanup()
+    public async Task WoundTreatmentClearsCleanupAndUsesTreatedState()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -375,7 +375,7 @@ public sealed class MechanismWoundsFoundationTest
                     Assert.That(completed, Is.True);
                     Assert.That(wounds.Wounds[0].Treated, Is.True);
                     Assert.That(wounds.TreatmentQualities[0], Is.EqualTo(WoundTreatmentQuality.Adequate));
-                    Assert.That(wounds.Cleanup[0], Is.Not.EqualTo(WoundCleanupFlags.None));
+                    Assert.That(wounds.Cleanup[0], Is.EqualTo(WoundCleanupFlags.None));
                 });
             }
             finally
@@ -388,7 +388,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task OptimalTreatmentMarksQualityAndClearsCleanup()
+    public async Task OptimalTreatmentRequestFallsBackToNormalTreatedState()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -414,7 +414,7 @@ public sealed class MechanismWoundsFoundationTest
                 {
                     Assert.That(completed, Is.True);
                     Assert.That(wounds.Wounds[0].Treated, Is.True);
-                    Assert.That(wounds.TreatmentQualities[0], Is.EqualTo(WoundTreatmentQuality.Optimal));
+                    Assert.That(wounds.TreatmentQualities[0], Is.EqualTo(WoundTreatmentQuality.Adequate));
                     Assert.That(wounds.Cleanup[0], Is.EqualTo(WoundCleanupFlags.None));
                 });
             }
@@ -436,18 +436,18 @@ public sealed class MechanismWoundsFoundationTest
         TreatmentQualitiesOf(wounds).Add(WoundTreatmentQuality.Untreated);
         CleanupOf(wounds).Add(WoundCleanupFlags.PoorClosure);
 
-        WoundsOf(wounds).Add(new Wound(10, FixedPoint2.Zero, 0f, null, WoundType.Brute, false));
+        WoundsOf(wounds).Add(new Wound(10, FixedPoint2.Zero, 0f, null, WoundType.Brute, true));
         SizesOf(wounds).Add(WoundSize.Massive);
         TreatmentQualitiesOf(wounds).Add(WoundTreatmentQuality.Adequate);
         CleanupOf(wounds).Add(WoundCleanupFlags.CrushDebris);
 
-        Assert.That(SharedCMUWoundsSystem.ComputeFieldTreatmentCap(wounds), Is.EqualTo(0.58f).Within(0.001f));
+        Assert.That(SharedCMUWoundsSystem.ComputeFieldTreatmentCap(wounds), Is.EqualTo(0.88f).Within(0.001f));
 
         for (var i = 0; i < 4; i++)
         {
             WoundsOf(wounds).Add(new Wound(10, FixedPoint2.Zero, 0f, null, WoundType.Brute, false));
             SizesOf(wounds).Add(WoundSize.Massive);
-            TreatmentQualitiesOf(wounds).Add(WoundTreatmentQuality.Adequate);
+            TreatmentQualitiesOf(wounds).Add(WoundTreatmentQuality.Untreated);
             CleanupOf(wounds).Add(WoundCleanupFlags.CrushDebris);
         }
 
@@ -505,7 +505,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task DetailedExamineShowsMechanismAndOptimalHintWithoutUntreatedCleanup()
+    public async Task DetailedExamineShowsMechanismAndTreatmentStateWithoutOptimalHint()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -535,8 +535,9 @@ public sealed class MechanismWoundsFoundationTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(text, Does.Contain("slash wound"));
-                    Assert.That(text, Does.Contain("slash wound[/color]\n  [color=#ffd166]untreated[/color]\n  [color=#83c9ff]optimal: sealing dressing[/color]\n  [color=#ff5f5f]external bleeding: moderate[/color]"));
-                    Assert.That(text, Does.Contain("optimal: sealing dressing"));
+                    Assert.That(text, Does.Contain("slash wound[/color]\n  [color=#ffd166]untreated[/color]\n  [color=#ff5f5f]external bleeding: moderate[/color]"));
+                    Assert.That(text, Does.Not.Contain("optimal:"));
+                    Assert.That(text, Does.Not.Contain("adequate treatment"));
                     Assert.That(text, Does.Not.Contain("cleanup needed"));
                     Assert.That(text, Does.Contain("external bleeding: moderate"));
                     Assert.That(text, Does.Not.Contain("bone:"));
@@ -554,7 +555,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task DetailedExamineShowsCleanupOnlyForAdequateTreatment()
+    public async Task DetailedExamineShowsTreatedWoundsWithoutCleanupOrQualityLabels()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -583,11 +584,11 @@ public sealed class MechanismWoundsFoundationTest
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(text, Does.Contain("slash wound[/color]\n  [color=#f0c85a]adequate treatment[/color]\n  [color=#d987ff]cleanup needed:"));
-                    Assert.That(text, Does.Contain("adequate treatment"));
-                    Assert.That(text, Does.Contain("cleanup needed"));
-                    Assert.That(text, Does.Contain("dirty dressing"));
-                    Assert.That(text, Does.Contain("optimal: sealing dressing"));
+                    Assert.That(text, Does.Contain("slash wound[/color]\n  [color=#7bd88f]treated[/color]"));
+                    Assert.That(text, Does.Not.Contain("adequate treatment"));
+                    Assert.That(text, Does.Not.Contain("cleanup needed"));
+                    Assert.That(text, Does.Not.Contain("dirty dressing"));
+                    Assert.That(text, Does.Not.Contain("optimal:"));
                     Assert.That(text, Does.Not.Contain("bone:"));
                 });
             }
@@ -601,7 +602,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task DetailedExamineHidesOptimallyTreatedWounds()
+    public async Task DetailedExamineShowsOptimalRequestsAsNormalTreatedWounds()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -630,8 +631,7 @@ public sealed class MechanismWoundsFoundationTest
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(text, Is.EqualTo("No obvious injuries found."));
-                    Assert.That(text, Does.Not.Contain("slash wound"));
+                    Assert.That(text, Does.Contain("slash wound[/color]\n  [color=#7bd88f]treated[/color]"));
                     Assert.That(text, Does.Not.Contain("optimal treatment"));
                 });
             }
@@ -645,7 +645,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task NormalExamineSummarizesTreatedWoundsByTreatmentQuality()
+    public async Task NormalExamineSummarizesTreatedWoundsWithoutTreatmentQuality()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -671,8 +671,9 @@ public sealed class MechanismWoundsFoundationTest
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(text, Does.Contain("wounds adequately treated"));
-                    Assert.That(text, Does.Contain("wounds optimally treated"));
+                    Assert.That(text, Does.Contain("wounds treated"));
+                    Assert.That(text, Does.Not.Contain("adequately treated"));
+                    Assert.That(text, Does.Not.Contain("optimally treated"));
                     Assert.That(text, Does.Not.Contain("massive wound"));
                     Assert.That(text, Does.Not.Contain("moderate wound"));
                     Assert.That(text, Does.Not.Contain("small wound"));
@@ -734,7 +735,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task DetailedExamineShortcutStartsInspectInjuriesDoAfter()
+    public async Task DetailedExamineShortcutDoesNotStartInspectInjuriesDoAfter()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -748,8 +749,8 @@ public sealed class MechanismWoundsFoundationTest
 
             try
             {
-                Assert.That(examine.TryStartDetailedExamine(user, patient), Is.True);
-                Assert.That(entMan.HasComponent<ActiveDoAfterComponent>(user), Is.True);
+                Assert.That(examine.TryStartDetailedExamine(user, patient), Is.False);
+                Assert.That(entMan.HasComponent<ActiveDoAfterComponent>(user), Is.False);
                 CancelActiveDoAfters(entMan, user);
             }
             finally
@@ -793,7 +794,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task InspectInjuriesUsesDistinctSiteColorFromOptimalTreatmentHint()
+    public async Task InspectInjuriesListsSitesWithoutOptimalTreatmentHint()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -817,9 +818,10 @@ public sealed class MechanismWoundsFoundationTest
 
                 Assert.Multiple(() =>
                 {
-                    Assert.That(text, Does.Contain("[color=#83c9ff]Optimal Treatment: sealing dressing[/color]"));
                     Assert.That(text, Does.Contain("[color=#ff9f43]Massive Torso, Moderate Right arm[/color]"));
-                    Assert.That(text, Does.Not.Contain("[color=#9fc7ff]Massive Torso, Moderate Right arm[/color]"));
+                    Assert.That(text, Does.Not.Contain("Optimal Treatment"));
+                    Assert.That(text, Does.Not.Contain("optimal:"));
+                    Assert.That(text, Does.Not.Contain("[color=#83c9ff]Massive Torso, Moderate Right arm[/color]"));
                 });
             }
             finally
@@ -939,7 +941,7 @@ public sealed class MechanismWoundsFoundationTest
     }
 
     [Test]
-    public async Task DetailedExamineVerbIsAvailableOnCMUHumans()
+    public async Task DetailedExamineVerbIsNotAvailableOnCMUHumans()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -954,7 +956,7 @@ public sealed class MechanismWoundsFoundationTest
             try
             {
                 var local = verbs.GetLocalVerbs(patient, user, typeof(InteractionVerb), force: true);
-                Assert.That(ContainsVerb(local, "Inspect injuries"), Is.True);
+                Assert.That(ContainsVerb(local, "Inspect injuries"), Is.False);
             }
             finally
             {
