@@ -154,6 +154,16 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
         UpgradeExternalBleeding(partWound, ComputeExternalBleedTier(mechanism, secondary, size));
         Dirty(ent.Owner, partWound);
 
+        var woundApplied = new BodyPartWoundAppliedEvent(
+            args.Body,
+            args.Part,
+            args.Type,
+            args.Delta,
+            args.Tool,
+            args.Impact,
+            args.Trauma);
+        RaiseLocalEvent(ent.Owner, ref woundApplied);
+
         // No-op when a catastrophic fracture or other source already drives a
         // higher rate (recompute picks the max).
         var blunt = GetTypeAmount(args.Delta, "Blunt");
