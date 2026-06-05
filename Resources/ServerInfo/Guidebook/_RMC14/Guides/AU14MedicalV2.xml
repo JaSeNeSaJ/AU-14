@@ -1,0 +1,60 @@
+<Document>
+
+  # Medical V2
+
+  ## Overview
+  - The medical system has heavily changed.
+  - Patients now suffer specific wounds on their limbs.
+  - Wounds reduce the maximum health of the affected limb until they are cleaned up.
+  - Healing wounds with the optimal treatment restores the limb's maximum health.
+
+  ## Inspecting injuries
+  - For a detailed report, right click a patient and choose [bold]Inspect injuries[/bold].
+  - You can also use [keybind="CMUInspectInjuries"] while targeting the patient.
+  - The report lists their wounds and the optimal treatment needed for each one.
+
+  ## Field treatment crafting
+  - Use [keybind="CMUOpenMedicalCraftingMenu"] to fast craft medical treatments.
+  - Crafting uses one ingredient and one base item.
+  - The two packed base items are packed gauze and packed trauma kits.
+  - Normal medical gauze and trauma kits can also be used as base items.
+
+  ## Ingredients
+  <Box>
+    <GuideEntityEmbed Entity="CMUCoagulantPowder1"/>
+    <GuideEntityEmbed Entity="CMUAntiseptic1"/>
+    <GuideEntityEmbed Entity="CMUBurnGel1"/>
+    <GuideEntityEmbed Entity="CMUTissueSealant1"/>
+    <GuideEntityEmbed Entity="CMUTraumaFoam1"/>
+  </Box>\n
+
+  ## Base items
+  <Box>
+    <GuideEntityEmbed Entity="CMUPlainGauze10"/>
+    <GuideEntityEmbed Entity="CMUPlainTraumaDressing10"/>
+  </Box>
+  <Box>
+    <GuideEntityEmbed Entity="CMGauze10"/>
+    <GuideEntityEmbed Entity="CMTraumaKit10"/>
+  </Box>\n
+
+  ## Optimal treatments
+  - Bullet, stab, fragment, ballistic, and sharp wounds need a hemostatic dressing made with coagulant powder.
+  - Contaminated wounds and dirty dressings need an antiseptic dressing made with antiseptic.
+  - Burns and charred tissue need a burn gel dressing made with burn gel.
+  - Slashes, surgical wounds, and poor closure need a sealing dressing made with tissue sealant.
+  - Crush, blast, and crush-debris wounds need a compression dressing made with trauma foam.
+  - Retained fragments must have the shrapnel removed before the correct dressing can finish the cleanup.
+
+  ## Adequate treatment
+  - If a marine is [bold]adequately treated[/bold], another bandage already stopped or covered the wound.
+  - Adequate treatment is not optimal treatment.
+  - Apply the correct treatment from the injury report to clean the wound up and restore the lost maximum limb health.
+
+  ## Surgical line and synth graft
+  - Surgical line now heals limb health only.
+  - Synth graft now heals limb health only.
+  - Neither item cleans up wounds or restores maximum limb health by itself.
+  - Use the correct crafted treatment for wounds, then use line or graft when the limb still needs health.
+
+</Document>
