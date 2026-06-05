@@ -78,6 +78,7 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
     /// </summary>
     public const float HealPerSecond = 0.6f;
 
+    private const float AdequateCleanupBurdenMultiplier = 0.5f;
     private const float WoundScanInterval = 0.5f;
 
     private float _woundScanAccumulator;
@@ -912,7 +913,7 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
             if (!WoundAppliesCapBurden(comp, i))
                 continue;
 
-            penalty += FieldTreatmentPenalty(GetWoundSize(comp, i));
+            penalty += FieldTreatmentPenalty(comp, i);
         }
 
         return Math.Clamp(1f - penalty, 0.35f, 1f);
@@ -947,6 +948,26 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
             : WoundCleanupFlags.None;
 
         return quality == WoundTreatmentQuality.Untreated || cleanup != WoundCleanupFlags.None;
+    }
+
+    private static float FieldTreatmentPenalty(BodyPartWoundComponent comp, int index)
+    {
+        var penalty = FieldTreatmentPenalty(GetWoundSize(comp, index));
+        if (index < 0 || index >= comp.Wounds.Count)
+            return penalty;
+
+        var quality = index < comp.TreatmentQualities.Count
+            ? comp.TreatmentQualities[index]
+            : comp.Wounds[index].Treated
+                ? WoundTreatmentQuality.Adequate
+                : WoundTreatmentQuality.Untreated;
+        var cleanup = index < comp.Cleanup.Count
+            ? comp.Cleanup[index]
+            : WoundCleanupFlags.None;
+
+        return quality == WoundTreatmentQuality.Adequate && cleanup != WoundCleanupFlags.None
+            ? penalty * AdequateCleanupBurdenMultiplier
+            : penalty;
     }
 
     private static float FieldTreatmentPenalty(WoundSize size) => size switch
@@ -1475,11 +1496,11 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
         if (args.Impact.Contact == DamageImpactContact.Fragment)
             return WoundMechanism.Fragment;
 
-        if (args.Impact.Delivery == DamageImpactDelivery.Projectile)
-            return WoundMechanism.Bullet;
-
         if (burn > brute && burn > FixedPoint2.Zero)
             return WoundMechanism.Burn;
+
+        if (args.Impact.Delivery == DamageImpactDelivery.Projectile)
+            return WoundMechanism.Bullet;
 
         return args.Trauma.Mechanism switch
         {
@@ -1493,6 +1514,9 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
 
     private static WoundMechanism ClassifyMechanismFromImpact(DamageImpact impact, FixedPoint2 brute, FixedPoint2 burn)
     {
+        if (burn > brute && burn > FixedPoint2.Zero)
+            return WoundMechanism.Burn;
+
         if (impact.Delivery == DamageImpactDelivery.Projectile)
             return WoundMechanism.Bullet;
 
