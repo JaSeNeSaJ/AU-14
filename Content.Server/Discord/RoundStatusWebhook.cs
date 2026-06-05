@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text.Json;
 using System.Text.Json.Nodes;
 
 namespace Content.Server.Discord;
@@ -32,6 +33,11 @@ public readonly record struct RoundStatusWebhookData(
 
 public readonly record struct RoundStatusRecentGamemode(int RoundId, string Gamemode, TimeSpan Duration);
 
+public readonly record struct RoundStatusWebhookMessageIds(
+    ulong StatusMessageId,
+    ulong RoundEndPingMessageId,
+    ulong GamemodeVotePingMessageId);
+
 public static class RoundStatusWebhook
 {
     private const int InlineValueLength = 24;
@@ -42,6 +48,12 @@ public static class RoundStatusWebhook
         0x23EB49,
         0xCD1010,
         0x6B7280);
+
+    private static readonly JsonSerializerOptions MessageIdsJsonOptions = new()
+    {
+        PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+        PropertyNameCaseInsensitive = true,
+    };
 
     public static WebhookPayload CreatePayload(
         RoundStatusWebhookKind kind,
@@ -116,9 +128,12 @@ public static class RoundStatusWebhook
         return payload;
     }
 
-    public static WebhookPayload CreateRolePingPayload(IEnumerable<string?> roleIds)
+    public static WebhookPayload CreateRolePingPayload(IEnumerable<string?> roleIds, string? message = null)
     {
         var content = BuildRoleMentions(roleIds);
+        if (!string.IsNullOrWhiteSpace(content) && !string.IsNullOrWhiteSpace(message))
+            content = $"{content} {message.Trim()}";
+
         var payload = new WebhookPayload
         {
             Content = content,
@@ -128,6 +143,31 @@ public static class RoundStatusWebhook
             payload.AllowedMentions.AllowRoleMentions();
 
         return payload;
+    }
+
+    public static string SerializeMessageIds(RoundStatusWebhookMessageIds messageIds)
+    {
+        return JsonSerializer.Serialize(messageIds, MessageIdsJsonOptions);
+    }
+
+    public static bool TryDeserializeMessageIds(string? json, out RoundStatusWebhookMessageIds messageIds)
+    {
+        messageIds = default;
+
+        if (string.IsNullOrWhiteSpace(json))
+            return false;
+
+        try
+        {
+            messageIds = JsonSerializer.Deserialize<RoundStatusWebhookMessageIds>(
+                json,
+                MessageIdsJsonOptions);
+            return true;
+        }
+        catch (JsonException)
+        {
+            return false;
+        }
     }
 
     public static int ParseColor(string? value, int fallback)
