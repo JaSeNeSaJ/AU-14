@@ -3,8 +3,8 @@
   parent: RMCArmbandBase
   id: AU14ChevronPAPBase
   abstract: true
-  suffix: PAP Rank Chevron
-  description: Planetary Administration Police rank insignia.
+  suffix: PAP Chevron
+  description: People's Armed Police rank insignia. Wearing this makes you remember what is the goal of your work. Punch some people as armed police, right?
 
 # ├──[ Militsiya ]────────────────────────────────────────────────────┤
 
