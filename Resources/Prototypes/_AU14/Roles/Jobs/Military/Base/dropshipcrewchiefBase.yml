@@ -30,13 +30,13 @@
     RMCRankCivilian: []
   chevrons:
     AU14RankUSASFCMSgt:
-      entity: AU14ChevronUSASFCMSgt
+      entity: AU14ChevronUSASFChiefMasterSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobGOVFORDCC
         time: 360000
     AU14RankUSASFSMSgt:
-      entity: AU14ChevronUSASFSMSgt
+      entity: AU14ChevronUSASFSeniorMasterSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobGOVFORDCC

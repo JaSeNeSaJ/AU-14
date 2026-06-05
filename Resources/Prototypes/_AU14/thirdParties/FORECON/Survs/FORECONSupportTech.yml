@@ -16,19 +16,19 @@
     RMCRankCivilian: []
   chevrons:
     RMCRankStaffSergeant:
-      entity: AU14ChevronStaffSergeant
+      entity: AU14ChevronUSCMStaffSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSupportTech
         time: 36000 #10 hours
     RMCRankSergeant:
-      entity: AU14ChevronSergeant
+      entity: AU14ChevronUSCMSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSupportTech
         time: 18000 #5 hours
     RMCRankCorporal:
-      entity: AU14ChevronCorporal
+      entity: AU14ChevronUSCMCorporal
       requirements: []
   spawnMenuRoleName: FORECON Support Tech (AU14, surv)
   startingGear: AU14GearFORECONSupportTech

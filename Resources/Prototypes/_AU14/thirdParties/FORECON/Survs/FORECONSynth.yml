@@ -8,31 +8,31 @@
     RMCRankSyntheticColonist: []
   chevrons:
     RMCRankChiefWarrantOfficer5:
-      entity: AU14ChevronChiefWarrantOfficer5
+      entity: AU14ChevronUSCMChiefWarrantOfficer5
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSynth
         time: 252000 #70 hours
     RMCRankChiefWarrantOfficer4:
-      entity: AU14ChevronChiefWarrantOfficer4
+      entity: AU14ChevronUSCMChiefWarrantOfficer4
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSynth
         time: 180000 #50 hours
     RMCRankChiefWarrantOfficer3:
-      entity: AU14ChevronChiefWarrantOfficer3
+      entity: AU14ChevronUSCMChiefWarrantOfficer3
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSynth
         time: 36000 #10 hours
     RMCRankChiefWarrantOfficer:
-      entity: AU14ChevronChiefWarrantOfficer
+      entity: AU14ChevronUSCMChiefWarrantOfficer2
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONSynth
         time: 18000 #5 hours
     RMCRankWarrantOfficer:
-      entity: AU14ChevronWarrantOfficer
+      entity: AU14ChevronUSCMWarrantOfficer
       requirements: []
   spawnMenuRoleName: FORECON Synthetic (AU14, surv)
   startingGear: AU14GearFORECONSynth

@@ -8,19 +8,19 @@
     RMCRankCivilian: []
   chevrons:
     UPP_SeniorSergeant:
-      entity: AU14ChevronUPPSeniorSergeant
+      entity: AU14ChevronUPPNISeniorSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobUPPGROMMachinegunner
         time: 36000 # 10 hours
     UPP_Sergeant:
-      entity: AU14ChevronUPPSergeant
+      entity: AU14ChevronUPPNISergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobUPPGROMMachinegunner
         time: 18000 # 5 hours
     UPP_Plutonowy:
-      entity: AU14ChevronUPPPlutonowy
+      entity: AU14ChevronUPPNIPlutonowy
       requirements: []
   spawnMenuRoleName: UPP GROM Machinegunner (Survivor)
   startingGear: AU14GearUPPGROMMachinegunner

@@ -37,13 +37,13 @@
   RMCRankCivilian: []
   chevrons:
     RMCRankMajor:
-      entity: AU14ChevronUSCMMajor
+      entity: AU14ChevronMajor
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobGOVFORPlatCo
         time: 180000 # 50 hours
     RMCRankCaptain:
-      entity: AU14ChevronUSCMCaptain
+      entity: AU14ChevronCaptain
       requirements: []
   special:
   - !type:AddComponentSpecial

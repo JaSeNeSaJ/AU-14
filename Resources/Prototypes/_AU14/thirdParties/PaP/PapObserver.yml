@@ -8,13 +8,13 @@
     RMCRankCivilian: []
   chevrons:
     UPP_SeniorLieutenant:
-      entity: AU14ChevronUPPSeniorLieutenant
+      entity: AU14ChevronUPPNISeniorLieutenant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobPaPThirdpartyInvestigator
         time: 36000 # 10 hours
     UPP_Lieutenant:
-      entity: AU14ChevronUPPLieutenant
+      entity: AU14ChevronUPPNILieutenant
       requirements: []
   spawnMenuRoleName: UPP PaP Observer (3rd party)
   startingGear: AU14GearPAPThirdpartyObserver

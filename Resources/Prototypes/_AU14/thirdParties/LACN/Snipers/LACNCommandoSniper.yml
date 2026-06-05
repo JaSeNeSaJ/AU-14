@@ -8,13 +8,13 @@
     RMCRankCivilian: []
   chevrons:
     RMCRankChiefWarrantOfficer:
-      entity: AU14ChevronChiefWarrantOfficer
+      entity: AU14ChevronLACNMasterChief
       requirements:
       - !type:RoleTimeRequirement
         role: AU14LACNCommandoSniper
         time: 18000 # 5 hours
     RMCRankWarrantOfficer:
-      entity: AU14ChevronWarrantOfficer
+      entity: AU14ChevronLACNSeniorChief
       requirements: []
   spawnMenuRoleName: LACN Commando Sniper (AU14, 3rd Party)
   icon: "CMJobIconEmpty"

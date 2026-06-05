@@ -8,13 +8,13 @@
     RMCRankCivilian: []
   chevrons:
     RMCRankSergeant:
-      entity: AU14ChevronSergeant
+      entity: AU14ChevronUSArmySergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobUACGSquadLeader
         time: 18000 #5 hours
     RMCRankCorporal:
-      entity: AU14ChevronCorporal
+      entity: AU14ChevronUSArmyCorporal
       requirements: []
   spawnMenuRoleName: UACG Squad Leader (3rd party)
   startingGear: AU14GearUACGLostSquadLeader

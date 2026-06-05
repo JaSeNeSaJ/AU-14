@@ -8,19 +8,19 @@
     RMCRankCivilian: []
   chevrons:
     RMCRankGunnerySergeant:
-      entity: AU14ChevronGunnerySergeant
+      entity: AU14ChevronUSCMGunnerySergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONMarksman
         time: 36000 #10 hours
     RMCRankStaffSergeant:
-      entity: AU14ChevronStaffSergeant
+      entity: AU14ChevronUSCMStaffSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobFORECONMarksman
         time: 18000 #5 hours
     RMCRankSergeant:
-      entity: AU14ChevronSergeant
+      entity: AU14ChevronUSCMSergeant
       requirements: []
   spawnMenuRoleName: FORECON Marksman (AU14, surv)
   startingGear: AU14GearFORECONMarksman

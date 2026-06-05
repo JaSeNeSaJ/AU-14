@@ -8,19 +8,19 @@
     RMCRankCivilian: []
   chevrons:
     UPP_FirstSergeant:
-      entity: AU14ChevronUPPFirstSergeant
+      entity: AU14ChevronUPPNIFirstSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobUPPGROMMarksman
         time: 36000 # 10 hours
     UPP_SeniorSergeant:
-      entity: AU14ChevronUPPSeniorSergeant
+      entity: AU14ChevronUPPNISeniorSergeant
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobUPPGROMMarksman
         time: 18000 # 5 hours
     UPP_Sergeant:
-      entity: AU14ChevronUPPSergeant
+      entity: AU14ChevronUPPNISergeant
       requirements: []
   spawnMenuRoleName: UPP GROM Marksman (Survivor)
   startingGear: AU14GearUPPGROMMarksman

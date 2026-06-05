@@ -100,7 +100,7 @@
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
       state: equipped-ranks_snco
   - type: RankChanger
-    rank: UPPNI_Sergeant
+    rank: UPP_Sergeant
     override: true
 
 - type: entity
