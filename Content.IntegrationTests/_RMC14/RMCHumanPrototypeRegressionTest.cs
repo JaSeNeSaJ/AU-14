@@ -158,11 +158,13 @@ public sealed class RMCHumanPrototypeRegressionTest
         await server.WaitAssertion(() =>
         {
             var entMan = server.EntMan;
+            var skills = entMan.System<SkillsSystem>();
             var patient = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
             var treater = entMan.SpawnEntity(treaterId, MapCoordinates.Nullspace);
 
             try
             {
+                skills.SetSkill(patient, "RMCSkillMedical", 2);
                 var part = GetFirstBodyPart(entMan, patient);
                 AddBodyPartWound(entMan, part, woundType);
                 AddBodyPartWound(entMan, part, woundType);
@@ -221,11 +223,13 @@ public sealed class RMCHumanPrototypeRegressionTest
         {
             var entMan = server.EntMan;
             var partHealth = entMan.System<SharedBodyPartHealthSystem>();
+            var skills = entMan.System<SkillsSystem>();
             patient = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
             treater = entMan.SpawnEntity(treaterId, MapCoordinates.Nullspace);
             part = GetFirstBodyPart(entMan, patient);
 
-            AddBodyPartWound(entMan, part, woundType, FixedPoint2.New(1), cleanup);
+            skills.SetSkill(patient, "RMCSkillMedical", 2);
+            AddBodyPartWound(entMan, part, woundType, FixedPoint2.New(1), cleanup, WoundSize.Small);
             var health = entMan.GetComponent<BodyPartHealthComponent>(part);
             partHealth.SetCurrent((part, health), health.Max - FixedPoint2.New(4));
 
@@ -278,12 +282,14 @@ public sealed class RMCHumanPrototypeRegressionTest
             var flow = entMan.System<CMUSurgeryFlowSystem>();
             var mobState = entMan.System<MobStateSystem>();
             var shrapnel = entMan.System<SharedCMUShrapnelSystem>();
+            var skills = entMan.System<SkillsSystem>();
             var patient = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
             var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
             var treater = entMan.SpawnEntity(treaterId, MapCoordinates.Nullspace);
 
             try
             {
+                skills.SetSkill(surgeon, "RMCSkillMedical", 2);
                 var part = GetFirstBodyPart(entMan, patient);
                 AddBodyPartWound(entMan, part, WoundType.Brute);
                 shrapnel.AddShrapnel(part, 1, 10f);
@@ -1922,11 +1928,12 @@ public sealed class RMCHumanPrototypeRegressionTest
         EntityUid part,
         WoundType type,
         FixedPoint2? damage = null,
-        WoundCleanupFlags cleanup = WoundCleanupFlags.None)
+        WoundCleanupFlags cleanup = WoundCleanupFlags.None,
+        WoundSize size = WoundSize.Deep)
     {
         var wounds = entMan.EnsureComponent<BodyPartWoundComponent>(part);
         GetField<List<Wound>>(wounds, nameof(BodyPartWoundComponent.Wounds)).Add(new Wound(damage ?? FixedPoint2.New(10), FixedPoint2.Zero, 0f, null, type, false));
-        GetField<List<WoundSize>>(wounds, nameof(BodyPartWoundComponent.Sizes)).Add(WoundSize.Deep);
+        GetField<List<WoundSize>>(wounds, nameof(BodyPartWoundComponent.Sizes)).Add(size);
         GetField<List<int>>(wounds, nameof(BodyPartWoundComponent.Bandages)).Add(0);
         GetField<List<WoundMechanism>>(wounds, nameof(BodyPartWoundComponent.Mechanisms)).Add(type == WoundType.Burn ? WoundMechanism.Burn : WoundMechanism.Generic);
         GetField<List<WoundMechanismFlags>>(wounds, nameof(BodyPartWoundComponent.SecondaryMechanisms)).Add(WoundMechanismFlags.None);
