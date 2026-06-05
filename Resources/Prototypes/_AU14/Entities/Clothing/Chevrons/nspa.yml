@@ -3,7 +3,7 @@
   id: AU14ChevronNSPABase
   abstract: true
   suffix: NSPA Rank Chevron
-  description: Civil policing rank insignia.
+  description: Civil policing rank insignia. The last series of pins were metal, but a senior inspector complained about getting stabbed, so these are made of plastic.
 
 - type: entity
   parent: AU14ChevronNSPABase

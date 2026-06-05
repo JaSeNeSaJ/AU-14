@@ -3,8 +3,8 @@
   parent: RMCArmbandBase
   id: AU14ChevronWeYuBase
   abstract: true
-  suffix: WeYu Rank Chevron
-  description: WeYu Private Military Company rank insignia.
+  suffix: WeYu Chevron
+  description: WeYu Private Military Company rank insignia. Wearing this makes you feel like you have the power to do anything, as long as you read the memo first.
 
 # ├──[ Platoon Ranks ]────────────────────────────────────────────────┤
 

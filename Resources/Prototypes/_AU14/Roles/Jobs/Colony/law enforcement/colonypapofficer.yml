@@ -14,11 +14,17 @@
     - Epilepsy
   playTimeTracker: AU14JobCivilianPaPOfficer
   ranks:
-    RMCRankCivilianSeniorOfficer:
-    - !type:RoleTimeRequirement
-      role: AU14JobCivilianEmergencyResponseOfficer
-      time: 72000 # 20 hours
-    RMCRankCivilianOfficer: []
+    RMCRankCivilian: []
+  chevrons:
+    SeniorMilitsioner:
+      entity: AU14ChevronPAPStarshiyMilitsioner
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobCivilianCMBDeputy
+        time: 72000 # 20 hours
+    Militsioner:
+      entity: AU14ChevronPAPMilitsioner
+      requirements: []
   startingGear: AU14GearCivilianPaPOfficer
   icon: "RMCJobIconBureauDeputy"
   requireAdminNotify: false

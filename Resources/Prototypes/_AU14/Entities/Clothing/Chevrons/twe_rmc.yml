@@ -348,9 +348,9 @@
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
       state: equipped-ranks_flagofficer
-    - type: RankChanger
-      rank: RMC_CommandantGeneral
-      override: true
+  - type: RankChanger
+    rank: RMC_CommandantGeneral
+    override: true
 
 - type: entity
   parent: AU14ChevronRMCBase

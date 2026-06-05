@@ -4,7 +4,7 @@
   id: AU14ChevronPrDBase
   abstract: true
   suffix: PSC Rank Chevron
-  description: Private Security Contractor response unit rank insignia.
+  description: Private Security Contractor response unit rank insignia. 3D printed, with laminate tailings and an alligator clip to hold it to your lapel. Tacky as always.
 
 # ├──[ Platoon Ranks ]───────────────────────────────────────────────┤
 
@@ -177,11 +177,11 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-    state: ranks_synthetic
+    state: ranks_warrant
   - type: UniformAccessory
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-      state: equipped-ranks_synthetic
+      state: equipped-ranks_warrant
   - type: RankChanger
     rank: AU14RankPrDSynth1
     override: true
@@ -193,11 +193,11 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-    state: ranks_synthetic
+    state: ranks_warrant
   - type: UniformAccessory
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-      state: equipped-ranks_synthetic
+      state: equipped-ranks_warrant
   - type: RankChanger
     rank: AU14RankPrDSynth2
     override: true
@@ -209,11 +209,11 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-    state: ranks_synthetic
+    state: ranks_warrant
   - type: UniformAccessory
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-      state: equipped-ranks_synthetic
+      state: equipped-ranks_warrant
   - type: RankChanger
     rank: AU14RankPrDSynth3
     override: true
@@ -225,11 +225,11 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-    state: ranks_synthetic
+    state: ranks_warrant
   - type: UniformAccessory
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-      state: equipped-ranks_synthetic
+      state: equipped-ranks_warrant
   - type: RankChanger
     rank: AU14RankPrDSynth4
     override: true
@@ -241,11 +241,11 @@
   components:
   - type: Sprite
     sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-    state: ranks_synthetic
+    state: ranks_warrant
   - type: UniformAccessory
     playerSprite:
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
-      state: equipped-ranks_synthetic
+      state: equipped-ranks_warrant
   - type: RankChanger
     rank: AU14RankPrDSynth5
     override: true
