@@ -23,7 +23,7 @@
   chevrons:
     RMCRankFirstLT:
       entity: AU14ChevronFirstLT
-      requirements: []
+      requirements:
       - !type:RoleTimeRequirement
         role: AU14JobGOVFORPlatOp
         time: 86400 # 24 hours
