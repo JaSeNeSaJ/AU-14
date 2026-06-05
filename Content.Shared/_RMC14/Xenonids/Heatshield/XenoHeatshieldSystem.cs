@@ -12,6 +12,8 @@ using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Weapons.Melee.Events;
+using Robust.Shared.Audio;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Timing;
@@ -20,6 +22,11 @@ namespace Content.Shared._RMC14.Xenonids.Heatshield;
 
 public sealed partial class XenoHeatshieldSystem : EntitySystem
 {
+    private const string FireSpewEffectPrototype = "RMCEffectXenoFireSpew";
+    private static readonly SoundSpecifier FireSpewSound = new SoundCollectionSpecifier("RMCFlamerShoot",
+        AudioParams.Default.WithVolume(-6f).WithVariation(0.05f));
+
+    [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private EntityLookupSystem _entityLookup = default!;
     [Dependency] private SharedRMCFlammableSystem _flammable = default!;
@@ -117,9 +124,11 @@ public sealed partial class XenoHeatshieldSystem : EntitySystem
             return false;
 
         var center = _rmcMap.SnapToGrid(xenoCoords.Offset(forward));
-        AddBileSprayTargets(xeno, center.Offset(-side));
+        var left = center.Offset(-side);
+        var right = center.Offset(side);
+        AddBileSprayTargets(xeno, left);
         AddBileSprayTargets(xeno, center);
-        AddBileSprayTargets(xeno, center.Offset(side));
+        AddBileSprayTargets(xeno, right);
 
         if (_bileSprayTargets.Count == 0)
             return false;
@@ -128,6 +137,14 @@ public sealed partial class XenoHeatshieldSystem : EntitySystem
             return true;
 
         args.Handled = true;
+        if (_flammable.IsOnFire((xeno.Owner, null)))
+        {
+            _audio.PlayPredicted(FireSpewSound, xeno, xeno);
+            SpawnAtPosition(FireSpewEffectPrototype, left);
+            SpawnAtPosition(FireSpewEffectPrototype, center);
+            SpawnAtPosition(FireSpewEffectPrototype, right);
+        }
+
         foreach (var bileTarget in _bileSprayTargets)
         {
             if (CanUseBileOnEntity(xeno, bileTarget))

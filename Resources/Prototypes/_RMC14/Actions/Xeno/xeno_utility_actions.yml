@@ -443,7 +443,7 @@
       state: xeno_spit
     useDelay: 8
   - type: TargetAction
-    range: 1.5
+    range: 1.8
     checkCanAccess: false
   - type: EntityTargetAction
     targetCheckCanInteract: false

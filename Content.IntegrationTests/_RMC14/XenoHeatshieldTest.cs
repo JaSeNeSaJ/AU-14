@@ -10,6 +10,8 @@ namespace Content.IntegrationTests._RMC14;
 [TestFixture]
 public sealed class XenoHeatshieldTest
 {
+    private const string FireSpewEffectPrototype = "RMCEffectXenoFireSpew";
+
     [Test]
     public async Task BurningVomitBileIgnitesThreeTilesInFront()
     {
@@ -55,10 +57,12 @@ public sealed class XenoHeatshieldTest
                     Assert.That(IsOnFire(entMan, targetCenter), Is.True);
                     Assert.That(IsOnFire(entMan, targetSouth), Is.True);
                     Assert.That(IsOnFire(entMan, behind), Is.False);
+                    Assert.That(CountPrototype(entMan, FireSpewEffectPrototype), Is.EqualTo(3));
                 });
             }
             finally
             {
+                DeletePrototypeEntities(entMan, FireSpewEffectPrototype);
                 entMan.DeleteEntity(xeno);
                 entMan.DeleteEntity(targetNorth);
                 entMan.DeleteEntity(targetCenter);
@@ -96,5 +100,28 @@ public sealed class XenoHeatshieldTest
     private static bool IsOnFire(IEntityManager entMan, EntityUid entity)
     {
         return entMan.GetComponent<FlammableComponent>(entity).OnFire;
+    }
+
+    private static int CountPrototype(IEntityManager entMan, string prototypeId)
+    {
+        var count = 0;
+        var query = entMan.EntityQueryEnumerator<MetaDataComponent>();
+        while (query.MoveNext(out _, out var metadata))
+        {
+            if (metadata.EntityPrototype?.ID == prototypeId)
+                count++;
+        }
+
+        return count;
+    }
+
+    private static void DeletePrototypeEntities(IEntityManager entMan, string prototypeId)
+    {
+        var query = entMan.EntityQueryEnumerator<MetaDataComponent>();
+        while (query.MoveNext(out var uid, out var metadata))
+        {
+            if (metadata.EntityPrototype?.ID == prototypeId)
+                entMan.DeleteEntity(uid);
+        }
     }
 }
