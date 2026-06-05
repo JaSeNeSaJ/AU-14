@@ -130,7 +130,6 @@
     setDamage:
       types:
         Structural: 750
-  components:
   - type: VehicleSmashable
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/coffee.rsi
@@ -242,7 +241,6 @@
     setDamage:
       types:
         Structural: 750
-  components:
   - type: VehicleSmashable
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/cola.rsi
@@ -605,7 +603,6 @@
     setDamage:
       types:
         Structural: 750
-  components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/nutri.rsi
   - type: VendingMachine
@@ -635,14 +632,13 @@
 - type: entity
   parent: CMVendor
   id: CMVendorSeeds
+  name: MegaSeed Servitor
+  description: When you need seeds fast!
   components:
   - type: XenoCrusherChargable
     setDamage:
       types:
         Structural: 750
-  name: MegaSeed Servitor
-  description: When you need seeds fast!
-  components:
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/seeds.rsi
   - type: VendingMachine
