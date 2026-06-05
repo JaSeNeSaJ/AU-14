@@ -5,15 +5,23 @@
   description: au14-uppgrom-description
   playTimeTracker: AU14JobUPPGROMMarksman
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     UPP_FirstSergeant:
-    - !type:RoleTimeRequirement
-      role: AU14JobUPPGROMMarksman
-      time: 36000 #10 hours
+      entity: AU14ChevronUPPFirstSergeant
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobUPPGROMMarksman
+        time: 36000 # 10 hours
     UPP_SeniorSergeant:
-    - !type:RoleTimeRequirement
-      role: AU14JobUPPGROMMarksman
-      time: 18000 #5 hours
-    UPP_Sergeant: []
+      entity: AU14ChevronUPPSeniorSergeant
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobUPPGROMMarksman
+        time: 18000 # 5 hours
+    UPP_Sergeant:
+      entity: AU14ChevronUPPSergeant
+      requirements: []
   spawnMenuRoleName: UPP GROM Marksman (Survivor)
   startingGear: AU14GearUPPGROMMarksman
   greeting: au14-uppgrom-greeting
