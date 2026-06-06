@@ -87,7 +87,7 @@
     - CMHandsLatex
     - CMHealthAnalyzer
     - AU14CMDefibrillator
-    - RMCRadioHandheldColony
+    - RMCRadioHandheldColonyOff
     outerClothing:
     - CMCrowbar
     - RMCFlashlight

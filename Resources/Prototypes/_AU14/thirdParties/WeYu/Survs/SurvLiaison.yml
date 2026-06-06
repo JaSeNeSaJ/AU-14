@@ -98,7 +98,7 @@
     ears: RMCHeadsetDistressWeYa
     ears2: RMCM5CameraGear
     pocket1: AU14WEYULiasonSurvIntel
-    pocket2: RMCRadioHandheldColony
+    pocket2: RMCRadioHandheldColonyOff
   inhand:
   - RMCPortableVendorCorporate
   storage:

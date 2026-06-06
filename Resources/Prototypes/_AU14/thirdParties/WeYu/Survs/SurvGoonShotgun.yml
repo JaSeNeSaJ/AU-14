@@ -87,7 +87,7 @@
     - CMSheetMetal30
     - RMCFlashlight 
     - CMCrowbar
-    - RMCRadioHandheldColony
+    - RMCRadioHandheldColonyOff
 
 - type: entity
   parent: AU14JumpsuitVeteranPMCCorporate
