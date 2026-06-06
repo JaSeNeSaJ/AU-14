@@ -53,7 +53,7 @@
 - type: entity
   parent: AU14StampBase
   id: AU14StampCMP
-  name: Military Police Officer's rubber stamp
+  name: military police officer's rubber stamp
   components:
   - type: Sprite
     state: stamp-hos
@@ -101,7 +101,7 @@
 - type: entity
   parent: AU14StampBase
   id: AU14StampSEA
-  name: senior enlisted advisor's rubber stamp
+  name: advisor's rubber stamp
   components:
   - type: Sprite
     state: stamp-sea
@@ -261,7 +261,7 @@
 - type: entity
   parent: U14StampCMB
   id: AU14StampCMBM
-  name: CMB Marshal's rubber stamp
+  name: cmb marshal's rubber stamp
   components:
   - type: Sprite
     state: stamp-we_ya
@@ -271,7 +271,7 @@
 - type: entity
   parent: AU14StampLiaison
   id: AU14StampKelland
-  name: Kelland Warden's rubber stamp
+  name: kelland warden's rubber stamp
   components:
   - type: Sprite
     state: stamp-we_ya
@@ -282,7 +282,7 @@
 - type: entity
   parent: AU14StampBase
   id: AU14StampJoe
-  name: Working Joe's rubber stamp
+  name: working joe's rubber stamp
   components:
   - type: Sprite
     state: stamp-we_ya
@@ -340,7 +340,7 @@
 - type: entity
   parent: AU14StampBase
   id: AU14StampInterstellarObserver
-  name: IHRO rubber stamp
+  name: ihro rubber stamp
   components:
   - type: Sprite
     state: stamp-provost
@@ -385,6 +385,20 @@
     stampedColor: "#3681bb"
     stampState: "paper_stamp-lawyer"
 
+# Evil
+
+- type: entity
+  parent: AU14StampBase
+  id: AU14StampCLFCell
+  name: cell lead's rubber stamp
+  suffix: CLF
+  components:
+  - type: Sprite
+    state: stamp-clf
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-au14-clfcel
+    stampedColor: "#6B6B6B"
+    stampState: "paper_stamp-clf"
 
 # Simple
 
@@ -417,7 +431,7 @@
 - type: entity
   parent: AU14StampLiaison
   id: AU14StampWeYu
-  name: Weyland-Yutani rubber stamp
+  name: weyland-yutani rubber stamp
   suffix: Admin
   components:
   - type: Stamp

@@ -16,7 +16,7 @@ stamp-component-stamped-name-au14-mp = Military Police Officer
 stamp-component-stamped-name-au14-mo = Medical Officer
 stamp-component-stamped-name-au14-aux = Auxiliary Technician
 stamp-component-stamped-name-au14-eo = Engineering Officer
-stamp-component-stamped-name-au14-sea = Senior Enlisted Advisor
+stamp-component-stamped-name-au14-sea = Advisor
 
 stamp-component-stamped-name-au14-cl = Corporate Liaison
 stamp-component-stamped-name-au14-ll = Laselle Liaison
@@ -45,6 +45,8 @@ stamp-component-stamped-name-au14-ihro = Interstellar Human Rights Observer
 stamp-component-stamped-name-au14-nspa = NSPA Inspector
 stamp-component-stamped-name-au14-pvi = Provost Inspector
 stamp-component-stamped-name-au14-iccl = Interstellar Commerce Commission Liaison
+
+stamp-component-stamped-name-au14-clfcel = CLF Cell Leader
 
 stamp-component-stamped-name-au14-approve = APPROVED
 stamp-component-stamped-name-au14-deny = DENIED
