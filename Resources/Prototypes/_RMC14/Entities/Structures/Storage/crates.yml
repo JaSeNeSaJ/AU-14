@@ -107,9 +107,8 @@
     passOnDestroy: true
     setDamage:
       types:
-        Blunt: 50
-    destroyDamage: 100
-    throwRange: 2
+        Blunt: 0
+
   - type: CrashLandable
   - type: ParaDroppable
     dropScatter: 4
