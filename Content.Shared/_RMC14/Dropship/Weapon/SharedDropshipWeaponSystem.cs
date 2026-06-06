@@ -291,7 +291,8 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
             }
         }
 
-        MakeDropshipTarget(ent, abbreviation);
+        var creatorFaction = projectile.Shooter is { } shooter ? GetUserFaction(shooter) : null;
+        MakeDropshipTarget(ent, abbreviation, creatorFaction);
         _physics.SetBodyType(ent, BodyType.Static);
     }
 
@@ -1537,6 +1538,17 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
         return abbreviation;
     }
 
+    public string? GetUserFaction(EntityUid user)
+    {
+        if (TryComp(user, out MarineComponent? marine) &&
+            !string.IsNullOrEmpty(marine.Faction))
+        {
+            return marine.Faction;
+        }
+
+        return null;
+    }
+
     protected virtual void AddPvs(Entity<DropshipTerminalWeaponsComponent> terminal, Entity<ActorComponent?> actor)
     {
     }
@@ -1574,8 +1586,8 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
         if (user != null)
             active.Abbreviation = GetUserAbbreviation(user.Value, id);
 
-        if (user != null && TryComp<MarineComponent>(user.Value, out var marine) && !string.IsNullOrEmpty(marine.Faction))
-            active.CreatorFaction = marine.Faction;
+        if (user != null)
+            active.CreatorFaction = GetUserFaction(user.Value);
 
         Dirty(ent, active);
     }
