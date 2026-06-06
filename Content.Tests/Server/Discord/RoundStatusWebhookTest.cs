@@ -87,6 +87,37 @@ public sealed class RoundStatusWebhookTest
     }
 
     [Test]
+    public void GamemodeVoteRolePingPayloadIncludesVotedMessage()
+    {
+        var payload = RoundStatusWebhook.CreateRolePingPayload(
+            new[] { "333" },
+            "Has been voted");
+
+        Assert.That(payload.Content, Is.EqualTo("<@&333> Has been voted"));
+        Assert.That(payload.AllowedMentions.Parse, Has.Member("roles"));
+    }
+
+    [Test]
+    public void MessageIdStateRoundTripsThroughJson()
+    {
+        var ids = new RoundStatusWebhookMessageIds(11, 22, 33);
+
+        var json = RoundStatusWebhook.SerializeMessageIds(ids);
+
+        Assert.That(RoundStatusWebhook.TryDeserializeMessageIds(json, out var parsed), Is.True);
+        Assert.That(parsed, Is.EqualTo(ids));
+    }
+
+    [Test]
+    public void MalformedMessageIdStateReturnsFalseAndDefaultIds()
+    {
+        Assert.That(
+            RoundStatusWebhook.TryDeserializeMessageIds("{ nope", out var parsed),
+            Is.False);
+        Assert.That(parsed, Is.EqualTo(default(RoundStatusWebhookMessageIds)));
+    }
+
+    [Test]
     public void PayloadShortensLongVariableFieldsToAvoidAwkwardWrapping()
     {
         var status = new RoundStatusWebhookData(

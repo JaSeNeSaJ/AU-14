@@ -98,6 +98,7 @@ namespace Content.Server.GameTicking
                     _discord.GetWebhook(value, data =>
                     {
                         _webhookIdentifier = data.ToIdentifier();
+                        LoadRoundStatusWebhookMessageIds();
                         TrySendInitialRoundStatusDiscordMessage();
                     });
                 }
