@@ -387,7 +387,7 @@
 
 - type: entity
   parent: AU14StampBase
-  id: AU14StampInterstellarLiaision
+  id: AU14StampInterstellarLiaison
   name: icc liaison's rubber stamp
   components:
   - type: Sprite
