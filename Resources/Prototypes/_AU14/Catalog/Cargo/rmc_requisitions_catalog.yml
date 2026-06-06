@@ -226,8 +226,8 @@
         crate: RMCDropshipAttachmentAmmoRocketHarpoon
       - cost: 800
         crate: RMCDropshipAttachmentAmmoRocketBanshee
-      - cost: 3000
-        crate: AU14DropshipAttachmentAmmoCBU250
+      - cost: 1600
+        crate: AU14DropshipAttachmentAmmoRocketBansheeHorde
       - cost: 3000
         crate: RMCDropshipAttachmentAmmoRocketKeeper
       - cost: 4000
@@ -236,25 +236,25 @@
         crate: AU14DropshipAttachmentAmmoRocketThermobaricTwo
       - cost: 6500
         crate: AU14DropshipAttachmentAmmoRocketWidowmakerDouble
-      - cost: 4600
-        crate: AU14DropshipAttachmentAmmoCBU607
-      - cost: 3200
-        crate: AU14DropshipAttachmentAmmoRocketBansheeHorde
       - cost: 4900
         crate: RMCDropshipAttachmentAmmoRocketThermobaric
       - cost: 4500
         crate: RMCDropshipAttachmentAmmoRocketNapalm
+      - cost: 3000
+        crate: RMCDropshipAttachmentAmmoRocketMiniMike
+      - cost: 3500
+        crate: RMCDropshipAttachmentAmmoRocketMiniMikeIncendiary
+      - cost: 3500
+        crate: AU14DropshipAttachmentAmmoCBU607
+      - cost: 3000
+        crate: AU14DropshipAttachmentAmmoCBU250
       - cost: 9000
         crate: AU14DropshipAttachmentAmmoMk102JDAM
       - cost: 11000
         crate: AU14DropshipAttachmentAmmoGBU89I
-      - cost: 6000
-        crate: RMCDropshipAttachmentAmmoRocketMiniMike
-      - cost: 8000
-        crate: RMCDropshipAttachmentAmmoRocketMiniMikeIncendiary
-      - cost: 3100
+      - cost: 2000
         crate: RMCDropshipAttachmentAmmoGAU
-      - cost: 3900
+      - cost: 2500
         crate: RMCDropshipAttachmentAmmoGAUAP
-      - cost: 2800
+      - cost: 2000
         crate: RMCDropshipAttachmentAmmoLaserCannon
