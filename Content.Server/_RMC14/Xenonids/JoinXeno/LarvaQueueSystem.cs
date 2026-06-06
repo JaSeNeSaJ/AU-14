@@ -1,6 +1,7 @@
 using Content.Server.GameTicking;
 using Content.Server.Ghost.Roles;
 using Content.Server.Ghost.Roles.Components;
+using Content.Server._RMC14.Xenonids.Construction;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.Dropship;
@@ -40,7 +41,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
 
-    private static readonly EntProtoId LesserDrone = "CMXenoLesserDrone";
+    private static readonly ProtoId<JobPrototype> LesserDroneRole = "CMXenoLesserDrone";
+    private static readonly ProtoId<JobPrototype> QueenRole = "CMXenoQueen";
     private static readonly ProtoId<TagPrototype> LarvaTag = "RMCXenoLarva";
     private static readonly ProtoId<JobPrototype> LarvaRole = "CMXenoLarva";
     private static readonly TimeSpan ClaimConfirmDuration = TimeSpan.FromSeconds(30);
@@ -312,7 +314,27 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!CanQueueBodyCommon(uid, member, hive, out var xeno))
             return false;
 
+        if (IsReservedForParasiteClaim(uid))
+            return false;
+
         return _tag.HasTag(uid, LarvaTag) && xeno.Role == LarvaRole;
+    }
+
+    private bool IsReservedForParasiteClaim(EntityUid uid)
+    {
+        if (!TryComp(uid, out BursterComponent? burster) ||
+            !TryComp(burster.BurstFrom, out VictimInfectedComponent? infected) ||
+            infected.SpawnedLarva != uid ||
+            !infected.InfectorWantsLarva ||
+            infected.InfectorUser is not { } userId)
+        {
+            return false;
+        }
+
+        return _player.TryGetSessionById(userId, out var session) &&
+               session.AttachedEntity is { } attached &&
+               _ghostQuery.HasComp(attached) &&
+               _mind.TryGetMind(session, out _, out _);
     }
 
     private bool TryOfferAbandonedXeno(Entity<HiveComponent> hive, LarvaQueueState queue)
@@ -341,6 +363,9 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!TryComp(uid, out XenoComponent? xenoComp))
             return false;
 
+        xeno = xenoComp;
+        var isQueen = xeno.Role == QueenRole;
+
         if (member.Hive != hive.Owner ||
             TerminatingOrDeleted(uid) ||
             _pendingEntityClaims.ContainsKey(uid) ||
@@ -350,14 +375,14 @@ public sealed partial class LarvaQueueSystem : EntitySystem
             HasComp<ActorComponent>(uid) ||
             _mobState.IsDead(uid) ||
             HasComp<XenoParasiteComponent>(uid) ||
-            HasComp<DropshipHijackerComponent>(uid) ||
+            HasComp<DropshipHijackerComponent>(uid) && !isQueen ||
             TryComp(uid, out MindContainerComponent? mind) && mind.HasMind)
         {
             return false;
         }
 
-        xeno = xenoComp;
-        return !TryPrototype(uid, out var prototype) || prototype.ID != LesserDrone;
+        return xeno.Role != LesserDroneRole ||
+               HasComp<XenoHiveCoreRoleComponent>(uid);
     }
 
     private bool TryOfferEntityClaim(EntityUid uid, Entity<HiveComponent> hive, LarvaQueueState queue)

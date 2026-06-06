@@ -150,6 +150,8 @@
         crate: RMCCrateMK80
       - cost: 600
         crate: RMCCrateXM88
+      - cost: 850
+        crate: RMCCrateXM51
       - cost: 800
         crate: RMCCrateMOU53
       - cost: 400
@@ -168,6 +170,8 @@
         crate: RMCCrateM2C
     - name: Ammo
       entries:
+      - cost: 400
+        crate: RMCCrateBoxShellsShotgunBreaching
       - cost: 650
         crate: RMCCrateBoxMagazinePistolMK80
       - cost: 800

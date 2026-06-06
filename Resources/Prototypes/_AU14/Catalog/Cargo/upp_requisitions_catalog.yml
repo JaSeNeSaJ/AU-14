@@ -152,11 +152,13 @@
 #      entries: []
     - name: Weapons
       entries:
-      - cost: 800
+      - cost: 850
+        crate: RMCCrateXM51
+      - cost: 250
         crate: RMCCrateMK80
       - cost: 400
         crate: RMCCrateXM88
-      - cost: 1000
+      - cost: 800
         crate: RMCCrateMOU53
       - cost: 400
         crate: RMCCrateM85A1
@@ -172,6 +174,8 @@
         crate: AU14CrateM5A1SLAW
     - name: Ammo
       entries:
+      - cost: 400
+        crate: RMCCrateBoxShellsShotgunBreaching
       - cost: 650
         crate: RMCCrateBoxMagazinePistolMK80
       - cost: 800
