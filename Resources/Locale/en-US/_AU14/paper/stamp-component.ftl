@@ -12,11 +12,12 @@ stamp-component-stamped-name-au14-twe = Three World Empire
 stamp-component-stamped-name-au14-ao = Adjutant Officer
 stamp-component-stamped-name-au14-co = Commanding Officer
 stamp-component-stamped-name-au14-so = Staff Officer
+stamp-component-stamped-name-au14-io = Intelligence Officer
 stamp-component-stamped-name-au14-mp = Military Police Officer
 stamp-component-stamped-name-au14-mo = Medical Officer
 stamp-component-stamped-name-au14-aux = Auxiliary Technician
 stamp-component-stamped-name-au14-eo = Engineering Officer
-stamp-component-stamped-name-au14-sea = Advisor
+stamp-component-stamped-name-au14-sea = Senior Enlisted Advisor
 
 stamp-component-stamped-name-au14-cl = Corporate Liaison
 stamp-component-stamped-name-au14-ll = Laselle Liaison

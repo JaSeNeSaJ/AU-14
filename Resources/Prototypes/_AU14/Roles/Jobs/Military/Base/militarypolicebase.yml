@@ -87,6 +87,7 @@
     ears: AU14HeadsetGovforMarineMP
     ears2: RMCM5CameraGear
     outerClothing: AU14ArmorM3JungleThree
+    pocket1: AU14StampCMP
 
 - type: entity
   parent: CMSpawnPointJobBase

@@ -52,6 +52,18 @@
 
 - type: entity
   parent: AU14StampBase
+  id: AU14StampIO
+  name: intelligence officer's rubber stamp
+  components:
+  - type: Sprite
+    state: stamp-clown
+  - type: Stamp
+    stampedName: stamp-component-stamped-name-au14-io
+    stampedColor: "#6F4922"
+    stampState: "paper_stamp-detective"
+
+- type: entity
+  parent: AU14StampBase
   id: AU14StampCMP
   name: military police officer's rubber stamp
   components:
@@ -190,7 +202,7 @@
   name: cca ambassador's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-cap
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
     stampedColor: "#ffae00"
@@ -204,7 +216,7 @@
   name: colony administrator's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-hop
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-admin
     stampedColor: "#3681bb"
@@ -216,7 +228,7 @@
   name: foreman's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-ro
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-fore
     stampedColor: "#725c0e"
@@ -228,7 +240,7 @@
   name: head of engineering rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-ce
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-heng
     stampedColor: "#d19f2a"
@@ -240,7 +252,7 @@
   name: head of service rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-cap
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-hos
     stampedColor: "#725c0e"
@@ -252,7 +264,7 @@
   name: head physician's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-cmo
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-hphy
     stampedColor: "#4e806a"
@@ -264,7 +276,7 @@
   name: cmb marshal's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-hos
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cmbm
 
@@ -285,7 +297,7 @@
   name: working joe's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-free-press
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-joe
     stampedColor: "#000000"
@@ -297,7 +309,7 @@
   name: ua recruiter's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-marine
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-uarec
     stampedColor: "#4e806a"
@@ -311,7 +323,7 @@
   name: orbital manager's rubber stamp
   components:
   - type: Sprite
-    state: stamp-we_ya
+    state: stamp-rd
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-oman
     stampedColor: "#b0901b"
