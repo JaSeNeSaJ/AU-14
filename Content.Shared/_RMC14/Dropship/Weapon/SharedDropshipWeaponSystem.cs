@@ -91,6 +91,7 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
     [Dependency] private SharedPointLightSystem _pointLight = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private PowerLoaderSystem _powerloader = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedRMCCameraSystem _rmcCamera = default!;
     [Dependency] private SharedRMCFlammableSystem _rmcFlammable = default!;
@@ -1743,7 +1744,8 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
                 var target = _transform.ToMapCoordinates(flight.Target).Offset(spread);
                 foreach (var effect in flight.ImpactEffects)
                 {
-                    Spawn(effect, target, rotation: _random.NextAngle());
+                    var rotation = GetImpactEffectRotation(_random.NextAngle(), ImpactEffectHasOccluder(effect));
+                    Spawn(effect, target, rotation: rotation);
                 }
 
                 if (flight.Damage != null)
@@ -1863,6 +1865,19 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
             if (!_transform.InRange(xform.Coordinates, active.Origin, active.BreakRange))
                 RemCompDeferred<ActiveLaserDesignatorComponent>(uid);
         }
+    }
+
+    public static Angle GetImpactEffectRotation(Angle randomRotation, bool hasOccluder)
+    {
+        return hasOccluder
+            ? randomRotation.RoundToCardinalAngle()
+            : randomRotation;
+    }
+
+    private bool ImpactEffectHasOccluder(EntProtoId effect)
+    {
+        return _prototypes.TryIndex<EntityPrototype>(effect, out var prototype) &&
+               prototype.Components.ContainsKey("Occluder");
     }
 
     public void TargetUpdated(Entity<DropshipTargetComponent> ent)
