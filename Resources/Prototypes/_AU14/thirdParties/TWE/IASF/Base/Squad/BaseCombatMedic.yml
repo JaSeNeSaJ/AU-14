@@ -38,7 +38,7 @@
     back: AU14CMDefibrillator
     jumpsuit: AU14JumpsuitIASFL90
     suitstorage: AU14WeaponRifleL90Full
-    belt: CMUBeltMedicBagSupportSynthRMC
+    belt: AU14BeltMedicBagSupportSynthRMC
     pocket2: RMCSurgicalCaseRCMFilled
     id: AU14IDCardIASFMedic
   storage:
