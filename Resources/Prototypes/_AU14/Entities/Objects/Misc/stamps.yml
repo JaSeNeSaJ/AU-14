@@ -149,7 +149,7 @@
     stampState: "paper_stamp-wizard"
 
 - type: entity
-  parent: AU14StampBas
+  parent: AU14StampBase
   id: AU14StampUAA
   name: ua ambassador's rubber stamp
   components:
@@ -271,7 +271,7 @@
     stampState: "paper_stamp-cmo"
 
 - type: entity
-  parent: U14StampCMB
+  parent: AU14StampCMB
   id: AU14StampCMBM
   name: cmb marshal's rubber stamp
   components:
