@@ -169,7 +169,7 @@
     state: stamp-spp
   - type: Stamp
     stampedName: stamp-component-stamped-name-au14-cl
-    stampedColor: "##A70707"
+    stampedColor: "#A70707"
     stampState: "paper_stamp-spp"
 
 - type: entity
