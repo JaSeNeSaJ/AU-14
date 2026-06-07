@@ -15,8 +15,10 @@
 
 - type: partySpawn
   id: badBloodClanParty
+  leadersToSpawn:
+    CMUMobYautja: 1
   gruntsToSpawn:
-    CMUMobYautja: 3
+    CMUMobYautja: 2
   scaling:
     CMUMobYautja:
       scale: 0.05
