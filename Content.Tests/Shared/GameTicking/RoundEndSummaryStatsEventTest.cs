@@ -7,7 +7,7 @@ namespace Content.Tests.Shared.GameTicking;
 public sealed class RoundEndSummaryStatsEventTest
 {
     [Test]
-    public void AddStatsDropsZeroValuesAndPreservesCategoryOrder()
+    public void AddStatsKeepsZeroValuesAndPreservesCategoryOrder()
     {
         var ev = new RoundEndSummaryStatsEvent();
 
@@ -31,11 +31,15 @@ public sealed class RoundEndSummaryStatsEventTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(stats.InjuryStats, Has.Length.EqualTo(1));
-            Assert.That(stats.InjuryStats[0].Label, Is.EqualTo("round-end-summary-window-stat-surgeries"));
-            Assert.That(stats.InjuryStats[0].Detail, Is.EqualTo("round-end-summary-window-stat-surgeries-detail"));
-            Assert.That(stats.InjuryStats[0].Value, Is.EqualTo(4));
-            Assert.That(stats.InjuryStats[0].Color, Is.EqualTo(RoundEndSummaryStatColor.Cyan));
+            Assert.That(stats.InjuryStats, Has.Length.EqualTo(2));
+            Assert.That(stats.InjuryStats[0].Label, Is.EqualTo("round-end-summary-window-stat-bones-broken"));
+            Assert.That(stats.InjuryStats[0].Detail, Is.EqualTo("round-end-summary-window-stat-bones-broken-detail"));
+            Assert.That(stats.InjuryStats[0].Value, Is.EqualTo(0));
+            Assert.That(stats.InjuryStats[0].Color, Is.EqualTo(RoundEndSummaryStatColor.Red));
+            Assert.That(stats.InjuryStats[1].Label, Is.EqualTo("round-end-summary-window-stat-surgeries"));
+            Assert.That(stats.InjuryStats[1].Detail, Is.EqualTo("round-end-summary-window-stat-surgeries-detail"));
+            Assert.That(stats.InjuryStats[1].Value, Is.EqualTo(4));
+            Assert.That(stats.InjuryStats[1].Color, Is.EqualTo(RoundEndSummaryStatColor.Cyan));
 
             Assert.That(stats.OddityStats, Has.Length.EqualTo(1));
             Assert.That(stats.OddityStats[0].Label, Is.EqualTo("round-end-summary-window-stat-limbs-stolen"));

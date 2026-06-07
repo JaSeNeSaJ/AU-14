@@ -28,6 +28,26 @@ public sealed class GhostWarpGroupingTest
     }
 
     [Test]
+    public void MilitaryRolesUseRoleSpecificSubtabs()
+    {
+        AssertMilitarySection("AU14JobGOVFORDSPilot", GhostWarpGrouping.SectionPilotsCrew);
+        AssertMilitarySection("AU14JobGOVFORPlatCo", GhostWarpGrouping.SectionCommand);
+        AssertMilitarySection("AU14JobGOVFORSectionSergeant", GhostWarpGrouping.SectionSquadLeads);
+        AssertMilitarySection("AU14JobGOVFORPlatoonCorpsman", GhostWarpGrouping.SectionSpecialists);
+        AssertMilitarySection("AU14JobGOVFORSquadRifleman", GhostWarpGrouping.SectionLine);
+    }
+
+    [Test]
+    public void UnmcMilitaryRolesUseRoleSpecificSubtabs()
+    {
+        AssertMilitarySection("CMJobPilotDropship", GhostWarpGrouping.SectionPilotsCrew, "UNMC", "CMEngineering");
+        AssertMilitarySection("CMJobCommandingOfficer", GhostWarpGrouping.SectionCommand, "UNMC", "CMCommand");
+        AssertMilitarySection("CMJobSquadLeader", GhostWarpGrouping.SectionSquadLeads, "UNMC", "CMSquad");
+        AssertMilitarySection("CMJobHospitalCorpsman", GhostWarpGrouping.SectionSpecialists, "UNMC", "CMMedbay");
+        AssertMilitarySection("CMJobRifleman", GhostWarpGrouping.SectionLine, "UNMC", "CMSquad");
+    }
+
+    [Test]
     public void YautjaComponentUsesYautjaHunters()
     {
         var grouping = GhostWarpGrouping.Classify(
@@ -121,6 +141,30 @@ public sealed class GhostWarpGroupingTest
         {
             Assert.That(grouping.Tab, Is.EqualTo(GhostWarpGrouping.TabLocations));
             Assert.That(grouping.Section, Is.EqualTo(GhostWarpGrouping.SectionWarpPoints));
+        });
+    }
+
+    private static void AssertMilitarySection(
+        string jobId,
+        string expectedSection,
+        string faction = "GOVFOR",
+        string departmentId = "AU14DepartmentGovernmentForces")
+    {
+        var grouping = GhostWarpGrouping.Classify(
+            isWarpPoint: false,
+            jobId: jobId,
+            departmentId: departmentId,
+            factions: new[] { faction },
+            isXeno: false,
+            isYautja: false,
+            isCorruptedHive: false,
+            xenoTier: null,
+            realDisplayWeight: 0);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(grouping.Tab, Is.EqualTo(GhostWarpGrouping.TabMilitary));
+            Assert.That(grouping.Section, Is.EqualTo(expectedSection));
         });
     }
 }
