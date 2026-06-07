@@ -34,6 +34,11 @@ namespace Content.IntegrationTests._CMU14.Medical;
 [TestFixture]
 public sealed class PainShockReworkTest
 {
+    private static readonly ProtoId<ReagentPrototype> Tramadol = "CMUTramadol";
+    private static readonly ProtoId<ReagentPrototype> Oxycodone = "CMUOxycodone";
+    private static readonly ProtoId<ReagentPrototype> Epinephrine = "CMEpinephrine";
+    private static readonly ProtoId<ReagentPrototype> Inaprovaline = "CMInaprovaline";
+
     [Test]
     public async Task ComminutedFractureAloneIsSeverePressureNotShock()
     {
@@ -679,11 +684,11 @@ public sealed class PainShockReworkTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
 
             AssertPainkillerHasDrunkOverdoseEffect(
-                prototypes.Index<ReagentPrototype>("CMUTramadol"),
+                prototypes.Index(Tramadol),
                 FixedPoint2.New(30));
 
             AssertPainkillerHasDrunkOverdoseEffect(
-                prototypes.Index<ReagentPrototype>("CMUOxycodone"),
+                prototypes.Index(Oxycodone),
                 FixedPoint2.New(20));
         });
 
@@ -700,10 +705,10 @@ public sealed class PainShockReworkTest
         {
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var epinephrine = AssertReagentHasPainSuppression(
-                prototypes.Index<ReagentPrototype>("CMEpinephrine"),
+                prototypes.Index(Epinephrine),
                 1);
             var inaprovaline = AssertReagentHasPainSuppression(
-                prototypes.Index<ReagentPrototype>("CMInaprovaline"),
+                prototypes.Index(Inaprovaline),
                 2);
 
             Assert.Multiple(() =>

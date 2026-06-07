@@ -11,6 +11,7 @@ namespace Content.IntegrationTests._RMC14;
 public sealed class CMArmorSystemTest
 {
     private const string TestArmorEntity = "RMCArmorInvalidOriginDamageable";
+    private static readonly ProtoId<DamageTypePrototype> SlashDamageType = "Slash";
 
     [TestPrototypes]
     private const string Prototypes = $@"
@@ -34,12 +35,12 @@ public sealed class CMArmorSystemTest
         var protoMan = server.ResolveDependency<IPrototypeManager>();
         var sysMan = server.ResolveDependency<IEntitySystemManager>();
 
-        DamageSpecifier? result = null;
+        DamageSpecifier result = null;
 
         await server.WaitPost(() =>
         {
             var target = entMan.SpawnEntity(TestArmorEntity, map.MapCoords);
-            var slash = protoMan.Index<DamageTypePrototype>("Slash");
+            var slash = protoMan.Index(SlashDamageType);
             var damageable = sysMan.GetEntitySystem<DamageableSystem>();
 
             result = damageable.TryChangeDamage(target, new DamageSpecifier(slash, 10), origin: EntityUid.Invalid);
