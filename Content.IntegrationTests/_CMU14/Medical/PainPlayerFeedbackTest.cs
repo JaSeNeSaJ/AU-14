@@ -176,14 +176,11 @@ public sealed class PainPlayerFeedbackTest
             var entMan = server.EntMan;
             var feedback = entMan.GetComponent<CMUPainFeedbackComponent>(human);
             var blur = entMan.GetComponent<BlurryVisionComponent>(human).Magnitude;
-            const float expectedProgress = (84f - 60f) / (85f - 60f);
-            var expected = feedback.SevereBlurStartAmount +
-                (feedback.SevereBlurAmount - feedback.SevereBlurStartAmount) * expectedProgress;
+            var expected = GetExpectedPainBlur(feedback, feedback.SevereBlurEquivalentPain);
 
             Assert.Multiple(() =>
             {
                 Assert.That(blur, Is.EqualTo(expected).Within(0.01f));
-                Assert.That(blur, Is.GreaterThan(feedback.SevereBlurStartAmount));
                 Assert.That(blur, Is.LessThan(0.5f));
             });
 
@@ -215,15 +212,13 @@ public sealed class PainPlayerFeedbackTest
             var feedback = entMan.GetComponent<CMUPainFeedbackComponent>(human);
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var blur = entMan.GetComponent<BlurryVisionComponent>(human).Magnitude;
-            const float expectedProgress = (90f - 85f) / (95f - 85f);
-            var expected = feedback.ShockBlurStartAmount +
-                (feedback.ShockBlurAmount - feedback.ShockBlurStartAmount) * expectedProgress;
+            var expected = GetExpectedPainBlur(feedback, feedback.ShockBlurEquivalentPain);
 
             Assert.Multiple(() =>
             {
                 Assert.That(blur, Is.EqualTo(expected).Within(0.01f));
-                Assert.That(blur, Is.GreaterThan(feedback.ShockBlurStartAmount));
-                Assert.That(blur, Is.LessThan(feedback.ShockBlurAmount));
+                Assert.That(blur, Is.GreaterThan(feedback.SevereBlurStartAmount));
+                Assert.That(blur, Is.LessThan(GetMaxSeverePainBlur(feedback)));
                 AssertPainEmotesExist(prototypes, feedback);
             });
 
@@ -231,6 +226,26 @@ public sealed class PainPlayerFeedbackTest
         });
 
         await pair.CleanReturnAsync();
+    }
+
+    private static float GetExpectedPainBlur(CMUPainFeedbackComponent feedback, float equivalentPain)
+    {
+        const float severeThreshold = 60f;
+        const float shockThreshold = 85f;
+        var severeAmount = GetMaxSeverePainBlur(feedback);
+        var progress = Math.Clamp(
+            (equivalentPain - severeThreshold) / (shockThreshold - severeThreshold),
+            0f,
+            1f);
+
+        return feedback.SevereBlurStartAmount +
+            (severeAmount - feedback.SevereBlurStartAmount) * progress;
+    }
+
+    private static float GetMaxSeverePainBlur(CMUPainFeedbackComponent feedback)
+    {
+        const float severeBlurMax = 0.49f;
+        return Math.Min(feedback.SevereBlurAmount, severeBlurMax);
     }
 
     [Test]

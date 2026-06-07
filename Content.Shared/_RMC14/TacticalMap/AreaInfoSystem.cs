@@ -121,7 +121,6 @@ public sealed partial class AreaInfoSystem : EntitySystem
                 return null;
 
             ent.Comp.LastMoveUpdate = time;
-            Dirty(ent);
         }
 
         short ceilingLevel = 0;
