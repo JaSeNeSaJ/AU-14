@@ -2520,5 +2520,82 @@
   id: 215
   time: '2026-06-07T09:21:53.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1243
+- author: TheHellFireo
+  changes:
+  - message: Refresh z-level viewers when mapping and Z mapping networks change, so
+      upper/lower z-level openings render instead of turning black.
+    type: Fix
+  - message: Improve the round status Discord embed layout for clearer round state
+      reporting.
+    type: Tweak
+  - message: Rework ghost warp grouping so ghost/admin warp menus are easier to scan.
+    type: Tweak
+  - message: Add a richer round-end summary with player manifests, round stats, and
+      medical telemetry such as injuries, surgeries, pain shock, organ crises, defibs,
+      bleeding, shrapnel, and limb events.
+    type: Add
+  - message: Redesign the admin logs player-log UI for better readability.
+    type: Tweak
+  - message: Hide redundant ghost warp subtabs.
+    type: Tweak
+  - message: Improve admin log message formatting.
+    type: Tweak
+  - message: Fix z-level visibility updates and throttle tactical map area alert updates
+      to reduce lag from frequent movement updates.
+    type: Fix
+  - message: Add lag profiling commands to help trace expensive server systems.
+    type: Add
+  - message: Clean up build warnings.
+    type: Fix
+  - message: Reduce extreme pain/shock blur. Shock pain now reuses the severe blur
+      curve instead of jumping to very high blur values, keeping feedback noticeable
+      without overwhelming vision.
+    type: Tweak
+  - message: Hivebreaker can now be used on freshly dead xenos for 1 minute, reviving
+      and converting them instead of requiring a critical-but-alive target.
+    type: Add
+  - message: Update round-end summary styling.
+    type: Tweak
+  - message: Improve round-end summary spacing and layout so the outcome, stats, and
+      manifest are less cramped.
+    type: Tweak
+  - message: Fix tactical map prediction state that could dirty/network local movement
+      throttle data.
+    type: Fix
+  - message: Larva ranks now use total xeno playtime scaled by a larva rank factor,
+      and xeno ranks now support higher rank thresholds up to rank 9.
+    type: Add
+  - message: Wide melee swings now prioritize valid living targets, avoid dead mobs,
+      avoid same-hive xenos, and respect barricades/walls before choosing a hit target.
+    type: Fix
+  - message: Queen-called hijacked dropships now announce their destination area to
+      the hive.
+    type: Add
+  - message: Resin Surge previews and effects now use predicted spawning, making reinforce/sticky/unstable
+      wall feedback more responsive for players.
+    type: Tweak
+  - message: Add resin spikes for drone, hivelord, and queen construction. Resin spikes
+      cost 80 plasma, are limited to 15, deal 8 piercing damage with 50 armor penetration
+      on contact, and can hit again after targets leave and re-enter.
+    type: Add
+  - message: 'Add queen psychic communication: Psychic Whisper within 7 tiles, Psychic
+      Radiance within 12 tiles for 100 plasma, and Give Order to the watched xeno
+      for 100 plasma.'
+    type: Add
+  - message: 'Fix drone evolution rules: drones can early-evolve into lurker, spitter,
+      or warrior before marines land, cannot early-evolve after landing, and cannot
+      evolve into queen while a living queen already exists.'
+    type: Fix
+  - message: Add reflective resin walls for hivelord and queen construction. Reflective
+      walls cost 145 plasma with scaling cost, have 300 structural health, resist
+      piercing, are weaker to heat, and can reflect projectiles with reduced reflected
+      damage.
+    type: Add
+  - message: Queen eye now stays leashed near weeds, can expand weeds while the queen
+      is in ovipositor mode, and ovipositor cost is reduced from 700 to 500 plasma.
+    type: Fix
+  id: 216
+  time: '2026-06-07T16:13:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1246
 Name: CMU
 Order: -1
