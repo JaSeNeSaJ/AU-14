@@ -5,6 +5,7 @@
   description: An automated supply vendor hooked up to a storage of medical supplies.
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/med.rsi
     layers:
@@ -16,40 +17,12 @@
       entries:
       - id: CMOintment10
         amount: 40
-      - id: CMUPlainGauze10
-        amount: 40
       - id: CMUPlainTraumaDressing10
         amount: 30
       - id: CMUCoagulantPowder
-        amount: 25
-      - id: CMUAntiseptic
-        amount: 25
+        amount: 20
       - id: CMUBurnGel
-        amount: 25
-      - id: CMUTissueSealant
-        amount: 25
-      - id: CMUTraumaFoam
-        amount: 25
-      - id: CMUHemostaticGauze6
-        amount: 25
-      - id: CMUAntisepticGauze6
-        amount: 25
-      - id: CMUBurnGelGauze6
-        amount: 25
-      - id: CMUSealingGauze6
-        amount: 25
-      - id: CMUCompressionGauze6
-        amount: 25
-      - id: CMUHemostaticTraumaDressing4
-        amount: 25
-      - id: CMUAntisepticTraumaDressing4
-        amount: 25
-      - id: CMUBurnTraumaDressing4
-        amount: 25
-      - id: CMUSealingTraumaDressing4
-        amount: 25
-      - id: CMUCompressionTraumaDressing4
-        amount: 25
+        amount: 20
       - id: AU14HemostaticGauzePacket
         amount: 40
       - id: AU14Tourniquet
@@ -170,6 +143,7 @@
   description: The WeYu Med-Sci Brand Blood Pack Dispensary is the premier, top-of-the-line blood dispenser of 2105! Get yours today! #dont update year, that`s a joke from cm13
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/blood.rsi
     snapCardinals: true
@@ -205,6 +179,7 @@
   description: The WeYu Med-Sci Brand Blood Pack Dispensary is the premier, top-of-the-line blood dispenser of 2105! Get yours today! #dont update year, that`s a joke from cm13
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/blood.rsi
     snapCardinals: true

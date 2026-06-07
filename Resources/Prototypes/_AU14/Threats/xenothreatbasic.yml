@@ -20,7 +20,7 @@
   spawnTogether: true
   scaling:
     CMXenoLarva:
-      scale: 0.05
+      scale: 0.11
       whenToBeginScaling: 30
 
 
@@ -28,6 +28,7 @@
   id: XenoThreatCF
   lorePrimer: AU14PrimerThreatXeno
   roundstartspawns: XenoThreatSpawnsCF
+  thirdpartyinterval: 9100
   whitelistedgamemodes:
   - ColonyFall
   blacklistedgamemodes:
@@ -45,7 +46,7 @@
   spawnTogether: true
   scaling:
     CMXenoLarva:
-      scale: 0.05
+      scale: 0.07
       whenToBeginScaling: 50
   Markers:
     Member: xenocf
