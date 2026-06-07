@@ -484,8 +484,8 @@
     - WYPMCPartyAlt
     - abominationThirdParty
     joboverrides:
-      AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
-      AU14JobLEOBase: AU14JobCivilianCMBDeputy
+      AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
+      AU14JobLEOBase: AU14JobCiviliannspaConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
