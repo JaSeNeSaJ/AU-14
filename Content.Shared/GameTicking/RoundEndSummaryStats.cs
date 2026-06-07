@@ -101,7 +101,7 @@ public sealed partial class RoundEndSummaryStatsEvent
         int value,
         RoundEndSummaryStatColor color)
     {
-        if (value <= 0)
+        if (value < 0)
             return;
 
         stats.Add(new RoundEndSummaryStat(label, detail, value, color));

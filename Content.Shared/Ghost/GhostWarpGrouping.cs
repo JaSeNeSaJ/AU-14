@@ -134,13 +134,13 @@ public static class GhostWarpGrouping
             return new GhostWarpGroupingResult(TabThirdParty, GetThirdPartySection(jobId, realDisplayWeight));
 
         if (TryGetFactionTab(factions, out var factionTab))
-            return new GhostWarpGroupingResult(factionTab, GetHumanSection(factionTab, realDisplayWeight));
+            return new GhostWarpGroupingResult(factionTab, GetFactionSection(factionTab, jobId, realDisplayWeight));
 
         if (departmentId == "CMSurvivor")
             return new GhostWarpGroupingResult(TabSurvivors, TabSurvivors);
 
         if (departmentId != null && MarineDepartments.Contains(departmentId))
-            return new GhostWarpGroupingResult(TabMilitary, GetHumanSection(TabMilitary, realDisplayWeight));
+            return new GhostWarpGroupingResult(TabMilitary, GetMilitarySection(jobId, realDisplayWeight));
 
         if (TryGetJobIdTab(jobId, out var jobTab))
             return new GhostWarpGroupingResult(jobTab, GetHumanSection(jobTab, realDisplayWeight));
@@ -200,34 +200,80 @@ public static class GhostWarpGrouping
 
     private static string GetOpforSection(string? jobId, int realDisplayWeight)
     {
+        return GetMilitaryRoleSection(jobId) ?? GetHumanSection(TabOpfor, realDisplayWeight);
+    }
+
+    private static string GetMilitarySection(string? jobId, int realDisplayWeight)
+    {
+        return GetMilitaryRoleSection(jobId) ?? GetHumanSection(TabMilitary, realDisplayWeight);
+    }
+
+    private static string? GetMilitaryRoleSection(string? jobId)
+    {
         if (ContainsAny(jobId, "Pilot", "DCC", "Dropship", "Crew"))
             return SectionPilotsCrew;
 
-        if (ContainsAny(jobId, "PlatCo", "PlatOp", "Advisor", "Commander", "Operations"))
+        if (ContainsAny(
+                jobId,
+                "PlatCo",
+                "PlatOp",
+                "Advisor",
+                "Commander",
+                "CommandingOfficer",
+                "ExecutiveOfficer",
+                "StaffOfficer",
+                "SeniorEnlistedAdvisor",
+                "AuxiliarySupportOfficer",
+                "ChiefMP",
+                "ChiefMedicalOfficer",
+                "ChiefEngineer",
+                "Quartermaster",
+                "Operations"))
+        {
             return SectionCommand;
+        }
 
-        if (ContainsAny(jobId, "SectionSergeant", "SquadSergeant", "PlatoonSergeant"))
+        if (ContainsAny(
+                jobId,
+                "SectionSergeant",
+                "SquadSergeant",
+                "PlatoonSergeant",
+                "SquadLeader",
+                "FireteamLeader"))
+        {
             return SectionSquadLeads;
+        }
 
         if (ContainsAny(
                 jobId,
                 "CombatTech",
                 "Corpsman",
                 "AutomaticRifleman",
+                "WeaponsSpecialist",
+                "SmartGun",
                 "RadioTelephoneOperator",
+                "RTO",
                 "MilitaryDoctor",
+                "Doctor",
+                "Nurse",
+                "Researcher",
                 "AuxTech",
                 "Synth",
                 "WorkingJoe",
-                "K9"))
+                "K9",
+                "IntelOfficer",
+                "OrdnanceTech",
+                "MaintTech",
+                "MilitaryPolice",
+                "MilitaryWarden"))
         {
             return SectionSpecialists;
         }
 
-        if (ContainsAny(jobId, "Rifleman"))
+        if (ContainsAny(jobId, "Rifleman", "Recruit"))
             return SectionLine;
 
-        return GetHumanSection(TabOpfor, realDisplayWeight);
+        return null;
     }
 
     private static bool IsThirdParty(string? jobId, string? departmentId)
@@ -265,6 +311,13 @@ public static class GhostWarpGrouping
             return SectionSpecialists;
 
         return realDisplayWeight > 0 ? SectionLinePersonnel : SectionPersonnel;
+    }
+
+    private static string GetFactionSection(string tab, string? jobId, int realDisplayWeight)
+    {
+        return tab == TabMilitary
+            ? GetMilitarySection(jobId, realDisplayWeight)
+            : GetHumanSection(tab, realDisplayWeight);
     }
 
     private static bool TryGetFactionTab(IEnumerable<string>? factions, out string tab)
