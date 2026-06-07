@@ -891,10 +891,11 @@
       entries:
       - id: CMPacketGrenadeHighExplosiveFilled
         amount: 6
+      - id: AU14PacketGrenadeFragM12Filled
+        amount: 4
       - id: RMCPacketGrenadeIncendiaryFilled
         amount: 3
-      - id: RMCGrenadeBlastM12
-        amount: 12
+
       - id: RMCPacketGrenadeSmokeFilled
         amount: 6
       - id: RMCBoxClaymoreMineFilled
