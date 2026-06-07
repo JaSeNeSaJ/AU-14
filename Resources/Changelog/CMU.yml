@@ -2513,5 +2513,12 @@
   id: 214
   time: '2026-06-07T00:09:50.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1240
+- author: toot521
+  changes:
+  - message: CLF Survs can now actually only spawn on distress signal
+    type: Fix
+  id: 215
+  time: '2026-06-07T09:21:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1243
 Name: CMU
 Order: -1
