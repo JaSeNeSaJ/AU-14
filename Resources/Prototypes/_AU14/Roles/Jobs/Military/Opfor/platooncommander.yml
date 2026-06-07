@@ -21,8 +21,6 @@
     - type: UserIFF
       factions:
       - OPFOR
-    - type: JobPrefix
-      prefix: au14-job-prefix-opforplatco
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_AU14/Interface/au14opforhud.rsi

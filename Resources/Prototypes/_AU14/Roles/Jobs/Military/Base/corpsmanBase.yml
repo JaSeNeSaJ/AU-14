@@ -40,8 +40,8 @@
       prefix: au14-job-prefix-govforplatooncorpsman
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: medic
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_corpsman
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatoonCorpsman

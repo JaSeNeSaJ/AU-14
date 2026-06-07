@@ -6,6 +6,7 @@
   description: au14-job-description-govformilitarypoliceman
   icon: "AU14JobIconRFN"
   spawnMenuRoleName: Military Policeman (GOVFOR)
+  supervisors: au14-job-supervisors-govforplatco
   startingGear: AU14GearGOVFORMilitaryPoliceMan
   dummyStartingGear: AU14GearGOVFORMilitaryPoliceManDummy
   playTimeTracker: AU14JobGOVFORMilitaryPoliceMan

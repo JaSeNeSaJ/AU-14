@@ -37,8 +37,8 @@
       prefix: au14-job-prefix-govforsquadrifleman
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: private
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_background
 
 - type: playTimeTracker
   id: AU14JobGOVFORSquadRifleman

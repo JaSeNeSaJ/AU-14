@@ -47,8 +47,8 @@
       prefix: au14-job-prefix-govforSSG
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: xo
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_platoonsergeant
 
 - type: playTimeTracker
   id: AU14JobGOVFORSectionSergeant

@@ -45,8 +45,8 @@
       prefix: au14-job-prefix-govforsquadsergeant
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: leader
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_sergeant
 
 - type: playTimeTracker
   id: AU14JobGOVFORSquadSergeant

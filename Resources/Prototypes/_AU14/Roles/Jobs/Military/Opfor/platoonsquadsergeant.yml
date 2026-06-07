@@ -15,14 +15,12 @@
     components:
     - type: Marine
       Faction: opfor
-    - type: NpcFactionMember
-      factions:
-      - OPFOR
     - type: UserIFF
       factions:
       - OPFOR
-    - type: JobPrefix
-      prefix: au14-job-prefix-opforsquadsergeant
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_AU14/Interface/au14opforhud.rsi

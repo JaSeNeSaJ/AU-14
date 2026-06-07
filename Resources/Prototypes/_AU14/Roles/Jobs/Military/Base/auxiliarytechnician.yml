@@ -79,6 +79,7 @@
   storage:
     back:
     - CMStampApproved
+    - AU14StampAUX
 
 - type: entity
   parent: CMSpawnPointJobBase

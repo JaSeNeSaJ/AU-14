@@ -47,8 +47,8 @@
       prefix: au14-job-prefix-govforsquadcombattech
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: engi
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_ct
     - type: CMVendorUser
       id: AU14JobGOVFORSquadCombatTech
       points: 50

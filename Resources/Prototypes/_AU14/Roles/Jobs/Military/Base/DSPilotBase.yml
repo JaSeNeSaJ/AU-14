@@ -49,8 +49,8 @@
       prefix: au14-job-prefix-govfordspilot
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: pilot
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_po
 
 - type: playTimeTracker
   id: AU14JobGOVFORDSPilot
