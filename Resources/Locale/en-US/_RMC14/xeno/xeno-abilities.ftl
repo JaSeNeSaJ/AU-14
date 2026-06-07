@@ -30,6 +30,7 @@ rmc-xeno-psychic-message-order = [color=#921992][font size=14][bold]{$queen} com
 rmc-xeno-psychic-ghost-whisper = [color=#921992][font size=14][bold]Psychic Whisper ({$queen} -> {$target}):[/bold] "{$message}"[/font][/color]
 rmc-xeno-psychic-ghost-radiance = [color=#921992][font size=14][bold]Psychic Radiance ({$queen}, {$count} recipients):[/bold] "{$message}"[/font][/color]
 rmc-xeno-psychic-ghost-order = [color=#921992][font size=14][bold]Psychic Order ({$queen} -> {$target}):[/bold] "{$message}"[/font][/color]
+
 # Acid reserves
 rmc-xeno-not-enough-acid = We don't have enough acid built up!
 rmc-xeno-acid-increase-user = We feel your acid reserves increase!
@@ -111,6 +112,10 @@ cm-xeno-leap-cancelled = We cancel our leap!
 # Plant weeds
 cm-xeno-weeds-source-already-here = There is already a resin node here!
 rmc-xeno-weeds-blocked = We can't do that here.
+rmc-xeno-weeds-no-nearby-node = We require weeds to be closer!
+rmc-xeno-queen-eye-no-weeds = We can't move our eye there, there are no weeds!
+rmc-xeno-queen-eye-expand-weeds-name = Expand Weeds (50)
+rmc-xeno-queen-eye-expand-weeds-desc = Expand existing weeds or turn a weed tile into a node.
 
 # Corrosive acid
 cm-xeno-acid-not-corrodible = We cannot dissolve {THE($target)}!
