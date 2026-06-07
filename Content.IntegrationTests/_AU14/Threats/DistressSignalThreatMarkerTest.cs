@@ -19,7 +19,7 @@ public sealed class DistressSignalThreatMarkerTest
 {
     private static readonly ProtoId<ThreatPrototype> XenoThreat = "XenoThreat";
     private static readonly ProtoId<ThreatPrototype> TribalThreat = "TribalsThreat";
-    private static readonly ProtoId<GamePresetPrototype> DistressSignalPreset = "DistressSignal";
+    private const string DistressSignalPreset = "DistressSignal";
     private const int MarkerValidationPlayerCount = 100;
 
     [Test]
@@ -34,7 +34,7 @@ public sealed class DistressSignalThreatMarkerTest
             var tribalThreat = prototypes.Index<ThreatPrototype>(TribalThreat);
 
             Assert.That(
-                ThreatVoteSelection.IsThreatAllowed(tribalThreat, DistressSignalPreset.Id, null, null, playerCount: 1),
+                ThreatVoteSelection.IsThreatAllowed(tribalThreat, DistressSignalPreset, null, null, playerCount: 1),
                 Is.False);
         });
 
@@ -51,7 +51,7 @@ public sealed class DistressSignalThreatMarkerTest
         {
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var factory = server.ResolveDependency<IComponentFactory>();
-            var preset = prototypes.Index(DistressSignalPreset);
+            var preset = prototypes.Index<GamePresetPrototype>(DistressSignalPreset);
             var offenders = new List<string>();
             var tribalThreat = prototypes.Index<ThreatPrototype>(TribalThreat);
 
@@ -62,7 +62,7 @@ public sealed class DistressSignalThreatMarkerTest
                     continue;
 
                 if (planet.AllowedThreats.Any(threat => threat.Id == TribalThreat) &&
-                    ThreatVoteSelection.IsThreatAllowed(tribalThreat, DistressSignalPreset.Id, null, null, MarkerValidationPlayerCount))
+                    ThreatVoteSelection.IsThreatAllowed(tribalThreat, DistressSignalPreset, null, null, MarkerValidationPlayerCount))
                 {
                     offenders.Add($"{planetId} ({planet.MapId})");
                 }
