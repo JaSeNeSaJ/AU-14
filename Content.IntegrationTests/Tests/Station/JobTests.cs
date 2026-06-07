@@ -48,7 +48,7 @@ public sealed class JobTest
 
         await server.WaitAssertion(() =>
         {
-            var exemptDepartments = new[] { "AU14DepartmentColonyCommand", "AU14DepartmentThreat" };
+            var exemptDepartments = new[] { "AU14DepartmentColonyCommand", "AU14DepartmentThreat", "AU14DepartmentThirdParty" };
 
             // only checking primary departments so don't bother with others
             var departments = prototypeManager.EnumeratePrototypes<DepartmentPrototype>()

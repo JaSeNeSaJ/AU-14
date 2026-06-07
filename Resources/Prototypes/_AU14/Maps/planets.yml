@@ -931,7 +931,7 @@
     - CMBInvestigationParty
     - CMBInvestigationPartyAlt
     - XenoParasiteRunnerParty
-    - ApeThirdPartys
+    - ApeThirdParty
     - ProfessorVonBandolier
     - IPIE
     - IPIESynth
@@ -946,7 +946,7 @@
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianColonySecurityLeader
       AU14JobLEOBase: AU14JobCivilianColonySecurityOfficer
-      AU14JobCivillianColonyAdministrtor: AU14JobCivilianCorporateAdministrator
+      AU14JobCivilianColonyAdministrator: AU14JobCivilianCorporateAdministrator
 
 - type: lorePrimer
   id: AU14PrimerPlanetChances
