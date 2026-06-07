@@ -393,6 +393,9 @@
     - wendigoThreat
     - abominationsThreatDistress
     thirdparties:
+    - IASFSurvLarge
+    - IASFSurvMedium
+    - IASFSurvSmall
     - WEYUSurvLarge
     - WEYUSurvMedium
     - WEYUSurvSmall
@@ -675,18 +678,21 @@
     - UPP
     - WEYU
     - VAIPO
+    - ProdigySF
     platoonsGovfor:
     - LACN
-    - ProdigySF
     - USCM
     - RMC
-    defaultgovfor: UPP
-    defaultopfor: RMC
+    defaultgovfor: RMC
+    defaultopfor: VAIPO
     govforinship: true
     opforinship: true
     daycycleenabled: true
     faction: ua
     thirdparties:
+    - IASFSurvLarge
+    - IASFSurvMedium
+    - IASFSurvSmall
     - WEYUSurvLarge
     - WEYUSurvMedium
     - WEYUSurvSmall

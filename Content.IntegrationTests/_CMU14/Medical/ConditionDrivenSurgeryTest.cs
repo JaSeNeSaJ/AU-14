@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using Content.Server._CMU14.Medical.Surgery;
+using Content.Shared._CMU14.Medical;
 using Content.Shared._CMU14.Medical.Bones;
 using Content.Shared._CMU14.Medical.Organs;
 using Content.Shared._CMU14.Medical.Organs.Brain;
@@ -20,11 +21,14 @@ using Content.Shared._CMU14.Medical.Wounds;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.Surgery;
 using Content.Shared._RMC14.Medical.Surgery.Steps.Parts;
+using Content.Shared._RMC14.Medical.Wounds;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Part;
 using Content.Shared.Body.Systems;
+using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.StatusEffectNew;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 
@@ -916,6 +920,197 @@ public sealed class ConditionDrivenSurgeryTest
     }
 
     [Test]
+    public async Task RepairingFailingStoppedHeartEndsCardiacArrestTicks()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        EntityUid human = default;
+        EntityUid surgeon = default;
+        EntityUid torso = default;
+        EntityUid heart = default;
+        FixedPoint2 damageAfterRepair = default;
+
+        await server.WaitPost(() =>
+        {
+            var entMan = server.EntMan;
+            var organHealth = entMan.System<SharedOrganHealthSystem>();
+            var traits = entMan.System<SharedCMUSurgicalTraitSystem>();
+
+            human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            entMan.EnsureComponent<BypassSkillChecksComponent>(surgeon);
+            entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+
+            torso = GetBodyPart(entMan, human, BodyPartType.Torso, BodyPartSymmetry.None);
+            OpenBoneCavity(entMan, torso);
+            ClearSurgicalTraits(traits, torso);
+
+            heart = GetPartOrgan<HeartComponent>(entMan, torso);
+            var health = entMan.GetComponent<OrganHealthComponent>(heart);
+            SetPublicField(health, nameof(OrganHealthComponent.Current), FixedPoint2.New(8));
+            organHealth.RecomputeStage((heart, health), human);
+
+            var heartComp = entMan.GetComponent<HeartComponent>(heart);
+            SetPublicField(heartComp, nameof(HeartComponent.StopGracePeriod), TimeSpan.Zero);
+
+            Assert.That(health.Stage, Is.EqualTo(OrganDamageStage.Failing));
+        });
+
+        await pair.RunSeconds(8);
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var status = entMan.System<SharedStatusEffectsSystem>();
+            var heartComp = entMan.GetComponent<HeartComponent>(heart);
+            var damage = entMan.GetComponent<DamageableComponent>(human);
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(heartComp.Stopped, Is.True);
+                Assert.That(status.HasStatusEffect(human, "StatusEffectCMUCardiacArrest"), Is.True);
+                Assert.That(damage.TotalDamage, Is.GreaterThan(FixedPoint2.Zero));
+            });
+        });
+
+        await server.WaitPost(() =>
+        {
+            var entMan = server.EntMan;
+            var flow = entMan.System<CMUSurgeryFlowSystem>();
+            var traits = entMan.System<SharedCMUSurgicalTraitSystem>();
+            ClearSurgicalTraits(traits, torso);
+
+            var armed = ArmStep(
+                flow,
+                surgeon,
+                human,
+                torso,
+                "CMUSurgeryRepairHeart",
+                BodyPartType.Torso,
+                BodyPartSymmetry.None,
+                "CMUSurgeryRepairHeart");
+
+            armed = CompleteExpectedStep(entMan, flow, human, surgeon, armed, "organ_clamp", "CMUSurgeryRepairHeart")!;
+            CompleteExpectedStep(entMan, flow, human, surgeon, armed, "hemostat", "CMUSurgeryRepairHeart");
+            AssertAwaitingClosure(entMan, human, torso, "CMUSurgeryRepairHeart");
+
+            damageAfterRepair = entMan.GetComponent<DamageableComponent>(human).TotalDamage;
+
+            var heartComp = entMan.GetComponent<HeartComponent>(heart);
+            var health = entMan.GetComponent<OrganHealthComponent>(heart);
+            var status = entMan.System<SharedStatusEffectsSystem>();
+
+            Assert.Multiple(() =>
+            {
+                Assert.That(health.Stage, Is.EqualTo(OrganDamageStage.Healthy));
+                Assert.That(heartComp.Stopped, Is.False);
+                Assert.That(status.HasStatusEffect(human, "StatusEffectCMUCardiacArrest"), Is.False);
+            });
+        });
+
+        await pair.RunSeconds(3);
+
+        await server.WaitPost(() =>
+        {
+            var entMan = server.EntMan;
+            var damage = entMan.GetComponent<DamageableComponent>(human);
+
+            Assert.That(damage.TotalDamage, Is.LessThanOrEqualTo(damageAfterRepair));
+
+            entMan.DeleteEntity(human);
+            entMan.DeleteEntity(surgeon);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DamagedNormalHumanBrainAppearsAsRepairableHeadSurgery()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var dispatch = entMan.System<CMUSurgeryDispatchSystem>();
+            var organHealth = entMan.System<SharedOrganHealthSystem>();
+            var skills = entMan.System<SkillsSystem>();
+
+            var human = entMan.SpawnEntity("MobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                Assert.That(entMan.HasComponent<CMUHumanMedicalComponent>(human), Is.True);
+                entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+                skills.SetSkill(surgeon, "RMCSkillSurgery", 3);
+
+                var head = GetBodyPart(entMan, human, BodyPartType.Head, BodyPartSymmetry.None);
+                DamageOrgan<CMUBrainComponent>(entMan, organHealth, human, head);
+
+                var entries = dispatch.BuildPartEntries(human, surgeon);
+                var headEntry = entries.Find(entry =>
+                    entry.Type == BodyPartType.Head &&
+                    entry.Symmetry == BodyPartSymmetry.None);
+
+                Assert.That(headEntry, Is.Not.Null);
+                Assert.That(
+                    headEntry!.EligibleSurgeries.ConvertAll(entry => entry.SurgeryId),
+                    Does.Contain("CMUSurgeryRepairBrain"));
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+                entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task AutodocOffersWoundRepairForHandWounds()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var autodoc = entMan.System<CMUAutodocSystem>();
+
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+
+                var hand = GetBodyPart(entMan, human, BodyPartType.Hand, BodyPartSymmetry.Right);
+                AddBodyPartWound(entMan, hand, WoundType.Brute);
+
+                var entries = BuildAutodocPartEntries(autodoc, human, surgeon);
+                var handEntry = entries.Find(entry =>
+                    entry.Type == BodyPartType.Hand &&
+                    entry.Symmetry == BodyPartSymmetry.Right);
+
+                Assert.That(handEntry, Is.Not.Null);
+                Assert.That(
+                    handEntry!.EligibleSurgeries.ConvertAll(entry => entry.SurgeryId),
+                    Does.Contain("CMUAutodocRepairWounds"));
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+                entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
     public async Task OrganRemovalSurgeriesAdvanceToClosureAfterExtractionStep()
     {
         await using var pair = await PoolManager.GetServerClient();
@@ -1616,5 +1811,40 @@ public sealed class ConditionDrivenSurgeryTest
 
         Assert.Fail($"Expected CMU human to have {symmetry} {type}.");
         return EntityUid.Invalid;
+    }
+
+    private static void AddBodyPartWound(IEntityManager entMan, EntityUid part, WoundType type)
+    {
+        var wounds = entMan.EnsureComponent<BodyPartWoundComponent>(part);
+        GetWoundField<List<Wound>>(wounds, nameof(BodyPartWoundComponent.Wounds))
+            .Add(new Wound(FixedPoint2.New(10), FixedPoint2.Zero, 0f, null, type, false));
+        GetWoundField<List<WoundSize>>(wounds, nameof(BodyPartWoundComponent.Sizes)).Add(WoundSize.Deep);
+        GetWoundField<List<int>>(wounds, nameof(BodyPartWoundComponent.Bandages)).Add(0);
+        GetWoundField<List<WoundMechanism>>(wounds, nameof(BodyPartWoundComponent.Mechanisms))
+            .Add(type == WoundType.Burn ? WoundMechanism.Burn : WoundMechanism.Generic);
+        GetWoundField<List<WoundMechanismFlags>>(wounds, nameof(BodyPartWoundComponent.SecondaryMechanisms))
+            .Add(WoundMechanismFlags.None);
+        GetWoundField<List<WoundTreatmentQuality>>(wounds, nameof(BodyPartWoundComponent.TreatmentQualities))
+            .Add(WoundTreatmentQuality.Untreated);
+        GetWoundField<List<WoundCleanupFlags>>(wounds, nameof(BodyPartWoundComponent.Cleanup))
+            .Add(WoundCleanupFlags.None);
+    }
+
+    private static T GetWoundField<T>(BodyPartWoundComponent comp, string name)
+        => (T) typeof(BodyPartWoundComponent).GetField(
+            name,
+            BindingFlags.Instance | BindingFlags.Public)!.GetValue(comp)!;
+
+    private static List<CMUSurgeryPartEntry> BuildAutodocPartEntries(
+        CMUAutodocSystem autodoc,
+        EntityUid patient,
+        EntityUid viewer)
+    {
+        var method = typeof(CMUAutodocSystem).GetMethod(
+            "BuildAutodocPartEntries",
+            BindingFlags.Instance | BindingFlags.NonPublic);
+
+        Assert.That(method, Is.Not.Null);
+        return (List<CMUSurgeryPartEntry>) method!.Invoke(autodoc, [patient, viewer])!;
     }
 }
