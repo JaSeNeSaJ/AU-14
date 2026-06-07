@@ -230,6 +230,8 @@ public sealed partial class AreaEchoSystem : EntitySystem
 
         var originTileIndices = tileRef.GridIndices;
         var worldPosition = _transformSystem.GetWorldPosition(transformComponent);
+        if (!IsFinite(worldPosition))
+            return false;
 
         // At this point, we are ready for war against the client's pc.
         foreach (var direction in _calculatedDirections)
@@ -256,6 +258,9 @@ public sealed partial class AreaEchoSystem : EntitySystem
                     remainingDistance
                 );
 
+                if (!float.IsFinite(distanceCovered))
+                    break;
+
                 totalDistance += distanceCovered;
                 remainingDistance -= distanceCovered;
 
@@ -270,6 +275,9 @@ public sealed partial class AreaEchoSystem : EntitySystem
 
                 var previousRayWorldOriginPosition = currentOriginWorldPosition;
                 currentOriginWorldPosition = raycastResults.Value.HitPos; // it's now where we hit
+                if (!IsFinite(currentOriginWorldPosition))
+                    break;
+
                 currentTargetEntityUid = raycastResults.Value.HitEntity;
 
                 if (!_mapSystem.TryGetTileRef(entityGrid, gridComponent, currentOriginWorldPosition, out var hitTileRef)) // means tile that ray hit is invalid, just assume the ray ends here
@@ -282,13 +290,18 @@ public sealed partial class AreaEchoSystem : EntitySystem
                 var currentOriginLocalPosition = Vector2.Transform(currentOriginWorldPosition, worldMatrix);
 
                 var delta = currentOriginLocalPosition - previousRayOriginLocalPosition;
-                if (delta.LengthSquared() <= float.Epsilon + float.Epsilon)
-                {
+                if (!IsFinite(delta) ||
+                    delta.LengthSquared() <= float.Epsilon + float.Epsilon)
                     break;
-                }
 
-                var normalVector = GetNormalVector(delta);
-                normalVector = GetTileHitNormal(currentOriginLocalPosition, _mapSystem.TileToVector(gridRoofEntity, currentOriginTileIndices), gridRoofEntity.Comp1.TileSize);
+                var normalVector = GetTileHitNormal(
+                    currentOriginLocalPosition,
+                    _mapSystem.TileToVector(gridRoofEntity, currentOriginTileIndices),
+                    gridRoofEntity.Comp1.TileSize);
+
+                if (normalVector == Vector2.Zero)
+                    break;
+
                 currentDirectionVector = Reflect(currentDirectionVector, normalVector);
             }
 
@@ -299,23 +312,19 @@ public sealed partial class AreaEchoSystem : EntitySystem
         return true;
     }
 
-    /// <summary>
-    ///     Gets the normal angle of a Vector2, relative to
-    ///         0, 0.
-    /// </summary>
     [Pure]
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static Vector2 GetNormalVector(in Vector2 deltaVector)
-    {
-        return Vector2.Normalize(
-            MathF.Abs(deltaVector.X) > MathF.Abs(deltaVector.Y) ?
-            new Vector2(MathF.Sign(deltaVector.X), 0f) :
-            new Vector2(0f, MathF.Sign(deltaVector.Y))
-        );
-    }
+    private static bool IsFinite(in Vector2 vector)
+        => float.IsFinite(vector.X) && float.IsFinite(vector.Y);
 
-    Vector2 GetTileHitNormal(Vector2 rayHitPos, Vector2 tileOrigin, float tileSize)
+    private static Vector2 GetTileHitNormal(Vector2 rayHitPos, Vector2 tileOrigin, float tileSize)
     {
+        if (!IsFinite(rayHitPos) ||
+            !IsFinite(tileOrigin) ||
+            !float.IsFinite(tileSize) ||
+            tileSize <= 0f)
+            return Vector2.Zero;
+
         // Position inside the tile (0..tileSize)
         Vector2 local = rayHitPos - tileOrigin;
 
@@ -358,6 +367,9 @@ public sealed partial class AreaEchoSystem : EntitySystem
     )
     {
         var directionFidelityStep = directionVector * _calculationalFidelity;
+        if (!IsFinite(directionFidelityStep) ||
+            directionFidelityStep.LengthSquared() <= float.Epsilon)
+            return (0f, null);
 
         var ray = new CollisionRay(originWorldPosition, directionVector, _echoLayer);
         var rayResults = _physicsSystem.IntersectRay(mapId, ray, maxLength: maximumDistance, ignoredEnt: ignoredEntity, returnOnFirstHit: true);
@@ -366,6 +378,10 @@ public sealed partial class AreaEchoSystem : EntitySystem
         var rayMagnitude = rayResults.TryFirstOrNull(out var firstResult) ?
             MathF.Min(firstResult.Value.Distance, maximumDistance) :
             maximumDistance;
+
+        if (!float.IsFinite(rayMagnitude) ||
+            rayMagnitude <= 0f)
+            return (0f, firstResult);
 
         var nextCheckedPosition = new Vector2(originTileIndices.X, originTileIndices.Y) * gridRoofEntity.Comp1.TileSize + directionFidelityStep;
         var incrementedRayMagnitude = MarchRayByTiles(
