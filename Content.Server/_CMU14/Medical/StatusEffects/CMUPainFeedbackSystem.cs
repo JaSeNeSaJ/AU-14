@@ -124,13 +124,19 @@ public sealed partial class CMUPainFeedbackSystem : EntitySystem
             return 0f;
 
         if (value < shock)
-        {
-            var severeAmount = Math.Min(feedback.SevereBlurAmount, SevereBlurMax);
-            return Lerp(feedback.SevereBlurStartAmount, severeAmount, InverseLerp(severe, shock, value));
-        }
+            return GetSevereBlurAmount(feedback, severe, shock, feedback.SevereBlurEquivalentPain);
 
-        var shockEnd = Math.Max(feedback.ShockBlurFullPain, shock);
-        return Lerp(feedback.ShockBlurStartAmount, feedback.ShockBlurAmount, InverseLerp(shock, shockEnd, value));
+        return GetSevereBlurAmount(feedback, severe, shock, feedback.ShockBlurEquivalentPain);
+    }
+
+    private static float GetSevereBlurAmount(
+        CMUPainFeedbackComponent feedback,
+        float severe,
+        float shock,
+        float value)
+    {
+        var severeAmount = Math.Min(feedback.SevereBlurAmount, SevereBlurMax);
+        return Lerp(feedback.SevereBlurStartAmount, severeAmount, InverseLerp(severe, shock, value));
     }
 
     private static float InverseLerp(float from, float to, float value)
