@@ -46,8 +46,8 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
     {
         _entityManager = entityManager;
 
-        MinSize = new Vector2(720, 640);
-        SetSize = new Vector2(760, 680);
+        MinSize = new Vector2(820, 700);
+        SetSize = new Vector2(900, 760);
         Title = Loc.GetString("round-end-summary-window-title");
 
         RoundId = roundId;
@@ -84,17 +84,21 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         var roundEndSummaryContainerScrollbox = new ScrollContainer
         {
             VerticalExpand = true,
-            Margin = new Thickness(10),
+            Margin = new Thickness(12),
             HScrollEnabled = false,
         };
         var roundEndSummaryContainer = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            SeparationOverride = 10
+            SeparationOverride = 14
         };
 
         roundEndSummaryContainer.AddChild(MakeReportHeader(gamemode, roundId, roundDuration, playersInfo));
-        roundEndSummaryContainer.AddChild(MakeMetricGrid(roundId, roundDuration, playersInfo));
+
+        if (!string.IsNullOrWhiteSpace(roundEnd))
+            roundEndSummaryContainer.AddChild(MakeRoundEndTextPanel(roundEnd));
+
+        roundEndSummaryContainer.AddChild(MakeMetricSection(roundId, roundDuration, playersInfo));
 
         if (summaryStats.InjuryStats.Length == 0 && summaryStats.OddityStats.Length == 0)
         {
@@ -118,9 +122,6 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
                     summaryStats.OddityStats));
             }
         }
-
-        if (!string.IsNullOrWhiteSpace(roundEnd))
-            roundEndSummaryContainer.AddChild(MakeRoundEndTextPanel(roundEnd));
 
         roundEndSummaryContainerScrollbox.AddChild(roundEndSummaryContainer);
         roundEndSummaryTab.AddChild(roundEndSummaryContainerScrollbox);
@@ -153,11 +154,32 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = GetAfterActionDetail(gamemode, roundId, roundDuration, playersInfo.Length),
             FontColorOverride = TextMuted,
+            ClipText = true,
             HorizontalExpand = true
         });
 
         panel.AddChild(container);
         return panel;
+    }
+
+    private Control MakeMetricSection(
+        int roundId,
+        TimeSpan roundDuration,
+        RoundEndMessageEvent.RoundEndPlayerInfo[] playersInfo)
+    {
+        var section = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical,
+            SeparationOverride = 8,
+            HorizontalExpand = true
+        };
+
+        section.AddChild(MakeSectionHeader(
+            "round-end-summary-window-telemetry-title",
+            "round-end-summary-window-telemetry-subtitle"));
+        section.AddChild(MakeMetricGrid(roundId, roundDuration, playersInfo));
+
+        return section;
     }
 
     private Control MakeMetricGrid(
@@ -171,9 +193,9 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
         var grid = new GridContainer
         {
-            Columns = 3,
-            HSeparationOverride = 8,
-            VSeparationOverride = 8,
+            Columns = 2,
+            HSeparationOverride = 10,
+            VSeparationOverride = 10,
             HorizontalExpand = true
         };
 
@@ -208,12 +230,12 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
     private Control MakeMetricCard(string title, string value, Color accent)
     {
         var panel = MakePanel(CardQuiet, accent.WithAlpha(AccentBorderAlpha));
-        panel.MinSize = new Vector2(160, 56);
+        panel.MinSize = new Vector2(260, 64);
 
         var container = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            Margin = new Thickness(8, 6),
+            Margin = new Thickness(12, 8),
             SeparationOverride = 2,
             HorizontalExpand = true
         };
@@ -221,13 +243,17 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         container.AddChild(new Label
         {
             Text = title,
-            FontColorOverride = TextMuted
+            FontColorOverride = TextMuted,
+            ClipText = true,
+            HorizontalExpand = true
         });
         container.AddChild(new Label
         {
             Text = value,
             FontColorOverride = accent,
-            StyleClasses = { StyleNano.StyleClassLabelBig }
+            StyleClasses = { StyleNano.StyleClassLabelBig },
+            ClipText = true,
+            HorizontalExpand = true
         });
 
         panel.AddChild(container);
@@ -242,34 +268,23 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         var section = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            SeparationOverride = 6,
+            SeparationOverride = 8,
             HorizontalExpand = true
         };
 
-        section.AddChild(new Label
-        {
-            Text = Loc.GetString(title),
-            FontColorOverride = Text,
-            StyleClasses = { StyleBase.StyleClassLabelHeading }
-        });
-        section.AddChild(new Label
-        {
-            Text = Loc.GetString(subtitle),
-            FontColorOverride = TextMuted
-        });
+        section.AddChild(MakeSectionHeader(title, subtitle));
 
-        var grid = new GridContainer
+        var list = new BoxContainer
         {
-            Columns = 2,
-            HSeparationOverride = 8,
-            VSeparationOverride = 8,
+            Orientation = LayoutOrientation.Vertical,
+            SeparationOverride = 8,
             HorizontalExpand = true
         };
 
         foreach (var stat in stats)
-            grid.AddChild(MakeStatCard(stat));
+            list.AddChild(MakeStatCard(stat));
 
-        section.AddChild(grid);
+        section.AddChild(list);
         return section;
     }
 
@@ -277,23 +292,25 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
     {
         var accent = GetStatColor(stat.Color);
         var panel = MakePanel(CardQuiet, accent.WithAlpha(AccentBorderAlpha));
-        panel.MinSize = new Vector2(310, 82);
+        panel.MinSize = new Vector2(0, 76);
 
         var row = new BoxContainer
         {
             Orientation = LayoutOrientation.Horizontal,
-            Margin = new Thickness(10),
-            SeparationOverride = 10,
+            Margin = new Thickness(12, 10),
+            SeparationOverride = 12,
             HorizontalExpand = true
         };
 
         var value = MakePanel(Background, accent.WithAlpha(AccentBorderAlpha));
-        value.MinSize = new Vector2(54, 54);
+        value.HorizontalExpand = false;
+        value.MinSize = new Vector2(64, 52);
         value.AddChild(new Label
         {
             Text = stat.Value.ToString(),
             FontColorOverride = accent,
             StyleClasses = { StyleNano.StyleClassLabelBig },
+            ClipText = true,
             HorizontalAlignment = HAlignment.Center,
             VerticalAlignment = VAlignment.Center
         });
@@ -310,12 +327,14 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = Loc.GetString(stat.Label),
             FontColorOverride = Text,
+            ClipText = true,
             HorizontalExpand = true
         });
         text.AddChild(new Label
         {
             Text = Loc.GetString(stat.Detail),
             FontColorOverride = TextMuted,
+            ClipText = true,
             HorizontalExpand = true
         });
 
@@ -330,7 +349,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         var container = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            Margin = new Thickness(10, 8),
+            Margin = new Thickness(12, 10),
             SeparationOverride = 2,
             HorizontalExpand = true
         };
@@ -344,7 +363,9 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         container.AddChild(new Label
         {
             Text = Loc.GetString("round-end-summary-window-telemetry-empty"),
-            FontColorOverride = TextMuted
+            FontColorOverride = TextMuted,
+            ClipText = true,
+            HorizontalExpand = true
         });
 
         panel.AddChild(container);
@@ -353,12 +374,12 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
     private Control MakeRoundEndTextPanel(string roundEnd)
     {
-        var panel = MakePanel(Background, Border);
+        var panel = MakePanel(CardQuiet, MarineBlue.WithAlpha(AccentBorderAlpha));
         var container = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            Margin = new Thickness(10),
-            SeparationOverride = 6,
+            Margin = new Thickness(12),
+            SeparationOverride = 8,
             HorizontalExpand = true
         };
 
@@ -371,6 +392,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
         var roundEndLabel = new RichTextLabel
         {
+            StyleClasses = { StyleNano.StyleClassCrtRichText },
             HorizontalExpand = true
         };
         roundEndLabel.SetMarkup(roundEnd.Trim());
@@ -391,13 +413,13 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         var playerInfoContainerScrollbox = new ScrollContainer
         {
             VerticalExpand = true,
-            Margin = new Thickness(10),
+            Margin = new Thickness(12),
             HScrollEnabled = false
         };
         var playerInfoContainer = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            SeparationOverride = 8
+            SeparationOverride = 10
         };
 
         playerInfoContainer.AddChild(MakeManifestHeader(playersInfo));
@@ -423,7 +445,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = Loc.GetString("round-end-summary-window-manifest-title", ("players", playersInfo.Length)),
             FontColorOverride = Text,
-            Margin = new Thickness(10, 8),
+            Margin = new Thickness(12, 10),
             StyleClasses = { StyleBase.StyleClassLabelHeading }
         });
 
@@ -442,8 +464,8 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         var row = new BoxContainer
         {
             Orientation = LayoutOrientation.Horizontal,
-            Margin = new Thickness(8),
-            SeparationOverride = 8,
+            Margin = new Thickness(10),
+            SeparationOverride = 12,
             HorizontalExpand = true
         };
 
@@ -460,15 +482,25 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = playerInfo.PlayerICName ?? playerInfo.PlayerOOCName,
             FontColorOverride = accent,
+            ClipText = true,
+            HorizontalExpand = true
+        });
+        info.AddChild(new Label
+        {
+            Text = Loc.GetString(
+                "round-end-summary-window-player-ooc-line",
+                ("playerOOCName", playerInfo.PlayerOOCName)),
+            FontColorOverride = TextMuted,
+            ClipText = true,
             HorizontalExpand = true
         });
         info.AddChild(new Label
         {
             Text = Loc.GetString(
                 "round-end-summary-window-player-role-line",
-                ("playerOOCName", playerInfo.PlayerOOCName),
                 ("playerRole", GetPlayerRole(playerInfo))),
             FontColorOverride = TextMuted,
+            ClipText = true,
             HorizontalExpand = true
         });
 
@@ -514,11 +546,13 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
                 OverrideDirection = Direction.South,
                 VerticalAlignment = VAlignment.Center,
                 SetSize = new Vector2(42, 42),
+                MinSize = new Vector2(42, 42),
                 VerticalExpand = true,
             };
         }
 
         var placeholder = MakePanel(Background, Border);
+        placeholder.HorizontalExpand = false;
         placeholder.MinSize = new Vector2(42, 42);
         return placeholder;
     }
@@ -526,14 +560,47 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
     private Control MakeBadge(string label, Color color)
     {
         var badge = MakePanel(Background, color.WithAlpha(AccentBorderAlpha));
+        badge.HorizontalExpand = false;
         badge.AddChild(new Label
         {
             Text = label,
             FontColorOverride = color,
-            Margin = new Thickness(5, 2)
+            Margin = new Thickness(6, 2)
         });
 
         return badge;
+    }
+
+    private static Control MakeSectionHeader(string title, string? subtitle = null)
+    {
+        var container = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical,
+            SeparationOverride = 2,
+            HorizontalExpand = true
+        };
+
+        container.AddChild(new Label
+        {
+            Text = Loc.GetString(title),
+            FontColorOverride = Text,
+            StyleClasses = { StyleBase.StyleClassLabelHeading },
+            ClipText = true,
+            HorizontalExpand = true
+        });
+
+        if (subtitle != null)
+        {
+            container.AddChild(new Label
+            {
+                Text = Loc.GetString(subtitle),
+                FontColorOverride = TextMuted,
+                ClipText = true,
+                HorizontalExpand = true
+            });
+        }
+
+        return container;
     }
 
     private static PanelContainer MakePanel(Color background, Color border)
