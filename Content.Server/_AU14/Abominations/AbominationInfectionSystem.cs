@@ -94,9 +94,6 @@ public sealed partial class AbominationInfectionSystem : EntitySystem
             return false;
         if (HasComp<SynthComponent>(target))
             return false;
-        // Goo zombies are their own threat — abominations cannot reclaim them.
-        if (HasComp<Content.Shared.AU14.GooHorde.GooZombieComponent>(target))
-            return false;
         // Dead targets can't be infected — the corpse has nothing left to host.
         if (_mobState.IsDead(target))
             return false;
