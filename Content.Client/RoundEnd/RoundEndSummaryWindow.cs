@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Client.Lobby.UI;
 using Content.Client.Message;
 using Content.Client.Stylesheets;
 using Content.Shared.GameTicking;
@@ -15,18 +16,20 @@ namespace Content.Client.RoundEnd;
 
 public sealed class RoundEndSummaryWindow : DefaultWindow
 {
-    private static readonly Color Background = Color.FromHex("#0D141B");
-    private static readonly Color Card = Color.FromHex("#121F2B");
-    private static readonly Color CardQuiet = Color.FromHex("#0F1923");
-    private static readonly Color Border = Color.FromHex("#2A3C4C");
-    private static readonly Color Text = Color.FromHex("#E7EEF3");
-    private static readonly Color TextMuted = Color.FromHex("#95A5B4");
-    private static readonly Color MarineBlue = Color.FromHex("#66B6FF");
-    private static readonly Color MedicalCyan = Color.FromHex("#52D6D3");
-    private static readonly Color WarningGold = Color.FromHex("#E9B96E");
-    private static readonly Color TraumaRed = Color.FromHex("#F36D67");
-    private static readonly Color OddityPurple = Color.FromHex("#B792FF");
-    private static readonly Color SuccessGreen = Color.FromHex("#75D17A");
+    private const float PanelBorderAlpha = 0.65f;
+    private const float AccentBorderAlpha = 0.85f;
+    private static Color Background => StyleNano.CrtBackground;
+    private static Color Card => StyleNano.CrtPanelBackground;
+    private static Color CardQuiet => StyleNano.CrtInsetBackground;
+    private static Color Border => StyleNano.CrtGreenDim.WithAlpha(PanelBorderAlpha);
+    private static Color Text => StyleNano.CrtGreenSoft;
+    private static Color TextMuted => StyleNano.CrtGreenDim;
+    private static Color MarineBlue => StyleNano.CrtGreen;
+    private static Color MedicalCyan => StyleNano.CrtGreenSoft;
+    private static Color WarningGold => StyleNano.CrtGreenSoft;
+    private static Color TraumaRed => StyleNano.CrtGreenSoft;
+    private static Color OddityPurple => StyleNano.CrtGreen;
+    private static Color SuccessGreen => StyleNano.CrtGreenSoft;
 
     private readonly IEntityManager _entityManager;
 
@@ -58,6 +61,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         roundEndTabs.AddChild(MakePlayerManifestTab(info));
 
         Contents.AddChild(roundEndTabs);
+        CrtLobbyTheme.ApplyWindow(this, useCrtTypography: true);
 
         OpenCenteredRight();
         MoveToFront();
@@ -91,16 +95,31 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
         roundEndSummaryContainer.AddChild(MakeReportHeader(gamemode, roundId, roundDuration, playersInfo));
         roundEndSummaryContainer.AddChild(MakeMetricGrid(roundId, roundDuration, playersInfo));
-        roundEndSummaryContainer.AddChild(MakeStatSection(
-            "round-end-summary-window-injury-ledger-title",
-            "round-end-summary-window-injury-ledger-subtitle",
-            summaryStats.InjuryStats));
-        roundEndSummaryContainer.AddChild(MakeStatSection(
-            "round-end-summary-window-oddities-title",
-            "round-end-summary-window-oddities-subtitle",
-            summaryStats.OddityStats));
 
-        if (!string.IsNullOrEmpty(roundEnd))
+        if (summaryStats.InjuryStats.Length == 0 && summaryStats.OddityStats.Length == 0)
+        {
+            roundEndSummaryContainer.AddChild(MakeEmptyStatsPanel());
+        }
+        else
+        {
+            if (summaryStats.InjuryStats.Length > 0)
+            {
+                roundEndSummaryContainer.AddChild(MakeStatSection(
+                    "round-end-summary-window-injury-ledger-title",
+                    "round-end-summary-window-injury-ledger-subtitle",
+                    summaryStats.InjuryStats));
+            }
+
+            if (summaryStats.OddityStats.Length > 0)
+            {
+                roundEndSummaryContainer.AddChild(MakeStatSection(
+                    "round-end-summary-window-oddities-title",
+                    "round-end-summary-window-oddities-subtitle",
+                    summaryStats.OddityStats));
+            }
+        }
+
+        if (!string.IsNullOrWhiteSpace(roundEnd))
             roundEndSummaryContainer.AddChild(MakeRoundEndTextPanel(roundEnd));
 
         roundEndSummaryContainerScrollbox.AddChild(roundEndSummaryContainer);
@@ -115,7 +134,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         TimeSpan roundDuration,
         RoundEndMessageEvent.RoundEndPlayerInfo[] playersInfo)
     {
-        var panel = MakePanel(CardQuiet, MarineBlue.WithAlpha(0.65f));
+        var panel = MakePanel(CardQuiet, MarineBlue.WithAlpha(AccentBorderAlpha));
         var container = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
@@ -128,16 +147,11 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = Loc.GetString("round-end-summary-window-after-action-title"),
             FontColorOverride = Text,
-            StyleClasses = { StyleNano.StyleClassLabelHeadingBigger }
+            StyleClasses = { StyleBase.StyleClassLabelHeading }
         });
         container.AddChild(new Label
         {
-            Text = Loc.GetString(
-                "round-end-summary-window-after-action-detail",
-                ("roundId", roundId),
-                ("gamemode", gamemode),
-                ("duration", FormatDuration(roundDuration)),
-                ("players", playersInfo.Length)),
+            Text = GetAfterActionDetail(gamemode, roundId, roundDuration, playersInfo.Length),
             FontColorOverride = TextMuted,
             HorizontalExpand = true
         });
@@ -157,7 +171,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
         var grid = new GridContainer
         {
-            Columns = 4,
+            Columns = 3,
             HSeparationOverride = 8,
             VSeparationOverride = 8,
             HorizontalExpand = true
@@ -193,13 +207,13 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
     private Control MakeMetricCard(string title, string value, Color accent)
     {
-        var panel = MakePanel(accent.WithAlpha(0.13f), accent.WithAlpha(0.72f));
-        panel.MinSize = new Vector2(160, 68);
+        var panel = MakePanel(CardQuiet, accent.WithAlpha(AccentBorderAlpha));
+        panel.MinSize = new Vector2(160, 56);
 
         var container = new BoxContainer
         {
             Orientation = LayoutOrientation.Vertical,
-            Margin = new Thickness(10, 8),
+            Margin = new Thickness(8, 6),
             SeparationOverride = 2,
             HorizontalExpand = true
         };
@@ -236,19 +250,13 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = Loc.GetString(title),
             FontColorOverride = Text,
-            StyleClasses = { StyleNano.StyleClassLabelHeadingBigger }
+            StyleClasses = { StyleBase.StyleClassLabelHeading }
         });
         section.AddChild(new Label
         {
             Text = Loc.GetString(subtitle),
             FontColorOverride = TextMuted
         });
-
-        if (stats.Length == 0)
-        {
-            section.AddChild(MakeEmptyStatsPanel());
-            return section;
-        }
 
         var grid = new GridContainer
         {
@@ -268,7 +276,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
     private Control MakeStatCard(RoundEndSummaryStat stat)
     {
         var accent = GetStatColor(stat.Color);
-        var panel = MakePanel(accent.WithAlpha(0.14f), accent.WithAlpha(0.72f));
+        var panel = MakePanel(CardQuiet, accent.WithAlpha(AccentBorderAlpha));
         panel.MinSize = new Vector2(310, 82);
 
         var row = new BoxContainer
@@ -279,7 +287,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
             HorizontalExpand = true
         };
 
-        var value = MakePanel(accent.WithAlpha(0.16f), accent.WithAlpha(0.6f));
+        var value = MakePanel(Background, accent.WithAlpha(AccentBorderAlpha));
         value.MinSize = new Vector2(54, 54);
         value.AddChild(new Label
         {
@@ -318,14 +326,28 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
     private Control MakeEmptyStatsPanel()
     {
-        var panel = MakePanel(Card, Border);
-        panel.AddChild(new Label
+        var panel = MakePanel(CardQuiet, Border);
+        var container = new BoxContainer
+        {
+            Orientation = LayoutOrientation.Vertical,
+            Margin = new Thickness(10, 8),
+            SeparationOverride = 2,
+            HorizontalExpand = true
+        };
+
+        container.AddChild(new Label
+        {
+            Text = Loc.GetString("round-end-summary-window-telemetry-empty-title"),
+            FontColorOverride = Text,
+            StyleClasses = { StyleBase.StyleClassLabelHeading }
+        });
+        container.AddChild(new Label
         {
             Text = Loc.GetString("round-end-summary-window-telemetry-empty"),
-            FontColorOverride = TextMuted,
-            Margin = new Thickness(10, 8)
+            FontColorOverride = TextMuted
         });
 
+        panel.AddChild(container);
         return panel;
     }
 
@@ -344,14 +366,14 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
         {
             Text = Loc.GetString("round-end-summary-window-transmission-title"),
             FontColorOverride = Text,
-            StyleClasses = { StyleNano.StyleClassLabelHeadingBigger }
+            StyleClasses = { StyleBase.StyleClassLabelHeading }
         });
 
         var roundEndLabel = new RichTextLabel
         {
             HorizontalExpand = true
         };
-        roundEndLabel.SetMarkup(roundEnd);
+        roundEndLabel.SetMarkup(roundEnd.Trim());
         container.AddChild(roundEndLabel);
 
         panel.AddChild(container);
@@ -396,13 +418,13 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
 
     private Control MakeManifestHeader(RoundEndMessageEvent.RoundEndPlayerInfo[] playersInfo)
     {
-        var panel = MakePanel(CardQuiet, MarineBlue.WithAlpha(0.65f));
+        var panel = MakePanel(CardQuiet, MarineBlue.WithAlpha(AccentBorderAlpha));
         panel.AddChild(new Label
         {
             Text = Loc.GetString("round-end-summary-window-manifest-title", ("players", playersInfo.Length)),
             FontColorOverride = Text,
             Margin = new Thickness(10, 8),
-            StyleClasses = { StyleNano.StyleClassLabelHeadingBigger }
+            StyleClasses = { StyleBase.StyleClassLabelHeading }
         });
 
         return panel;
@@ -416,7 +438,7 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
                 ? MarineBlue
                 : MedicalCyan;
 
-        var panel = MakePanel(Card, accent.WithAlpha(0.64f));
+        var panel = MakePanel(CardQuiet, accent.WithAlpha(AccentBorderAlpha));
         var row = new BoxContainer
         {
             Orientation = LayoutOrientation.Horizontal,
@@ -496,14 +518,14 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
             };
         }
 
-        var placeholder = MakePanel(CardQuiet, Border);
+        var placeholder = MakePanel(Background, Border);
         placeholder.MinSize = new Vector2(42, 42);
         return placeholder;
     }
 
     private Control MakeBadge(string label, Color color)
     {
-        var badge = MakePanel(color.WithAlpha(0.13f), color.WithAlpha(0.58f));
+        var badge = MakePanel(Background, color.WithAlpha(AccentBorderAlpha));
         badge.AddChild(new Label
         {
             Text = label,
@@ -556,5 +578,26 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
             ("hours", (roundDuration.Days * 24) + roundDuration.Hours),
             ("minutes", roundDuration.Minutes),
             ("seconds", roundDuration.Seconds));
+    }
+
+    private static string GetAfterActionDetail(
+        string gamemode,
+        int roundId,
+        TimeSpan roundDuration,
+        int playerCount)
+    {
+        var duration = FormatDuration(roundDuration);
+        return string.IsNullOrWhiteSpace(gamemode)
+            ? Loc.GetString(
+                "round-end-summary-window-after-action-detail-no-gamemode",
+                ("roundId", roundId),
+                ("duration", duration),
+                ("players", playerCount))
+            : Loc.GetString(
+                "round-end-summary-window-after-action-detail",
+                ("roundId", roundId),
+                ("gamemode", gamemode),
+                ("duration", duration),
+                ("players", playerCount));
     }
 }

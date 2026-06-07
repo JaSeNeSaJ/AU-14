@@ -8,6 +8,7 @@ round-end-summary-window-player-info-if-observer-text = [color=gray]{$playerOOCN
 round-end-summary-window-player-info-if-not-observer-text = [color=gray]{$playerOOCName}[/color] was [color={$icNameColor}]{$playerICName}[/color] playing role of [color=orange]{$playerRole}[/color].
 round-end-summary-window-after-action-title = After-action report
 round-end-summary-window-after-action-detail = Round #{$roundId} ran {$gamemode} for {$duration} with {$players} recorded players.
+round-end-summary-window-after-action-detail-no-gamemode = Round #{$roundId} ran for {$duration} with {$players} recorded players.
 round-end-summary-window-duration-value = {$hours}h {$minutes}m {$seconds}s
 round-end-summary-window-metric-round = Round
 round-end-summary-window-metric-round-value = #{$roundId}
@@ -20,7 +21,8 @@ round-end-summary-window-injury-ledger-title = Global injury ledger
 round-end-summary-window-injury-ledger-subtitle = The medical damage report collected across the whole round.
 round-end-summary-window-oddities-title = Common oddities
 round-end-summary-window-oddities-subtitle = The strange-but-common incidents that made it into the logs.
-round-end-summary-window-telemetry-empty = No medical telemetry was recorded for this section.
+round-end-summary-window-telemetry-empty-title = No medical telemetry
+round-end-summary-window-telemetry-empty = Injury and oddity counters will appear here once the round records them.
 round-end-summary-window-transmission-title = Final transmission
 round-end-summary-window-manifest-title = Player manifest ({$players})
 round-end-summary-window-player-role-line = {$playerOOCName} - {$playerRole}
