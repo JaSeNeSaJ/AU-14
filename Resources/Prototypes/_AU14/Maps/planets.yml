@@ -944,9 +944,9 @@
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
     joboverrides:
-    AU14JobLEOLeaderBase: AU14JobCivilianColonySecurityLeader
-    AU14JobLEOBase: AU14JobCivilianColonySecurityOfficer
-    AU14JobCivillianColonyAdministrtor: AU14JobCivilianCorporateAdministrator
+      AU14JobLEOLeaderBase: AU14JobCivilianColonySecurityLeader
+      AU14JobLEOBase: AU14JobCivilianColonySecurityOfficer
+      AU14JobCivillianColonyAdministrtor: AU14JobCivilianCorporateAdministrator
 
 - type: lorePrimer
   id: AU14PrimerPlanetChances
