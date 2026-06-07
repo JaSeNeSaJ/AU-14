@@ -540,7 +540,8 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
                 SetActiveTab(_activeTab);
 
             TabBarScroll.Visible = anyVisibleTabs;
-            SubTabBarScroll.Visible = anyVisibleTabs && _activeTab != null;
+            SubTabBarScroll.Visible = anyVisibleTabs &&
+                                      _activeTab?.SubTabs.Any(subTab => subTab.Button.Visible) == true;
             ContentPanel.Visible = anyVisibleTabs;
             EmptyLabel.Text = string.IsNullOrWhiteSpace(_searchText)
                 ? Loc.GetString("ghost-target-window-empty")
@@ -580,7 +581,10 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
             SubTabBar.DisposeAllChildren();
 
             if (_activeTab == null)
+            {
+                SubTabBarScroll.Visible = false;
                 return;
+            }
 
             _activeTab.SubTabs.Clear();
 
@@ -590,6 +594,14 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
                 .OrderBy(GetSectionOrder)
                 .ThenBy(section => section, OrdinalComparer)
                 .ToList();
+
+            if (sections.Count <= 1)
+            {
+                _activeTab.ActiveSubTab = GhostWarpGrouping.SectionAll;
+                SubTabBarScroll.Visible = false;
+                return;
+            }
+
             sections.Insert(0, GhostWarpGrouping.SectionAll);
 
             var compact = sections.Count >= 6;
