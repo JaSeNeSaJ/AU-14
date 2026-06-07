@@ -5,6 +5,7 @@
   description: An automated supply vendor hooked up to a storage of medical supplies.
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/med.rsi
     layers:
@@ -129,6 +130,7 @@
   description: The WeYu Med-Sci Brand Blood Pack Dispensary is the premier, top-of-the-line blood dispenser of 2105! Get yours today! #dont update year, that`s a joke from cm13
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/blood.rsi
     snapCardinals: true
@@ -164,6 +166,7 @@
   description: The WeYu Med-Sci Brand Blood Pack Dispensary is the premier, top-of-the-line blood dispenser of 2105! Get yours today! #dont update year, that`s a joke from cm13
   suffix: AU14 MED
   components:
+  - type: AU14MedVendorDistressLock
   - type: Sprite
     sprite: _RMC14/Structures/Machines/VendingMachines/blood.rsi
     snapCardinals: true
