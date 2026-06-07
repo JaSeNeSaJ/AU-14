@@ -10,6 +10,10 @@
 - type: auThirdParty
   id: CLFSurvsBig
   partyspawn: CLFSurvsSpawnBig
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
   entrymethod: ground
   weight: 25
   minplayers: 101
@@ -29,6 +33,10 @@
 - type: auThirdParty
   id: CLFSurvsMedium
   partyspawn: CLFSurvsSpawnBig
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
   entrymethod: ground
   weight: 25
   minplayers: 51
@@ -48,6 +56,10 @@
 - type: auThirdParty
   id: CLFSurvsSmall
   partyspawn: CLFSurvsSpawnBig
+  blacklistedgamemodes:
+    - insurgency
+    - forceonforce
+    - colonyfall
   entrymethod: ground
   weight: 25
   minplayers: 20
