@@ -58,8 +58,9 @@
     - ActionXenoAcidNormal
     - ActionXenoPheromones
     - ActionXenoWordQueen
-#    - ActionXenoPsychicWhisper
-#    - ActionXenoPsychicRadiance
+    - ActionXenoPsychicWhisper
+    - ActionXenoPsychicRadiance
+    - ActionXenoGiveOrder
     - ActionXenoGut
     - ActionXenoPlantWeeds
     - ActionXenoChooseStructure
@@ -103,6 +104,7 @@
     xenoArmor: 25
     explosionArmor: 100
   - type: XenoWordQueen
+  - type: XenoPsychicCommunication
   - type: VehicleDamageMultiplier
     multiplier: 4
   - type: InnateCommandSpeech
