@@ -461,7 +461,7 @@ public sealed partial class SharedXenoConstructionSystem : EntitySystem
         };
     }
 
-    private EntProtoId GetQueenAnimationVariant(EntProtoId originalId)
+    private EntProtoId GetResinUpgradeTarget(EntProtoId originalId)
     {
         return originalId.Id switch
         {
@@ -547,7 +547,7 @@ public sealed partial class SharedXenoConstructionSystem : EntitySystem
         if (attempt.Cancelled)
             return;
 
-        var animationChoice = hasBoost ? GetQueenAnimationVariant(choice) : choice;
+        var animationChoice = hasBoost ? GetResinUpgradeTarget(choice) : choice;
         var effectId = XenoStructuresAnimation + animationChoice;
         var coordinates = GetNetCoordinates(args.Target);
         var entityCoords = GetCoordinates(coordinates);
