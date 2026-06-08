@@ -581,50 +581,38 @@ public abstract partial class SharedCMAutomatedVendorSystem : EntitySystem
             }
         }
 
-    if (section.SharedJOLimit is { } joLimit) // CMU14 JO limit
-    {
-        if (TryComp<AU14VendorJOComponent>(vendor, out var thisJOVendor))
+        if (section.SharedJOLimit is { } joLimit) // CMU14 JO limit
         {
-            // If the vendor's own value is at or above the capacity, immediately return.
-            if (thisJOVendor.GlobalSharedVends.TryGetValue(args.Entry, out var vendCount) &&
-                vendCount >= joLimit)
+            if (TryComp<AU14VendorJOComponent>(vendor, out var thisJOVendor))
             {
-                // FIXME
-                ResetChoices();
-                _popup.PopupEntity(Loc.GetString("au14-vending-machine-jo-max"), vendor, actor);
-                return;
-            }
+                // Get every AU14VendorJO
+                var joVendors = EntityQueryEnumerator<AU14VendorJOComponent>();
+                var allVendorsTotal = 0;
 
-            // Get every AU14VendorJO
-            var joVendors = EntityQueryEnumerator<AU14VendorJOComponent>();
-            var allVendorsTotal = 0;
-
-            // Goes through each AU14VendorJO and gets the value for this kit type.
-            while (joVendors.MoveNext(out _, out var joVendorComponent))
-            {
-                foreach (var linkedEntry in args.LinkedEntries)
+                // Goes through each AU14VendorJO and gets the value for this kit type.
+                while (joVendors.MoveNext(out _, out var joVendorComponent))
                 {
-                    joVendorComponent.GlobalSharedVends.TryGetValue(linkedEntry, out var linkedCount);
-                    allVendorsTotal += linkedCount;
+                    foreach (var linkedEntry in args.LinkedEntries)
+                    {
+                        joVendorComponent.GlobalSharedVends.TryGetValue(linkedEntry, out var linkedCount);
+                        allVendorsTotal += linkedCount;
+                    }
+                    if (joVendorComponent.GlobalSharedVends.TryGetValue(args.Entry, out var vendCount))
+                        allVendorsTotal += vendCount;
                 }
-                if (joVendorComponent.GlobalSharedVends.TryGetValue(args.Entry, out vendCount))
+
+                if (allVendorsTotal >= joLimit)
                 {
-                    allVendorsTotal += vendCount;
+                    ResetChoices();
+                    _popup.PopupEntity(Loc.GetString("au14-vending-machine-jo-max"), vendor.Owner, actor);
+                    return;
                 }
-            }
 
-            if (allVendorsTotal >= joLimit)
-            {
-                ResetChoices();
-                _popup.PopupEntity(Loc.GetString("au14-vending-machine-jo-max"), vendor.Owner, actor);
-                return;
+                var old = thisJOVendor.GlobalSharedVends.GetValueOrDefault(args.Entry, 0);
+                thisJOVendor.GlobalSharedVends[args.Entry] = old + 1;
+                Dirty(vendor, thisJOVendor);
             }
-
-            var old = thisJOVendor.GlobalSharedVends.GetValueOrDefault(args.Entry, 0);
-            thisJOVendor.GlobalSharedVends[args.Entry] = old + 1;
-            Dirty(vendor, thisJOVendor);
         }
-    }
 
         if (entry.Points != null)
         {
