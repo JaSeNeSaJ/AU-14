@@ -2597,5 +2597,93 @@
   id: 216
   time: '2026-06-07T16:13:58.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1246
+- author: JaSeNeSaJ
+  changes:
+  - message: Chair rotation
+    type: Fix
+  - message: Xeno kudzu
+    type: Remove
+  - message: Cleaned formatting on gamemodes.yml
+    type: Tweak
+  id: 217
+  time: '2026-06-07T21:19:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/991
+- author: maertayn
+  changes:
+  - message: Job Normalization - for military jobs -> only apply overrides (use the
+      new "inheritAddComponentSpecials"), let the base abstract prototype do all the
+      heavy lifting - one centralized definition will prevent maintaining from becoming
+      a chore and adding custom factions becomes a breeze
+    type: Code
+  - message: Opfor/Govfor have faction colored TacMap icons per role (gets rid of
+      the synth/smiley icons!)
+    type: Add
+  id: 218
+  time: '2026-06-08T00:38:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1250
+- author: potatoed6
+  changes:
+  - message: EO, Adjutant and IO icons for govfor
+    type: Add
+  - message: 'Now kits are limited: 1 Adjutant, 2 IOs, 2 SOs, 2 EOs'
+    type: Tweak
+  - message: CO icon is a bit cooler now
+    type: Tweak
+  id: 219
+  time: '2026-06-08T00:39:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1216
+- author: Kadeo64
+  changes:
+  - message: Removed chances and sorokyne from insurgency map rotation.
+    type: Remove
+  id: 220
+  time: '2026-06-08T00:41:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1253
+- author: troytroy400
+  changes:
+  - message: Port Neroid made MultiZ
+    type: Add
+  - message: Store racks now act as shopkeeper stores.
+    type: Add
+  - message: Sheperds Pride and Stable Garrison temporarily removed from Distress
+      Signal.
+    type: Tweak
+  id: 221
+  time: '2026-06-08T06:52:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1257
+- author: 400Ferrets
+  changes:
+  - message: Port Neroid grass is now semi-weedable, instead of unweedable. (Clusters,
+      Gardener weeds only)
+    type: Fix
+  id: 222
+  time: '2026-06-08T11:37:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1261
+- author: deepdarkdepths
+  changes:
+  - message: Added the Despoiler, a new Tier 3 xeno.
+    type: Add
+  id: 223
+  time: '2026-06-08T12:16:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1256
+- author: TheHellFireo
+  changes:
+  - message: Ported RMC-14#9832 parasite duplicate infection behavior.
+    type: Tweak
+  - message: Ported RMC-14#9963 xeno lag compensation updates.
+    type: Tweak
+  - message: Ported RMC-14#9905 weld effects and paired door behavior.
+    type: Tweak
+  - message: Ported RMC-14#9999 MB-6 folding barricades.
+    type: Add
+  - message: Ported RMC-14#9956 Despoiler with restored CM13 sprites.
+    type: Add
+  - message: Added the MB-6 to all AU14 platoon engineer vendors.
+    type: Add
+  - message: Restored timestamps in the new admin logs panel.
+    type: Fix
+  id: 224
+  time: '2026-06-08T12:29:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1262
 Name: CMU
 Order: -1
