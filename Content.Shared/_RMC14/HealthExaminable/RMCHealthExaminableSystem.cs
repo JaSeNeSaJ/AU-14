@@ -1,4 +1,3 @@
-using System.Collections.Immutable;
 using Content.Shared._CMU14.Medical;
 using Content.Shared._CMU14.Medical.Bones;
 using Content.Shared._CMU14.Medical.Wounds;
@@ -22,7 +21,15 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
     private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
     private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";
 
-    private readonly ImmutableArray<FixedPoint2> _thresholds = ImmutableArray.Create<FixedPoint2>(25, 50, 75, 100, 200, 300);
+    private static readonly FixedPoint2[] Thresholds = new FixedPoint2[]
+    {
+        FixedPoint2.New(25),
+        FixedPoint2.New(50),
+        FixedPoint2.New(75),
+        FixedPoint2.New(100),
+        FixedPoint2.New(200),
+        FixedPoint2.New(300),
+    };
 
     public override void Initialize()
     {
@@ -51,9 +58,9 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
                 if (!damageable.DamagePerGroup.TryGetValue(group, out var groupDamage))
                     continue;
 
-                for (var i = _thresholds.Length - 1; i >= 0; i--)
+                for (var i = Thresholds.Length - 1; i >= 0; i--)
                 {
-                    var threshold = _thresholds[i];
+                    var threshold = Thresholds[i];
                     if (groupDamage < threshold)
                         continue;
 

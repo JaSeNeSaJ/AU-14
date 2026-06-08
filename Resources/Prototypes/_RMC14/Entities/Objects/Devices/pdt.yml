@@ -45,35 +45,6 @@
         startingItem: RMCPowerCellCrap
 
 - type: entity
-  abstract: true
-  parent: RMCBaseUniformAccessory
-  id: RMCWatchBaseL
-  name: watch
-  components:
-  - type: UniformAccessory
-    category: WristL
-    limit: 1
-  - type: Tag
-    tags:
-    - Watch
-
-- type: entity
-  parent: BaseStorageItem
-  id: RMCWatchCase
-  name: watch case
-  description: A small case for storing wrist accessories.
-  components:
-  - type: Sprite
-    sprite: _RMC14/Objects/Clothing/Accessory/Watches/pdt.rsi
-    state: icon
-  - type: Item
-    size: Small
-  - type: Storage
-    maxItemSize: Normal
-    grid:
-    - 0,0,5,1
-
-- type: entity
   parent: RMCWatchBaseL
   id: RMCPDTBracelet
   name: PDT wrist bracelet
@@ -124,6 +95,3 @@
 
 - type: Tag
   id: PDTLocator
-
-- type: Tag
-  id: Watch

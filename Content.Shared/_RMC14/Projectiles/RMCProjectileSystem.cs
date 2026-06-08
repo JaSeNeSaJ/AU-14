@@ -227,7 +227,8 @@ public sealed partial class RMCProjectileSystem : EntitySystem
             return;
 
         var coordinates = transform.Coordinates;
-        if (ent.Comp.Origin is { } origin &&
+        if (ent.Comp.ProjectileAdjust &&
+            ent.Comp.Origin is { } origin &&
             coordinates.TryDelta(EntityManager, _transform, origin, out var delta))
         {
             var deltaLength = delta.Length();
@@ -246,6 +247,9 @@ public sealed partial class RMCProjectileSystem : EntitySystem
 
                 if (ent.Comp.AdjustSpawn && ent.Comp.SpawnOffset != 0f)
                     coordinates = coordinates.Offset(direction * ent.Comp.SpawnOffset);
+
+                if (ent.Comp.AdjustSpawn && HasComp<RMCFireProjectileComponent>(ent))
+                    coordinates = coordinates.Offset(direction);
             }
         }
 

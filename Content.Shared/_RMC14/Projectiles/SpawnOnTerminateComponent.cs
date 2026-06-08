@@ -25,5 +25,8 @@ public sealed partial class SpawnOnTerminateComponent : Component
     public bool AdjustSpawn;
 
     [DataField, AutoNetworkedField]
+    public bool ProjectileAdjust = true;
+
+    [DataField, AutoNetworkedField]
     public float SpawnOffset;
 }
