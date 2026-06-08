@@ -1,11 +1,12 @@
 - type: gameMap
   id: portneroid
   mapName: LV-327 Port Neroid
-  mapPath: /Maps/_AU14/portneroid.yml
+  mapPath: /Maps/_AU14/PortNeroidMultiZ/portneroidmultiz0.yml
   mapsBelow:
-  - /Maps/_AU14/portneroid_below.yml
+  - /Maps/_AU14/PortNeroidMultiZ/portneroidmultiz-1.yml
   mapsAbove:
-  - /Maps/_AU14/portneroid_above.yml
+  - /Maps/_AU14/PortNeroidMultiZ/portneroidmultiz1.yml
+  - /Maps/_AU14/PortNeroidMultiZ/portneroidmultiz2.yml
   minPlayers: 0
   maxPlayers: 200
   maxRandomOffset: 0

@@ -41,6 +41,8 @@
     - CMUPlanetLament
     - AUPlanetStableGarrison
     #- AUPlanetLV747
+    - AUPlanetSorokyne
+    - AuPlanetChances
   rules:
   - AuVoteRule
   - PlatoonSpawn
@@ -63,9 +65,7 @@
   - AuPlanetFiorina
   - AuPlanetKutjevo
   - AuPlanetShivasSnowball
-  - AUPlanetShepherdsPride
   - AUPlanetLV327
-  - AUPlanetStableGarrison
   - AuPlanetChances
   rules:
   - AuVoteRule
