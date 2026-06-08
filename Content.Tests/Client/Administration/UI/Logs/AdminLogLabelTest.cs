@@ -25,11 +25,12 @@ public sealed class AdminLogLabelTest : RobustUnitTest
     public void ConstructorSplitsLogMetadataFromMessage()
     {
         var player = Guid.Parse("aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa");
+        var timestamp = new DateTime(2026, 6, 7, 13, 2, 11, DateTimeKind.Utc);
         var log = new SharedAdminLog(
             12,
             LogType.Damaged,
             LogImpact.High,
-            new DateTime(2026, 6, 7, 13, 2, 11),
+            timestamp,
             "Hudson took [color=red]32 brute[/color].",
             new[] { player });
         var separator = new HSeparator();
@@ -39,7 +40,7 @@ public sealed class AdminLogLabelTest : RobustUnitTest
         Assert.Multiple(() =>
         {
             Assert.That(control.Log, Is.EqualTo(log));
-            Assert.That(control.TimeText, Is.EqualTo("13:02:11"));
+            Assert.That(control.TimeText, Is.EqualTo(timestamp.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")));
             Assert.That(control.ImpactText, Is.EqualTo("High"));
             Assert.That(control.TypeText, Is.EqualTo("Damaged"));
         });

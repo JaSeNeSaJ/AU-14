@@ -4,8 +4,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Shared._RMC14.Xenonids.Despoiler;
 
-[RegisterComponent, NetworkedComponent]
-[AutoGenerateComponentState(raiseAfterAutoHandleState: true)]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(raiseAfterAutoHandleState: true)]
 public sealed partial class XenoDespoilerAcidBarrageProjectileComponent : Component
 {
     [DataField]

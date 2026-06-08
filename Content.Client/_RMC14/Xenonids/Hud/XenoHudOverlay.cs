@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Stealth;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Energy;
 using Content.Shared._RMC14.Xenonids.Dancer;
+using Content.Shared._RMC14.Xenonids.Despoiler;
 using Content.Shared._RMC14.Xenonids.Maturing;
 using Content.Shared._RMC14.Xenonids.Parasite;
 using Content.Shared._RMC14.Xenonids.Plasma;
@@ -652,7 +653,7 @@ public sealed partial class XenoHudOverlay : Overlay
         var icon = new Rsi(_rsiPathHypertension, $"level_{level}");
         var texture = _sprite.GetFrame(icon, _timing.CurTime);
 
-        var bounds = sprite.Bounds;
+        var bounds = _sprite.GetLocalBounds((uid, sprite));
         var yOffset = (bounds.Height + sprite.Offset.Y) / 2f - (float) texture.Height / EyeManager.PixelsPerMeter * bounds.Height + xeno.HudOffset.Y;
         var xOffset = (bounds.Width + sprite.Offset.X) / 2f - (float) texture.Width / EyeManager.PixelsPerMeter * bounds.Width + xeno.HudOffset.X + (float) texture.Width / EyeManager.PixelsPerMeter;
 
