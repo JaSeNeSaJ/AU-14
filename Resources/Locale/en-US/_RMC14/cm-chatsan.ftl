@@ -34,11 +34,17 @@ cm-chatsan-replacement-admins-marine = high command
 cm-chatsan-word-eorg-marine = eorg
 cm-chatsan-replacement-eorg-marine = warcrimes
 
-cm-chatsan-word-xenoid = xenomorph
-cm-chatsan-replacement-xenoid = xenomorph
+cm-chatsan-word-xx121-marine = xx121
+cm-chatsan-replacement-xx121-marine = xenonids
 
-cm-chatsan-word-xenoids = xenomorphs
-cm-chatsan-replacement-xenoids = xenomorphs
+cm-chatsan-word-xx-121-marine = xx-121
+cm-chatsan-replacement-xx-121-marine = xenonids
+
+cm-chatsan-word-xenoid = xenoid
+cm-chatsan-replacement-xenoid = xenonid
+
+cm-chatsan-word-xenoids = xenoids
+cm-chatsan-replacement-xenoids = xenonids
 
 cm-chatsan-word-beno = beno
 cm-chatsan-replacement-beno = xeno
@@ -283,12 +289,6 @@ cm-chatsan-replacement-felinid = feline host
 cm-chatsan-word-felinids = felinids
 cm-chatsan-replacement-felinids = feline hosts
 
-cm-chatsan-word-cat = cat
-cm-chatsan-replacement-cat = feline host
-
-cm-chatsan-word-cats = cats
-cm-chatsan-replacement-cats = feline hosts
-
 cm-chatsan-word-vamp = vamp
 cm-chatsan-word-replacement-vamp = vampire lurker
 
@@ -307,12 +307,6 @@ cm-chatsan-replacement-vulp = canine host
 cm-chatsan-word-vulps = vulps
 cm-chatsan-replacement-vulps = canine hosts
 
-cm-chatsan-word-dog = dog
-cm-chatsan-replacement-dog = canine host
-
-cm-chatsan-word-dogs = dogs
-cm-chatsan-replacement-dogs = canine hosts
-
 cm-chatsan-word-avali = avali
 cm-chatsan-replacement-avali = four-eared host
 
@@ -328,18 +322,6 @@ cm-chatsan-replacement-rodentias = squeaking hosts
 cm-chatsan-word-rodentiae = rodentiae
 cm-chatsan-replacement-rodentiae = squeaking hosts
 
-cm-chatsan-word-rat = rat
-cm-chatsan-replacement-rat = squeaking host
-
-cm-chatsan-word-rats = rats
-cm-chatsan-replacement-rats = squeaking hosts
-
-cm-chatsan-word-mouse = mouse
-cm-chatsan-replacement-mouse = squeaking host
-
-cm-chatsan-word-mice = mice
-cm-chatsan-replacement-mice = squeaking hosts
-
 cm-chatsan-word-feroxi = feroxi
 cm-chatsan-replacement-feroxi = aquatic host
 
@@ -352,8 +334,60 @@ cm-chatsan-replacement-shark = aquatic host
 cm-chatsan-word-sharks = sharks
 cm-chatsan-replacement-sharks = aquatic hosts
 
+cm-chatsan-word-dog = dog
+cm-chatsan-replacement-dog = canine
+
+cm-chatsan-word-corgi = corgi
+cm-chatsan-word-mrwiggles = mr.wiggles
+cm-chatsan-word-mr-wiggles = mr wiggles
+cm-chatsan-word-mister-wiggles = mister wiggles
+cm-chatsan-word-puppy = puppy
+cm-chatsan-replacement-corgi = canine fuzzy
+
+cm-chatsan-word-dogs = dogs
+cm-chatsan-word-corgies = corgies
+cm-chatsan-word-puppies = puppies
+cm-chatsan-replacement-dogs = canines
+
+cm-chatsan-word-cat = cat
+cm-chatsan-word-kitty = kitty
+cm-chatsan-word-kitten = kitten
+cm-chatsan-replacement-cat = feline
+
+cm-chatsan-word-cats = cats
+cm-chatsan-word-kitties = kitties
+cm-chatsan-word-kittens = kittens
+cm-chatsan-replacement-cats = felines
+
 cm-chatsan-word-fish = fish
-cm-chatsan-replacement-fish = aquatic host
+cm-chatsan-word-carp = carp
+cm-chatsan-replacement-fish = aquatic creature
+
+cm-chatsan-word-rat = rat
+cm-chatsan-word-mouse = mouse
+cm-chatsan-replacement-rat = squeaking creature
+
+cm-chatsan-word-rats = rats
+cm-chatsan-word-mice = mice
+cm-chatsan-replacement-rats = squeaking creature
+
+cm-chatsan-word-monkey = monkey
+cm-chatsan-word-monke = monke
+cm-chatsan-word-kobold = kobold
+cm-chatsan-word-farwa = farwa
+cm-chatsan-word-stok = stok
+cm-chatsan-word-neaera = neaera
+cm-chatsan-word-yiren = yiren
+cm-chatsan-replacement-monkey = small host
+
+cm-chatsan-word-monkeys = monkeys
+cm-chatsan-word-monkies = monkies
+cm-chatsan-word-kobolds = kobolds
+cm-chatsan-word-farwas = farwas
+cm-chatsan-word-stoks = stoks
+cm-chatsan-word-neaeras = neaeras
+cm-chatsan-word-yirens = yirens
+cm-chatsan-replacement-monkeys = small hosts
 
 cm-chatsan-word-grenade = grenade
 cm-chatsan-replacement-grenade = boomstick
@@ -746,26 +780,6 @@ cm-chatsan-replacement-folder = sheet holder
 cm-chatsan-word-folders = folders
 cm-chatsan-replacement-folders = sheet holders
 
-cm-chatsan-word-weya = weya
-cm-chatsan-replacement-weya = weyu
-
-cm-chatsan-word-unmc = unmc
-cm-chatsan-replacement-unmc = uscm
-
-cm-chatsan-word-spp = spp
-cm-chatsan-replacement-spp = upp
-
-cm-chatsan-word-weyafull = weston yamada
-cm-chatsan-replacement-weyafull = Weyland-Yutani
-
-cm-chatsan-word-weyafullhyphenated = weston-yamada
-cm-chatsan-replacement-weyafullhyphenated = Weyland-Yutani
-
-cm-chatsan-word-unmcfull = united nations marine corps
-cm-chatsan-replacement-unmcfull = United States Colonial Marines
-
-cm-chatsan-word-sppfull = Socialist Progressive Peoples
-cm-chatsan-replacement-sppfull = Union of Progressive Peoples
 cm-chatsan-word-zerker = zerker
 cm-chatsan-word-replacement-zerker = berserker
 
@@ -818,6 +832,9 @@ cm-chatsan-word-xover = xover
 cm-chatsan-word-xenoover = xenover
 cm-chatsan-word-replacement-xover = over
 
+cm-chatsan-word-m2c = m2c
+cm-chatsan-word-replacement-m2c = heavy mounted spitter
+
 cm-chatsan-word-m13 = m13
 cm-chatsan-word-replacement-m13 = fast spitter
 
@@ -826,6 +843,9 @@ cm-chatsan-word-replacement-m63 = fast spitter
 
 cm-chatsan-word-p90 = p90
 cm-chatsan-word-replacement-p90 = fast spitter
+
+cm-chatsan-word-pdw90 = pdw90
+cm-chatsan-word-replacement-pdw90 = fast spitter
 
 cm-chatsan-word-m54c = m54c
 cm-chatsan-word-replacement-m54c = spitter
