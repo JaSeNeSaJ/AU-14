@@ -32,7 +32,7 @@ namespace Content.Server._RMC14.Roles;
 
 public sealed partial class MarineCommandOverrideSystem : EntitySystem
 {
-    [Dependency] private ARESSystem _ares = default!;
+    [Dependency] private ARESCoreSystem _aresCore = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IGameTiming _gameTiming = default!;
     [Dependency] private InventorySystem _inventory = default!;
@@ -104,7 +104,7 @@ public sealed partial class MarineCommandOverrideSystem : EntitySystem
     /// </remarks>
     private void CheckForSeniorCommandPresence()
     {
-        var ares = _ares.EnsureARES();
+        var ares = _aresCore.EnsureMarineARES();
         var foundAny = false;
 
         var query = EntityQueryEnumerator<MarineComponent, OriginalRoleComponent, MobStateComponent, MindContainerComponent>();
@@ -152,7 +152,7 @@ public sealed partial class MarineCommandOverrideSystem : EntitySystem
     /// </remarks>
     private void CommanderSelection()
     {
-        var ares = _ares.EnsureARES();
+        var ares = _aresCore.EnsureMarineARES();
 
         // In fact, List contains only entities with the maximum (the same among themselves) non-zero authority level (MarineAuthorityLevel)
         List<EntityUid> candidates = [];

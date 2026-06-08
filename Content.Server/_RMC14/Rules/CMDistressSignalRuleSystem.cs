@@ -113,7 +113,7 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
 {
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
-    [Dependency] private ARESSystem _ares = default!;
+    [Dependency] private ARESCoreSystem _aresCore = default!;
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private IBanManager _bans = default!;
     [Dependency] private IChatManager _chatManager = default!;
@@ -1889,7 +1889,7 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
                     _rmcAmbientLight.SetColor((xenoMap, rmcAmbientComp), colorSequence, _sunriseDuration);
                 }
 
-                var ares = _ares.EnsureARES();
+                var ares = _aresCore.EnsureMarineARES();
                 _marineAnnounce.AnnounceRadio(ares,
                     "Bioscan complete. No unknown lifeform signature detected.",
                     rule.AllClearChannel);

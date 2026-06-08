@@ -1,5 +1,7 @@
 using System.Collections.Immutable;
 using System.Linq;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dropship.Weapon;
 using Content.Shared._RMC14.PowerLoader;
@@ -23,6 +25,7 @@ public sealed partial class DropshipFabricatorSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private IComponentFactory _compFactory = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private PowerLoaderSystem _powerLoader = default!;
@@ -34,6 +37,8 @@ public sealed partial class DropshipFabricatorSystem : EntitySystem
     private TimeSpan _gainEvery;
 
     public ImmutableArray<EntProtoId<DropshipFabricatorPrintableComponent>> Printables { get; private set; }
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabDropshipLogs";
 
     public override void Initialize()
     {
@@ -124,6 +129,8 @@ public sealed partial class DropshipFabricatorSystem : EntitySystem
         ent.Comp.Queue.Add(new DropshipFabricatorQueueEntry(proto.ID, printable.Cost));
         Dirty(ent);
         TryStartNextPrint(ent);
+
+        _core.CreateARESLog(ent, LogCat, (string) $"{Name(args.Actor)} printed {proto.Name} for {printable.Cost} points at the dropship lathe");
     }
 
     private void OnCancelQueueMsg(Entity<DropshipFabricatorComponent> ent, ref DropshipFabricatorCancelQueueMsg args)

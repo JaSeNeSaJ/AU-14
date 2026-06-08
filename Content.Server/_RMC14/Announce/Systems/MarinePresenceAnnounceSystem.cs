@@ -18,7 +18,7 @@ namespace Content.Server._RMC14.Announce
 {
     public sealed partial class MarinePresenceAnnounceSystem : EntitySystem
     {
-        [Dependency] private ARESSystem _ares = default!;
+        [Dependency] private ARESCoreSystem _aresCore = default!;
         [Dependency] private MarineAnnounceSystem _marineAnnounce = default!;
         [Dependency] private SharedRankSystem _rankSystem = default!;
         [Dependency] private SquadSystem _squad = default!;
@@ -29,7 +29,7 @@ namespace Content.Server._RMC14.Announce
 
         public void AnnounceLateJoin(bool lateJoin, bool silent, EntityUid mob, string jobId, string jobName, JobPrototype jobPrototype)
         {
-            var ares = _ares.EnsureARES();
+            var ares = _aresCore.EnsureMarineARES();
             var fullRankName = _rankSystem.GetSpeakerFullRankName(mob) ?? Name(mob);
             var rankName = _rankSystem.GetSpeakerRankName(mob) ?? Name(mob);
 
@@ -108,7 +108,7 @@ namespace Content.Server._RMC14.Announce
 
         public void AnnounceEarlyLeave(Entity<CryostorageContainedComponent> ent, uint? recordId, EntityUid? station, string jobName)
         {
-            var ares = _ares.EnsureARES();
+            var ares = _aresCore.EnsureMarineARES();
             var rankName = _rankSystem.GetSpeakerRankName(ent.Owner) ?? Name(ent.Owner);
             JobPrototype? jobProto = null;
 
