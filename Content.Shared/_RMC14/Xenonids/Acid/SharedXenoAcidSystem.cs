@@ -209,7 +209,12 @@ public abstract partial class SharedXenoAcidSystem : EntitySystem
             return;
 
         _acidHole.TryStoreAcidDirection(target, xeno.Owner);
-        ApplyAcid(args.AcidId, args.Strength, target, args.Dps, args.ExpendableLightDps, args.Time * mult);
+
+        var acidTime = args.Time * mult;
+        if (CorrosiveAcidInstant)
+            acidTime = TimeSpan.Zero;
+
+        ApplyAcid(args.AcidId, args.Strength, target, args.Dps, args.ExpendableLightDps, acidTime);
     }
 
     /// <summary>
