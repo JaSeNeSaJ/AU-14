@@ -41,8 +41,6 @@
     - CMUPlanetLament
     - AUPlanetStableGarrison
     #- AUPlanetLV747
-    - AUPlanetSorokyne
-    - AuPlanetChances
   rules:
   - AuVoteRule
   - PlatoonSpawn
