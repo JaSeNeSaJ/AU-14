@@ -1,8 +1,8 @@
 - type: entity
   parent: ActionXenoBase
   id: RMCActionXenoDespoilerAcidBarrage
-  name: Acid Barrage
-  description: "Activate to arm: the icon lights up green. Hold LMB to charge the volley: the longer you hold, the more projectiles. Release LMB to fire at the cursor."
+  name: rmc-action-despoiler-acid-barrage-name
+  description: rmc-action-despoiler-acid-barrage-desc
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -37,8 +37,8 @@
 - type: entity
   parent: ActionXenoBase
   id: RMCActionXenoDespoilerCausticEmbrace
-  name: Caustic Embrace
-  description: Leap toward the click with an acid splash. Empowered lets you strike a chosen target up to 5 tiles away and applies an acid DoT.
+  name: rmc-action-despoiler-caustic-embrace-name
+  description: rmc-action-despoiler-caustic-embrace-desc
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -73,8 +73,8 @@
 - type: entity
   parent: ActionXenoBase
   id: RMCActionXenoDespoilerOozingWounds
-  name: Oozing Wounds
-  description: Creates a ring of acid spray around you. The radius grows as your HP drops. The empowered version stuns and applies acid.
+  name: rmc-action-despoiler-oozing-wounds-name
+  description: rmc-action-despoiler-oozing-wounds-desc
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -103,8 +103,8 @@
 - type: entity
   parent: ActionXenoBase
   id: RMCActionXenoDespoilerCatalyze
-  name: Catalyze
-  description: Spends 1 Hypertension stack and empowers your next active ability.
+  name: rmc-action-despoiler-catalyze-name
+  description: rmc-action-despoiler-catalyze-desc
   components:
   - type: Action
     itemIconStyle: NoItem
