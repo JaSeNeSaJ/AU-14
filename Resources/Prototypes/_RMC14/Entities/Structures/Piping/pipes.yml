@@ -19,6 +19,28 @@
         showEnts: False
         occludes: True
         ents: []
+  - type: Construction
+    graph: RMCGasPipe
+    node: broken
+  - type: Destructible
+    thresholds:
+    - trigger:
+        !type:DamageTrigger
+        damage: 200
+      behaviors:
+      - !type:DoActsBehavior
+        acts: ["Destruction"]
+    - trigger:
+        !type:DamageTrigger
+        damage: 100
+      behaviors:
+      - !type:PlaySoundBehavior
+        sound:
+          collection: MetalBreak
+          params:
+            volume: -8
+      - !type:DoActsBehavior
+        acts: ["Breakage"]
 
 - type: entity
   parent: [RMCBasePipe, GasPipeHalf]
@@ -29,6 +51,9 @@
   components:
   - type: VentCrawlable
     travelDirection: South
+  - type: Construction
+    graph: RMCGasPipe
+    node: half
 
 - type: entity
   parent: [RMCBasePipe, GasPipeStraight]
@@ -39,6 +64,9 @@
   components:
   - type: VentCrawlable
     travelDirection: Longitudinal
+  - type: Construction
+    graph: RMCGasPipe
+    node: straight
 
 - type: entity
   parent: [RMCBasePipe, GasPipeBend]
@@ -49,6 +77,9 @@
   components:
   - type: VentCrawlable
     travelDirection: SWBend
+  - type: Construction
+    graph: RMCGasPipe
+    node: bend
 
 - type: entity
   parent: [RMCBasePipe, GasPipeTJunction]
@@ -59,6 +90,9 @@
   components:
   - type: VentCrawlable
     travelDirection: TSouth
+  - type: Construction
+    graph: RMCGasPipe
+    node: tjunction
 
 - type: entity
   parent: [RMCBasePipe, GasPipeFourway]
@@ -69,3 +103,6 @@
   components:
   - type: VentCrawlable
     travelDirection: Fourway
+  - type: Construction
+    graph: RMCGasPipe
+    node: fourway
