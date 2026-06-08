@@ -242,7 +242,7 @@
   - type: CMAutomatedVendor
     jobs: [ AU14JobOpforPlatOp, AU14JobGOVFORPlatOp, AU14JobPlatOpBase ]
     sections:
-    - name: Senior Officers
+    - name: Senior Officer
       choices: { CMUJOLoadoutVendorKit: 1 }
       sharedJOLimit: 1
       entries:
@@ -254,9 +254,8 @@
         giveIcon:
           sprite: _AU14/Interface/au14govforjobicons.rsi
           state: govfor_adj
-    - name: Junior Officers
+    - name: Staff Officers
       choices: { CMUJOLoadoutVendorKit: 1 }
-      sharedJOLimit: 2
       entries:
       - id: AU14KitJOStaffOfficerKit
         recommended: true
@@ -264,6 +263,10 @@
         givePrefix: au14-job-prefix-juniorofficer-so
         isAppendPrefix: false
         isAppendSquadRoleName: false
+    - name: Specialized Officers
+      choices: { CMUJOLoadoutVendorKit: 1 }
+      sharedJOLimit: 1
+      entries:
       - id: AU14KitJOIntelligenceOfficer
         giveSquadRoleName: au14-job-name-juniorofficer-io
         givePrefix: au14-job-prefix-juniorofficer-io
