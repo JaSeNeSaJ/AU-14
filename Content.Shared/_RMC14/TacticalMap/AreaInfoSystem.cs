@@ -88,6 +88,18 @@ public sealed partial class AreaInfoSystem : EntitySystem
 
     private void UpdateAreaInfoAlert(Entity<AreaInfoComponent> ent, bool checkMove)
     {
+        if (_prof.IsEnabled)
+        {
+            using var profile = _prof.Group("AreaInfoSystem.UpdateAlert");
+            UpdateAreaInfoAlertCore(ent, checkMove);
+            return;
+        }
+
+        UpdateAreaInfoAlertCore(ent, checkMove);
+    }
+
+    private void UpdateAreaInfoAlertCore(Entity<AreaInfoComponent> ent, bool checkMove)
+    {
         if (GetAreaInfo(ent, checkMove) is not { areaName: var areaName, ceilingLevel: var ceilingLevel, restrictions: var restrictions })
             return;
 
@@ -246,17 +258,35 @@ public sealed partial class AreaInfoSystem : EntitySystem
 
     private bool IsProtectedByRoofingCore(EntityCoordinates coordinates, Predicate<Entity<RoofingEntityComponent>> predicate)
     {
+        var scanned = 0;
+        var matched = 0;
         var roofs = EntityQueryEnumerator<RoofingEntityComponent>();
         while (roofs.MoveNext(out var uid, out var roof))
         {
+            scanned++;
+
             if (!predicate((uid, roof)))
                 continue;
+
+            matched++;
 
             if (coordinates.TryDistance(_entityManager, uid.ToCoordinates(), out var distance) &&
                 distance <= roof.Range)
             {
+                if (_prof.IsEnabled)
+                {
+                    _prof.WriteValue("AreaInfoSystem Roofing Entities Scanned", scanned);
+                    _prof.WriteValue("AreaInfoSystem Roofing Predicate Matches", matched);
+                }
+
                 return true;
             }
+        }
+
+        if (_prof.IsEnabled)
+        {
+            _prof.WriteValue("AreaInfoSystem Roofing Entities Scanned", scanned);
+            _prof.WriteValue("AreaInfoSystem Roofing Predicate Matches", matched);
         }
 
         return false;

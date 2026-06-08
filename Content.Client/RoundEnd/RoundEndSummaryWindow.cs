@@ -311,8 +311,10 @@ public sealed class RoundEndSummaryWindow : DefaultWindow
             FontColorOverride = accent,
             StyleClasses = { StyleNano.StyleClassLabelBig },
             ClipText = true,
-            HorizontalAlignment = HAlignment.Center,
-            VerticalAlignment = VAlignment.Center
+            Align = Label.AlignMode.Center,
+            VAlign = Label.VAlignMode.Center,
+            HorizontalAlignment = HAlignment.Stretch,
+            VerticalAlignment = VAlignment.Stretch
         });
         row.AddChild(value);
 

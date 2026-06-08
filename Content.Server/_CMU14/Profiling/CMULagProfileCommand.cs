@@ -141,6 +141,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         }
 
         var samples = new Dictionary<string, LagProfileSample>();
+        var counters = new Dictionary<string, LagProfileCounter>();
         var frames = new List<LagProfileFrame>(frameIndices.Count);
 
         foreach (var indexOffset in frameIndices)
@@ -156,7 +157,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
                 switch (log.Type)
                 {
                     case ProfLogType.Value:
-                        AddSample(samples, "sample", log.Value.StringId, log.Value.Value);
+                        AddValue(samples, counters, log.Value.StringId, log.Value.Value);
                         break;
                     case ProfLogType.GroupEnd:
                         AddSample(samples, "group", log.GroupEnd.StringId, log.GroupEnd.Value);
@@ -187,6 +188,19 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         {
             shell.WriteLine(
                 $"  {sample.Kind,-6} {sample.Name,-48} calls={sample.Count,5} total={sample.TotalSeconds * 1000,9:N2} ms avg={sample.AverageSeconds * 1000,7:N3} ms max={sample.MaxSeconds * 1000,7:N3} ms alloc={FormatBytes(sample.AllocatedBytes)}");
+        }
+
+        if (counters.Count == 0)
+            return;
+
+        shell.WriteLine("Profile counters by max value:");
+        foreach (var counter in counters.Values
+                     .OrderByDescending(counter => counter.Max)
+                     .ThenByDescending(counter => counter.Average)
+                     .Take(topCount))
+        {
+            shell.WriteLine(
+                $"  sample {counter.Name,-48} calls={counter.Count,5} avg={counter.Average,9:N2} max={counter.Max,9:N0} last={counter.Last,9:N0}");
         }
     }
 
@@ -223,12 +237,40 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         return true;
     }
 
+    private void AddValue(
+        Dictionary<string, LagProfileSample> samples,
+        Dictionary<string, LagProfileCounter> counters,
+        int stringId,
+        ProfValue value)
+    {
+        var name = _prof.GetString(stringId);
+        if (name == ProfTextStartFrame)
+            return;
+
+        switch (value.Type)
+        {
+            case ProfValueType.TimeAllocSample:
+                AddSample(samples, "sample", name, value);
+                break;
+            case ProfValueType.Int32:
+                AddCounter(counters, name, value.Int32);
+                break;
+            case ProfValueType.Int64:
+                AddCounter(counters, name, value.Int64);
+                break;
+        }
+    }
+
     private void AddSample(Dictionary<string, LagProfileSample> samples, string kind, int stringId, ProfValue value)
+    {
+        AddSample(samples, kind, _prof.GetString(stringId), value);
+    }
+
+    private static void AddSample(Dictionary<string, LagProfileSample> samples, string kind, string name, ProfValue value)
     {
         if (value.Type != ProfValueType.TimeAllocSample)
             return;
 
-        var name = _prof.GetString(stringId);
         if (kind == "group" && name == "Frame")
             return;
 
@@ -240,6 +282,17 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         }
 
         sample.Add(value.TimeAllocSample);
+    }
+
+    private static void AddCounter(Dictionary<string, LagProfileCounter> counters, string name, long value)
+    {
+        if (!counters.TryGetValue(name, out var counter))
+        {
+            counter = new LagProfileCounter(name);
+            counters.Add(name, counter);
+        }
+
+        counter.Add(value);
     }
 
     private static List<long> GetFrameIndices(ProfBuffer snapshot, int frameLimit, long? sinceIndexOffset)
@@ -329,6 +382,30 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
             TotalSeconds += sample.Time;
             MaxSeconds = Math.Max(MaxSeconds, sample.Time);
             AllocatedBytes += sample.Alloc;
+        }
+    }
+
+    private sealed class LagProfileCounter
+    {
+        public readonly string Name;
+        public int Count;
+        public double Total;
+        public long Max;
+        public long Last;
+
+        public double Average => Count == 0 ? 0 : Total / Count;
+
+        public LagProfileCounter(string name)
+        {
+            Name = name;
+        }
+
+        public void Add(long value)
+        {
+            Count++;
+            Total += value;
+            Max = Math.Max(Max, value);
+            Last = value;
         }
     }
 
