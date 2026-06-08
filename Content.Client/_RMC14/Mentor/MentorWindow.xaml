@@ -36,7 +36,8 @@
                     </PanelContainer>
                     <Button Name="ClaimButton" Access="Public" Text="Claim"
                             Visible="False" />
-                </BoxContainer>
+                <Button Name="TeleportButton" Access="Public" Text="Teleport"
+                        Visible="False" />
             </BoxContainer>
         </BoxContainer>
     </PanelContainer>
