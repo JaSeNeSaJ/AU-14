@@ -69,6 +69,8 @@ namespace Content.Shared._RMC14.Dropship.Weapon;
 
 public abstract partial class SharedDropshipWeaponSystem : EntitySystem
 {
+    private static readonly ProtoId<TagPrototype> WallTag = "Wall";
+
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private AreaSystem _area = default!;
@@ -1924,7 +1926,7 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
 
     private bool IsWall(EntityUid uid)
     {
-        return _tagSystem.HasTag(uid, "Wall");
+        return _tagSystem.HasTag(uid, WallTag);
     }
 
     private bool HasNonDeletableWallOnTile(EntityCoordinates impactCoords)

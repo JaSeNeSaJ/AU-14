@@ -1038,7 +1038,10 @@ public sealed partial class IntelSystem : EntitySystem
             tree.Value.Comp.LastAnnounceAt = time + _announceEvery;
             Dirty(tree.Value);
 
-            var ares = _aresCore.EnsureMarineARES();
+            EntityUid? ares = null;
+            if (_aresCore.TryGetMarineARES(out var aresEnt) && aresEnt != null)
+                ares = aresEnt.Value.Owner;
+
             // Announcements reflect the intel tree's internal FixedPoint2 points only.
             var points = tree.Value.Comp.Tree.Points;
 
@@ -1053,7 +1056,8 @@ public sealed partial class IntelSystem : EntitySystem
                     ? Loc.GetString("rmc-intel-announcement-gain", ("points", points), ("change", change))
                     : Loc.GetString("rmc-intel-announcement", ("points", points));
 
-                _marineAnnounce.AnnounceRadio(ares, announcement, channel);
+                if (ares != null)
+                    _marineAnnounce.AnnounceRadio(ares.Value, announcement, channel);
             }
         }
 

@@ -36,7 +36,7 @@ public sealed partial class CMStorageVisualizerSystem : VisualizerSystem<CMStora
         if (TryComp(uid, out RMCIdLockableStorageComponent? lockable))
         {
             if (component.StorageEmpty != null)
-                args.Sprite.LayerSetVisible(component.StorageEmpty, false);
+                _sprite.LayerSetVisible((uid, args.Sprite), component.StorageEmpty, false);
 
             if (!AppearanceSystem.TryGetData<bool>(uid, StorageVisuals.Open, out var lockableOpen, args.Component))
                 return;
@@ -44,18 +44,18 @@ public sealed partial class CMStorageVisualizerSystem : VisualizerSystem<CMStora
             if (lockable.Locked)
             {
                 if (component.StorageOpen != null)
-                    args.Sprite.LayerSetVisible(component.StorageOpen, lockableOpen);
+                    _sprite.LayerSetVisible((uid, args.Sprite), component.StorageOpen, lockableOpen);
                 if (component.StorageClosed != null)
-                    args.Sprite.LayerSetVisible(component.StorageClosed, !lockableOpen);
+                    _sprite.LayerSetVisible((uid, args.Sprite), component.StorageClosed, !lockableOpen);
                 return;
             }
 
             var emptyUnlocked = used == 0;
             var showOpen = lockableOpen || emptyUnlocked;
             if (component.StorageOpen != null)
-                args.Sprite.LayerSetVisible(component.StorageOpen, showOpen);
+                _sprite.LayerSetVisible((uid, args.Sprite), component.StorageOpen, showOpen);
             if (component.StorageClosed != null)
-                args.Sprite.LayerSetVisible(component.StorageClosed, !showOpen);
+                _sprite.LayerSetVisible((uid, args.Sprite), component.StorageClosed, !showOpen);
             return;
         }
 
