@@ -107,6 +107,7 @@
       sprite: _RMC14/Structures/Walls/Barricades/burn_barricade_cracks.rsi
   - type: RMCConstructionUpgradeTarget
     upgrades: null
+    downgrade: RMCBiohazardUpgradePlasteel
   - type: Flammable
     damage:
       types:
@@ -134,6 +135,7 @@
       sprite: _RMC14/Structures/Walls/Barricades/brute_barricade_cracks.rsi
   - type: RMCConstructionUpgradeTarget
     upgrades: null
+    downgrade: RMCBruteUpgradePlasteel
   - type: BarricadeBlock
     bidirectional: true
     blocking: 55
@@ -159,6 +161,7 @@
       sprite: _RMC14/Structures/Walls/Barricades/explosive_barricade_cracks.rsi
   - type: RMCConstructionUpgradeTarget
     upgrades: null
+    downgrade: RMCExplosiveUpgradePlasteel
   - type: Flammable
     damage:
       types:
