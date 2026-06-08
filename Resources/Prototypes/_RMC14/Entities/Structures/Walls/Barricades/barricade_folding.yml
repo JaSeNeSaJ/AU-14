@@ -28,9 +28,8 @@
     delay: 10
     fuelUsed: 2
   - type: NailgunRepairable
-    repairValues:
-      CMSteel: 105
-      CMPlasteel: 157.5
+    repairMetal: 105
+    repairPlasteel: 157.5
   - type: Destructible
     thresholds:
     - trigger:
