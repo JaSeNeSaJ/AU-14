@@ -2005,6 +2005,32 @@
 
 - type: entity
   parent: RMCMedicalL75RCM
+  id: RMCMedicalL75RCMFilled
+  suffix: RCM, Filled
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMPillCanisterBicaridine
+    - id: CMPillCanisterBicaridine
+    - id: CMPillCanisterKelotane
+    - id: CMPillCanisterKelotane
+    # - id: CMPillCanisterTramadol
+    # - id: CMPillCanisterTramadol
+    - id: CMPillCanisterDylovene
+    # - id: CMPillCanisterPeridaxon
+    - id: CMPillCanisterDexalin
+    # - id: CMPillCanisterAlkysine
+    - id: RMCPillCanisterImidazoline
+    - id: CMTraumaKit10
+      amount: 3
+    - id: CMBurnKit10
+      amount: 3
+    # - id: RMCSplint
+    - id: CMDexalinPlusAutoInjector
+    - id: CMHealthAnalyzer
+
+- type: entity
+  parent: RMCMedicalL75RCM
   id: RMCMedicalL75RCMFillPara
   suffix: Paramarine, Survivor, Filled, Medical
   components:
