@@ -5,6 +5,8 @@ cm-gun-pump-examine = [bold]Press your [color=cyan]unique action[/color] keybind
 cm-gun-pump-first-with = You need to pump the gun with {$key} first!
 cm-gun-pump-first = You need to pump the gun first!
 
+rmc-sharp-examine = [bold]Press your [color=cyan]unique action[/color] keybind (Spacebar by default) to toggle explosive and incendiary dart direct-hit detonation delay. Current delay: [color=yellow]{TOSTRING($seconds, "F1")} seconds[/color].[/bold]
+rmc-sharp-toggle-delay = You set {THE($gun)}'s direct-hit detonation delay to {TOSTRING($seconds, "F1")} seconds.
 rmc-breech-loaded-open-shoot-attempt = You need to close the breech first!
 rmc-breech-loaded-not-ready-to-shoot = You need to open and close the breech first!
 rmc-breech-loaded-closed-load-attempt = You need to open the breech first!

@@ -656,6 +656,29 @@
 
 - type: entity
   parent: CMBeltMarine
+  id: RMCBeltSharp
+  name: M103 pattern SHARP magazine belt
+  description: A modified M103 pattern rig designed to hold P9 SHARP rifle magazines.
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Belt/tankbelt.rsi
+  - type: Clothing
+    slots:
+    - belt
+    sprite: _RMC14/Objects/Clothing/Belt/tankbelt.rsi
+  - type: Storage
+    maxItemSize: Normal
+    grid:
+    - 0,0,15,1 # 8 slots
+    whitelist:
+      tags:
+      - RMCMagazineRifleSharp
+  - type: FixedItemSizeStorage
+  - type: ItemCamouflage
+    camouflageVariations: { }
+
+- type: entity
+  parent: CMBeltMarine
   id: RMCBeltSmartPistol
   name: M276 pattern SU-6 smart pistol holster rig
   description: The M276 is the standard load-bearing equipment of the USCM. It consists of a modular belt with various clips. This version is for the SU-6 smartpistol.
