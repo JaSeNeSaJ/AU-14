@@ -695,6 +695,26 @@
       prob: 0.25
       orGroup: ShellThree
 
+- type: entity
+  parent: RMCGunCaseBase
+  id: RMCMK481ShotgunCase
+  name: MK481 heavy shotgun case
+  description: A gun case containing an MK481 heavy shotgun, a box of high-dispersive shock grenades, and a box of buckshot shells.
+  components:
+  - type: Storage
+    maxItemSize: Huge
+    grid:
+    - 0,0,5,1 # 6 slots
+    whitelist:
+      tags:
+      - RMCWeaponShotgunMK481
+      - RMCBoxShotgunHDSG
+      - RMCBoxShotgunShells
+  - type: StorageFill
+    contents:
+    - id: RMCWeaponShotgunMK481
+    - id: RMCBoxShotgunHDSG
+    - id: RMCBoxShotgunBuckshot
 # Launchers
 # M85A1
 - type: entity
