@@ -108,6 +108,19 @@
 
 - type: entity
   parent: CMPamphlet
+  id: RMCPamphletVulture
+  name: M707 instructional pamphlet
+  description: A pamphlet used to quickly impart vital knowledge. This one has the image of the M707 "Vulture" on it.
+  components:
+  - type: Sprite
+    state: pamphlet_vulture
+  - type: SkillPamphlet
+    addComps:
+    - type: VultureWhitelist
+    bypassLimit: true
+
+- type: entity
+  parent: CMPamphlet
   id: RMCPamphletSharp
   name: SHARP operator instructional pamphlet
   description: A pamphlet used to quickly impart vital knowledge. This one contains P9 SHARP operator notes.
@@ -118,6 +131,7 @@
     addComps:
     - type: SharpSpecWhitelist
     bypassLimit: true
+
 # gives powerloader skill / bypasses limit
 - type: entity
   parent: CMPamphlet

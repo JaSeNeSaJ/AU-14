@@ -647,6 +647,7 @@
     - id: CMShellShotgunFlechette
       prob: 0.25
       orGroup: ShellThree
+
 - type: entity
   parent: RMCGunCaseBase
   id: RMCM42A2ShotgunCase
@@ -715,6 +716,42 @@
     - id: RMCWeaponShotgunMK481
     - id: RMCBoxShotgunHDSG
     - id: RMCBoxShotgunBuckshot
+
+- type: entity
+  parent: RMCGunCaseBase
+  id: RMCM707VultureCase
+  name: M707 anti-materiel rifle case
+  description: A gun case containing the M707 "Vulture" anti-materiel rifle, a spotter kit, and two instructional pamphlets.
+  components:
+  - type: Storage
+    maxItemSize: Huge
+    grid:
+    - 0,0,10,1 # 11 slots
+    whitelist:
+      tags:
+      - RMCWeaponSniperM707Vulture
+      - RMCMagazineSniperM707Vulture
+      - RMCVultureBarrel
+      - RMCVultureScope
+      - RMCVultureBipod
+      - RMCVultureStock
+      - RMCVultureSpotter
+      - Screwdriver
+      - RMCSkillPamphlet
+  - type: StorageFill
+    contents:
+    - id: RMCWeaponSniperM707VultureCase
+    - id: RMCMagazineSniperM707Vulture
+    - id: RMCVultureBarrel
+    - id: RMCVultureScope
+    - id: RMCVultureBipod
+    - id: RMCVultureStock
+    - id: RMCVultureSpotterTripod
+    - id: RMCVultureSpotterScope
+    - id: CMScrewdriver
+    - id: RMCPamphletVulture
+      amount: 2
+
 # Launchers
 # M85A1
 - type: entity
