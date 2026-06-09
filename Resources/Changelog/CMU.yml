@@ -2856,5 +2856,16 @@
   id: 230
   time: '2026-06-09T02:36:11.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1259
+- author: troytroy400
+  changes:
+  - message: USS George W. Bush now has an orbital cannon and supply console.
+    type: Add
+  - message: USS George W. Bush requisitions starts with basic supplies.
+    type: Add
+  - message: USS George W. Bush AI stairwell fixed.
+    type: Fix
+  id: 231
+  time: '2026-06-09T12:24:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1269
 Name: CMU
 Order: -1
