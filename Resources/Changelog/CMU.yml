@@ -2867,5 +2867,39 @@
   id: 231
   time: '2026-06-09T12:24:35.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1269
+- author: TheHellFireo
+  changes:
+  - message: Added the M37A1 pump shotgun with camouflage sprites, inhand/wielded
+      sprites, attachment support, and a dedicated gun case.
+    type: Add
+  - message: Increased the M37A1 fire rate so it cycles faster than the initial port.
+    type: Tweak
+  - message: Added the MK481 heavy shotgun with HDSG grenade rounds, ammo boxes, projectile
+      sprites, and a dedicated gun case.
+    type: Add
+  - message: Lowered MK481 scatter and tuned HDSG behavior so its cluster bomblets
+      detonate at the intended impact/stop point.
+    type: Tweak
+  - message: Added the P9 SHARP rifle, SHARP operator equipment case, SHARP magazine
+      belt, operator pamphlet, explosive/incendiary/flechette magazines, dart projectiles,
+      deployed dart mines, mine sprites, direct-hit effects, and ammo crates.
+    type: Add
+  - message: 'SHARP explosive and incendiary darts can toggle direct-hit detonation
+      delay, spawn armed 360-degree proximity mines on range expiry, and apply flashing
+      target outlines: red for explosive and yellow for incendiary.'
+    type: Tweak
+  - message: Added the M707 Vulture anti-materiel rifle with disassembled case setup,
+      integrated barrel/scope/bipod/stock attachments, 20x102mm magazine/ammo, spotter
+      scope, deployable spotter tripod, instructional pamphlet, Vulture action icons,
+      and scope overlay assets.
+    type: Add
+  - message: 'Added Vulture scoped-fire mechanics: fixed 5x5 firing window, scope
+      zoom/angle controls, windage/elevation adjustments, crosshair drift, hold-breath
+      stabilization, spotter-linked view support, heavy bullet penetration, impact
+      audio, and enhanced bullet fly-by sound.'
+    type: Add
+  id: 232
+  time: '2026-06-09T15:31:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1270
 Name: CMU
 Order: -1
