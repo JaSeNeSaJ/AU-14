@@ -10,10 +10,12 @@ public sealed partial class VultureSpotterTripodSystem : EntitySystem
     [Dependency] private SharedAppearanceSystem _appearance = default!;
     [Dependency] private SharedScopeSystem _scope = default!;
     [Dependency] private ItemSlotsSystem _itemSlots = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     public override void Initialize()
     {
         SubscribeLocalEvent<VultureSpotterTripodComponent, ComponentInit>(OnInit);
+        SubscribeLocalEvent<VultureSpotterTripodComponent, ItemSlotInsertAttemptEvent>(OnInsertAttempt);
         SubscribeLocalEvent<VultureSpotterTripodComponent, EntInsertedIntoContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<VultureSpotterTripodComponent, EntRemovedFromContainerMessage>(OnContainerChanged);
         SubscribeLocalEvent<VultureSpotterTripodComponent, InteractHandEvent>(OnInteractHand);
@@ -24,20 +26,37 @@ public sealed partial class VultureSpotterTripodSystem : EntitySystem
         UpdateVisuals(ent);
     }
 
+    private void OnInsertAttempt(Entity<VultureSpotterTripodComponent> ent, ref ItemSlotInsertAttemptEvent args)
+    {
+        if (args.User is not { } user ||
+            args.Slot.ID != ent.Comp.ScopeSlot)
+        {
+            return;
+        }
+
+        ent.Comp.PendingScopeDirection = Transform(user).LocalRotation.GetCardinalDir();
+    }
+
     private void OnContainerChanged(Entity<VultureSpotterTripodComponent> ent, ref EntInsertedIntoContainerMessage args)
     {
-        OnContainerChanged(ent, args.Container.ID);
+        OnContainerChanged(ent, args.Container.ID, true);
     }
 
     private void OnContainerChanged(Entity<VultureSpotterTripodComponent> ent, ref EntRemovedFromContainerMessage args)
     {
-        OnContainerChanged(ent, args.Container.ID);
+        OnContainerChanged(ent, args.Container.ID, false);
     }
 
-    private void OnContainerChanged(Entity<VultureSpotterTripodComponent> ent, string containerId)
+    private void OnContainerChanged(Entity<VultureSpotterTripodComponent> ent, string containerId, bool inserted)
     {
-        if (containerId == ent.Comp.ScopeSlot)
-            UpdateVisuals(ent);
+        if (containerId != ent.Comp.ScopeSlot)
+            return;
+
+        if (inserted && ent.Comp.PendingScopeDirection is { } direction)
+            _transform.SetLocalRotation(ent.Owner, direction.ToAngle());
+
+        ent.Comp.PendingScopeDirection = null;
+        UpdateVisuals(ent);
     }
 
     private void OnInteractHand(Entity<VultureSpotterTripodComponent> ent, ref InteractHandEvent args)
