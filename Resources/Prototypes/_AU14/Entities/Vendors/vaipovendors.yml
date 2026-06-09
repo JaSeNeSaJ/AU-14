@@ -306,8 +306,8 @@
         amount: 5
       - id: RMCBinoculars
         amount: 2
-      #- id: CMFoldingBarricadesMB6x3
-      #  amount: 2
+      - id: CMFoldingBarricadesMB6x3
+        amount: 2
       #- id: CMSparePDTLBattleBuddyKit
       #  amount: 3
       - id: CMSandbagEmpty25
@@ -695,6 +695,10 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 6
+    - name: Chevrons
+      entries:
+      - id: AU14ChevronVASCMercenary
+        amount: 2
 
 - type: entity
   parent: ColMarTechBase

@@ -1,3 +1,4 @@
+using System.Globalization;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
 using Robust.Client.Graphics;
@@ -9,6 +10,8 @@ namespace Content.Client.Administration.UI.CustomControls;
 
 public sealed class AdminLogLabel : PanelContainer
 {
+    private const string TimestampFormat = "yyyy-MM-dd HH:mm:ss";
+
     private static readonly Color BackgroundColor = Color.FromHex("#1B1B1E");
     private static readonly Color BorderColor = Color.FromHex("#303645");
     private static readonly Color ChipBackgroundColor = Color.FromHex("#23272F");
@@ -24,7 +27,7 @@ public sealed class AdminLogLabel : PanelContainer
         Log = log;
         Separator = separator;
         Details = AdminLogMessageFormatter.GetDetails(log.Type, log.Message);
-        TimeText = $"{log.Date:HH:mm:ss}";
+        TimeText = log.Date.ToLocalTime().ToString(TimestampFormat, CultureInfo.InvariantCulture);
         ImpactText = log.Impact.ToString();
         TypeText = log.Type.ToString();
 
@@ -58,6 +61,7 @@ public sealed class AdminLogLabel : PanelContainer
         {
             Text = TimeText,
             ClipText = true,
+            MinWidth = 145,
             FontColorOverride = HeaderColor,
         });
 
