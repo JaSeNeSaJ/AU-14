@@ -2841,5 +2841,20 @@
   id: 228
   time: '2026-06-08T20:40:16.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1266
+- author: 400Ferrets
+  changes:
+  - message: Dropship sentries are in govfor ASRS for $600 instead of the dropship
+      fabricator.
+    type: Tweak
+  id: 229
+  time: '2026-06-09T02:35:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1260
+- author: 400Ferrets
+  changes:
+  - message: Second floor of the USS Bush is now weedable.
+    type: Fix
+  id: 230
+  time: '2026-06-09T02:36:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1259
 Name: CMU
 Order: -1
