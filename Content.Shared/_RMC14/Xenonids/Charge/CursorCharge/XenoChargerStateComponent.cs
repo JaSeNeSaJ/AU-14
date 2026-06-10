@@ -16,6 +16,6 @@ public sealed partial class XenoChargerStateComponent : Component
     public int Stage = 0;
     public float SoundDistanceAccumulator = 0f;
     public float LungeDistanceRemaining = 0f;
-    public HashSet<EntityUid> HitEntities = new();
+    public Dictionary<EntityUid, TimeSpan> HitEntities = new();
 
 }

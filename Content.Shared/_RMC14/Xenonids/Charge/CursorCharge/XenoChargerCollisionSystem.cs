@@ -43,6 +43,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly XenoChargerMovementSystem _movement = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly XenoProjectileSystem _projectile = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private const float HeadOnDotThreshold = 0.707f; // cos(45°)
@@ -86,9 +87,15 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
                 if (!TryComp(charger, out XenoChargerStateComponent? state))
                     continue;
 
-                if ((state.MoveState == XenoChargerMoveState.Lunging || state.MoveState == XenoChargerMoveState.Charging)
-                    && !state.HitEntities.Add(target))
-                    continue;
+                var now = _timing.CurTime;
+
+                if (state.MoveState == XenoChargerMoveState.Lunging || state.MoveState == XenoChargerMoveState.Charging)
+                {
+                    if (state.HitEntities.TryGetValue(target, out var lastHit) && now - lastHit < xeno.HitCooldown)
+                        continue;
+
+                    state.HitEntities[target] = now;
+                }
 
                 switch (state.MoveState)
                 {
@@ -134,7 +141,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
             _stun.TryParalyze(target, knockdown, false);
 
             var origin = _transform.GetMapCoordinates(charger);
-            _sizeStun.KnockBack(target, origin, stage * 0.5f, stage);
+            _sizeStun.KnockBack(target, origin, stage * 0.3f, stage * 0.5f, knockBackSpeed: stage);
 
             if (_net.IsServer)
             {

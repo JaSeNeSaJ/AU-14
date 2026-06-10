@@ -50,4 +50,6 @@ public sealed partial class XenoChargerComponent : Component
     [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3); //only add this when we got the wall sliding to work
     [DataField] public TimeSpan LungeCooldown = TimeSpan.FromSeconds(8); //probably not needed
     [DataField] public TimeSpan LungeChargedCooldown = TimeSpan.FromSeconds(4); //probably not needed
+    [DataField] public TimeSpan HitCooldown = TimeSpan.FromSeconds(2);
+
 }
