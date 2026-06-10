@@ -57,6 +57,7 @@ public sealed partial class XenoStompSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private TurfSystem _turf = default!;
 
+
     public override void Initialize()
     {
         base.Initialize();

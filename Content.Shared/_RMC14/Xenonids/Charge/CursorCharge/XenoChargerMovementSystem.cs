@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using Content.Shared._RMC14.Atmos;
 using Content.Shared._RMC14.Emote;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
@@ -10,7 +11,7 @@ using Robust.Shared.Timing;
 
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 
-public sealed class XenoChargerMovementSystem : EntitySystem
+public sealed partial class XenoChargerMovementSystem : EntitySystem
 {
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly INetManager _net = default!;
@@ -19,6 +20,7 @@ public sealed class XenoChargerMovementSystem : EntitySystem
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedRMCEmoteSystem _rmcEmote = default!;
     [Dependency] private readonly XenoChargerCollisionSystem _collision = default!;
+    [Dependency] private readonly SharedRMCFlammableSystem _flammable = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
@@ -111,7 +113,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
             }
         }
 
-        _collision.ProcessHits();
+        if (_net.IsServer)
+            _collision.ProcessHits();
     }
 
     private void UpdateCharging(Entity<XenoChargerStateComponent> state, Entity<XenoChargerComponent> xeno, PhysicsComponent physics, float frameTime)
@@ -126,6 +129,7 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         // Accumulate distance and increment stage.
         var distThisFrame = speed * frameTime;
         stateComp.DistanceTraveled += distThisFrame;
+
 
         if (stateComp.Stage < xenoComp.MaxStage && stateComp.DistanceTraveled >= xenoComp.DistancePerStage)
         {
@@ -162,6 +166,8 @@ public sealed class XenoChargerMovementSystem : EntitySystem
         {
             stateComp.SoundDistanceAccumulator = 0f;
             _audio.PlayPvs(xenoComp.ChargeSound, xeno);
+            //doing fire stack clearing increments here too.
+            _flammable.AdjustStacks(xeno.Owner, -xenoComp.FireStacksCleared);
         }
 
         Dirty(xeno, stateComp);

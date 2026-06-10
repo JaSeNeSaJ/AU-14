@@ -16,6 +16,7 @@ public sealed partial class XenoChargerComponent : Component
     [DataField] public float BaseTurnRate = 3f;
     [DataField] public float MinTurnRate = 1.5f;
     [DataField] public float SoundEveryDistance = 10f;
+    [DataField] public int FireStacksCleared = 10;
 
     // --- Charge collision tuning ---
     [DataField] public float HumanDamageMultiplier = 5f;
