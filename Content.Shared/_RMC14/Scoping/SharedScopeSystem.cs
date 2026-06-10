@@ -330,7 +330,7 @@ public abstract partial class SharedScopeSystem : EntitySystem
 
     public virtual bool Unscope(Entity<ScopeComponent> scope)
     {
-        if (_net.IsClient)
+        if (_net.IsClient && scope.Comp.Attachment)
             return false;
 
         if (scope.Comp.User is not { } user)
