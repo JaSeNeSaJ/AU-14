@@ -1362,7 +1362,7 @@ namespace Content.Client.Lobby.UI
                 {
                     // Clone so we don't modify the underlying loadout.
                     RoleLoadout? loadout = null;
-                    Profile?.Loadouts.TryGetValue(LoadoutSystem.GetJobPrototype(job.ID), out loadout);
+                    Profile?.Loadouts.TryGetValue(roleLoadoutProto.ID, out loadout);
                     loadout = loadout?.Clone();
 
                     if (loadout == null)

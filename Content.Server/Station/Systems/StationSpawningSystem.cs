@@ -161,14 +161,38 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             roleProto = LoadoutSystem.GetRoleLoadout(loadoutJobId, _prototypeManager);
             if (roleProto != null)
             {
-                var jobLoadout = LoadoutSystem.GetJobPrototype(loadoutJobId);
-                profile?.Loadouts.TryGetValue(jobLoadout, out loadout);
+                profile?.Loadouts.TryGetValue(roleProto.ID, out loadout);
 
-                // Set to default if not present
                 if (loadout == null)
                 {
-                    loadout = new RoleLoadout(jobLoadout);
-                    loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager);
+                    var legacyKey = LoadoutSystem.GetJobPrototype(loadoutJobId);
+                    if (legacyKey != roleProto.ID)
+                        profile?.Loadouts.TryGetValue(legacyKey, out loadout);
+                }
+
+                // Set to default if not present
+                bool needDefault = loadout == null;
+                if (!needDefault)
+                {
+                    // If the stored Role is outdated migrate it to the resolved parent
+                    if (!_prototypeManager.HasIndex<RoleLoadoutPrototype>(loadout!.Role))
+                    {
+                        var session = _actors.GetSession(entity);
+                        if (profile != null && session != null)
+                        {
+                            loadout.Role = roleProto.ID;
+                            loadout.EnsureValid(profile, session, IoCManager.Instance!);
+                            needDefault = false; // migrated
+                        }
+                        else
+                            loadout = null; // force default
+                    }
+                }
+
+                if (needDefault)
+                {
+                    loadout = new RoleLoadout(roleProto.ID);
+                    loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager, force: true);
                 }
             }
         }
@@ -176,11 +200,10 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         // RMC14 UseLoadoutOfJob
         if (prototype?.UseLoadoutOfJob != null && _prototypeManager.Resolve(prototype.UseLoadoutOfJob, out var usedPrototype))
         {
-            var newJobLoadout = LoadoutSystem.GetJobPrototype(usedPrototype.ID);
             var newRoleProto = LoadoutSystem.GetRoleLoadout(usedPrototype.ID, _prototypeManager);
             if (newRoleProto != null)
             {
-                if (profile != null && profile.Loadouts.TryGetValue(newJobLoadout, out var newLoadout))
+                if (profile != null && profile.Loadouts.TryGetValue(newRoleProto.ID, out var newLoadout))
                 {
                     roleProto = newRoleProto;
                     loadout = newLoadout;

@@ -203,4 +203,13 @@ public sealed partial class LoadoutSystem : EntitySystem
 
         return null;
     }
+
+    /// <summary>
+    /// Returns the key to use for profile.Loadouts for a given job:
+    /// the resolved RoleLoadoutPrototype ID, or null if no loadout exists for this job.
+    /// </summary>
+    public static string? GetLoadoutKey(ProtoId<JobPrototype> jobId, IPrototypeManager protoMan)
+    {
+        return GetRoleLoadout(jobId, protoMan)?.ID;
+    }
 }

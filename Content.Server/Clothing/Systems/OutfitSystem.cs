@@ -82,7 +82,6 @@ public sealed partial class OutfitSystem : EntitySystem
             if (job.StartingGear != gear)
                 continue;
 
-            var jobProtoId = LoadoutSystem.GetJobPrototype(job.ID);
             var roleProto = LoadoutSystem.GetRoleLoadout(job.ID, _prototypeManager);
             if (roleProto == null)
                 break;
@@ -92,12 +91,19 @@ public sealed partial class OutfitSystem : EntitySystem
                 ? HumanoidCharacterProfile.DefaultWithSpecies(comp.Species)
                 : new HumanoidCharacterProfile();
             // Try to get the user's existing loadout for the role
-            profile.Loadouts.TryGetValue(jobProtoId, out var roleLoadout);
+            profile.Loadouts.TryGetValue(roleProto.ID, out var roleLoadout);
+
+            if (roleLoadout == null)
+            {
+                var legacyKey = LoadoutSystem.GetJobPrototype(job.ID);
+                if (legacyKey != roleProto.ID)
+                    profile.Loadouts.TryGetValue(legacyKey, out roleLoadout);
+            }
 
             if (roleLoadout == null)
             {
                 // If they don't have a loadout for the role, make a default one
-                roleLoadout = new RoleLoadout(jobProtoId);
+                roleLoadout = new RoleLoadout(roleProto.ID);
                 roleLoadout.SetDefault(profile, session, _prototypeManager);
             }
 
