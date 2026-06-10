@@ -58,13 +58,8 @@
         amount: 15
       - id: AU14UPPUshanka
         amount: 40
-    - name: Headsets
-      entries:
       - id: RMCM5CameraGear
         amount: 30
-      - id: AU14HeadsetGovforMarine
-        name: empty headset
-        amount: 20
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -708,12 +703,6 @@
         amount: 5
       - id: CMHeadCapSPPUshankaCivilian
         amount: 10
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetGovforCommand
-        amount: 2
-      - id: AU14HeadsetGovforAuxiliary
-        amount: 2
     - name: Backpack
       entries:
       - id: RMCBackpackRTOSPP
