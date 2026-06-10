@@ -2901,5 +2901,71 @@
   id: 232
   time: '2026-06-09T15:31:37.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1270
+- author: KeiKiyomi
+  changes:
+  - message: Fixed Prodigy synth raffle
+    type: Fix
+  id: 233
+  time: '2026-06-09T16:59:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1272
+- author: Piticzu
+  changes:
+  - message: Fixed Wendigo headbite screech not playing globally for all players.
+    type: Fix
+  id: 234
+  time: '2026-06-09T23:50:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1274
+- author: jok989372-lgtm
+  changes:
+  - message: Fixed stamps
+    type: Fix
+  id: 235
+  time: '2026-06-09T23:51:07.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1273
+- author: maertayn
+  changes:
+  - message: job icons require chevron to be worn, without chevron, no icon and a
+      surprise for IO mains
+    type: Add
+  - message: loadouts for military jobs have been fixed - now able to look up one
+      immediate parent
+    type: Fix
+  - message: JO vendors sharing limits between sections & bumped IO+EO to 2 per round
+      (e.g. 2 IOs, 0 EO)
+    type: Fix
+  - message: aboms were not detected by the motion tracker
+    type: Fix
+  - message: 'DIY spacecleaner: 2 parts water, 1 part vodka, lemon-lime and a tsp.
+      of salt, then stir it'
+    type: Add
+  - message: govfor headsets removed from govfor/opfor vendors
+    type: Remove
+  id: 236
+  time: '2026-06-10T05:15:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1276
+- author: 400Ferrets
+  changes:
+  - message: flamethrowers NERFED VICIOUSLY!!
+    type: Tweak
+  id: 237
+  time: '2026-06-10T07:40:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1281
+- author: 400Ferrets
+  changes:
+  - message: Port Neroid has a sensor tower.
+    type: Add
+  - message: Port Neroid has both comms towers, with multiple spawn locations.
+    type: Add
+  - message: Port Neroid grass is now weedable.
+    type: Add
+  - message: Port Neroid weedkiller range is larger.
+    type: Add
+  - message: Port Neroid no longer has working generators round-start.
+    type: Add
+  - message: Port Neroid is now darker.
+    type: Add
+  id: 238
+  time: '2026-06-10T07:43:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1279
 Name: CMU
 Order: -1
