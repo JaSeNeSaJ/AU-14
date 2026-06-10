@@ -1189,7 +1189,7 @@
       - id: RMCM54CMK2Case
         name: M54C assault rifle MK2
       - id: RMCCaseFlamer
-        name: M34 incinerator unit
+        name: M240 incinerator unit #cmu14
     - name: Spare Equipment
       jobs:
       - CMChiefEngineer
