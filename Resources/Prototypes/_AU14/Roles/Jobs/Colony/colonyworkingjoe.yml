@@ -1,6 +1,7 @@
 - type: job
   parent: AU14JobWorkingJoeBase
   id: AU14JobColonyWorkingJoe
+  requirements:
   - !type:TraitsRequirement
     inverted: true
     traits:
