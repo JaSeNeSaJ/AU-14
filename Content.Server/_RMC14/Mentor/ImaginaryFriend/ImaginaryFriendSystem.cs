@@ -38,7 +38,7 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
     private static readonly EntProtoId XenoImaginaryFriendPrototype = "RMCImaginaryFriendXeno";
 
     private static readonly ProtoId<StartingGearPrototype> XenoImaginaryFriendGear = "RMCMobXippyGear";
-    private static readonly ProtoId<JobPrototype> ImaginaryFriendJobPrototype = "CMSeniorEnlistedAdvisor";
+    private static readonly ProtoId<JobPrototype> ImaginaryFriendJobPrototype = "AU14JobGOVFORadvisor";
 
     public override void Initialize()
     {
