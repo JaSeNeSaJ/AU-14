@@ -44,8 +44,10 @@
     - type: NpcFactionMember
       factions:
       - GOVFOR
+      - OPFOR
+      - CMUVAI
     - type: Marine
-      Faction: govfor
+    # Faction: ""
   hidden: false
 
 - type: startingGear
@@ -53,7 +55,7 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonBlack
     shoes: RMCShoesLaceupBrown
-    id: AU14IDCardColonyCorporateLiaison
+    id: AU14IDCardVAIAmbassador
     outerClothing: RMCFancySuitJacketBrown
     ears: AU14AmbassadorUAHeadset
     pocket1: AU14StampUAA
