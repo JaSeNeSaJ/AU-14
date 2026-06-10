@@ -33,6 +33,7 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
+    - badBloodClanThreat
     thirdparties:
     - WEYUSurvLarge
     - WEYUSurvMedium
@@ -392,6 +393,7 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
+    - Bb
     thirdparties:
     - IASFSurvLarge
     - IASFSurvMedium
@@ -458,6 +460,8 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
+    - badBloodClanThreat
+
     thirdparties:
     - WEYUSurvLarge
     - WEYUSurvMedium
@@ -521,7 +525,8 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-    - TribalsThreat
+    - badBloodClanThreat
+
     thirdparties:
     - WEYUSurvLarge
     - WEYUSurvMedium
@@ -599,6 +604,8 @@
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
+    - -badBloodClanThreat
+
     joboverrides:
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
       AU14JobLEOLeaderBase: AU14JobCivilianCMBMarshal
@@ -658,8 +665,10 @@
     - cultistThreat
     - XenoThreat
     - wendigoThreat
-    - TribalsThreat
+ #   - TribalsThreat
     - abominationsThreatDistress
+    - -badBloodClanThreat
+
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -718,7 +727,9 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - TribalsThreat
+    #- TribalsThreat
+    - -badBloodClanThreat
+
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -774,7 +785,9 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - TribalsThreat
+ #   - TribalsThreat
+    - -badBloodClanThreat
+
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -831,6 +844,8 @@
     threats:
     - XenoThreat
     - TribalsThreat
+    - -badBloodClanThreat
+
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -887,6 +902,7 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
+     -badBloodClanThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -941,6 +957,8 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
+    - -badBloodClanThreat
+
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
     joboverrides:
