@@ -154,8 +154,8 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
                     if (_prototypeManager.TryIndex(highJob, out var jobProto))
                     {
                         var jobLoadoutId = LoadoutSystem.GetJobPrototype(jobProto.ID);
-
-                        if (_prototypeManager.TryIndex(jobLoadoutId, out RoleLoadoutPrototype? roleProto))
+                        var roleProto = LoadoutSystem.GetRoleLoadout(jobProto.ID, _prototypeManager);
+                        if (roleProto != null)
                         {
                             humanoid.Loadouts.TryGetValue(jobLoadoutId, out var loadout);
 

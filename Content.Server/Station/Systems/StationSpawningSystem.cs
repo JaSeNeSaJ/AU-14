@@ -152,18 +152,24 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         // Get the original job prototype for access/faction/ID
         _prototypeManager.Resolve(originalJob, out var originalPrototype);
         RoleLoadout? loadout = null;
+        RoleLoadoutPrototype? roleProto = null;
 
         // Need to get the loadout up-front to handle names if we use an entity spawn override.
-        var jobLoadout = LoadoutSystem.GetJobPrototype(prototype?.ID);
-        if (_prototypeManager.TryIndex(jobLoadout, out RoleLoadoutPrototype? roleProto))
+        var loadoutJobId = prototype?.ID;
+        if (loadoutJobId != null)
         {
-            profile?.Loadouts.TryGetValue(jobLoadout, out loadout);
-
-            // Set to default if not present
-            if (loadout == null)
+            roleProto = LoadoutSystem.GetRoleLoadout(loadoutJobId, _prototypeManager);
+            if (roleProto != null)
             {
-                loadout = new RoleLoadout(jobLoadout);
-                loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager);
+                var jobLoadout = LoadoutSystem.GetJobPrototype(loadoutJobId);
+                profile?.Loadouts.TryGetValue(jobLoadout, out loadout);
+
+                // Set to default if not present
+                if (loadout == null)
+                {
+                    loadout = new RoleLoadout(jobLoadout);
+                    loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager);
+                }
             }
         }
 
@@ -171,8 +177,8 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         if (prototype?.UseLoadoutOfJob != null && _prototypeManager.Resolve(prototype.UseLoadoutOfJob, out var usedPrototype))
         {
             var newJobLoadout = LoadoutSystem.GetJobPrototype(usedPrototype.ID);
-
-            if (_prototypeManager.TryIndex(newJobLoadout, out RoleLoadoutPrototype? newRoleProto))
+            var newRoleProto = LoadoutSystem.GetRoleLoadout(usedPrototype.ID, _prototypeManager);
+            if (newRoleProto != null)
             {
                 if (profile != null && profile.Loadouts.TryGetValue(newJobLoadout, out var newLoadout))
                 {
@@ -181,7 +187,6 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 }
             }
         }
-
         // Spawn a custom JobEntity (e.g. Working Joe, rAI), this skips a lot of the humanoid stuff
         // Only apply player profile when UsePlayerProfile: true (default)
         if (prototype?.JobEntity != null)

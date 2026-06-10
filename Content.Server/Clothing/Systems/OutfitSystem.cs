@@ -47,7 +47,7 @@ public sealed partial class OutfitSystem : EntitySystem
             foreach (var slot in slots)
             {
                 _invSystem.TryUnequip(target, slot.Name, true, true, false, inventoryComponent);
-                var gearStr = ((IEquipmentLoadout) startingGear).GetGear(slot.Name);
+                var gearStr = ((IEquipmentLoadout)startingGear).GetGear(slot.Name);
                 if (gearStr == string.Empty)
                     continue;
 
@@ -83,7 +83,8 @@ public sealed partial class OutfitSystem : EntitySystem
                 continue;
 
             var jobProtoId = LoadoutSystem.GetJobPrototype(job.ID);
-            if (!_prototypeManager.TryIndex<RoleLoadoutPrototype>(jobProtoId, out var jobProto))
+            var roleProto = LoadoutSystem.GetRoleLoadout(job.ID, _prototypeManager);
+            if (roleProto == null)
                 break;
 
             // Don't require a player, so this works on Urists
@@ -101,7 +102,7 @@ public sealed partial class OutfitSystem : EntitySystem
             }
 
             // Equip the target with the job loadout
-            _spawningSystem.EquipRoleLoadout(target, roleLoadout, jobProto);
+            _spawningSystem.EquipRoleLoadout(target, roleLoadout, roleProto);
         }
 
         return true;
