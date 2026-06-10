@@ -11,6 +11,7 @@
   - AU14UCMJArrestingProcedure
   - AU14UCMJCriminalCode
   - AU14UCMJDefinitionsandGlossary
+  - WarfareInterstellarCharterofHumanity
 
 - type: guideEntry
   parent: RMC
@@ -25,13 +26,6 @@
   name: Warfare Interstellar Charter of Humanity (WICH)
   priority: 0
   text: "/ServerInfo/Guidebook/_AU14/UCMJ/WarfareInterstellarCharterofHumanity.xml"
-
-- type: guideEntry
-  parent: RMC
-  id: AU14UCMJSRA
-  name: Synthetics Right Act (SRA)
-  priority: 0
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/SyntheticRightsAct.xml"
 
 - type: guideEntry
   parent: RMC
