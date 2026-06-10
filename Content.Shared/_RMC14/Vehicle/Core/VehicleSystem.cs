@@ -1091,4 +1091,17 @@ public sealed partial class VehicleSystem : EntitySystem
         target = interior.Map;
         return target.IsValid();
     }
+
+    public bool TryGetOccupants(EntityUid vehicle, out IReadOnlyCollection<EntityUid> passengers, out IReadOnlyCollection<EntityUid> xenos)
+    {
+        passengers = Array.Empty<EntityUid>();
+        xenos = Array.Empty<EntityUid>();
+
+        if (!TryComp(vehicle, out VehicleInteriorComponent? interior))
+            return false;
+
+        passengers = interior.Passengers;
+        xenos = interior.Xenos;
+        return true;
+    }
 }

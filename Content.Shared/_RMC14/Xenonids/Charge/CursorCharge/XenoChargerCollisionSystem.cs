@@ -1,7 +1,9 @@
-﻿using System.Numerics;
+﻿using System.Linq;
+using System.Numerics;
 using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Explosion;
 using Content.Shared._RMC14.Stun;
+using Content.Shared._RMC14.Vehicle;
 using Content.Shared._RMC14.Xenonids.Projectile;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -44,6 +46,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly XenoProjectileSystem _projectile = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly VehicleSystem _vehicle = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private const float HeadOnDotThreshold = 0.707f; // cos(45°)
@@ -236,7 +239,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
         EntityUid target)
     {
         var stage = state.Stage;
-        var isCharged = stage > 4;
+        var isCharged = stage > 6;
 
         if (TryComp(target, out MobStateComponent? mobState))
         {
@@ -280,12 +283,34 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
             return;
         }
 
-        // --- Vehicles ---
+        //Vehicles
         if (HasComp<VehicleComponent>(target))
         {
             var damage = new DamageSpecifier();
-            damage.DamageDict[_blunt] = xeno.ChargedDamageBase + (stage) * xeno.ChargedDamagePerStage;
+            damage.DamageDict[_blunt] = stage * xeno.StructureDamageMultiplier;
             _damageable.TryChangeDamage(target, damage, origin: charger);
+
+            if (isCharged && _vehicle.TryGetOccupants(target, out var passengers, out var xenos))
+            {
+                foreach (var occupant in passengers.Concat(xenos))
+                {
+                    if (TerminatingOrDeleted(occupant) || _mobState.IsDead(occupant))
+                        continue;
+
+                    var throwDir = new Vector2(
+                        _random.NextFloat(-1f, 1f),
+                        _random.NextFloat(-1f, 1f)
+                    );
+
+                    if (throwDir.LengthSquared() > 0.001f)
+                        throwDir = Vector2.Normalize(throwDir);
+
+
+                    _stun.TryKnockdown(occupant, TimeSpan.FromSeconds(1), false);
+                    _throwing.TryThrow(occupant, throwDir, 20f);
+                }
+            }
+
             _movement.ResetToIdle(charger);
             return;
         }
