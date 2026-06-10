@@ -25,7 +25,7 @@
   id: AU14UCMJWICH
   name: Warfare Interstellar Charter of Humanity (WICH)
   priority: 0
-  text: "/ServerInfo/Guidebook/_AU14/UCMJ/Protectionacts/WarfareInterstellarCharterofHumanity"
+  text: "/ServerInfo/Guidebook/_AU14/UCMJ/Protectionacts/WarfareInterstellarCharterofHumanity.xml"
 
 - type: guideEntry
   parent: RMC
