@@ -28,7 +28,7 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-  RMCRankCivilian: []
+    RMCRankCivilian: []
   chevrons:
     RMCRankGunnerySergeant:
       entity: AU14ChevronUSCMGunnerySergeant

@@ -7,6 +7,7 @@ using Content.Shared.AU14.Allegiance;
 using Content.Shared.AU14.Origin;
 using Content.Shared.AU14.Threats;
 using Content.Shared.CCVar;
+using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
 using Content.Shared.Humanoid;
 using Content.Shared.Humanoid.Prototypes;
@@ -698,7 +699,7 @@ namespace Content.Shared.Preferences
         {
             return new(this)
             {
-                _antagPreferences = new (antagPreferences),
+                _antagPreferences = new(antagPreferences),
             };
         }
 
@@ -1150,7 +1151,7 @@ namespace Content.Shared.Preferences
                     toRemove.Add(roleName);
                     continue;
                 }
-                
+
                 loadouts.Role = roleName;
                 loadouts.EnsureValid(this, session, collection);
             }
@@ -1331,14 +1332,25 @@ namespace Content.Shared.Preferences
 
         public RoleLoadout GetLoadoutOrDefault(string id, ICommonSession? session, ProtoId<SpeciesPrototype>? species, IEntityManager entManager, IPrototypeManager protoManager)
         {
-            if (!_loadouts.TryGetValue(id, out var loadout))
+            var resolvedKey = LoadoutSystem.GetLoadoutKey(id, protoManager);
+            if ((resolvedKey != null && _loadouts.TryGetValue(resolvedKey, out var loadout))
+                || _loadouts.TryGetValue(id, out loadout))
             {
-                loadout = new RoleLoadout(id);
-                loadout.SetDefault(this, session, protoManager, force: true);
+                if (protoManager.HasIndex<RoleLoadoutPrototype>(loadout.Role))
+                    return loadout;
+
+                if (resolvedKey != null)
+                {
+                    loadout.Role = resolvedKey;
+                    if (session != null)
+                        loadout.EnsureValid(this, session, IoCManager.Instance!);
+                    return loadout;
+                }
             }
 
-            loadout.SetDefault(this, session, protoManager);
-            return loadout;
+            var newLoadout = new RoleLoadout(resolvedKey ?? id);
+            newLoadout.SetDefault(this, session, protoManager, force: true);
+            return newLoadout;
         }
 
         public HumanoidCharacterProfile WithNamedItems(SharedRMCNamedItems named)

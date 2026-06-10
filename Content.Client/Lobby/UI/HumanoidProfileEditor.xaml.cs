@@ -1353,19 +1353,16 @@ namespace Content.Client.Lobby.UI
             var protoManager = collection.Resolve<IPrototypeManager>();
 
             // If no loadout found then disabled button
-            if (!protoManager.TryIndex<RoleLoadoutPrototype>(LoadoutSystem.GetJobPrototype(job.ID), out var roleLoadoutProto))
-            {
+            var roleLoadoutProto = LoadoutSystem.GetRoleLoadout(job.ID, protoManager);
+            if (roleLoadoutProto == null)
                 loadoutWindowBtn.Disabled = true;
-            }
-            // else
             else
             {
                 loadoutWindowBtn.OnPressed += args =>
                 {
-                    RoleLoadout? loadout = null;
-
                     // Clone so we don't modify the underlying loadout.
-                    Profile?.Loadouts.TryGetValue(LoadoutSystem.GetJobPrototype(job.ID), out loadout);
+                    RoleLoadout? loadout = null;
+                    Profile?.Loadouts.TryGetValue(roleLoadoutProto.ID, out loadout);
                     loadout = loadout?.Clone();
 
                     if (loadout == null)
