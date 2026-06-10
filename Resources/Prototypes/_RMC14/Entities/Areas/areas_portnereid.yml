@@ -1,4 +1,6 @@
-﻿- type: entity
+﻿# continuted in /_CMU14/Entities/Areas/areas_cmu_portnereid.yml
+
+- type: entity
   parent: RMCAreaShuttleDrop1
   id: RMCAreaShuttleDrop1PortNereid
   name: Port Nereid Cargo Depot AC-170 - LZ1
@@ -62,9 +64,9 @@
   components:
   - type: Sprite
     state: tunnels0
-    weatherEnabled: false
   - type: Area
     minimapColor: '#a16027'
+    weatherEnabled: false
 
 - type: entity
   parent: RMCAreaProtectionFour
