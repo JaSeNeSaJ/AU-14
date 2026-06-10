@@ -1,8 +1,8 @@
 - type: entity
   parent: RMCWeaponFlamer
   id: RMCWeaponFlamerSpec
-  name: M34-T incinerator unit
-  description: An improved version of the M34 incinerator unit, the M34-T model is capable of dispersing a larger variety of fuel types.
+  name: M240-T incinerator unit #cmu14
+  description: An improved version of the M240 incinerator unit, the M240-T model is capable of dispersing a larger variety of fuel types. #cmu14
   components:
   - type: Corrodible
     isCorrodible: true

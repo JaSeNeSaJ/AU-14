@@ -27,7 +27,7 @@
     - Back
   - type: Gun
     cameraRecoilScalar: 0
-    fireRate: 1.9
+    fireRate: 0.7 #cmu14
     selectedMode: FullAuto
     availableModes:
     - FullAuto
