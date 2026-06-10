@@ -305,12 +305,10 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
                     if (throwDir.LengthSquared() > 0.001f)
                         throwDir = Vector2.Normalize(throwDir);
 
-
                     _stun.TryKnockdown(occupant, TimeSpan.FromSeconds(1), false);
                     _throwing.TryThrow(occupant, throwDir, 20f);
                 }
             }
-
             _movement.ResetToIdle(charger);
             return;
         }
@@ -393,7 +391,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
 
     private void BreakWall(EntityUid charger, EntityUid wall, Vector2 lungeDirection)
     {
-        //WIP, very inconsistent and largely just hoping for some sovl, leave it for now.
+        //WIP but not really that important.
 
         if (!_net.IsServer)
             return;
@@ -401,9 +399,11 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
         if (TerminatingOrDeleted(charger))
             return;
 
-        Del(wall);
+        //if its not indestructible, delete.
+        if (HasComp<DamageableComponent>(wall))
+            Del(wall);
 
-        //_projectile.TryShoot(charger, new EntityCoordinates(charger, lungeDirection * 1.5f), FixedPoint2.Zero, "XenoHedgehogSpikeProjectileSpread", null, _random.Next(14, 20), new Angle(2 * Math.PI), 9f, projectileHitLimit: 6);
+        //was gonna add some shrapnel throwing code here, but it had hands so im not doing it now.
     }
 
     private Vector2 GetWallNormal(EntityUid charger, EntityUid wall)
