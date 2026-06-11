@@ -31,6 +31,7 @@
             # Security/LEO
             AU14JobCivilianCMBMarshal: [1, 1]
             AU14JobCivilianCMBDeputy: [4, 4]
+            AU14JobCivilianColonyAdministrator: [1, 1]
 
             # Engineering/Logi
             AU14JobCivilianForeman: [1, 1]

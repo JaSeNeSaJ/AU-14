@@ -49,10 +49,6 @@
 
             # We-Yu
 
-            AU14JobCivilianScientist: [6, 6]
-            AU14JobCivilianCorporateLiaison: [4, 4]
-
-            # Orbital
-            AU14JobCivilianOrbitalArbiter: [1, 1]
-            AU14JobCivilianOrbitalLawyer: [2, 3]
+            #AU14JobCivilianScientist: [6, 6]
+          #  AU14JobCivilianCorporateLiaison: [4, 4]
 

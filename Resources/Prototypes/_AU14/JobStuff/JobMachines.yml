@@ -57,11 +57,11 @@
     probability: 100
   - type: SubmissionStorage
     rewards:
-      SteelOre: 30
-      AUwood: 25
-      Vegetable: 10
+      SteelOre: 5
+      AUwood: 20
+      Vegetable: 1
       Fruit: 2
-      CottonBoll: 4
+      CottonBoll: 2
       CMUGrain: 2
   - type: ContainerContainer
     containers:
