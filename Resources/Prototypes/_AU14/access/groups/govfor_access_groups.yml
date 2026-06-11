@@ -29,6 +29,13 @@
   id: AU14GovforSquad
 
 - type: accessGroup
+  id: AU14GovforWeaponsSpecialist
+  tags:
+  - AU14AccessGovforSquadWeaponsSpecialist
+  - AU14AccessGovforSquad
+  - AU14AccessGovfor
+
+- type: accessGroup
   id: AU14GovforFTL
   tags:
   - AU14AccessGovfor
