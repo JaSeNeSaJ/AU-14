@@ -26,7 +26,7 @@
         crate: RMCCrateHighCapacityPowerCell
       - cost: 400
         crate: AU14CrateBoxFusionCells
-      - cost: 350
+      - cost: 3500
         crate: AU14CrateBoxToolbelt
       - cost: 3000
         crate: AU14CrateBoxFieldSupplyEngin
