@@ -188,7 +188,7 @@
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14CMBCIUapparelvendor
     Weapons: AU14CMBCIUWeaponsVendor
-    SWeapons: AU14CMBCIUSpecialWeaponsVendor
+    SWeapons: AU14SpecVend
     Corpsman: AU14CMBCIUTacticalMedicVendor
     Arifleman: AU14CMBCIUGunnerVendor
     Dcc: AU14CMBCIUWeaponsVendor
@@ -265,7 +265,7 @@
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14prodigyclothingequipmentvendor
     Weapons: AU14prodigyWeaponsVendor
-    SWeapons: AU14prodigySpecialWeaponsVendor
+    SWeapons: AU14SpecVend
     Corpsman: AU14prodigycorpsmanvendor
     Arifleman: AU14prodigySGequipmentvendor
     Dcc: AU14prodigyaircrewvendor
@@ -300,7 +300,7 @@
     Rifleman: AU14USCMequipmentvendor
     Clothing: AU14VAIPOclothingequipmentvendor
     Weapons: AU14VAIPOWeaponsVendor
-    SWeapons: AU14VAIPOSpecialWeaponsVendor
+    SWeapons: AU14SpecVend
     Corpsman: AU14VAIPOcorpsmanvendor
     Arifleman: AU14VAIPOSGequipmentvendor
     Dcc: AU14VAIPOaircrewvendor
