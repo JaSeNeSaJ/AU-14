@@ -322,6 +322,10 @@
       - id: AU14PouchIFAKFill
       - id: RMCPouchMagazinePistol
       - id: RMCPouchPistol
+    - name: Inmate Restraining Gear
+      entries:
+      - id: AU14ClothingOuterStraitjacket
+        amount: 5 # TODO: bandaid - remove after mappers have placed this
 
 - type: entity
   parent: ColMarTechBase
