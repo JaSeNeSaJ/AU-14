@@ -19,3 +19,19 @@
   id: AUPrisonStaff
   tags:
   - AUAccessPrison
+
+- type: accessGroup
+  id: aulegacygroupcommand # bandaid for officers (legacy AA)
+  tags:
+  - CMAccessGovforCommand
+  - CMAccessBrig
+  - CMAccessArmory
+  - CMAccessMedPrep
+  - CMAccessMarineRifleman
+  - CMAccessMarinePrep
+  - CMAccessSmartPrep
+  - CMAccessSquadLeaderPrep
+  - CMAccessDropship
+  - CMAccessPilot
+  - CMAccessCrewman
+  - CMAccessRequisitions
