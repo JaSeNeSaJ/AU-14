@@ -33,6 +33,7 @@
   tags:
   - AU14AccessGovforSquadWeaponsSpecialist
   - AU14AccessGovforSquad
+  - AU14AccessGovfor
 
 - type: accessGroup
   id: AU14GovforFTL
