@@ -3018,5 +3018,19 @@
   id: 244
   time: '2026-06-11T12:02:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1289
+- author: troytroy400
+  changes:
+  - message: CMU logo replaced with pride version for pride month.
+    type: Tweak
+  id: 245
+  time: '2026-06-11T17:10:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1293
+- author: troytroy400
+  changes:
+  - message: The USS George W. Bush now has solid fuel so the OB can be used.
+    type: Add
+  id: 246
+  time: '2026-06-11T17:38:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1294
 Name: CMU
 Order: -1
