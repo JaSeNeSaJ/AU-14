@@ -1311,46 +1311,61 @@ namespace Content.Shared.Preferences
             _loadouts[loadout.Role.Id] = loadout;
         }
 
-        public HumanoidCharacterProfile WithLoadout(RoleLoadout loadout)
+        public HumanoidCharacterProfile WithLoadout(string key, RoleLoadout loadout)
         {
             // Deep copies so we don't modify the DB profile.
             var copied = new Dictionary<string, RoleLoadout>();
 
             foreach (var proto in _loadouts)
             {
-                if (proto.Key == loadout.Role)
+                if (proto.Key == key)
                     continue;
 
                 copied[proto.Key] = proto.Value.Clone();
             }
 
-            copied[loadout.Role] = loadout.Clone();
+            copied[key] = loadout.Clone();
             var profile = Clone();
             profile._loadouts = copied;
             return profile;
         }
 
-        public RoleLoadout GetLoadoutOrDefault(string id, ICommonSession? session, ProtoId<SpeciesPrototype>? species, IEntityManager entManager, IPrototypeManager protoManager)
+        public RoleLoadout GetLoadoutOrDefault(string id, ICommonSession? session, ProtoId<SpeciesPrototype>? species,
+            IEntityManager entManager, IPrototypeManager protoManager)
         {
-            var resolvedKey = LoadoutSystem.GetLoadoutKey(id, protoManager);
-            if ((resolvedKey != null && _loadouts.TryGetValue(resolvedKey, out var loadout))
-                || _loadouts.TryGetValue(id, out loadout))
+            if (_loadouts.TryGetValue(id, out var loadout))
             {
-                if (protoManager.HasIndex<RoleLoadoutPrototype>(loadout.Role))
-                    return loadout;
-
-                if (resolvedKey != null)
-                {
-                    loadout.Role = resolvedKey;
-                    if (session != null)
-                        loadout.EnsureValid(this, session, IoCManager.Instance!);
-                    return loadout;
-                }
+                TryMigrateLoadout(loadout, id, protoManager, session, this);
+                loadout.SetDefault(this, session, protoManager);
+                return loadout;
             }
 
-            var newLoadout = new RoleLoadout(resolvedKey ?? id);
+            // Create a new loadout with the resolved parent ID
+            var jobId = id.StartsWith("Job") ? id.Substring(3) : id;
+            var (_, proto) = LoadoutSystem.GetJobLoadoutInfo(jobId, protoManager);
+            var newLoadout = new RoleLoadout(proto?.ID ?? id);
             newLoadout.SetDefault(this, session, protoManager, force: true);
             return newLoadout;
+        }
+
+        private static bool TryMigrateLoadout(RoleLoadout loadout, string concreteKey,
+            IPrototypeManager protoManager, ICommonSession? session, HumanoidCharacterProfile profile)
+        {
+            if (protoManager.HasIndex<RoleLoadoutPrototype>(loadout.Role))
+                return false;
+
+            var jobId = concreteKey.StartsWith("Job") ? concreteKey.Substring(3) : concreteKey;
+            var (_, resolved) = LoadoutSystem.GetJobLoadoutInfo(jobId, protoManager);
+            if (resolved?.ID == null)
+                return false;
+
+            if (loadout.Role == resolved.ID)
+                return false;
+            loadout.Role = resolved.ID;
+
+            if (session != null && IoCManager.Instance is { } ioc)
+                loadout.EnsureValid(profile, session, ioc);
+            return true;
         }
 
         public HumanoidCharacterProfile WithNamedItems(SharedRMCNamedItems named)

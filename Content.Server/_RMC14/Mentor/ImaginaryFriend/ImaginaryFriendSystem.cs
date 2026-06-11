@@ -155,18 +155,17 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
 
                     if (_prototypeManager.TryIndex(highJob, out var jobProto))
                     {
-                        var roleProto = LoadoutSystem.GetRoleLoadout(jobProto.ID, _prototypeManager);
-                        if (roleProto != null)
+                        var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(jobProto.ID, _prototypeManager);
+                        if (proto != null)
                         {
-                            humanoid.Loadouts.TryGetValue(roleProto.ID, out var loadout);
-
+                            humanoid.Loadouts.TryGetValue(key, out var loadout);
                             if (loadout == null)
                             {
-                                loadout = new RoleLoadout(roleProto!.ID);
+                                loadout = new RoleLoadout(proto.ID);
                                 loadout.SetDefault(humanoid, null, _prototypeManager);
                             }
 
-                            _stationSpawning.EquipRoleLoadout(friend, loadout, roleProto);
+                            _stationSpawning.EquipRoleLoadout(friend, loadout, proto);
                         }
                     }
                     break;
