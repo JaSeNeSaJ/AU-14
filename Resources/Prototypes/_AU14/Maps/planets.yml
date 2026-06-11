@@ -393,7 +393,7 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
-    - Bb
+
     thirdparties:
     - IASFSurvLarge
     - IASFSurvMedium
@@ -604,7 +604,7 @@
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     joboverrides:
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -902,7 +902,7 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
-     -badBloodClanThreat
+    -  badBloodClanThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
