@@ -38,7 +38,7 @@
 
             # Security/LEO
             AU14JobCivilianNSPAInspector: [1, 1]
-            AU14JobCiviliannspaConstable: [5, 5]
+            AU14JobCivilianNSPAConstable: [5, 5]
 
             # Engineering/Logi
             AU14JobCivilianForeman: [1, 1]
