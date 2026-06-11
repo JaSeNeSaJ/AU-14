@@ -65,10 +65,10 @@ rmc-job-name-weapons-specialist-pyro = Pyrotechnical Specialist
 rmc-job-prefix-weapons-specialist-pyro = PYRO
 
 rmc-job-name-weapons-specialist-shotgunner = Heavy Shotgunner
-rmc-job-prefix-weapons-specialist-shotgunner = HSHG
+rmc-job-prefix-weapons-specialist-shotgunner = SGNR
 
 rmc-job-name-weapons-specialist-plasmagunner = Plasma Gunner
-rmc-job-prefix-weapons-specialist-plasmagunner = Plasma Gunner
+rmc-job-prefix-weapons-specialist-plasmagunner = PGNR
 
 rmc-job-name-forecon-spotter = Recon Spotter
 
