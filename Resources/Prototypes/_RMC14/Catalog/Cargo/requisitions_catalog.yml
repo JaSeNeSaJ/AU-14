@@ -24,6 +24,8 @@
         crate: RMCCrateSuperPacmanParts
       - cost: 350
         crate: RMCCrateHighCapacityPowerCell
+      - cost: 400
+        crate: AU14CrateBoxFusionCells
       - cost: 350
         crate: AU14CrateBoxToolbelt
       - cost: 3000
