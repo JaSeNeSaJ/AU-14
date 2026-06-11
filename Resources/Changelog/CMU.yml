@@ -3032,5 +3032,22 @@
   id: 246
   time: '2026-06-11T17:38:05.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1294
+- author: UnicornOnLSD
+  changes:
+  - message: Monocular and it's advanced counterpart have proper inhands.
+    type: Add
+  id: 247
+  time: '2026-06-11T20:08:57.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1292
+- author: troytroy400
+  changes:
+  - message: Added Weapon Specialist.
+    type: Add
+  - message: Changed content of various special weapons kits to contain more ammunition
+      and a variety of other special items.
+    type: Tweak
+  id: 248
+  time: '2026-06-11T20:14:01.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1295
 Name: CMU
 Order: -1
