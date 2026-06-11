@@ -55,20 +55,18 @@
   # Start _CMU14
   - type: Item 
     heldPrefix: monocular
-  - type: Sprite
-    sprite: _CMU14/Objects/Devices/monocular.rsi
-    state: monocular
   # End _CMU14
+  - type: Sprite
+    sprite: _CMU14/Objects/Devices/monocular.rsi # _CMU14
+    state: monocular
   - type: Scope
     zoomLevels:
     - zoom: 1.4
       offset: 10
       allowMovement: false
       doAfter: 0.1
-  # Start _CMU14
   - type: ItemCamouflage
     states: {}
-  # End _CMU14
 
 - type: entity
   parent: RMCBinoculars
