@@ -667,7 +667,7 @@
     - wendigoThreat
  #   - TribalsThreat
     - abominationsThreatDistress
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -728,7 +728,7 @@
     threats:
     - XenoThreat
     #- TribalsThreat
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -786,7 +786,7 @@
     threats:
     - XenoThreat
  #   - TribalsThreat
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -844,7 +844,7 @@
     threats:
     - XenoThreat
     - TribalsThreat
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -957,7 +957,7 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
-    - -badBloodClanThreat
+    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
