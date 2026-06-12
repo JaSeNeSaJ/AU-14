@@ -45,6 +45,7 @@ using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Storage;
 using Content.Shared._RMC14.Cryostorage;
 using Content.Shared.AU14.Objectives;
+using Content.Shared._AU14.Vendors;
 
 namespace Content.Shared._RMC14.Vendors;
 
@@ -577,6 +578,37 @@ public abstract partial class SharedCMAutomatedVendorSystem : EntitySystem
                     Vendor = vendor,
                     Entry = args.Entry
                 }, true);
+            }
+        }
+
+        if (section.SharedJOLimit is { } joLimit) // CMU14 JO limit
+        {
+            if (TryComp<AU14VendorJOComponent>(vendor, out var thisJOVendor))
+            {
+                // Get every AU14VendorJO
+                var joVendors = EntityQueryEnumerator<AU14VendorJOComponent>();
+                var totalSectionVends = 0;
+
+                // Goes through each AU14VendorJO and gets the value for this kit type.
+                while (joVendors.MoveNext(out _, out var joVendor))
+                {
+                    for (int i = 0; i < section.Entries.Count; i++)
+                    {
+                        if (joVendor.GlobalSharedVends.TryGetValue(i, out var count))
+                            totalSectionVends += count;
+                    }
+                }
+
+                if (totalSectionVends >= joLimit)
+                {
+                    ResetChoices();
+                    _popup.PopupEntity(Loc.GetString("au14-vending-machine-jo-max"), vendor.Owner, actor);
+                    return;
+                }
+
+                var current = thisJOVendor.GlobalSharedVends.GetValueOrDefault(args.Entry);
+                thisJOVendor.GlobalSharedVends[args.Entry] = current + 1;
+                Dirty(vendor, thisJOVendor);
             }
         }
 

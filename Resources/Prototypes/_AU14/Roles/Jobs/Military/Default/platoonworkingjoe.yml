@@ -1,10 +1,23 @@
 - type: job
+  abstract: true
   parent: AU14JobWorkingJoeBase
+  id: AU14JobGOVFORWorkingJoeBase
+  icon: "AU14JobIconGovWorkingJoe"
+  spawnMenuRoleName: Working Joe (GOVFOR)
+  supervisors: au14-job-supervisors-workingjoe-military
+  startingGear: AU14GearGOVFORWorkingJoe
+  dummyStartingGear: AU14GearGOVFORWorkingJoe
+  usePlayerProfile: false
+  jobEntity: AU14MobWorkingJoeGOVFOR
+  accessGroups:
+  - AU14GovforCommand
+  - AUPrisonStaff
+  - auwy
+
+- type: job
+  parent: AU14JobGOVFORWorkingJoeBase
   id: AU14JobGOVFORWorkingJoe
   requirements:
-  - !type:RoleTimeRequirement
-    role: AU14JobGOVFORAuxSupportSynth
-    time: 9000 # 2.5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:
@@ -12,12 +25,6 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
-  icon: "AU14JobIconGovWorkingJoe"
-  spawnMenuRoleName: Working Joe (GOVFOR)
-  supervisors: au14-job-supervisors-workingjoe-military
-  usePlayerProfile: false
-  accessGroups:
-  - AU14GovforCommand
   special:
   - !type:AddComponentSpecial
     components:
@@ -33,6 +40,7 @@
       - radioGovforCharlie
       - radioGovforBravo
       - radioGovforIntel
+      - radioGovforMILP
     - type: ActiveRadio
       channels:
       - radioAI
@@ -42,15 +50,13 @@
       - radioGovforCharlie
       - radioGovforBravo
       - radioGovforIntel
-    - type: Access
-      groups:
-      - AU14GovforCommand
-      - AUPrisonStaff
-      - auwy
-    - type: Loadout
-      prototypes: [ AU14GearGOVFORWorkingJoe ]
-  dummyStartingGear: AU14GearGOVFORWorkingJoe
-  hidden: false
+      - radioGovforMILP
+    - type: Tag
+      tags:
+      - WorkingJoe
+      - CanPilot
+      - FootstepSound
+      - DoorBumpOpener
 
 - type: startingGear
   parent: AU14GearWorkingJoeBase
@@ -60,6 +66,7 @@
     ears: AU14HeadsetWorkingJoe
     ears2: RMCM5CameraGear
     back: AU14IMPBackpackMarine
+    pocket1: AU14StampJoe
 
 - type: entity
   parent: CMSpawnPointJobBase

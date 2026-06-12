@@ -49,6 +49,9 @@ rmc-job-prefix-weapons-specialist-demo = DEMO
 rmc-job-name-weapons-specialist-grenadier = Grenadier Specialist
 rmc-job-prefix-weapons-specialist-grenadier = GRND
 
+rmc-job-name-weapons-specialist-sharp = SHARP Operator Specialist
+rmc-job-prefix-weapons-specialist-sharp = SHRP
+
 rmc-job-name-weapons-specialist-sniper = Sniper Specialist
 rmc-job-prefix-weapons-specialist-sniper = SNPR
 
@@ -60,6 +63,12 @@ rmc-job-prefix-weapons-specialist-scout = SCT
 
 rmc-job-name-weapons-specialist-pyro = Pyrotechnical Specialist
 rmc-job-prefix-weapons-specialist-pyro = PYRO
+
+rmc-job-name-weapons-specialist-shotgunner = Heavy Shotgunner
+rmc-job-prefix-weapons-specialist-shotgunner = SGNR
+
+rmc-job-name-weapons-specialist-plasmagunner = Plasma Gunner
+rmc-job-prefix-weapons-specialist-plasmagunner = PGNR
 
 rmc-job-name-forecon-spotter = Recon Spotter
 

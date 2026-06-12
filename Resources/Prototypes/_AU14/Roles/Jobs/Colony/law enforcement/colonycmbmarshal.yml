@@ -6,7 +6,11 @@
   setPreference: false
   canBeAntag: false
   ranks:
-    AU14RankCMBMarshal: []
+    RMCRankCivilian: []
+  chevrons:
+    Marshal:
+      entity: AU14ChevronCMBMarshal
+      requirements: []
   startingGear: AU14GearCivilianCMBMarshal
   icon: "RMCJobIconBureauMarshal"
   requireAdminNotify: true
@@ -57,6 +61,7 @@
     ears: AU14CMBHeadset
     outerClothing: AU14CMBMarshalWindbreaker
     pocket1: AU14GuidebookLawColonial
+    pocket2: AU14StampCMBM
 
 - type: entity
   parent: CMSpawnPointJobBase

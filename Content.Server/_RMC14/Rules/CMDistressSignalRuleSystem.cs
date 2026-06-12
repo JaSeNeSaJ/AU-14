@@ -113,7 +113,7 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
 {
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private IAdminLogManager _adminLog = default!;
-    [Dependency] private ARESSystem _ares = default!;
+    [Dependency] private ARESCoreSystem _aresCore = default!;
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private IBanManager _bans = default!;
     [Dependency] private IChatManager _chatManager = default!;
@@ -232,6 +232,7 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
             before: [typeof(ArrivalsSystem), typeof(SpawnPointSystem)]);
         SubscribeLocalEvent<RoundEndMessageEvent>(OnRoundEndMessage);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestartCleanup);
+        SubscribeLocalEvent<DropshipLandedOnPlanetEvent>(OnDropshipLandedOnPlanet);
         SubscribeLocalEvent<DropshipHijackStartEvent>(OnDropshipHijackStart);
         SubscribeLocalEvent<DropshipHijackLandedEvent>(OnDropshipHijackLanded);
 
@@ -1006,6 +1007,27 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
             Log.Info($"Human faction hijack by '{ev.HijackerFaction}': found {crewOnShip} crew on target ship maps, {targetShipMaps.Count} ship map(s) scanned.");
         }
     }
+
+    private void OnDropshipLandedOnPlanet(ref DropshipLandedOnPlanetEvent ev)
+    {
+        var rules = QueryActiveRules();
+        while (rules.MoveNext(out var uid, out _, out var rule, out var gameRule))
+        {
+            if (!GameTicker.IsGameRuleAdded(uid, gameRule))
+                continue;
+
+            if (rule.MarinesLanded)
+                return;
+
+            rule.MarinesLanded = true;
+            Dirty(uid, rule);
+
+            var landedEv = new MarinesLandedChangedEvent(true);
+            RaiseLocalEvent(ref landedEv);
+            return;
+        }
+    }
+
     private void OnDropshipHijackLanded(ref DropshipHijackLandedEvent ev)
     {
         var rules = QueryActiveRules();
@@ -1867,16 +1889,19 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
                     _rmcAmbientLight.SetColor((xenoMap, rmcAmbientComp), colorSequence, _sunriseDuration);
                 }
 
-                var ares = _ares.EnsureARES();
-                _marineAnnounce.AnnounceRadio(ares,
-                    "Bioscan complete. No unknown lifeform signature detected.",
-                    rule.AllClearChannel);
-                _marineAnnounce.AnnounceRadio(ares,
-                    "Saving operational report to archive.",
-                    rule.AllClearChannel);
-                _marineAnnounce.AnnounceRadio(ares,
-                    "Commencing final systems scan in 3 minutes.",
-                    rule.AllClearChannel);
+                if (_aresCore.TryGetMarineARES(out var ares) && ares != null)
+                {
+                    _marineAnnounce.AnnounceRadio(ares.Value.Owner,
+                        "Bioscan complete. No unknown lifeform signature detected.",
+                        rule.AllClearChannel);
+                    _marineAnnounce.AnnounceRadio(ares.Value.Owner,
+                        "Saving operational report to archive.",
+                        rule.AllClearChannel);
+                    _marineAnnounce.AnnounceRadio(ares.Value.Owner,
+                        "Commencing final systems scan in 3 minutes.",
+                        rule.AllClearChannel);
+                }
+
                 rule.EndAtAllClear ??= Timing.CurTime + rule.AllClearEndDelay;
                 break;
             default:

@@ -6,6 +6,8 @@ rmc-dropship-hijack-no-intel = Your faction does not have enough intel points to
 rmc-dropship-hijack-no-enemy-lz = No enemy primary landing zones are available to hijack to.
 rmc-dropship-hijack-thirdparty = This shuttle's navigation systems are incompatible with your override device.
 rmc-dropship-terminal-wrong-faction = This terminal does not recognize your credentials.
+rmc-dropship-hijack-queen-call-unknown-location = Unknown
+rmc-dropship-hijack-queen-call-announcement = The Queen has commanded the metal bird to the hive at {$location}
 
 rmc-dropship-weapons-title = Weapons Console
 
@@ -22,6 +24,8 @@ rmc-dropship-weapons-weapon-selected-ammo = {$weapon}
 rmc-dropship-weapons-target-strike = Target Acquisition
 
   Strike mode: {$mode}
+
+  Target mode: {$targetMode}
 
   Strike configuration {$weapon}
 
@@ -61,6 +65,14 @@ rmc-dropship-weapons-offset-calibration-does-not-affect-direct-bombardment = Doe
 rmc-dropship-weapons-fire = FIRE
 rmc-dropship-weapons-strike = STRIKE
 rmc-dropship-weapons-vector = VECTOR
+rmc-dropship-weapons-quick = QUICK
+# TODO RMC14 fire missions: restore these labels with fire mission vector controls.
+# rmc-dropship-weapons-north = NORTH
+# rmc-dropship-weapons-south = SOUTH
+# rmc-dropship-weapons-east = EAST
+# rmc-dropship-weapons-west = WEST
+rmc-dropship-weapons-target-mode-quick = QUICK
+rmc-dropship-weapons-target-mode-standard = STANDARD
 
 rmc-dropship-weapons-night-vision-on = NV-ON
 rmc-dropship-weapons-night-vision-off = NV-OFF
@@ -94,6 +106,14 @@ rmc-dropship-fabricator-equipment = [bold]Equipment[/bold]
 rmc-dropship-fabricator-ammo = [bold]Ammo[/bold]
 rmc-dropship-fabricator-fabricate = Fabricate ({$cost})
 rmc-dropship-fabricator-busy = The dropship part fabricator is busy. Please wait for completion of previous operation.
+rmc-dropship-fabricator-current = [bold]Current:[/bold] {$item}
+rmc-dropship-fabricator-idle = [bold]Current:[/bold] Idle
+rmc-dropship-fabricator-queue = [bold]Queue:[/bold] {$count}/{$max}
+rmc-dropship-fabricator-queue-empty = No pending orders.
+rmc-dropship-fabricator-queue-entry = {$position}. {$item} ({$cost})
+rmc-dropship-fabricator-cancel = Cancel
+rmc-dropship-fabricator-queue-full = The dropship part fabricator queue is full.
+rmc-dropship-fabricator-insufficient-points = You don't have enough points to fabricate that.
 
 rmc-dropship-firemission-warning = A DROPSHIP FIRES TOWARDS THE {$direction}
 rmc-dropship-firemission-warning-above = A DROPSHIP FIRES RIGHT ONTOP OF YOU!

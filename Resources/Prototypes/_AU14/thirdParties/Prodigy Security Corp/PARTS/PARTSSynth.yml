@@ -82,14 +82,12 @@
         types:
           Blunt: 35
     - type: Synth
-  hidden: false
 
 - type: entity
   parent: AU14BaseMobSpeciesSyntheticProdigy
   id: AU14JobPARTSPartySynthetic
   name: Prodigy Sierra Support Synthetic (AU14, 3rd Party)
   components:
-  - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
     squad: SquadPARTS

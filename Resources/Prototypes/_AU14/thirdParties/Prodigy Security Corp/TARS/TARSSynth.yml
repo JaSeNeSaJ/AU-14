@@ -1,5 +1,5 @@
 - type: job
-  parent: CMJobBase
+  parent: AU14JobTARSPartyContractorBase
   id: AU14JobProdigyTARSPartySynth
   name: Prodigy TARS Support Synthetic
   description: au14-prodigyrescue-description
@@ -82,14 +82,12 @@
         types:
           Blunt: 35
     - type: Synth
-  hidden: false
 
 - type: entity
   parent: AU14BaseMobSpeciesSyntheticProdigy
   id: AU14JobProdigyTARSPartySynth
   name: Prodigy TARS Support Synthetic (AU14, 3rd Party)
   components:
-  - type: Threat
   - type: GhostTakeoverAvailable
   - type: GhostRoleApplySpecial
     squad: SquadTARS

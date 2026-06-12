@@ -1,3 +1,5 @@
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.Dialog;
 using Content.Shared._RMC14.Marines.ControlComputer;
 using Content.Shared._RMC14.Marines.Roles.Ranks;
@@ -6,6 +8,8 @@ using Content.Shared._RMC14.Marines.Squads;
 using Content.Shared._RMC14.Overwatch;
 using Content.Shared._RMC14.TacticalMap;
 using Content.Shared._RMC14.AlertLevel;
+using Content.Shared._RMC14.Weapons.Ranged.IFF;
+using Content.Shared.Access.Systems;
 using Content.Shared.Administration.Logs;
 using Content.Shared.CCVar;
 using Content.Shared.Database;
@@ -27,8 +31,10 @@ public abstract partial class SharedMarineAnnounceSystem : EntitySystem
 {
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private DialogSystem _dialog = default!;
     [Dependency] private SharedMarineControlComputerSystem _marineControlComputer = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedRankSystem _rankSystem = default!;
@@ -40,8 +46,11 @@ public abstract partial class SharedMarineAnnounceSystem : EntitySystem
     public static readonly SoundSpecifier DefaultAnnouncementSound = new SoundPathSpecifier("/Audio/_RMC14/Announcements/Marine/notice2.ogg");
     public static readonly SoundSpecifier DefaultSquadSound = new SoundPathSpecifier("/Audio/_RMC14/Effects/tech_notification.ogg");
     public static readonly SoundSpecifier AresAnnouncementSound = new SoundPathSpecifier("/Audio/_RMC14/AI/announce.ogg");
+    public const string DefaultAnnouncementFaction = "govfor";
 
     public int CharacterLimit = 1000;
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabAnnouncementLogs";
 
     public override void Initialize()
     {
@@ -121,7 +130,7 @@ public abstract partial class SharedMarineAnnounceSystem : EntitySystem
         if (text.Length > CharacterLimit)
             text = text[..CharacterLimit].Trim();
 
-        AnnounceSigned(args.Actor, text, name: ent.Comp.AnnounceName, faction: ent.Comp.Faction);
+        AnnounceSigned(args.Actor, text, name: ent.Comp.AnnounceName, faction: ResolveAnnouncementFaction(ent));
 
         ent.Comp.LastAnnouncement = time;
         Dirty(ent);
@@ -208,6 +217,41 @@ public abstract partial class SharedMarineAnnounceSystem : EntitySystem
     {
     }
 
+    public static string ResolveAnnouncementFaction(string? configuredFaction, string? overwatchGroup = null)
+    {
+        if (!string.IsNullOrWhiteSpace(configuredFaction))
+            return configuredFaction.Trim().ToLowerInvariant();
+
+        if (!string.IsNullOrWhiteSpace(overwatchGroup))
+        {
+            var group = overwatchGroup.Trim().ToLowerInvariant();
+            if (group is "govfor" or "opfor")
+                return group;
+        }
+
+        return DefaultAnnouncementFaction;
+    }
+
+    public static bool IsMarineAnnouncementRecipient(string? marineFaction, string? targetFaction)
+    {
+        if (string.IsNullOrWhiteSpace(marineFaction))
+            return false;
+
+        return string.Equals(
+            marineFaction.Trim(),
+            ResolveAnnouncementFaction(targetFaction),
+            StringComparison.OrdinalIgnoreCase);
+    }
+
+    protected string ResolveAnnouncementFaction(Entity<MarineCommunicationsComputerComponent> computer)
+    {
+        var overwatchGroup = TryComp<OverwatchConsoleComponent>(computer.Owner, out var overwatch)
+            ? overwatch.Group
+            : null;
+
+        return ResolveAnnouncementFaction(computer.Comp.Faction, overwatchGroup);
+    }
+
     public virtual void AnnounceOverwatchSquad(
         EntityUid sender,
         string message,
@@ -282,6 +326,14 @@ public abstract partial class SharedMarineAnnounceSystem : EntitySystem
         AnnounceToMarines(wrappedMessage, sound, filter, excludeSurvivors, faction);
         AnnounceSignedUi(sender, message, author, name, sound, filter, excludeSurvivors, faction);
         _adminLog.Add(LogType.RMCMarineAnnounce, $"{ToPrettyString(sender):source} marine announced message: {message}");
+
+        if (_idCard.TryFindIdCard(sender, out var idCard) && TryComp(idCard, out ItemIFFComponent? idCardIFF))
+        {
+            foreach (var iffFaction in idCardIFF.Factions)
+            {
+                _core.CreateARESLog(iffFaction, LogCat, (string) $"{Name(sender)} sent an announcement: {message}");
+            }
+        }
     }
 
     protected virtual void AnnounceSignedUi(
