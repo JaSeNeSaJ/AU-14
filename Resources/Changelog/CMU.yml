@@ -3102,5 +3102,22 @@
   id: 253
   time: '2026-06-12T04:23:44.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1299
+- author: troytroy400
+  changes:
+  - message: Scout sights in special weapon kits have been replaced with NVG visors
+      to be more balanced during HvH.
+    type: Tweak
+  - message: The M707 Vulture has been buffed and is now worth taking. The amount
+      of setup required to use the weapon effectively should reap benefit. The weapon
+      will now sever limbs pretty much every shot while its fully deployed and does
+      a huge heap of damage to armored targets. The weapon's bullets will fling targets
+      a further distance on impact and its fire rate has been halved.
+    type: Tweak
+  - message: The scout cloak now no longer requires scout armor to be used but is
+      also SLIGHTLY (0.5) more visible.
+    type: Fix
+  id: 254
+  time: '2026-06-12T11:19:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1300
 Name: CMU
 Order: -1
