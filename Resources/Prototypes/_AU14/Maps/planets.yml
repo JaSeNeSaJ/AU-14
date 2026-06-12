@@ -33,7 +33,7 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
-    - badBloodClanThreat
+#    - badBloodClanThreat
     thirdparties:
     - WEYUSurvLarge
     - WEYUSurvMedium
@@ -460,7 +460,7 @@
     - XenoThreatCF
     - wendigoThreat
     - abominationsThreatDistress
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     thirdparties:
     - WEYUSurvLarge
@@ -525,7 +525,7 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     thirdparties:
     - WEYUSurvLarge
@@ -604,7 +604,7 @@
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     joboverrides:
       AU14JobLEOBase: AU14JobCivilianCMBDeputy
@@ -667,7 +667,7 @@
     - wendigoThreat
  #   - TribalsThreat
     - abominationsThreatDistress
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -728,7 +728,7 @@
     threats:
     - XenoThreat
     #- TribalsThreat
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -786,7 +786,7 @@
     threats:
     - XenoThreat
  #   - TribalsThreat
-    - badBloodClanThreat
+#    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -843,8 +843,8 @@
     - abominationThirdParty
     threats:
     - XenoThreat
-    - TribalsThreat
-    - badBloodClanThreat
+#    - TribalsThreat
+#    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -902,7 +902,8 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
-    -  badBloodClanThreat
+    - XenoThreat
+ #   -  badBloodClanThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -957,7 +958,8 @@
     - abominationThirdParty
     threats:
     - abominationsThreatDistress
-    - badBloodClanThreat
+    - XenoThreat
+#    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
