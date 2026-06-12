@@ -96,7 +96,7 @@
   name: weapons specialist ID card
   components:
   - type: PresetIdCard
-    job: AU14JobWeaponsSpecialistBaseAbstract
+    job: AU14JobGOVFORWeaponsSpecialist
   - type: ItemIFF
     factions:
     - GOVFOR

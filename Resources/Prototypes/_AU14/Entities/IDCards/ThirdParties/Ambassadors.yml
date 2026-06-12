@@ -1,8 +1,8 @@
 # ├──[ THIRD PARTY AMBASSADORS ]─────────────────────────────────────┤
 - type: entity
   parent: CMIDCardBase
-  id: AU14IDCardVAIAmbassador
-  name: VAI ambassador ID card
+  id: AU14IDCardUAAmbassador
+  name: UA ambassador ID card
   components:
   - type: PresetIdCard
     job: AU14JobCivilianAmbassadorUA

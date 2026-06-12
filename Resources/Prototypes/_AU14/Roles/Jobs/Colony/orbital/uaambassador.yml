@@ -43,9 +43,8 @@
         state: synth
     - type: NpcFactionMember
       factions:
-      - GOVFOR
-      - OPFOR
-      - CMUVAI
+      - AUUnitedAmericas
+    # - CMUVAI
     - type: Marine
     # Faction: ""
   hidden: false
@@ -55,7 +54,7 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonBlack
     shoes: RMCShoesLaceupBrown
-    id: AU14IDCardVAIAmbassador
+    id: AU14IDCardUAAmbassador
     outerClothing: RMCFancySuitJacketBrown
     ears: AU14AmbassadorUAHeadset
     pocket1: AU14StampUAA

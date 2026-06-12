@@ -423,7 +423,7 @@
     - abominationThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
-      AU14JobLEOBase: AU14JobCiviliannspaConstable
+      AU14JobLEOBase: AU14JobCivilianNSPAConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -489,7 +489,7 @@
     - abominationThirdParty
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
-      AU14JobLEOBase: AU14JobCiviliannspaConstable
+      AU14JobLEOBase: AU14JobCivilianNSPAConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 
@@ -1089,7 +1089,7 @@
     - abominationsThreatDistress
     joboverrides:
       AU14JobLEOLeaderBase: AU14JobCivilianNSPAInspector
-      AU14JobLEOBase: AU14JobCiviliannspaConstable
+      AU14JobLEOBase: AU14JobCivilianNSPAConstable
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
 

@@ -92,11 +92,12 @@ public sealed partial class ChameleonControllerSystem : SharedChameleonControlle
         if (prefs.SelectedCharacter is not HumanoidCharacterProfile profile)
             return;
 
-        var roleProto = LoadoutSystem.GetRoleLoadout(jobPrototype.ID, _proto); // pass job ID directly
-        if (roleProto == null)
+        var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(jobPrototype.ID, _proto);
+        if (proto == null)
             return;
-        profile.Loadouts.TryGetValue(roleProto.ID, out customRoleLoadout);
-        defaultRoleLoadout = new RoleLoadout(roleProto.ID);
+
+        profile.Loadouts.TryGetValue(key, out customRoleLoadout);
+        defaultRoleLoadout = new RoleLoadout(proto.ID);
         defaultRoleLoadout.SetDefault(profile, null, _proto); // only sets the default if the player has no loadout
     }
 
