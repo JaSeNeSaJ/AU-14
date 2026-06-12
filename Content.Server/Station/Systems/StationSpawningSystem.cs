@@ -152,64 +152,27 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         // Get the original job prototype for access/faction/ID
         _prototypeManager.Resolve(originalJob, out var originalPrototype);
         RoleLoadout? loadout = null;
-        RoleLoadoutPrototype? roleProto = null;
+        RoleLoadoutPrototype? loadoutProto = null;
+        string? loadoutKey = null;
+
+        if (prototype?.ID is { } id)
+            (loadoutKey, loadoutProto) = LoadoutSystem.GetJobLoadoutInfo(id, _prototypeManager);
 
         // Need to get the loadout up-front to handle names if we use an entity spawn override.
-        var loadoutJobId = prototype?.ID;
-        if (loadoutJobId != null)
-        {
-            roleProto = LoadoutSystem.GetRoleLoadout(loadoutJobId, _prototypeManager);
-            if (roleProto != null)
-            {
-                profile?.Loadouts.TryGetValue(roleProto.ID, out loadout);
-
-                if (loadout == null)
-                {
-                    var legacyKey = LoadoutSystem.GetJobPrototype(loadoutJobId);
-                    if (legacyKey != roleProto.ID)
-                        profile?.Loadouts.TryGetValue(legacyKey, out loadout);
-                }
-
-                // Set to default if not present
-                bool needDefault = loadout == null;
-                if (!needDefault)
-                {
-                    // If the stored Role is outdated migrate it to the resolved parent
-                    if (!_prototypeManager.HasIndex<RoleLoadoutPrototype>(loadout!.Role))
-                    {
-                        var session = _actors.GetSession(entity);
-                        if (profile != null && session != null)
-                        {
-                            loadout.Role = roleProto.ID;
-                            loadout.EnsureValid(profile, session, IoCManager.Instance!);
-                            needDefault = false; // migrated
-                        }
-                        else
-                            loadout = null; // force default
-                    }
-                }
-
-                if (needDefault)
-                {
-                    loadout = new RoleLoadout(roleProto.ID);
-                    loadout.SetDefault(profile, _actors.GetSession(entity), _prototypeManager, force: true);
-                }
-            }
-        }
+        if (loadoutProto != null && loadoutKey != null)
+            loadout = profile?.GetLoadoutOrDefault(loadoutKey, _actors.GetSession(entity), profile.Species, EntityManager, _prototypeManager);
 
         // RMC14 UseLoadoutOfJob
         if (prototype?.UseLoadoutOfJob != null && _prototypeManager.Resolve(prototype.UseLoadoutOfJob, out var usedPrototype))
         {
-            var newRoleProto = LoadoutSystem.GetRoleLoadout(usedPrototype.ID, _prototypeManager);
-            if (newRoleProto != null)
+            var (newKey, newProto) = LoadoutSystem.GetJobLoadoutInfo(usedPrototype.ID, _prototypeManager);
+            if (newProto != null && newKey != null && profile != null)
             {
-                if (profile != null && profile.Loadouts.TryGetValue(newRoleProto.ID, out var newLoadout))
-                {
-                    roleProto = newRoleProto;
-                    loadout = newLoadout;
-                }
+                loadout = profile.GetLoadoutOrDefault(newKey, _actors.GetSession(entity), profile.Species, EntityManager, _prototypeManager);
+                loadoutProto = newProto;
             }
         }
+
         // Spawn a custom JobEntity (e.g. Working Joe, rAI), this skips a lot of the humanoid stuff
         // Only apply player profile when UsePlayerProfile: true (default)
         if (prototype?.JobEntity != null)
@@ -228,8 +191,8 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             }
 
             // Make sure custom names get handled, what is gameticker control flow whoopy.
-            if (loadout != null)
-                EquipRoleName(jobEntity, loadout, roleProto!);
+            if (loadout != null && loadoutProto != null)
+                EquipRoleName(jobEntity, loadout, loadoutProto);
 
             DoJobSpecials(job, jobEntity);
 
@@ -256,8 +219,8 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 AddComp<DetailExaminableComponent>(entity.Value).Content = profile.FlavorText;
         }
 
-        if (loadout != null)
-            EquipRoleLoadout(entity.Value, loadout, roleProto!);
+        if (loadout != null && loadoutProto != null)
+            EquipRoleLoadout(entity.Value, loadout, loadoutProto);
 
         if (prototype?.StartingGear != null)
         {

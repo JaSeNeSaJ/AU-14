@@ -1353,26 +1353,27 @@ namespace Content.Client.Lobby.UI
             var protoManager = collection.Resolve<IPrototypeManager>();
 
             // If no loadout found then disabled button
-            var roleLoadoutProto = LoadoutSystem.GetRoleLoadout(job.ID, protoManager);
-            if (roleLoadoutProto == null)
+            var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(job.ID, protoManager);
+            if (proto == null)
+            {
                 loadoutWindowBtn.Disabled = true;
+            }
             else
             {
                 loadoutWindowBtn.OnPressed += args =>
-                {
-                    // Clone so we don't modify the underlying loadout.
-                    RoleLoadout? loadout = null;
-                    Profile?.Loadouts.TryGetValue(roleLoadoutProto.ID, out loadout);
-                    loadout = loadout?.Clone();
+               {
+                   RoleLoadout? loadout = null;
+                   // Clone so we don't modify the underlying loadout.
+                   if (Profile?.Loadouts.TryGetValue(key, out var existing) == true)
+                       loadout = existing.Clone();
 
-                    if (loadout == null)
-                    {
-                        loadout = new RoleLoadout(roleLoadoutProto.ID);
-                        loadout.SetDefault(Profile, _playerManager.LocalSession, _prototypeManager);
-                    }
-
-                    OpenLoadout(job, loadout, roleLoadoutProto);
-                };
+                   if (loadout == null)
+                   {
+                       loadout = new RoleLoadout(proto.ID);
+                       loadout.SetDefault(Profile, _playerManager.LocalSession, _prototypeManager);
+                   }
+                   OpenLoadout(job, loadout, proto);
+               };
             }
 
             _jobPriorities.Add((gamemode, job.ID, selector));
@@ -1611,7 +1612,7 @@ namespace Content.Client.Lobby.UI
             _loadoutWindow = null;
             var collection = IoCManager.Instance;
 
-            if (collection == null || _playerManager.LocalSession == null || Profile == null)
+            if (collection == null || _playerManager.LocalSession == null || Profile == null || jobProto == null)
                 return;
 
             JobOverride = jobProto;
@@ -1619,17 +1620,18 @@ namespace Content.Client.Lobby.UI
 
             _loadoutWindow = new LoadoutWindow(Profile, roleLoadout, roleLoadoutProto, _playerManager.LocalSession, collection)
             {
-                Title = jobProto?.ID + "-loadout",
+                Title = jobProto.ID + "-loadout",
             };
 
             // Refresh the buttons etc.
             _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
             _loadoutWindow.OpenCenteredLeft();
 
+            var concreteKey = LoadoutSystem.GetJobPrototype(jobProto.ID);
             _loadoutWindow.OnNameChanged += name =>
             {
                 roleLoadout.EntityName = name;
-                Profile = Profile.WithLoadout(roleLoadout);
+                Profile = Profile.WithLoadout(concreteKey, roleLoadout);
                 SetDirty();
             };
 
@@ -1637,7 +1639,7 @@ namespace Content.Client.Lobby.UI
             {
                 roleLoadout.AddLoadout(loadoutGroup, loadoutProto, _prototypeManager);
                 _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
-                Profile = Profile?.WithLoadout(roleLoadout);
+                Profile = Profile?.WithLoadout(concreteKey, roleLoadout);
                 ReloadPreview();
             };
 
@@ -1645,7 +1647,7 @@ namespace Content.Client.Lobby.UI
             {
                 roleLoadout.RemoveLoadout(loadoutGroup, loadoutProto, _prototypeManager);
                 _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
-                Profile = Profile?.WithLoadout(roleLoadout);
+                Profile = Profile?.WithLoadout(concreteKey, roleLoadout);
                 ReloadPreview();
             };
 

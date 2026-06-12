@@ -10,6 +10,7 @@ using Content.Shared._RMC14.Xenonids;
 using Content.Shared.Clothing;
 using Content.Shared.Eye;
 using Content.Shared.Humanoid;
+using Content.Shared.Inventory;
 using Content.Shared.Preferences;
 using Content.Shared.Preferences.Loadouts;
 using Content.Shared.Roles;
@@ -33,6 +34,7 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
     [Dependency] private StationSpawningSystem _stationSpawning = default!;
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private VisibilitySystem _visibility = default!;
+    [Dependency] private InventorySystem _inventory = default!;
 
     private static readonly EntProtoId ImaginaryFriendPrototype = "RMCImaginaryFriendHumanoid";
     private static readonly EntProtoId XenoImaginaryFriendPrototype = "RMCImaginaryFriendXeno";
@@ -153,18 +155,17 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
 
                     if (_prototypeManager.TryIndex(highJob, out var jobProto))
                     {
-                        var roleProto = LoadoutSystem.GetRoleLoadout(jobProto.ID, _prototypeManager);
-                        if (roleProto != null)
+                        var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(jobProto.ID, _prototypeManager);
+                        if (proto != null)
                         {
-                            humanoid.Loadouts.TryGetValue(roleProto.ID, out var loadout);
-
+                            humanoid.Loadouts.TryGetValue(key, out var loadout);
                             if (loadout == null)
                             {
-                                loadout = new RoleLoadout(roleProto!.ID);
+                                loadout = new RoleLoadout(proto.ID);
                                 loadout.SetDefault(humanoid, null, _prototypeManager);
                             }
 
-                            _stationSpawning.EquipRoleLoadout(friend, loadout, roleProto);
+                            _stationSpawning.EquipRoleLoadout(friend, loadout, proto);
                         }
                     }
                     break;
@@ -240,6 +241,14 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
             var startingGear = _prototypeManager.Index<StartingGearPrototype>(jobProto.StartingGear);
             _stationSpawning.EquipStartingGear(friend, startingGear, raiseEvent: false);
         }
+
+        // Remove the satchel & stamp + add the drill instructor hat
+        if (_inventory.TryGetSlotEntity(friend, "back", out var backItem))
+            Del(backItem.Value);
+        if (_inventory.TryGetSlotEntity(friend, "pocket1", out var pocket1Item))
+            Del(pocket1Item.Value);
+        var hat = Spawn("CMHeadCapDrill", Transform(friend).Coordinates);
+        _inventory.TryEquip(friend, hat, "head");
 
         var ev = new StartingGearEquippedEvent(friend);
         RaiseLocalEvent(friend, ref ev);

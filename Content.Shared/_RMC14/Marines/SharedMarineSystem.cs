@@ -96,8 +96,7 @@ public abstract partial class SharedMarineSystem : EntitySystem
     public void MakeMarine(EntityUid uid, SpriteSpecifier? icon, bool hideIcon = false)
     {
         var marine = EnsureComp<MarineComponent>(uid);
-        if (!hideIcon)
-            marine.Icon = _serialization.CreateCopy(icon);
+        marine.Icon = hideIcon ? null : _serialization.CreateCopy(icon);
         Dirty(uid, marine);
     }
 
