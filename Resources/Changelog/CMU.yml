@@ -3205,5 +3205,14 @@
   id: 258
   time: '2026-06-12T19:40:02.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1303
+- author: troytroy400
+  changes:
+  - message: Clankers (synths) no longer have human rights.
+    type: Tweak
+  - message: Updated the charter to fully outlaw combat synths.
+    type: Tweak
+  id: 259
+  time: '2026-06-12T19:58:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1304
 Name: CMU
 Order: -1
