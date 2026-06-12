@@ -3119,5 +3119,22 @@
   id: 254
   time: '2026-06-12T11:19:00.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1300
+- author: basementoWasntAvailable
+  changes:
+  - message: '? and !  emote into "looks surprised" or "looks confused" again'
+    type: Add
+  id: 255
+  time: '2026-06-12T17:18:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1301
+- author: troytroy400
+  changes:
+  - message: Xenos added as a threat option on all maps.
+    type: Add
+  - message: Removed badblood and tribals threat from rotation until they can be built
+      out more.
+    type: Remove
+  id: 256
+  time: '2026-06-12T18:45:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1302
 Name: CMU
 Order: -1
