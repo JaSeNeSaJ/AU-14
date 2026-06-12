@@ -35,3 +35,9 @@
   - CMAccessPilot
   - CMAccessCrewman
   - CMAccessRequisitions
+
+- type: accessGroup
+  id: aulegacygroupmilp
+  tags:
+  - CMAccessBrig
+  - CMAccessArmory
