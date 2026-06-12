@@ -3058,5 +3058,49 @@
   id: 249
   time: '2026-06-11T21:14:45.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1296
+- author: UnicornOnLSD
+  changes:
+  - message: '? and ! no longer emote into "looks surprised" or "looks confused"'
+    type: Remove
+  id: 250
+  time: '2026-06-11T23:58:36.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1291
+- author: maertayn
+  changes:
+  - message: Fixed binocular delay regression from Vulture
+    type: Fix
+  - message: Missing jobs added to & job ordering/cleanup of CMU planets
+    type: Code
+  - message: Fixed loadouts for real this time
+    type: Fix
+  - message: Supply drop unusable by AuxTech - advisor/CO/SO receive legacy AA
+    type: Fix
+  - message: Chevron icon not hiding when unequipping uniform -
+    type: Fix
+  - message: Loreprimer not updating throughout rounds - showing xeno for aboms etc.
+    type: Fix
+  id: 251
+  time: '2026-06-12T01:53:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1297
+- author: maertayn
+  changes:
+  - message: Cultists can no longer move dead mobs unless they are either cultist
+      or xeno
+    type: Add
+  id: 252
+  time: '2026-06-12T02:59:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1298
+- author: maertayn
+  changes:
+  - message: Medical belt/bags are able to hold surgery tools (like the cautery)
+    type: Fix
+  - message: Used Hemo Gauze is tagged as Trash
+    type: Tweak
+  - message: Lights/airlocks no longer randomly break (part of colony engineering
+      loop) on Distress Signal
+    type: Fix
+  id: 253
+  time: '2026-06-12T04:23:44.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1299
 Name: CMU
 Order: -1
