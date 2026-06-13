@@ -44,7 +44,8 @@
   - type: CMArmor
     bio: 20
 
-  - type: entity
+- type: entity
+
   parent: AU14MaskGasHAZOPSM17
   id: AU14MaskGasHAZOPSM17Flamer
   name: M17A4-FLAME gas mask
