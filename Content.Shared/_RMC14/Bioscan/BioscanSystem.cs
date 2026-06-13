@@ -28,7 +28,6 @@ public sealed partial class BioscanSystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedXenoAnnounceSystem _xenoAnnounce = default!;
-
     private const string None = "none";
 
     private TimeSpan _bioscanInitialDelay;
@@ -189,6 +188,7 @@ public sealed partial class BioscanSystem : EntitySystem
         );
 
         _marineAnnounce.AnnounceARESStaging(null, message, bioscan.Comp.MarineSound, "rmc-bioscan-ares-announcement", "govfor");
+        _marineAnnounce.AnnounceARESStaging(null, message, bioscan.Comp.MarineSound, "rmc-bioscan-ares-announcement", "opfor");
         Dirty(bioscan);
     }
 
@@ -230,6 +230,9 @@ public sealed partial class BioscanSystem : EntitySystem
     public override void Update(float frameTime)
     {
         if (_net.IsClient)
+            return;
+
+        if (EntityQuery<InsurgencyRuleComponent>().Any())
             return;
 
         var time = _timing.CurTime;
