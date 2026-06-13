@@ -1068,16 +1068,6 @@
 
 - type: entity
   parent: CMUAreaShepOOB
-  id: CMUAreaShepSWJungleOOB
-  name: Southwest Jungle - Out Of Bounds
-  components:
-  - type: Sprite
-    layers:
-    - state: w_jungle
-    - state: oob
-
-- type: entity
-  parent: CMUAreaShepOOB
   id: CMUAreaShepCJungleOOB
   name: Central Jungle - Out Of Bounds
   components:
