@@ -264,14 +264,6 @@
 
 - type: entity
   parent: CMUAreaShepWY
-  id: CMUAreaShepWYStorage
-  name: We-Yu Research Lab - Storage
-  components:
-  - type: Sprite
-    state: wy_storage
-
-- type: entity
-  parent: CMUAreaShepWY
   id: CMUAreaShepWYLab3
   name: We-Yu Research Lab - Examination
   components:
