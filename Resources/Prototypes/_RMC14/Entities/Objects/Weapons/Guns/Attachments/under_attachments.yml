@@ -293,8 +293,6 @@
       - RMCFlareL96
       - RMCFlareCAS
       - AU14FlareRMC
-      - RMCFlareR44
-      - RMCFlareC18
     capacity: 1
     proto: CMFlare
     soundInsert:
