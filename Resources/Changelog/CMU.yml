@@ -3119,5 +3119,100 @@
   id: 254
   time: '2026-06-12T11:19:00.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1300
+- author: basementoWasntAvailable
+  changes:
+  - message: '? and !  emote into "looks surprised" or "looks confused" again'
+    type: Add
+  id: 255
+  time: '2026-06-12T17:18:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1301
+- author: troytroy400
+  changes:
+  - message: Xenos added as a threat option on all maps.
+    type: Add
+  - message: Removed badblood and tribals threat from rotation until they can be built
+      out more.
+    type: Remove
+  id: 256
+  time: '2026-06-12T18:45:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1302
+- author: KeiKiyomi
+  changes:
+  - message: Added Command Arms section in Command SOP
+    type: Add
+  - message: Added Detainment Authority in Command SOP
+    type: Add
+  - message: Added DNR Orders in Command SOP
+    type: Add
+  - message: Changed the wording on Command Field Deployment in Command SOP
+    type: Tweak
+  - message: Added another line in Aircraft Integrity in Aircrew SOP
+    type: Add
+  - message: Added another line in Aircraft Seating in Aircrew SOP
+    type: Add
+  - message: Added another line in Parachuting Operations in Aircrew SOP
+    type: Add
+  - message: Added Purchasing of Munitions in Aircrew SOP
+    type: Add
+  - message: Added another line in Standard Issue Equipment  in Equipment SOP
+    type: Add
+  - message: Added another line in Firearm Regulations  in Equipment SOP
+    type: Add
+  - message: Changed another line in Firearm Regulations  in Equipment SOP
+    type: Tweak
+  - message: Added Synthetic Operations  in Equipment SOP
+    type: Add
+  - message: Changed another line in Grooming Standards  in Equipment SOP
+    type: Tweak
+  - message: Added Vehicle and Motorized Assets in Equipment SOP
+    type: Add
+  - message: Changed pretty much the entire Rank Structure SOP Section
+    type: Tweak
+  - message: Added Orbital Station Personnel in Third Party SOP
+    type: Add
+  - message: Added Violation of Warfare Interstellar Charter of Humanity (WICH) in
+      UCMJ Capital Crimes
+    type: Add
+  - message: Added Violation of Legal DNR (VoL) in UCMJ Major Crimes
+    type: Add
+  - message: Added Failure to Attend Combative Briefing in UCMJ Minor Crimes
+    type: Add
+  - message: Added Saluting in Vehicle Operations Area (SVO) in UCMJ Optional Crimes
+    type: Add
+  - message: Added Head Covers in Vehicle Operations Area (HCVO) in UCMJ Optional
+      Crimes
+    type: Add
+  - message: Added Negligent Use of Resources (NUR) in UCMJ Minor Crimes
+    type: Add
+  - message: Changed server rules regarding command deployment as SOP said they could,
+      rules said they couldnt creating too much confusion.
+    type: Admin
+  - message: Clarified combat synths a bit more.
+    type: Admin
+  - message: Added Warfare Interstellar Charter of Humanity in UCMJ
+    type: Add
+  - message: Added Heavy Weapons Definition in Glossary
+    type: Add
+  - message: Added Command Arrests in UCMJ Arrest Procedures
+    type: Add
+  id: 257
+  time: '2026-06-12T19:34:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1284
+- author: toot521
+  changes:
+  - message: CLF surv AR-10 spawn doesnt have wrong ammo anymore
+    type: Fix
+  id: 258
+  time: '2026-06-12T19:40:02.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1303
+- author: troytroy400
+  changes:
+  - message: Clankers (synths) no longer have human rights.
+    type: Tweak
+  - message: Updated the charter to fully outlaw combat synths.
+    type: Tweak
+  id: 259
+  time: '2026-06-12T19:58:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1304
 Name: CMU
 Order: -1
