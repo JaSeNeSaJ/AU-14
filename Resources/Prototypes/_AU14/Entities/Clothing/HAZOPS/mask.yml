@@ -45,7 +45,7 @@
     bio: 20
 
   - type: entity
-  parent: [CMBaseMask, CMUBaseGasMaskFilterSlot]
+  parent: AU14MaskGasHAZOPSM17
   id: AU14MaskGasHAZOPSM17Flamer
   name: M17A4-FLAME gas mask
   description: This ain't your grandaddy's M17. Designed for high-temperture weapon use, this mask will make sure you don't burn up while you flame the push.
