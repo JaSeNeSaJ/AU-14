@@ -41,7 +41,7 @@
       - id: AU14WeaponFlamerM240A2HAZOPS
       - id: AU14TankFlamerM240A2HAZOPS
         amount: 7
-      #- id: placeholder
+      - id: AU14MaskGasHAZOPSM17Flamer
       - id: RMCBackpackFlamer
       - id: RMCPouchFuelTank
         amount: 2
