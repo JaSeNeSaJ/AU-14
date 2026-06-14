@@ -3214,5 +3214,225 @@
   id: 259
   time: '2026-06-12T19:58:34.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1304
+- author: troytroy400
+  changes:
+  - message: Added the M4RA underbarrel flaregun.
+    type: Add
+  - message: Added the M276 'Sam Browne' Duty Belt, available in USCM and CMB CIU
+      Military Police vendors.
+    type: Add
+  - message: UPP MP fatigues removed from the UPP apparel vendor.
+    type: Remove
+  - message: Atmos Scanner/Radio Jammer resprited.
+    type: Tweak
+  id: 260
+  time: '2026-06-13T19:23:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1309
+- author: thoughtlessuser
+  changes:
+  - message: GOVFOR. requisitions is now a viable supply chain!
+    type: Tweak
+  id: 261
+  time: '2026-06-13T19:43:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1220
+- author: JaSeNeSaJ
+  changes:
+  - message: Sheperds' Pride v3
+    type: Map
+  - message: Miscellaneous areas
+    type: Add
+  - message: Miscellaneous areas
+    type: Tweak
+  - message: Sheperds' enabled for distress
+    type: Tweak
+  - message: Adjusted role numbers
+    type: Tweak
+  - message: More govfor factions
+    type: Add
+  - message: M44 Civ gun case
+    type: Add
+  - message: Basira gun case
+    type: Add
+  - message: ABR40 Civ gun case
+    type: Add
+  - message: M357 gun case
+    type: Add
+  - message: Ranger gunlocker (random guns)
+    type: Add
+  - message: submission point (crop)
+    type: Add
+  - message: Destroy Carp objective (CLF)
+    type: Add
+  - message: 32x64 multiZ stairs (2x solo)
+    type: Add
+  - message: Random Tree spawners no longer force snap to grid
+    type: Tweak
+  - message: Removed duplicate entity x3
+    type: Fix
+  - message: Replaced Comm & Sensor tower entities
+    type: Fix
+  id: 262
+  time: '2026-06-13T21:18:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1308
+- author: johnnny34y
+  changes:
+  - message: Added weapon specialist kits for HAZOPS
+    type: Add
+  id: 263
+  time: '2026-06-13T21:20:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1305
+- author: JaSeNeSaJ
+  changes:
+  - message: Changed research lab access
+    type: Fix
+  id: 264
+  time: '2026-06-14T06:24:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1313
+- author: troytroy400
+  changes:
+  - message: Removed upstream figurines.
+    type: Remove
+  id: 265
+  time: '2026-06-14T06:29:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1314
+- author: maertayn
+  changes:
+  - message: Fixed ending/restarting round ignored by the threat vote - giving black
+      screen to threat players
+    type: Fix
+  - message: Synths receive Flash Immunity
+    type: Add
+  - message: Fixed binocular delay for clients? - with a question mark
+    type: Fix
+  - message: 'Selling crates is back: 15 for a crate & 25 bonus when paper stamped
+      - au14.sell_cargo_rewards (cvar) off to disable'
+    type: Add
+  - message: Disable bioscans for Insurgency & add abomination+yautja+yautja aboms
+      to scanned threats
+    type: Fix
+  - message: Imaginary mentors speech isn't recorded by dictaphones anymore
+    type: Fix
+  - message: Send players who lost threat vote (due to players leaving queue & scaling
+      changes) back to lobby to JIP
+    type: Fix
+  - message: Crusher charge now ignores low impassable objects (like indestructible
+      computers)
+    type: Fix
+  id: 266
+  time: '2026-06-14T06:29:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1311
+- author: troytroy400
+  changes:
+  - message: WY colony Security roles now properly show up on corporate overwatch.
+    type: Fix
+  - message: Rules changed and clarified more.
+    type: Admin
+  id: 267
+  time: '2026-06-14T12:41:23.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1317
+- author: Piticzu
+  changes:
+  - message: Added Yautja health shard healing item, replacing healing capsules.
+    type: Add
+  - message: Added Yautja APC siphon ability for bracer recharge.
+    type: Add
+  - message: Added ability to overload a dead hunter's bracer to trigger self-destruct.
+    type: Add
+  - message: Added Bad Blood renegade Yautja variant with gear choice UI.
+    type: Add
+  - message: Added cloak duration, cooldown, and expiry warning system for Bad Bloods.
+    type: Add
+  - message: Added plasma caster per-mode cooldowns.
+    type: Add
+  - message: Added distract voice emote action.
+    type: Add
+  - message: Added new Yautja audio and reorganized audio file structure.
+    type: Add
+  - message: Reworked Yautja skin color randomization to use HSV ranges.
+    type: Tweak
+  - message: Reworked wrist blades and scimitar weapon sounds.
+    type: Tweak
+  - message: Removed emotes using human sounds from Yautjas.
+    type: Remove
+  id: 268
+  time: '2026-06-14T12:57:16.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1310
+- author: Squagg
+  changes:
+  - message: Added the missing Head Physician colonist role loadout.
+    type: Fix
+  id: 269
+  time: '2026-06-14T12:58:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1316
+- author: deepdarkdepths
+  changes:
+  - message: Queen armor and health increased. Limb sever chances are a flat chance
+      instead of being armor dependent.
+    type: Tweak
+  - message: Despoiler is less vulnerable to fire damage, with armor increased. Hypertension
+      stacks are easier to get and decay less quickly, as well as doing more damage
+      with stacks present.
+    type: Tweak
+  - message: Acid runner bomb prime slowdown decreased.
+    type: Tweak
+  id: 270
+  time: '2026-06-14T13:55:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1315
+- author: troytroy400
+  changes:
+  - message: Added M20I mines, an incendiary version of the M20. One box is available
+      in the req vend.
+    type: Add
+  - message: The Vulture now does more damage when fired unwielded, has harsher wield
+      slowdown, has a longer wield delay time and generally should be much harder
+      to fire unbipoded.
+    type: Tweak
+  - message: All snipers are now incapable of PBing.
+    type: Tweak
+  - message: Claymore boxes now only contain four mines.
+    type: Tweak
+  - message: Synths can no longer get wall hacks (meson goggles) from loadouts.
+    type: Tweak
+  id: 271
+  time: '2026-06-14T20:14:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1319
+- author: JaSeNeSaJ
+  changes:
+  - message: Colony ATMs
+    type: Add
+  - message: Withdrawal console
+    type: Add
+  - message: Round start plant bags
+    type: Add
+  - message: Light sticks on logistics roof.
+    type: Add
+  - message: Airlock access to numerous areas
+    type: Fix
+  - message: Wrong stair entity in We-Yu lab
+    type: Fix
+  - message: Containment Cell always powered now
+    type: Tweak
+  - message: Evacuation pod direction
+    type: Fix
+  - message: Hotplate to tavern
+    type: Add
+  - message: Lights meant to be always powered
+    type: Fix
+  - message: Changed some entity contents from Sugar to RMCSugar
+    type: Fix
+  - message: Removed Working Joes pending fix
+    type: Fix
+  - message: Increased armory, pen, and paper for CWPS
+    type: Add
+  id: 272
+  time: '2026-06-14T20:14:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1318
+- author: HolySSSS
+  changes:
+  - message: Military Policeman now has his own loadout. Add items of your choosing.
+    type: Add
+  id: 273
+  time: '2026-06-14T20:15:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1321
 Name: CMU
 Order: -1
