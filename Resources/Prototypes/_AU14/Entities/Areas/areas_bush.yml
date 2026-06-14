@@ -41,6 +41,7 @@
   parent: AU14AreaUSSGeorgeBushUpperEngineeringFuelPumps
   id: AU14AreaUSSGeorgeBushUpperStarboardSideFuelPumps
   name: "Upper Starboard Side Fuel Pumps"
+  components:
   - type: Area
     powerNet: Bush
     CAS: false
