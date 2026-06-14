@@ -3378,5 +3378,61 @@
   id: 270
   time: '2026-06-14T13:55:17.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1315
+- author: troytroy400
+  changes:
+  - message: Added M20I mines, an incendiary version of the M20. One box is available
+      in the req vend.
+    type: Add
+  - message: The Vulture now does more damage when fired unwielded, has harsher wield
+      slowdown, has a longer wield delay time and generally should be much harder
+      to fire unbipoded.
+    type: Tweak
+  - message: All snipers are now incapable of PBing.
+    type: Tweak
+  - message: Claymore boxes now only contain four mines.
+    type: Tweak
+  - message: Synths can no longer get wall hacks (meson goggles) from loadouts.
+    type: Tweak
+  id: 271
+  time: '2026-06-14T20:14:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1319
+- author: JaSeNeSaJ
+  changes:
+  - message: Colony ATMs
+    type: Add
+  - message: Withdrawal console
+    type: Add
+  - message: Round start plant bags
+    type: Add
+  - message: Light sticks on logistics roof.
+    type: Add
+  - message: Airlock access to numerous areas
+    type: Fix
+  - message: Wrong stair entity in We-Yu lab
+    type: Fix
+  - message: Containment Cell always powered now
+    type: Tweak
+  - message: Evacuation pod direction
+    type: Fix
+  - message: Hotplate to tavern
+    type: Add
+  - message: Lights meant to be always powered
+    type: Fix
+  - message: Changed some entity contents from Sugar to RMCSugar
+    type: Fix
+  - message: Removed Working Joes pending fix
+    type: Fix
+  - message: Increased armory, pen, and paper for CWPS
+    type: Add
+  id: 272
+  time: '2026-06-14T20:14:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1318
+- author: HolySSSS
+  changes:
+  - message: Military Policeman now has his own loadout. Add items of your choosing.
+    type: Add
+  id: 273
+  time: '2026-06-14T20:15:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1321
 Name: CMU
 Order: -1
