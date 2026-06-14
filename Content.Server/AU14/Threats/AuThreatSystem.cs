@@ -392,6 +392,17 @@ public sealed partial class AuThreatSystem : EntitySystem
                     spawnedMembers,
                     spawnedThreatPlayers);
 
+                var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
+                var unassigned = eligibleHeldPlayers.Where(p => !spawnedThreatPlayers.Contains(p)).ToList();
+                foreach (var playerId in unassigned)
+                {
+                    if (!_playerManager.TryGetSessionById(playerId, out var session))
+                        continue;
+
+                    Logger.GetSawmill("au14.threat").Info($"[AuThreatSystem] Player {session.Name} ({playerId}) returning to lobby as there was no threat mob available for them.");
+                    ticker.Respawn(session);
+                }
+
                 AddGhostRolesForUnassigned(spawnedLeaders, assignedLeaders, ThreatLeaderJobId);
                 AddGhostRolesForUnassigned(spawnedMembers, assignedMembers, ThreatMemberJobId);
 
