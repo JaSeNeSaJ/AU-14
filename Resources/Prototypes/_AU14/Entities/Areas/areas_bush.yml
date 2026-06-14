@@ -23,17 +23,17 @@
   name: "Reflection Room"
 
 - type: entity
-  parent: AU14AreaUSSGeorgeBushUpperEngineeringFuelPumps
+  parent: AU14AreaUSSGeorgeBushUpperStarboardSideFuelPumps
   id: AU14AreaUSSGeorgeBushLowerPortSideFuelPumps
   name: "Lower Port Side Fuel Pumps"
 
 - type: entity
-  parent: AU14AreaUSSGeorgeBushUpperEngineeringFuelPumps
+  parent: AU14AreaUSSGeorgeBushUpperStarboardSideFuelPumps
   id: AU14AreaUSSGeorgeBushUpperPortSideFuelPumps
   name: "Upper Port Side Fuel Pumps"
 
 - type: entity
-  parent: AU14AreaUSSGeorgeBushUpperEngineeringFuelPumps
+  parent: AU14AreaUSSGeorgeBushUpperStarboardSideFuelPumps
   id: AU14AreaUSSGeorgeBushLowerStarboardSideFuelPumps
   name: "Lower Starboard Side Fuel Pumps"
 
@@ -41,6 +41,22 @@
   parent: AU14AreaUSSGeorgeBushUpperEngineeringFuelPumps
   id: AU14AreaUSSGeorgeBushUpperStarboardSideFuelPumps
   name: "Upper Starboard Side Fuel Pumps"
+  - type: Area
+    powerNet: Bush
+    CAS: false
+    fulton: false
+    mortarPlacement: false
+    mortarFire: false
+    lasing: false
+    medevac: false
+    paradropping: false
+    OB: false
+    supplyDrop: false
+    weatherEnabled: false
+    noTunnel: true
+    hijackEvacuationArea: true
+    hijackEvacuationWeight: 0.1
+    hijackEvacuationType: Add
 
 - type: entity
   parent: AU14AreaUSSGeorgeBush
@@ -141,7 +157,7 @@
     weatherEnabled: false
     noTunnel: true
     hijackEvacuationArea: true
-    hijackEvacuationWeight: 0.1
+    hijackEvacuationWeight: 0.2
     hijackEvacuationType: Add
 
 - type: entity
