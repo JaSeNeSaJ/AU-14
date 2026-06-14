@@ -237,6 +237,7 @@
     state: wy_lab
   - type: Area
     noTunnel: true
+    alwaysPowered: true
 
 - type: entity
   parent: CMUAreaShepWY
