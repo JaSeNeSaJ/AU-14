@@ -97,9 +97,13 @@
     - USCM
     - WEYU
     - RMC
+    - UPP
+    - HAZOPS
+    - VAIPO
+    - ProdigySF
     defaultgovfor: USCM
     defaultopfor: UPP
-    govforinship: false
+    govforinship: true
     opforinship: true
     daycycleenabled: true
     thirdparties:

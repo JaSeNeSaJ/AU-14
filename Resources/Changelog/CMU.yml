@@ -3214,5 +3214,26 @@
   id: 259
   time: '2026-06-12T19:58:34.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1304
+- author: troytroy400
+  changes:
+  - message: Added the M4RA underbarrel flaregun.
+    type: Add
+  - message: Added the M276 'Sam Browne' Duty Belt, available in USCM and CMB CIU
+      Military Police vendors.
+    type: Add
+  - message: UPP MP fatigues removed from the UPP apparel vendor.
+    type: Remove
+  - message: Atmos Scanner/Radio Jammer resprited.
+    type: Tweak
+  id: 260
+  time: '2026-06-13T19:23:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1309
+- author: thoughtlessuser
+  changes:
+  - message: GOVFOR. requisitions is now a viable supply chain!
+    type: Tweak
+  id: 261
+  time: '2026-06-13T19:43:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1220
 Name: CMU
 Order: -1
