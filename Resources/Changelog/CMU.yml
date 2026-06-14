@@ -3214,5 +3214,112 @@
   id: 259
   time: '2026-06-12T19:58:34.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1304
+- author: troytroy400
+  changes:
+  - message: Added the M4RA underbarrel flaregun.
+    type: Add
+  - message: Added the M276 'Sam Browne' Duty Belt, available in USCM and CMB CIU
+      Military Police vendors.
+    type: Add
+  - message: UPP MP fatigues removed from the UPP apparel vendor.
+    type: Remove
+  - message: Atmos Scanner/Radio Jammer resprited.
+    type: Tweak
+  id: 260
+  time: '2026-06-13T19:23:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1309
+- author: thoughtlessuser
+  changes:
+  - message: GOVFOR. requisitions is now a viable supply chain!
+    type: Tweak
+  id: 261
+  time: '2026-06-13T19:43:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1220
+- author: JaSeNeSaJ
+  changes:
+  - message: Sheperds' Pride v3
+    type: Map
+  - message: Miscellaneous areas
+    type: Add
+  - message: Miscellaneous areas
+    type: Tweak
+  - message: Sheperds' enabled for distress
+    type: Tweak
+  - message: Adjusted role numbers
+    type: Tweak
+  - message: More govfor factions
+    type: Add
+  - message: M44 Civ gun case
+    type: Add
+  - message: Basira gun case
+    type: Add
+  - message: ABR40 Civ gun case
+    type: Add
+  - message: M357 gun case
+    type: Add
+  - message: Ranger gunlocker (random guns)
+    type: Add
+  - message: submission point (crop)
+    type: Add
+  - message: Destroy Carp objective (CLF)
+    type: Add
+  - message: 32x64 multiZ stairs (2x solo)
+    type: Add
+  - message: Random Tree spawners no longer force snap to grid
+    type: Tweak
+  - message: Removed duplicate entity x3
+    type: Fix
+  - message: Replaced Comm & Sensor tower entities
+    type: Fix
+  id: 262
+  time: '2026-06-13T21:18:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1308
+- author: johnnny34y
+  changes:
+  - message: Added weapon specialist kits for HAZOPS
+    type: Add
+  id: 263
+  time: '2026-06-13T21:20:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1305
+- author: JaSeNeSaJ
+  changes:
+  - message: Changed research lab access
+    type: Fix
+  id: 264
+  time: '2026-06-14T06:24:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1313
+- author: troytroy400
+  changes:
+  - message: Removed upstream figurines.
+    type: Remove
+  id: 265
+  time: '2026-06-14T06:29:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1314
+- author: maertayn
+  changes:
+  - message: Fixed ending/restarting round ignored by the threat vote - giving black
+      screen to threat players
+    type: Fix
+  - message: Synths receive Flash Immunity
+    type: Add
+  - message: Fixed binocular delay for clients? - with a question mark
+    type: Fix
+  - message: 'Selling crates is back: 15 for a crate & 25 bonus when paper stamped
+      - au14.sell_cargo_rewards (cvar) off to disable'
+    type: Add
+  - message: Disable bioscans for Insurgency & add abomination+yautja+yautja aboms
+      to scanned threats
+    type: Fix
+  - message: Imaginary mentors speech isn't recorded by dictaphones anymore
+    type: Fix
+  - message: Send players who lost threat vote (due to players leaving queue & scaling
+      changes) back to lobby to JIP
+    type: Fix
+  - message: Crusher charge now ignores low impassable objects (like indestructible
+      computers)
+    type: Fix
+  id: 266
+  time: '2026-06-14T06:29:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1311
 Name: CMU
 Order: -1
