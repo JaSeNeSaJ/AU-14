@@ -24,7 +24,7 @@
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_AU14/Interface/au14opforhud.rsi
-        state: rto
+        state: ftl
 
 - type: startingGear
   id: AU14GearopforRadioTelephoneOperator
