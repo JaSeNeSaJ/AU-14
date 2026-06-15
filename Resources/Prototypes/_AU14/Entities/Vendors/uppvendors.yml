@@ -20,8 +20,6 @@
       entries:
       - id: AU14FatiguesUPP
         amount: 40
-      - id: AU14JumpsuitMPUPP
-        amount: 5
     - name: Footwear
       entries:
       - id: RMCBootsSPPBlack
@@ -58,13 +56,8 @@
         amount: 15
       - id: AU14UPPUshanka
         amount: 40
-    - name: Headsets
-      entries:
       - id: RMCM5CameraGear
         amount: 30
-      - id: AU14HeadsetGovforMarine
-        name: empty headset
-        amount: 20
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -297,11 +290,11 @@
       entries:
       - id: CMSandbagEmpty25
         recommended: true
-        amount: 60
+        amount: 2
       - id: BarbedWire15
         amount: 6
       - id: CMSheetMetal50
-        amount: 3
+        amount: 2
       - id: CMSheetPlasteel50
         amount: 1
       - id: RMCBoxMagazinePowerCellsHighFilled
@@ -324,10 +317,8 @@
         amount: 5
       - id: CMPackFlare
         amount: 12
-      - id: RMCBoxPackFlareCAS
-        amount: 1
       - id: RMCPackFlareCAS
-        amount: 7
+        amount: 8
     - name: Optics
       entries:
       - id: RMCLaserDesignatorPVE
@@ -343,6 +334,8 @@
         amount: 1
       - id: CMRollerBedSpawnFolded
         amount: 8
+      - id: CMFoldingBarricadesMB6x3
+        amount: 2
       - id: BedrollFolded
         amount: 20
       - id: AU14GuidebookLawMarine
@@ -391,8 +384,16 @@
         amount: 60
       - id: AU14Tourniquet
         amount: 60
+      - id: CMUSplintItem
+        amount: 60
       - id: CMOintment10
         amount: 60
+      - id: CMUPlainTraumaDressing10
+        amount: 40
+      - id: CMUCoagulantPowder
+        amount: 30
+      - id: CMUBurnGel
+        amount: 30
       - id: CMBurnKit10
         amount: 30
       - id: CMTraumaKit10
@@ -700,12 +701,6 @@
         amount: 5
       - id: CMHeadCapSPPUshankaCivilian
         amount: 10
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetGovforCommand
-        amount: 2
-      - id: AU14HeadsetGovforAuxiliary
-        amount: 2
     - name: Backpack
       entries:
       - id: RMCBackpackRTOSPP
@@ -736,6 +731,12 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 6
+    - name: Chevrons
+      entries:
+      - id: AU14ChevronUPPNIPrivate
+        amount: 2
+      - id: AU14PortableVendorUPPNIRanks
+        amount: 1
 
 - type: entity
   parent: ColMarTechBase
@@ -756,7 +757,7 @@
       takeAll: CMUAREssentialEquipment
       entries:
       - id: AU14ArmorSmartGunDesertCombatHarnessUPP
-      
+
     - name: Firearm System
       choices: { CMUPlatoonMG: 1 }
       entries:
@@ -775,7 +776,7 @@
         amount: 40
       - id: RMCMagazineLMGQYJ72
         amount: 40
-        
+
 - type: entity
   parent: ColMarTechBase
   id: AU14UPPSectionLeaderVendor
@@ -845,9 +846,9 @@
       - id: RMCAttachmentRailFlashlight
 
 - type: entity
-  parent: ColMarTechBase
+  parent: AU14SpecVend
   id: AU14UPPSpecialWeaponsVendor
-  name: UPP special weapons rack
+  name: UPP weapons specialist rack
   description: >-
     An automated special weapons rack, hooked up to a restricted armory of Union of Progressive Peoples heavy and breaching ordnance.
     Standard issue only for qualified operators.
@@ -855,64 +856,32 @@
 
     Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
-  - type: AccessReader
-    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
-  - type: Sprite
-    sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: Type 23 Riot Shotgun Pointman kit
+    - name: Weapons Specialist Sets
+      takeOne: SquadSpecKit
+      sharedSpecLimit: 1
       entries:
       - id: AU14KitUPPPointmanType23
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-pointmanUPP
         givePrefix: au14-job-prefix-govforspecialist-pointmanUPP
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: RMCBoxShotgunHeavyBuckshot
-        amount: 4
-      - id: RMCBoxShotgunHeavySlugs
-        amount: 7
-      - id: RMCBoxShotgunHeavyFlechette
-        amount: 1
-    - name: Heavy Antitank HJRA-12 Rifleman kit
-      entries:
       - id: AU14KitUPPHATHJRA12
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-heavyantitankUPP
         givePrefix: au14-job-prefix-govforspecialist-heavyantitankUPP
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: RMCRocketHJRA12AT
-        amount: 16
-      - id: RMCRocketHJRA12HE
-        amount: 7
-      - id: RMCRocketHJRA12Incen
-        amount: 3
-      - id: AU14BackpackRockets
-        amount: 2
-    - name: LPO80 Pyrotechnician kit
-      entries:
-      - id: AU14KitUPPPyroLPO80
-        amount: 1
-        giveSquadRoleName: au14-job-name-specialist-pyro
-        givePrefix: au14-job-prefix-specialist-pyro
-        isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: RMCAttachmentUnderbarrelExtinguisherSpec
-        amount: 1
-      - id: RMCPouchFuelTankFilledExtinguisher
-        amount: 1
-    - name: Type 88 Marksman kit
-      entries:
       - id: AU14KitUPPMarksmanType88
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-marksmanUPP
         givePrefix: au14-job-prefix-govforspecialist-marksmanUPP
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: RMCMagazineSniperType88
-        amount: 10
+      - id: AU14KitUPPPyroLPO80
+        giveSquadRoleName: au14-job-name-specialist-pyro
+        givePrefix: au14-job-prefix-specialist-pyro
+        isAppendSquadRoleName: false
+        isAppendPrefix: true
 
 # AirCrew Weapons
 - type: entity
@@ -1127,9 +1096,15 @@
       - id: RMCWeaponPistolNPZ92
         amount: 2
       - id: RMCWeaponRevolverZHNK72Empty
-        amount: 1
+        amount: 3
+      - id: RMCWeaponSMGType19
+        amount: 3
+      - id: RMCWeaponShotgunType23
+        amount: 3
     - name: primary ammunition
       entries:
+      - id: AU14MagazineSmartGunUPP
+        amount: 40
       - id: AU14MagazineRifleAG80
         amount: 200
       - id: AU14MagazineRifleAG80AP
@@ -1138,6 +1113,8 @@
         amount: 10
       - id: RMCMagazineRifleAK4047
         amount: 60
+      - id: RMCMagazineRifleAK4047AP
+        amount: 15
       - id: RMCMagazineRifleType71
         amount: 150
       - id: RMCMagazineRifleType71AP
@@ -1150,6 +1127,8 @@
         amount: 20
       - id: RMCMagazineLMGQYJ72
         amount: 25
+      - id: RMCMagazineSMGType64
+        amount: 200
     - name: secondary ammunition
       entries:
       - id: RMCMagazinePistolT73
@@ -1159,7 +1138,11 @@
       - id: RMCMagazinePistolNP92
         amount: 100
       - id: RMCSpeedLoaderZHNK72
-        amount: 10
+        amount: 40
+      - id: RMCMagazineSMGType19
+        amount: 100
+      - id: RMCMagazineSMGType19Drum
+        amount: 40
     - name: explosives
       entries:
       - id: AU14PacketGrenadeHighExplosiveUPPFilled
@@ -1168,8 +1151,12 @@
         amount: 4
       - id: AU14PacketGrenadeSmokeUPPFilled
         amount: 6
+      - id: AU14PacketGrenadeTearGasFilled
+        amount: 3
       - id: RMCBoxClaymoreMineFilled
         amount: 3
+      - id: AU14BoxClaymoreMineIncendiaryFilled
+        amount: 1
       - id: RMCExplosiveBreachingCharge
         amount: 6
       - id: RMCExplosivePlastic
@@ -1208,6 +1195,8 @@
         amount: 4
     - name: Devices
       entries:
+      - id: AU14PowerCellSmartgunUPP
+        amount: 20
       - id: RMCIntelDetector
         amount: 4
       - id: RMCFulton20

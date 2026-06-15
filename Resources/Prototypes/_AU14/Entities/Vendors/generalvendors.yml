@@ -4,6 +4,10 @@
   name: Koorlander Cigarette Machine
   description: Manufactured by the Koorlander Corporation as part of their "Worker Morale Suite," these vending units were once standard issue for deep-bore miners, orbital rig crews and indentured work colonies. When Koorlander realized it was more profitable to sell cigarettes than drill oil or move rock, they laid off 32000 workers overnight and pivoted entirely to tobacco production. The machines stayed behind, now full of the only thing they still make.
   components:
+  - type: XenoCrusherChargable
+    setDamage:
+      types:
+        Structural: 750
   - type: Sprite
     sprite: _AU14/Structures/Vendors/koorcigs.rsi
   - type: VendingMachine
@@ -232,12 +236,25 @@
   name: junior officer equipment rack
   description: An automated rack hooked up to a small storage of junior officer equipment.
   components:
+  - type: AU14VendorJO
   - type: Sprite
     sprite: _AU14/Structures/Vendors/assortedequipment.rsi
   - type: CMAutomatedVendor
     jobs: [ AU14JobOpforPlatOp, AU14JobGOVFORPlatOp, AU14JobPlatOpBase ]
     sections:
-    - name: Assignment Kit
+    - name: Senior Officer
+      choices: { CMUJOLoadoutVendorKit: 1 }
+      sharedJOLimit: 1
+      entries:
+      - id: AU14KitJOAdjutantKit
+        giveSquadRoleName: au14-job-name-juniorofficer-adj
+        givePrefix: au14-job-prefix-juniorofficer-adj
+        isAppendPrefix: false
+        isAppendSquadRoleName: false
+        giveIcon:
+          sprite: _AU14/Interface/au14govforjobicons.rsi
+          state: govfor_adj
+    - name: Staff Officers
       choices: { CMUJOLoadoutVendorKit: 1 }
       entries:
       - id: AU14KitJOStaffOfficerKit
@@ -246,21 +263,26 @@
         givePrefix: au14-job-prefix-juniorofficer-so
         isAppendPrefix: false
         isAppendSquadRoleName: false
+    - name: Specialized Officers
+      choices: { CMUJOLoadoutVendorKit: 1 }
+      sharedJOLimit: 2
+      entries:
       - id: AU14KitJOIntelligenceOfficer
         giveSquadRoleName: au14-job-name-juniorofficer-io
         givePrefix: au14-job-prefix-juniorofficer-io
         isAppendPrefix: false
         isAppendSquadRoleName: false
+        giveIcon:
+          sprite: _AU14/Interface/au14govforjobicons.rsi
+          state: govfor_io
       - id: AU14KitJOEngineeringKit
         giveSquadRoleName: au14-job-name-juniorofficer-eo
         givePrefix: au14-job-prefix-juniorofficer-eo
         isAppendPrefix: false
         isAppendSquadRoleName: false
-      - id: AU14KitJOAdjutantKit
-        giveSquadRoleName: au14-job-name-juniorofficer-adj
-        givePrefix: au14-job-prefix-juniorofficer-adj
-        isAppendPrefix: false
-        isAppendSquadRoleName: false
+        giveIcon:
+          sprite: _AU14/Interface/au14govforjobicons.rsi
+          state: govfor_eo
 
 - type: entity
   parent: ColMarTechBase
@@ -300,6 +322,10 @@
       - id: AU14PouchIFAKFill
       - id: RMCPouchMagazinePistol
       - id: RMCPouchPistol
+    - name: Inmate Restraining Gear
+      entries:
+      - id: AU14ClothingOuterStraitjacket
+        amount: 5 # TODO: bandaid - remove after mappers have placed this
 
 - type: entity
   parent: ColMarTechBase
@@ -385,3 +411,66 @@
     - CMRollerBedSpawnFolded
     - CMPortableSurgicalBedSpawnFolded
     - AU14IVFoldableFolded
+
+#generic specvend
+- type: entity
+  abstract: true
+  id: AU14VendorWeaponsSpecialistGearBase
+  components:
+  - type: CMAutomatedVendor
+    jobs:
+    - AU14JobGOVFORWeaponsSpecialist
+    pointsType: Specialist
+    sections:
+    - name: Weapons Specialist Sets
+      takeOne: SquadSpecKit
+      sharedSpecLimit: 1
+      entries:
+      - id: RMCGrenadeSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-grenadier
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-grenadier
+        isAppendPrefix: true
+      - id: RMCSharpSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sharp
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sharp
+        isAppendPrefix: true
+      - id: RMCScoutSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-scout
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-scout
+        isAppendPrefix: true
+      - id: CMSniperEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sniper
+        isAppendPrefix: true
+      - id: RMCAntiMaterielEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-anti-materiel-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-anti-materiel-sniper
+        isAppendPrefix: true
+      - id: RMCM707VultureCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sniper
+        isAppendPrefix: true
+      - id: RMCMK481ShotgunCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-shotgunner
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-shotgunner
+        isAppendPrefix: true
+
+- type: entity
+  parent: [ColMarTechBase, AU14VendorWeaponsSpecialistGearBase]
+  id: AU14SpecVend
+  name: weapons specialist gear rack
+  description: An automated gear rack for Weapons Specialists.
+  components:
+  - type: RMCVendorSpecialist
+  - type: AccessReader
+    access:
+    - [ "AU14AccessGovforSquadWeaponsSpecialist" ]
+  - type: Sprite
+    sprite: _RMC14/Structures/Machines/VendingMachines/ColMarTech/specialist_gear.rsi

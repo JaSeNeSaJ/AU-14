@@ -10,6 +10,10 @@
     angle: 0
   - type: CMArmorPiercing
     amount: 20
+  - type: InteractedBlacklist
+    blacklist:
+      components:
+      - Xeno
 
 - type: entity
   parent: [ RMCBaseMeleeWeapon, BaseKnife, RMCAttachableBase ]
@@ -42,6 +46,13 @@
     damage:
       types:
         Slash: 18
+  - type: DamageImpactProfile
+    melee:
+      contact: Stab
+      penetration: Low
+    thrown:
+      contact: Stab
+      penetration: Low
   - type: Item
     size: Small
     sprite: _RMC14/Objects/Weapons/Melee/m5_bayonet.rsi
@@ -56,6 +67,10 @@
     - bonusDamage:
         types:
           Slash: 20
+      impact:
+        contact: Stab
+        penetration: Medium
+        energy: Medium
   - type: AttachableWeaponRangedMods
     modifiers:
     - conditions:
@@ -225,6 +240,14 @@
     damage:
       types:
         Slash: 34
+  - type: DamageImpactProfile
+    melee:
+      contact: Stab
+      penetration: Low
+    thrown:
+      contact: Stab
+      penetration: Medium
+      energy: Medium
   - type: UsableWhileDevoured
   - type: Item
     size: Small
@@ -260,6 +283,13 @@
     damage:
       types:
         Slash: 27
+  - type: DamageImpactProfile
+    melee:
+      contact: Slash
+      penetration: Low
+    thrown:
+      contact: Fragment
+      penetration: Low
   - type: UsableWhileDevoured
   - type: Item
     size: Large

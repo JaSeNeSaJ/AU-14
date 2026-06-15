@@ -1,9 +1,9 @@
 - type: partySpawn
   id: MSGSpawn
   leadersToSpawn:
-    AU14MSGCommander: 1
+    AU14JobMSGCommander: 1
   gruntsToSpawn:
-    AU14MSGWatchStander: 1
+    AU14JobMSGWatchStander: 1
   scalewithpop: false
   spawnTogether: true
 
@@ -14,6 +14,7 @@
     - insurgency
     - colonyfall
   entrymethod: shuttle
+  dropshippath: /Maps/_AU14/ShuttlesDropships/rmc_ert_response_shuttle.yml
   weight: 20
   minplayers: 400
   maxplayers: 400

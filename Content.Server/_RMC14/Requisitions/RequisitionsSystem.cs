@@ -15,11 +15,14 @@ using Content.Shared.Labels.Components;
 using Content.Shared.Lock;
 using Content.Shared.Paper;
 using Content.Server.Store.Components;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._AU14.CCVar;
 using Content.Shared.AU14.ColonyEconomy;
 using Content.Shared.AU14.util;
 using Content.Shared.Cargo.Components;
@@ -52,6 +55,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     [Dependency] private ChasmSystem _chasm = default!;
     [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private EntityStorageSystem _entityStorage = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private INetManager _net = default!;
@@ -71,8 +75,11 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     private EntityQuery<ChasmFallingComponent> _chasmFallingQuery;
     private int _gain;
     private int _freeCratesXenoDivider;
+    private bool _sellCargoRewards;
 
     private readonly HashSet<Entity<MobStateComponent>> _toPit = new();
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabRequisitionsLogs";
 
     public override void Initialize()
     {
@@ -94,7 +101,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         Subs.CVar(_config, RMCCVars.RMCRequisitionsBalanceGain, v => _gain = v, true);
         Subs.CVar(_config, RMCCVars.RMCRequisitionsFreeCratesXenoDivider, v => _freeCratesXenoDivider = v, true);
-
+        Subs.CVar(_config, AU14CCVars.SellCargoRewards, v => _sellCargoRewards = v, true);
     }
 
     private void OnComputerStartup(EntityUid uid, RequisitionsComputerComponent comp, ComponentStartup args)
@@ -206,6 +213,13 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         elevator.Comp.Orders.Add(order);
         SendUIStateAll();
         _adminLogs.Add(LogType.RMCRequisitionsBuy, $"{ToPrettyString(args.Actor):actor} bought requisitions crate {order.Name} with crate {order.Crate} for {order.Cost}");
+
+        if (!_prototypeManager.TryIndex<EntityPrototype>(order.Crate, out var prototype))
+            return;
+
+        _core.CreateARESLog(computer.Owner,
+            LogCat,
+            (string)$"{Name(actor)} bought {prototype.Name} for {order.Cost}$");
     }
 
     private void OnPlatform(Entity<RequisitionsComputerComponent> computer, ref RequisitionsPlatformMsg args)
@@ -238,7 +252,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         if (nextMode == Lowering)
         {
-            var mask = (int) (CollisionGroup.MobLayer | CollisionGroup.MobMask);
+            var mask = (int)(CollisionGroup.MobLayer | CollisionGroup.MobMask);
             foreach (var entity in _physics.GetEntitiesIntersectingBody(elevator, mask, false))
             {
                 if (HasComp<MobStateComponent>(entity))
@@ -250,12 +264,17 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         comp.Busy = true;
         SetMode(elevator, Preparing, nextMode);
         Dirty(elevator);
+
+        if (nextMode == Raising)
+            _core.CreateARESLog(computer.Owner, LogCat, (string)$"{Name(args.Actor)} raised the requisitions elevator");
+        if (nextMode == Lowering)
+            _core.CreateARESLog(computer.Owner, LogCat, (string)$"{Name(args.Actor)} lowered the requisitions elevator");
     }
 
     // Returns the first existing account matching faction, or creates a new one.
     // The original (no faction param) used a single global account, we replicate this.
     private Entity<RequisitionsAccountComponent> GetAccount(string? faction = null)
-     {
+    {
         var factionKey = string.IsNullOrEmpty(faction) || faction == "none"
             ? "unassigned" // use the shared global account so we're not stealing from a faction
             : faction;
@@ -267,7 +286,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         }
 
         return CreateAccount(factionKey);
-     }
+    }
 
     private Entity<RequisitionsAccountComponent> CreateAccount(string faction)
     {
@@ -485,55 +504,88 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
     private bool Sell(Entity<RequisitionsElevatorComponent> elevator)
     {
-         var entities = _lookup.GetEntitiesIntersecting(elevator);
-         var soldAny = false;
-         foreach (var entity in entities)
-         {
-             if (entity == elevator.Comp.Audio)
-                 continue;
+        var account = GetAccount(elevator.Comp.Faction);
+        var entities = _lookup.GetEntitiesIntersecting(elevator);
+        var soldAny = false;
+        var rewards = 0;
 
-             if (HasComp<CargoSellBlacklistComponent>(entity))
-                 continue;
+        foreach (var entity in entities)
+        {
+            if (entity == elevator.Comp.Audio)
+                continue;
 
-             soldAny = true;
-             QueueDel(entity);
-         }
+            // Instead of blacklist, we use a whitelist to selectively control generated funds from selling
+            // if (HasComp<CargoSellBlacklistComponent>(entity))
+            //     continue;
+            if (!HasComp<CargoSellWhitelistComponent>(entity))
+            {
+                QueueDel(entity);
+                continue;
+            }
 
-         return soldAny;
-     }
+            if (_sellCargoRewards)
+            {
+                var entRewards = SubmitInvoices(entity);
+                if (TryComp(entity, out RequisitionsCrateComponent? crate))
+                    entRewards += crate.Reward;
+                else
+                    entRewards += (int)Math.Round(_pricing.GetPrice(entity));
 
-     private void GetCrateWeight(Entity<RequisitionsAccountComponent> account, Dictionary<EntProtoId, float> crates, out Entity<RequisitionsComputerComponent> computer)
-     {
-         // TODO RMC14 price scaling
-         computer = default;
-         var computers = EntityQueryEnumerator<RequisitionsComputerComponent>();
-         while (computers.MoveNext(out var uid, out var comp))
-         {
-             // Prefer computers whose account matches this account entity reference
-             if (comp.Account != account)
-                 continue;
+                if (entRewards > 0)
+                    soldAny = true;
 
-             computer = (uid, comp);
-             foreach (var category in comp.Categories)
-             {
-                 foreach (var entry in category.Entries)
-                 {
-                     if (crates.ContainsKey(entry.Crate))
-                         crates[entry.Crate] = 10000f / entry.Cost;
-                 }
-             }
-         }
-     }
+                rewards += entRewards;
+            }
+            else
+                soldAny = true; // cvar is off, sell is allowed without rewards
 
-     public override void Update(float frameTime)
-     {
-         base.Update(frameTime);
+            QueueDel(entity);
+        }
 
-         var time = _timing.CurTime;
-         var updateUI = false;
-         var accounts = EntityQueryEnumerator<RequisitionsAccountComponent>();
-         while (accounts.MoveNext(out var uid, out var account))
-         {
+        if (rewards > 0)
+        {
+            ChangeBudget(rewards, elevator.Comp.Faction);
+            if (elevator.Comp.Faction != "colony")
+            {
+                SendUIFeedback(Loc.GetString("requisition-paperwork-reward-message", ("amount", rewards)));
+            }
+        }
+
+        return soldAny;
+    }
+
+    private void GetCrateWeight(Entity<RequisitionsAccountComponent> account, Dictionary<EntProtoId, float> crates, out Entity<RequisitionsComputerComponent> computer)
+    {
+        // TODO RMC14 price scaling
+        computer = default;
+        var computers = EntityQueryEnumerator<RequisitionsComputerComponent>();
+        while (computers.MoveNext(out var uid, out var comp))
+        {
+            // Prefer computers whose account matches this account entity reference
+            if (comp.Account != account)
+                continue;
+
+            computer = (uid, comp);
+            foreach (var category in comp.Categories)
+            {
+                foreach (var entry in category.Entries)
+                {
+                    if (crates.ContainsKey(entry.Crate))
+                        crates[entry.Crate] = 10000f / entry.Cost;
+                }
+            }
+        }
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var time = _timing.CurTime;
+        var updateUI = false;
+        var accounts = EntityQueryEnumerator<RequisitionsAccountComponent>();
+        while (accounts.MoveNext(out var uid, out var account))
+        {
             // Disabled periodic budget gain
             // if (time > account.NextGain)
             // {
@@ -553,18 +605,18 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                 if (pool.Next >= time)
                     continue;
 
-                var crates = Math.Max(0, Math.Sqrt((float) xenos / _freeCratesXenoDivider));
+                var crates = Math.Max(0, Math.Sqrt((float)xenos / _freeCratesXenoDivider));
 
                 if (crates < pool.Minimum && pool.Given < pool.MinimumFor)
                     crates = pool.Minimum;
 
                 pool.Next = time + pool.Every;
                 pool.Given++;
-                pool.Fraction = crates - (int) crates;
+                pool.Fraction = crates - (int)crates;
 
                 if (pool.Fraction >= 1)
                 {
-                    var add = (int) pool.Fraction;
+                    var add = (int)pool.Fraction;
                     pool.Fraction = pool.Fraction - add;
                     crates += add;
                 }
@@ -594,7 +646,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                     elevator.Comp.Orders.Add(new RequisitionsEntry { Crate = crate });
                 }
             }
-         }
+        }
 
         var elevators = EntityQueryEnumerator<RequisitionsElevatorComponent>();
         while (elevators.MoveNext(out var uid, out var elevator))

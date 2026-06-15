@@ -8,7 +8,6 @@
   supervisors: au14-job-supervisors-opfor
   startingGear: AU14GearOPFORAuxTech
   dummyStartingGear: AU14GearOPFORAuxTechDummy
-  overwatchRoleName: au14-job-name-opforAuxTech
   accessGroups:
   - AU14OpforAuxTech
   special:
@@ -16,14 +15,12 @@
     components:
     - type: Marine
       Faction: opfor
-    - type: NpcFactionMember
-      factions:
-      - OPFOR
     - type: UserIFF
       factions:
       - OPFOR
-    - type: JobPrefix
-      prefix: au14-job-prefix-opforAuxTech
+    - type: NpcFactionMember
+      factions:
+      - OPFOR
     - type: TacticalMapIcon
       icon:
         sprite: /Textures/_AU14/Interface/au14opforhud.rsi
@@ -39,6 +36,7 @@
   storage:
     back:
     - CMStampApproved
+    - AU14StampAUX
 
 - type: startingGear
   id: AU14GearOPFORAuxTechDummy
@@ -48,6 +46,7 @@
   storage:
     back:
     - CMStampApproved
+    - AU14StampAUX
 
 - type: entity
   parent: CMSpawnPointJobBase

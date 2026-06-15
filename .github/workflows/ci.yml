@@ -384,7 +384,21 @@ jobs:
       fail-fast: false
       matrix:
         shard:
-          - name: root
+          - name: root_1
+            root_group: 0
+            root_groups: 2
+          - name: root_2
+            root_group: 1
+            root_groups: 2
+          - name: entity_spawn_delete_maps
+            filter: FullyQualifiedName~Content.IntegrationTests.Tests.EntityTest.SpawnAndDeleteAllEntitiesOnDifferentMaps
+          - name: entity_spawn_dirty
+            filter: FullyQualifiedName~Content.IntegrationTests.Tests.EntityTest.SpawnAndDirtyAllEntities
+          - name: entity_counts
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests.Tests.EntityTest.AllComponentsOneToOneDeleteTest
+              | FullyQualifiedName~Content.IntegrationTests.Tests.EntityTest.SpawnAndDeleteAllEntitiesInTheSameSpot
+              | FullyQualifiedName~Content.IntegrationTests.Tests.EntityTest.SpawnAndDeleteEntityCountTest
           - name: admin_access_ui
             filter: >-
               FullyQualifiedName~Content.IntegrationTests.Tests.Administration
@@ -436,7 +450,9 @@ jobs:
               | FullyQualifiedName~Content.IntegrationTests.Tests.Climbing
               | FullyQualifiedName~Content.IntegrationTests.Tests.Cloning
               | FullyQualifiedName~Content.IntegrationTests.Tests.DoAfter
-              | FullyQualifiedName~Content.IntegrationTests.Tests.Interaction
+          - name: gameplay_runtime
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests.Tests.Interaction
               | FullyQualifiedName~Content.IntegrationTests.Tests.Internals
               | FullyQualifiedName~Content.IntegrationTests.Tests.Minds
               | FullyQualifiedName~Content.IntegrationTests.Tests.Movement
@@ -451,7 +467,9 @@ jobs:
               | FullyQualifiedName~Content.IntegrationTests.Tests.Lathe
               | FullyQualifiedName~Content.IntegrationTests.Tests.Materials
               | FullyQualifiedName~Content.IntegrationTests.Tests.Sprite
-              | FullyQualifiedName~Content.IntegrationTests.Tests.Storage
+          - name: storage_crafting_misc
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests.Tests.Storage
               | FullyQualifiedName~Content.IntegrationTests.Tests.Strip
               | FullyQualifiedName~Content.IntegrationTests.Tests.Tag
               | FullyQualifiedName~Content.IntegrationTests.Tests.Utility
@@ -505,7 +523,7 @@ jobs:
           cp -r RobustToolbox/Resources/* bin/RobustToolbox/Resources/
 
       - name: Runtime diagnostics
-        if: matrix.shard.name == 'root'
+        if: matrix.shard.name == 'root_1'
         shell: bash
         run: |
           set -euo pipefail
@@ -522,7 +540,9 @@ jobs:
           export DOTNET_gcServer=1
           shard="${{ matrix.shard.name }}"
 
-          if [ "$shard" = "root" ]; then
+          if [[ "$shard" == root_* ]]; then
+            root_group='${{ matrix.shard.root_group }}'
+            root_groups='${{ matrix.shard.root_groups }}'
             shopt -s nullglob
             files=(Content.IntegrationTests/Tests/*.cs)
             if [ ${#files[@]} -eq 0 ]; then
@@ -530,10 +550,18 @@ jobs:
               exit 1
             fi
             FILTER=""
-            for f in "${files[@]}"; do
+            for i in "${!files[@]}"; do
+              f="${files[$i]}"
               base=$(basename "$f" .cs)
+              if [[ "$base" == "EntityTest" ]] || (( i % root_groups != root_group )); then
+                continue
+              fi
               FILTER="${FILTER:+$FILTER | }FullyQualifiedName~Content.IntegrationTests.Tests.$base"
             done
+            if [ -z "$FILTER" ]; then
+              echo "::error::$shard shard: no test files assigned!"
+              exit 1
+            fi
           else
             FILTER='${{ matrix.shard.filter }}'
           fi

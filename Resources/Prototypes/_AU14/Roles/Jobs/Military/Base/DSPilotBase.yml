@@ -31,23 +31,35 @@
     - NonResuscitable
     - Epilepsy
   ranks:
-    RMCRankMajor:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORDSPilot
-      time: 360000 # 100 hours, (540000 for 150 hours)
-    RMCRankCaptain:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORDSPilot
-      time: 180000 # 50 hours
-    RMCRankFirstLT:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORDSPilot
-      time: 86400 # 24 hours
-    RMCRankSecondLT:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORDSPilot
-      time: 36000 # 10 hours
-    RMCRankChiefWarrantOfficer5: []
+    RMCRankCivilian: []
+  chevrons:
+    RMCRankChiefWarrantOfficer5:
+      entity: AU14ChevronUSCMChiefWarrantOfficer5
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORDSPilot
+        time: 360000
+    RMCRankChiefWarrantOfficer4:
+      entity: AU14ChevronUSCMChiefWarrantOfficer4
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORDSPilot
+        time: 180000
+    RMCRankChiefWarrantOfficer3:
+      entity: AU14ChevronUSCMChiefWarrantOfficer3
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORDSPilot
+        time: 86400
+    RMCRankChiefWarrantOfficer2:
+      entity: AU14ChevronUSCMChiefWarrantOfficer2
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORDSPilot
+        time: 36000
+    RMCRankWarrantOfficer:
+      entity: AU14ChevronUSCMWarrantOfficer
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
@@ -57,8 +69,8 @@
       prefix: au14-job-prefix-govfordspilot
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: pilot
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_po
 
 - type: playTimeTracker
   id: AU14JobGOVFORDSPilot

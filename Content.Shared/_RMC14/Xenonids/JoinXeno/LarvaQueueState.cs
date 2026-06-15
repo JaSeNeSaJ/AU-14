@@ -49,6 +49,25 @@ public sealed class LarvaQueueState
         return _waiting.Remove(user) || _ready.Remove(user);
     }
 
+    public bool TryGetUserStatus(NetUserId user, out LarvaQueueUserStatus status)
+    {
+        var readyIndex = _ready.IndexOf(user);
+        if (readyIndex >= 0)
+        {
+            status = new LarvaQueueUserStatus(readyIndex + 1);
+            return true;
+        }
+
+        if (_waiting.ContainsKey(user))
+        {
+            status = new LarvaQueueUserStatus(null);
+            return true;
+        }
+
+        status = default;
+        return false;
+    }
+
     public bool TryDequeueReady(out NetUserId user)
     {
         if (_ready.Count == 0)
@@ -80,3 +99,5 @@ public sealed class LarvaQueueState
         return promoted;
     }
 }
+
+public readonly record struct LarvaQueueUserStatus(int? Position);

@@ -71,13 +71,8 @@
         amount: 15
       - id: AU14DesertFlapCap
         amount: 15
-    - name: Headsets
-      entries:
       - id: RMCM5CameraGear
         amount: 30
-      - id: AU14HeadsetGovforMarine
-        name: empty headset
-        amount: 20
     - name: Heads Up Display
       entries:
       - id: AU14VisorSquadRMC
@@ -331,13 +326,13 @@
         amount: 1
     - name: Engineering Supplies
       entries:
-      - id: CMSandbagEmpty25
+      - id: CMSandbagEmpty50
         recommended: true
         amount: 2
       - id: BarbedWire15
-        amount: 3
+        amount: 4
       - id: CMSheetMetal50
-        amount: 1
+        amount: 2
       - id: CMSheetPlasteel50
         amount: 1
       - id: RMCBoxMagazinePowerCellsHighFilled
@@ -360,10 +355,8 @@
         amount: 5
       - id: AU14PackFlareRMC
         amount: 12
-      - id: RMCBoxPackFlareCAS
-        amount: 1
       - id: RMCPackFlareCAS
-        amount: 7
+        amount: 8
     - name: Optics
       entries:
       - id: RMCLaserDesignatorPVE
@@ -379,6 +372,8 @@
         amount: 1
       - id: CMRollerBedSpawnFolded
         amount: 8
+      - id: CMFoldingBarricadesMB6x3
+        amount: 2
       - id: BedrollFolded
         amount: 20
       - id: AU14GuidebookSOP
@@ -436,6 +431,12 @@
         amount: 60
       - id: CMOintment10
         amount: 60
+      - id: CMUPlainTraumaDressing10
+        amount: 40
+      - id: CMUCoagulantPowder
+        amount: 30
+      - id: CMUBurnGel
+        amount: 30
       - id: CMBurnKit10
         amount: 30
       - id: CMTraumaKit10
@@ -746,12 +747,6 @@
         amount: 5
       - id: AU14DesertPatrolCap
         amount: 5
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetGovforCommand
-        amount: 2
-      - id: AU14HeadsetGovforAuxiliary
-        amount: 2
     - name: Backpack
       entries:
       - id: RMCBackpackRTO
@@ -785,6 +780,12 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 6
+    - name: Chevrons
+      entries:
+      - id: AU14ChevronRMCRecruit
+        amount: 2
+      - id: AU14PortableVendorRMCRanks
+        amount: 1
 
 - type: entity
   parent: ColMarTechBase
@@ -950,9 +951,9 @@
         amount: 1
 
 - type: entity
-  parent: ColMarTechBase
+  parent: AU14SpecVend
   id: AU14RMCSpecialWeaponsVendor
-  name: Royal Marines special weapons rack
+  name: Royal Marines weapons specialist rack
   description: >-
     An automated special weapons rack, hooked up to a restricted armory of Royal Marine Commandos heavy and breaching ordnance.
     Standard issue only for qualified operators.
@@ -960,73 +961,37 @@
 
     Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
-  - type: AccessReader
-    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
-  - type: Sprite
-    sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: M240 Incinerator
-      entries:
-      - id: RMCWeaponFlamer
-        amount: 1
-      - id: RMCAttachmentUnderbarrelExtinguisher
-        amount: 1
-      - id: RMCPVECaseFlamerFuel
-        amount: 2
-      - id: RMCBackpackFlamer
-        name: G4-1 fueltank
-        amount: 1
-    - name: Marksman kit
+    - name: Weapons Specialist Sets
+      takeOne: SquadSpecKit
+      sharedSpecLimit: 1
       entries:
       - id: AU14KitRMCMarksmanL64A3
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-marksmanRMC
         givePrefix: au14-job-prefix-govforspecialist-marksmanRMC
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: AU14MagazineSniperL64A3
-        amount: 18
-    - name: Pointman kit
-      entries:
       - id: AU14KitRMCPointmanL23B
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-pointmanRMC
         givePrefix: au14-job-prefix-govforspecialist-pointmanRMC
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: RMCMagazineRifleL24
-        amount: 14
-      - id: RMCBoxShotgunBuckshot
-        amount: 8
-    - name: Sapper kit
-      entries:
       - id: AU14KitRMCMarksmanL164A3
-        amount: 1
         giveSquadRoleName: au14-job-name-govforspecialist-grenadierRMC
         givePrefix: au14-job-prefix-govforspecialist-grenadierRMC
+        isAppendSquadRoleName: false
         isAppendPrefix: true
-        isAppendSquadRoleName: true
-      - id: AU14Packet20MMGrenadeFragRMCFilled
-        amount: 3
-      - id: AU14Packet20MMGrenadeHERMCFilled
-        amount: 4
-      - id: AU14Packet20MMGrenadeHoloRMCFilled
-        amount: 2
-      - id: AU14Packet20MMGrenadeIncendiaryRMCFilled
-        amount: 1
-      - id: AU14Packet20MMGrenadeHESHRMCFilled
-        amount: 1
-    - name: Shoulder-Launched Multipurpose Assault Weapon
-      entries:
-      - id: RMCWeaponLauncherM5ATL
-        amount: 1
-      - id: RMCRocket84mmAntiArmor
-        amount: 15
-      - id: RMCRocket84mm
-        amount: 7
-      - id: AU14BackpackRockets
-        amount: 2
+      - id: RMCSharpSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sharp
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sharp
+        isAppendPrefix: true
+      - id: RMCM707VultureCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sniper
+        isAppendPrefix: true
 
 # AirCrew Weapons
 - type: entity
@@ -1181,12 +1146,18 @@
         amount: 10
     - name: special issue firearms
       entries:
-      - id: RMCWeaponShotgunM3717
+      - id: RMCL49Case
         amount: 3
       - id: RMCWeaponRifleL90A1
         amount: 5
       - id: RMCWeaponRifleL90A2
         amount: 3
+      - id: RMCWeaponRifleL91SWS
+        amount: 1
+      - id: RMCWeaponRifleL89A1
+        amount: 1
+      - id: RMCWeaponRifleL89A2
+        amount: 1
       - id: AU14Mk86Case
         amount: 1
     - name: primary ammunition
@@ -1209,6 +1180,10 @@
         amount: 10
       - id: RMCMagazineRifleL90DrumAP
         amount: 1
+      - id: RMCMagazineRifleL88
+        amount: 16
+      - id: RMCMagazineRifleL88AP
+        amount: 4
       - id: RMCBoxShotgunBuckshot
         amount: 20
       - id: RMCBoxShotgunFlechette
@@ -1237,6 +1212,12 @@
         amount: 2
       - id: RMCBoxClaymoreMineFilled
         amount: 3
+      - id: AU14BoxClaymoreMineIncendiaryFilled
+        amount: 1
+      - id: AU14PacketGrenadeTearGasFilled
+        amount: 2
+      - id: AU14PacketGrenadeTearGasFilledAirburst
+        amount: 1
       - id: AU14Packet20MMGrenadeHERMCFilled
         amount: 4
       - id: AU14Packet20MMGrenadeHESHRMCFilled
@@ -1251,7 +1232,7 @@
         amount: 6
       - id: RMCExplosivePlastic
         amount: 8
-      - id: RMCWeaponLauncherDisposableFolded
+      - id: RMCWeaponLauncherL33
         amount: 2
       - id: RMCRocketM5510Brute
         amount: 12

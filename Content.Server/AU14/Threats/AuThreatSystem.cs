@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
+using Content.Server.Ghost.Roles;
 using Content.Server.Ghost.Roles.Components;
+using Content.Server.Mind.Commands;
 using Content.Shared.AU14.Threats;
 using Content.Server.AU14.Round;
 using Robust.Shared.Timing;
@@ -34,11 +36,12 @@ public sealed partial class AuThreatSystem : EntitySystem
     [Dependency] private NpcFactionSystem _npcFaction = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IGameTiming _timing = default!;
-    public readonly ProtoId<NpcFactionPrototype> threatnpcfaction = "THREAT";
     [Dependency] private SharedRoleSystem _roles = default!;
+    [Dependency] private GhostRoleSystem _ghostRole = default!;
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    public readonly ProtoId<NpcFactionPrototype> threatnpcfaction = "THREAT";
 
     private sealed class PendingThreatSpawn
     {
@@ -77,6 +80,12 @@ public sealed partial class AuThreatSystem : EntitySystem
         return removed;
     }
 
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<GameRunLevelChangedEvent>(OnRunLevelChanged);
+    }
+
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -102,6 +111,12 @@ public sealed partial class AuThreatSystem : EntitySystem
         {
             Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Delayed threat spawn threw: {ex}");
         }
+    }
+
+    private void OnRunLevelChanged(GameRunLevelChangedEvent ev)
+    {
+        if (ev.New != GameRunLevel.InRound)
+            _pendingSpawn = null;
     }
 
     /// <summary>
@@ -185,7 +200,7 @@ public sealed partial class AuThreatSystem : EntitySystem
         var partySpawn = threat.RoundStartSpawn;
         if (string.IsNullOrWhiteSpace(partySpawn))
         {
-            Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
+            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
             var removed = RemoveThreatJobAssignments(assignedJobs);
             if (removed > 0)
                 Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with no roundstart spawn so normal overflow assignment can handle them.");
@@ -194,7 +209,7 @@ public sealed partial class AuThreatSystem : EntitySystem
         var newpartySpawn = _prototypeManager.TryIndex(partySpawn, out var spawn) ? spawn : null;
         if (newpartySpawn == null)
         {
-            Logger.GetSawmill("au14.threat").Error( $"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
+            Logger.GetSawmill("au14.threat").Error($"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
             var removed = RemoveThreatJobAssignments(assignedJobs);
             if (removed > 0)
                 Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with missing roundstart spawn '{partySpawn}' so normal overflow assignment can handle them.");
@@ -223,7 +238,7 @@ public sealed partial class AuThreatSystem : EntitySystem
         // --- Spawn entities and collect them for mind assignment ---
         var spawnedLeaders = new List<EntityUid>();
         var spawnedMembers = new List<EntityUid>();
-        Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Begin spawning threat entities for threat: {threat?.ID ?? "null"}");
+        Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Begin spawning threat entities for threat: {threat?.ID ?? "null"}");
 
         // --- Spawn Together logic ---
         bool spawnTogether = newpartySpawn?.SpawnTogether == true;
@@ -295,7 +310,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                         var ent = _entityManager.SpawnEntity(protoId,
                             _entityManager.GetComponent<TransformComponent>(marker).Coordinates);
                         spawnedLeaders.Add(ent);
-                        Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Spawned leader entity {ent} at marker {marker}");
+                        Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned leader entity {ent} at marker {marker}");
                     }
                 }
             }
@@ -315,12 +330,12 @@ public sealed partial class AuThreatSystem : EntitySystem
                         var ent = _entityManager.SpawnEntity(protoId,
                             _entityManager.GetComponent<TransformComponent>(marker).Coordinates);
                         spawnedMembers.Add(ent);
-                        Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Spawned member entity {ent} at marker {marker}");
+                        Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned member entity {ent} at marker {marker}");
                     }
                 }
             }
 
-            Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Spawned {spawnedMembers.Count} threat members.");
+            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned {spawnedMembers.Count} threat members.");
 
             // Spawn other entities
             var spawnedEntities = 0;
@@ -343,7 +358,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 }
             }
 
-            Logger.GetSawmill("au14.threat").Debug( $"[DEBUG] Spawned {spawnedEntities} other threat entities.");
+            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned {spawnedEntities} other threat entities.");
 
             var spawnedThreatPlayers = new HashSet<NetUserId>();
 
@@ -351,8 +366,20 @@ public sealed partial class AuThreatSystem : EntitySystem
             {
                 var eligibleHeldPlayers = GetEligibleVoteHeldPlayers(voteHeldPlayers, requireObserverForVotePlayers);
                 _random.Shuffle(eligibleHeldPlayers);
+                var heldAssignments = eligibleHeldPlayers
+                    .Select(player =>
+                    {
+                        var job = assignedJobs.TryGetValue(player, out var assigned) &&
+                                  assigned.Item1 == ThreatLeaderJobId
+                            ? ThreatLeaderJobId
+                            : ThreatMemberJobId;
+
+                        return new ThreatVoteAssignment(player, job);
+                    })
+                    .ToList();
+
                 var voteAssignments = ThreatVoteSelection.BuildSpawnAssignments(
-                    eligibleHeldPlayers,
+                    heldAssignments,
                     spawnedLeaders.Count,
                     spawnedMembers.Count);
 
@@ -364,6 +391,17 @@ public sealed partial class AuThreatSystem : EntitySystem
                     voteAssignments.Where(assignment => assignment.Job == ThreatMemberJobId),
                     spawnedMembers,
                     spawnedThreatPlayers);
+
+                var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
+                var unassigned = eligibleHeldPlayers.Where(p => !spawnedThreatPlayers.Contains(p)).ToList();
+                foreach (var playerId in unassigned)
+                {
+                    if (!_playerManager.TryGetSessionById(playerId, out var session))
+                        continue;
+
+                    Logger.GetSawmill("au14.threat").Info($"[AuThreatSystem] Player {session.Name} ({playerId}) returning to lobby as there was no threat mob available for them.");
+                    ticker.Respawn(session);
+                }
 
                 AddGhostRolesForUnassigned(spawnedLeaders, assignedLeaders, ThreatLeaderJobId);
                 AddGhostRolesForUnassigned(spawnedMembers, assignedMembers, ThreatMemberJobId);
@@ -458,6 +496,10 @@ public sealed partial class AuThreatSystem : EntitySystem
         var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
         ticker.PlayerJoinGame(session, silent: true);
 
+        GhostRoleComponent? ghostRole = null;
+        if (TryComp(entity, out ghostRole) && ghostRole.MakeSentient)
+            MakeSentientCommand.MakeSentient(entity, EntityManager, ghostRole.AllowMovement, ghostRole.AllowSpeech);
+
         var data = session.ContentData();
         var mind = _mindSystem.GetMind(playerNetId);
         if (mind == null)
@@ -471,10 +513,24 @@ public sealed partial class AuThreatSystem : EntitySystem
         Logger.GetSawmill("au14.threat").Debug(
             $"[DEBUG] Assigned threat mind {mind.Value} to entity {entity} for player {playerNetId} as {jobId.Id}");
 
-        _roles.MindAddJobRole(mind.Value, silent: true, jobPrototype: jobId);
+        var entityJob = ghostRole?.JobProto ?? jobId;
+        _roles.MindAddJobRole(mind.Value, silent: true, jobPrototype: entityJob);
+        AddStartingMindRole(entity, mind.Value);
         _roles.MindAddRole(mind.Value, "MindRoleThreat", silent: true);
         AddThreatFaction(entity);
+
+        if (ghostRole != null)
+        {
+            _ghostRole.UnregisterGhostRole((entity, ghostRole));
+        }
+
         return true;
+    }
+
+    private void AddStartingMindRole(EntityUid entity, EntityUid mind)
+    {
+        if (TryComp(entity, out StartingMindRoleComponent? starting))
+            _roles.MindAddRole(mind, starting.MindRole, silent: starting.Silent);
     }
 
     private void AddGhostRolesForUnassigned(

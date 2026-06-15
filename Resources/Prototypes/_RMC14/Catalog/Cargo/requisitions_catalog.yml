@@ -24,7 +24,9 @@
         crate: RMCCrateSuperPacmanParts
       - cost: 350
         crate: RMCCrateHighCapacityPowerCell
-      - cost: 350
+      - cost: 400
+        crate: AU14CrateBoxFusionCells
+      - cost: 3500
         crate: AU14CrateBoxToolbelt
       - cost: 3000
         crate: AU14CrateBoxFieldSupplyEngin
@@ -48,6 +50,8 @@
         crate: RMCCrateGlassSheets
       - cost: 350
         crate: RMCCrateWoodenPlanks
+      - cost: 2000
+        crate: RMCCrateFoldingBarricades
       - cost: 350
         crate: RMCCrateSuppliesBoxes
     - name: Food and Drinks
@@ -92,6 +96,8 @@
         crate: RMCCrateMedicalFilled
       - cost: 370
         crate: RMCCrateMedicalPill
+      - cost: 500
+        crate: CMUCrateMedicalFieldTreatments
       - cost: 320
         crate: AU14CrateBoxHospitalBeds
       - cost: 475
@@ -182,4 +188,3 @@
 
       - cost: 350
         crate: RMCTelevision
-

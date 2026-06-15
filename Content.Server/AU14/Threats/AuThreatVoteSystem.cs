@@ -48,12 +48,45 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
     }
 
     private PreparedThreatVote? _prepared;
+    private readonly HashSet<NetUserId> _roundJoinBlockedPlayers = new();
+
+    public override void Initialize()
+    {
+        base.Initialize();
+        SubscribeLocalEvent<GameRunLevelChangedEvent>(OnRunLevelChanged);
+    }
+
+    private void OnRunLevelChanged(GameRunLevelChangedEvent ev)
+    {
+        if (ev.New != GameRunLevel.InRound)
+        {
+            _prepared = null;
+            ClearRoundJoinBlocks();
+        }
+    }
+
+    public bool IsRoundJoinBlocked(NetUserId playerId)
+    {
+        return _roundJoinBlockedPlayers.Contains(playerId);
+    }
+
+    public void ClearRoundJoinBlocks()
+    {
+        _roundJoinBlockedPlayers.Clear();
+    }
+
+    internal void BlockRoundJoinsForHeldPlayers(IEnumerable<NetUserId> heldPlayers)
+    {
+        _roundJoinBlockedPlayers.Clear();
+        _roundJoinBlockedPlayers.UnionWith(heldPlayers);
+    }
 
     public bool TryPrepareThreatVote(
         Dictionary<NetUserId, HumanoidCharacterProfile> profiles,
         MapId mapId)
     {
         _prepared = null;
+        ClearRoundJoinBlocks();
 
         if (!_auRound.UsesPostRoundstartThreatVote())
             return false;
@@ -75,15 +108,19 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             return false;
         }
 
-        var lowestBodyCount = candidates.Min(candidate => candidate.BodyCount.Total);
+        var heldBodyCount = candidates
+            .OrderBy(candidate => candidate.BodyCount.Total)
+            .Select(candidate => candidate.BodyCount)
+            .First();
         var candidateIds = candidates
             .Select(candidate => new ProtoId<ThreatPrototype>(candidate.Threat.ID))
             .ToList();
         var heldPlayers = _jobSelection.AssignThreatVotePoolJobs(
             profiles,
             candidateIds,
-            lowestBodyCount,
+            heldBodyCount,
             presetId);
+        BlockRoundJoinsForHeldPlayers(heldPlayers);
 
         _prepared = new PreparedThreatVote
         {
@@ -94,23 +131,27 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
         };
 
         Logger.GetSawmill("au14.threat").Debug(
-            $"[AuThreatVoteSystem] Prepared {candidates.Count} candidate(s), held {heldPlayers.Count} player(s), lowest body count {lowestBodyCount}.");
+            $"[AuThreatVoteSystem] Prepared {candidates.Count} candidate(s), held {heldPlayers.Count} player(s), held body count {heldBodyCount.Total}.");
         return true;
     }
 
     public bool StartPreparedThreatVote(Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
     {
         if (_prepared == null)
+        {
+            ClearRoundJoinBlocks();
             return false;
+        }
 
         var prepared = _prepared;
         _prepared = null;
+        BlockRoundJoinsForHeldPlayers(prepared.HeldPlayers);
 
         var voteOptions = new VoteOptions
         {
             Title = Loc.GetString(VoteTitleLocId),
             Options = prepared.Candidates
-                .Select(candidate => (GetLocalizedThreatDisplayName(candidate.Threat.ID), (object) candidate.Threat))
+                .Select(candidate => (GetLocalizedThreatDisplayName(candidate.Threat.ID), (object)candidate.Threat))
                 .ToList(),
             Duration = VoteDuration,
             AllowedVoters = prepared.HeldPlayers.ToHashSet(),
@@ -121,11 +162,22 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
         voteOptions.SetInitiatorOrServer(null);
 
         var handle = _voteManager.CreateVote(voteOptions);
+        handle.OnCancelled += _ => ClearRoundJoinBlocks();
         handle.OnFinished += (_, args) =>
         {
+            var ticker = EntityManager.EntitySysManager.GetEntitySystem<GameTicker>();
+            if (ticker.RunLevel != GameRunLevel.InRound)
+            {
+                ClearRoundJoinBlocks();
+                return;
+            }
+
             var selected = ResolveThreatWinner(args.Winner, args.Winners, prepared.Candidates);
             if (selected == null)
+            {
+                ClearRoundJoinBlocks();
                 return;
+            }
 
             args.ResolveWinner(selected);
             FinishThreatVote(prepared, selected, assignedJobs);
@@ -219,8 +271,8 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
     {
         var ticker = EntityManager.EntitySysManager.GetEntitySystem<GameTicker>();
         var isColonyFall = string.Equals(_auRound.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
-        var minMinutes = Math.Max(1, (int) Math.Round(selected.SpawnDelayMin / 60.0));
-        var maxMinutes = Math.Max(minMinutes, (int) Math.Round(selected.SpawnDelayMax / 60.0));
+        var minMinutes = Math.Max(1, (int)Math.Round(selected.SpawnDelayMin / 60.0));
+        var maxMinutes = Math.Max(minMinutes, (int)Math.Round(selected.SpawnDelayMax / 60.0));
 
         foreach (var playerId in heldPlayers)
         {

@@ -489,6 +489,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
         {
             BreakOnMove = true,
             BlockDuplicate = true,
+            CancelDuplicate = false,
             DuplicateCondition = DuplicateConditions.SameEvent,
             AttemptFrequency = AttemptFrequency.EveryTick
         };
@@ -1172,9 +1173,6 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
 
     private void LinkLarvaToVictim(Entity<VictimInfectedComponent> victim, EntityUid spawned)
     {
-        if (HasComp<XenoComponent>(spawned))
-            _hive.SetHive(spawned, victim.Comp.Hive);
-
         victim.Comp.CurrentStage = 6;
         victim.Comp.SpawnedLarva = spawned;
         Dirty(victim);
@@ -1183,7 +1181,11 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
         burster.BurstFrom = victim.Owner;
         Dirty(spawned, burster);
 
+        // Let the accepted infector claim this specific larva before hive assignment wakes the general larva queue.
         LarvaLinked(victim, spawned);
+
+        if (HasComp<XenoComponent>(spawned))
+            _hive.SetHive(spawned, victim.Comp.Hive);
     }
 }
 

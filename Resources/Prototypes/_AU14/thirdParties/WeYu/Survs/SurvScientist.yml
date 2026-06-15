@@ -75,10 +75,10 @@
     ears: AU14ColonyWeylandHeadset
     outerClothing: RMCLabcoatOpened
     eyes: RMCGlassesMedicalHUDGlasses
-    belt: CMUBeltMedicBagSupportSynth
+    belt: AU14BeltMedicBagSupportSynth
     back: RMCSatchelChemistry
-    pocket1: RMCFlashlight
-    pocket2: RMCPouchFirstAidPMCFill
+    pocket1: CMSurgicalCaseFilled
+    pocket2: AU14PouchIFAKFill
   storage:
     back:
     - AU14CBRNKitWeYu
@@ -87,3 +87,7 @@
     - CMHandsLatex
     - CMHealthAnalyzer
     - AU14CMDefibrillator
+    - RMCRadioHandheldColonyOff
+    outerClothing:
+    - CMCrowbar
+    - RMCFlashlight

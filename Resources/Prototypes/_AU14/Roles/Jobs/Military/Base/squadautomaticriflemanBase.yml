@@ -26,15 +26,23 @@
     - Epilepsy
     - NonResuscitable
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     RMCRankLanceCorporal:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSquadAutomaticRifleman
-      time: 86400 # 24 hours
+      entity: AU14ChevronUSCMLanceCorporal
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORSquadAutomaticRifleman
+        time: 86400 # 24 hours
     RMCRankPrivateFirstClass:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSquadAutomaticRifleman
-      time: 36000 # 10 hours
-    RMCRankPrivate: []
+      entity: AU14ChevronUSCMPrivateFirstClass
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORSquadAutomaticRifleman
+        time: 36000 # 10 hours
+    RMCRankPrivate:
+      entity: AU14ChevronUSCMPrivate
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
@@ -45,8 +53,8 @@
       prefix: au14-job-prefix-govforsquadautomaticrifleman
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: smartgunner
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_afn
 
 - type: playTimeTracker
   id: AU14JobGOVFORSquadAutomaticRifleman

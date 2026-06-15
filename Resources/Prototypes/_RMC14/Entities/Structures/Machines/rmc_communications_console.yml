@@ -19,6 +19,17 @@
   - type: InteractionOutline
   - type: Corrodible
     isCorrodible: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.45,-0.45,0.45,0.45"
+        density: 60
+        mask:
+        - MachineMask
+        layer:
+        - LowImpassable
   - type: ApcPowerReceiver
     powerLoad: 0
     needsPower: false # TODO RMC14
@@ -77,6 +88,8 @@
   id: RMCGroundsideOperationsConsoleGovfor
   suffix: Govfor
   components:
+  - type: MarineCommunicationsComputer
+    faction: govfor
   - type: OverwatchConsole
     canMessageSquad: false
     group: GOVFOR
@@ -88,6 +101,8 @@
   id: RMCGroundsideOperationsConsoleOpfor
   suffix: Opfor
   components:
+  - type: MarineCommunicationsComputer
+    faction: opfor
   - type: OverwatchConsole
     canMessageSquad: false
     group: OPFOR

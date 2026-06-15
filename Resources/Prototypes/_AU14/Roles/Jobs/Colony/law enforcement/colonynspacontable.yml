@@ -1,6 +1,6 @@
 - type: job
   parent: AU14JobLEOBase
-  id: AU14JobCiviliannspaConstable
+  id: AU14JobCivilianNSPAConstable
   name: au14-job-name-civiliannspaConstable
   description: au14-job-description-civiliannspaConstable
   setPreference: true
@@ -13,15 +13,23 @@
     - Epilepsy
   canBeAntag: false
   ranks:
-    AU14RankNSPAInspector:
-    - !type:RoleTimeRequirement
-      role: AU14JobCivilianCMBDeputy
-      time: 90000 # 25 hours
-    AU14RankNSPASeniorConstable:
-    - !type:RoleTimeRequirement
-      role: AU14JobCivilianCMBDeputy
-      time: 36000 # 10 hours
-    AU14RankNSPAConstable: []
+    RMCRankCivilian: []
+  chevrons:
+    Inspector:
+      entity: AU14ChevronNSPAInspector
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobCivilianCMBDeputy
+        time: 90000 # 25 hours
+    SeniorConstable:
+      entity: AU14ChevronNSPASeniorConstable
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobCivilianCMBDeputy
+        time: 36000 # 10 hours
+    Constable:
+      entity: AU14ChevronNSPAConstable
+      requirements: []
   startingGear: AU14GearCiviliannspaConstable
   icon: "RMCJobIconTSEPAConstable"
   requireAdminNotify: false
@@ -74,6 +82,6 @@
   name: Spawn Point Civilian nspa Constable
   components:
   - type: SpawnPoint
-    job_id: AU14JobCiviliannspaConstable
+    job_id: AU14JobCivilianNSPAConstable
   - type: Sprite
     state: syn_spawn

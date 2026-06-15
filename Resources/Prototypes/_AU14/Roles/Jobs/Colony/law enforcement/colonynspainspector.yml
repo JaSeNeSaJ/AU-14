@@ -6,7 +6,11 @@
   setPreference: false
   canBeAntag: false
   ranks:
-    RMCRankTSEPAInspector: []
+    RMCRankCivilian: []
+  chevrons:
+    Inspector:
+      entity: AU14ChevronNSPAInspector
+      requirements: []
   startingGear: AU14GearCivilianNSPAInspector
   icon: "RMCJobIconTSEPAInspector"
   requireAdminNotify: true
@@ -59,6 +63,7 @@
     belt: CMBeltSecurityMarshalFilled
     back: RMCSatchelTSEPA
     ears: AU14CMBHeadset
+    pocket1: AU14StampNSPA
   storage:
     back:
     - AU14GuidebookLawColonial

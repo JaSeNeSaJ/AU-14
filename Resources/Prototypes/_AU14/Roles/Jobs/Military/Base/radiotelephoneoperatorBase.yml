@@ -25,7 +25,11 @@
     - Epilepsy
     - NonResuscitable
   ranks:
-    RMCRankCorporal: []
+    RMCRankCivilian: []
+  chevrons:
+    RMCRankCorporal:
+      entity: AU14ChevronUSCMCorporal
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
@@ -35,8 +39,8 @@
       prefix: au14-job-prefix-radiotelephoneoperator
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: tl
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_rto
 
 - type: playTimeTracker
   id: AU14JobGOVFORRadioTelephoneOperator

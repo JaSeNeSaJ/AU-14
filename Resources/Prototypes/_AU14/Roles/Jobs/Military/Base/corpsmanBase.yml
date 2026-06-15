@@ -26,11 +26,17 @@
     - Epilepsy
     - NonResuscitable
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     RMCRankLanceCorporal:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatoonCorpsman
-      time: 36000 # 10 hours
-    RMCRankPrivateFirstClass: []
+      entity: AU14ChevronUSCMLanceCorporal
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORPlatoonCorpsman
+        time: 36000
+    RMCRankPrivateFirstClass:
+      entity: AU14ChevronUSCMPrivateFirstClass
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
@@ -40,8 +46,8 @@
       prefix: au14-job-prefix-govforplatooncorpsman
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: medic
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_corpsman
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatoonCorpsman

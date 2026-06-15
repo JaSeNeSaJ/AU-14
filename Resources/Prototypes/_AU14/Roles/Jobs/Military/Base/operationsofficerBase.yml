@@ -13,17 +13,24 @@
   canBeAntag: false
   accessGroups:
   - AU14GovforCommand
+  - aulegacygroupcommand # NOTE: should remove & hard migrate
 
 - type: job
   abstract: true
   parent: AU14JobPlatOpBaseAbstract
   id: AU14JobPlatOpBase
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     RMCRankFirstLT:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORPlatOp
-      time: 86400 # 24 hours
-    RMCRankSecondLT: []
+      entity: AU14ChevronFirstLT
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORPlatOp
+        time: 86400 # 24 hours
+    SecondLT:
+      entity: AU14ChevronSecondLT
+      requirements: []
   requirements:
   - !type:AgeRequirement
     requiredAge: 25
@@ -39,12 +46,14 @@
     components:
     - type: Skills
       preset: AU14SkillPresetPlatoonJuniorOfficer
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
     - type: JobPrefix
       prefix: au14-job-prefix-govforplatop
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: so
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_po
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatOp

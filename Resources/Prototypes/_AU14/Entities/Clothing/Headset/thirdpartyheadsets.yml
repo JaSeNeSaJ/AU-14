@@ -20,6 +20,8 @@
     trackerModes:
     - SquadLeader
     - USArmyCommandingOfficer
+    - BattleBuddy
+    - PrimaryLandingZone
 
 - type: entity
   parent: AU14HeadsetGovforCommand
@@ -60,11 +62,13 @@
       - CMEncryptionKeyColony
   - type: RMCHeadset
     channels:
-    - VAI
+    - radioVAI
   - type: GrantSquadLeaderTracker
     defaultMode: SquadLeader
     trackerModes:
     - SquadLeader
+    - BattleBuddy
+    - PrimaryLandingZone
 
 - type: entity
   parent: AU14HeadsetGovforCommand
@@ -75,7 +79,7 @@
   components:
   - type: RMCHeadset
     channels:
-    - VAI
+    - radioVAI
 
 - type: entity
   parent: AU14ColonyAdminHeadset
@@ -86,7 +90,7 @@
   components:
   - type: RMCHeadset
     channels:
-    - VAI
+    - radioVAI
 
 - type: entity
   parent: AU14HeadsetGovforMarine
@@ -108,3 +112,5 @@
     defaultMode: SquadLeader
     trackerModes:
     - SquadLeader
+    - PrimaryLandingZone
+    - BattleBuddy

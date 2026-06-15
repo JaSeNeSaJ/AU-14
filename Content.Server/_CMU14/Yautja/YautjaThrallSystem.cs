@@ -19,6 +19,7 @@ using Content.Shared.Humanoid;
 using Content.Shared.Inventory;
 using Content.Shared.Inventory.Events;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Systems;
@@ -495,8 +496,13 @@ public sealed partial class YautjaThrallSystem : EntitySystem
         if (hivebreaker.BloodOnConversion)
             GrantAllSkills(target, 4);
 
-        if (hivebreaker.HealOnConversion && TryComp(target, out DamageableComponent? damageable))
-            _damage.SetAllDamage(target, damageable, 0);
+        if (hivebreaker.HealOnConversion)
+        {
+            if (TryComp(target, out DamageableComponent? damageable))
+                _damage.SetAllDamage(target, damageable, 0);
+
+            _mob.ChangeMobState(target, MobState.Alive, origin: master);
+        }
 
         BroadcastToYautja(
             Loc.GetString("cmu-yautja-hivebreaker-broadcast",
@@ -1067,7 +1073,7 @@ public sealed partial class YautjaThrallSystem : EntitySystem
         if (TryComp(bracer, out YautjaBracerComponent? masterBracer))
             return masterBracer.LockSound;
 
-        return new SoundPathSpecifier("/Audio/_CMU14/Yautja/pred_bracer.wav");
+        return new SoundPathSpecifier("/Audio/_CMU14/Yautja/Equipment/pred_bracer.wav");
     }
 
     private void SendPrivateChat(EntityUid source, EntityUid target, string text)

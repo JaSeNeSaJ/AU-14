@@ -5,7 +5,11 @@
   description: au14-rmcert-rules
   playTimeTracker: AU14JobRMCRRTCorpsman
   ranks:
-    RMC_LanceCorporal: []
+    RMCRankCivilian: []
+  chevrons:
+    RMC_LanceCorporal:
+      entity: AU14ChevronRMCLanceCorporal
+      requirements: []
   spawnMenuRoleName: RMC RRT Corpsman
   startingGear: AU14GearRMCRRTCorpsman
   icon: "RMCJobIconRoyalMedic"
@@ -62,7 +66,7 @@
     mask: RMCMaskScarfTan
     head: AU14HeadHelmetRMCMedic
     gloves: AU14HandsRMC
-    belt: CMUBeltMedicBagSupportSynthRMC
+    belt: AU14BeltMedicBagSupportSynthRMC
     pocket1: AU14RMCRTTPouchMagazineL90A2
     pocket2: AU14PouchIFAKFill
     back: AU14CMDefibrillator

@@ -7,6 +7,7 @@
   supervisors: au14-job-supervisors-workingjoe-military
   dummyStartingGear: AU14GearGOVFORWorkingJoe
   usePlayerProfile: false
+  jobEntity: AU14MobWorkingJoeGOVFOR
   accessGroups:
   - AU14GovforCommand
   - AUPrisonStaff
@@ -16,9 +17,6 @@
   parent: AU14JobGOVFORWorkingJoeBase
   id: AU14JobGOVFORWorkingJoe
   requirements:
-  - !type:RoleTimeRequirement
-    role: AU14JobGOVFORAuxSupportSynth
-    time: 9000 # 2.5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:
@@ -52,8 +50,12 @@
       - radioGovforBravo
       - radioGovforIntel
       - radioGovforMILP
-    - type: Loadout
-      prototypes: [ AU14GearGOVFORWorkingJoe ]
+    - type: Tag
+      tags:
+      - WorkingJoe
+      - CanPilot
+      - FootstepSound
+      - DoorBumpOpener
 
 - type: startingGear
   parent: AU14GearWorkingJoeBase
@@ -63,6 +65,7 @@
     ears: AU14HeadsetWorkingJoe
     ears2: RMCM5CameraGear
     back: AU14IMPBackpackMarine
+    pocket1: AU14StampJoe
 
 - type: entity
   parent: CMSpawnPointJobBase

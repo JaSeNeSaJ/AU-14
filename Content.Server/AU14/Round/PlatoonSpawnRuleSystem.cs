@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server._CMU14.ZLevels.Core;
 using Content.Server.AU14.VendorMarker;
 using Robust.Shared.Prototypes;
 using Content.Server.GameTicking.Rules;
@@ -26,6 +27,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
     [Dependency] private MapLoaderSystem _mapLoader = default!;
     [Dependency] private SharedMapSystem _mapSystem = default!;
     [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private CMUZLevelsSystem _zLevels = default!;
 
     // Store selected platoons in the system
     private PlatoonPrototype? _selectedGovforPlatoon;
@@ -81,9 +83,12 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
         // --- SHIP VENDOR MARKER LOGIC ---
         if ((planetComp.GovforInShip || planetComp.OpforInShip))
         {
+            var usedShipMarkers = new HashSet<EntityUid>();
             var factionShipsQuery = AllEntityQuery<ShipFactionComponent>();
             while (factionShipsQuery.MoveNext(out var shipUid, out var shipFaction))
             {
+                var shipTransform = _entityManager.GetComponent<TransformComponent>(shipUid);
+
                 // Ensure any existing rotary phones that belong to this ship inherit the ship faction
                 if (!string.IsNullOrEmpty(shipFaction.Faction))
                     SetPhonesFactionForParent(shipUid, shipFaction.Faction);
@@ -100,8 +105,12 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
                 while (shipMarkers.MoveNext(out var markerUid, out var markerComp))
                 {
                     var transform = _entityManager.GetComponent<TransformComponent>(markerUid);
-                    if (!markerComp.Ship || transform.ParentUid != shipUid)
+                    if (!markerComp.Ship ||
+                        !IsMarkerOnShipOrZLevel(shipUid, shipTransform, transform) ||
+                        !usedShipMarkers.Add(markerUid))
+                    {
                         continue;
+                    }
 
                     // --- DOOR MARKER LOGIC ---
                     string? doorProtoId = null;
@@ -699,10 +708,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
 
         void HandlePlatoonConsoles(PlatoonPrototype? platoon, string faction, int dropshipCount, int fighterCount)
         {
-            if (platoon == null)
-            {
-                return;
-            }
+            if (platoon == null) return;
             var random = new Random();
             var dropships = platoon.CompatibleDropships.ToList();
             for (int i = 0; i < dropshipCount && dropships.Count > 0; i++)
@@ -711,9 +717,8 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
                 var mapId = dropships[idx];
                 dropships.RemoveAt(idx);
                 if (!_mapLoader.TryLoadMap(mapId, out _, out var grids))
-                {
                     continue;
-                }
+
                 foreach (var grid in grids)
                 {
                     var gridMapId = _entityManager.GetComponent<TransformComponent>(grid).MapID;
@@ -724,43 +729,32 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
                     // Offset ladder IDs on opfor ships to avoid duplicate numeric IDs when the same ship/map
                     // is loaded multiple times (adds 100 to numeric ladder IDs, e.g. "2" -> "102").
                     if (faction == "opfor" && planetComp != null && planetComp.OpforInShip)
-                    {
                         OffsetLaddersOnGrid(grid, 100);
-                    }
 
                     var navMarkers = FindMarkersOnGrid(grid, "dropshipshuttlevmarker");
                     if (navMarkers.Count > 0)
                     {
                         var navProto = faction == "govfor" ? "CMComputerDropshipNavigationGovfor" : "CMComputerDropshipNavigationOpfor";
                         foreach (var navMarkerUid in navMarkers)
-                        {
                             SpawnWeaponsConsole(navProto, navMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
-                        }
                     }
+
                     var weaponsMarkers = FindMarkersOnGrid(grid, "dropshipweaponsvmarker");
                     if (weaponsMarkers.Count > 0)
                     {
                         var weaponsProto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
                         foreach (var weaponsMarkerUid in weaponsMarkers)
-                        {
                             SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Dropship);
-                        }
                     }
+
                     // Fly to a destination, prioritizing ship destinations if in ship
                     EntityUid? dest = null;
-                    bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip) || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
+                    bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip)
+                        || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
                     if (inShip)
-                    {
                         dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship, grid);
-                        if (dest == null)
-                        {
-                            dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
-                        }
-                    }
-                    else
-                    {
-                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
-                    }
+                    dest ??= FindDestination(faction, DropshipDestinationComponent.DestinationType.Dropship);
+
                     var navComputer = FindNavComputerOnGrid(grid);
                     if (dest != null && navComputer != null)
                     {
@@ -776,65 +770,50 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             var loadedFighterGrids = new List<EntityUid>();
             foreach (var fighterMap in fighters.ToList())
             {
-                if (!_mapLoader.TryLoadMap(fighterMap, out _, out var grids))
-                {
+                if (!_mapLoader.TryLoadGrid(fighterMap, out _, out var grid))
                     continue;
-                }
-                foreach (var grid in grids)
+
+                loadedFighterGrids.Add(grid.Value);
+                // Ensure any existing rotary phones on this fighter grid inherit the platoon faction
+                SetPhonesFactionOnGrid(grid.Value, faction);
+
+                // Offset ladder IDs on opfor ships (fighters) as well
+                if (faction == "opfor" && planetComp != null && planetComp.OpforInShip)
+                    OffsetLaddersOnGrid(grid.Value, 100);
+
+                var fighterMarkers = FindMarkersOnGrid(grid.Value, "dropshipfighterdestmarker");
+                if (fighterMarkers.Count > 0)
                 {
-                    loadedFighterGrids.Add(grid);
-                    // Ensure any existing rotary phones on this fighter grid inherit the platoon faction
-                    SetPhonesFactionOnGrid(grid, faction);
+                    var proto = faction == "govfor" ? "CMComputerDropshipNavigationGovfor" : "CMComputerDropshipNavigationOpfor";
+                    foreach (var markerUid in fighterMarkers)
+                        SpawnWeaponsConsole(proto, markerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
+                }
+                var weaponsMarkers = FindMarkersOnGrid(grid.Value, "dropshipweaponsvmarker");
+                if (weaponsMarkers.Count > 0)
+                {
+                    var weaponsProto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
+                    foreach (var weaponsMarkerUid in weaponsMarkers)
+                        SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
+                }
 
-                    // Offset ladder IDs on opfor ships (fighters) as well
-                    if (faction == "opfor" && planetComp != null && planetComp.OpforInShip)
-                    {
-                        OffsetLaddersOnGrid(grid, 100);
-                    }
+                // Fly to a destination, prioritizing ship destinations if in ship
+                EntityUid? dest = null;
+                bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip)
+                    || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
+                if (inShip)
+                    dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher, grid.Value);
+                dest ??= FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
 
-                    var fighterMarkers = FindMarkersOnGrid(grid, "dropshipfighterdestmarker");
-                    if (fighterMarkers.Count > 0)
-                    {
-                        var proto = faction == "govfor" ? "CMComputerDropshipNavigationGovfor" : "CMComputerDropshipNavigationOpfor";
-                        foreach (var markerUid in fighterMarkers)
-                        {
-                            SpawnWeaponsConsole(proto, markerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
-                        }
-                    }
-                    var weaponsMarkers = FindMarkersOnGrid(grid, "dropshipweaponsvmarker");
-                    if (weaponsMarkers.Count > 0)
-                    {
-                        var weaponsProto = faction == "govfor" ? "CMComputerDropshipWeaponsGovfor" : "CMComputerDropshipWeaponsOpfor";
-                        foreach (var weaponsMarkerUid in weaponsMarkers)
-                        {
-                            SpawnWeaponsConsole(weaponsProto, weaponsMarkerUid, faction, DropshipDestinationComponent.DestinationType.Figher);
-                        }
-                    }
-                    // Fly to a destination, prioritizing ship destinations if in ship
-                    EntityUid? dest = null;
-                    bool inShip = (faction == "govfor" && planetComp != null && planetComp.GovforInShip) || (faction == "opfor" && planetComp != null && planetComp.OpforInShip);
-                    if (inShip)
-                    {
-                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher, grid);
-                        if (dest == null)
-                        {
-                            dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
-                        }
-                    }
-                    else
-                    {
-                        dest = FindDestination(faction, DropshipDestinationComponent.DestinationType.Figher);
-                    }
-                    var navComputer = FindNavComputerOnGrid(grid);
-                    if (dest != null && navComputer != null)
-                    {
-                        var navComp = _entityManager.GetComponent<DropshipNavigationComputerComponent>(navComputer.Value);
-                        var navEntity = new Entity<DropshipNavigationComputerComponent>(navComputer.Value, navComp);
-                        _sharedDropshipSystem.FlyTo(navEntity, dest.Value, null);
-                    }
+                var navComputer = FindNavComputerOnGrid(grid.Value);
+                if (dest != null && navComputer != null)
+                {
+                    var navComp = _entityManager.GetComponent<DropshipNavigationComputerComponent>(navComputer.Value);
+                    var navEntity = new Entity<DropshipNavigationComputerComponent>(navComputer.Value, navComp);
+                    _sharedDropshipSystem.FlyTo(navEntity, dest.Value, null);
                 }
             }
         }
+
         // Use the planet config to determine how many to spawn
         var govforDropships = planetComp.govfordropships;
         var govforFighters = planetComp.govforfighters;
@@ -842,6 +821,29 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
         var opforFighters = planetComp.opforfighters;
         HandlePlatoonConsoles(govPlatoon, "govfor", govforDropships, govforFighters);
         HandlePlatoonConsoles(opPlatoon, "opfor", opforDropships, opforFighters);
+    }
+
+    private bool IsMarkerOnShipOrZLevel(EntityUid shipUid, TransformComponent shipTransform, TransformComponent markerTransform)
+    {
+        if (markerTransform.ParentUid == shipUid || markerTransform.GridUid == shipUid)
+            return true;
+
+        if (shipTransform.MapUid is not { } shipMap ||
+            markerTransform.MapUid is not { } markerMap)
+        {
+            return false;
+        }
+
+        if (markerMap == shipMap)
+            return false;
+
+        if (!_zLevels.TryGetZNetwork(shipMap, out var shipNetwork) ||
+            !_zLevels.TryGetZNetwork(markerMap, out var markerNetwork))
+        {
+            return false;
+        }
+
+        return shipNetwork.Value.Owner == markerNetwork.Value.Owner;
     }
 
     protected override void Ended(EntityUid uid, PlatoonSpawnRuleComponent component, GameRuleComponent gameRule, GameRuleEndedEvent args)

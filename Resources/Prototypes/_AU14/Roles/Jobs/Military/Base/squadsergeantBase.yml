@@ -29,22 +29,30 @@
     - NonResuscitable
     - Epilepsy
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     RMCRankStaffSergeant:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORSquadSergeant
-      time: 36000 # 10 hours
-    RMCRankSergeant: []
+      entity: AU14ChevronUSCMStaffSergeant
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORSquadSergeant
+        time: 36000 # 10 hours
+    RMCRankSergeant:
+      entity: AU14ChevronUSCMSergeant
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
     - type: Skills
       preset: AU14SkillPresetPlatoonSergeant
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadsergeant
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: leader
+        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
+        state: govfor_sergeant
 
 - type: playTimeTracker
   id: AU14JobGOVFORSquadSergeant

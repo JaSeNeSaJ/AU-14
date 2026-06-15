@@ -4,7 +4,11 @@
   name: au14-job-name-vai-medic
   description: au14-vai-mercenary-description
   ranks:
-    VAI_MedicalSpecialist: []
+    RMCRankCivilian: []
+  chevrons:
+    VAI_MedicalSpecialist:
+      entity: AU14ChevronVASCMedicalSpecialist
+      requirements: []
   icon: "CMJobIconEmpty"
   playTimeTracker: AU14VAIMedic
   spawnMenuRoleName: VAI Medic (Base)
@@ -43,7 +47,7 @@
   id: AU14GearVAIMedic
   equipment:
     jumpsuit: AU14JumpsuitTShirtWhiteVAIWebbingSurgical
-    pocket1: RMCPouchMedkitFillAdvanced
+    pocket1: AU14PouchIFAKFill
     pocket2: AU14PouchMagazineLargeFilledMAR40
     suitstorage: AU14WeaponRifleMAR30Tactical
     eyes: RMCGlassesMedicalHUDGlasses
@@ -58,6 +62,9 @@
     - RMCPillCanisterIron
     - CMPillCanisterBicaridine
     - CMPillCanisterKelotane
+    - CMUPlainTraumaDressing10
+    - CMUCoagulantPowder
+    - CMUBurnGel
     - CMEpinephrineAutoInjector
     - AU14NaloxoneAutoInjector
     - CMHealthAnalyzer

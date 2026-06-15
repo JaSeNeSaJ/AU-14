@@ -3,19 +3,21 @@
   id: AU14JobOPFORMilitaryPolice
   icon: "AU14JobIconOPFORRFN"
   spawnMenuRoleName: Military Policeman (OPFOR)
+  supervisors: au14-job-supervisors-opforplatco
   startingGear: AU14GearOPFORMilitaryPoliceMan
   dummyStartingGear: AU14GearOPFORMilitaryPoliceManDummy
   accessGroups:
   - AU14OpforSecurity
+  - aulegacygroupmilp
   special:
   - !type:AddComponentSpecial
     components:
     - type: Marine
       Faction: opfor
-    - type: NpcFactionMember
+    - type: UserIFF
       factions:
       - OPFOR
-    - type: UserIFF
+    - type: NpcFactionMember
       factions:
       - OPFOR
     - type: TacticalMapIcon

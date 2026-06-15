@@ -104,14 +104,19 @@ public static class ThreatVoteSelection
         string? presetId,
         IEnumerable<ProtoId<ThreatPrototype>> candidateThreatIds)
     {
-        var priorities = profile.GetJobPrioritiesForGamemode(presetId);
-        if ((!priorities.TryGetValue(ThreatLeaderJobId, out var leaderPriority) ||
-             leaderPriority == JobPriority.Never) &&
-            (!priorities.TryGetValue(ThreatMemberJobId, out var memberPriority) ||
-             memberPriority == JobPriority.Never))
-        {
+        return CanEnterThreatVotePoolForJob(profile, presetId, candidateThreatIds, ThreatLeaderJobId) ||
+               CanEnterThreatVotePoolForJob(profile, presetId, candidateThreatIds, ThreatMemberJobId);
+    }
+
+    public static bool CanEnterThreatVotePoolForJob(
+        HumanoidCharacterProfile profile,
+        string? presetId,
+        IEnumerable<ProtoId<ThreatPrototype>> candidateThreatIds,
+        ProtoId<JobPrototype> threatJobId)
+    {
+        var priority = GetThreatJobPriority(profile, presetId, threatJobId);
+        if (priority == JobPriority.Never)
             return false;
-        }
 
         var threatPreferences = profile.GetThreatPreferencesForGamemode(presetId);
         if (threatPreferences.Count == 0)
@@ -122,6 +127,61 @@ public static class ThreatVoteSelection
             .ToHashSet(StringComparer.OrdinalIgnoreCase);
 
         return threatPreferences.Any(preference => candidates.Contains(preference.Id));
+    }
+
+    private static JobPriority GetThreatJobPriority(
+        HumanoidCharacterProfile profile,
+        string? presetId,
+        ProtoId<JobPrototype> threatJobId)
+    {
+        var priorities = profile.GetJobPrioritiesForGamemode(presetId);
+        return priorities.TryGetValue(threatJobId, out var priority)
+            ? priority
+            : JobPriority.Never;
+    }
+
+    public static List<ThreatVoteAssignment> BuildHeldAssignments(
+        IReadOnlyList<NetUserId> shuffledPlayers,
+        IReadOnlyDictionary<NetUserId, HumanoidCharacterProfile> profiles,
+        IReadOnlyList<ProtoId<ThreatPrototype>> candidateThreatIds,
+        int leaderSlots,
+        int memberSlots,
+        string? presetId)
+    {
+        var assignments = new List<ThreatVoteAssignment>(Math.Max(0, leaderSlots) + Math.Max(0, memberSlots));
+        var assigned = new HashSet<NetUserId>();
+
+        AssignJob(ThreatLeaderJobId, leaderSlots);
+        AssignJob(ThreatMemberJobId, memberSlots);
+
+        return assignments;
+
+        void AssignJob(ProtoId<JobPrototype> jobId, int slots)
+        {
+            if (slots <= 0)
+                return;
+
+            var candidates = shuffledPlayers
+                .Select((player, index) => (player, index))
+                .Where(candidate =>
+                    !assigned.Contains(candidate.player) &&
+                    profiles.TryGetValue(candidate.player, out var profile) &&
+                    CanEnterThreatVotePoolForJob(profile, presetId, candidateThreatIds, jobId))
+                .Select(candidate =>
+                {
+                    var profile = profiles[candidate.player];
+                    return (candidate.player, candidate.index, priority: GetThreatJobPriority(profile, presetId, jobId));
+                })
+                .OrderByDescending(candidate => candidate.priority)
+                .ThenBy(candidate => candidate.index)
+                .Take(slots);
+
+            foreach (var candidate in candidates)
+            {
+                assignments.Add(new ThreatVoteAssignment(candidate.player, jobId));
+                assigned.Add(candidate.player);
+            }
+        }
     }
 
     public static List<ThreatVoteAssignment> BuildHeldAssignments(
@@ -142,20 +202,47 @@ public static class ThreatVoteSelection
         int leaderBodies,
         int memberBodies)
     {
-        var totalBodies = Math.Max(0, leaderBodies) + Math.Max(0, memberBodies);
-        var assignments = new List<ThreatVoteAssignment>(Math.Min(totalBodies, shuffledHeldPlayers.Count));
-        var playerIndex = 0;
+        var heldAssignments = shuffledHeldPlayers
+            .Select(player => new ThreatVoteAssignment(player, ThreatMemberJobId))
+            .ToList();
 
-        for (var i = 0; i < leaderBodies && playerIndex < shuffledHeldPlayers.Count; i++)
+        return BuildSpawnAssignments(heldAssignments, leaderBodies, memberBodies);
+    }
+
+    public static List<ThreatVoteAssignment> BuildSpawnAssignments(
+        IReadOnlyList<ThreatVoteAssignment> shuffledHeldAssignments,
+        int leaderBodies,
+        int memberBodies)
+    {
+        var totalBodies = Math.Max(0, leaderBodies) + Math.Max(0, memberBodies);
+        var assignments = new List<ThreatVoteAssignment>(Math.Min(totalBodies, shuffledHeldAssignments.Count));
+        var assigned = new HashSet<NetUserId>();
+        var assignedLeaders = 0;
+        var assignedMembers = 0;
+
+        foreach (var held in shuffledHeldAssignments)
         {
-            assignments.Add(new ThreatVoteAssignment(shuffledHeldPlayers[playerIndex], ThreatLeaderJobId));
-            playerIndex++;
+            if (assignedLeaders >= leaderBodies)
+                break;
+
+            if (held.Job != ThreatLeaderJobId)
+                continue;
+
+            assignments.Add(new ThreatVoteAssignment(held.Player, ThreatLeaderJobId));
+            assigned.Add(held.Player);
+            assignedLeaders++;
         }
 
-        for (var i = 0; i < memberBodies && playerIndex < shuffledHeldPlayers.Count; i++)
+        foreach (var held in shuffledHeldAssignments)
         {
-            assignments.Add(new ThreatVoteAssignment(shuffledHeldPlayers[playerIndex], ThreatMemberJobId));
-            playerIndex++;
+            if (assignedMembers >= memberBodies)
+                break;
+
+            if (!assigned.Add(held.Player))
+                continue;
+
+            assignments.Add(new ThreatVoteAssignment(held.Player, ThreatMemberJobId));
+            assignedMembers++;
         }
 
         return assignments;

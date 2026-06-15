@@ -5,6 +5,8 @@ using Content.Server.Chat.Managers;
 using Content.Server.Radio.EntitySystems;
 using Content.Shared._RMC14.AlertLevel;
 using Content.Shared._RMC14.Announce;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Marines.Announce;
@@ -29,12 +31,15 @@ public sealed partial class MarineAnnounceSystem : SharedMarineAnnounceSystem
     [Dependency] private IAdminLogManager _adminLogs = default!;
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private IChatManager _chatManager = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private CMDistressSignalRuleSystem _distressSignal = default!;
     [Dependency] private SharedDropshipSystem _dropship = default!;
     [Dependency] private GeneralAnnounceSystem _generalAnnounce = default!;
     [Dependency] private RadioSystem _radio = default!;
     [Dependency] private SquadSystem _squad = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabAnnouncementLogs";
 
     public override void Initialize()
     {
@@ -86,6 +91,7 @@ public sealed partial class MarineAnnounceSystem : SharedMarineAnnounceSystem
             _dropship.SetFactionController(lz.Value, computer.Comp.Faction!.ToLowerInvariant());
 
         _dropship.TryDesignatePrimaryLZ(user, lz.Value);
+        _core.CreateARESLog(computer, LogCat, (string) $"{Name(args.Actor)} designated Primary LZ as: {Name(lz.Value)}");
     }
 
     private void UpdatePlanetMap(Entity<MarineCommunicationsComputerComponent> computer)
@@ -122,12 +128,11 @@ public sealed partial class MarineAnnounceSystem : SharedMarineAnnounceSystem
     {
         if (filter == null)
         {
-            var targetFaction = string.IsNullOrWhiteSpace(faction) ? "govfor" : faction.ToLowerInvariant();
+            var targetFaction = ResolveAnnouncementFaction(faction);
             filter = Filter.Empty().AddWhereAttachedEntity(e =>
             {
                 if (TryComp<MarineComponent>(e, out var marine))
-                    return !string.IsNullOrWhiteSpace(marine.Faction) &&
-                           string.Equals(marine.Faction, targetFaction, StringComparison.OrdinalIgnoreCase);
+                    return IsMarineAnnouncementRecipient(marine.Faction, targetFaction);
 
                 return HasComp<GhostComponent>(e);
             });
@@ -242,12 +247,11 @@ public sealed partial class MarineAnnounceSystem : SharedMarineAnnounceSystem
 
     private Filter BuildMarineAnnouncementFilter(string? faction)
     {
-        var targetFaction = string.IsNullOrWhiteSpace(faction) ? "govfor" : faction.ToLowerInvariant();
+        var targetFaction = ResolveAnnouncementFaction(faction);
         return Filter.Empty().AddWhereAttachedEntity(e =>
         {
             if (TryComp<MarineComponent>(e, out var marine))
-                return !string.IsNullOrWhiteSpace(marine.Faction) &&
-                       string.Equals(marine.Faction, targetFaction, StringComparison.OrdinalIgnoreCase);
+                return IsMarineAnnouncementRecipient(marine.Faction, targetFaction);
 
             return HasComp<GhostComponent>(e);
         });

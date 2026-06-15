@@ -79,13 +79,8 @@
         amount: 15
       - id: AU14HeadCommandoBeanie
         amount: 10
-    - name: Headsets
-      entries:
       - id: RMCM5CameraGear
         amount: 30
-      - id: AU14HeadsetGovforMarine
-        name: empty headset
-        amount: 20
     - name: Heads Up Display
       entries:
       - id: RMCVisorSquad
@@ -310,6 +305,12 @@
         amount: 60
       - id: CMOintment10
         amount: 60
+      - id: CMUPlainTraumaDressing10
+        amount: 40
+      - id: CMUCoagulantPowder
+        amount: 30
+      - id: CMUBurnGel
+        amount: 30
       - id: CMBurnKit10
         amount: 30
       - id: CMTraumaKit10
@@ -627,12 +628,6 @@
         amount: 5
       - id: AU14DesertPatrolCap
         amount: 5
-    - name: Headsets
-      entries:
-      - id: AU14HeadsetGovforCommand
-        amount: 2
-      - id: AU14HeadsetGovforAuxiliary
-        amount: 2
     - name: Backpack
       entries:
       - id: RMCBackpackRTO
@@ -663,6 +658,12 @@
         amount: 1
       - id: RMCPackFlareCAS
         amount: 6
+    - name: Chevrons
+      entries:
+      - id: AU14ChevronUSCMPrivate
+        amount: 2
+      - id: AU14PortableVendorSEAUSCM
+        amount: 1
 
 - type: entity
   parent: ColMarTechBase
@@ -778,9 +779,9 @@
       - id: AU14AttachmentTwoPointSling
 
 - type: entity
-  parent: ColMarTechBase
+  parent: AU14SpecVend
   id: AU14USCMSpecialWeaponsVendor
-  name: USCM special weapons rack
+  name: USCM weapons specialist rack
   description: >-
     An automated special weapons rack, hooked up to a restricted armory of US Colonial Marine Corps heavy and breaching ordnance.
     Standard issue only for qualified operators.
@@ -788,51 +789,52 @@
 
     Special weapons protocol: one weapon system of choice with a full ammunition loadout and explosives.
   components:
-  - type: AccessReader
-    access: [ [ "AU14AccessGovforSquad" ], [ "AU14AccessOpforSquad" ] ]
-  - type: Sprite
-    sprite: _AU14/Structures/Vendors/genericweaponrack.rsi
   - type: CMAutomatedVendor
     sections:
-    - name: M240 Incinerator
+    - name: Weapons Specialist Sets
+      takeOne: SquadSpecKit
+      sharedSpecLimit: 1
       entries:
-      - id: RMCWeaponFlamer
-        amount: 1
-      - id: RMCAttachmentUnderbarrelExtinguisher
-        amount: 1
-      - id: RMCPVECaseFlamerFuel
-        amount: 2
-      - id: RMCBackpackFlamer
-        name: G4-1 fueltank
-        amount: 1
-      - id: RMCPouchFuelTankFilledExtinguisher
-        amount: 1
-    - name: M5RA battle rifle
-      entries:
-      - id: RMCPVECaseM5SPR
-        amount: 1
-      - id: RMCAttachmentB8SmartScope
-        amount: 1
-      - id: RMCAttachmentBipod
-        amount: 1
-      - id: RMCAttachmentExtendedBarrel
-        amount: 1
-      - id: CMMagazineRifleM4SPR
-        amount: 12
-    - name: M42A2 pump shotgun
-      entries:
-      - id: RMCPVECaseM42A2
-        amount: 2
-      - id: RMCBoxShotgunBuckshot
-        amount: 16
-      - id: RMCBoxShotgunSlugs
-        amount: 12
-      - id: RMCBoxShotgunBreaching
-        amount: 3
-    - name: XM99A phased plasma pulse rifle
-      entries:
+      - id: RMCGrenadeSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-grenadier
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-grenadier
+        isAppendPrefix: true
+      - id: RMCSharpSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sharp
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sharp
+        isAppendPrefix: true
+      - id: RMCScoutSpecEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-scout
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-scout
+        isAppendPrefix: true
+      - id: CMSniperEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sniper
+        isAppendPrefix: true
+      - id: RMCAntiMaterielEquipmentCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-anti-materiel-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-anti-materiel-sniper
+        isAppendPrefix: true
+      - id: RMCM707VultureCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-sniper
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-sniper
+        isAppendPrefix: true
+      - id: RMCMK481ShotgunCase
+        giveSquadRoleName: rmc-job-name-weapons-specialist-shotgunner
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-shotgunner
+        isAppendPrefix: true
       - id: AU14CaseXM99A
-        amount: 1
+        giveSquadRoleName: rmc-job-name-weapons-specialist-plasmagunner
+        isAppendSquadRoleName: false
+        givePrefix: rmc-job-prefix-weapons-specialist-plasmagunner
+        isAppendPrefix: true
 
 # Equipment Vendor (universal except UPP/RMC)
 - type: entity
@@ -917,11 +919,11 @@
         amount: 1
     - name: Engineering Supplies
       entries:
-      - id: CMSandbagEmpty25
+      - id: CMSandbagEmpty50
         recommended: true
-        amount: 1
-      - id: BarbedWire15
         amount: 2
+      - id: BarbedWire15
+        amount: 4
       - id: CMSheetMetal50
         amount: 2
       - id: CMSheetPlasteel50
@@ -946,10 +948,8 @@
         amount: 5
       - id: CMPackFlare
         amount: 12
-      - id: RMCBoxPackFlareCAS
-        amount: 1
       - id: RMCPackFlareCAS
-        amount: 7
+        amount: 8
     - name: Optics
       entries:
       - id: RMCLaserDesignatorPVE
@@ -967,8 +967,8 @@
       #  amount: 5
       - id: CMRollerBedSpawnFolded
         amount: 8
-      #- id: CMFoldingBarricadesMB6x3
-      #  amount: 2
+      - id: CMFoldingBarricadesMB6x3
+        amount: 2
       #- id: CMSparePDTLBattleBuddyKit
       #  amount: 3
       - id: BedrollFolded
@@ -994,6 +994,7 @@
     - name: Equipment
       takeAll: CMStandard
       entries:
+      - id: CMArmorHelmetM12
       - id: RMCLaserDesignator
       - id: RMCWhistle
       - id: RMCPackFlareCAS
@@ -1132,7 +1133,7 @@
   parent: CMVendorBundleRiflemanApparel
   id: AU14VendorBundleCombatTechnicianEssentials
   name: essential engineer set
-  description: Contains 50 metal, 40 plasteel, 25 sandbags, a high-capacity power cell, a light replacer, a welding visor, and a nailgun.
+  description: Contains 50 metal, 50 plasteel, 50 sandbags, a high-capacity power cell, a light replacer, a welding visor, and a nailgun.
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Tools/wrench.rsi
@@ -1140,9 +1141,11 @@
   - type: CMVendorBundle
     bundle:
     - RMCExplosivePlastic
-    - CMSandbagEmpty25
+    - RMCEngineerKit
+    - CMSandbagEmpty50
+    - RMCPlankWood
     - CMSheetMetal50
-    - CMSheetPlasteel40
+    - CMSheetPlasteel50
     - RMCPowerCellHigh
     - RMCLightReplacer
     - CMAPCElectronics
@@ -1162,6 +1165,7 @@
   - type: CMVendorBundle
     bundle:
     - RMCVisorMedical
+    - RMCGlassesMedicalHUDGlasses
     - AU14CMDefibrillator
     - CMHealthAnalyzer
     - RMCFlashlightPen
@@ -1170,12 +1174,12 @@
     - CMPortableSurgicalBedSpawnFolded
     - RMCMedevacStretcherFolded
     - AU14IVFoldableFolded
-    - CMSurgicalLine
-    - CMSynthGraft
     - CMStasisBagFolded
     - CMSurgicalCaseFilled
-    - CMFirstAidKit
-    - CMMedicalUpgradeKitFilledCommando
+    - RMCStandardAidKitPVE
+    - RMCStandardAidKitPVE
+    - RMCBurnAidKitPVE
+    - RMCBruteAidKitPVE
 
 - type: entity
   parent: ColMarTechBase
@@ -1193,7 +1197,7 @@
       takeAll: CMStandard
       entries:
       - id: CMGlassesSecurity
-      - id: CMBeltSecurityMPFilled
+      - id: RMCBeltBrowne
       - id: RMCBoxZiptie
       - id: AU14GuidebookLawMarine
       - id: AU14GuidebookSOP
@@ -1285,6 +1289,8 @@
         amount: 200
       - id: CMMagazineRifleM54CMK1AP
         amount: 15
+      - id: CMMagazineRifleM54CMK1Tracer
+        amount: 5
       - id: CMMagazineSMGM63
         amount: 200
       - id: CMMagazineSMGM63AP
@@ -1307,8 +1313,6 @@
         amount: 10
       - id: RMCMagazineRifleM54CWP
         amount: 5
-      - id: RMCMagazineRifleM54CHEAPEmpty
-        amount: 0
       - id: RMCBoxShotgunBuckshot
         amount: 20
       - id: RMCBoxShotgunFlechette
@@ -1347,6 +1351,12 @@
         amount: 2
       - id: RMCBoxClaymoreMineFilled
         amount: 3
+      - id: AU14BoxClaymoreMineIncendiaryFilled
+        amount: 1
+      - id: AU14PacketGrenadeTearGasFilled
+        amount: 2
+      - id: AU14PacketGrenadeTearGasFilledAirburst
+        amount: 1
       - id: RMCPacketGrenadeM74AGMFFilled
         amount: 4
       - id: RMCPacketGrenadeM74AGMSHornetFilled

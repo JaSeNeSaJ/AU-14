@@ -33,11 +33,17 @@
     - NonResuscitable
     - Epilepsy
   ranks:
+    RMCRankCivilian: []
+  chevrons:
     RMCRankFirstLT:
-    - !type:RoleTimeRequirement
-      role: AU14JobGOVFORMilitaryDoctor
-      time: 86400 #24 hours
-    RMCRankSecondLT: []
+      entity: AU14ChevronFirstLT
+      requirements:
+      - !type:RoleTimeRequirement
+        role: AU14JobGOVFORMilitaryDoctor
+        time: 86400 # 24 hours
+    RMCRankSecondLT:
+      entity: AU14ChevronSecondLT
+      requirements: []
   special:
   - !type:AddComponentSpecial
     components:
@@ -60,6 +66,8 @@
     shoes: CMBootsBlackFilled
     ears: AU14HeadsetGovforAuxiliary
     ears2: RMCM5CameraGear
+  inhand:
+    - AU14StampMO
 
 - type: startingGear
   id: AU14GearGOVFORMilitaryDoctorDummy

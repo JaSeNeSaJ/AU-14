@@ -1,4 +1,6 @@
 using Content.Shared._RMC14.AlertLevel;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.Marines.Announce;
 using Content.Shared._RMC14.Commendations;
 using Content.Shared._RMC14.Dialog;
@@ -28,6 +30,7 @@ public abstract partial class SharedMarineControlComputerSystem : EntitySystem
     [Dependency] private RMCAlertLevelSystem _alertLevel = default!;
     [Dependency] private SharedCommendationSystem _commendation = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private DialogSystem _dialog = default!;
     [Dependency] private SharedEvacuationSystem _evacuation = default!;
     [Dependency] private SharedMarineAnnounceSystem _marineAnnounce = default!;
@@ -38,6 +41,8 @@ public abstract partial class SharedMarineControlComputerSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private WarshipSystem _warship = default!;
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabAnnouncementLogs";
 
     private int _characterLimit = 1000;
 
@@ -299,14 +304,18 @@ public abstract partial class SharedMarineControlComputerSystem : EntitySystem
 
         ent.Comp.LastShipAnnouncement = _timing.CurTime;
         var map = _warship.TryGetWarshipMap(ent, out var warshipMap) ? warshipMap : _transform.GetMapId(ent.Owner);
+        var faction = SharedMarineAnnounceSystem.ResolveAnnouncementFaction(ent.Comp.Faction);
         _marineAnnounce.AnnounceSigned(
             user,
             args.Message,
             Loc.GetString("rmc-announcement-author-shipside"),
             sound: SharedMarineAnnounceSystem.AresAnnouncementSound,
-            filter: Filter.BroadcastMap(map).RemoveWhereAttachedEntity(e => !HasComp<MarineComponent>(e) && !HasComp<GhostComponent>(e)),
-            excludeSurvivors: false
+            filter: Filter.BroadcastMap(map).RemoveWhereAttachedEntity(e => !IsShipAnnouncementRecipient(e, faction)),
+            excludeSurvivors: false,
+            faction: faction
         );
+
+        _core.CreateARESLog(ent, LogCat, (string) $"{Name(user)} sent a Warship Announcement: {args.Message}");
     }
 
     private void OnMedal(Entity<MarineControlComputerComponent> ent, ref MarineControlComputerMedalMsg args)
@@ -595,6 +604,14 @@ public abstract partial class SharedMarineControlComputerSystem : EntitySystem
         }
 
         return true;
+    }
+
+    private bool IsShipAnnouncementRecipient(EntityUid uid, string faction)
+    {
+        if (TryComp<MarineComponent>(uid, out var marine))
+            return SharedMarineAnnounceSystem.IsMarineAnnouncementRecipient(marine.Faction, faction);
+
+        return HasComp<GhostComponent>(uid);
     }
 
     public bool TryAddAwardRecommendation(MarineAwardRecommendationInfo recommendation)
