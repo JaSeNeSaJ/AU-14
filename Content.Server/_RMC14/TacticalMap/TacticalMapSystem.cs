@@ -331,7 +331,18 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
 
         if (HasComp<XenoComponent>(ent))
+        {
+            if (!ent.Comp.Xenos || ent.Comp.Marines || ent.Comp.Opfor || ent.Comp.Govfor || ent.Comp.Clf)
+            {
+                ent.Comp.Xenos = true;
+                ent.Comp.Marines = false;
+                ent.Comp.Opfor = false;
+                ent.Comp.Govfor = false;
+                ent.Comp.Clf = false;
+                Dirty(ent);
+            }
             return;
+        }
 
         bool marines = false, opfor = false, govfor = false, clf = false;
         string faction = "null";
@@ -1915,7 +1926,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                 map.XenoLabels = new Dictionary<Vector2i, string>(labels);
                 map.LastUpdateXenoBlips = map.XenoBlips.ToDictionary();
                 map.LastUpdateXenoStructureBlips = map.XenoStructureBlips.ToDictionary();
-                _xenoAnnounce.AnnounceSameHive(user, "The tactical map has been updated.", sound);
+                _xenoAnnounce.AnnounceSameHive(user, "There's a shift in the hivemind's tactical picture. The mental map sharpens.", sound);
                 _adminLog.Add(LogType.RMCTacticalMapUpdated, $"{ToPrettyString(user)} updated the xenonid tactical map for {ToPrettyString(mapId)}");
             }
 
@@ -2011,7 +2022,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
 
     private void AnnounceHumanTacticalMapUpdated(EntityUid user, SoundSpecifier? sound, string faction)
     {
-        const string message = "The tactical map has been updated.";
+        string message = $"The {faction} tactical map has been updated.";
         _marineAnnounce.AnnounceARESStaging(user, message, sound, null, faction);
 
         var request = new AnnouncementRequest
