@@ -151,7 +151,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         SubscribeLocalEvent<ActiveTacticalMapTrackedComponent, HiveLeaderStatusChangedEvent>(OnHiveLeaderStatusChanged);
 
         SubscribeLocalEvent<MapBlipIconOverrideComponent, MapInitEvent>(OnMapBlipOverrideMapInit);
-
+        SubscribeLocalEvent<SensorTowerComponent, SensorTowerStateChangedEvent>(OnSensorTowerStateChanged);
 
         SubscribeLocalEvent<RottingComponent, MapInitEvent>(OnRottingMapInit);
         SubscribeLocalEvent<RottingComponent, ComponentRemove>(OnRottingRemove);
@@ -266,15 +266,13 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             return;
 
         var faction = (marine.Faction ?? string.Empty).ToUpperInvariant();
-        var wantMarines = false;
-        var wantOpfor = false;
-        var wantGovfor = false;
-        var wantClf = false;
+        bool wantMarines = false, wantOpfor = false, wantGovfor = false, wantClf = false;
+
         if (faction.Contains("CLF"))
             wantClf = true;
-        else if (faction.Contains("OPFOR") || faction.Contains("OPF"))
+        else if (faction.Contains("OPF"))
             wantOpfor = true;
-        else if (faction.Contains("GOVFOR") || faction.Contains("GOV"))
+        else if (faction.Contains("GOV"))
             wantGovfor = true;
         else
             wantMarines = true;
@@ -325,11 +323,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         {
             var changed = !ent.Comp.Marines || !ent.Comp.Xenos || !ent.Comp.Opfor
                 || !ent.Comp.Govfor || !ent.Comp.Clf || !ent.Comp.LiveUpdate;
-            ent.Comp.Marines = true;
-            ent.Comp.Xenos = true;
-            ent.Comp.Opfor = true;
-            ent.Comp.Govfor = true;
-            ent.Comp.Clf = true;
+            ent.Comp.Marines = ent.Comp.Xenos = ent.Comp.Opfor = ent.Comp.Govfor = ent.Comp.Clf = true;
             ent.Comp.LiveUpdate = true;
             if (changed)
                 Dirty(ent);
@@ -339,32 +333,34 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         if (HasComp<XenoComponent>(ent))
             return;
 
-        if (!TryComp<MarineComponent>(ent, out var marine))
-            return;
+        bool marines = false, opfor = false, govfor = false, clf = false;
+        string faction = "null";
+        if (TryComp<MarineComponent>(ent, out var marine))
+        {
+            faction = (marine.Faction ?? string.Empty).ToUpperInvariant();
+            if (faction.Contains("CLF"))
+                clf = true;
+            else if (faction.Contains("OPF"))
+                opfor = true;
+            else if (faction.Contains("GOV"))
+                govfor = true;
+            else
+            {
+                marines = true;
+                Logger.GetSawmill("tacmap").Warning($"[SyncUserFactionFlags] Couldn't determine TacticalMapUser faction for {ToPrettyString(ent.Owner)}, with Marine: ({faction})");
+            }
+        }
 
-        var faction = (marine.Faction ?? string.Empty).ToUpperInvariant();
-        var marines = false;
-        var opfor = false;
-        var govfor = false;
-        var clf = false;
-        if (faction.Contains("CLF"))
-            clf = true;
-        else if (faction.Contains("OPFOR") || faction.Contains("OPF"))
-            opfor = true;
-        else if (faction.Contains("GOVFOR") || faction.Contains("GOV"))
-            govfor = true;
-        else
-            marines = true;
-
-        if (ent.Comp.Marines == marines && ent.Comp.Opfor == opfor
-            && ent.Comp.Govfor == govfor && ent.Comp.Clf == clf)
-            return;
-
-        ent.Comp.Marines = marines;
-        ent.Comp.Opfor = opfor;
-        ent.Comp.Govfor = govfor;
-        ent.Comp.Clf = clf;
-        Dirty(ent);
+        var current = (ent.Comp.Marines, ent.Comp.Opfor, ent.Comp.Govfor, ent.Comp.Clf);
+        var desired = (marines, opfor, govfor, clf);
+        if (current != desired)
+        {
+            ent.Comp.Marines = marines;
+            ent.Comp.Opfor = opfor;
+            ent.Comp.Govfor = govfor;
+            ent.Comp.Clf = clf;
+            Dirty(ent);
+        }
     }
 
     private void OnComputerMapInit(Entity<TacticalMapComputerComponent> ent, ref MapInitEvent args)
@@ -727,7 +723,9 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                     overwatchSquadTeam.Color,
                     Name(overwatchSquadUid));
 
-                return;
+                if (TryComp(ent.Comp.Map, out TacticalMapComponent? tacMap))
+                    UpdateMapData((ent.Owner, ent.Comp), tacMap);
+                return; // skip all the global broadcasting stuff
             }
         }
 
@@ -770,12 +768,12 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                 assign = "CLF";
                 result = (false, false, false, false, true);
             }
-            else if (userFaction.Contains("OPFOR") || userFaction.Contains("OPF"))
+            else if (userFaction.Contains("OPF"))
             {
                 assign = "OPFOR";
                 result = (false, false, true, false, false);
             }
-            else if (userFaction.Contains("GOVFOR") || userFaction.Contains("GOV"))
+            else if (userFaction.Contains("GOV"))
             {
                 assign = "GOVFOR";
                 result = (false, false, false, true, false);
@@ -1688,45 +1686,10 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             }
 
             // Include communication towers, sensor towers and tunnels explicitly
-            comms = EntityQueryEnumerator<CommunicationsTowerComponent>();
-            while (comms.MoveNext(out var towerId, out var comm))
-            {
-                var blip = FindBlipInMap(towerId.Id, map);
-                if (blip != null && !user.Comp.OpforBlips.ContainsKey(towerId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "comms_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.OpforBlips[towerId.Id] = full;
-                }
-            }
-
-            sensors = EntityQueryEnumerator<SensorTowerComponent>();
-            while (sensors.MoveNext(out var sensorId, out var sensor))
-            {
-                var blip = FindBlipInMap(sensorId.Id, map);
-                if (blip != null && !user.Comp.OpforBlips.ContainsKey(sensorId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "sensor_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.OpforBlips[sensorId.Id] = full;
-                }
-            }
+            AddTowersToBlips(user.Comp.OpforBlips, map);
 
             // Only include tunnels for OPFOR users if OPFOR currently has active sensors
-            if (TeamHasActiveSensors("OPFOR"))
-            {
-                tunnels = EntityQueryEnumerator<XenoTunnelComponent>();
-                while (tunnels.MoveNext(out var tunId, out var tun))
-                {
-                    var blip = FindBlipInMap(tunId.Id, map);
-                    if (blip != null && !user.Comp.OpforBlips.ContainsKey(tunId.Id))
-                    {
-                        var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "tunnel");
-                        var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                        user.Comp.OpforBlips[tunId.Id] = full;
-                    }
-                }
-            }
+            AddTunnelsToBlips(user.Comp.OpforBlips, map, "OPFOR");
 
             lines.OpforLines = map.OpforLines;
             labels.OpforLabels = map.OpforLabels;
@@ -1755,45 +1718,10 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             }
 
             // Include comms/sensors/tunnels for govfor
-            var comms2 = EntityQueryEnumerator<CommunicationsTowerComponent>();
-            while (comms2.MoveNext(out var towerId, out var comm))
-            {
-                var blip = FindBlipInMap(towerId.Id, map);
-                if (blip != null && !user.Comp.GovforBlips.ContainsKey(towerId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "comms_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.GovforBlips[towerId.Id] = full;
-                }
-            }
-
-            var sensors2 = EntityQueryEnumerator<SensorTowerComponent>();
-            while (sensors2.MoveNext(out var sensorId, out var sensor))
-            {
-                var blip = FindBlipInMap(sensorId.Id, map);
-                if (blip != null && !user.Comp.GovforBlips.ContainsKey(sensorId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "sensor_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.GovforBlips[sensorId.Id] = full;
-                }
-            }
+            AddTowersToBlips(user.Comp.GovforBlips, map);
 
             // Only include tunnels for GOVFOR users if GOVFOR currently has active sensors
-            if (TeamHasActiveSensors("GOVFOR"))
-            {
-                var tunnels2 = EntityQueryEnumerator<XenoTunnelComponent>();
-                while (tunnels2.MoveNext(out var tunId, out var tun))
-                {
-                    var blip = FindBlipInMap(tunId.Id, map);
-                    if (blip != null && !user.Comp.GovforBlips.ContainsKey(tunId.Id))
-                    {
-                        var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "tunnel");
-                        var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                        user.Comp.GovforBlips[tunId.Id] = full;
-                    }
-                }
-            }
+            AddTunnelsToBlips(user.Comp.GovforBlips, map, "GOVFOR");
 
             lines.GovforLines = map.GovforLines;
             labels.GovforLabels = map.GovforLabels;
@@ -1822,109 +1750,33 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             }
 
             // Include comms/sensors/tunnels for clf
-            var comms3 = EntityQueryEnumerator<CommunicationsTowerComponent>();
-            while (comms3.MoveNext(out var towerId, out var comm))
-            {
-                var blip = FindBlipInMap(towerId.Id, map);
-                if (blip != null && !user.Comp.ClfBlips.ContainsKey(towerId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "comms_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.ClfBlips[towerId.Id] = full;
-                }
-            }
-
-            var sensors3 = EntityQueryEnumerator<SensorTowerComponent>();
-            while (sensors3.MoveNext(out var sensorId, out var sensor))
-            {
-                var blip = FindBlipInMap(sensorId.Id, map);
-                if (blip != null && !user.Comp.ClfBlips.ContainsKey(sensorId.Id))
-                {
-                    var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "sensor_tower");
-                    var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                    user.Comp.ClfBlips[sensorId.Id] = full;
-                }
-            }
+            AddTowersToBlips(user.Comp.ClfBlips, map);
 
             // Only include tunnels for CLF users if CLF currently has active sensors
-            if (TeamHasActiveSensors("CLF"))
-            {
-                var tunnels3 = EntityQueryEnumerator<XenoTunnelComponent>();
-                while (tunnels3.MoveNext(out var tunId, out var tun))
-                {
-                    var blip = FindBlipInMap(tunId.Id, map);
-                    if (blip != null && !user.Comp.ClfBlips.ContainsKey(tunId.Id))
-                    {
-                        var image = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "tunnel");
-                        var full = new TacticalMapBlip(blip.Value.Indices, image, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                        user.Comp.ClfBlips[tunId.Id] = full;
-                    }
-                }
-            }
+            AddTunnelsToBlips(user.Comp.ClfBlips, map, "CLF");
 
             lines.ClfLines = map.ClfLines;
             labels.ClfLabels = map.ClfLabels;
             ApplyEnemySpritesToUser("CLF", user.Comp.ClfBlips, playerId);
         }
 
+#if DEBUG
+        Logger.GetSawmill("tacmap").Debug($"Marine blips: {map.MarineBlips.Count}");
+        Logger.GetSawmill("tacmap").Debug($"Xeno blips: {map.XenoBlips.Count}");
+        Logger.GetSawmill("tacmap").Debug($"Opfor blips: {map.OpforBlips.Count}");
+        Logger.GetSawmill("tacmap").Debug($"Govfor blips: {map.GovforBlips.Count}");
+        Logger.GetSawmill("tacmap").Debug($"CLF blips: {map.ClfBlips.Count}");
+#endif
         // Build squad blips for squad tacmap
         if (TryComp<SquadMemberComponent>(user.Owner, out var squadMember) &&
             squadMember.Squad is { } memberSquadUid &&
             _squadTeamQuery.TryComp(memberSquadUid, out var memberSquadTeam))
         {
             user.Comp.HasSquad = true;
-
-            var fireteamNumbers = new Dictionary<int, int>();
-            for (var ft = 0; ft < memberSquadTeam.Fireteams.Fireteams.Length; ft++)
-            {
-                var fireteam = memberSquadTeam.Fireteams.Fireteams[ft];
-                if (fireteam == null)
-                    continue;
-
-                var ftNumber = ft + 1;
-                if (fireteam.Leader != null)
-                    fireteamNumbers[fireteam.Leader.Value.Id.Id] = ftNumber;
-
-                if (fireteam.Members != null)
-                {
-                    foreach (var (netEnt, _) in fireteam.Members)
-                        fireteamNumbers[netEnt.Id] = ftNumber;
-                }
-            }
-
-            var squadBlips = new Dictionary<int, TacticalMapBlip>();
-            foreach (var memberUid in memberSquadTeam.Members)
-            {
-                var blip = FindBlipInMap(memberUid.Id, map);
-                if (blip == null)
-                    continue;
-
-                var ftNum = fireteamNumbers.GetValueOrDefault(memberUid.Id, 0);
-                squadBlips[memberUid.Id] = blip.Value with { FireteamNumber = ftNum };
-            }
+            var squadBlips = BuildSquadBlips(memberSquadTeam, map);
 
             // Add comms towers and sensor towers to squad view
-            var squadComms = EntityQueryEnumerator<CommunicationsTowerComponent>();
-            while (squadComms.MoveNext(out var cid, out _))
-            {
-                var blip = FindBlipInMap(cid.Id, map);
-                if (blip != null && !squadBlips.ContainsKey(cid.Id))
-                {
-                    var img = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "comms_tower");
-                    squadBlips[cid.Id] = new TacticalMapBlip(blip.Value.Indices, img, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                }
-            }
-
-            var squadSensors = EntityQueryEnumerator<SensorTowerComponent>();
-            while (squadSensors.MoveNext(out var sid, out _))
-            {
-                var blip = FindBlipInMap(sid.Id, map);
-                if (blip != null && !squadBlips.ContainsKey(sid.Id))
-                {
-                    var img = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "sensor_tower");
-                    squadBlips[sid.Id] = new TacticalMapBlip(blip.Value.Indices, img, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
-                }
-            }
+            AddTowersToBlips(squadBlips, map);
 
             user.Comp.SquadBlips = squadBlips;
             user.Comp.SquadLines = memberSquadTeam.TacMapLines.Count > 0
@@ -2185,6 +2037,84 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         });
     }
 
+    private Dictionary<int, TacticalMapBlip> BuildSquadBlips(SquadTeamComponent squadTeam, TacticalMapComponent map)
+    {
+        var fireteamNumbers = new Dictionary<int, int>();
+        for (var ft = 0; ft < squadTeam.Fireteams.Fireteams.Length; ft++)
+        {
+            var fireteam = squadTeam.Fireteams.Fireteams[ft];
+            if (fireteam == null) continue;
+
+            var ftNumber = ft + 1;
+            if (fireteam.Leader != null)
+                fireteamNumbers[GetEntity(fireteam.Leader.Value.Id).Id] = ftNumber;
+
+            if (fireteam.Members != null)
+                foreach (var (netEnt, _) in fireteam.Members)
+                    fireteamNumbers[GetEntity(netEnt).Id] = ftNumber;
+        }
+
+        var squadBlips = new Dictionary<int, TacticalMapBlip>();
+        foreach (var memberUid in squadTeam.Members)
+        {
+            var blip = FindBlipInMap(memberUid.Id, map);
+            if (blip == null) continue;
+
+            squadBlips[memberUid.Id] = blip.Value with
+            {
+                FireteamNumber =
+                fireteamNumbers.GetValueOrDefault(memberUid.Id, 0)
+            };
+        }
+
+        return squadBlips;
+    }
+
+    private void AddTowersToBlips(Dictionary<int, TacticalMapBlip> blips, TacticalMapComponent map)
+    {
+        var comms = EntityQueryEnumerator<CommunicationsTowerComponent>();
+        while (comms.MoveNext(out var uid, out _))
+        {
+            if (blips.ContainsKey(uid.Id)) continue;
+            var blip = FindBlipInMap(uid.Id, map);
+            if (blip == null) continue;
+
+            var img = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "comms_tower");
+            blips[uid.Id] = new TacticalMapBlip(blip.Value.Indices, img, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
+        }
+
+        var sensors = EntityQueryEnumerator<SensorTowerComponent>();
+        while (sensors.MoveNext(out var uid, out _))
+        {
+            if (blips.ContainsKey(uid.Id)) continue;
+            var blip = FindBlipInMap(uid.Id, map);
+            if (blip == null) continue;
+
+            var img = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "sensor_tower");
+            blips[uid.Id] = new TacticalMapBlip(blip.Value.Indices, img, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
+        }
+    }
+
+    private void AddTunnelsToBlips(Dictionary<int, TacticalMapBlip> blips, TacticalMapComponent map, string faction)
+    {
+        if (!TeamHasActiveSensors(faction))
+            return;
+
+        var tunnels = EntityQueryEnumerator<XenoTunnelComponent>();
+        while (tunnels.MoveNext(out var uid, out _))
+        {
+            if (blips.ContainsKey(uid.Id))
+                continue;
+
+            var blip = FindBlipInMap(uid.Id, map);
+            if (blip == null)
+                continue;
+
+            var img = blip.Value.Image ?? new SpriteSpecifier.Rsi(new ResPath("/Textures/_RMC14/Interface/map_blips.rsi"), "tunnel");
+            blips[uid.Id] = new TacticalMapBlip(blip.Value.Indices, img, blip.Value.Color, blip.Value.Status, blip.Value.Background, blip.Value.HiveLeader);
+        }
+    }
+
     // Use the shared implementation (it knows about faction filtering)
     private new void UpdateMapData(Entity<TacticalMapComputerComponent> computer, TacticalMapComponent map)
     {
@@ -2295,27 +2225,8 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             if (!TerminatingOrDeleted(squadUid) &&
                 _squadTeamQuery.TryComp(squadUid, out var squadTeam))
             {
-                var fireteamNumbers = new Dictionary<int, int>();
-                for (var ft = 0; ft < squadTeam.Fireteams.Fireteams.Length; ft++)
-                {
-                    var fireteam = squadTeam.Fireteams.Fireteams[ft];
-                    if (fireteam == null) continue;
-                    var ftNumber = ft + 1;
-                    if (fireteam.Leader != null)
-                        fireteamNumbers[fireteam.Leader.Value.Id.Id] = ftNumber;
-                    if (fireteam.Members != null)
-                        foreach (var (netEnt, _) in fireteam.Members)
-                            fireteamNumbers[netEnt.Id] = ftNumber;
-                }
-
-                var squadBlips = new Dictionary<int, TacticalMapBlip>();
-                foreach (var memberUid in squadTeam.Members)
-                {
-                    var blip = FindBlipInMap(memberUid.Id, map);
-                    if (blip == null) continue;
-                    var ftNum = fireteamNumbers.GetValueOrDefault(memberUid.Id, 0);
-                    squadBlips[memberUid.Id] = blip.Value with { FireteamNumber = ftNum };
-                }
+                var squadBlips = BuildSquadBlips(squadTeam, map);
+                AddTowersToBlips(squadBlips, map);
 
                 computer.Comp.SquadBlips = squadBlips;
                 computer.Comp.SquadLines = squadTeam.TacMapLines.Count > 0
@@ -2517,17 +2428,15 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
     }
 
-    private void OnSensorTowerStateChanged(EntityUid towerUid, SensorTowerStateChangedEvent ev)
+    private void OnSensorTowerStateChanged(Entity<SensorTowerComponent> ent, ref SensorTowerStateChangedEvent args)
     {
         // When a sensor changes state, update the tactical map computers (canvas) on the map and mark it dirty.
-        var xform = Transform(towerUid);
+        var xform = Transform(ent.Owner);
         if (xform.GridUid is not { } gridId)
         {
             var maps = EntityQueryEnumerator<TacticalMapComponent>();
             while (maps.MoveNext(out var map))
-            {
                 map.MapDirty = true;
-            }
             return;
         }
 
@@ -2535,9 +2444,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         {
             var maps = EntityQueryEnumerator<TacticalMapComponent>();
             while (maps.MoveNext(out var map))
-            {
                 map.MapDirty = true;
-            }
             return;
         }
 
