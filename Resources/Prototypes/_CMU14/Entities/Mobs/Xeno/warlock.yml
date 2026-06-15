@@ -6,17 +6,14 @@
   - RMCXenoSpeechSounds
   - RMCXenoCommendationReceiver
   - RMCXenoMobCollision
-  id: CMXenoWarrior
-  name: Warrior
-  description: A beefy alien with an armored carapace.
+  id: CMXenoWarlock
+  name: Warlock
+  description: A psychic xeno that crushes minds and shields itself with plasma.
   components:
-  - type: GuideHelp
-    guides:
-    - RMCGuideRoleWarrior
   - type: GhostRole
-    name: cm-job-name-xeno-warrior
+    name: cm-job-name-xeno-warlock
   - type: Sprite
-    sprite: _AU14/Mobs/Xenos/Warrior/warrior.rsi # AU14-Edit
+    sprite: _CMU14/Mobs/Xenonids/Warlock/warlock.rsi
   - type: MobState
     allowedStates:
     - Alive
@@ -25,90 +22,81 @@
   - type: MobThresholds
     thresholds:
       0: Alive
-      500: Critical
-      600: Dead
+      325: Critical
+      425: Dead
   - type: Xeno
-    role: CMXenoWarrior
+    role: CMXenoWarlock
     actionIds:
     - ActionXenoRest
     - ActionXenoRegurgitate
     - ActionXenoWatch
     - ActionXenoTailStab
-    - ActionXenoPunch
-    - ActionXenoLunge
-    - ActionXenoFling
+    - CMUActionXenoPsychicCrush
+    - CMUActionXenoPsychicBlast
+    - CMUActionXenoPsychicShield
+    - ActionXenoTransferPlasmaHivelord
+    - ActionXenoPsychicWhisper
     - ActionXenoDevolve
-    tier: 2
-    hudOffset: -0.15,0.25
-    unlockAt: 540 # 9 minutes
+    tier: 3
+    hudOffset: -0.15,0.2
+    unlockAt: 900
   - type: XenoRegen
-    restHealMultiplier:  1.4
+    restHealMultiplier: 1.25
   - type: XenoLight
   - type: XenoDevolve
     devolvesTo:
-    - CMXenoDefender
+    - CMXenoWarrior
   - type: XenoDevour
-  - type: XenoPunch
-    damage:
-      types:
-        Blunt: 27.5
-  - type: XenoFling
-  - type: XenoLunge
   - type: XenoPlasma
-    plasma: 0
-    maxPlasma: 0
-    plasmaRegenOnWeeds: 0
-  - type: XenoEvolution
-    max: 500
-    evolvesTo:
-    - RMCXenoCrusher
-    # CMU14
-    - CMXenoWarlock
-    # CMU14
-    - CMXenoPraetorian
-    strains:
-    - CMXenoWarriorBulwark
+    plasma: 1700
+    maxPlasma: 1700
+    plasmaRegenOnWeeds: 60
+  - type: CMUXenoWarlock
+  - type: XenoPsychicCommunication
+    whisperRange: 7
   - type: CMArmor
-    xenoArmor: 20
-    explosionArmor: 40
+    xenoArmor: 10
+    explosionArmor: 30
   - type: XenoClaws
     clawType: Sharp
   - type: MeleeWeapon
     damage:
       groups:
-        Brute: 35
+        Brute: 18
   - type: XenoTailStab
     tailDamage:
       groups:
-        Brute: 48
+        Brute: 30
   - type: Tackle
-    max: 4
+    max: 3
+  - type: MovementSpeedModifier
+    baseWalkSpeed: 2.6
+    baseSprintSpeed: 4.5
   - type: SlowOnPull
     slowdowns:
-    - multiplier: 0.4525
+    - multiplier: 0.45
       whitelist:
         components:
         - Marine
-    - multiplier: 0.5025
+    - multiplier: 0.5
       whitelist:
         components:
         - XenoLight
-    - multiplier: 0.3625
+    - multiplier: 0.36
       whitelist:
         components:
         - XenoHeavy
-  - type: XenoLifesteal
   - type: RMCXenoDamageVisuals
-    prefix: warrior
+    prefix: warlock
   - type: TacticalMapIcon
     icon:
       sprite: /Textures/_RMC14/Interface/map_blips.rsi
-      state: warrior
+      state: spitter
   - type: IntelRecoverCorpseObjectiveOnDeath
-    value: 0.2
+    value: 0.5
   - type: FixedIdentity
-    name: cm-job-name-xeno-warrior
+    name: cm-job-name-xeno-warlock
   - type: RMCSurgeryXenoHeart
-    item: RMCOrganXenoHeartT2
+    item: RMCOrganXenoHeartT3
   - type: RMCActionOrder
-    id: CMXenoWarrior
+    id: CMXenoWarlock
