@@ -20,6 +20,7 @@ using Content.Shared._RMC14.Xenonids.Charge;
 using Content.Shared._RMC14.Xenonids.Pierce;
 using Content.Shared._RMC14.Xenonids.Stomp;
 using Content.Shared._RMC14.Xenonids.Weeds;
+using Content.Shared._RMC14.Xenonids.Despoiler;
 using Content.Shared.Actions.Components;
 using Content.Shared.Maps;
 using Content.Shared.Physics;
@@ -92,6 +93,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
     private readonly EntityQuery<XenoChargeComponent> _chargeQ;
     private readonly EntityQuery<XenoStompComponent> _stompQ;
     private readonly EntityQuery<TransformComponent> _xformQ;
+    private readonly EntityQuery<XenoDespoilerCausticEmbraceActionComponent> _causticEmbraceQ;
 
     public XenoAbilityPreviewOverlay(IEntityManager ents)
     {
@@ -208,7 +210,8 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
             case XenoDeployTrapsActionEvent:
                 if (!_deployTrapsQ.TryComp(player.Value, out var deployTraps))
                     return;
-                DrawDeployTraps(args, originMap, mousePos, deployTraps, DeployTrapsOutlineColor.WithAlpha(OutlineAlpha));
+                DrawDeployTraps(args, originMap, mousePos, deployTraps,
+                    DeployTrapsOutlineColor.WithAlpha(OutlineAlpha));
                 break;
             case XenoAbductActionEvent:
                 if (!_abductQ.TryComp(player.Value, out var abduct))
@@ -232,6 +235,13 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 if (!_stompQ.TryComp(player.Value, out var stomp) || !stomp.Directional)
                     return;
                 DrawDirectionalStomp(args, player.Value, originMap, mousePos, stomp);
+                break;
+
+            case XenoDespoilerCausticEmbraceActionEvent:
+                DrawCausticEmbrace(
+                    args,
+                    originMap,
+                    mousePos);
                 break;
         }
     }
@@ -456,6 +466,65 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
         }
 
         DrawTileBorder(args.WorldHandle, gridUid, grid, tiles, color);
+    }
+
+    private void DrawCausticEmbrace(
+        in OverlayDrawArgs args,
+        MapCoordinates originMap,
+        MapCoordinates mousePos)
+    {
+        if (!_mapManager.TryFindGridAt(originMap, out var gridUid, out var grid))
+            return;
+
+        var direction = mousePos.Position - originMap.Position;
+
+        if (direction.Length() < 0.1f)
+            return;
+
+        var dir = direction.Normalized();
+
+        var step = new Vector2i(
+            Math.Sign(MathF.Round(dir.X)),
+            Math.Sign(MathF.Round(dir.Y)));
+
+        if (step == Vector2i.Zero)
+            return;
+
+        var originTile = _mapSystem.CoordinatesToTile(gridUid, grid, originMap);
+        var landingTile = originTile + step;
+
+        var splashTiles = new HashSet<Vector2i>();
+
+        var backX = -step.X;
+        var backY = -step.Y;
+
+        for (var dx = -1; dx <= 1; dx++)
+        {
+            for (var dy = -1; dy <= 1; dy++)
+            {
+                if (dx == 0 && dy == 0)
+                    continue;
+
+                if (dx == backX && dy == backY)
+                    continue;
+
+                splashTiles.Add(landingTile + new Vector2i(dx, dy));
+            }
+        }
+
+        DrawTileBorder(
+            args.WorldHandle,
+            gridUid,
+            grid,
+            splashTiles,
+            Color.Lime.WithAlpha(OutlineAlpha));
+
+        DrawTileBorder(
+            args.WorldHandle,
+            gridUid,
+            grid,
+            new HashSet<Vector2i> { landingTile },
+            Color.Yellow.WithAlpha(OutlineAlpha));
     }
 
     private void DrawBombard(

@@ -1,10 +1,32 @@
 using Robust.Shared.Timing;
+using Content.Shared._RMC14.Armor;
 
 namespace Content.Shared._RMC14.Xenonids.Despoiler;
 
 public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
 {
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private CMArmorSystem _armor = default!;
+
+    public override void Initialize()
+    {
+        SubscribeLocalEvent<
+            XenoDespoilerHypertensionComponent,
+            CMGetArmorEvent>(OnGetArmor);
+    }
+
+    private void OnGetArmor(
+        Entity<XenoDespoilerHypertensionComponent> ent,
+        ref CMGetArmorEvent args)
+    {
+        args.XenoArmor += (ent.Comp.Stacks / 2) * 10;
+    }
+
+    private void RefreshArmor(EntityUid uid)
+    {
+        if (TryComp<CMArmorComponent>(uid, out var armor))
+            _armor.UpdateArmorValue((uid, armor));
+    }
 
     public void AddSlashPoints(EntityUid uid, XenoDespoilerHypertensionComponent comp)
     {
@@ -19,14 +41,16 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
         comp.Points += amount;
         comp.LastActivityAt = _timing.CurTime;
 
+        var oldStacks = comp.Stacks;
+
         while (comp.Points >= comp.PointsPerStack && comp.Stacks < comp.MaxStacks)
         {
             comp.Points -= comp.PointsPerStack;
             comp.Stacks++;
         }
 
-        if (comp.Stacks >= comp.MaxStacks)
-            comp.Points = 0;
+        if (oldStacks != comp.MaxStacks)
+            RefreshArmor(uid);
 
         Dirty(uid, comp);
     }
@@ -37,6 +61,9 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
             return false;
 
         comp.Stacks -= count;
+
+        RefreshArmor(uid);
+
         Dirty(uid, comp);
         return true;
     }
@@ -54,14 +81,17 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
                 continue;
 
             comp.Points -= comp.DecayPerSecond * frameTime;
+
+            var oldStacks = comp.Stacks;
+
             while (comp.Points < 0 && comp.Stacks > 0)
             {
                 comp.Stacks--;
                 comp.Points += comp.PointsPerStack;
             }
 
-            if (comp.Stacks <= 0 && comp.Points < 0)
-                comp.Points = 0;
+            if (oldStacks != comp.Stacks)
+                RefreshArmor(uid);
 
             Dirty(uid, comp);
         }
