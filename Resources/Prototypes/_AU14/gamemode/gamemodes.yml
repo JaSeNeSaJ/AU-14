@@ -59,7 +59,7 @@
   requiresGovforVote: true
   supportedPlanets:
 #  - AUPlanetLV747
-  - AUPlanetShepherdsPride
+#  - AUPlanetShepherdsPride
   - AUPlanetSorokyne
   - AUPlanetCorsatStation
   - AUPlanetTrijent
