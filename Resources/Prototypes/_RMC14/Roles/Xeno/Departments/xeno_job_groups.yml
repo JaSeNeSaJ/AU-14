@@ -7,6 +7,9 @@
     color: "#8b36a6"
     jobs:
     - CMXenoBoiler
+    # CMU14
+    - CMXenoBull
+    # CMU14
     - CMXenoBurrower
     - CMXenoCarrier
     - CMXenoCrusher
