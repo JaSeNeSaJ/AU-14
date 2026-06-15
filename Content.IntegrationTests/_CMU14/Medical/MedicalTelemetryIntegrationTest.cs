@@ -28,6 +28,11 @@ public sealed class MedicalTelemetryIntegrationTest
             try
             {
                 var part = body.GetBodyChildren(patient).First().Id;
+                var baselineStats = GetSummaryStats(entMan);
+                var baselineSurgeries = GetStatValue(baselineStats.InjuryStats, "round-end-summary-window-stat-surgeries");
+                var baselineDefibs = GetStatValue(baselineStats.InjuryStats, "round-end-summary-window-stat-defibs");
+                var baselineShrapnelEmbedded = GetStatValue(baselineStats.OddityStats, "round-end-summary-window-stat-shrapnel-embedded");
+                var baselineShrapnelExtracted = GetStatValue(baselineStats.OddityStats, "round-end-summary-window-stat-shrapnel-extracted");
 
                 var surgery = new CMSurgeryCompleteEvent(patient, surgeon, "CMUTelemetryTestSurgery");
                 entMan.EventBus.RaiseLocalEvent(patient, ref surgery);
@@ -41,16 +46,14 @@ public sealed class MedicalTelemetryIntegrationTest
                 var extracted = new CMUShrapnelChangedEvent(patient, part, true);
                 entMan.EventBus.RaiseLocalEvent(part, ref extracted);
 
-                var statsEv = new RoundEndSummaryStatsEvent();
-                entMan.EventBus.RaiseEvent(EventSource.Local, statsEv);
-                var stats = statsEv.ToSummaryStats();
+                var stats = GetSummaryStats(entMan);
 
                 Assert.Multiple(() =>
                 {
-                    AssertStatValue(stats.InjuryStats, "round-end-summary-window-stat-surgeries", 1);
-                    AssertStatValue(stats.InjuryStats, "round-end-summary-window-stat-defibs", 1);
-                    AssertStatValue(stats.OddityStats, "round-end-summary-window-stat-shrapnel-embedded", 1);
-                    AssertStatValue(stats.OddityStats, "round-end-summary-window-stat-shrapnel-extracted", 1);
+                    AssertStatValue(stats.InjuryStats, "round-end-summary-window-stat-surgeries", baselineSurgeries + 1);
+                    AssertStatValue(stats.InjuryStats, "round-end-summary-window-stat-defibs", baselineDefibs + 1);
+                    AssertStatValue(stats.OddityStats, "round-end-summary-window-stat-shrapnel-embedded", baselineShrapnelEmbedded + 1);
+                    AssertStatValue(stats.OddityStats, "round-end-summary-window-stat-shrapnel-extracted", baselineShrapnelExtracted + 1);
                 });
             }
             finally
@@ -63,11 +66,23 @@ public sealed class MedicalTelemetryIntegrationTest
         await pair.CleanReturnAsync();
     }
 
-    private static void AssertStatValue(RoundEndSummaryStat[] stats, string label, int value)
+    private static RoundEndSummaryStats GetSummaryStats(IEntityManager entMan)
+    {
+        var statsEv = new RoundEndSummaryStatsEvent();
+        entMan.EventBus.RaiseEvent(EventSource.Local, statsEv);
+        return statsEv.ToSummaryStats();
+    }
+
+    private static int GetStatValue(RoundEndSummaryStat[] stats, string label)
     {
         var stat = stats.SingleOrDefault(s => s.Label == label);
 
         Assert.That(stat.Label, Is.EqualTo(label), $"Missing {label}");
-        Assert.That(stat.Value, Is.EqualTo(value), label);
+        return stat.Value;
+    }
+
+    private static void AssertStatValue(RoundEndSummaryStat[] stats, string label, int value)
+    {
+        Assert.That(GetStatValue(stats, label), Is.EqualTo(value), label);
     }
 }
