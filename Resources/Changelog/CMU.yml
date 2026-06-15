@@ -3479,5 +3479,93 @@
   id: 276
   time: '2026-06-14T23:25:40.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1324
+- author: JaSeNeSaJ
+  changes:
+  - message: CWPS Ranger ID IFF (comm towers)
+    type: Fix
+  - message: Sheperds' from Distress Signal rotation
+    type: Remove
+  id: 277
+  time: '2026-06-15T06:49:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1331
+- author: Piticzu
+  changes:
+  - message: Bad Blood Yautja threat enabled on all Distress Signal maps.
+    type: Add
+  id: 278
+  time: '2026-06-15T14:16:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1325
+- author: TheHellFireo
+  changes:
+  - message: Added optional ghost follow buttons next to chat messages.
+    type: Add
+  - message: Fixed full-auto-capable guns incorrectly rearming like semi-auto weapons
+      while holding fire.
+    type: Fix
+  - message: Fixed medical round-end summary stats missing surgery, defib, and shrapnel
+      telemetry.
+    type: Fix
+  id: 279
+  time: '2026-06-15T16:04:57.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1332
+- author: TheHellFireo
+  changes:
+  - message: Added the Bull xeno caste.
+    type: Add
+  - message: Added the Warlock xeno caste.
+    type: Add
+  - message: Added a xeno Z-level jump ability.
+    type: Add
+  - message: Added Warlock psychic blast, crush, and shield abilities with matching
+      visuals, sounds, and projectiles.
+    type: Add
+  - message: Added Bull plow, headbutt, and gore abilities with matching effects.
+    type: Add
+  - message: Fixed Warlock shield projectile freezing, release, and reflection behavior.
+    type: Fix
+  - message: Fixed Z-level jump windup and jump trajectory behavior.
+    type: Fix
+  id: 280
+  time: '2026-06-15T16:06:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1333
+- author: 400Ferrets
+  changes:
+  - message: Sorokyne Colony ASRS functions.
+    type: Add
+  - message: Sorokyne has many more faxes and phones.
+    type: Add
+  - message: Sorokyne has engineering spawn points.
+    type: Add
+  - message: Sorokyne now has Mining, Woodcutting, and a more equipped Hydroponics.
+    type: Add
+  - message: Sorokyne now has many more ATMs.
+    type: Add
+  - message: Sorokyne department computers are easier to find.
+    type: Add
+  - message: Sorokyne sinks are now facing the right way.
+    type: Add
+  - message: Sorokyne APCs are now firmly affixed to the walls.
+    type: Add
+  - message: Sorokyne now has two Ambassadors, ICSC and UPP.
+    type: Add
+  - message: Sorokyne now has basic zlevels.
+    type: Add
+  - message: Sorokyne mining has a hole for you to fall in.
+    type: Add
+  - message: Sorokyne hydroponics no longer has a leaky roof.
+    type: Add
+  - message: Sorokyne northwest LZ no longer has a spooky shadow south of it.
+    type: Add
+  id: 281
+  time: '2026-06-15T16:11:38.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1330
+- author: sunzu432
+  changes:
+  - message: Hope's Retreat, a map intended for Colony Fall, Insurgency and Distress
+      Signal.
+    type: Add
+  id: 282
+  time: '2026-06-15T16:14:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1322
 Name: CMU
 Order: -1
