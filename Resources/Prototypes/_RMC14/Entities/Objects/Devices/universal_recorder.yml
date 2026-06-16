@@ -133,6 +133,7 @@
 - type: entity
   parent: RMCBoxRegulationTapesEmpty
   id: RMCBoxRegulationTapesFull
+  name: box of regulation tapes (x7)
   suffix: FullyFilled
   components:
   - type: StorageFill
