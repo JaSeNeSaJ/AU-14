@@ -28,17 +28,10 @@ public sealed partial class MarineSystem : SharedMarineSystem
         if (!_prototypes.TryIndex<JobPrototype>(jobId, out var job) || !job.IsCM)
             return;
 
-
-        SpriteSpecifier? icon = null;
-        if (job.HasIcon && _prototypes.TryIndex(job.Icon, out var jobIcon))
-            icon = jobIcon.Icon;
-
-        // TODO: remove debugs
-        LogManager.GetSawmill("marine").Debug($"[ICON] Job={jobId}, HasIcon={job.HasIcon}, IconId={job.Icon}");
-        var foundIconProto = _prototypes.TryIndex(job.Icon, out var iconn);
-        LogManager.GetSawmill("marine").Debug($"[ICON] TryIndex success={foundIconProto}, Icon={iconn?.Icon}");
-
-        MakeMarine(args.Mob, icon, hideIcon: true);
+        // SpriteSpecifier? icon = null;
+        // if (job.HasIcon && _prototypes.TryIndex(job.Icon, out var jobIcon))
+        //     icon = jobIcon.Icon;
+        MakeMarine(args.Mob, null, hideIcon: true);
 
         if (!_idCard.TryFindIdCard(ent, out var card))
             return;

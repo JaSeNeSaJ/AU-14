@@ -126,7 +126,7 @@ public abstract partial class SharedScopeSystem : EntitySystem
 
         args.Handled = true;
 
-        if (_net.IsClient)
+        if (_net.IsClient && scope.Comp.Attachment)
             return;
 
         if (scope.Comp.CurrentZoomLevel >= scope.Comp.ZoomLevels.Count - 1)
@@ -261,7 +261,7 @@ public abstract partial class SharedScopeSystem : EntitySystem
 
     public virtual Direction? StartScoping(Entity<ScopeComponent> scope, EntityUid user)
     {
-        if (_net.IsClient)
+        if (_net.IsClient && scope.Comp.Attachment)
             return null;
 
         if (!CanScopePopup(scope, user))
@@ -376,7 +376,7 @@ public abstract partial class SharedScopeSystem : EntitySystem
 
     private void ToggleScoping(Entity<ScopeComponent> scope, EntityUid user)
     {
-        if (_net.IsClient)
+        if (_net.IsClient && scope.Comp.Attachment)
             return;
 
         if (TryComp(user, out ScopingComponent? scoping))
