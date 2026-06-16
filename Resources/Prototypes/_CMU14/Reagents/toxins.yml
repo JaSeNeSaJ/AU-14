@@ -7,6 +7,8 @@
   flavor: bitter
   color: "#0a0b0d"
   unknown: true
+  flags: Scannable
+  class: Uncommon
   toxin: true
   metabolisms:
     Poison:

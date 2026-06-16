@@ -1,0 +1,29 @@
+- type: entity
+  parent: CMBaseStructure
+  id: CMUResearchDataTerminal
+  name: research data terminal
+  description: A terminal for accessing research data.
+  components:
+  - type: InteractedBlacklist
+    blacklist:
+      components:
+      - Xeno
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _RMC14/Structures/Machines/computer.rsi
+    state: research
+  - type: Clickable
+  - type: Corrodible
+    isCorrodible: false
+  - type: InteractionOutline
+  - type: ActivatableUI
+    key: enum.ResearchDataTerminalUI.Key
+  - type: UserInterface
+    interfaces:
+      enum.ResearchDataTerminalUI.Key:
+        type: ResearchDataTerminalBui
