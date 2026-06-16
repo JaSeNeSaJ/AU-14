@@ -485,24 +485,27 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
             if (direction.Length() < 0.1f)
                 return;
 
+            var landingPos =
+                originMap.Position +
+                direction.Normalized() * (embrace.NormalRange - 0.5f);
+
+            landingPos += direction.Normalized() * 0.5f;
+
+            var landingMap = new MapCoordinates(
+                landingPos,
+                originMap.MapId);
+
+            var landingTile = _mapSystem.CoordinatesToTile(
+                gridUid,
+                grid,
+                landingMap);
+
             var dir = direction.Normalized();
 
-            var step = new Vector2i(
-                Math.Sign(MathF.Round(dir.X)),
-                Math.Sign(MathF.Round(dir.Y)));
-
-            if (step == Vector2i.Zero)
-                return;
-
-            var originTile = _mapSystem.CoordinatesToTile(gridUid, grid, originMap);
-
-            // Use 3 for now since we know the leap range is 3.
-            var landingTile = originTile + step * 3;
+            var backX = (int)Math.Round(-dir.X);
+            var backY = (int)Math.Round(-dir.Y);
 
             var splashTiles = new HashSet<Vector2i>();
-
-            var backX = -step.X;
-            var backY = -step.Y;
 
             for (var dx = -1; dx <= 1; dx++)
             {

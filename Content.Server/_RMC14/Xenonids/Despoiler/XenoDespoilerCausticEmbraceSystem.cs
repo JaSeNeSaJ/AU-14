@@ -62,9 +62,7 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
         if (dist < 0.01f)
             return;
 
-        var step = SnapDirectionToTile(approach / dist);
-        if (step == Vector2.Zero)
-            return;
+        var direction = approach.Normalized();
 
         if (_catalyze.IsEmpowered(uid, comp))
         {
@@ -80,10 +78,12 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
             return;
         }
 
-        var landing = ownerXform.Coordinates.Offset(step * action.NormalRange);
+        var landing = ownerXform.Coordinates.Offset(direction * action.NormalRange);
+        var landingMap = _xform.ToMapCoordinates(landing);
+        var landingDistance = (landingMap.Position - ownerMap.Position).Length();
 
         if (_rmcMap.IsTileBlocked(landing) ||
-            !_interaction.InRangeUnobstructed(uid, landing, range: action.NormalRange + UnobstructedRangeBuffer))
+            !_interaction.InRangeUnobstructed(uid, landing, range: landingDistance + UnobstructedRangeBuffer))
         {
             _popup.PopupEntity(Loc.GetString("rmc-despoiler-pounce-blocked"), uid, uid);
             return;
@@ -97,7 +97,7 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
         if (action.PounceSound is { } sound)
             _audio.PlayPvs(sound, uid);
 
-        SpawnSplashAroundExceptBack(uid, action, landing, step);
+        SpawnSplashAroundExceptBack(uid, action, landing, direction);
 
         args.Handled = true;
     }
