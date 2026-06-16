@@ -278,11 +278,11 @@
   - type: MeleeWeapon
     damage:
       types:
-        Slash: 47
+        Slash: 44
   - type: DamageOtherOnHit
     damage:
       types:
-        Slash: 27
+        Slash: 23
   - type: DamageImpactProfile
     melee:
       contact: Slash
