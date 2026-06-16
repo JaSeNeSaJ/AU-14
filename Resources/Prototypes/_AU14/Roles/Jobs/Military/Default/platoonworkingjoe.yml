@@ -64,7 +64,7 @@
     id: AU14IDCardGOVFORWorkingJoe
     ears: AU14HeadsetWorkingJoe
     ears2: RMCM5CameraGear
-    back: AU14IMPBackpackMarine
+    back: AU14IMPBackpackWorkingJoe
     pocket1: AU14StampJoe
 
 - type: entity
