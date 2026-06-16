@@ -11,6 +11,7 @@
         amount: 2
       - id: RMCTentUNMCStandardMedicalFolded
       - id: AU14TentBigFoldedSurgical
+      - id: CMUYautjaHivebreaker
 
 - type: entity
   id: AU14CrateSecureWeYuMindBreaker
@@ -53,6 +54,7 @@
         amount: 1
       - id: RMCTentUNMCStandardMedicalFolded
       - id: AU14TentBigFoldedSurgical
+      
 
 # Dedicated clotted-syringe crate — six pre-filled syringes for a WYHT
 # squad to use on captured colonists. Folded medical tents come along
