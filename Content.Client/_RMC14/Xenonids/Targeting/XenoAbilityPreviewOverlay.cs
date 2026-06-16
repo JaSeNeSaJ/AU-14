@@ -127,6 +127,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
         _chargeQ = ents.GetEntityQuery<XenoChargeComponent>();
         _stompQ = ents.GetEntityQuery<XenoStompComponent>();
         _xformQ = ents.GetEntityQuery<TransformComponent>();
+        _causticEmbraceQ = ents.GetEntityQuery<XenoDespoilerCausticEmbraceActionComponent>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -241,7 +242,8 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 DrawCausticEmbrace(
                     args,
                     originMap,
-                    mousePos);
+                    mousePos,
+                    new XenoDespoilerCausticEmbraceActionComponent());
                 break;
         }
     }
@@ -471,60 +473,65 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
     private void DrawCausticEmbrace(
         in OverlayDrawArgs args,
         MapCoordinates originMap,
-        MapCoordinates mousePos)
+        MapCoordinates mousePos,
+        XenoDespoilerCausticEmbraceActionComponent embrace)
     {
-        if (!_mapManager.TryFindGridAt(originMap, out var gridUid, out var grid))
-            return;
-
-        var direction = mousePos.Position - originMap.Position;
-
-        if (direction.Length() < 0.1f)
-            return;
-
-        var dir = direction.Normalized();
-
-        var step = new Vector2i(
-            Math.Sign(MathF.Round(dir.X)),
-            Math.Sign(MathF.Round(dir.Y)));
-
-        if (step == Vector2i.Zero)
-            return;
-
-        var originTile = _mapSystem.CoordinatesToTile(gridUid, grid, originMap);
-        var landingTile = originTile + step;
-
-        var splashTiles = new HashSet<Vector2i>();
-
-        var backX = -step.X;
-        var backY = -step.Y;
-
-        for (var dx = -1; dx <= 1; dx++)
         {
-            for (var dy = -1; dy <= 1; dy++)
+            if (!_mapManager.TryFindGridAt(originMap, out var gridUid, out var grid))
+                return;
+
+            var direction = mousePos.Position - originMap.Position;
+
+            if (direction.Length() < 0.1f)
+                return;
+
+            var dir = direction.Normalized();
+
+            var step = new Vector2i(
+                Math.Sign(MathF.Round(dir.X)),
+                Math.Sign(MathF.Round(dir.Y)));
+
+            if (step == Vector2i.Zero)
+                return;
+
+            var originTile = _mapSystem.CoordinatesToTile(gridUid, grid, originMap);
+
+            // Use 3 for now since we know the leap range is 3.
+            var landingTile = originTile + step * 3;
+
+            var splashTiles = new HashSet<Vector2i>();
+
+            var backX = -step.X;
+            var backY = -step.Y;
+
+            for (var dx = -1; dx <= 1; dx++)
             {
-                if (dx == 0 && dy == 0)
-                    continue;
+                for (var dy = -1; dy <= 1; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
 
-                if (dx == backX && dy == backY)
-                    continue;
+                    if (dx == backX && dy == backY)
+                        continue;
 
-                splashTiles.Add(landingTile + new Vector2i(dx, dy));
+                    splashTiles.Add(landingTile + new Vector2i(dx, dy));
+                }
             }
+
+            DrawTileBorder(
+                args.WorldHandle,
+                gridUid,
+                grid,
+                splashTiles,
+                Color.Lime.WithAlpha(OutlineAlpha));
+
+            DrawTileBorder(
+                args.WorldHandle,
+                gridUid,
+                grid,
+                new HashSet<Vector2i> { landingTile },
+                Color.Yellow.WithAlpha(OutlineAlpha));
         }
-
-        DrawTileBorder(
-            args.WorldHandle,
-            gridUid,
-            grid,
-            splashTiles,
-            Color.Lime.WithAlpha(OutlineAlpha));
-
-        DrawTileBorder(
-            args.WorldHandle,
-            gridUid,
-            grid,
-            new HashSet<Vector2i> { landingTile },
-            Color.Yellow.WithAlpha(OutlineAlpha));
     }
 
     private void DrawBombard(

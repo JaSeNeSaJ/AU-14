@@ -9,7 +9,7 @@ public sealed partial class XenoDespoilerCausticEmbraceActionComponent : Compone
 
 {
     [DataField]
-    public int NormalRange = 1;
+    public int NormalRange = 3;
 
     [DataField]
     public int EmpoweredRange = 5;

@@ -80,7 +80,7 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
             return;
         }
 
-        var landing = ownerXform.Coordinates.Offset(step);
+        var landing = ownerXform.Coordinates.Offset(step * action.NormalRange);
 
         if (_rmcMap.IsTileBlocked(landing) ||
             !_interaction.InRangeUnobstructed(uid, landing, range: action.NormalRange + UnobstructedRangeBuffer))
