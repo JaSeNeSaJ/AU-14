@@ -1,8 +1,6 @@
 - type: job
   parent: AU14JobRadioTelephoneOperatorBase
   id: AU14JobOpforRadioTelephoneOperator
-  name: au14-job-name-radiotelephoneoperator
-  description: au14-job-description-radiotelephoneoperator
   icon: "AU14JobIconOPFORSarge"
   startingGear: AU14GearopforRadioTelephoneOperator
   dummyStartingGear: AU14GearopforRadioTelephoneOperatorDummy
