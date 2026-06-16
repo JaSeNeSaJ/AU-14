@@ -13,6 +13,7 @@
   canBeAntag: false
   accessGroups:
   - AU14GovforCommand
+  - aulegacygroupcommand # NOTE: should remove & hard migrate
 
 - type: job
   abstract: true

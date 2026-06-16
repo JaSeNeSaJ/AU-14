@@ -82,33 +82,26 @@ public sealed partial class OutfitSystem : EntitySystem
             if (job.StartingGear != gear)
                 continue;
 
-            var roleProto = LoadoutSystem.GetRoleLoadout(job.ID, _prototypeManager);
-            if (roleProto == null)
-                break;
-
             // Don't require a player, so this works on Urists
             profile ??= TryComp<HumanoidAppearanceComponent>(target, out var comp)
                 ? HumanoidCharacterProfile.DefaultWithSpecies(comp.Species)
                 : new HumanoidCharacterProfile();
+
+            var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(job.ID, _prototypeManager);
+            if (proto == null)
+                break;
+
             // Try to get the user's existing loadout for the role
-            profile.Loadouts.TryGetValue(roleProto.ID, out var roleLoadout);
-
-            if (roleLoadout == null)
-            {
-                var legacyKey = LoadoutSystem.GetJobPrototype(job.ID);
-                if (legacyKey != roleProto.ID)
-                    profile.Loadouts.TryGetValue(legacyKey, out roleLoadout);
-            }
-
+            profile.Loadouts.TryGetValue(key, out var roleLoadout);
             if (roleLoadout == null)
             {
                 // If they don't have a loadout for the role, make a default one
-                roleLoadout = new RoleLoadout(roleProto.ID);
+                roleLoadout = new RoleLoadout(proto.ID);
                 roleLoadout.SetDefault(profile, session, _prototypeManager);
             }
 
             // Equip the target with the job loadout
-            _spawningSystem.EquipRoleLoadout(target, roleLoadout, roleProto);
+            _spawningSystem.EquipRoleLoadout(target, roleLoadout, proto);
         }
 
         return true;

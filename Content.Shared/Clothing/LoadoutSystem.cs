@@ -186,9 +186,20 @@ public sealed partial class LoadoutSystem : EntitySystem
     }
 
     /// <summary>
+    /// Returns the profile key and RoleLoadoutPrototype for a job, example key: JobAU14JobGOVFORPlatCo
+    /// The prototype is the concrete job's own loadout, falls back to immediate parent
+    /// </summary>
+    public static (string ProfileKey, RoleLoadoutPrototype? Prototype) GetJobLoadoutInfo(ProtoId<JobPrototype> jobId, IPrototypeManager protoMan)
+    {
+        string key = GetJobPrototype(jobId);
+        var proto = GetRoleLoadout(jobId, protoMan);
+        return (key, proto);
+    }
+
+    /// <summary>
     /// Returns the RoleLoadoutPrototype for a job, or null if not found, falls back to immediate parent job
     /// </summary>
-    public static RoleLoadoutPrototype? GetRoleLoadout(ProtoId<JobPrototype> jobId, IPrototypeManager protoMan)
+    private static RoleLoadoutPrototype? GetRoleLoadout(ProtoId<JobPrototype> jobId, IPrototypeManager protoMan)
     {
         if (protoMan.TryIndex(GetJobPrototype(jobId), out RoleLoadoutPrototype? loadout))
             return loadout;
@@ -196,20 +207,8 @@ public sealed partial class LoadoutSystem : EntitySystem
         // Immediate parent fallback
         if (protoMan.TryIndex(jobId, out JobPrototype? jobProto)
             && jobProto.Parents?.FirstOrDefault() is { } parentId)
-        {
-            protoMan.TryIndex(GetJobPrototype(parentId), out loadout);
-            return loadout;
-        }
+            return protoMan.TryIndex(GetJobPrototype(parentId), out loadout) ? loadout : null;
 
         return null;
-    }
-
-    /// <summary>
-    /// Returns the key to use for profile.Loadouts for a given job:
-    /// the resolved RoleLoadoutPrototype ID, or null if no loadout exists for this job.
-    /// </summary>
-    public static string? GetLoadoutKey(ProtoId<JobPrototype> jobId, IPrototypeManager protoMan)
-    {
-        return GetRoleLoadout(jobId, protoMan)?.ID;
     }
 }
