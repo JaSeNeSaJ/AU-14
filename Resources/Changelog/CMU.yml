@@ -3669,5 +3669,26 @@
   id: 287
   time: '2026-06-16T06:36:36.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1337
+- author: KeiKiyomi
+  changes:
+  - message: Added all vehicle hardpoints to the ASRS
+    type: Add
+  - message: Added all Blackfoot hardpoints to the ASRS
+    type: Add
+  - message: Added all vehicle ammo to the ASRS
+    type: Add
+  - message: Added all blackfoot hardpoints to the ASRS
+    type: Add
+  - message: Added a crate with all 3 componets for the blackfoot landing pad (and
+      added it to ASRS)
+    type: Add
+  - message: Added 2 new ammo crates, each containing 3 blackfoot flare ammo and blackfoot
+      doorgun ammo
+    type: Add
+  - message: Added blackfoot tug to ASRS (incase you loose the original)
+    type: Add
+  id: 288
+  time: '2026-06-16T07:15:40.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1167
 Name: CMU
 Order: -1
