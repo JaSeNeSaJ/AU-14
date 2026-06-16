@@ -10,8 +10,6 @@
   canBeAntag: false
   whitelisted: true
   whitelistParent: AU14JobGeneralWhitelist
-  jobEntity: AU14MobWorkingJoe
-  jobPreviewEntity: AU14MobWorkingJoeDummy
 
 - type: playTimeTracker
   id: AU14JobWorkingJoe
