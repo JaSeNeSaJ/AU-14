@@ -3567,5 +3567,22 @@
   id: 282
   time: '2026-06-15T16:14:34.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1322
+- author: Crime481
+  changes:
+  - message: New icons for majority of GOVFOR roles,  this includes the Auxiliary
+      Technician, Fireteam Leader, Military Doctor and Military Police.
+    type: Add
+  - message: New icons for majority of OPFOR roles, this includes the Auxiliary Technician,
+      Fireteam Leader, Military Doctor and Military Police.
+    type: Add
+  - message: New icons for majority of Colony roles, this includes the Foreman, Head
+      of Service and Freight Systems Specialist.
+    type: Add
+  - message: Threat Leader and Third Party Leader job icons now have contrast on their
+      crowns.
+    type: Tweak
+  id: 283
+  time: '2026-06-15T20:03:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1329
 Name: CMU
 Order: -1
