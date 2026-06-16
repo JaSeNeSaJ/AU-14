@@ -129,3 +129,13 @@
     contents:
     - id: RMCUniversalRecorderTape
       amount: 5
+
+- type: entity
+  parent: RMCBoxRegulationTapesEmpty
+  id: RMCBoxRegulationTapesFull
+  suffix: FullyFilled
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCUniversalRecorderTape
+      amount: 7

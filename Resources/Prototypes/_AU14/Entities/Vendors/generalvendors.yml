@@ -305,6 +305,8 @@
       - id: AU14GuidebookLawMarine
       - id: AU14GuidebookSOP
       - id: AU14Scissors
+      - id: RMCBoxRegulationTapesFull
+      - id: RMCUniversalRecorder
     - name: Hat
       choices: { CMHat: 1 }
       entries:
