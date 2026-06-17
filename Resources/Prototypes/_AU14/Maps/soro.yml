@@ -38,9 +38,7 @@
 
             # Ambassadors
             AU14JobCivilianAmbassadorICSC: [1, 1]
-            AU14JobCivilianAmbassadorUPP: [1, 1]
 
-            # Corporate
             # todo UPP researcher job overrides
 
             # Security/LEO
