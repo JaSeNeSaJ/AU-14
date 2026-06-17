@@ -1,5 +1,6 @@
 ui-options-header-cmu-medical = CMU Medical
 ui-options-header-cmu-zlevels = CMU Z-Levels
+cmu-ui-options-disable-wound-treatment-radial = Disable wound treatment body-part radial
 
 ui-options-function-cmu-cycle-body-zone-target = Cycle body-zone target
 ui-options-function-cmu-cycle-body-zone-target-reverse = Cycle body-zone target backwards

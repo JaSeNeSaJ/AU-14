@@ -24,6 +24,9 @@ public sealed partial class CMUMedicalCCVars : CVars
     public static readonly CVarDef<bool> WoundsEnabled =
         CVarDef.Create("cmu.medical.wounds.enabled", true, CVar.REPLICATED | CVar.SERVER);
 
+    public static readonly CVarDef<bool> DisableWoundTreatmentRadial =
+        CVarDef.Create("cmu.medical.wounds.disable_treatment_radial", false, CVar.CLIENT | CVar.REPLICATED | CVar.ARCHIVE);
+
     public static readonly CVarDef<bool> SurgeryEnabled =
         CVarDef.Create("cmu.medical.surgery.enabled", true, CVar.REPLICATED | CVar.SERVER);
 

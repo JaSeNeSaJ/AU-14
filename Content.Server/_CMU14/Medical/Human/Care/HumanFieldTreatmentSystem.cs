@@ -20,6 +20,7 @@ using Content.Shared.Stacks;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
+using Robust.Server.Player;
 using Robust.Server.GameObjects;
 using BodyPartComponent = Content.Shared.Body.Part.BodyPartComponent;
 using BodyPartSymmetry = Content.Shared.Body.Part.BodyPartSymmetry;
@@ -69,6 +70,8 @@ public sealed partial class HumanFieldTreatmentSystem : EntitySystem
     [Dependency] private HumanSurgeryToolSystem _humanSurgeryTools = default!;
     [Dependency] private HumanTreatmentSystem _humanTreatment = default!;
     [Dependency] private INetManager _net = default!;
+    [Dependency] private INetConfigurationManager _netConfig = default!;
+    [Dependency] private IPlayerManager _players = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SkillsSystem _skills = default!;
     [Dependency] private SharedStackSystem _stacks = default!;
@@ -157,6 +160,12 @@ public sealed partial class HumanFieldTreatmentSystem : EntitySystem
                 medical,
                 chainByZone: true,
                 targetZone);
+            return;
+        }
+
+        if (IsTreatmentPickerDisabled(args.User))
+        {
+            PopupNoTreatment(args.User, args.Patient, treater);
             return;
         }
 
@@ -395,6 +404,12 @@ public sealed partial class HumanFieldTreatmentSystem : EntitySystem
             BodyPartPickerUIKey.Key,
             new BodyPartPickerBuiState(GetNetEntity(patient), entries));
         _ui.OpenUi(patient, BodyPartPickerUIKey.Key, user);
+    }
+
+    private bool IsTreatmentPickerDisabled(EntityUid user)
+    {
+        return _players.TryGetSessionByEntity(user, out var session) &&
+            _netConfig.GetClientCVar(session.Channel, CMUMedicalCCVars.DisableWoundTreatmentRadial);
     }
 
     private List<BodyPartPickerEntry> BuildBodyPartPickerEntries(
