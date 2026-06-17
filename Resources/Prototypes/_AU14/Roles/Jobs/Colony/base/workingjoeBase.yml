@@ -27,6 +27,7 @@
   storage:
       belt:
       - AU14MaintenanceJack
+      - RMCSynthResetKeySeegson
       back:
       - AU14SprayCleanerExperimental
       - RMCBucketJanitorial
