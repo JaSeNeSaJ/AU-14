@@ -121,6 +121,7 @@
     state: box
   - type: Item
     size: Small
+    shape: null
 
 - type: entity
   parent: RMCBoxRegulationTapesEmpty
