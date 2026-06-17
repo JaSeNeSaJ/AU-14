@@ -305,9 +305,6 @@
       - id: AU14GuidebookLawMarine
       - id: AU14GuidebookSOP
       - id: AU14Scissors
-      - id: RMCBoxRegulationTapesFull
-      - id: RMCUniversalRecorder
-      - id: CMHandLabeler
     - name: Hat
       choices: { CMHat: 1 }
       entries:
@@ -325,6 +322,12 @@
       - id: AU14PouchIFAKFill
       - id: RMCPouchMagazinePistol
       - id: RMCPouchPistol
+    - name: Record Keeping
+      takeAll: CMRecordKeeping
+      entries:
+      - id: RMCBoxRegulationTapesFull
+      - id: RMCUniversalRecorder
+      - id: CMHandLabeler
     - name: Inmate Restraining Gear
       entries:
       - id: AU14ClothingOuterStraitjacket
