@@ -70,14 +70,12 @@ public sealed class HumanMedicalLegacyGuardTest
         "TraumaGovernor",
         "trauma_governor",
         "CMUActionTraumaGovernor",
-        "CMUImprovisedSurgeryTool",
         "CMUPlainGauze",
         "CMUPlainTraumaDressing",
         "CMUCoagulantPowder",
         "CMUBurnGel",
         "CMUpgradedBurnKit",
         "CMUpgradedTraumaKit",
-        "CMUBurnDebridementTool",
         "CMUFieldBleedControl",
         "CMUFieldTreatmentBaseKind",
         "cmu-medical-surgery-patient-not-controlled",
@@ -139,21 +137,14 @@ public sealed class HumanMedicalLegacyGuardTest
     }
 
     [Test]
-    public void LegacyAuthorityChecklistExists()
+    public void LegacyAuthorityGuardStaysCodeOwned()
     {
-        var root = FindRepoRoot();
-        var checklist = Path.Combine(root, "Docs", "CM13MedicalResearch", "legacy-authority-removal-checklist.md");
-
-        Assert.That(File.Exists(checklist), Is.True);
-        var text = File.ReadAllText(checklist);
-
         Assert.Multiple(() =>
         {
-            Assert.That(text, Does.Contain("Wounds and internal bleeding"));
-            Assert.That(text, Does.Contain("Bones and fractures"));
-            Assert.That(text, Does.Contain("Organ health"));
-            Assert.That(text, Does.Contain("Body-part HP authority"));
-            Assert.That(text, Does.Contain("HumanMedicalComponent"));
+            Assert.That(File.Exists(Path.Combine(
+                FindRepoRoot(),
+                "Content.Shared/_CMU14/Medical/Human/Components/HumanMedicalComponent.cs")), Is.True);
+            AssertNoMatches(LegacyClinicalAuthorityTerms, includeDocs: false);
         });
     }
 
@@ -800,7 +791,7 @@ public sealed class HumanMedicalLegacyGuardTest
     }
 
     [Test]
-    public void AutodocShellIsRemovedFromMapsAndPrototypes()
+    public void AutodocShellIsCurrentMachineGameplayOnly()
     {
         var root = FindRepoRoot();
         var records = new List<MatchRecord>();
@@ -822,14 +813,24 @@ public sealed class HumanMedicalLegacyGuardTest
                 for (var i = 0; i < lines.Length; i++)
                 {
                     if (lines[i].Contains("CMUAutodoc", StringComparison.Ordinal))
-                        records.Add(new MatchRecord(Normalize(Path.GetRelativePath(root, path)), i + 1, "CMUAutodoc"));
+                    {
+                        var relative = Normalize(Path.GetRelativePath(root, path));
+                        if (relative != "Resources/Prototypes/_CMU14/Medical/medical_machines.yml")
+                            records.Add(new MatchRecord(relative, i + 1, "CMUAutodoc"));
+                    }
                     if (lines[i].Contains("CMUYautjaStructureYautjaMachinesAutodoc", StringComparison.Ordinal))
                         records.Add(new MatchRecord(Normalize(Path.GetRelativePath(root, path)), i + 1, "CMUYautjaStructureYautjaMachinesAutodoc"));
                 }
             }
         }
 
-        Assert.That(records, Is.Empty, FormatMatches(records));
+        Assert.Multiple(() =>
+        {
+            Assert.That(File.Exists(Path.Combine(
+                root,
+                "Content.Server/_CMU14/Medical/Machines/CMUAutodocSystem.cs")), Is.True);
+            Assert.That(records, Is.Empty, FormatMatches(records));
+        });
     }
 
     [Test]

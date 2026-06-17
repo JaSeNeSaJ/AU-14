@@ -1,4 +1,5 @@
 using Content.Shared._CMU14.Medical.Human.Organs.Eyes;
+using Content.Shared.Eye.Blinding.Components;
 using Content.Shared.Eye.Blinding.Systems;
 using Content.Shared.Rejuvenate;
 using Robust.Shared.Network;
@@ -31,6 +32,7 @@ public sealed partial class CMUTemporaryBlurryVisionSystem : EntitySystem
         if (_net.IsClient || duration <= TimeSpan.Zero || strength <= 0f)
             return;
 
+        EnsureComp<BlindableComponent>(uid);
         blur ??= EnsureComp<CMUTemporaryBlurryVisionComponent>(uid);
         blur.Modifiers.Add(new CMUTemporaryBlurModifier
         {

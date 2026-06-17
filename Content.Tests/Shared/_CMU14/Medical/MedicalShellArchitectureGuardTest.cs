@@ -8,26 +8,20 @@ namespace Content.Tests.Shared._CMU14.Medical;
 [TestFixture]
 public sealed class MedicalShellArchitectureGuardTest
 {
-    private static readonly string[] TargetModules =
+    private static readonly string[] CurrentTopLevelModules =
     {
-        "Core",
-        "Anatomy",
-        "Treatment",
-        "Surgery",
-        "Diagnostics",
-        "Status",
-        "Infection",
         "Chemistry",
         "Equipment",
+        "Foundation",
+        "Human",
         "Machines",
         "Presentation",
-        "Monitoring",
-        "Trauma",
+        "Synthetic",
+        "Targeting",
     };
 
     private static readonly string[] TemporaryOffenderFolders =
     {
-        "Chemistry",
         "Metabolism",
         "Organs",
         "Penalties",
@@ -39,48 +33,53 @@ public sealed class MedicalShellArchitectureGuardTest
     };
 
     [Test]
-    public void MedicalShellRewritePlanNamesAllTargetModules()
+    public void MedicalShellUsesCurrentTopLevelModules()
     {
         var root = FindRepoRoot();
-        var plan = Path.Combine(root, "Docs", "CM13MedicalResearch", "cmu-medical-shell-rewrite-plan.md");
-
-        Assert.That(File.Exists(plan), Is.True);
-        var text = File.ReadAllText(plan);
+        var roots = new[]
+        {
+            Path.Combine(root, "Content.Shared", "_CMU14", "Medical"),
+            Path.Combine(root, "Content.Server", "_CMU14", "Medical"),
+            Path.Combine(root, "Content.Client", "_CMU14", "Medical"),
+        };
 
         Assert.Multiple(() =>
         {
-            Assert.That(text, Does.Contain("Target Folder Layout"));
-            Assert.That(text, Does.Contain("Implementation Program Phases"));
-            Assert.That(text, Does.Contain("Pruning Phase 1"));
-            Assert.That(text, Does.Contain("Pruning Phase 5"));
-
-            foreach (var module in TargetModules)
-                Assert.That(text, Does.Contain($"{module}/"), module);
+            foreach (var sourceRoot in roots)
+            {
+                foreach (var directory in Directory.GetDirectories(sourceRoot))
+                {
+                    var name = Path.GetFileName(directory);
+                    Assert.That(CurrentTopLevelModules, Does.Contain(name), directory);
+                }
+            }
         });
     }
 
     [Test]
-    public void MedicalShellMigrationManifestRecordsCompletedMigrations()
+    public void RetiredShellFoldersStayEmptyOrMissing()
     {
         var root = FindRepoRoot();
-        var manifest = Path.Combine(root, "Docs", "CM13MedicalResearch", "medical-shell-migration-manifest.md");
-
-        Assert.That(File.Exists(manifest), Is.True);
-        var text = File.ReadAllText(manifest);
+        var contentRoots = new[]
+        {
+            Path.Combine(root, "Content.Shared", "_CMU14", "Medical"),
+            Path.Combine(root, "Content.Server", "_CMU14", "Medical"),
+            Path.Combine(root, "Content.Client", "_CMU14", "Medical"),
+        };
 
         Assert.Multiple(() =>
         {
-            Assert.That(text, Does.Contain("Completed Folder Migrations"));
-            Assert.That(text, Does.Contain("Target Modules"));
-            Assert.That(text, Does.Contain("Deletion Targets"));
-            Assert.That(text, Does.Contain("Allowed Readers"));
-            Assert.That(text, Does.Contain("Phase Exit Rules"));
+            foreach (var sourceRoot in contentRoots)
+            {
+                foreach (var folder in TemporaryOffenderFolders)
+                {
+                    var path = Path.Combine(sourceRoot, folder);
+                    if (!Directory.Exists(path))
+                        continue;
 
-            foreach (var module in TargetModules)
-                Assert.That(text, Does.Contain($"Medical/{module}"), module);
-
-            foreach (var folder in TemporaryOffenderFolders)
-                Assert.That(text, Does.Contain($"Medical/{folder}"), folder);
+                    Assert.That(Directory.GetFiles(path, "*", SearchOption.AllDirectories), Is.Empty, path);
+                }
+            }
         });
     }
 

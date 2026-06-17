@@ -373,7 +373,7 @@ public abstract partial class SharedPainShockSystem : EntitySystem
         SwapTierStatuses(body, pain, oldTier, newTier);
 
         var ev = new PainTierChangedEvent(body, oldTier, newTier);
-        RaiseLocalEvent(body, ref ev);
+        RaiseLocalEvent(ref ev);
 
         if (newTier == PainTier.Shock && oldTier != PainTier.Shock)
             TriggerShockEntry(body, pain);

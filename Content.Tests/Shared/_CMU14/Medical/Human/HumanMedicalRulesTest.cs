@@ -305,7 +305,7 @@ public sealed class HumanMedicalRulesTest
     {
         Assert.Multiple(() =>
         {
-            Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.Head), Is.False);
+            Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.Head), Is.True);
             Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.Chest), Is.False);
             Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.LeftArm), Is.True);
             Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.RightLeg), Is.True);

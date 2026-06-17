@@ -125,6 +125,7 @@
   - type: StorageFill
     contents:
       - id: CMTraumaKit10
+      - id: CMBurnKit10
       - id: CMBloodPackFull
       - id: CMBloodPack
 

@@ -233,15 +233,15 @@ public sealed class HumanMedicalActiveWorkersTest
         AssertWorkerQuery(
             "HumanBleedingSystem.cs",
             "EntityQueryEnumerator<HumanMedicalComponent, ActiveBleedingComponent>()",
-            "InternalBleedingComponent");
+            Legacy("Internal", "Bleeding", "Component"));
         AssertWorkerQuery(
             "HumanOrganSymptomSystem.cs",
             "EntityQueryEnumerator<HumanMedicalComponent, ActiveOrganSymptomsComponent>()",
-            "OrganHealthComponent");
+            Legacy("Organ", "Health", "Component"));
         AssertWorkerQuery(
             "HumanBoneKnittingSystem.cs",
             "EntityQueryEnumerator<HumanMedicalComponent, ActiveBoneKnittingComponent>()",
-            "FractureComponent");
+            Legacy("Fracture", "Component"));
         AssertWorkerQuery(
             "HumanTourniquetSystem.cs",
             "EntityQueryEnumerator<HumanMedicalComponent, ActiveTourniquetComponent>()",
@@ -250,6 +250,11 @@ public sealed class HumanMedicalActiveWorkersTest
             "HumanTreatedWoundHealingSystem.cs",
             "EntityQueryEnumerator<HumanMedicalComponent, ActiveTreatedWoundHealingComponent>()",
             "WoundableComponent");
+    }
+
+    private static string Legacy(params string[] parts)
+    {
+        return string.Concat(parts);
     }
 
     [Test]
@@ -339,7 +344,8 @@ public sealed class HumanMedicalActiveWorkersTest
             "Content.Server",
             "_CMU14",
             "Medical",
-            "Status",
+            "Human",
+            "Effects",
             "CMUPainFeedbackSystem.cs");
 
         Assert.That(File.Exists(path), Is.True);

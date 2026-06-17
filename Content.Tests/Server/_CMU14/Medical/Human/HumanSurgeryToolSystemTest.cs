@@ -112,14 +112,17 @@ public sealed class HumanSurgeryToolSystemTest
     }
 
     [Test]
-    public void GenericSurgeryToolSubscriptionRoutesTagOnlySurgeryTools()
+    public void SurgeryToolSubscriptionsUseSpecificToolOwners()
     {
         var text = ReadSurgeryToolSystem();
 
         Assert.Multiple(() =>
         {
-            Assert.That(text, Does.Contain("SubscribeLocalEvent<CMSurgeryToolComponent, AfterInteractEvent>(OnGenericSurgeryToolAfterInteract)"));
-            Assert.That(text, Does.Contain("private void OnGenericSurgeryToolAfterInteract(Entity<CMSurgeryToolComponent> ent, ref AfterInteractEvent args)"));
+            Assert.That(text, Does.Contain("SubscribeLocalEvent<CMScalpelComponent, AfterInteractEvent>(OnScalpelAfterInteract)"));
+            Assert.That(text, Does.Contain("SubscribeLocalEvent<CMHemostatComponent, AfterInteractEvent>(OnHemostatAfterInteract)"));
+            Assert.That(text, Does.Contain("SubscribeLocalEvent<CMRetractorComponent, AfterInteractEvent>(OnRetractorAfterInteract)"));
+            Assert.That(text, Does.Not.Contain("SubscribeLocalEvent<CMSurgeryToolComponent, AfterInteractEvent>"));
+            Assert.That(text, Does.Not.Contain("OnGenericSurgeryToolAfterInteract"));
         });
     }
 
@@ -176,7 +179,7 @@ public sealed class HumanSurgeryToolSystemTest
             "_CMU14",
             "Medical",
             "Human",
-            "Treatment",
+            "Care",
             "HumanBleedControlTreatmentSystem.cs");
 
         Assert.That(File.Exists(bleedControlPath), Is.True);

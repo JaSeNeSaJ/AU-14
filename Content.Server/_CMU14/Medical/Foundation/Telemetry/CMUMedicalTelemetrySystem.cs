@@ -49,11 +49,11 @@ public sealed partial class CMUMedicalTelemetrySystem : EntitySystem
 
         SubscribeLocalEvent<HitLocationComponent, HitLocationResolvedEvent>(OnHitResolved);
         SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>(OnHumanLedgerChanged);
-        SubscribeLocalEvent<HumanSurgeryAppliedEvent>(OnSurgeryDone);
+        SubscribeLocalEvent<HumanMedicalComponent, HumanSurgeryAppliedEvent>(OnSurgeryDone);
         SubscribeLocalEvent<RMCDefibrillatorAttemptEvent>(OnDefibAttempt);
         SubscribeLocalEvent<CMUPainShockStatusComponent, ComponentStartup>(OnPainShockEntered);
         SubscribeLocalEvent<BodyPartSeveranceAppliedEvent>(OnBodyPartSevered);
-        SubscribeLocalEvent<CMUShrapnelChangedEvent>(OnShrapnelChanged);
+        SubscribeLocalEvent<HumanMedicalComponent, CMUShrapnelChangedEvent>(OnShrapnelChanged);
         SubscribeLocalEvent<RoundEndSummaryStatsEvent>(OnRoundEndStats);
 
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundEnd);
@@ -82,7 +82,7 @@ public sealed partial class CMUMedicalTelemetrySystem : EntitySystem
             TrackInternalBleeding(ent);
     }
 
-    private void OnSurgeryDone(ref HumanSurgeryAppliedEvent args)
+    private void OnSurgeryDone(Entity<HumanMedicalComponent> ent, ref HumanSurgeryAppliedEvent args)
     {
         if (args.Surgeon is not { } surgeon)
             return;
@@ -182,7 +182,7 @@ public sealed partial class CMUMedicalTelemetrySystem : EntitySystem
         return false;
     }
 
-    private void OnShrapnelChanged(ref CMUShrapnelChangedEvent args)
+    private void OnShrapnelChanged(Entity<HumanMedicalComponent> ent, ref CMUShrapnelChangedEvent args)
     {
         if (args.Removed)
             _shrapnelExtracted++;

@@ -39,11 +39,36 @@ public sealed class HumanBodyPartSeveranceSystemTest
     }
 
     [Test]
-    public void ProtectedPartSeveranceCreatesNoLedgerEffects()
+    public void HeadSeveranceCreatesChestStumpAndDetachedHead()
     {
         var medical = HumanMedicalLedger.CreateDefault();
         var transaction = BodyPartSeveranceSystem.CreateLedgerSeveranceTransaction(
             BodyPartType.Head,
+            BodyPartSymmetry.None);
+
+        var result = HumanMedicalLedger.ApplyTransaction(medical, transaction);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Applied, Is.True);
+            Assert.That(medical.Injuries, Has.Some.Matches<InjuryRecord>(injury =>
+                injury.Region == BodyRegion.Chest &&
+                injury.Kind == InjuryKind.Stump));
+            Assert.That(medical.BleedSources, Has.Some.Matches<BleedSource>(bleed =>
+                bleed.Region == BodyRegion.Chest &&
+                bleed.Kind == BleedKind.Stump &&
+                bleed.Flags.HasFlag(BleedFlags.Arterial)));
+            Assert.That(medical.DetachedLimbs, Has.Some.Matches<DetachedLimbRecord>(limb =>
+                limb.Region == BodyRegion.Head));
+        });
+    }
+
+    [Test]
+    public void ChestSeveranceCreatesNoLedgerEffects()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        var transaction = BodyPartSeveranceSystem.CreateLedgerSeveranceTransaction(
+            BodyPartType.Torso,
             BodyPartSymmetry.None);
 
         var result = HumanMedicalLedger.ApplyTransaction(medical, transaction);
@@ -66,7 +91,8 @@ public sealed class HumanBodyPartSeveranceSystemTest
             "Content.Server",
             "_CMU14",
             "Medical",
-            "Trauma",
+            "Human",
+            "Damage",
             "BodyPartSeveranceSystem.cs");
 
         Assert.That(File.Exists(path), Is.True);
@@ -75,7 +101,7 @@ public sealed class HumanBodyPartSeveranceSystemTest
         Assert.Multiple(() =>
         {
             Assert.That(text, Does.Contain("SubscribeLocalEvent<BodyComponent, BodyPartRemovedEvent>"));
-            Assert.That(text, Does.Contain("TryComp<HumanMedicalComponent>"));
+            Assert.That(text, Does.Contain("TryComp(body.Owner, out medical)"));
             Assert.That(text, Does.Contain("OnBodyPartRemoved"));
             Assert.That(text, Does.Contain("TryApplyLedgerSeverance"));
         });

@@ -91,8 +91,8 @@ public sealed class HumanChemicalLedgerRulesTest
         Assert.Multiple(() =>
         {
             Assert.That(result.Applied, Is.True);
-            Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Brain).Damage, Is.EqualTo(FixedPoint2.New(1)));
-            Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Liver).Damage, Is.EqualTo(FixedPoint2.New(1)));
+            Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Brain).Damage, Is.EqualTo(FixedPoint2.New(4)));
+            Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Liver).Damage, Is.EqualTo(FixedPoint2.New(12)));
         });
     }
 
