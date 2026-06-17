@@ -1,83 +1,31 @@
 - type: job
-  parent: AU14JobWorkingJoeBase
-  id: AU14JobHazmatWorkingJoe
-  whitelisted: true
-  whitelistParent: AU14JobGeneralWhitelist
-  requirements:
-  - !type:TraitsRequirement
-    inverted: true
-    traits:
-    - SocialAnxietyHeavy
-    - FrontalLisp
-    - NonResuscitable
-    - Epilepsy
-  icon: "AU14JobIconColonyWorkingJoe"
+  parent: AU14JobColonyWorkingJoe
+  id: AU14JobColonyWorkingJoeHazmat
   spawnMenuRoleName: Working Joe (Hazmat)
-  supervisors: au14-job-supervisors-workingjoe-colony
-  usePlayerProfile: false
-  hasIcon: false
-  accessGroups:
-  - auadmin
-  - Colonist
-  - AUPrisonStaff
-  - auwy
+  inheritAddComponentSpecials: true
   special:
   - !type:AddComponentSpecial
     components:
-    - type: IntrinsicRadioTransmitter
-      channels:
-      - radioAI
-      - Colony
-      - radioWEYU
-      - radioCMB
-    - type: ActiveRadio
-      channels:
-      - radioAI
-      - Colony
-      - radioWEYU
-      - radioCMB
-    - type: Access
-      groups:
-      - auadmin
-      - Colonist
-      - AUPrisonStaff
-      - auwy
     - type: Loadout
-      prototypes: [ AU14GearHazmatWorkingJoe ]
-  dummyStartingGear: AU14GearHazmatWorkingJoe
-  hidden: false
+      prototypes: [ AU14GearColonyWorkingJoeHazmat ]
+  dummyStartingGear: AU14GearColonyWorkingJoeHazmat
 
 - type: startingGear
-  id: AU14GearHazmatWorkingJoe
+  parent: AU14GearWorkingJoeBase
+  id: AU14GearColonyWorkingJoeHazmat
   equipment:
-    id: AU14IDCardColonyWorkingJoe
-    ears: AU14HeadsetWorkingJoe
     shoes: AU14BootsCBRN
     gloves: RMCHandsVeteranCBRN
     jumpsuit: AU14JoeHazmat
-    belt: CMBeltUtilityFilled
-    back: AU14IMPBackpackMarine
-    pocket2: RMCPouchConstructionFillFull
-  storage:
-      belt:
-      - AU14MaintenanceJack
-      - RMCSynthResetKeySeegson
-      back:
-      - AU14SprayCleanerExperimental
-      - RMCBucketJanitorial
-      - CMMop
-      - CMWetSign
-      - RMCLightReplacer
-      - AU14StampJoe
   inhand:
   - CMFireExtinguisher
 
 - type: entity
   parent: CMSpawnPointJobBase
-  id: AU14SpawnPointHazmatWorkingJoe
+  id: AU14SpawnPointWorkingJoeHazmat
   name: Spawn Point Working Joe (Hazmat)
   components:
   - type: SpawnPoint
-    job_id: AU14JobHazmatWorkingJoe
+    job_id: AU14JobColonyWorkingJoeHazmat
   - type: Sprite
     state: syn_spawn

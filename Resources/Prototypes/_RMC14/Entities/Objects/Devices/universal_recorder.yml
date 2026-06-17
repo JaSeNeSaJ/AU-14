@@ -29,7 +29,6 @@
   - type: ContainerContainer
     containers:
       rmc_universal_recorder_tape: !type:ContainerSlot {}
-  - type: ItemSlots
   - type: UserInterface
     interfaces:
       enum.UniversalRecorderUiKey.Recorder:
