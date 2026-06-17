@@ -239,11 +239,10 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 break;
 
             case XenoDespoilerCausticEmbraceActionEvent:
-                DrawCausticEmbrace(
-                    args,
-                    originMap,
-                    mousePos,
-                    new XenoDespoilerCausticEmbraceActionComponent());
+                if (!_causticEmbraceQ.TryComp(action, out var embrace))
+                    break;
+
+                DrawCausticEmbrace(args, originMap, mousePos, embrace);
                 break;
         }
     }
@@ -487,12 +486,10 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
 
             var landingPos =
                 originMap.Position +
-                direction.Normalized() * (embrace.NormalRange - 0.5f);
-
-            landingPos += direction.Normalized() * 0.5f;
+                direction.Normalized() * (embrace.NormalRange);
 
             var landingMap = new MapCoordinates(
-                landingPos,
+                landingPos + new Vector2(0f, 0.001f),
                 originMap.MapId);
 
             var landingTile = _mapSystem.CoordinatesToTile(
