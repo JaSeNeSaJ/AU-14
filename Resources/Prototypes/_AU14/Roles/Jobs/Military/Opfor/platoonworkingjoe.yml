@@ -57,6 +57,10 @@
       - CanPilot
       - FootstepSound
       - DoorBumpOpener
+    - type: TacticalMapIcon
+      icon:
+        sprite: /Textures/_AU14/Interface/au14govforjobicons.rsi
+        state: working_joe
 
 - type: entity
   parent: CMSpawnPointJobBase
