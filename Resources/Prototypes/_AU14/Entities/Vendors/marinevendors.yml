@@ -1242,6 +1242,7 @@
       - id: RMCBoxRegulationTapesFull
       - id: RMCUniversalRecorder
       - id: CMHandLabeler
+      - id: RMCDigitalClock
     - name: Inmate Restraining Gear
       entries:
       - id: AU14ClothingOuterStraitjacket
