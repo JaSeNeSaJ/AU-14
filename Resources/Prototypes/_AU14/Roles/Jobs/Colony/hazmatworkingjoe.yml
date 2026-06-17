@@ -2,7 +2,7 @@
   parent: AU14JobWorkingJoeBase
   id: AU14JobHazmatWorkingJoe
   whitelisted: true
-  whitelistParent: RMCWhitelistMedium
+  whitelistParent: AU14JobGeneralWhitelist
   requirements:
   - !type:TraitsRequirement
     inverted: true
