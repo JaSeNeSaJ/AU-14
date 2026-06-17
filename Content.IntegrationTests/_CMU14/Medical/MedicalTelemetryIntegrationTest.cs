@@ -1,5 +1,6 @@
 using System.Linq;
-using Content.Shared._CMU14.Medical.Shrapnel;
+using Content.Shared._CMU14.Medical.Human.Damage.Shrapnel;
+using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._RMC14.Medical.Defibrillator;
 using Content.Shared._RMC14.Medical.Surgery;
 using Content.Shared.Body.Systems;
@@ -40,10 +41,10 @@ public sealed class MedicalTelemetryIntegrationTest
                 var defib = new RMCDefibrillatorAttemptEvent(patient);
                 entMan.EventBus.RaiseLocalEvent(patient, defib);
 
-                var embedded = new CMUShrapnelChangedEvent(patient, part, false);
+                var embedded = new CMUShrapnelChangedEvent(patient, BodyRegion.Chest, false);
                 entMan.EventBus.RaiseLocalEvent(part, ref embedded);
 
-                var extracted = new CMUShrapnelChangedEvent(patient, part, true);
+                var extracted = new CMUShrapnelChangedEvent(patient, BodyRegion.Chest, true);
                 entMan.EventBus.RaiseLocalEvent(part, ref extracted);
 
                 var stats = GetSummaryStats(entMan);
