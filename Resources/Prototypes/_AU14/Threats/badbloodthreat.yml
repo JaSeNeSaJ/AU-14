@@ -1,17 +1,17 @@
 # Bad Blood Clan — dishonored Yautja hunters. Distress Signal only.
 # Base: 3 at 40 players. Scales at 1:20 (one hunter per 20 players above 40).
-- type: threat
-  id: badBloodClanThreat
-  lorePrimer: AU14PrimerThreatBadBlood
-  roundstartspawns: badBloodClanParty
-  whitelistedgamemodes:
-  - DistressSignal
-  blacklistedgamemodes:
-  - ColonyFall
-  winconditions:
-  - KillAllGovforRule
-  - KillAllYautjaRule
-  minplayers: 0
+#- type: threat
+#  id: badBloodClanThreat
+#  lorePrimer: AU14PrimerThreatBadBlood
+#  roundstartspawns: badBloodClanParty
+#  whitelistedgamemodes:
+#  - DistressSignal
+#  blacklistedgamemodes:
+#  - ColonyFall
+#  winconditions:
+#  - KillAllGovforRule
+#  - KillAllYautjaRule
+#  minplayers: 0
 
 - type: partySpawn
   id: badBloodClanParty
