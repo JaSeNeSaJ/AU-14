@@ -37,7 +37,6 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private MapLoaderSystem _mapLoader = default!;
-    private readonly ISawmill _sawmill = Logger.GetSawmill("thirdparty");
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private AuRoundSystem _auRoundSystem = default!;
     [Dependency] private ChatSystem _chat = default!;
@@ -47,6 +46,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private IdCardSystem _idCard = default!;
     [Dependency] private IdentitySystem _identity = default!;
+    private readonly ISawmill _sawmill = Logger.GetSawmill("thirdparty");
 
     // --- State for round third party spawning ---
     private ThreatPrototype? _currentThreat;
@@ -305,48 +305,48 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         {
             // Only check main-map/groundside markers; dropship spawns handled elsewhere via useDropship
 
-                var markerCoords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
-                _sawmill.Debug($"[AuThirdPartySystem] Checking marker {marker} at coords {markerCoords}");
+            var markerCoords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
+            _sawmill.Debug($"[AuThirdPartySystem] Checking marker {marker} at coords {markerCoords}");
 
-                foreach (var session in _playerManager.Sessions)
+            foreach (var session in _playerManager.Sessions)
+            {
+                if (!session.AttachedEntity.HasValue)
                 {
-                    if (!session.AttachedEntity.HasValue)
-                    {
-                        _sawmill.Debug($"[AuThirdPartySystem] Session has no attached entity, skipping");
-                        continue;
-                    }
-
-                    var attached = session.AttachedEntity.Value;
-                    _sawmill.Debug($"[AuThirdPartySystem] Found attached entity {attached} for session");
-
-                    // Skip ghosts
-                    if (_entityManager.HasComponent<GhostComponent>(attached))
-                    {
-                        _sawmill.Debug($"[AuThirdPartySystem] Attached entity {attached} is a ghost, skipping");
-                        continue;
-                    }
-
-                    if (!_entityManager.TryGetComponent<TransformComponent>(attached, out var playerXform))
-                    {
-                        _sawmill.Debug($"[AuThirdPartySystem] Could not get TransformComponent for attached entity {attached}, skipping");
-                        continue;
-                    }
-
-                    // Log check steps for debugging
-                    _sawmill.Debug($"[AuThirdPartySystem] Checking player {attached} for proximity to marker {marker} (player coords={playerXform.Coordinates}, marker coords={markerCoords})");
-
-                    if (_transform.InRange(playerXform.Coordinates, markerCoords, PlayerAvoidRadius))
-                    {
-                        _sawmill.Debug($"[AuThirdPartySystem] Marker {marker} is blocked by player {attached} within radius {PlayerAvoidRadius}");
-                        return true;
-                    }
-                    else
-                    {
-                        _sawmill.Debug($"[AuThirdPartySystem] Player {attached} not within avoid radius of marker {marker}");
-                    }
+                    _sawmill.Debug($"[AuThirdPartySystem] Session has no attached entity, skipping");
+                    continue;
                 }
 
-                return false;
+                var attached = session.AttachedEntity.Value;
+                _sawmill.Debug($"[AuThirdPartySystem] Found attached entity {attached} for session");
+
+                // Skip ghosts
+                if (_entityManager.HasComponent<GhostComponent>(attached))
+                {
+                    _sawmill.Debug($"[AuThirdPartySystem] Attached entity {attached} is a ghost, skipping");
+                    continue;
+                }
+
+                if (!_entityManager.TryGetComponent<TransformComponent>(attached, out var playerXform))
+                {
+                    _sawmill.Debug($"[AuThirdPartySystem] Could not get TransformComponent for attached entity {attached}, skipping");
+                    continue;
+                }
+
+                // Log check steps for debugging
+                _sawmill.Debug($"[AuThirdPartySystem] Checking player {attached} for proximity to marker {marker} (player coords={playerXform.Coordinates}, marker coords={markerCoords})");
+
+                if (_transform.InRange(playerXform.Coordinates, markerCoords, PlayerAvoidRadius))
+                {
+                    _sawmill.Debug($"[AuThirdPartySystem] Marker {marker} is blocked by player {attached} within radius {PlayerAvoidRadius}");
+                    return true;
+                }
+                else
+                {
+                    _sawmill.Debug($"[AuThirdPartySystem] Player {attached} not within avoid radius of marker {marker}");
+                }
+            }
+
+            return false;
         }
 
 
@@ -371,8 +371,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         var spawnedLeaders = new List<EntityUid>();
         var spawnedGrunts = new List<EntityUid>();
         var SpawnedEnts = new List<EntityUid>();
-         // Track the last marker we used during this spawn operation
-         EntityUid? lastUsedMarker = null;
+        // Track the last marker we used during this spawn operation
+        EntityUid? lastUsedMarker = null;
         // Before spawning, verify we have enough unused markers for each required type. If not, abort the spawn.
         var leaderReq = spawnProto.LeadersToSpawn.Values.Sum();
         var gruntReq = spawnProto.GruntsToSpawn.Values.Sum();
@@ -467,8 +467,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     Dirty(marker, lmComp);
                 }
                 // Parachute markers are intentionally NOT marked as used so they may be reused.
-                 lastUsedMarker = marker;
-                 _sawmill.Debug($"[AuThirdPartySystem] Spawned leader {protoId} at {coords} (entity {ent})");
+                lastUsedMarker = marker;
+                _sawmill.Debug($"[AuThirdPartySystem] Spawned leader {protoId} at {coords} (entity {ent})");
             }
         }
         _sawmill.Debug($"[AuThirdPartySystem] Spawning grunts...");
@@ -505,16 +505,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         RaiseLocalEvent(gridEntity, ref attemptEvent);
                     }
                 }
-                 spawnedGrunts.Add(ent);
-                 // Mark this marker's component as used (do NOT mark neighbors yet)
-                 if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var gmComp) && !gmComp.Used)
-                 {
-                     gmComp.Used = true;
-                     Dirty(marker, gmComp);
-                 }
-                 // Parachute markers are intentionally NOT marked as used so they may be reused.
-                  lastUsedMarker = marker;
-                  _sawmill.Debug($"[AuThirdPartySystem] Spawned grunt {protoId} at {coords} (entity {ent})");
+                spawnedGrunts.Add(ent);
+                // Mark this marker's component as used (do NOT mark neighbors yet)
+                if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var gmComp) && !gmComp.Used)
+                {
+                    gmComp.Used = true;
+                    Dirty(marker, gmComp);
+                }
+                // Parachute markers are intentionally NOT marked as used so they may be reused.
+                lastUsedMarker = marker;
+                _sawmill.Debug($"[AuThirdPartySystem] Spawned grunt {protoId} at {coords} (entity {ent})");
             }
         }
         _sawmill.Debug($"[AuThirdPartySystem] Spawning ents...");
@@ -551,16 +551,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         RaiseLocalEvent(gridEntity, ref attemptEvent);
                     }
                 }
-                 SpawnedEnts.Add(ent);
-                 // Mark this marker's component as used (do NOT mark neighbors yet)
-                 if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var emComp) && !emComp.Used)
-                 {
-                     emComp.Used = true;
-                     Dirty(marker, emComp);
-                 }
-                 // Parachute markers are intentionally NOT marked as used so they may be reused.
-                  lastUsedMarker = marker;
-                  _sawmill.Debug($"[AuThirdPartySystem] Spawned ent {protoId} at {coords} (entity {ent})");
+                SpawnedEnts.Add(ent);
+                // Mark this marker's component as used (do NOT mark neighbors yet)
+                if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var emComp) && !emComp.Used)
+                {
+                    emComp.Used = true;
+                    Dirty(marker, emComp);
+                }
+                // Parachute markers are intentionally NOT marked as used so they may be reused.
+                lastUsedMarker = marker;
+                _sawmill.Debug($"[AuThirdPartySystem] Spawned ent {protoId} at {coords} (entity {ent})");
             }
         }
 
@@ -790,7 +790,4 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             }
         }
     }
-
-
 }
-
