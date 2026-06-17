@@ -119,6 +119,8 @@
   components:
   - type: Sprite
     state: box
+  - type: Item
+    size: Small
 
 - type: entity
   parent: RMCBoxRegulationTapesEmpty
