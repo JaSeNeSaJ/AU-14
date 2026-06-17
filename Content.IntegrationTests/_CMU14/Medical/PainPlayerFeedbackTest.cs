@@ -1,5 +1,4 @@
-using Content.Shared._CMU14.Medical.StatusEffects;
-using Content.Shared._CMU14.Medical.TemporaryBlurryVision;
+using Content.Shared._CMU14.Medical.Human.Effects;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Damage;
 using Content.Shared.Eye.Blinding.Components;
