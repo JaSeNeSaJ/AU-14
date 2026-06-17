@@ -18,6 +18,7 @@ public sealed partial class ColonyAntagsRuleSystem : GameRuleSystem<ColonyAntags
         { "RunawaySynth", 0.5f },
         { "Fugitive", 0.5f },
         { "DrugDealer", 0.5f },
+        { "CorporateSpy", 0.35f },
         { "CLFVeteran", 0.5f },
         { "StrikeOrganizer", 0.5f },
         { "Cannibal", 0.25f },
