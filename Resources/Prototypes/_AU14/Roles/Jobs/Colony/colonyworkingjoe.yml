@@ -14,6 +14,7 @@
   supervisors: au14-job-supervisors-workingjoe-colony
   dummyStartingGear: AU14GearColonyWorkingJoe
   usePlayerProfile: false
+  jobEntity: AU14MobWorkingJoeColony
   hasIcon: false
   accessGroups:
   - auadmin

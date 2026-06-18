@@ -282,6 +282,42 @@ public sealed class HumanMedicalLegacyGuardTest
     }
 
     [Test]
+    public void RmcHealthExamineSuppressesLegacyDamageForLedgerHumansBeforeReadingDamageable()
+    {
+        var root = FindRepoRoot();
+        var text = File.ReadAllText(Path.Combine(
+            root,
+            "Content.Shared/_RMC14/HealthExaminable/RMCHealthExaminableSystem.cs"));
+
+        var humanMedicalGate = text.IndexOf("HasComp<HumanMedicalComponent>(ent)", StringComparison.Ordinal);
+        var damageableRead = text.IndexOf("TryComp(ent, out DamageableComponent? damageable)", StringComparison.Ordinal);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(humanMedicalGate, Is.GreaterThanOrEqualTo(0));
+            Assert.That(damageableRead, Is.GreaterThan(humanMedicalGate));
+        });
+    }
+
+    [Test]
+    public void RmcMedicalExamineSuppressesLegacyBloodstreamForLedgerHumansBeforeReadingBloodstream()
+    {
+        var root = FindRepoRoot();
+        var text = File.ReadAllText(Path.Combine(
+            root,
+            "Content.Shared/_RMC14/Medical/Examine/RMCMedicalExamineSystem.cs"));
+
+        var humanMedicalGate = text.IndexOf("HasCmuHumanMedicalLedger(ent.Owner)", StringComparison.Ordinal);
+        var bloodstreamRead = text.IndexOf("TryComp<BloodstreamComponent>(ent, out var bloodstream)", StringComparison.Ordinal);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(humanMedicalGate, Is.GreaterThanOrEqualTo(0));
+            Assert.That(bloodstreamRead, Is.GreaterThan(humanMedicalGate));
+        });
+    }
+
+    [Test]
     public void LedgerFieldTreatmentInterceptOwnsRmcWoundTreatersForHumans()
     {
         var root = FindRepoRoot();

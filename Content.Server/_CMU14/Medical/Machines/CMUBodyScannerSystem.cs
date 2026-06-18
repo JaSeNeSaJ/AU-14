@@ -667,10 +667,12 @@ public sealed partial class CMUBodyScannerSystem : EntitySystem
     private List<CMUBodyScannerScanLine> BuildScanLines(EntityUid patient)
     {
         var lines = new List<CMUBodyScannerScanLine>();
+        var hasHumanMedical = TryComp<HumanMedicalComponent>(patient, out var humanMedical);
+
         if (TryComp<MobStateComponent>(patient, out var mob))
             lines.Add(VitalsLine(Loc.GetString("cmu-body-scanner-line-state", ("state", mob.CurrentState))));
 
-        if (TryComp<DamageableComponent>(patient, out var damageable))
+        if (!hasHumanMedical && TryComp<DamageableComponent>(patient, out var damageable))
         {
             lines.Add(VitalsLine(Loc.GetString(
                 "cmu-body-scanner-line-damage",
@@ -694,7 +696,7 @@ public sealed partial class CMUBodyScannerSystem : EntitySystem
             }
         }
 
-        if (TryComp<HumanMedicalComponent>(patient, out var humanMedical))
+        if (humanMedical is not null)
             HumanMedicalScannerBuiSystem.AppendBodyScannerLines(humanMedical, lines);
 
         if (lines.Count == 0)

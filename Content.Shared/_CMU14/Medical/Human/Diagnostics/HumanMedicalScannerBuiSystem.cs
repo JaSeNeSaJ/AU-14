@@ -7,6 +7,7 @@ using Content.Shared._CMU14.Medical.Human.Organs;
 using Content.Shared._CMU14.Medical.Machines;
 using Content.Shared._RMC14.Medical.Scanner;
 using Content.Shared.FixedPoint;
+using Content.Shared.MedicalScanner;
 using Content.Shared.Mobs;
 using BodyPartSymmetry = Content.Shared.Body.Part.BodyPartSymmetry;
 using BodyPartType = Content.Shared.Body.Part.BodyPartType;
@@ -110,6 +111,58 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
         }
 
         RefreshAdviceFromLedgerState(state);
+    }
+
+    public static HealthAnalyzerDamageReadout BuildHealthAnalyzerDamageReadout(
+        HumanMedicalComponent medical,
+        HealthAnalyzerDamageReadout? existing = null)
+    {
+        existing ??= new HealthAnalyzerDamageReadout();
+
+        var brute = FixedPoint2.Zero;
+        var burn = FixedPoint2.Zero;
+        foreach (var region in medical.Regions)
+        {
+            if (region.Region == BodyRegion.None)
+                continue;
+
+            brute += region.BruteDamage;
+            burn += region.BurnDamage;
+        }
+
+        var preservedTotal = FixedPoint2.Zero;
+        foreach (var (group, amount) in existing.DamagePerGroup)
+        {
+            if (group is "Brute" or "Burn")
+                continue;
+
+            preservedTotal += amount;
+        }
+
+        existing.DamagePerGroup.Remove("Brute");
+        existing.DamagePerGroup.Remove("Burn");
+        existing.DamagePerType.Remove("Blunt");
+        existing.DamagePerType.Remove("Slash");
+        existing.DamagePerType.Remove("Piercing");
+        existing.DamagePerType.Remove("Heat");
+        existing.DamagePerType.Remove("Shock");
+        existing.DamagePerType.Remove("Cold");
+        existing.DamagePerType.Remove("Caustic");
+
+        if (brute > FixedPoint2.Zero)
+        {
+            existing.DamagePerGroup["Brute"] = brute;
+            existing.DamagePerType["Blunt"] = brute;
+        }
+
+        if (burn > FixedPoint2.Zero)
+        {
+            existing.DamagePerGroup["Burn"] = burn;
+            existing.DamagePerType["Heat"] = burn;
+        }
+
+        existing.Total = brute + burn + preservedTotal;
+        return existing;
     }
 
     private static void FillDamageProfile(

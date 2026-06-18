@@ -28,7 +28,7 @@ public sealed partial class HumanBoneKnittingSystem : EntitySystem
                 continue;
             }
 
-            _medical.RefreshActiveMarkers(uid, medical);
+            _medical.NotifyLedgerChanged((uid, medical), result);
 
             var ev = new HumanBoneKnittingTickEvent(uid, result, tick.ActiveRegions, frameTime);
             RaiseLocalEvent(uid, ref ev);
