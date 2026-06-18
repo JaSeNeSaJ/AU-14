@@ -71,7 +71,7 @@ public static class MedicalSummaryBuilder
             if (region.Presence == LimbPresence.Missing || region.Presence == LimbPresence.Detached)
                 summary.Alerts |= MedicalAlertFlags.MissingLimb;
 
-            if (region.Skeletal.Broken && !region.Skeletal.Splinted)
+            if (region.Skeletal.Broken && !region.Skeletal.Stabilized)
             {
                 summary.HasBrokenUnsplintedLimb = true;
                 summary.Alerts |= MedicalAlertFlags.BrokenUnsplintedLimb;

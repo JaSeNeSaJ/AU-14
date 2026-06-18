@@ -253,7 +253,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
             damage += region.BruteDamage + region.BurnDamage;
             broken |= region.Skeletal.Broken;
             splinted |= region.Skeletal.Splinted;
-            cast |= region.Skeletal.Knitting;
+            cast |= region.Skeletal.Casted;
             tourniquet |= region.Tourniquet.Applied;
         }
 
@@ -356,7 +356,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
                 continue;
 
             broken = true;
-            suppressed &= region.Skeletal.Splinted;
+            suppressed &= region.Skeletal.Stabilized;
             if (region.Skeletal.Severity > severity)
                 severity = region.Skeletal.Severity;
         }
@@ -765,9 +765,11 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
 
             if (region.Skeletal.Broken)
             {
-                details.Add(region.Skeletal.Splinted
-                    ? localizer("cmu-body-scanner-human-region-fracture-splinted")
-                    : localizer("cmu-body-scanner-human-region-fracture"));
+                details.Add(region.Skeletal.Casted
+                    ? localizer("cmu-body-scanner-human-region-fracture-cast")
+                    : region.Skeletal.Splinted
+                        ? localizer("cmu-body-scanner-human-region-fracture-splinted")
+                        : localizer("cmu-body-scanner-human-region-fracture"));
             }
 
             if (region.Incision != IncisionDepth.Closed)

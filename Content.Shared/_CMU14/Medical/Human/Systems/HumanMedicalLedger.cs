@@ -765,6 +765,7 @@ public static class HumanMedicalLedger
         {
             region.Skeletal.Broken = false;
             region.Skeletal.Splinted = false;
+            region.Skeletal.Casted = false;
             region.Skeletal.Knitting = false;
             region.Skeletal.Malunion = false;
             region.Skeletal.BoneGelApplied = false;
@@ -1635,6 +1636,12 @@ public static class HumanMedicalLedger
         }
 
         var region = stage.Regions[index];
+        if (effect.Splinted && region.Skeletal.Casted)
+        {
+            failureReason = $"Treatment targets casted region {effect.Region}.";
+            return false;
+        }
+
         region.Skeletal.Splinted = effect.Splinted;
         stage.Regions[index] = region;
 
@@ -1669,7 +1676,13 @@ public static class HumanMedicalLedger
             return false;
         }
 
-        region.Skeletal.Splinted = true;
+        if (region.Skeletal.Splinted)
+        {
+            failureReason = $"Treatment targets splinted region {effect.Region}.";
+            return false;
+        }
+
+        region.Skeletal.Casted = true;
         region.Skeletal.Knitting = true;
         region.Skeletal.KnittingSecondsRemaining = effect.Amount;
         stage.Regions[index] = region;

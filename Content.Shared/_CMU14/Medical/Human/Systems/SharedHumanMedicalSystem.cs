@@ -192,10 +192,10 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
         if (state.Presence == LimbPresence.Prosthetic)
             flags |= HumanMedicalRegionVisualFlags.Prosthetic;
 
-        if (state.Skeletal.Splinted)
-            flags |= state.Skeletal.Knitting
-                ? HumanMedicalRegionVisualFlags.Casted
-                : HumanMedicalRegionVisualFlags.Splinted;
+        if (state.Skeletal.Casted)
+            flags |= HumanMedicalRegionVisualFlags.Casted;
+        else if (state.Skeletal.Splinted)
+            flags |= HumanMedicalRegionVisualFlags.Splinted;
 
         for (var i = 0; i < medical.Injuries.Count; i++)
         {

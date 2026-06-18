@@ -88,7 +88,7 @@ public sealed partial class AutoHolocardSystem : EntitySystem
             if (region.Presence is LimbPresence.Missing or LimbPresence.Detached)
                 return true;
 
-            if (region.Skeletal.Broken && !region.Skeletal.Splinted)
+            if (region.Skeletal.Broken && !region.Skeletal.Stabilized)
                 return true;
 
             if (region.BruteDamage + region.BurnDamage >= 40)
