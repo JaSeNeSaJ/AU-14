@@ -498,7 +498,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             return $"{Color("surgery", DetailedWoundColor)}\n    {string.Join("\n    ", lines)}";
         }
 
-        var possibleSteps = DescribePossibleSurgerySteps(region);
+        var possibleSteps = DescribeNoRepairSurgeryStep(region);
         if (!string.IsNullOrEmpty(possibleSteps))
             lines.Add(Color($"next: {possibleSteps}", DetailedUntreatedColor));
 
@@ -728,20 +728,20 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     {
         return operation.ProcedureId switch
         {
-            SurgeryProcedureId.SurgicalAccess => DescribePossibleSurgerySteps(region),
+            SurgeryProcedureId.SurgicalAccess => DescribeNoRepairSurgeryStep(region),
             SurgeryProcedureId.SutureWound => "suture the wound",
             SurgeryProcedureId.RemoveForeignObject => "remove the foreign object",
             SurgeryProcedureId.SealStump => "seal the stump",
             SurgeryProcedureId.RepairInternalBleeding => HasShallowAccess(medical, region.Region)
                 ? "repair the internal bleed"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.RemoveEschar => "remove the eschar",
             SurgeryProcedureId.RepairOrgan => HasRequiredRepairAccess(medical, region.Region)
                 ? "repair the organ damage"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.RepairFracture => HasRequiredRepairAccess(medical, region.Region)
                 ? "set and mend the fracture"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.CloseIncision => "close the incision",
             SurgeryProcedureId.AlienEmbryoRemoval => operation.StepIndex <= 0
                 ? "cut the embryo roots"
@@ -760,17 +760,29 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         };
     }
 
-    private static string DescribePossibleSurgerySteps(RegionState region)
+    private static string DescribeRequiredAccessStep(RegionState region)
     {
         return region.Incision switch
         {
             IncisionDepth.OpenSkin => "clamp surgical bleeders, then retract the incision",
             IncisionDepth.Retracted when IsEncasedRegion(region.Region) && !HasFracturedBoneAccess(region) =>
-                "cut bone for deep access, or close the incision if no repair remains",
-            IncisionDepth.Retracted =>
-                "repair exposed damage, or close the incision if no repair remains",
+                "cut bone for deep access",
+            IncisionDepth.Retracted => "use the required repair tool",
+            IncisionDepth.DeepAccess => "use the required repair tool",
+            _ => string.Empty,
+        };
+    }
+
+    private static string DescribeNoRepairSurgeryStep(RegionState region)
+    {
+        return region.Incision switch
+        {
+            IncisionDepth.OpenSkin => "close the incision with cautery or surgical line",
+            IncisionDepth.Retracted when IsEncasedRegion(region.Region) && !HasFracturedBoneAccess(region) =>
+                "close the incision with cautery or surgical line",
+            IncisionDepth.Retracted => "close the incision with cautery or surgical line",
             IncisionDepth.DeepAccess =>
-                "repair deep damage, then mend bone access",
+                "mend bone access with bone gel, bone setter, or bone graft, then close with cautery or surgical line",
             _ => string.Empty,
         };
     }
@@ -784,21 +796,21 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         {
             SurgeryProcedureId.SealStump => HasShallowAccess(medical, region.Region)
                 ? "seal the stump"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.SutureWound => "suture the wound",
             SurgeryProcedureId.RepairInternalBleeding => HasShallowAccess(medical, region.Region)
                 ? "repair the internal bleed"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.RemoveEschar => HasShallowAccess(medical, region.Region)
                 ? "remove the eschar"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.RepairOrgan => HasRequiredRepairAccess(medical, region.Region)
                 ? "repair the organ damage"
-                : DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
             SurgeryProcedureId.RepairFracture => HasRequiredRepairAccess(medical, region.Region)
                 ? "set and mend the fracture"
-                : DescribePossibleSurgerySteps(region),
-            _ => DescribePossibleSurgerySteps(region),
+                : DescribeRequiredAccessStep(region),
+            _ => DescribeRequiredAccessStep(region),
         };
     }
 
