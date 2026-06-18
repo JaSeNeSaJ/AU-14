@@ -205,10 +205,44 @@ public sealed class HumanSurgeryToolSystemTest
 
         Assert.Multiple(() =>
         {
+            Assert.That(closeBranch, Does.Contain("IsCloseIncisionTool(tool)"));
             Assert.That(closeBranch, Does.Contain("lockedProcedure == SurgeryProcedureId.SurgicalAccess"));
             Assert.That(closeBranch, Does.Contain("procedureId: closingActiveSurgicalAccess"));
             Assert.That(closeBranch, Does.Contain("SurgeryStepKind.CloseIncision"));
         });
+    }
+
+    [Test]
+    public void CauteryCanCloseCommittedLockedRepairProcedure()
+    {
+        var text = ReadSurgeryToolSystem();
+        var activeProcedureSelection = SliceBetween(
+            text,
+            "var activeOperationFound",
+            "if (TryCreateStumpRepairAttempt");
+        var closeBranch = SliceBetween(
+            text,
+            "var closingActiveSurgicalAccess",
+            "attempt = default;");
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(activeProcedureSelection, Does.Contain("activeOperationCommitted"));
+            Assert.That(closeBranch, Does.Contain("activeOperationCommitted"));
+            Assert.That(closeBranch, Does.Contain("lockedProcedure != SurgeryProcedureId.None"));
+            Assert.That(closeBranch, Does.Contain("? lockedProcedure"));
+        });
+    }
+
+    [Test]
+    public void FracturesDoNotBlockIncisionClosureAfterOtherRepairs()
+    {
+        var repairableProblem = SliceBetween(
+            ReadSurgeryToolSystem(),
+            "private bool HasRepairableProblem",
+            "private static bool TryFindInternalBleed");
+
+        Assert.That(repairableProblem, Does.Not.Contain("Skeletal.Broken"));
     }
 
     [Test]
