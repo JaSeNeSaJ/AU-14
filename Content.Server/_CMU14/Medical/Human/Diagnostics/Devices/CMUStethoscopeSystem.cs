@@ -5,6 +5,7 @@ using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Effects;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.Scanner;
+using Content.Shared._RMC14.Synth;
 using Content.Shared.DoAfter;
 using Content.Shared.Popups;
 using Robust.Shared.Configuration;
@@ -75,6 +76,9 @@ public sealed partial class CMUStethoscopeSystem : EntitySystem
 
     public (StethoscopeAudioCue Cue, string Popup) ReadStethoscope(EntityUid user, EntityUid patient)
     {
+        if (HasComp<SynthComponent>(patient))
+            return (StethoscopeAudioCue.Flatline, Loc.GetString("rmc-stethoscope-synth"));
+
         var skill = _skills.GetSkill(user, MedicalSkill);
         if (!TryComp<HumanMedicalComponent>(patient, out var medical))
         {

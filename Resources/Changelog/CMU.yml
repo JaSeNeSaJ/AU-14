@@ -4049,5 +4049,150 @@
   id: 291
   time: '2026-06-17T21:10:58.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1354
+- author: Kadeo64
+  changes:
+  - message: The Weyland-Yutani bioweapons laptops have now been encrypted properly,
+      and will now only seem to be generic research laptops.
+    type: Tweak
+  id: 292
+  time: '2026-06-17T22:01:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1346
+- author: 400Ferrets
+  changes:
+  - message: Sorokyne caves no longer get rain!
+    type: Add
+  - message: Sorokyne now has salvage!
+    type: Add
+  - message: Sorokyne UPP Ambassador has had an APC installed!
+    type: Add
+  - message: Sorokyne walls will eat things less!
+    type: Add
+  id: 293
+  time: '2026-06-17T22:03:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1342
+- author: HolySSSS
+  changes:
+  - message: 'all MP Vendors feature a "Record Keeping" section: hand labeler, tapes
+      box, digital clock and universal recorder.'
+    type: Add
+  - message: all MP Vendors now should have straitjackets for use.
+    type: Tweak
+  - message: the autolathe now features a recipe for universal recorder's tapes.
+    type: Tweak
+  - message: the regulation tape box is now a small item allowing you to store it
+      in a satchel.
+    type: Tweak
+  id: 294
+  time: '2026-06-17T22:05:18.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1348
+- author: HotdogMan52
+  changes:
+  - message: Tear gas now respects gas masks with filters. Wearing a gas mask with
+      a filter lets you walk through chemical gas unaffected, though the filter takes
+      damage.
+    type: Add
+  - message: Tear gas smoke now uses the new ChemicalIrritant system instead of the
+      xeno neurotoxin system.
+    type: Tweak
+  id: 295
+  time: '2026-06-17T22:16:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1355
+- author: wray-git
+  changes:
+  - message: GAU-19/H handheld minigun no longer has an IFF system
+    type: Fix
+  - message: FBS-B ballistic shield can now be stored on the back slot or in suit
+      storage when wearing the Kestrel pointman armour
+    type: Tweak
+  - message: FBS-B ballistic shield displays a holstered sprite on the character's
+      back when stored
+    type: Tweak
+  - message: F-key quick-equip now works for the FBS-B ballistic shield
+    type: Tweak
+  - message: GAU-19/H handheld minigun RoF increased from `9.3` to `10`
+    type: Tweak
+  - message: M56 Smartgun RoF reduced from `10` to `8`
+    type: Tweak
+  - message: M56 Smartgun falloff increased from `4.5` to `10`
+    type: Tweak
+  - message: TWE L23 & L23B variant RoF increased from `2.75` to `3.5`
+    type: Tweak
+  - message: TWE L90 Combat PDW RoF increased from `3.6` to `4.0`
+    type: Tweak
+  - message: Added `ShowToggleAction` field to `IFFToggleComponent` to allow suppressing
+      the IFF toggle action on a per-gun basis
+    type: Code
+  - message: Added `FlipDirOffset` field to `ClothingComponent` to allow clothing
+      visuals on back/suitstorage slots to have their directional frames reversed
+    type: Code
+  - message: Subscribed `BlockingComponent` to `IsUnholsterableEvent` so blocking
+      items (shields) are recognised by the F-key quick-equip system
+    type: Code
+  id: 296
+  time: '2026-06-17T22:52:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1352
+- author: jok989372-lgtm
+  changes:
+  - message: Added hazmat for working joe.
+    type: Add
+  id: 297
+  time: '2026-06-17T22:54:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1350
+- author: maertayn
+  changes:
+  - message: Being able to put CAS munitions into toolboxes or pouches (any storage)
+      via Powerloader
+    type: Fix
+  - message: CMB access to the military SecTech (used by Hope's Retreat)
+    type: Tweak
+  - message: HRP roles holding the server hostage with WJ round restarts
+    type: Fix
+  - message: Pamphlets can be used by any marine that finds it
+    type: Tweak
+  - message: Govfor/Opfor getting opposite faction access from their squads
+    type: Fix
+  - message: Third Party spawns are wrapped in try/catch logs for entities/leader/members
+    type: Code
+  - message: OPFOR/GOVFOR radio channels are given on promotion - instead of old legacy
+      JTAC/Command channels
+    type: Fix
+  - message: TacMap blips - yes the icon is still small but at least not mini - will
+      be fixed
+    type: Tweak
+  id: 298
+  time: '2026-06-17T23:35:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1356
+- author: Piticzu
+  changes:
+  - message: Completely reworked Working Joe Voice Synthesizer with 220 voicelines
+      across 17 categories, favorites, recently used, and search.
+    type: Add
+  - message: '"Reboot Unit" right-click verb to revive dead, fully-repaired Working
+      Joes without needing a physical reset key.'
+    type: Add
+  - message: Working Joe backpack now opens instantly without a do-after.
+    type: Add
+  - message: Working Joe blood now displays as white in syringes instead of red.
+    type: Fix
+  - message: Stethoscope now correctly reports "You hear nothing." when used on synths.
+    type: Fix
+  - message: Working Joe death sounds now play randomly from 9 variants on death.
+    type: Tweak
+  - message: Replaced legacy voiceline audio files with new variants.
+    type: Remove
+  id: 299
+  time: '2026-06-17T23:40:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1341
+- author: troytroy400
+  changes:
+  - message: Roundstart vehicles added to the bush, retrievable via the vehicle lift.
+    type: Add
+  - message: Badbloods temporarily taken out of rotation for reworks.
+    type: Remove
+  - message: LTB cannon nerfed.
+    type: Tweak
+  id: 300
+  time: '2026-06-18T00:20:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1357
 Name: CMU
 Order: -1
