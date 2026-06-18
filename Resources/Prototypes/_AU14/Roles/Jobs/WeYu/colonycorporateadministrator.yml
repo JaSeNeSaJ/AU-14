@@ -51,7 +51,6 @@
       whitelist:
         tags:
         - SquadPMC
-  hidden: false
 
 - type: startingGear
   id: AU14GearCivilianCorporateAdministrator

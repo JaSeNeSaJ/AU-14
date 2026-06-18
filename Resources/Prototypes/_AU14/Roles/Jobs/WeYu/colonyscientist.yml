@@ -1,11 +1,11 @@
 - type: job
+  abstract: true
   parent: CMJobBase
   id: AU14JobCivilianScientistBase
   name: au14-job-name-civilianscientist
   description: au14-job-description-civilianscientist
   playTimeTracker: AU14JobCivilianScientist
   basePlaytimeTracker: true
-  hidden: true
 
 - type: job
   parent: AU14JobCivilianScientistBase
