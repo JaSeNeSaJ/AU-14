@@ -399,7 +399,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
 
     private bool TryOfferBurrowedLarva(Entity<HiveComponent> hive, LarvaQueueState queue)
     {
-        while (hive.Comp.BurrowedLarva - GetPendingBurrowedLarvaClaims(hive.Owner) > 0 &&
+        while (_hive.CanSpawnBurrowedLarva(hive) &&
+               hive.Comp.BurrowedLarva - GetPendingBurrowedLarvaClaims(hive.Owner) > 0 &&
                queue.TryDequeueReady(out var userId))
         {
             if (!TryGetQueuedSession(userId, out var session))
