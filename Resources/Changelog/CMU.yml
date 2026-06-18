@@ -4183,5 +4183,16 @@
   id: 299
   time: '2026-06-17T23:40:27.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1341
+- author: troytroy400
+  changes:
+  - message: Roundstart vehicles added to the bush, retrievable via the vehicle lift.
+    type: Add
+  - message: Badbloods temporarily taken out of rotation for reworks.
+    type: Remove
+  - message: LTB cannon nerfed.
+    type: Tweak
+  id: 300
+  time: '2026-06-18T00:20:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1357
 Name: CMU
 Order: -1
