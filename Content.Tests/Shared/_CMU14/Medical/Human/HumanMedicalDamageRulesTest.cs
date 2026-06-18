@@ -105,7 +105,7 @@ public sealed class HumanMedicalDamageRulesTest
     }
 
     [Test]
-    public void BoneContactUsesRngBeforeAddingFractureEffect()
+    public void BoneContactAddsFractureWithoutRng()
     {
         var transaction = MedicalDamageRules.CreateDamageTransaction(
             BodyRegion.LeftArm,
@@ -116,6 +116,60 @@ public sealed class HumanMedicalDamageRulesTest
                 BoneContact: true),
             new MedicalRngContext(BoneRoll: 0.99f));
 
-        Assert.That(transaction.Effects.ToArray().Any(effect => effect.Kind == MedicalEffectKind.SetSkeletalState), Is.False);
+        Assert.That(transaction.Effects.ToArray().Any(effect => effect.Kind == MedicalEffectKind.SetSkeletalState), Is.True);
+    }
+
+    [Test]
+    public void PolicyDisablesDepthDerivedLedgerEffects()
+    {
+        var transaction = MedicalDamageRules.CreateDamageTransaction(
+            BodyRegion.Chest,
+            FixedPoint2.New(35),
+            FixedPoint2.Zero,
+            new MedicalDamageContext(
+                InjuryKind.Cut,
+                BoneContact: true,
+                OrganContact: true,
+                VascularContact: true,
+                OrganSlot.LeftLung,
+                OrganDamageScale: 0.25f,
+                InternalBleedRate: FixedPoint2.New(0.3)),
+            new MedicalRngContext(BoneRoll: 0f, OrganRoll: 0f),
+            policy: new MedicalDamagePolicy(
+                BoneEnabled: false,
+                OrganEnabled: false,
+                WoundsEnabled: false));
+
+        var effects = transaction.Effects.ToArray();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(effects.Any(effect => effect.Kind == MedicalEffectKind.AddRegionDamage), Is.True);
+            Assert.That(effects.Any(effect => effect.Kind == MedicalEffectKind.AddInjury), Is.False);
+            Assert.That(effects.Any(effect => effect.Kind == MedicalEffectKind.SetSkeletalState), Is.False);
+            Assert.That(effects.Any(effect => effect.Kind == MedicalEffectKind.AddOrganDamage), Is.False);
+            Assert.That(effects.Any(effect => effect.Kind == MedicalEffectKind.AddBleedSource), Is.False);
+        });
+    }
+
+    [Test]
+    public void PolicyDisablesMedicalLedgerTransaction()
+    {
+        var transaction = MedicalDamageRules.CreateDamageTransaction(
+            BodyRegion.Chest,
+            FixedPoint2.New(35),
+            FixedPoint2.Zero,
+            new MedicalDamageContext(
+                InjuryKind.Cut,
+                BoneContact: true,
+                OrganContact: true,
+                VascularContact: true,
+                OrganSlot.LeftLung,
+                OrganDamageScale: 0.25f,
+                InternalBleedRate: FixedPoint2.New(0.3)),
+            new MedicalRngContext(BoneRoll: 0f, OrganRoll: 0f),
+            policy: new MedicalDamagePolicy(MedicalEnabled: false));
+
+        Assert.That(transaction.Count, Is.Zero);
     }
 }

@@ -237,6 +237,22 @@ public sealed class HumanMedicalLegacyGuardTest
     }
 
     [Test]
+    public void MedicalExamineAvoidsGenericSurgeryRepairGuidance()
+    {
+        var root = FindRepoRoot();
+        var text = File.ReadAllText(Path.Combine(
+            root,
+            "Content.Shared/_CMU14/Medical/Human/Diagnostics/Examine/CMUMedicalExamineSystem.cs"));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(text, Does.Not.Contain("repair exposed damage"));
+            Assert.That(text, Does.Not.Contain("if no repair remains"));
+            Assert.That(text, Does.Contain("close the incision with cautery or surgical line"));
+        });
+    }
+
+    [Test]
     public void DetailedMedicalExamineUsesLedgerBleedSeverity()
     {
         var root = FindRepoRoot();
@@ -727,6 +743,29 @@ public sealed class HumanMedicalLegacyGuardTest
                 AssertDoesNotContainAny(text, LegacyClinicalAuthorityTerms);
                 Assert.That(text, Does.Not.Contain("SharedCMUWoundsSystem"));
             }
+        });
+    }
+
+    [Test]
+    public void DefibrillatorZapDamageForcesChestHitLocation()
+    {
+        var root = FindRepoRoot();
+        var path = Path.Combine(
+            root,
+            "Content.Server/Medical/DefibrillatorSystem.cs");
+
+        Assert.That(File.Exists(path), Is.True);
+
+        var text = File.ReadAllText(path);
+        var forceHit = text.IndexOf("_hitLocation.SetForcedHit((target, null), BodyPartType.Torso);", StringComparison.Ordinal);
+        var electrocution = text.IndexOf("_electrocution.TryDoElectrocution(target,", StringComparison.Ordinal);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(text, Does.Contain("Content.Server._CMU14.Medical.Targeting"));
+            Assert.That(text, Does.Contain("[Dependency] private HitLocationSystem _hitLocation = default!;"));
+            Assert.That(forceHit, Is.GreaterThanOrEqualTo(0));
+            Assert.That(electrocution, Is.GreaterThan(forceHit));
         });
     }
 

@@ -358,7 +358,7 @@ public static class TreatmentRules
                     injury.Region,
                     injury.Id,
                     repairAmount,
-                    InjuryFlags.Salved),
+                    InjuryFlags.Salved | InjuryFlags.Grafted),
             },
             MedicalDirtyFlags.Regions | MedicalDirtyFlags.Injuries);
     }
@@ -635,6 +635,9 @@ public static class TreatmentRules
         bool requireBurn,
         out InjuryRecord injury)
     {
+        InjuryRecord recoveringFallback = default;
+        var hasRecoveringFallback = false;
+
         foreach (var candidate in medical.Injuries)
         {
             if (attempt.InjuryId != 0 && candidate.Id != attempt.InjuryId)
@@ -647,7 +650,7 @@ public static class TreatmentRules
             if (requireBurn)
             {
                 if (candidate.Kind != InjuryKind.Burn ||
-                    candidate.Flags.HasFlag(InjuryFlags.Salved))
+                    candidate.Flags.HasFlag(InjuryFlags.Grafted))
                 {
                     continue;
                 }
@@ -658,7 +661,24 @@ public static class TreatmentRules
                 continue;
             }
 
+            if (HumanMedicalLedger.CanTreatedInjuryRecover(candidate))
+            {
+                if (!hasRecoveringFallback)
+                {
+                    recoveringFallback = candidate;
+                    hasRecoveringFallback = true;
+                }
+
+                continue;
+            }
+
             injury = candidate;
+            return true;
+        }
+
+        if (hasRecoveringFallback)
+        {
+            injury = recoveringFallback;
             return true;
         }
 

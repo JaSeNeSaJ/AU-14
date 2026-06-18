@@ -1,3 +1,4 @@
+using Content.Server._CMU14.Medical.Targeting;
 using Content.Server.Atmos.Rotting;
 using Content.Server.Chat.Systems;
 using Content.Server.DoAfter;
@@ -10,6 +11,7 @@ using Content.Shared._RMC14.Damage;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.Defibrillator;
 using Content.Shared._RMC14.TrainingDummy;
+using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.Interaction;
@@ -49,6 +51,7 @@ public sealed partial class DefibrillatorSystem : EntitySystem
     [Dependency] private SharedMindSystem _mind = default!;
     [Dependency] private UseDelaySystem _useDelay = default!;
     [Dependency] private InventorySystem _inventory = default!;
+    [Dependency] private HitLocationSystem _hitLocation = default!;
 
     // RMC14
     [Dependency] private RMCDefibrillatorSystem _rmcDefibrillator = default!;
@@ -229,6 +232,7 @@ public sealed partial class DefibrillatorSystem : EntitySystem
             return;
 
         _audio.PlayPvs(component.ZapSound, uid);
+        _hitLocation.SetForcedHit((target, null), BodyPartType.Torso);
         _electrocution.TryDoElectrocution(target, null, component.ZapDamage, component.WritheDuration, true, ignoreInsulation: true);
         if (!TryComp<UseDelayComponent>(uid, out var useDelay))
             return;

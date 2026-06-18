@@ -456,7 +456,9 @@ public sealed partial class XenoChargeSystem : EntitySystem
 
         _stun.TryParalyze(targetId, xeno.Comp.StunTime, true);
         _rmcObstacleSlamming.ApplyBonuses(targetId, TimeSpan.FromSeconds(1.5), TimeSpan.FromSeconds(3));
-        EnsureComp<ChargeFlungComponent>(targetId);
+        var flung = EnsureComp<ChargeFlungComponent>(targetId);
+        flung.Charger = xeno.Owner;
+        Dirty(targetId, flung);
 
         var targetPos = _transform.GetMapCoordinates(targetId);
         var chargeDir = savedChargeDir ?? (targetPos.Position - origin.Position).Normalized();
@@ -490,7 +492,8 @@ public sealed partial class XenoChargeSystem : EntitySystem
             return;
 
         // Damage and knockdown the marine in the path.
-        _damageable.TryChangeDamage(target, ent.Comp.CollisionDamage, origin: ent);
+        var source = ent.Comp.Charger ?? ent.Owner;
+        _damageable.TryChangeDamage(target, ent.Comp.CollisionDamage, origin: source, tool: source);
 
         var filter = Filter.Pvs(target, entityManager: EntityManager);
         _colorFlash.RaiseEffect(Color.Red, new List<EntityUid> { target }, filter);

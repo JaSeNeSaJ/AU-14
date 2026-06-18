@@ -859,19 +859,6 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             return false;
         }
 
-        if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))
-        {
-            if (!popupNoProcedure)
-                return false;
-
-            _popup.PopupEntity(
-                Loc.GetString("cmu-medical-surgery-mode-required"),
-                patient,
-                user,
-                PopupType.SmallCaution);
-            return true;
-        }
-
         var painkilled = HasPainSuppressionForSurgery(patient);
         if (!TryCreateSurgeryAttempt(user, patient, tool, medical, painkilled, out var attempt))
         {
@@ -928,6 +915,9 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             _popup.PopupEntity(reason, patient, user, PopupType.SmallCaution);
             return true;
         }
+
+        if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))
+            _humanSurgeryMode.SetSurgeryMode(user, true);
 
         var skillMultiplier = _skills.GetSkillDelayMultiplier(user, SurgerySkill);
         var delay = HumanSurgeryRules.GetStepDuration(
@@ -1123,9 +1113,11 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             return false;
 
         var anesthetized = HasAnesthesiaForSurgery(patient, medical);
-        var lockedProcedure = _humanSurgery.TryGetActiveOperation(patient, region, out var operation)
+        var activeOperationFound = _humanSurgery.TryGetActiveOperation(patient, region, out var operation);
+        var lockedProcedure = activeOperationFound
             ? operation.ProcedureId
             : SurgeryProcedureId.None;
+        var activeOperationCommitted = activeOperationFound && operation.Committed;
 
         if (TryCreateStumpRepairAttempt(tool, medical, region, lockedProcedure, painkilled, anesthetized, out attempt))
             return true;
@@ -1148,7 +1140,7 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
         if (TryCreateEscharRemovalAttempt(patient, tool, medical, region, lockedProcedure, painkilled, anesthetized, out attempt))
             return true;
 
-        if (TryCreateIncisionAttempt(patient, tool, medical, region, lockedProcedure, painkilled, anesthetized, out attempt))
+        if (TryCreateIncisionAttempt(patient, tool, medical, region, lockedProcedure, activeOperationCommitted, painkilled, anesthetized, out attempt))
             return true;
 
         if (TryCreateAmputationAttempt(patient, tool, medical, region, lockedProcedure, painkilled, anesthetized, out attempt))
@@ -1287,6 +1279,7 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
         HumanMedicalComponent medical,
         BodyRegion region,
         SurgeryProcedureId lockedProcedure,
+        bool activeOperationCommitted,
         bool painkilled,
         bool anesthetized,
         out SurgeryAttempt attempt)
@@ -1439,10 +1432,13 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
         }
 
         var closingActiveSurgicalAccess = lockedProcedure == SurgeryProcedureId.SurgicalAccess;
-        if (HasComp<CMCauteryComponent>(tool) &&
+        var closingActiveProcedure = activeOperationCommitted &&
+            lockedProcedure != SurgeryProcedureId.None;
+        if (IsCloseIncisionTool(tool) &&
             regionState.Incision != IncisionDepth.Closed &&
             (regionState.Incision != IncisionDepth.DeepAccess || !IsEncasedRegion(region)) &&
             (closingActiveSurgicalAccess ||
+             closingActiveProcedure ||
              lockedProcedure == SurgeryProcedureId.None &&
              !HasRepairableProblem(patient, medical, region)))
         {
@@ -1456,8 +1452,9 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
                 baseDelay: TimeSpan.FromSeconds(2.5),
                 anesthetized: anesthetized,
                 painkilled: painkilled,
-                procedureId: closingActiveSurgicalAccess
-                    ? SurgeryProcedureId.SurgicalAccess
+                procedureId: closingActiveSurgicalAccess ||
+                    closingActiveProcedure
+                    ? lockedProcedure
                     : SurgeryProcedureId.CloseIncision,
                 stepIndex: 0,
                 toolRole: GetToolRole(tool));
@@ -3020,7 +3017,7 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             return true;
         }
 
-        return HumanMedicalLedger.GetRegion(medical, region).Skeletal.Broken;
+        return false;
     }
 
     private static bool TryFindInternalBleed(

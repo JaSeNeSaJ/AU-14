@@ -17,11 +17,24 @@ public sealed class CMUTraumaContactModelTest
         Assert.Multiple(() =>
         {
             Assert.That(settings.BallisticHighDamageThreshold, Is.EqualTo(FixedPoint2.New(45)));
-            Assert.That(settings.BallisticHeadBoneChance, Is.EqualTo(0.65f));
-            Assert.That(settings.BallisticTorsoBoneChance, Is.EqualTo(0.30f));
-            Assert.That(settings.BallisticArmBoneChance, Is.EqualTo(0.60f));
-            Assert.That(settings.BallisticLegBoneChance, Is.EqualTo(0.60f));
-            Assert.That(settings.BallisticOtherBoneChance, Is.EqualTo(0.35f));
+            Assert.That(settings.BallisticHeadBoneChance, Is.EqualTo(0.13f));
+            Assert.That(settings.BallisticTorsoBoneChance, Is.EqualTo(0.06f));
+            Assert.That(settings.BallisticArmBoneChance, Is.EqualTo(0.12f));
+            Assert.That(settings.BallisticLegBoneChance, Is.EqualTo(0.12f));
+            Assert.That(settings.BallisticOtherBoneChance, Is.EqualTo(0.07f));
+        });
+    }
+
+    [Test]
+    public void DefaultMeleeBoneProfileUsesReducedContactRates()
+    {
+        var settings = CMUTraumaContactSettings.Default;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(settings.PierceBoneChance, Is.EqualTo(0.04f));
+            Assert.That(settings.SlashBoneChance, Is.EqualTo(0.02f));
+            Assert.That(settings.BluntBoneChance, Is.EqualTo(0.10f));
         });
     }
 
@@ -32,16 +45,37 @@ public sealed class CMUTraumaContactModelTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(settings.BallisticHeadOrganChance, Is.EqualTo(0.08f));
-            Assert.That(settings.BallisticTorsoOrganChance, Is.EqualTo(0.25f));
-            Assert.That(settings.PierceOrganChance, Is.EqualTo(0.175f));
-            Assert.That(settings.SlashOrganChance, Is.EqualTo(0.10f));
-            Assert.That(settings.BluntOrganChance, Is.EqualTo(0.05f));
+            Assert.That(settings.BallisticHeadOrganChance, Is.EqualTo(0.016f));
+            Assert.That(settings.BallisticTorsoOrganChance, Is.EqualTo(0.05f));
+            Assert.That(settings.PierceOrganChance, Is.EqualTo(0.035f));
+            Assert.That(settings.SlashOrganChance, Is.EqualTo(0.02f));
+            Assert.That(settings.BluntOrganChance, Is.EqualTo(0.01f));
         });
     }
 
     [Test]
-    public void BallisticCanReachOrganWithoutBone()
+    public void LowDamageBluntStaysSoftTissueWithoutInternalBleeding()
+    {
+        var result = CMUTraumaContactModel.Create(
+            CMUTraumaMechanism.Blunt,
+            BodyPartType.Torso,
+            FixedPoint2.New(10),
+            hasOrgans: true,
+            roll: 0.0f,
+            TestSettings());
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Depth, Is.EqualTo(CMUTraumaDepth.SoftTissue));
+            Assert.That(result.BoneContact, Is.False);
+            Assert.That(result.OrganContact, Is.False);
+            Assert.That(result.VascularContact, Is.False);
+            Assert.That(result.InternalBleedRate, Is.Zero);
+        });
+    }
+
+    [Test]
+    public void BallisticDepthReachesBoneOrganAndVascularContact()
     {
         var settings = TestSettings() with
         {
@@ -60,15 +94,16 @@ public sealed class CMUTraumaContactModelTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(result.BoneContact, Is.False);
+            Assert.That(result.BoneContact, Is.True);
             Assert.That(result.OrganContact, Is.True);
-            Assert.That(result.VascularContact, Is.False);
+            Assert.That(result.VascularContact, Is.True);
+            Assert.That(result.InternalBleedRate, Is.GreaterThan(0f));
             Assert.That(result.Depth, Is.EqualTo(CMUTraumaDepth.Deep));
         });
     }
 
     [Test]
-    public void BallisticCanMissDeepStructures()
+    public void LowDamageBallisticStaysSoftTissue()
     {
         var settings = TestSettings() with
         {
@@ -80,7 +115,7 @@ public sealed class CMUTraumaContactModelTest
         var result = CMUTraumaContactModel.Create(
             CMUTraumaMechanism.Ballistic,
             BodyPartType.Torso,
-            FixedPoint2.New(40),
+            FixedPoint2.New(5),
             hasOrgans: true,
             roll: 0.80f,
             settings);
@@ -95,7 +130,7 @@ public sealed class CMUTraumaContactModelTest
     }
 
     [Test]
-    public void LowRollCanCauseDirectVascularContact()
+    public void BallisticDeepContactCreatesInternalBleeding()
     {
         var settings = TestSettings() with
         {
@@ -144,14 +179,15 @@ public sealed class CMUTraumaContactModelTest
         {
             Assert.That(result.BoneContact, Is.True);
             Assert.That(result.OrganContact, Is.True);
-            Assert.That(result.VascularContact, Is.False);
+            Assert.That(result.VascularContact, Is.True);
+            Assert.That(result.InternalBleedRate, Is.GreaterThan(0f));
             Assert.That(result.Depth, Is.EqualTo(CMUTraumaDepth.Severe));
             Assert.That(result.HighEnergy, Is.True);
         });
     }
 
     [Test]
-    public void SlashUsesSurfaceBiasedChances()
+    public void SurfaceSlashDoesNotReachOrgansFromChanceRates()
     {
         var settings = TestSettings() with
         {
@@ -171,8 +207,9 @@ public sealed class CMUTraumaContactModelTest
         Assert.Multiple(() =>
         {
             Assert.That(result.BoneContact, Is.False);
-            Assert.That(result.OrganContact, Is.True);
+            Assert.That(result.OrganContact, Is.False);
             Assert.That(result.VascularContact, Is.False);
+            Assert.That(result.Depth, Is.EqualTo(CMUTraumaDepth.SoftTissue));
         });
     }
 
@@ -230,7 +267,7 @@ public sealed class CMUTraumaContactModelTest
     }
 
     [Test]
-    public void MediumAndDeeperBallisticHitsIncreaseOrganPassThrough()
+    public void DeeperBallisticHitsIncreaseOrganPassThrough()
     {
         var settings = TestSettings() with
         {
@@ -239,20 +276,11 @@ public sealed class CMUTraumaContactModelTest
             BallisticOrganPassThrough = 0.35f,
         };
 
-        var shallow = CMUTraumaContactModel.Create(
-            CMUTraumaMechanism.Ballistic,
-            new DamageImpact(DamageImpactDelivery.Projectile, DamageImpactContact.Stab, DamageImpactPenetration.Low, DamageImpactEnergy.Medium),
-            BodyPartType.Torso,
-            FixedPoint2.New(20),
-            hasOrgans: true,
-            roll: 0f,
-            settings);
-
         var medium = CMUTraumaContactModel.Create(
             CMUTraumaMechanism.Ballistic,
             new DamageImpact(DamageImpactDelivery.Projectile, DamageImpactContact.Stab, DamageImpactPenetration.Medium, DamageImpactEnergy.Medium),
             BodyPartType.Torso,
-            FixedPoint2.New(20),
+            FixedPoint2.New(25),
             hasOrgans: true,
             roll: 0f,
             settings);
@@ -261,15 +289,14 @@ public sealed class CMUTraumaContactModelTest
             CMUTraumaMechanism.Ballistic,
             DamageImpact.Projectile,
             BodyPartType.Torso,
-            FixedPoint2.New(20),
+            FixedPoint2.New(25),
             hasOrgans: true,
             roll: 0f,
             settings);
 
         Assert.Multiple(() =>
         {
-            Assert.That(shallow.OrganPassThrough, Is.EqualTo(settings.BallisticOrganPassThrough));
-            Assert.That(medium.OrganPassThrough, Is.GreaterThan(shallow.OrganPassThrough));
+            Assert.That(medium.OrganPassThrough, Is.GreaterThanOrEqualTo(settings.BallisticOrganPassThrough));
             Assert.That(deep.OrganPassThrough, Is.GreaterThan(medium.OrganPassThrough));
         });
     }
@@ -381,7 +408,7 @@ public sealed class CMUTraumaContactModelTest
     {
         var settings = TestSettings() with
         {
-            MeleeHighDamageThreshold = FixedPoint2.New(100),
+            MeleeHighDamageThreshold = FixedPoint2.New(45),
             BluntBoneChance = 1f,
             BluntOrganChance = 1f,
             BluntVascularChance = 1f,
@@ -391,7 +418,7 @@ public sealed class CMUTraumaContactModelTest
             CMUTraumaMechanism.Blunt,
             new DamageImpact(DamageImpactDelivery.Melee, DamageImpactContact.Crush, DamageImpactPenetration.None, DamageImpactEnergy.Medium),
             BodyPartType.Torso,
-            FixedPoint2.New(10),
+            FixedPoint2.New(20),
             hasOrgans: true,
             roll: 0.0f,
             settings);
@@ -441,7 +468,8 @@ public sealed class CMUTraumaContactModelTest
         {
             Assert.That(result.BoneContact, Is.True);
             Assert.That(result.OrganContact, Is.True);
-            Assert.That(result.VascularContact, Is.False);
+            Assert.That(result.VascularContact, Is.True);
+            Assert.That(result.InternalBleedRate, Is.GreaterThan(0f));
             Assert.That(result.Depth, Is.EqualTo(CMUTraumaDepth.Severe));
             Assert.That(result.HighEnergy, Is.True);
         });

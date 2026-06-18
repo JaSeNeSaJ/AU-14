@@ -4,6 +4,7 @@ using Content.IntegrationTests.Pair;
 using Content.Server._CMU14.ZLevels.Core;
 using Content.Shared._CMU14.ZLevels.Core.Components;
 using Content.Shared.Hands.EntitySystems;
+using Content.Shared.Interaction;
 using Content.Shared.Interaction.Events;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
@@ -64,6 +65,41 @@ public sealed class CMUDeployableZLevelLadderSystemTest
             Assert.That(ladders.Select(ladder => ladder.Ladder.Offset), Is.EquivalentTo(new[] { -1, 1 }));
             Assert.That(ladders[0].Packable.Partner, Is.EqualTo(ladders[1].Uid));
             Assert.That(ladders[1].Packable.Partner, Is.EqualTo(ladders[0].Uid));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ActivateInWorldDeploysKitAtItsTile()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var maps = await CreateLinkedMaps(pair, "Lattice");
+
+        EntityUid kit = default;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var user = entMan.SpawnEntity("CMMobHuman", maps.Lower.GridCoords);
+            kit = entMan.SpawnEntity(DeployableLadder, maps.Lower.GridCoords);
+
+            var activate = new ActivateInWorldEvent(user, kit, true);
+            entMan.EventBus.RaiseLocalEvent(kit, activate);
+
+            Assert.That(activate.Handled, Is.True);
+        });
+
+        await server.WaitRunTicks(1);
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var ladders = GetPackableLadders(entMan).ToArray();
+
+            Assert.That(ladders, Has.Length.EqualTo(2));
+            Assert.That(entMan.Deleted(kit), Is.True);
         });
 
         await pair.CleanReturnAsync();

@@ -1,5 +1,6 @@
 using Content.Shared._CMU14.Medical.Chemistry.Data;
 using Content.Shared._CMU14.Medical.Chemistry.Rules;
+using Content.Shared._CMU14.Medical.Foundation;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
@@ -78,6 +79,35 @@ public sealed class HumanChemicalLedgerRulesTest
     }
 
     [Test]
+    public void OsteoCalcRepairsFracturesUpToSimple()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        BreakRegion(medical, BodyRegion.LeftArm, FractureSeverity.Hairline);
+        BreakRegion(medical, BodyRegion.RightArm, FractureSeverity.Simple);
+        BreakRegion(medical, BodyRegion.Chest, FractureSeverity.Compound);
+
+        var plan = HumanChemicalLedgerRules.CreatePlan(
+            medical,
+            new HumanChemicalTick("CMUOsteoCalc", FixedPoint2.New(1), FixedPoint2.New(5)));
+
+        var result = HumanMedicalLedger.ApplyTransaction(medical, plan.Transaction);
+        var hairline = HumanMedicalLedger.GetRegion(medical, BodyRegion.LeftArm);
+        var simple = HumanMedicalLedger.GetRegion(medical, BodyRegion.RightArm);
+        var compound = HumanMedicalLedger.GetRegion(medical, BodyRegion.Chest);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Applied, Is.True);
+            Assert.That(hairline.Skeletal.Broken, Is.False);
+            Assert.That(hairline.Skeletal.Severity, Is.EqualTo(FractureSeverity.None));
+            Assert.That(simple.Skeletal.Broken, Is.False);
+            Assert.That(simple.Skeletal.Severity, Is.EqualTo(FractureSeverity.None));
+            Assert.That(compound.Skeletal.Broken, Is.True);
+            Assert.That(compound.Skeletal.Severity, Is.EqualTo(FractureSeverity.Compound));
+        });
+    }
+
+    [Test]
     public void OxycodoneCriticalOverdoseDamagesBrainAndLiver()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -94,6 +124,16 @@ public sealed class HumanChemicalLedgerRulesTest
             Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Brain).Damage, Is.EqualTo(FixedPoint2.New(4)));
             Assert.That(HumanMedicalLedger.GetOrgan(medical, OrganSlot.Liver).Damage, Is.EqualTo(FixedPoint2.New(12)));
         });
+    }
+
+    private static void BreakRegion(
+        HumanMedicalComponent medical,
+        BodyRegion region,
+        FractureSeverity severity)
+    {
+        var transaction = new MedicalTransaction(region);
+        transaction.Add(MedicalEffect.SetSkeletalState(region, broken: true, splinted: false, severity));
+        HumanMedicalLedger.ApplyTransaction(medical, transaction);
     }
 
     private static void AddInjury(

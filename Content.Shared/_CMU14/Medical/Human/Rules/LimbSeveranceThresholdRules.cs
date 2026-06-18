@@ -5,8 +5,8 @@ namespace Content.Shared._CMU14.Medical.Human.Rules;
 
 public static class LimbSeveranceThresholdRules
 {
-    private static readonly FixedPoint2 HeadSeveranceThreshold = FixedPoint2.New(185);
-    private static readonly FixedPoint2 LimbSeveranceThreshold = FixedPoint2.New(120);
+    private static readonly FixedPoint2 HeadSeveranceThreshold = FixedPoint2.New(275);
+    private static readonly FixedPoint2 LimbSeveranceThreshold = FixedPoint2.New(180);
 
     public static bool ShouldSever(
         BodyRegion region,

@@ -47,6 +47,7 @@
     blacklist:
       components:
       - Xeno
+  - type: RMCStrapNoDrawDepthChange
 
 - type: entity
   parent: [ CMSeatBase, ChairFolding ]

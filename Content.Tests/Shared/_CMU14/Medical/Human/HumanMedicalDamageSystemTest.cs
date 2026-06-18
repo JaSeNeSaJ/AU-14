@@ -132,6 +132,7 @@ public sealed class HumanMedicalDamageSystemTest
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: false, isSynth: false, isXeno: false), Is.False);
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: true, isXeno: false), Is.False);
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: false, isXeno: true), Is.False);
+            Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: false, isXeno: false, medicalEnabled: false), Is.False);
         });
     }
 
@@ -187,6 +188,67 @@ public sealed class HumanMedicalDamageSystemTest
             Assert.That(increased.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.New(12.5)));
             Assert.That(nextProjected.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.New(11)));
             Assert.That(cleared.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.Zero));
+        });
+    }
+
+    [Test]
+    public void DefibrillatorHealingRepairsHumanLedgerBruteAndBurn()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        var arm = medical.Regions[(int) BodyRegion.LeftArm];
+        arm.BruteDamage = FixedPoint2.New(15);
+        arm.BurnDamage = FixedPoint2.New(12);
+        medical.Regions[(int) BodyRegion.LeftArm] = arm;
+        medical.Injuries.Add(new InjuryRecord
+        {
+            Id = 1,
+            Region = BodyRegion.LeftArm,
+            Kind = InjuryKind.Bruise,
+            Stage = InjuryStage.Moderate,
+            Damage = FixedPoint2.New(15),
+        });
+        medical.Injuries.Add(new InjuryRecord
+        {
+            Id = 2,
+            Region = BodyRegion.LeftArm,
+            Kind = InjuryKind.Burn,
+            Stage = InjuryStage.Moderate,
+            Damage = FixedPoint2.New(12),
+        });
+
+        var heal = new DamageSpecifier
+        {
+            DamageDict =
+            {
+                ["Blunt"] = FixedPoint2.New(-10),
+                ["Heat"] = FixedPoint2.New(-8),
+                ["Poison"] = FixedPoint2.New(-5),
+            },
+        };
+
+        var transaction = HumanMedicalDefibrillatorHealingSystem.CreateHealingTransaction(
+            medical,
+            heal,
+            out var remainingHeal);
+
+        Assert.That(transaction, Is.Not.Null);
+        var result = HumanMedicalLedger.ApplyTransaction(medical, transaction!);
+        var healedArm = HumanMedicalLedger.GetRegion(medical, BodyRegion.LeftArm);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Applied, Is.True);
+            Assert.That(healedArm.BruteDamage, Is.EqualTo(FixedPoint2.New(5)));
+            Assert.That(healedArm.BurnDamage, Is.EqualTo(FixedPoint2.New(4)));
+            Assert.That(medical.Injuries, Has.Some.Matches<InjuryRecord>(injury =>
+                injury.Kind == InjuryKind.Bruise &&
+                injury.Damage == FixedPoint2.New(5)));
+            Assert.That(medical.Injuries, Has.Some.Matches<InjuryRecord>(injury =>
+                injury.Kind == InjuryKind.Burn &&
+                injury.Damage == FixedPoint2.New(4)));
+            Assert.That(remainingHeal.DamageDict, Does.Not.ContainKey("Blunt"));
+            Assert.That(remainingHeal.DamageDict, Does.Not.ContainKey("Heat"));
+            Assert.That(remainingHeal.DamageDict["Poison"], Is.EqualTo(FixedPoint2.New(-5)));
         });
     }
 

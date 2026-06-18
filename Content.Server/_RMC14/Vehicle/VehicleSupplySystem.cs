@@ -285,8 +285,12 @@ public sealed partial class VehicleSupplySystem : EntitySystem
         var liftQuery = EntityQueryEnumerator<VehicleSupplyLiftComponent>();
         while (liftQuery.MoveNext(out var uid, out var lift))
         {
-            if (GetStoredCount(lift, unlock) > 0 || lift.Deployed.Contains(unlock))
+            if (GetStoredCount(lift, unlock) > 0 ||
+                lift.Deployed.Contains(unlock) ||
+                lift.Consumed.Contains(unlock))
+            {
                 continue;
+            }
 
             AddStored(lift, unlock);
             Dirty(uid, lift);
@@ -332,8 +336,11 @@ public sealed partial class VehicleSupplySystem : EntitySystem
                     continue;
 
                 var key = Normalize(entry.Vehicle.Id);
-                if (lift.Comp.Deployed.Contains(key))
+                if (lift.Comp.Deployed.Contains(key) ||
+                    lift.Comp.Consumed.Contains(key))
+                {
                     continue;
+                }
 
                 if (GetStoredCount(lift.Comp, key) > 0)
                     continue;
@@ -635,7 +642,11 @@ public sealed partial class VehicleSupplySystem : EntitySystem
         if (Deleted(active))
         {
             if (!string.IsNullOrWhiteSpace(comp.ActiveVehicleId))
-                comp.Deployed.Remove(Normalize(comp.ActiveVehicleId));
+            {
+                var key = Normalize(comp.ActiveVehicleId);
+                comp.Deployed.Remove(key);
+                comp.Consumed.Add(key);
+            }
 
             comp.ActiveVehicle = null;
             comp.ActiveVehicleId = string.Empty;
@@ -749,6 +760,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
         lift.Comp.PendingVehicle = string.Empty;
         lift.Comp.PendingVehicleEntity = null;
         lift.Comp.Deployed.Add(key);
+        lift.Comp.Consumed.Add(key);
 
         ApplyPendingLoadout(vehicle, lift.Comp);
         SpawnPendingBundle(lift);
@@ -887,8 +899,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
         {
             var key = Normalize(comp.ActiveVehicleId);
             comp.Deployed.Remove(key);
-            AddStored(comp, key);
-            AddStoredEntity(comp, key, active);
+            comp.Consumed.Add(key);
         }
 
         _transform.SetParent(active, EntityUid.Invalid);
