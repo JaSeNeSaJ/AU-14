@@ -16,5 +16,8 @@ public sealed partial class CMUDeployableZLevelLadderComponent : Component
     public EntProtoId UpperPrototype = "CMUZLevelLadderThroughDown3";
 
     [DataField, AutoNetworkedField]
+    public EntProtoId PackedPrototype = "CMUDeployableZLevelLadder";
+
+    [DataField, AutoNetworkedField]
     public float ExistingLadderRadius = 0.3f;
 }

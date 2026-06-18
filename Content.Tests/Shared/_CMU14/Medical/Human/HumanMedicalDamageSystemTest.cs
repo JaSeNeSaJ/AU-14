@@ -134,6 +134,38 @@ public sealed class HumanMedicalDamageSystemTest
     }
 
     [Test]
+    public void LedgerDamageProjectionStabilizesSubPointHealingDeltasForHealthHud()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        var region = medical.Regions[(int) BodyRegion.RightArm];
+        region.BruteDamage = FixedPoint2.New(11.75);
+        medical.Regions[(int) BodyRegion.RightArm] = region;
+
+        var existing = Damage("Blunt", 12);
+        var projected = HumanMedicalDamageableBridgeSystem.BuildProjectedDamage(medical, existing);
+
+        region.BruteDamage = FixedPoint2.New(12.5);
+        medical.Regions[(int) BodyRegion.RightArm] = region;
+        var increased = HumanMedicalDamageableBridgeSystem.BuildProjectedDamage(medical, existing);
+
+        region.BruteDamage = FixedPoint2.New(11);
+        medical.Regions[(int) BodyRegion.RightArm] = region;
+        var nextProjected = HumanMedicalDamageableBridgeSystem.BuildProjectedDamage(medical, existing);
+
+        region.BruteDamage = FixedPoint2.Zero;
+        medical.Regions[(int) BodyRegion.RightArm] = region;
+        var cleared = HumanMedicalDamageableBridgeSystem.BuildProjectedDamage(medical, existing);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(projected.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.New(12)));
+            Assert.That(increased.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.New(12.5)));
+            Assert.That(nextProjected.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.New(11)));
+            Assert.That(cleared.DamageDict["Blunt"], Is.EqualTo(FixedPoint2.Zero));
+        });
+    }
+
+    [Test]
     public void AnatomyRegionOverridesBodyPartFallback()
     {
         var anatomy = new AnatomyRegionComponent

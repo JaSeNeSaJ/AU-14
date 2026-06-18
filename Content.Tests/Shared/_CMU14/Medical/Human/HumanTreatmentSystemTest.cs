@@ -35,6 +35,33 @@ public sealed class HumanTreatmentSystemTest
     }
 
     [Test]
+    public void GauzeClosesSuppressedSurfaceBleedSource()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        AddBleed(medical, BodyRegion.Chest, BleedKind.External, FixedPoint2.New(2));
+        var bleedId = medical.BleedSources[0].Id;
+
+        var suppress = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.TemporaryBleedSuppression, BodyRegion.Chest));
+        var result = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.Gauze, BodyRegion.Chest, BleedSourceId: bleedId));
+        var bleed = medical.BleedSources[0];
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(suppress.Applied, Is.True);
+            Assert.That(result.Applied, Is.True);
+            Assert.That(result.DirtyFlags.HasFlag(MedicalDirtyFlags.Bleeding), Is.True);
+            Assert.That(bleed.Active, Is.False);
+            Assert.That(bleed.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(bleed.Treatment.HasFlag(TreatmentFlags.Bandaged), Is.True);
+            Assert.That(bleed.Treatment.HasFlag(TreatmentFlags.Closed), Is.True);
+        });
+    }
+
+    [Test]
     public void BleedSourceArterialFlagSurvivesTransaction()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -206,6 +233,112 @@ public sealed class HumanTreatmentSystemTest
     }
 
     [Test]
+    public void SurgicalLineClosesOnlySurfaceBleedsWithoutTemporarySuppression()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.External, FixedPoint2.New(2));
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Internal, FixedPoint2.New(1));
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Stump, FixedPoint2.New(3));
+
+        var result = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.SurgicalLine, BodyRegion.LeftLeg));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Applied, Is.True);
+            Assert.That(result.DirtyFlags.HasFlag(MedicalDirtyFlags.Bleeding), Is.True);
+        });
+
+        var external = medical.BleedSources[0];
+        var internalBleed = medical.BleedSources[1];
+        var stump = medical.BleedSources[2];
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(external.Active, Is.False);
+            Assert.That(external.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.Sutured), Is.True);
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.Closed), Is.True);
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.False);
+            Assert.That(internalBleed.Active, Is.True);
+            Assert.That(internalBleed.Rate, Is.EqualTo(FixedPoint2.New(1)));
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
+            Assert.That(stump.Active, Is.False);
+            Assert.That(stump.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Sutured), Is.True);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Closed), Is.True);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.False);
+        });
+    }
+
+    [Test]
+    public void SurgicalLineClosesOnlySuppressedSurfaceBleeds()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.External, FixedPoint2.New(2));
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Internal, FixedPoint2.New(1));
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Stump, FixedPoint2.New(3));
+
+        var suppress = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.TemporaryBleedSuppression, BodyRegion.LeftLeg));
+        var result = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.SurgicalLine, BodyRegion.LeftLeg));
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(suppress.Applied, Is.True);
+            Assert.That(result.Applied, Is.True);
+            Assert.That(result.DirtyFlags.HasFlag(MedicalDirtyFlags.Bleeding), Is.True);
+        });
+
+        var external = medical.BleedSources[0];
+        var internalBleed = medical.BleedSources[1];
+        var stump = medical.BleedSources[2];
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(external.Active, Is.False);
+            Assert.That(external.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.Sutured), Is.True);
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.Closed), Is.True);
+            Assert.That(internalBleed.Active, Is.False);
+            Assert.That(internalBleed.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.True);
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
+            Assert.That(stump.Active, Is.False);
+            Assert.That(stump.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Sutured), Is.True);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Closed), Is.True);
+        });
+    }
+
+    [Test]
+    public void SurgicalLineDoesNotCloseInternalBleedExternally()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Internal, FixedPoint2.New(1));
+
+        var result = HumanTreatmentSystem.TryApplyTreatment(
+            medical,
+            new TreatmentAttempt(TreatmentKind.SurgicalLine, BodyRegion.LeftLeg));
+        var internalBleed = medical.BleedSources[0];
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(result.Applied, Is.False);
+            Assert.That(internalBleed.Active, Is.True);
+            Assert.That(internalBleed.Rate, Is.EqualTo(FixedPoint2.New(1)));
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
+            Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
+        });
+    }
+
+    [Test]
     public void SalveTreatsBurnDamageAndBurnInjuriesOverTime()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -357,30 +490,38 @@ public sealed class HumanTreatmentSystemTest
     }
 
     [Test]
-    public void TemporaryBleedSuppressionStopsExternalAndInternalBleedsWithoutClosingThem()
+    public void TemporaryBleedSuppressionStopsSurfaceInternalAndStumpBleedsWithoutClosingThem()
     {
         var medical = HumanMedicalLedger.CreateDefault();
         AddBleed(medical, BodyRegion.LeftLeg, BleedKind.External, FixedPoint2.New(2));
         AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Internal, FixedPoint2.New(1));
+        AddBleed(medical, BodyRegion.LeftLeg, BleedKind.Stump, FixedPoint2.New(3));
 
         var result = HumanTreatmentSystem.TryApplyTreatment(
             medical,
             new TreatmentAttempt(TreatmentKind.TemporaryBleedSuppression, BodyRegion.LeftLeg));
         var external = medical.BleedSources[0];
         var internalBleed = medical.BleedSources[1];
+        var stump = medical.BleedSources[2];
 
         Assert.Multiple(() =>
         {
             Assert.That(result.Applied, Is.True);
             Assert.That(external.Active, Is.False);
             Assert.That(internalBleed.Active, Is.False);
+            Assert.That(stump.Active, Is.False);
             Assert.That(external.Rate, Is.EqualTo(FixedPoint2.Zero));
             Assert.That(internalBleed.Rate, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(stump.Rate, Is.EqualTo(FixedPoint2.Zero));
             Assert.That(external.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.True);
             Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.True);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed), Is.True);
             Assert.That(external.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
             Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Closed), Is.False);
+            Assert.That(external.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
             Assert.That(internalBleed.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
+            Assert.That(stump.Treatment.HasFlag(TreatmentFlags.Sutured), Is.False);
         });
     }
 

@@ -42,7 +42,7 @@ public readonly record struct HumanMovementComplicationResult(
 public static class HumanMovementDebuffRules
 {
     public const float ShrapnelJostlePopupChance = 0.30f;
-    public const float UnsplintedFractureOrganDamageChance = 0.15f;
+    public const float UnsplintedFractureOrganDamageChance = 0.075f;
     public const float UnsplintedFractureInternalBleedChance = 0.02f;
     public const float CrippledLegsDropChance = 0.02f;
     public const float DefaultEmbeddedObjectMovementDamagePerCount = 0.5f;

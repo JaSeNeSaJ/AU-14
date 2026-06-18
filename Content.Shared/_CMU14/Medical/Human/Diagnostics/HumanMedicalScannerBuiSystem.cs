@@ -401,7 +401,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
         {
             if (bleed.Kind != BleedKind.Internal ||
                 !ContainsRegion(regions, bleed.Region) ||
-                (!bleed.Active && !IsBleedSuppressedButNeedsSurgery(bleed)))
+                (!bleed.Active && !IsBleedSuppressedButUnrepaired(bleed)))
             {
                 continue;
             }
@@ -656,7 +656,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
             if (!ContainsRegion(regions, bleed.Region))
                 continue;
 
-            if (bleed.Active || IsBleedSuppressedButNeedsSurgery(bleed))
+            if (bleed.Active || IsBleedSuppressedButUnrepaired(bleed))
                 return true;
         }
 
@@ -800,8 +800,8 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
                     continue;
                 }
 
-                if (IsBleedSuppressedButNeedsSurgery(bleed))
-                    details.Add(localizer("cmu-body-scanner-human-region-bleed-suppressed-needs-surgery"));
+                if (IsBleedSuppressedButUnrepaired(bleed))
+                    details.Add(localizer("cmu-body-scanner-human-region-bleed-suppressed"));
             }
 
             foreach (var foreignObject in detail.ForeignObjects)
@@ -868,7 +868,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
         };
     }
 
-    private static bool IsBleedSuppressedButNeedsSurgery(BleedSource bleed)
+    private static bool IsBleedSuppressedButUnrepaired(BleedSource bleed)
     {
         if (bleed.Treatment.HasFlag(TreatmentFlags.Closed) ||
             bleed.Treatment.HasFlag(TreatmentFlags.Sutured))
