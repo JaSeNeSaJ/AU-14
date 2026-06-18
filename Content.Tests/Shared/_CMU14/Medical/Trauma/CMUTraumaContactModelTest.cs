@@ -17,11 +17,24 @@ public sealed class CMUTraumaContactModelTest
         Assert.Multiple(() =>
         {
             Assert.That(settings.BallisticHighDamageThreshold, Is.EqualTo(FixedPoint2.New(45)));
-            Assert.That(settings.BallisticHeadBoneChance, Is.EqualTo(0.65f));
-            Assert.That(settings.BallisticTorsoBoneChance, Is.EqualTo(0.30f));
-            Assert.That(settings.BallisticArmBoneChance, Is.EqualTo(0.60f));
-            Assert.That(settings.BallisticLegBoneChance, Is.EqualTo(0.60f));
-            Assert.That(settings.BallisticOtherBoneChance, Is.EqualTo(0.35f));
+            Assert.That(settings.BallisticHeadBoneChance, Is.EqualTo(0.13f));
+            Assert.That(settings.BallisticTorsoBoneChance, Is.EqualTo(0.06f));
+            Assert.That(settings.BallisticArmBoneChance, Is.EqualTo(0.12f));
+            Assert.That(settings.BallisticLegBoneChance, Is.EqualTo(0.12f));
+            Assert.That(settings.BallisticOtherBoneChance, Is.EqualTo(0.07f));
+        });
+    }
+
+    [Test]
+    public void DefaultMeleeBoneProfileUsesReducedContactRates()
+    {
+        var settings = CMUTraumaContactSettings.Default;
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(settings.PierceBoneChance, Is.EqualTo(0.04f));
+            Assert.That(settings.SlashBoneChance, Is.EqualTo(0.02f));
+            Assert.That(settings.BluntBoneChance, Is.EqualTo(0.10f));
         });
     }
 
@@ -32,11 +45,11 @@ public sealed class CMUTraumaContactModelTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(settings.BallisticHeadOrganChance, Is.EqualTo(0.08f));
-            Assert.That(settings.BallisticTorsoOrganChance, Is.EqualTo(0.25f));
-            Assert.That(settings.PierceOrganChance, Is.EqualTo(0.175f));
-            Assert.That(settings.SlashOrganChance, Is.EqualTo(0.10f));
-            Assert.That(settings.BluntOrganChance, Is.EqualTo(0.05f));
+            Assert.That(settings.BallisticHeadOrganChance, Is.EqualTo(0.016f));
+            Assert.That(settings.BallisticTorsoOrganChance, Is.EqualTo(0.05f));
+            Assert.That(settings.PierceOrganChance, Is.EqualTo(0.035f));
+            Assert.That(settings.SlashOrganChance, Is.EqualTo(0.02f));
+            Assert.That(settings.BluntOrganChance, Is.EqualTo(0.01f));
         });
     }
 

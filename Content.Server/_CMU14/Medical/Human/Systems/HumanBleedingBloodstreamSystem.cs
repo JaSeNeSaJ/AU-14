@@ -19,16 +19,6 @@ public sealed partial class HumanBleedingBloodstreamSystem : EntitySystem
         SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>(OnLedgerChanged);
     }
 
-    public override void Update(float frameTime)
-    {
-        var query = EntityQueryEnumerator<HumanMedicalComponent, BloodstreamComponent>();
-        while (query.MoveNext(out var uid, out var medical, out _))
-        {
-            var tick = HumanBleedingSystem.CalculateBleedingTick(medical);
-            ReconcileBleedAmount(uid, tick.TotalRate);
-        }
-    }
-
     private void OnBleedingTick(ref HumanBleedingTickEvent args)
     {
         ReconcileBleedAmount(args.Body, args.TotalRate);
