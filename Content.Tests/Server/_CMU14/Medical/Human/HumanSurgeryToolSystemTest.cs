@@ -147,6 +147,34 @@ public sealed class HumanSurgeryToolSystemTest
     }
 
     [Test]
+    public void AutoSurgeryModeStartsValidAttemptFromSameClick()
+    {
+        var text = SliceBetween(
+            ReadSurgeryToolSystem(),
+            "public bool TryHandleSurgeryToolInteraction",
+            "var skillMultiplier");
+        var procedureSelection = text.IndexOf("TryCreateSurgeryAttempt(user, patient, tool, medical, painkilled, out var attempt)", StringComparison.Ordinal);
+        var noAttemptMessage = text.IndexOf("GetNoSurgeryAttemptMessage(user, medical)", StringComparison.Ordinal);
+        var reserve = text.IndexOf("_humanSurgery.TryReserveOperation(patient, attempt", StringComparison.Ordinal);
+        var conditionGate = text.IndexOf("TryValidateCM13SurgeryConditions(user, patient, tool, medical, attempt", StringComparison.Ordinal);
+        var armorGate = text.IndexOf("TryValidateArmorForSurgery(patient, attempt.Region", StringComparison.Ordinal);
+        var modeGate = text.IndexOf("if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))", StringComparison.Ordinal);
+        var autoEnable = text.IndexOf("_humanSurgeryMode.SetSurgeryMode(user, true);", StringComparison.Ordinal);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(procedureSelection, Is.GreaterThanOrEqualTo(0));
+            Assert.That(noAttemptMessage, Is.GreaterThan(procedureSelection));
+            Assert.That(reserve, Is.GreaterThan(noAttemptMessage));
+            Assert.That(conditionGate, Is.GreaterThan(reserve));
+            Assert.That(armorGate, Is.GreaterThan(conditionGate));
+            Assert.That(modeGate, Is.GreaterThan(armorGate));
+            Assert.That(autoEnable, Is.GreaterThan(modeGate));
+            Assert.That(text, Does.Not.Contain("cmu-medical-surgery-mode-required"));
+        });
+    }
+
+    [Test]
     public void AutoSurgeryToolPathSkipsMissingRegionsExceptStumps()
     {
         var text = ReadSurgeryToolSystem();

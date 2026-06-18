@@ -859,19 +859,6 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             return false;
         }
 
-        if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))
-        {
-            if (!popupNoProcedure)
-                return false;
-
-            _popup.PopupEntity(
-                Loc.GetString("cmu-medical-surgery-mode-required"),
-                patient,
-                user,
-                PopupType.SmallCaution);
-            return true;
-        }
-
         var painkilled = HasPainSuppressionForSurgery(patient);
         if (!TryCreateSurgeryAttempt(user, patient, tool, medical, painkilled, out var attempt))
         {
@@ -928,6 +915,9 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             _popup.PopupEntity(reason, patient, user, PopupType.SmallCaution);
             return true;
         }
+
+        if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))
+            _humanSurgeryMode.SetSurgeryMode(user, true);
 
         var skillMultiplier = _skills.GetSkillDelayMultiplier(user, SurgerySkill);
         var delay = HumanSurgeryRules.GetStepDuration(
