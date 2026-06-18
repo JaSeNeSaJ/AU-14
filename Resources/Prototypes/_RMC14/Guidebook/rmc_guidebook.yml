@@ -88,8 +88,6 @@
   priority: 2
   name: "Medical V3"
   text: "/ServerInfo/Guidebook/_RMC14/Guides/AU14MedicalV2.xml"
-  children:
-  - MedicalSurgery
 
 - type: guideEntry
   parent: RMC
