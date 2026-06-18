@@ -322,10 +322,6 @@
           name: LTAAAP minigun
           item: VehicleTankLTAAAPMinigun
           slot: primary::turret-cannon
-        - id: VehicleTankLTBCannon
-          name: LTB cannon
-          item: VehicleTankLTBCannon
-          slot: primary::turret-cannon
         - id: VehicleTankAceAutocannon
           name: ACE autocannon
           item: VehicleTankAceAutocannon
@@ -418,7 +414,6 @@
       - VehicleTankArmorPaladin
       - VehicleTankSnowplow
       - VehicleTankLTAAAPMinigun
-      - VehicleTankLTBCannon
       - VehicleTankAceAutocannon
       - VehicleTankDragonFlamer
       - VehicleTankFlamer
@@ -441,10 +436,6 @@
           name: P-17702 rotary cannon
           item: VehicleSPPTankP17702
           slot: primary::turret-cannon
-        - id: VehicleSPPTankRailgun
-          name: railgun
-          item: VehicleSPPTankRailgun
-          slot: primary::turret-cannon
         - id: VehicleSPPTankHJ35TLauncher
           name: HJ35T launcher
           item: VehicleSPPTankHJ35TLauncher
@@ -496,7 +487,6 @@
       - VehicleTankTreads
       - VehicleTankReinforcedTreads
       - VehicleSPPTankP17702
-      - VehicleSPPTankRailgun
       - VehicleSPPTankHJ35TLauncher
       - VehicleSPPTankCupola
       - VehicleSPPTankReactiveArmor
@@ -515,10 +505,6 @@
           name: P-17702 rotary cannon
           item: VehicleSPPTankP17702
           slot: primary::turret-cannon
-        - id: VehicleSPPTankRailgun
-          name: railgun
-          item: VehicleSPPTankRailgun
-          slot: primary::turret-cannon
         - id: VehicleSPPTankHJ35TLauncher
           name: HJ35T launcher
           item: VehicleSPPTankHJ35TLauncher
@@ -570,7 +556,6 @@
       - VehicleTankTreads
       - VehicleTankReinforcedTreads
       - VehicleSPPTankP17702
-      - VehicleSPPTankRailgun
       - VehicleSPPTankHJ35TLauncher
       - VehicleSPPTankCupola
       - VehicleSPPTankReactiveArmor

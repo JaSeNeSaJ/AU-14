@@ -87,6 +87,9 @@ public sealed partial class VehicleSupplyLiftComponent : Component
     public readonly HashSet<string> Deployed = new();
 
     [NonSerialized]
+    public readonly HashSet<string> Consumed = new();
+
+    [NonSerialized]
     public readonly Dictionary<string, int> Stored = new();
 
     [NonSerialized]

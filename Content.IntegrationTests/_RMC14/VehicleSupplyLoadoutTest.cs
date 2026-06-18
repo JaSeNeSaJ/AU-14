@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Content.Server._RMC14.Vehicle;
@@ -7,6 +8,7 @@ using Content.Shared.UserInterface;
 using NUnit.Framework;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Timing;
 
 namespace Content.IntegrationTests._RMC14;
 
@@ -203,6 +205,69 @@ public sealed class VehicleSupplyLoadoutTest
                 AssertLoadoutOption(entries, vehicle, "support", "VehicleTankTreads", "wheel-1");
                 AssertLoadoutOption(entries, vehicle, "support", "VehicleTankReinforcedTreads", "wheel-1");
             }
+
+            AssertNoLoadoutOption(entries, "VehicleTank", "primary", "VehicleTankLTBCannon");
+            AssertNoLoadoutOption(entries, "VehicleSPPTank", "primary", "VehicleSPPTankRailgun");
+            AssertNoLoadoutOption(entries, "VehicleSPPTankCommand", "primary", "VehicleSPPTankRailgun");
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task LoweredConsumedVehicleDoesNotReturnToConsole()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        EntityUid consoleUid = default;
+        EntityUid liftUid = default;
+        const string vehicleId = "VehicleHumvee";
+        var vehicleKey = vehicleId.ToLowerInvariant();
+
+        await server.WaitPost(() =>
+        {
+            consoleUid = server.EntMan.SpawnEntity(ConsoleId, map.GridCoords);
+            liftUid = server.EntMan.SpawnEntity("VehicleLift", map.GridCoords);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitPost(() =>
+        {
+            var entMan = server.EntMan;
+            var timing = server.ResolveDependency<IGameTiming>();
+            var vehicle = entMan.SpawnEntity(vehicleId, map.GridCoords);
+            var lift = entMan.GetComponent<VehicleSupplyLiftComponent>(liftUid);
+
+            lift.Stored.Remove(vehicleKey);
+            lift.StoredEntities.Remove(vehicleKey);
+            lift.ActiveVehicle = vehicle;
+            lift.ActiveVehicleId = vehicleId;
+            lift.Deployed.Add(vehicleKey);
+            lift.Mode = VehicleSupplyLiftMode.Lowering;
+            lift.ToggledAt = timing.CurTime - TimeSpan.FromSeconds(5);
+            lift.Busy = true;
+            entMan.Dirty(liftUid, lift);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitPost(() =>
+        {
+            var ev = new BeforeActivatableUIOpenEvent(consoleUid);
+            server.EntMan.EventBus.RaiseLocalEvent(consoleUid, ev);
+        });
+
+        await server.WaitAssertion(() =>
+        {
+            var ui = server.EntMan.System<SharedUserInterfaceSystem>();
+            Assert.That(ui.TryGetUiState<VehicleSupplyBuiState>(consoleUid, VehicleSupplyUIKey.Key, out var state), Is.True);
+            Assert.That(state!.Available.Select(v => v.Id), Does.Not.Contain(vehicleId));
+
+            var lift = server.EntMan.GetComponent<VehicleSupplyLiftComponent>(liftUid);
+            Assert.That(lift.Stored.Keys, Does.Not.Contain(vehicleKey));
+            Assert.That(lift.Deployed, Does.Not.Contain(vehicleKey));
         });
 
         await pair.CleanReturnAsync();
@@ -386,7 +451,7 @@ public sealed class VehicleSupplyLoadoutTest
             var entry = console!.Vehicles.Single(v => v.Vehicle.Id == "VehicleTank");
             var selections = new Dictionary<string, string>
             {
-                ["primary"] = "VehicleTankLTBCannon",
+                ["primary"] = "VehicleTankAceAutocannon",
                 ["armor"] = "VehicleTankArmorBallistic",
                 ["support"] = "VehicleTankWarningArray",
             };
@@ -399,7 +464,7 @@ public sealed class VehicleSupplyLoadoutTest
             Assert.That(itemSlots.TryGetSlot(vehicle, "primary", out var turretSlot), Is.True);
             Assert.That(turretSlot!.Item, Is.Not.Null);
 
-            AssertSlotItem(entMan, itemSlots, turretSlot.Item!.Value, "turret-cannon", "VehicleTankLTBCannon");
+            AssertSlotItem(entMan, itemSlots, turretSlot.Item!.Value, "turret-cannon", "VehicleTankAceAutocannon");
         });
 
         await pair.CleanReturnAsync();
@@ -512,7 +577,6 @@ public sealed class VehicleSupplyLoadoutTest
         "VehicleTankArmorCaustic",
         "VehicleTankArmorPaladin",
         "VehicleTankSnowplow",
-        "VehicleTankLTBCannon",
         "VehicleTankLTAAAPMinigun",
         "VehicleTankAceAutocannon",
         "VehicleTankDragonFlamer",
@@ -534,7 +598,6 @@ public sealed class VehicleSupplyLoadoutTest
         "VehicleTankTreads",
         "VehicleTankReinforcedTreads",
         "VehicleSPPTankP17702",
-        "VehicleSPPTankRailgun",
         "VehicleSPPTankHJ35TLauncher",
         "VehicleSPPTankCupola",
         "VehicleSPPTankReactiveArmor",
@@ -605,6 +668,18 @@ public sealed class VehicleSupplyLoadoutTest
         Assert.That(option, Is.Not.Null, $"{vehicleId} {categoryId} {optionId}");
         Assert.That(option!.Item.Id, Is.EqualTo(optionId), $"{vehicleId} {categoryId} {optionId}");
         Assert.That(option.Slot, Is.EqualTo(slotId), $"{vehicleId} {categoryId} {optionId}");
+    }
+
+    private static void AssertNoLoadoutOption(
+        IReadOnlyDictionary<string, VehicleSupplyEntry> entries,
+        string vehicleId,
+        string categoryId,
+        string optionId)
+    {
+        Assert.That(entries.TryGetValue(vehicleId, out var entry), Is.True, vehicleId);
+        var category = entry!.LoadoutCategories.Single(c => c.Id == categoryId);
+        Assert.That(category.Options.Select(o => o.Id), Does.Not.Contain(optionId), $"{vehicleId} {categoryId}");
+        Assert.That(entry.Hardpoints.Select(h => h.Id), Does.Not.Contain(optionId), $"{vehicleId} hardpoints");
     }
 
     private static int CountPrototype(IEntityManager entMan, string prototypeId)
