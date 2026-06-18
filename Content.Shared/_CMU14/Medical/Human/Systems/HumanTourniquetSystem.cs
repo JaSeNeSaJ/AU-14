@@ -27,7 +27,7 @@ public sealed partial class HumanTourniquetSystem : EntitySystem
                 continue;
             }
 
-            _medical.RefreshActiveMarkers(uid, medical);
+            _medical.NotifyLedgerChanged((uid, medical), result);
         }
     }
 

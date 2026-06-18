@@ -1,6 +1,5 @@
 using Content.Shared._CMU14.Medical.Foundation;
 using Content.Shared._CMU14.Medical.Human.Components;
-using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Examine;
@@ -38,20 +37,19 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
         if (ent.Comp.SpeciesType == null)
             return;
 
+        if (_cfg.GetCVar(CMUMedicalCCVars.Enabled) &&
+            HasComp<HumanMedicalComponent>(ent))
+        {
+            return;
+        }
+
         if (!TryComp(ent, out DamageableComponent? damageable))
             return;
 
         using (args.PushGroup(nameof(RMCHealthExaminableSystem), -1))
         {
-            (bool Brute, bool Burn) suppress = TryComp<HumanMedicalComponent>(ent, out var humanMedical)
-                ? GetCmuLocalizedSuppressions(humanMedical)
-                : default;
-
             foreach (var group in ent.Comp.Groups)
             {
-                if ((group == BruteGroup && suppress.Brute) || (group == BurnGroup && suppress.Burn))
-                    continue;
-
                 if (!damageable.DamagePerGroup.TryGetValue(group, out var groupDamage))
                     continue;
 
@@ -70,55 +68,5 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
                 }
             }
         }
-    }
-
-    private (bool Brute, bool Burn) GetCmuLocalizedSuppressions(HumanMedicalComponent medical)
-    {
-        if (!_cfg.GetCVar(CMUMedicalCCVars.Enabled))
-            return default;
-
-        var showBones = _cfg.GetCVar(CMUMedicalCCVars.BoneEnabled);
-        var showWounds = _cfg.GetCVar(CMUMedicalCCVars.WoundsEnabled);
-        var brute = false;
-        var burn = false;
-
-        foreach (var region in medical.Regions)
-        {
-            if (showBones && region.Skeletal.Broken)
-                brute = true;
-
-            if (showWounds)
-            {
-                if (region.BruteDamage > FixedPoint2.Zero)
-                    brute = true;
-                if (region.BurnDamage > FixedPoint2.Zero)
-                    burn = true;
-            }
-
-            if (brute && burn)
-                break;
-        }
-
-        if (showWounds && (!brute || !burn))
-        {
-            foreach (var injury in medical.Injuries)
-            {
-                if (injury.Flags.HasFlag(InjuryFlags.Closed) ||
-                    injury.Flags.HasFlag(InjuryFlags.Sutured))
-                {
-                    continue;
-                }
-
-                if (injury.Kind == InjuryKind.Burn)
-                    burn = true;
-                else
-                    brute = true;
-
-                if (brute && burn)
-                    break;
-            }
-        }
-
-        return (brute, burn);
     }
 }

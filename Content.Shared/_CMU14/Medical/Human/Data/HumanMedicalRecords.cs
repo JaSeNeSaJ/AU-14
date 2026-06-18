@@ -29,6 +29,12 @@ public partial record struct SkeletalState
         set => SetFlag(SkeletalStateFlags.Splinted, value);
     }
 
+    public bool Casted
+    {
+        readonly get => Flags.HasFlag(SkeletalStateFlags.Casted);
+        set => SetFlag(SkeletalStateFlags.Casted, value);
+    }
+
     public bool Knitting
     {
         readonly get => Flags.HasFlag(SkeletalStateFlags.Knitting);
@@ -58,6 +64,8 @@ public partial record struct SkeletalState
         readonly get => Flags.HasFlag(SkeletalStateFlags.BoneGrafted);
         set => SetFlag(SkeletalStateFlags.BoneGrafted, value);
     }
+
+    public readonly bool Stabilized => Splinted || Casted;
 
     private void SetFlag(SkeletalStateFlags flag, bool enabled)
     {

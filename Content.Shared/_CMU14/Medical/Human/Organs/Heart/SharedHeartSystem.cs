@@ -4,6 +4,7 @@ using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
 using Content.Shared._CMU14.Medical.Human.Organs.Heart.Events;
 using Content.Shared._RMC14.Body;
+using Content.Shared._RMC14.Synth;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
@@ -66,6 +67,11 @@ public abstract partial class SharedHeartSystem : EntitySystem
             return;
         if (TerminatingOrDeleted(args.OldBody))
             return;
+        if (HasComp<SynthComponent>(args.OldBody) ||
+            !HasComp<HumanMedicalComponent>(args.OldBody))
+        {
+            return;
+        }
 
         var missing = EnsureComp<MissingHeartComponent>(args.OldBody);
         missing.NoPulseSince ??= Timing.CurTime;
@@ -128,6 +134,14 @@ public abstract partial class SharedHeartSystem : EntitySystem
         var missingQuery = EntityQueryEnumerator<MissingHeartComponent>();
         while (missingQuery.MoveNext(out var uid, out var missing))
         {
+            if (HasComp<SynthComponent>(uid) ||
+                !HasComp<HumanMedicalComponent>(uid))
+            {
+                RemCompDeferred<MissingHeartComponent>(uid);
+                Status.TryRemoveStatusEffect(uid, CardiacArrest);
+                continue;
+            }
+
             if (TryComp<HumanMedicalComponent>(uid, out var medical) &&
                 !HumanOrganLedgerUtility.IsMissing(medical, OrganSlot.Heart) &&
                 Body.GetBodyOrganEntityComps<HeartComponent>(uid).Count != 0)

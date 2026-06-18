@@ -3,6 +3,7 @@ using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
 using Content.Shared._RMC14.Medical.Unrevivable;
+using Content.Shared._RMC14.Synth;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
@@ -58,6 +59,8 @@ public abstract partial class SharedBrainSystem : EntitySystem
         if (!_medicalEnabled || !_organEnabled)
             return;
         if (TerminatingOrDeleted(args.OldBody))
+            return;
+        if (HasComp<SynthComponent>(args.OldBody))
             return;
 
         if (!ent.Comp.PermadeathApplied)

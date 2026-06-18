@@ -179,6 +179,7 @@ public enum SkeletalStateFlags : byte
     BoneGelApplied = 1 << 4,
     BoneSet = 1 << 5,
     BoneGrafted = 1 << 6,
+    Casted = 1 << 7,
 }
 
 [Flags, Serializable, NetSerializable]
