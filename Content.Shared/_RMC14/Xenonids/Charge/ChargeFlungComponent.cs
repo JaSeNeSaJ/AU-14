@@ -13,6 +13,9 @@ namespace Content.Shared._RMC14.Xenonids.Charge;
 public sealed partial class ChargeFlungComponent : Component
 {
     [DataField, AutoNetworkedField]
+    public EntityUid? Charger;
+
+    [DataField, AutoNetworkedField]
     public DamageSpecifier CollisionDamage = new()
     {
         DamageDict = { ["Blunt"] = 30 }

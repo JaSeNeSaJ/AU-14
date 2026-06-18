@@ -132,6 +132,7 @@ public sealed class HumanMedicalDamageSystemTest
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: false, isSynth: false, isXeno: false), Is.False);
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: true, isXeno: false), Is.False);
             Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: false, isXeno: true), Is.False);
+            Assert.That(HumanMedicalDamageSystem.CanProcessBody(hasHumanLedger: true, isSynth: false, isXeno: false, medicalEnabled: false), Is.False);
         });
     }
 
