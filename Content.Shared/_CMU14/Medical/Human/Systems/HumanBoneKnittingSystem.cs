@@ -2,18 +2,30 @@ using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared.FixedPoint;
 using Robust.Shared.IoC;
+using Robust.Shared.Timing;
 
 namespace Content.Shared._CMU14.Medical.Human.Systems;
 
 public sealed partial class HumanBoneKnittingSystem : EntitySystem
 {
     [Dependency] private SharedHumanMedicalSystem _medical = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     public override void Update(float frameTime)
     {
+        var now = _timing.CurTime;
         var query = EntityQueryEnumerator<HumanMedicalComponent, ActiveBoneKnittingComponent>();
-        while (query.MoveNext(out var uid, out var medical, out _))
+        while (query.MoveNext(out var uid, out var medical, out var active))
         {
+            if (!HumanMedicalWorkerTiming.TryGetElapsed(
+                    now,
+                    ref active.LastUpdate,
+                    ref active.NextUpdate,
+                    out var elapsed))
+            {
+                continue;
+            }
+
             var tick = CalculateBoneKnittingTick(medical);
             if (!tick.HasActiveKnitting)
             {
@@ -21,7 +33,7 @@ public sealed partial class HumanBoneKnittingSystem : EntitySystem
                 continue;
             }
 
-            var result = HumanMedicalLedger.AdvanceBoneKnitting(medical, FixedPoint2.New(frameTime));
+            var result = HumanMedicalLedger.AdvanceBoneKnitting(medical, elapsed);
             if (!result.Applied)
             {
                 _medical.RefreshActiveMarkers(uid, medical);
@@ -30,7 +42,7 @@ public sealed partial class HumanBoneKnittingSystem : EntitySystem
 
             _medical.NotifyLedgerChanged((uid, medical), result);
 
-            var ev = new HumanBoneKnittingTickEvent(uid, result, tick.ActiveRegions, frameTime);
+            var ev = new HumanBoneKnittingTickEvent(uid, result, tick.ActiveRegions, elapsed.Float());
             RaiseLocalEvent(uid, ref ev);
         }
     }

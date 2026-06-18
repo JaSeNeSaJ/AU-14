@@ -48,6 +48,7 @@ public static class HumanMedicalLedger
         };
 
         medical.Summary = MedicalSummaryBuilder.Build(medical);
+        medical.SummaryInitialized = true;
         return medical;
     }
 
@@ -68,8 +69,11 @@ public static class HumanMedicalLedger
         medical.ForeignObjects ??= new List<ForeignObjectRecord>();
         medical.DetachedLimbs ??= new List<DetachedLimbRecord>();
 
-        if (medical.Summary.Revision == 0 && medical.DirtyFlags == MedicalDirtyFlags.None)
+        if (!medical.SummaryInitialized && medical.DirtyFlags == MedicalDirtyFlags.None)
+        {
             medical.Summary = MedicalSummaryBuilder.Build(medical);
+            medical.SummaryInitialized = true;
+        }
     }
 
     public static void ResetToHealthy(HumanMedicalComponent medical)
@@ -130,7 +134,8 @@ public static class HumanMedicalLedger
         if (!medical.DirtyFlags.HasFlag(MedicalDirtyFlags.Summary))
             return false;
 
-        medical.Summary = MedicalSummaryBuilder.Build(medical);
+        medical.Summary = MedicalSummaryBuilder.BuildForCurrentRevision(medical, medical.Summary);
+        medical.SummaryInitialized = true;
         medical.DirtyFlags &= ~MedicalDirtyFlags.Summary;
         return true;
     }
@@ -1682,6 +1687,7 @@ public static class HumanMedicalLedger
             return false;
         }
 
+        region.Skeletal.Splinted = true;
         region.Skeletal.Casted = true;
         region.Skeletal.Knitting = true;
         region.Skeletal.KnittingSecondsRemaining = effect.Amount;

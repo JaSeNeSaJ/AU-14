@@ -69,7 +69,7 @@ public sealed class HumanMedicalScannerBuiSystem : EntitySystem
     public static HumanMedicalLedgerDetail BuildFullLedgerDetail(HumanMedicalComponent medical)
     {
         var summary = medical.DirtyFlags.HasFlag(MedicalDirtyFlags.Summary)
-            ? MedicalSummaryBuilder.Build(medical)
+            ? MedicalSummaryBuilder.BuildForCurrentRevision(medical, medical.Summary)
             : medical.Summary;
 
         return new HumanMedicalLedgerDetail(

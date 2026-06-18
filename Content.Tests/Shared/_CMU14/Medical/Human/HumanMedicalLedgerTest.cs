@@ -93,6 +93,51 @@ public sealed class HumanMedicalLedgerTest
     }
 
     [Test]
+    public void SummaryRevisionOnlyAdvancesWhenProjectedSummaryChanges()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+        var bleed = new MedicalTransaction(BodyRegion.Chest);
+        bleed.Add(MedicalEffect.AddBleedSource(
+            BodyRegion.Chest,
+            BleedKind.Internal,
+            FixedPoint2.New(2)));
+        HumanMedicalLedger.ApplyTransaction(medical, bleed);
+        HumanMedicalLedger.RebuildSummaryIfDirty(medical);
+        var firstSummaryRevision = medical.Summary.Revision;
+        var firstLedgerRevision = medical.Revision;
+
+        var genericDamage = new MedicalTransaction(BodyRegion.LeftArm);
+        genericDamage.Add(MedicalEffect.AddRegionDamage(
+            BodyRegion.LeftArm,
+            FixedPoint2.New(5),
+            FixedPoint2.Zero));
+        var result = HumanMedicalLedger.ApplyTransaction(medical, genericDamage);
+        var rebuilt = HumanMedicalLedger.RebuildSummaryIfDirty(medical);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(firstSummaryRevision, Is.GreaterThan(0));
+            Assert.That(result.Applied, Is.True);
+            Assert.That(rebuilt, Is.True);
+            Assert.That(medical.Revision, Is.GreaterThan(firstLedgerRevision));
+            Assert.That(medical.Summary.Revision, Is.EqualTo(firstSummaryRevision));
+            Assert.That(medical.Summary.HasInternalBleeding, Is.True);
+        });
+    }
+
+    [Test]
+    public void DefaultLedgerMarksSummaryInitializedEvenWhenSummaryRevisionIsZero()
+    {
+        var medical = HumanMedicalLedger.CreateDefault();
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(medical.SummaryInitialized, Is.True);
+            Assert.That(medical.Summary.Revision, Is.Zero);
+        });
+    }
+
+    [Test]
     public void DefaultLedgerUsesEnumIndexedRegionAndOrganArrays()
     {
         var medical = HumanMedicalLedger.CreateDefault();

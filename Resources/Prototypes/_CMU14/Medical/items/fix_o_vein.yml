@@ -2,7 +2,7 @@
   parent: CMBaseHealingItem
   id: CMUFixOVein
   name: Fix-o-vein
-  description: A single-use vein-sealing applicator used during surgery to repair internal bleeding.
+  description: A reusable vein-sealing applicator used during surgery to repair internal bleeding.
   components:
   - type: Tag
     tags:

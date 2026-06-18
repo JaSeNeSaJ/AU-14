@@ -215,6 +215,77 @@ public sealed class HumanMedicalActiveWorkersTest
     }
 
     [Test]
+    public void SlowLedgerWorkerTimingCoalescesFrameTicks()
+    {
+        var lastUpdate = TimeSpan.Zero;
+        var nextUpdate = TimeSpan.Zero;
+
+        var first = HumanMedicalWorkerTiming.TryGetElapsed(
+            TimeSpan.FromSeconds(100),
+            ref lastUpdate,
+            ref nextUpdate,
+            out var firstElapsed);
+        var early = HumanMedicalWorkerTiming.TryGetElapsed(
+            TimeSpan.FromSeconds(100.5),
+            ref lastUpdate,
+            ref nextUpdate,
+            out var earlyElapsed);
+        var due = HumanMedicalWorkerTiming.TryGetElapsed(
+            TimeSpan.FromSeconds(101.25),
+            ref lastUpdate,
+            ref nextUpdate,
+            out var dueElapsed);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(first, Is.False);
+            Assert.That(firstElapsed, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(early, Is.False);
+            Assert.That(earlyElapsed, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(due, Is.True);
+            Assert.That(dueElapsed, Is.EqualTo(FixedPoint2.New(1.25f)));
+            Assert.That(lastUpdate, Is.EqualTo(TimeSpan.FromSeconds(101.25)));
+            Assert.That(nextUpdate, Is.EqualTo(TimeSpan.FromSeconds(102.25)));
+        });
+    }
+
+    [Test]
+    public void SlowLedgerWorkerTimingCanStartAtZero()
+    {
+        var lastUpdate = TimeSpan.Zero;
+        var nextUpdate = TimeSpan.Zero;
+
+        var first = HumanMedicalWorkerTiming.TryGetElapsed(
+            TimeSpan.Zero,
+            ref lastUpdate,
+            ref nextUpdate,
+            out var firstElapsed);
+        var due = HumanMedicalWorkerTiming.TryGetElapsed(
+            TimeSpan.FromSeconds(1),
+            ref lastUpdate,
+            ref nextUpdate,
+            out var dueElapsed);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(first, Is.False);
+            Assert.That(firstElapsed, Is.EqualTo(FixedPoint2.Zero));
+            Assert.That(due, Is.True);
+            Assert.That(dueElapsed, Is.EqualTo(FixedPoint2.New(1)));
+            Assert.That(lastUpdate, Is.EqualTo(TimeSpan.FromSeconds(1)));
+            Assert.That(nextUpdate, Is.EqualTo(TimeSpan.FromSeconds(2)));
+        });
+    }
+
+    [Test]
+    public void SlowLedgerWorkersUseTimingGateBeforeApplyingRevisions()
+    {
+        AssertSlowWorkerTimingGate("HumanBoneKnittingSystem.cs");
+        AssertSlowWorkerTimingGate("HumanTourniquetSystem.cs");
+        AssertSlowWorkerTimingGate("HumanTreatedWoundHealingSystem.cs");
+    }
+
+    [Test]
     public void UnsplintedBrokenRegionRequestsMovementRiskMarker()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -382,6 +453,28 @@ public sealed class HumanMedicalActiveWorkersTest
             Assert.That(text, Does.Contain("SubscribeLocalEvent<PainShockStartupEvent>(OnPainStartup);"));
             Assert.That(text, Does.Contain("RefreshPainFeedbackActivity(args.Body);"));
             Assert.That(text, Does.Not.Contain("SubscribeLocalEvent<PainShockComponent, ComponentStartup>"));
+        });
+    }
+
+    private static void AssertSlowWorkerTimingGate(string fileName)
+    {
+        var root = FindRepoRoot();
+        var path = Path.Combine(
+            root,
+            "Content.Shared",
+            "_CMU14",
+            "Medical",
+            "Human",
+            "Systems",
+            fileName);
+
+        Assert.That(File.Exists(path), Is.True);
+        var text = File.ReadAllText(path);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(text, Does.Contain("HumanMedicalWorkerTiming.TryGetElapsed"));
+            Assert.That(text, Does.Not.Contain("FixedPoint2.New(frameTime)"));
         });
     }
 

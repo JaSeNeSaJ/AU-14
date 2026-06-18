@@ -279,9 +279,7 @@ public sealed partial class HumanSurgerySystem : EntitySystem
         SurgeryAttempt attempt)
     {
         var region = HumanMedicalLedger.GetRegion(medical, attempt.Region);
-        var targetDepth = attempt.Region is BodyRegion.Head or BodyRegion.Chest
-            ? IncisionDepth.DeepAccess
-            : IncisionDepth.Retracted;
+        var targetDepth = GetShortcutIncisionDepth(attempt.Region, attempt.ProcedureId);
         if (region.Incision >= targetDepth)
             return Fail($"Surgery expected incision depth below {targetDepth} but found {region.Incision}.");
 
@@ -294,6 +292,21 @@ public sealed partial class HumanSurgerySystem : EntitySystem
             flags: BleedFlags.Surgical));
 
         return FromTransaction(HumanMedicalLedger.ApplyTransaction(medical, transaction), attempt);
+    }
+
+    private static IncisionDepth GetShortcutIncisionDepth(
+        BodyRegion region,
+        SurgeryProcedureId procedureId)
+    {
+        return procedureId switch
+        {
+            SurgeryProcedureId.RepairInternalBleeding => IncisionDepth.Retracted,
+            SurgeryProcedureId.RemoveEschar => IncisionDepth.Retracted,
+            SurgeryProcedureId.SealStump => IncisionDepth.Retracted,
+            _ => region is BodyRegion.Head or BodyRegion.Chest
+                ? IncisionDepth.DeepAccess
+                : IncisionDepth.Retracted,
+        };
     }
 
     private static SurgeryResult ApplyIncisionTransition(
