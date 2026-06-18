@@ -171,7 +171,7 @@
       - cost: 1500
         crate: AU14CrateM5A1SLAW
       - cost: 800
-        crate: RMCCrateFlamer
+        crate: RMCCrateM34
       - cost: 2200
         crate: AU14CrateM7SLAW
       - cost: 1500
@@ -211,7 +211,7 @@
       - cost: 200
         crate: RMCCrateMagazineNapthalUT
       - cost: 350
-        crate: RMCCrateMagazineMagazineFlamerMixed
+        crate: RMCCrateMagazineFlamerMixed
       - cost: 500
         crate: RMCCrateMagazineBGel
     - name: AP Ammo
