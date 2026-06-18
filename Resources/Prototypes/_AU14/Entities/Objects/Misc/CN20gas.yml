@@ -45,7 +45,7 @@
       irritantType: NerveGas
       irritantDamage:
         types:
-          Asphyxiation: 3
+          Asphyxiation: 1
           Poison: 3
       effectThreshold: 1
       blindThreshold: 19
