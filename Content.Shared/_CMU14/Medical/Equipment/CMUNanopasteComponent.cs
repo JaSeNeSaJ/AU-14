@@ -7,8 +7,8 @@ namespace Content.Shared._CMU14.Medical.Equipment;
 public sealed partial class CMUNanopasteComponent : Component
 {
     [DataField, AutoNetworkedField]
-    public int Uses = 3;
+    public int Uses = 10;
 
     [DataField, AutoNetworkedField]
-    public FixedPoint2 RepairAmount = FixedPoint2.New(20);
+    public FixedPoint2 RepairAmount = FixedPoint2.New(15);
 }

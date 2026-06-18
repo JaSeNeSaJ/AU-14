@@ -167,11 +167,10 @@ public sealed partial class WoundsSystem : SharedWoundsSystem
 
         var tick = HumanBleedingSystem.CalculateBleedingTick(medical);
         var desired = Math.Clamp(tick.TotalRate.Float(), 0f, bloodstream.MaxBleedAmount);
-        var delta = desired - bloodstream.BleedAmount;
-        if (MathF.Abs(delta) < 0.001f)
+        if (MathF.Abs(desired - bloodstream.BleedAmount) < 0.001f)
             return;
 
-        _bloodstream.TryModifyBleedAmount(uid, delta);
+        _bloodstream.TrySetBleedAmount(uid, desired);
     }
     // CMU14 end
 }

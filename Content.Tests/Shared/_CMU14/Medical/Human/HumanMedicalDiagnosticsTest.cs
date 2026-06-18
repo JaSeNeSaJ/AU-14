@@ -156,7 +156,7 @@ public sealed class HumanMedicalDiagnosticsTest
     }
 
     [Test]
-    public void SummaryShowsSuppressedInternalBleedAsNeedsSurgery()
+    public void SummaryShowsSuppressedInternalBleedAsUntreated()
     {
         var medical = HumanMedicalLedger.CreateDefault();
         AddInternalBleed(medical, BodyRegion.LeftLeg, FixedPoint2.New(2));
@@ -360,7 +360,7 @@ public sealed class HumanMedicalDiagnosticsTest
     }
 
     [Test]
-    public void BodyScannerLinesShowSuppressedBleedStillNeedsSurgery()
+    public void BodyScannerLinesShowSuppressedBleedAsUntreated()
     {
         var medical = HumanMedicalLedger.CreateDefault();
         AddInternalBleed(medical, BodyRegion.LeftLeg, FixedPoint2.New(2));
@@ -372,8 +372,13 @@ public sealed class HumanMedicalDiagnosticsTest
 
         HumanMedicalScannerBuiSystem.AppendBodyScannerLines(medical, lines, PassthroughLoc);
 
-        Assert.That(lines, Has.Some.Matches<CMUBodyScannerScanLine>(
-            line => line.Text.Contains("cmu-body-scanner-human-region-bleed-suppressed-needs-surgery")));
+        Assert.Multiple(() =>
+        {
+            Assert.That(lines, Has.Some.Matches<CMUBodyScannerScanLine>(
+                line => line.Text.Contains("cmu-body-scanner-human-region-bleed-suppressed")));
+            Assert.That(lines, Has.None.Matches<CMUBodyScannerScanLine>(
+                line => line.Text.Contains("needs-surgery")));
+        });
     }
 
     private static void AddInternalBleed(

@@ -35,7 +35,8 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
                 continue;
             }
 
-            if (TryComp<HumanMedicalSummaryComponent>(uid, out var summary))
+            if (TryComp<HumanMedicalSummaryComponent>(uid, out var summary) &&
+                summary.Summary != medical.Summary)
             {
                 summary.Summary = medical.Summary;
                 Dirty(uid, summary);
@@ -106,7 +107,6 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
             return;
 
         RefreshActiveMarkers(body.Owner, body.Comp);
-        RefreshVisuals(body.Owner, body.Comp);
 
         var ev = new HumanMedicalLedgerChangedEvent(body.Owner, result);
         RaiseLocalEvent(ref ev);
@@ -137,10 +137,13 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
             return;
 
         var visuals = EnsureComp<HumanMedicalVisualsComponent>(uid);
+        var changed = false;
         if (visuals.RegionFlags.Length != HumanMedicalComponent.RegionSlotCount)
+        {
             visuals.RegionFlags = new HumanMedicalRegionVisualFlags[HumanMedicalComponent.RegionSlotCount];
+            changed = true;
+        }
 
-        var changed = visuals.Revision != medical.Revision;
         for (var i = 1; i < visuals.RegionFlags.Length; i++)
         {
             var region = (BodyRegion) i;

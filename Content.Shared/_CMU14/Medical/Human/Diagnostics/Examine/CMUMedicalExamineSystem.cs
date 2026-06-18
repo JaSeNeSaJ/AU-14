@@ -331,7 +331,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         {
             if (bleed.Region == region && bleed.Active && bleed.Kind != BleedKind.Internal)
                 AddVisibleBleedBucket(activeBleeds, bleed);
-            else if (bleed.Region == region && IsBleedSuppressedButNeedsSurgery(bleed))
+            else if (bleed.Region == region && IsBleedSuppressedButUnrepaired(bleed))
                 AddSuppressedBleedBucket(suppressedBleeds, bleed);
         }
 
@@ -542,7 +542,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
                 continue;
             }
 
-            if (IsBleedSuppressedButNeedsSurgery(bleed))
+            if (IsBleedSuppressedButUnrepaired(bleed))
                 AddSuppressedBleedBucket(suppressedBleeds, bleed);
         }
 
@@ -645,8 +645,8 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     private static string DescribeSuppressedBleed(SuppressedBleedBucket bucket)
     {
         return bucket.Surgical
-            ? "surgical bleeding suppressed, surgery needed"
-            : "bleeding suppressed, surgery needed";
+            ? "surgical bleeding suppressed, not treated"
+            : "bleeding suppressed, not treated";
     }
 
     private static string DescribeDetailedBleed(VisibleBleedBucket bucket)
@@ -659,8 +659,8 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     private static string DescribeDetailedSuppressedBleed(SuppressedBleedBucket bucket)
     {
         return global::Robust.Shared.Localization.Loc.GetString(
-            "cmu-medical-detailed-examine-suppressed-bleed-needs-surgery",
-            ("kind", bucket.Surgical ? "surgical" : "active"));
+            "cmu-medical-detailed-examine-suppressed-bleed",
+            ("kind", bucket.Surgical ? "surgical" : "external"));
     }
 
     private static string DescribeSurgeryIncisionState(IncisionDepth incision) => incision switch
@@ -1004,7 +1004,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
                injury.Flags.HasFlag(InjuryFlags.Closed);
     }
 
-    private static bool IsBleedSuppressedButNeedsSurgery(BleedSource bleed)
+    private static bool IsBleedSuppressedButUnrepaired(BleedSource bleed)
     {
         if (bleed.Treatment.HasFlag(TreatmentFlags.Closed) ||
             bleed.Treatment.HasFlag(TreatmentFlags.Sutured))

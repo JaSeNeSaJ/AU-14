@@ -19,6 +19,16 @@ public sealed partial class HumanBleedingBloodstreamSystem : EntitySystem
         SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>(OnLedgerChanged);
     }
 
+    public override void Update(float frameTime)
+    {
+        var query = EntityQueryEnumerator<HumanMedicalComponent, BloodstreamComponent>();
+        while (query.MoveNext(out var uid, out var medical, out _))
+        {
+            var tick = HumanBleedingSystem.CalculateBleedingTick(medical);
+            ReconcileBleedAmount(uid, tick.TotalRate);
+        }
+    }
+
     private void OnBleedingTick(ref HumanBleedingTickEvent args)
     {
         ReconcileBleedAmount(args.Body, args.TotalRate);
@@ -42,11 +52,10 @@ public sealed partial class HumanBleedingBloodstreamSystem : EntitySystem
             return;
 
         var desired = GetDesiredBleedAmount(ledgerRate, bloodstream.MaxBleedAmount);
-        var delta = desired - bloodstream.BleedAmount;
-        if (MathF.Abs(delta) < 0.001f)
+        if (MathF.Abs(desired - bloodstream.BleedAmount) < 0.001f)
             return;
 
-        _bloodstream.TryModifyBleedAmount((body, bloodstream), delta);
+        _bloodstream.TrySetBleedAmount((body, bloodstream), desired);
     }
 
     public static float GetDesiredBleedAmount(FixedPoint2 ledgerRate, float maxBleedAmount)

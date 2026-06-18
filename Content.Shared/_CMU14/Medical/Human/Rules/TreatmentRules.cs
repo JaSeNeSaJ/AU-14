@@ -64,7 +64,7 @@ public static class TreatmentRules
         var dirty = MedicalDirtyFlags.None;
         var recoveryRate = GetRecoveryRate(attempt, DefaultBruteRecoveryRate);
 
-        if (TryFindSurfaceBleedSource(medical, attempt, requireActive: true, out var bleed))
+        if (TryFindSurfaceBleedSource(medical, attempt, out var bleed))
         {
             effects.Add(TreatmentEffect.UpdateBleedSource(
                 bleed.Region,
@@ -108,7 +108,7 @@ public static class TreatmentRules
         }
 
         return effects.Count == 0
-            ? Fail("No active external bleed source or open wound can be bandaged.")
+            ? Fail("No untreated external bleed source or open wound can be bandaged.")
             : Applied(effects.ToArray(), dirty);
     }
 
@@ -330,10 +330,10 @@ public static class TreatmentRules
             dirty |= MedicalDirtyFlags.Regions | MedicalDirtyFlags.Injuries;
         }
 
-        AddTemporaryBleedSuppressionEffects(medical, attempt, effects, ref dirty);
+        AddSurgicalLineBleedClosureEffects(medical, attempt, effects, ref dirty);
 
         return effects.Count == 0
-            ? Fail("No brute injury or active bleed can be treated with surgical line.")
+            ? Fail("No brute injury or untreated bleed can be treated with surgical line.")
             : Applied(effects.ToArray(), dirty);
     }
 
@@ -437,6 +437,31 @@ public static class TreatmentRules
         }
     }
 
+    private static void AddSurgicalLineBleedClosureEffects(
+        HumanMedicalComponent medical,
+        TreatmentAttempt attempt,
+        List<TreatmentEffect> effects,
+        ref MedicalDirtyFlags dirty)
+    {
+        foreach (var source in medical.BleedSources)
+        {
+            if (source.Region != attempt.Region)
+                continue;
+            if (source.Kind is not BleedKind.External and not BleedKind.Stump)
+                continue;
+            if (!IsTreatableBleedSource(source))
+                continue;
+
+            effects.Add(TreatmentEffect.UpdateBleedSource(
+                source.Region,
+                source.Id,
+                TreatmentFlags.Sutured | TreatmentFlags.Closed,
+                setBleedRate: true,
+                FixedPoint2.Zero));
+            dirty |= MedicalDirtyFlags.Bleeding;
+        }
+    }
+
     private static TreatmentRuleResult TryCreateOrganRepairPlan(
         HumanMedicalComponent medical,
         TreatmentAttempt attempt)
@@ -488,7 +513,6 @@ public static class TreatmentRules
     private static bool TryFindSurfaceBleedSource(
         HumanMedicalComponent medical,
         TreatmentAttempt attempt,
-        bool requireActive,
         out BleedSource bleed)
     {
         foreach (var source in medical.BleedSources)
@@ -499,7 +523,7 @@ public static class TreatmentRules
                 continue;
             if (source.Kind is not BleedKind.External and not BleedKind.Stump)
                 continue;
-            if (requireActive && !source.Active)
+            if (!IsTreatableBleedSource(source))
                 continue;
 
             bleed = source;
@@ -694,6 +718,20 @@ public static class TreatmentRules
     private static bool IsLineRepairableBruteInjury(InjuryKind kind)
     {
         return kind is InjuryKind.Cut or InjuryKind.Puncture or InjuryKind.Bruise;
+    }
+
+    private static bool IsTreatableBleedSource(BleedSource bleed)
+    {
+        if (bleed.Treatment.HasFlag(TreatmentFlags.Closed) ||
+            bleed.Treatment.HasFlag(TreatmentFlags.Sutured))
+        {
+            return false;
+        }
+
+        return bleed.Active ||
+            bleed.Treatment.HasFlag(TreatmentFlags.Clamped) ||
+            bleed.Treatment.HasFlag(TreatmentFlags.TemporarilySuppressed) ||
+            bleed.Treatment.HasFlag(TreatmentFlags.Tourniquetted);
     }
 
     private static bool TryGetRecoveryRate(

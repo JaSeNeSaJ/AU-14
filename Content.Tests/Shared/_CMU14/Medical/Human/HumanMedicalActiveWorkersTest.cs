@@ -307,7 +307,7 @@ public sealed class HumanMedicalActiveWorkersTest
         {
             Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanBleedingTickEvent>"));
             Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>"));
-            Assert.That(text, Does.Contain("TryModifyBleedAmount"));
+            Assert.That(text, Does.Contain("TrySetBleedAmount"));
         });
     }
 
@@ -333,6 +333,31 @@ public sealed class HumanMedicalActiveWorkersTest
             Assert.That(text, Does.Contain("SetDamage"));
             Assert.That(text, Does.Contain("BuildProjectedDamage"));
             Assert.That(text, Does.Not.Contain("TryChangeDamage"));
+        });
+    }
+
+    [Test]
+    public void MedicalSummaryRefreshDoesNotDirtyUnchangedPresentationState()
+    {
+        var root = FindRepoRoot();
+        var path = Path.Combine(
+            root,
+            "Content.Shared",
+            "_CMU14",
+            "Medical",
+            "Human",
+            "Systems",
+            "SharedHumanMedicalSystem.cs");
+
+        Assert.That(File.Exists(path), Is.True);
+        var text = File.ReadAllText(path);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(text, Does.Contain("summary.Summary != medical.Summary"));
+            Assert.That(text, Does.Contain("var changed = false;"));
+            Assert.That(text, Does.Not.Contain("var changed = visuals.Revision != medical.Revision;"));
+            Assert.That(text, Does.Not.Contain("RefreshVisuals(body.Owner, body.Comp);\r\n\r\n        var ev = new HumanMedicalLedgerChangedEvent"));
         });
     }
 

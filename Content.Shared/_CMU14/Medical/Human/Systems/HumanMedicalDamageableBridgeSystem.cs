@@ -11,6 +11,8 @@ public sealed partial class HumanMedicalDamageableBridgeSystem : EntitySystem
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private INetManager _net = default!;
 
+    private static readonly FixedPoint2 DamageProjectionHealingStep = FixedPoint2.New(1);
+
     private static readonly string[] LedgerTraumaTypes =
     [
         "Blunt",
@@ -66,6 +68,9 @@ public sealed partial class HumanMedicalDamageableBridgeSystem : EntitySystem
         DamageSpecifier existing)
     {
         var projected = new DamageSpecifier(existing);
+        var currentBrute = GetDamageOrZero(existing, "Blunt");
+        var currentBurn = GetDamageOrZero(existing, "Heat");
+
         foreach (var type in LedgerTraumaTypes)
         {
             if (projected.DamageDict.ContainsKey(type))
@@ -83,8 +88,8 @@ public sealed partial class HumanMedicalDamageableBridgeSystem : EntitySystem
             burn += region.BurnDamage;
         }
 
-        projected.DamageDict["Blunt"] = brute;
-        projected.DamageDict["Heat"] = burn;
+        projected.DamageDict["Blunt"] = StabilizeHealingProjection(currentBrute, brute);
+        projected.DamageDict["Heat"] = StabilizeHealingProjection(currentBurn, burn);
         return projected;
     }
 
@@ -97,5 +102,28 @@ public sealed partial class HumanMedicalDamageableBridgeSystem : EntitySystem
         }
 
         return false;
+    }
+
+    private static FixedPoint2 GetDamageOrZero(DamageSpecifier damage, string type)
+    {
+        return damage.DamageDict.TryGetValue(type, out var value)
+            ? value
+            : FixedPoint2.Zero;
+    }
+
+    private static FixedPoint2 StabilizeHealingProjection(
+        FixedPoint2 current,
+        FixedPoint2 target)
+    {
+        if (target <= FixedPoint2.Zero ||
+            current <= FixedPoint2.Zero ||
+            target >= current)
+        {
+            return target;
+        }
+
+        return FixedPoint2.Abs(current - target) < DamageProjectionHealingStep
+            ? current
+            : target;
     }
 }
