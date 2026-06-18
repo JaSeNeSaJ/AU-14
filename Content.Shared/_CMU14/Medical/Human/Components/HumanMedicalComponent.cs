@@ -35,6 +35,9 @@ public sealed partial class HumanMedicalComponent : Component
     public MedicalSummary Summary;
 
     [DataField]
+    public bool SummaryInitialized;
+
+    [DataField]
     public MedicalDirtyFlags DirtyFlags;
 
     [DataField]

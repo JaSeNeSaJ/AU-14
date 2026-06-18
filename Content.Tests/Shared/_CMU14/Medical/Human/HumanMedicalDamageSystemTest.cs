@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
@@ -134,6 +136,29 @@ public sealed class HumanMedicalDamageSystemTest
     }
 
     [Test]
+    public void LedgerDamageHandlerIsServerAuthoritative()
+    {
+        var root = FindRepoRoot();
+        var path = Path.Combine(
+            root,
+            "Content.Shared",
+            "_CMU14",
+            "Medical",
+            "Human",
+            "Systems",
+            "HumanMedicalDamageSystem.cs");
+
+        Assert.That(File.Exists(path), Is.True);
+        var text = File.ReadAllText(path);
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(text, Does.Contain("[Dependency] private INetManager _net = default!;"));
+            Assert.That(text, Does.Contain("if (_net.IsClient ||"));
+        });
+    }
+
+    [Test]
     public void LedgerDamageProjectionStabilizesSubPointHealingDeltasForHealthHud()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -218,5 +243,19 @@ public sealed class HumanMedicalDamageSystemTest
                 [type] = FixedPoint2.New(amount),
             },
         };
+    }
+
+    private static string FindRepoRoot()
+    {
+        var directory = new DirectoryInfo(AppContext.BaseDirectory);
+        while (directory is not null)
+        {
+            if (File.Exists(Path.Combine(directory.FullName, "SpaceStation14.slnx")))
+                return directory.FullName;
+
+            directory = directory.Parent;
+        }
+
+        throw new DirectoryNotFoundException("Could not find repository root containing SpaceStation14.slnx.");
     }
 }

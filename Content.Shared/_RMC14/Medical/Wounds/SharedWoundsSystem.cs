@@ -2,7 +2,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Runtime.InteropServices;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Care;
-using Content.Shared._CMU14.Yautja;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Damage;
 using Content.Shared._RMC14.DoAfter;
@@ -144,9 +143,7 @@ public abstract partial class SharedWoundsSystem : EntitySystem
         if (!args.CanReach || args.Target == null)
             return;
 
-        if (HasComp<HumanMedicalComponent>(args.Target.Value)
-            && (HasComp<HumanMedicalComponent>(args.User)
-                || HasComp<YautjaMedicalItemComponent>(ent.Owner)))
+        if (HasComp<HumanMedicalComponent>(args.Target.Value))
         {
             var hasSkills = _skills.HasAllSkills(args.User, ent.Comp.Skills);
             if (!CanUseWoundTreater(args.User, args.Target.Value, ent, hasSkills))
