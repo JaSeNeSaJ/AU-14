@@ -202,7 +202,7 @@
 - type: entity
   parent: CMUAreaShepWY
   id: CMUAreaShepWYAssistant
-  name: We-Yu Research Lab - Assistant Office
+  name: We-Yu Research Lab - Assistant Quarters
   components:
   - type: Sprite
     state: wy_quarters
