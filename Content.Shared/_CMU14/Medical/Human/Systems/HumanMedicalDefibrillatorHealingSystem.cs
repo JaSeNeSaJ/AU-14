@@ -47,13 +47,22 @@ public sealed partial class HumanMedicalDefibrillatorHealingSystem : EntitySyste
     {
         base.Initialize();
 
-        SubscribeLocalEvent<DefibrillatorComponent, RMCDefibrillatorDamageModifyEvent>(
+        SubscribeLocalEvent<DefibrillatorComponent, ComponentStartup>(OnDefibrillatorStartup);
+        SubscribeLocalEvent<HumanMedicalDefibrillatorHealingComponent, RMCDefibrillatorDamageModifyEvent>(
             OnDefibrillatorDamageModify,
             after: [typeof(RMCDefibrillatorSystem)]);
     }
 
+    private void OnDefibrillatorStartup(Entity<DefibrillatorComponent> ent, ref ComponentStartup args)
+    {
+        if (_net.IsClient)
+            return;
+
+        EnsureComp<HumanMedicalDefibrillatorHealingComponent>(ent);
+    }
+
     private void OnDefibrillatorDamageModify(
-        Entity<DefibrillatorComponent> ent,
+        Entity<HumanMedicalDefibrillatorHealingComponent> ent,
         ref RMCDefibrillatorDamageModifyEvent args)
     {
         if (_net.IsClient ||
