@@ -17,6 +17,7 @@
         potency: 2
       - !type:ReduceChemicalIrritant
         amount: 1
+        
 # TODO RMC14 other effects
 - type: reagent
   parent: [ CMReagentMedicine, Ethylredoxrazine ]
