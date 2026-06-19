@@ -1,3 +1,4 @@
+using Content.Shared._CMU14.Medical;
 using Content.Shared._RMC14.Damage;
 using Content.Shared._RMC14.Medical.Stasis;
 using Content.Shared._RMC14.Medical.Wounds;
@@ -421,7 +422,7 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
             return false;
 
         // CMU14
-        if (amount > 0f && HasComp<HumanMedicalComponent>(ent.Owner))
+        if (amount > 0f && HasComp<CMUHumanMedicalComponent>(ent.Owner))
             return false;
         // CMU14
 
