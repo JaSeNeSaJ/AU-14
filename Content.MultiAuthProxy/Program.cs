@@ -19,7 +19,7 @@
 // On /api/session/hasJoined we fan out & *fastest* valid response wins and gets pinned to that user.
 // routingCache -> overtime every known UID becomes a single request instead of a multiplexer to the
 // providers: we only fallback on timeout, 404, invalid etc. & update/heal cache on success.
-// The Admin queries (/api/query/name/ & /api/query/userid/) are not using the routingCache.
+// The Admin queries (/api/query/name/ & /api/query/userid/) prefer the player-store.
 //
 using System.Collections.Concurrent;
 using System.Net;
@@ -34,53 +34,76 @@ var app = builder.Build();
 var logger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("MultiAuthProxy");
 var authServers = builder.Configuration.GetSection("AuthServers").Get<string[]>()!.Select(s => s.TrimEnd('/')).ToArray();
 var timeoutMs = builder.Configuration.GetValue("TimeoutMs", 1500);
-var cacheTtl = TimeSpan.FromMinutes(builder.Configuration.GetValue("CacheTtlMinutes", 10));
+var cacheTtl = TimeSpan.FromDays(builder.Configuration.GetValue("CacheTtlDays", 30));
+var storePath = builder.Configuration.GetValue("StorePath", "player-store.json")!;
+var flushInterval = TimeSpan.FromSeconds(builder.Configuration.GetValue("FlushIntervalSeconds", 60));
 var listen = builder.Configuration.GetValue("Listen", "http://localhost:9119");
 const int HttpTimeoutMultiplier = 4;
 
 // Must exceed the timeoutMs, so a cancel comes from CTS rather than the HttpClient timeout
 var http = new HttpClient { Timeout = TimeSpan.FromMilliseconds(timeoutMs * HttpTimeoutMultiplier) };
 
-var routingCache = new ConcurrentDictionary<string, (string Server, DateTimeOffset PinnedAt)>();
+var store = new PlayerStore(storePath, cacheTtl);
+store.Load(logger);
+
+using var flushTimer = new Timer(_ =>
+{
+    if (!store.IsDirty) return;
+    try { store.Save(); logger.LogDebug("player-store flushed to disk"); }
+    catch (Exception ex) { logger.LogError(ex, "player-store flush failed"); }
+}, null, flushInterval, flushInterval);
+
+app.Lifetime.ApplicationStopping.Register(() =>
+{
+    try { store.Save(); logger.LogInformation("player-store saved on shutdown ({Path})", storePath); }
+    catch (Exception ex) { logger.LogError(ex, "player-store shutdown save failed"); }
+});
 
 app.MapGet("/api/session/hasJoined", async (string hash, string userId, string? serverUrl, CancellationToken ct) =>
 {
     // Cached server first
-    if (routingCache.TryGetValue(userId, out var entry))
+    var cached = store.GetById(userId);
+    if (cached != null)
     {
-        if (DateTimeOffset.UtcNow - entry.PinnedAt < cacheTtl)
+        try
         {
-            try
+            var result = await CheckServer(cached.Server, ct);
+            if (result?.RawBody != null)
             {
-                var cached = await CheckServer(entry.Server, ct);
-                if (cached?.RawBody != null)
-                {
-                    logger.LogDebug("hasJoined userId={UserId} served from cache auth={Server}", userId, entry.Server);
-                    return Results.Bytes(cached.Value.RawBody, "application/json");
-                }
-            }
-            catch (Exception ex) when (ex is not OperationCanceledException)
-            {
-                logger.LogWarning(ex, "hasJoined cached auth={Server} failed for userId={UserId}; falling back to fan-out", entry.Server, userId);
+                logger.LogDebug("hasJoined userId={UserId} served from store auth={Server}", userId, cached.Server);
+                UpdateStore(userId, result.Value.UserName, cached.Server);
+                return Results.Bytes(result.Value.RawBody, "application/json");
             }
         }
+        catch (Exception ex) when (ex is not OperationCanceledException)
+        {
+            logger.LogWarning(ex, "hasJoined cached auth={Server} failed for userId={UserId}; falling back to fan-out", cached.Server, userId);
+        }
 
-        routingCache.TryRemove(userId, out _);
-        logger.LogInformation("hasJoined userId={UserId} cache entry invalid/stale for auth={Server}; repairing via fan-out", userId, entry.Server);
+        store.Invalidate(userId);
+        logger.LogInformation("hasJoined userId={UserId} cache invalid for auth={Server}; repairing via fan-out", userId, cached.Server);
     }
+
 
     // Multiplexer
     var winner = await FirstValid(authServers, CheckServer, ct, timeoutMs, logger);
     if (winner?.RawBody != null)
     {
-        logger.LogInformation("hasJoined userId={UserId} routedTo={Server} cacheUpdated=true", userId, winner.Value.Server);
-        routingCache[userId] = (winner.Value.Server, DateTimeOffset.UtcNow);
+        if (cached != null && cached.Server != winner.Value.Server)
+            logger.LogWarning("hasJoined userId={UserId} server changed {Old} -> {New}; shared GUID or multi-server account?",
+                userId, cached.Server, winner.Value.Server);
+
+        logger.LogInformation("hasJoined userId={UserId} routedTo={Server} storeUpdated=true", userId, winner.Value.Server);
+        UpdateStore(userId, winner.Value.UserName, winner.Value.Server);
         return Results.Bytes(winner.Value.RawBody, "application/json");
     }
 
     return Results.Ok(new { isValid = false, userData = (object?)null, connectionData = (object?)null });
 
-    async Task<(byte[]? RawBody, string Server)?> CheckServer(string server, CancellationToken token)
+    void UpdateStore(string uid, string? userName, string server)
+    => store.Upsert(uid, userName, server);
+
+    async Task<(byte[]? RawBody, string Server, string? UserName)?> CheckServer(string server, CancellationToken token)
     {
         var url = $"{server}/api/session/hasJoined?hash={hash}&userId={userId}";
         if (serverUrl != null)
@@ -101,7 +124,11 @@ app.MapGet("/api/session/hasJoined", async (string hash, string userId, string? 
         if (doc.RootElement.TryGetProperty("isValid", out var isValid) && isValid.GetBoolean())
         {
             logger.LogDebug("hasJoined auth={Server} userId={UserId} valid=true", server, userId);
-            return (body, server);
+            var userName = doc.RootElement.TryGetProperty("userData", out var ud)
+                && ud.TryGetProperty("userName", out var un)
+                ? un.GetString() : null;
+            return (body, server, userName);
+
         }
 
         logger.LogDebug("hasJoined auth={Server} userId={UserId} valid=false", server, userId);
@@ -109,12 +136,17 @@ app.MapGet("/api/session/hasJoined", async (string hash, string userId, string? 
     }
 });
 
-// /api/query/ is run sequentially, without routingCache, and not in parallel
 app.MapGet("/api/query/name", async (string name, CancellationToken ct) =>
-    await ProxyQuery(authServers, http, s => $"{s}/api/query/name?name={Uri.EscapeDataString(name)}", ct, logger, "query/name", name));
+{
+    var servers = Prefer(authServers, store.GetByName(name));
+    return await ProxyQuery(servers, http, s => $"{s}/api/query/name?name={Uri.EscapeDataString(name)}", ct, logger, "query/name", name);
+});
 
 app.MapGet("/api/query/userid", async (string userid, CancellationToken ct) =>
-    await ProxyQuery(authServers, http, s => $"{s}/api/query/userid?userid={Uri.EscapeDataString(userid)}", ct, logger, "query/userid", userid));
+{
+    var servers = Prefer(authServers, store.GetById(userid));
+    return await ProxyQuery(servers, http, s => $"{s}/api/query/userid?userid={Uri.EscapeDataString(userid)}", ct, logger, "query/userid", userid);
+});
 
 app.Run(listen);
 
@@ -136,8 +168,8 @@ static async Task<T?> FirstValid<T>(
         try
         {
             var result = await query(server, cts.Token);
-            if (result is not null)
-                tcs.TrySetResult(result);
+            if (result is not null && tcs.TrySetResult(result))
+                cts.Cancel();
         }
         catch (OperationCanceledException) { }
         catch (Exception ex) { logger.LogWarning(ex, "fan-out auth={Server} failed", server); }
@@ -155,6 +187,9 @@ static async Task<T?> FirstValid<T>(
     cts.Cancel();
     return finalResult;
 }
+
+static string[] Prefer(string[] servers, PlayerRecord? record) =>
+    record == null ? servers : new[] { record.Server }.Concat(servers.Where(s => s != record.Server)).ToArray();
 
 static async Task<IResult> ProxyQuery(
     string[] servers, HttpClient http,
