@@ -135,7 +135,7 @@ public sealed partial class HumanMedicalVisualsSystem : EntitySystem
 
     private static string StateFor(EntityUid uid, BodyRegion region, MedicalOverlayKind kind)
     {
-        if (kind is MedicalOverlayKind.Bandage or MedicalOverlayKind.Splint or MedicalOverlayKind.Cast)
+        if (kind == MedicalOverlayKind.Bandage || kind == MedicalOverlayKind.Splint)
             return TreatmentOverlayStateFor(uid, region, kind);
 
         return $"{KindPrefix(kind)}_{RegionSuffix(region)}";
@@ -147,13 +147,12 @@ public sealed partial class HumanMedicalVisualsSystem : EntitySystem
         MedicalOverlayKind kind)
     {
         var prefix = kind == MedicalOverlayKind.Bandage ? "gauze" : "splint";
-        var variantKind = kind == MedicalOverlayKind.Cast ? MedicalOverlayKind.Splint : kind;
         var suffix = CM13TreatmentRegionSuffix(region);
-        var variants = CM13TreatmentVariantCount(region, variantKind);
+        var variants = CM13TreatmentVariantCount(region, kind);
         if (variants <= 1)
             return $"{prefix}_{suffix}";
 
-        return $"{prefix}_{suffix}_{StableVariant(uid, region, variantKind, variants)}";
+        return $"{prefix}_{suffix}_{StableVariant(uid, region, kind, variants)}";
     }
 
     private static int StableVariant(

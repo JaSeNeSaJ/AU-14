@@ -183,6 +183,9 @@ public sealed partial class CMUPainFeedbackSystem : EntitySystem
             uid,
             GetEmoteChance(feedback, tier),
             GetEmotes(feedback, tier));
+
+        if (tier >= PainTier.Horrible)
+            _stun.TryParalyze(uid, TimeSpan.FromSeconds(2), refresh: true);
     }
 
     private TimeSpan GetBlurDuration(CMUPainFeedbackComponent feedback, PainTier tier)

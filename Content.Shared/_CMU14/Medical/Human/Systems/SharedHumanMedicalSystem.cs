@@ -93,23 +93,14 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
         if (!result.Applied)
             return result;
 
-        NotifyLedgerChanged(body, result);
-        RaiseTransactionPresentationEvents(body.Owner, transaction, widenedRegions);
-
-        return result;
-    }
-
-    public void NotifyLedgerChanged(
-        Entity<HumanMedicalComponent> body,
-        MedicalTransactionResult result)
-    {
-        if (_net.IsClient || !result.Applied)
-            return;
-
         RefreshActiveMarkers(body.Owner, body.Comp);
 
         var ev = new HumanMedicalLedgerChangedEvent(body.Owner, result);
         RaiseLocalEvent(ref ev);
+
+        RaiseTransactionPresentationEvents(body.Owner, transaction, widenedRegions);
+
+        return result;
     }
 
     public void RefreshActiveMarkers(EntityUid uid, HumanMedicalComponent medical)
@@ -195,10 +186,10 @@ public sealed partial class SharedHumanMedicalSystem : EntitySystem
         if (state.Presence == LimbPresence.Prosthetic)
             flags |= HumanMedicalRegionVisualFlags.Prosthetic;
 
-        if (state.Skeletal.Casted)
-            flags |= HumanMedicalRegionVisualFlags.Casted;
-        else if (state.Skeletal.Splinted)
-            flags |= HumanMedicalRegionVisualFlags.Splinted;
+        if (state.Skeletal.Splinted)
+            flags |= state.Skeletal.Knitting
+                ? HumanMedicalRegionVisualFlags.Casted
+                : HumanMedicalRegionVisualFlags.Splinted;
 
         for (var i = 0; i < medical.Injuries.Count; i++)
         {

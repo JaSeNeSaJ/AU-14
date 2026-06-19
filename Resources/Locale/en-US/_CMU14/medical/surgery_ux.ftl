@@ -317,7 +317,6 @@ cmu-body-scanner-human-region-presence = { $presence }
 cmu-body-scanner-human-region-damage = tissue trauma { $brute } brute / { $burn } burn
 cmu-body-scanner-human-region-fracture = fracture
 cmu-body-scanner-human-region-fracture-splinted = fracture, splinted
-cmu-body-scanner-human-region-fracture-cast = fracture, cast
 cmu-body-scanner-human-region-incision = incision { $depth }
 cmu-body-scanner-human-region-tourniquet = tourniqueted
 cmu-body-scanner-human-region-tourniquet-necrotic = tourniqueted, necrotic

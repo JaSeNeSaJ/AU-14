@@ -1097,8 +1097,6 @@
         points: 8
       - id: RMCMagazineSMGNailgun
         points: 5
-      - id: CMUDeployableZLevelLadder
-        points: 10
     #- id: CMES11MobileFuelCanister
     #  points: 4
     - name: Explosives

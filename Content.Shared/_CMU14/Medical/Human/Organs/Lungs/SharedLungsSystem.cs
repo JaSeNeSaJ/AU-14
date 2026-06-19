@@ -4,7 +4,6 @@ using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
 using Content.Shared._CMU14.Medical.Human.Organs.Lungs.Events;
-using Content.Shared._RMC14.Synth;
 using Content.Shared.Body.Events;
 using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
@@ -70,11 +69,6 @@ public abstract partial class SharedLungsSystem : EntitySystem
             return;
         if (TerminatingOrDeleted(args.OldBody))
             return;
-        if (HasComp<SynthComponent>(args.OldBody) ||
-            !HasComp<HumanMedicalComponent>(args.OldBody))
-        {
-            return;
-        }
 
         var missing = EnsureComp<MissingLungsComponent>(args.OldBody);
         missing.NextAsphyxTick = Timing.CurTime;
@@ -158,14 +152,6 @@ public abstract partial class SharedLungsSystem : EntitySystem
         var missingQuery = EntityQueryEnumerator<MissingLungsComponent>();
         while (missingQuery.MoveNext(out var uid, out var missing))
         {
-            if (HasComp<SynthComponent>(uid) ||
-                !HasComp<HumanMedicalComponent>(uid))
-            {
-                RemCompDeferred<MissingLungsComponent>(uid);
-                Status.TryRemoveStatusEffect(uid, PulmonaryEdema);
-                continue;
-            }
-
             if (TryComp<HumanMedicalComponent>(uid, out var medical) &&
                 !BothLungsMissing(medical) &&
                 Body.GetBodyOrganEntityComps<LungsComponent>(uid).Count != 0)

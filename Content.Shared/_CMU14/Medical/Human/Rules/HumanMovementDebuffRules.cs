@@ -338,7 +338,7 @@ public static class HumanMovementDebuffRules
         return region.Region != BodyRegion.None &&
             region.Presence == LimbPresence.Present &&
             region.Skeletal.Broken &&
-            !region.Skeletal.Stabilized;
+            !region.Skeletal.Splinted;
     }
 
     private static bool IsUnsplintedBroken(HumanMedicalComponent medical, BodyRegion region)

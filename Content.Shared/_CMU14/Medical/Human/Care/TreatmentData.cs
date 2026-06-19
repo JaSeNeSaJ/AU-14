@@ -155,7 +155,9 @@ public readonly record struct TreatmentEffect
         return Create(
             TreatmentEffectKind.StartBoneKnitting,
             region,
-            amount: seconds);
+            amount: seconds,
+            treatmentFlags: TreatmentFlags.Splinted,
+            splinted: true);
     }
 
     public static TreatmentEffect SetTourniquet(

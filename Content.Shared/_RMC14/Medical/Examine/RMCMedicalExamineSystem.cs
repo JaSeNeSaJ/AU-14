@@ -45,8 +45,7 @@ public sealed partial class RMCMedicalExamineSystem : EntitySystem
     {
         var msg = new FormattedMessage();
 
-        if (!HasCmuHumanMedicalLedger(ent.Owner) &&
-            TryComp<BloodstreamComponent>(ent, out var bloodstream) &&
+        if (TryComp<BloodstreamComponent>(ent, out var bloodstream) &&
             bloodstream.BleedAmount > 0 &&
             !HasCmuBleedingWoundDetails(ent.Owner))
         {
@@ -69,12 +68,6 @@ public sealed partial class RMCMedicalExamineSystem : EntitySystem
             msg.AddMarkupOrThrow(Loc.GetString(stateText, ("victim", ent.Owner)));
 
         return msg;
-    }
-
-    private bool HasCmuHumanMedicalLedger(EntityUid body)
-    {
-        return _cfg.GetCVar(CMUMedicalCCVars.Enabled) &&
-            HasComp<HumanMedicalComponent>(body);
     }
 
     private bool HasCmuBleedingWoundDetails(EntityUid body)

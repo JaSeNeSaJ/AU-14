@@ -167,23 +167,6 @@ public sealed class HumanSurgeryToolSystemTest
     }
 
     [Test]
-    public void CauteryCanCloseCommittedSurgicalAccessOnRetractedCoreIncision()
-    {
-        var text = ReadSurgeryToolSystem();
-        var closeBranch = SliceBetween(
-            text,
-            "var closingActiveSurgicalAccess",
-            "attempt = default;");
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(closeBranch, Does.Contain("lockedProcedure == SurgeryProcedureId.SurgicalAccess"));
-            Assert.That(closeBranch, Does.Contain("procedureId: closingActiveSurgicalAccess"));
-            Assert.That(closeBranch, Does.Contain("SurgeryStepKind.CloseIncision"));
-        });
-    }
-
-    [Test]
     public void OrganClampAfterInteractHasSingleOwningSubscriber()
     {
         const string subscription = "SubscribeLocalEvent<CMUOrganClampComponent, AfterInteractEvent>";
@@ -228,17 +211,6 @@ public sealed class HumanSurgeryToolSystemTest
 
         Assert.That(File.Exists(path), Is.True);
         return File.ReadAllText(path);
-    }
-
-    private static string SliceBetween(string text, string start, string end)
-    {
-        var startIndex = text.IndexOf(start, StringComparison.Ordinal);
-        Assert.That(startIndex, Is.GreaterThanOrEqualTo(0), start);
-
-        var endIndex = text.IndexOf(end, startIndex, StringComparison.Ordinal);
-        Assert.That(endIndex, Is.GreaterThan(startIndex), end);
-
-        return text[startIndex..endIndex];
     }
 
     private static int CountOccurrences(string text, string value)

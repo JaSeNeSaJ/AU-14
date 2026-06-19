@@ -81,7 +81,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
 
             if (includeFractures && region.Skeletal.Broken)
             {
-                var text = region.Skeletal.Stabilized
+                var text = region.Skeletal.Splinted
                     ? "a stabilized fracture"
                     : "a broken bone";
                 sections.Add(Color(text, FractureColor));
@@ -511,7 +511,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         if (region.Skeletal.Broken)
         {
             sections.Add(Color(
-                region.Skeletal.Stabilized ? "stabilized fracture" : "unstabilized fracture",
+                region.Skeletal.Splinted ? "stabilized fracture" : "unstabilized fracture",
                 FractureColor));
         }
 

@@ -335,39 +335,6 @@ public sealed class PainPlayerFeedbackTest
         await pair.CleanReturnAsync();
     }
 
-    [Test]
-    public async Task ShockPainFeedbackDoesNotKeepPatientKnockedDown()
-    {
-        await using var pair = await PoolManager.GetServerClient();
-        var server = pair.Server;
-        EntityUid human = default;
-
-        await server.WaitPost(() =>
-        {
-            var entMan = server.EntMan;
-            human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
-            SetPainTier(entMan, human, PainTier.Shock);
-        });
-
-        await pair.RunTicksSync(pair.SecondsToTicks(4));
-
-        await server.WaitAssertion(() =>
-        {
-            var entMan = server.EntMan;
-            var oldStatus = entMan.System<StatusEffectQuerySystem>();
-
-            Assert.Multiple(() =>
-            {
-                Assert.That(oldStatus.HasStatusEffect(human, "KnockedDown"), Is.False);
-                Assert.That(oldStatus.HasStatusEffect(human, "Stun"), Is.False);
-            });
-
-            entMan.DeleteEntity(human);
-        });
-
-        await pair.CleanReturnAsync();
-    }
-
     private static void SetPainTier(IEntityManager entMan, EntityUid uid, PainTier tier)
     {
         var pain = entMan.GetComponent<PainShockComponent>(uid);

@@ -312,27 +312,26 @@ public sealed class HumanMedicalActiveWorkersTest
     }
 
     [Test]
-    public void LedgerDamageableBridgeProjectsFromLedgerChangedEvent()
+    public void TreatedWoundHealingWorkerHasServerDamageableSink()
     {
         var root = FindRepoRoot();
         var path = Path.Combine(
             root,
-            "Content.Shared",
+            "Content.Server",
             "_CMU14",
             "Medical",
             "Human",
             "Systems",
-            "HumanMedicalDamageableBridgeSystem.cs");
+            "HumanTreatedWoundHealingDamageSystem.cs");
 
         Assert.That(File.Exists(path), Is.True);
         var text = File.ReadAllText(path);
 
         Assert.Multiple(() =>
         {
-            Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>"));
-            Assert.That(text, Does.Contain("SetDamage"));
-            Assert.That(text, Does.Contain("BuildProjectedDamage"));
-            Assert.That(text, Does.Not.Contain("TryChangeDamage"));
+            Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanTreatedWoundHealingTickEvent>"));
+            Assert.That(text, Does.Contain("DistributeHealing"));
+            Assert.That(text, Does.Contain("TryChangeDamage"));
         });
     }
 

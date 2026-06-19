@@ -308,34 +308,6 @@ public sealed class HumanMedicalDiagnosticsTest
     }
 
     [Test]
-    public void HealthAnalyzerReadoutBuildsDamageFromHumanLedger()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        AddRegionDamage(medical, BodyRegion.LeftArm, FixedPoint2.New(20), FixedPoint2.Zero);
-        AddRegionDamage(medical, BodyRegion.RightArm, FixedPoint2.New(45), FixedPoint2.New(15));
-        HumanMedicalLedger.RebuildSummaryIfDirty(medical);
-
-        var method = typeof(HumanMedicalScannerBuiSystem).GetMethod(nameof(HumanMedicalScannerBuiSystem.BuildHealthAnalyzerDamageReadout));
-
-        Assert.That(method, Is.Not.Null);
-
-        var readout = method!.Invoke(null, new object[] { medical, null })!;
-        var type = readout.GetType();
-        var total = (FixedPoint2) type.GetField("Total")!.GetValue(readout)!;
-        var groups = (Dictionary<string, FixedPoint2>) type.GetField("DamagePerGroup")!.GetValue(readout)!;
-        var types = (Dictionary<string, FixedPoint2>) type.GetField("DamagePerType")!.GetValue(readout)!;
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(total, Is.EqualTo(FixedPoint2.New(80)));
-            Assert.That(groups["Brute"], Is.EqualTo(FixedPoint2.New(65)));
-            Assert.That(groups["Burn"], Is.EqualTo(FixedPoint2.New(15)));
-            Assert.That(types["Blunt"], Is.EqualTo(FixedPoint2.New(65)));
-            Assert.That(types["Heat"], Is.EqualTo(FixedPoint2.New(15)));
-        });
-    }
-
-    [Test]
     public void BodyScannerLinesCanBeBuiltFromHumanMedicalLedger()
     {
         var medical = HumanMedicalLedger.CreateDefault();

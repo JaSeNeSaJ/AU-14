@@ -991,7 +991,7 @@ public sealed partial class SharedCMUShrapnelSystem : EntitySystem
         if (!region.Skeletal.Broken)
             return 0f;
 
-        return region.Skeletal.Stabilized ? 4f : 14f;
+        return region.Skeletal.Splinted ? 4f : 14f;
     }
 
     private static bool IsShrapnelCapable(ProtoId<ExplosionPrototype> explosion, float exposure)

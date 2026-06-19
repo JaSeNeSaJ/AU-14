@@ -364,7 +364,7 @@ public abstract partial class SharedCMUMedicalSpeedSystem : EntitySystem
         if (IsMissingOrDetached(state))
             return MissingRegionSlowdownPoints;
 
-        if (state.Skeletal.Stabilized ||
+        if (state.Skeletal.Splinted ||
             (!state.Skeletal.Broken && HasEschar(medical, region)))
         {
             return SplintedOrEscharSlowdownPoints;
@@ -398,7 +398,7 @@ public abstract partial class SharedCMUMedicalSpeedSystem : EntitySystem
         if (!region.Skeletal.Broken)
             return 1f;
 
-        return region.Skeletal.Stabilized ? 1.05f : 1.10f;
+        return region.Skeletal.Splinted ? 1.05f : 1.10f;
     }
 
     private static float EyeAimSwayMultiplier(OrganState eyes)

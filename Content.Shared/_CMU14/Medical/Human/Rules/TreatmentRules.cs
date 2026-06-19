@@ -167,8 +167,6 @@ public static class TreatmentRules
         var region = HumanMedicalLedger.GetRegion(medical, attempt.Region);
         if (!region.Skeletal.Broken)
             return Fail("The target region is not broken.");
-        if (region.Skeletal.Casted)
-            return Fail("The target region is already casted.");
         if (region.Skeletal.Splinted)
             return Fail("The target region is already splinted.");
 
@@ -187,10 +185,6 @@ public static class TreatmentRules
         var region = HumanMedicalLedger.GetRegion(medical, attempt.Region);
         if (!region.Skeletal.Broken)
             return Fail("The target region is not broken.");
-        if (region.Skeletal.Splinted)
-            return Fail("The target region is already splinted.");
-        if (region.Skeletal.Casted)
-            return Fail("The target region is already casted.");
         if (region.Skeletal.Knitting)
             return Fail("The target region is already knitting.");
 

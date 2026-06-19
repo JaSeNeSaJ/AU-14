@@ -28,7 +28,7 @@ public sealed partial class HumanTreatedWoundHealingSystem : EntitySystem
                 continue;
             }
 
-            _medical.NotifyLedgerChanged((uid, medical), result);
+            _medical.RefreshActiveMarkers(uid, medical);
 
             var ev = new HumanTreatedWoundHealingTickEvent(
                 uid,

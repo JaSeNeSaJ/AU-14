@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using Content.Shared._CMU14.Medical.Human.Components;
-using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
 using Content.Shared.Body.Components;
 using Content.Shared.Body.Part;
@@ -81,19 +80,7 @@ public sealed partial class CMUMedicalRejuvenateSystem : EntitySystem
             Dirty(body, summary);
         }
 
-        var result = new MedicalTransactionResult(
-            true,
-            ent.Comp.Revision,
-            MedicalDirtyFlags.Regions |
-            MedicalDirtyFlags.Injuries |
-            MedicalDirtyFlags.Skeletal |
-            MedicalDirtyFlags.Organs |
-            MedicalDirtyFlags.Bleeding |
-            MedicalDirtyFlags.ForeignObjects |
-            MedicalDirtyFlags.DetachedLimbs |
-            MedicalDirtyFlags.Summary,
-            string.Empty);
-        _medical.NotifyLedgerChanged(ent, result);
+        _medical.RefreshActiveMarkers(body, ent.Comp);
 
         foreach (var effect in CmuStatusEffects)
             _status.TryRemoveStatusEffect(body, effect);

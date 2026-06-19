@@ -18,7 +18,6 @@ namespace Content.Shared._CMU14.Medical.Human.Systems;
 public sealed partial class HumanMedicalDamageSystem : EntitySystem
 {
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private HumanMedicalDamageableBridgeSystem _damageableBridge = default!;
     [Dependency] private SharedHumanMedicalSystem _humanMedical = default!;
     [Dependency] private SharedPainShockSystem _pain = default!;
 
@@ -159,11 +158,7 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
         var brute = ExtractBruteDamage(damage);
         var burn = ExtractBurnDamage(damage);
         if (brute <= FixedPoint2.Zero && burn <= FixedPoint2.Zero)
-        {
-            if (HumanMedicalDamageableBridgeSystem.HasLedgerOwnedTrauma(damage))
-                _damageableBridge.ProjectLedgerTrauma(ent);
             return;
-        }
 
         var previousRegionState = HumanMedicalLedger.GetRegion(ent.Comp, region);
         if (previousRegionState.Presence == LimbPresence.Prosthetic)

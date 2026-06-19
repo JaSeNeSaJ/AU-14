@@ -1438,13 +1438,11 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
             return true;
         }
 
-        var closingActiveSurgicalAccess = lockedProcedure == SurgeryProcedureId.SurgicalAccess;
         if (HasComp<CMCauteryComponent>(tool) &&
             regionState.Incision != IncisionDepth.Closed &&
             (regionState.Incision != IncisionDepth.DeepAccess || !IsEncasedRegion(region)) &&
-            (closingActiveSurgicalAccess ||
-             lockedProcedure == SurgeryProcedureId.None &&
-             !HasRepairableProblem(patient, medical, region)))
+            lockedProcedure == SurgeryProcedureId.None &&
+            !HasRepairableProblem(patient, medical, region))
         {
             attempt = BuildAttempt(
                 region,
@@ -1456,9 +1454,7 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
                 baseDelay: TimeSpan.FromSeconds(2.5),
                 anesthetized: anesthetized,
                 painkilled: painkilled,
-                procedureId: closingActiveSurgicalAccess
-                    ? SurgeryProcedureId.SurgicalAccess
-                    : SurgeryProcedureId.CloseIncision,
+                procedureId: SurgeryProcedureId.CloseIncision,
                 stepIndex: 0,
                 toolRole: GetToolRole(tool));
             return true;

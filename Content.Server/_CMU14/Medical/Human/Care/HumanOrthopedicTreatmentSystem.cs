@@ -7,7 +7,6 @@ using Content.Shared._CMU14.Medical.Human.Rules;
 using Content.Shared._CMU14.Medical.Human.Care;
 using Content.Shared._RMC14.Synth;
 using Content.Shared.DoAfter;
-using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
 using Content.Shared.Interaction;
 using Content.Shared.Popups;
@@ -46,7 +45,6 @@ public sealed partial class HumanOrthopedicTreatmentSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<CMUSplintItemComponent, AfterInteractEvent>(OnSplintAfterInteract);
-        SubscribeLocalEvent<CMUSplintItemComponent, ExaminedEvent>(OnSplintExamined);
         SubscribeLocalEvent<CMUSplintItemComponent, HumanSplintTreatmentDoAfterEvent>(OnSplintDoAfter);
         SubscribeLocalEvent<CMUCastItemComponent, AfterInteractEvent>(OnCastAfterInteract);
         SubscribeLocalEvent<CMUCastItemComponent, HumanCastTreatmentDoAfterEvent>(OnCastDoAfter);
@@ -79,16 +77,6 @@ public sealed partial class HumanOrthopedicTreatmentSystem : EntitySystem
             return;
 
         HandleSplintAfterInteract(args.User, patient, ent.Owner, ent.Comp, medical, ref args);
-    }
-
-    private void OnSplintExamined(Entity<CMUSplintItemComponent> ent, ref ExaminedEvent args)
-    {
-        if (!args.IsInDetailsRange || !ent.Comp.ConsumedOnApply)
-            return;
-
-        args.PushMarkup(Loc.GetString(
-            "cmu-human-medical-splint-uses",
-            ("uses", Math.Max(ent.Comp.Uses, 0))));
     }
 
     private void OnCastAfterInteract(Entity<CMUCastItemComponent> ent, ref AfterInteractEvent args)

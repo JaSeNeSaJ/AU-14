@@ -700,7 +700,7 @@ public abstract partial class SharedPainShockSystem : EntitySystem
         if (!skeletal.Broken)
             return 0f;
 
-        return skeletal.Stabilized ? 15f : 25f;
+        return skeletal.Splinted ? 15f : 25f;
     }
 
     private static PainReflectionSeverity GetPainReflectionSeverity(float amount)
@@ -752,7 +752,7 @@ public abstract partial class SharedPainShockSystem : EntitySystem
         if (!skeletal.Broken)
             return 0f;
 
-        return skeletal.Stabilized ? 14f : 32f;
+        return skeletal.Splinted ? 14f : 32f;
     }
 
     private static float IncisionPainTarget(IncisionDepth incision) => incision switch
