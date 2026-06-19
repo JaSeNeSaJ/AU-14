@@ -552,8 +552,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 gridUid,
                 grid,
                 splashTiles,
-                (empowered ? Color.OrangeRed : Color.Lime)
-                .WithAlpha(OutlineAlpha));
+                (Color.Lime).WithAlpha(OutlineAlpha));
 
             DrawTileBorder(
                 args.WorldHandle,
