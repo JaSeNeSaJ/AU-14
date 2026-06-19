@@ -105,28 +105,6 @@ public sealed class HumanMedicalDiagnosticsTest
     }
 
     [Test]
-    public void FullLedgerDetailKeepsSummaryRevisionSemanticWhenSummaryProjectionIsUnchanged()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        AddInternalBleed(medical, BodyRegion.Chest, FixedPoint2.New(2));
-        HumanMedicalLedger.RebuildSummaryIfDirty(medical);
-        var summaryRevision = medical.Summary.Revision;
-        var ledgerRevision = medical.Revision;
-
-        AddRegionDamage(medical, BodyRegion.LeftArm, FixedPoint2.New(5), FixedPoint2.Zero);
-
-        var detail = HumanMedicalScannerBuiSystem.BuildFullLedgerDetail(medical);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(medical.Revision, Is.GreaterThan(ledgerRevision));
-            Assert.That(detail.Revision, Is.EqualTo(medical.Revision));
-            Assert.That(detail.Summary.Revision, Is.EqualTo(summaryRevision));
-            Assert.That(detail.Summary.HasInternalBleeding, Is.True);
-        });
-    }
-
-    [Test]
     public void ClientSummaryContainsUiReadyStatusFlags()
     {
         var medical = HumanMedicalLedger.CreateDefault();

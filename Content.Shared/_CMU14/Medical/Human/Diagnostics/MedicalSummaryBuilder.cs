@@ -11,6 +11,7 @@ public static class MedicalSummaryBuilder
     {
         var summary = new MedicalSummary
         {
+            Revision = medical.Revision,
             HudStatus = HudStatus.Healthy,
             WalkingSlowdownPoints = SharedCMUMedicalSpeedSystem.CalculateLedgerMedicalMovementSlowdownPoints(
                 medical,
@@ -115,26 +116,6 @@ public static class MedicalSummaryBuilder
             summary.Alerts |= MedicalAlertFlags.Critical;
 
         return summary;
-    }
-
-    public static MedicalSummary BuildForCurrentRevision(
-        HumanMedicalComponent medical,
-        MedicalSummary current)
-    {
-        var next = Build(medical);
-        next.Revision = ProjectionEquals(next, current)
-            ? current.Revision
-            : current.Revision + 1;
-
-        return next;
-    }
-
-    public static bool ProjectionEquals(
-        MedicalSummary left,
-        MedicalSummary right)
-    {
-        left.Revision = right.Revision;
-        return left == right;
     }
 
     private static HudStatus GetHudStatus(MedicalSummary summary)

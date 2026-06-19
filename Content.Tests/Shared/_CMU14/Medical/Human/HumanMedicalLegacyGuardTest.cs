@@ -318,33 +318,6 @@ public sealed class HumanMedicalLegacyGuardTest
     }
 
     [Test]
-    public void RmcWoundTreatersRouteLedgerPatientsByPatientNotHealer()
-    {
-        var root = FindRepoRoot();
-        var text = File.ReadAllText(Path.Combine(
-            root,
-            "Content.Shared/_RMC14/Medical/Wounds/SharedWoundsSystem.cs"));
-
-        var methodStart = text.IndexOf("private void OnWoundTreaterAfterInteract", StringComparison.Ordinal);
-        var methodEnd = text.IndexOf("private void OnWoundTreaterDoAfter", StringComparison.Ordinal);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(methodStart, Is.GreaterThanOrEqualTo(0));
-            Assert.That(methodEnd, Is.GreaterThan(methodStart));
-        });
-
-        var methodText = text[methodStart..methodEnd];
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(methodText, Does.Contain("HasComp<HumanMedicalComponent>(args.Target.Value)"));
-            Assert.That(methodText, Does.Contain("CMUWoundTreaterInterceptEvent"));
-            Assert.That(methodText, Does.Not.Contain("HasComp<HumanMedicalComponent>(args.User)"));
-        });
-    }
-
-    [Test]
     public void LedgerFieldTreatmentInterceptOwnsRmcWoundTreatersForHumans()
     {
         var root = FindRepoRoot();

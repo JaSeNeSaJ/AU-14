@@ -467,6 +467,12 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
 
         PopupSurgeryStepApplied(args.User, patient.Owner, attempt);
 
+        if (attempt.Step == SurgeryStepKind.RepairInternalBleed &&
+            _tags.HasTag(tool, CMUFixOVeinTag))
+        {
+            QueueDel(tool);
+        }
+
         if (result.PainEventRequired &&
             CanFeelSurgeryPain(patient.Owner))
         {
@@ -653,7 +659,7 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
         return attempt.Step switch
         {
             SurgeryStepKind.OpenIncision => region.Incision >= IncisionDepth.OpenSkin,
-            SurgeryStepKind.PrepareIncision => region.Incision >= GetShortcutIncisionDepth(attempt.Region, attempt.ProcedureId),
+            SurgeryStepKind.PrepareIncision => region.Incision >= GetShortcutIncisionDepth(attempt.Region),
             SurgeryStepKind.ClampBleeders => !HasActiveSurgicalBleed(medical, attempt.Region),
             SurgeryStepKind.RetractIncision => region.Incision >= IncisionDepth.Retracted,
             SurgeryStepKind.DeepAccess => region.Incision >= IncisionDepth.DeepAccess,
@@ -674,19 +680,11 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
         };
     }
 
-    private static IncisionDepth GetShortcutIncisionDepth(
-        BodyRegion region,
-        SurgeryProcedureId procedureId)
+    private static IncisionDepth GetShortcutIncisionDepth(BodyRegion region)
     {
-        return procedureId switch
-        {
-            SurgeryProcedureId.RepairInternalBleeding => IncisionDepth.Retracted,
-            SurgeryProcedureId.RemoveEschar => IncisionDepth.Retracted,
-            SurgeryProcedureId.SealStump => IncisionDepth.Retracted,
-            _ => region is BodyRegion.Head or BodyRegion.Chest
-                ? IncisionDepth.DeepAccess
-                : IncisionDepth.Retracted,
-        };
+        return region is BodyRegion.Head or BodyRegion.Chest
+            ? IncisionDepth.DeepAccess
+            : IncisionDepth.Retracted;
     }
 
     private static bool IsInjuryClosed(HumanMedicalComponent medical, int injuryId)
@@ -1307,7 +1305,9 @@ public sealed partial class HumanSurgeryToolSystem : EntitySystem
 
         if (HasComp<CMUIncisionManagementSystemComponent>(tool))
         {
-            var targetDepth = GetShortcutIncisionDepth(region, procedureId);
+            var targetDepth = IsEncasedRegion(region)
+                ? IncisionDepth.DeepAccess
+                : IncisionDepth.Retracted;
             if (regionState.Incision < targetDepth)
             {
                 attempt = BuildAttempt(

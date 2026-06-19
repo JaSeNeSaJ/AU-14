@@ -2,30 +2,18 @@ using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared.FixedPoint;
 using Robust.Shared.IoC;
-using Robust.Shared.Timing;
 
 namespace Content.Shared._CMU14.Medical.Human.Systems;
 
 public sealed partial class HumanTreatedWoundHealingSystem : EntitySystem
 {
     [Dependency] private SharedHumanMedicalSystem _medical = default!;
-    [Dependency] private IGameTiming _timing = default!;
 
     public override void Update(float frameTime)
     {
-        var now = _timing.CurTime;
         var query = EntityQueryEnumerator<HumanMedicalComponent, ActiveTreatedWoundHealingComponent>();
-        while (query.MoveNext(out var uid, out var medical, out var active))
+        while (query.MoveNext(out var uid, out var medical, out _))
         {
-            if (!HumanMedicalWorkerTiming.TryGetElapsed(
-                    now,
-                    ref active.LastUpdate,
-                    ref active.NextUpdate,
-                    out var elapsed))
-            {
-                continue;
-            }
-
             var tick = CalculateTreatedWoundHealingTick(medical);
             if (!tick.HasActiveHealing)
             {
@@ -33,7 +21,7 @@ public sealed partial class HumanTreatedWoundHealingSystem : EntitySystem
                 continue;
             }
 
-            var result = HumanMedicalLedger.AdvanceTreatedWoundHealing(medical, elapsed);
+            var result = HumanMedicalLedger.AdvanceTreatedWoundHealing(medical, FixedPoint2.New(frameTime));
             if (!result.Applied)
             {
                 _medical.RefreshActiveMarkers(uid, medical);
@@ -48,7 +36,7 @@ public sealed partial class HumanTreatedWoundHealingSystem : EntitySystem
                 tick.ActiveInjuries,
                 result.BruteHealed,
                 result.BurnHealed,
-                elapsed.Float());
+                frameTime);
             RaiseLocalEvent(uid, ref ev);
         }
     }

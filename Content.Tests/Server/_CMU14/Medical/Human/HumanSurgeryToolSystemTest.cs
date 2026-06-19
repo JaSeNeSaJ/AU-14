@@ -184,20 +184,6 @@ public sealed class HumanSurgeryToolSystemTest
     }
 
     [Test]
-    public void IncisionShortcutUsesProcedureSpecificAccessDepth()
-    {
-        var text = ReadSurgeryToolSystem();
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(text, Does.Contain("GetShortcutIncisionDepth(region, procedureId)"));
-            Assert.That(text, Does.Contain("GetShortcutIncisionDepth(attempt.Region, attempt.ProcedureId)"));
-            Assert.That(text, Does.Contain("SurgeryProcedureId.RepairInternalBleeding => IncisionDepth.Retracted"));
-            Assert.That(text, Does.Not.Contain("var targetDepth = IsEncasedRegion(region)\r\n                ? IncisionDepth.DeepAccess\r\n                : IncisionDepth.Retracted;"));
-        });
-    }
-
-    [Test]
     public void OrganClampAfterInteractHasSingleOwningSubscriber()
     {
         const string subscription = "SubscribeLocalEvent<CMUOrganClampComponent, AfterInteractEvent>";
