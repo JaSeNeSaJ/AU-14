@@ -2,17 +2,13 @@ using System.Numerics;
 using Content.Shared._CMU14.ZLevels.Core.Components;
 using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared.Actions;
-using Content.Shared.Damage;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
-using Content.Shared.Movement.Events;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared.Popups;
-using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Robust.Shared.Map;
-using Robust.Shared.Network;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
@@ -24,15 +20,11 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
     public const float ZJumpTakeoffLocalPosition = 0.25f;
     private const float LightTakeoffDashMaxDistance = 1f;
     private const float LightTakeoffDashMaxSpeed = 5f;
-    private const float SameZFallbackStableEpsilon = 0.05f;
 
     [Dependency] private SharedActionsSystem _actions = default!;
-    [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
-    [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
-    [Dependency] private SharedStunSystem _stun = default!;
     [Dependency] private ThrowingSystem _throwing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private XenoPlasmaSystem _xenoPlasma = default!;
@@ -43,26 +35,6 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         SubscribeLocalEvent<CMUXenoZJumpComponent, MapInitEvent>(OnZJumpMapInit);
         SubscribeLocalEvent<CMUXenoZJumpComponent, CMUXenoZJumpActionEvent>(OnZJumpAction);
         SubscribeLocalEvent<CMUXenoZJumpComponent, CMUXenoZJumpDoAfterEvent>(OnZJumpDoAfter);
-        SubscribeLocalEvent<CMUXenoZJumpingComponent, CMUZLevelFallEvent>(OnZJumpingFall);
-        SubscribeLocalEvent<CMUXenoZJumpingComponent, MoveEvent>(OnZJumpingMove);
-        SubscribeLocalEvent<CMUXenoZJumpingComponent, UpdateCanMoveEvent>(OnZJumpingCanMove);
-    }
-
-    public override void Update(float frameTime)
-    {
-        var query = EntityQueryEnumerator<CMUXenoZJumpingComponent, CMUZPhysicsComponent, TransformComponent>();
-        while (query.MoveNext(out var uid, out var jump, out var zPhysics, out var transform))
-        {
-            var onOriginMap = transform.MapUid == jump.OriginMap;
-            if (!onOriginMap && !jump.LeftOriginMap)
-            {
-                jump.LeftOriginMap = true;
-                Dirty(uid, jump);
-            }
-
-            if (ShouldClearSameZFallbackTracking(jump.LeftOriginMap, onOriginMap, zPhysics.Velocity, zPhysics.LocalPosition))
-                RemCompDeferred<CMUXenoZJumpingComponent>(uid);
-        }
     }
 
     private void OnZJumpMapInit(Entity<CMUXenoZJumpComponent> xeno, ref MapInitEvent args)
@@ -149,8 +121,6 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         if (!_xenoPlasma.TryRemovePlasmaPopup((xeno.Owner, null), xeno.Comp.PlasmaCost))
             return false;
 
-        TrackSameZFallback(xeno);
-
         _physics.ResetDynamics(xeno, physics);
 
         var takeoffDash = GetTakeoffDashVector(direction, xeno.Comp.TakeoffDashDistance);
@@ -173,55 +143,6 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         }
 
         return true;
-    }
-
-    private void TrackSameZFallback(Entity<CMUXenoZJumpComponent> xeno)
-    {
-        var xform = Transform(xeno);
-        if (xform.MapUid is not { } mapUid)
-            return;
-
-        var jumping = EnsureComp<CMUXenoZJumpingComponent>(xeno);
-        jumping.OriginMap = mapUid;
-        jumping.LeftOriginMap = false;
-        Dirty(xeno, jumping);
-    }
-
-    private void OnZJumpingFall(Entity<CMUXenoZJumpingComponent> jumping, ref CMUZLevelFallEvent args)
-    {
-        var onOriginMap = Transform(jumping).MapUid == jumping.Comp.OriginMap;
-        if (!ShouldPenalizeSameZFallback(jumping.Comp.LeftOriginMap, onOriginMap))
-            return;
-
-        if (_net.IsServer &&
-            TryComp<CMUXenoZJumpComponent>(jumping, out var zJump))
-        {
-            _stun.TryParalyze(jumping, zJump.SameZFallbackStun, true);
-            _damage.TryChangeDamage(jumping, zJump.SameZFallbackDamage, origin: jumping, tool: jumping);
-        }
-
-        RemCompDeferred<CMUXenoZJumpingComponent>(jumping);
-    }
-
-    private void OnZJumpingMove(Entity<CMUXenoZJumpingComponent> jumping, ref MoveEvent args)
-    {
-        var onOriginMap = Transform(jumping).MapUid == jumping.Comp.OriginMap;
-        if (onOriginMap || jumping.Comp.LeftOriginMap)
-            return;
-
-        jumping.Comp.LeftOriginMap = true;
-        Dirty(jumping);
-    }
-
-    private void OnZJumpingCanMove(Entity<CMUXenoZJumpingComponent> jumping, ref UpdateCanMoveEvent args)
-    {
-        if (!TryComp<CMUZPhysicsComponent>(jumping, out var zPhysics) ||
-            !ShouldBlockZJumpAirControl(zPhysics.LocalPosition))
-        {
-            return;
-        }
-
-        args.Cancel();
     }
 
     private bool CanStartZJumpWindup(
@@ -314,24 +235,6 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
     public static bool CanStartZJumpTakeoff(bool canUseZJumpMap, bool hasBlockingTileAbove)
     {
         return canUseZJumpMap && !hasBlockingTileAbove;
-    }
-
-    public static bool ShouldPenalizeSameZFallback(bool leftOriginMap, bool onOriginMap)
-    {
-        return leftOriginMap && onOriginMap;
-    }
-
-    public static bool ShouldClearSameZFallbackTracking(bool leftOriginMap, bool onOriginMap, float zVelocity, float localPosition)
-    {
-        return leftOriginMap &&
-               !onOriginMap &&
-               MathF.Abs(zVelocity) <= SameZFallbackStableEpsilon &&
-               MathF.Abs(localPosition) <= SameZFallbackStableEpsilon;
-    }
-
-    public static bool ShouldBlockZJumpAirControl(float localPosition)
-    {
-        return localPosition > SameZFallbackStableEpsilon;
     }
 
     public static bool ShouldUseWindupDoAfter(TimeSpan windup)

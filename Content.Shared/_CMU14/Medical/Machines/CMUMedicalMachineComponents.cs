@@ -175,10 +175,10 @@ public sealed partial class CMULimbPrinterComponent : Component
     public ProtoId<ReagentPrototype> SynthesisReagent = "CMUBiogenicMatrix";
 
     [DataField]
-    public ProtoId<StackPrototype> MetalStack = "CMSteel";
+    public ProtoId<StackPrototype> MetalStack = "Steel";
 
     [DataField]
-    public ProtoId<StackPrototype> CableStack = "RMCCable";
+    public ProtoId<StackPrototype> CableStack = "Cable";
 
     [DataField]
     public FixedPoint2 SynthesisCost = FixedPoint2.New(30);

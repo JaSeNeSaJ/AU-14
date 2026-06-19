@@ -536,7 +536,7 @@ public abstract partial class SharedXenoHiveSystem : EntitySystem
         if (_net.IsClient)
             return false;
 
-        if (!CanSpawnBurrowedLarva(hive))
+        if (hive.Comp.BurrowedLarva <= 0)
             return false;
 
         EntityUid? larva = null;
@@ -583,33 +583,6 @@ public abstract partial class SharedXenoHiveSystem : EntitySystem
             $"{session.Name:player} took a burrowed larva from hive {ToPrettyString(hive):hive}.");
 
         return true;
-    }
-
-    public bool CanSpawnBurrowedLarva(Entity<HiveComponent> hive)
-    {
-        if (hive.Comp.BurrowedLarva <= 0)
-            return false;
-
-        return HasBurrowedLarvaSpawnLocation<HiveCoreComponent>(hive) ||
-               HasBurrowedLarvaSpawnLocation<XenoEvolutionGranterComponent>(hive) ||
-               HasBurrowedLarvaSpawnLocation<XenoComponent>(hive);
-    }
-
-    private bool HasBurrowedLarvaSpawnLocation<T>(Entity<HiveComponent> hive) where T : Component
-    {
-        var candidates = EntityQueryEnumerator<T, HiveMemberComponent>();
-        while (candidates.MoveNext(out var uid, out _, out var member))
-        {
-            if (member.Hive != hive.Owner)
-                continue;
-
-            if (_mobState.IsDead(uid))
-                continue;
-
-            return true;
-        }
-
-        return false;
     }
 
     private void OnAutoAssignHiveAdded(Entity<AutoAssignHiveComponent> ent, ref ComponentStartup args)

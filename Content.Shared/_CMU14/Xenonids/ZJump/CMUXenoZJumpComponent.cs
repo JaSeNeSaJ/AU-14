@@ -1,4 +1,3 @@
-using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
@@ -32,15 +31,6 @@ public sealed partial class CMUXenoZJumpComponent : Component
 
     [DataField, AutoNetworkedField]
     public FixedPoint2 PlasmaCost = 50;
-
-    [DataField, AutoNetworkedField]
-    public TimeSpan SameZFallbackStun = TimeSpan.FromSeconds(3);
-
-    [DataField, AutoNetworkedField]
-    public DamageSpecifier SameZFallbackDamage = new()
-    {
-        DamageDict = { { "Blunt", FixedPoint2.New(35) } },
-    };
 
     [DataField]
     public LocId NotXenoPopup = "cmu-xeno-zjump-fail-not-xeno";

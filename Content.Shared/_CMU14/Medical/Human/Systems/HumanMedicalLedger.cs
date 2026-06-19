@@ -11,8 +11,6 @@ namespace Content.Shared._CMU14.Medical.Human.Systems;
 
 public static class HumanMedicalLedger
 {
-    private static readonly FixedPoint2 MaxTotalRegionTraumaDamage = FixedPoint2.New(600);
-
     private static readonly BodyRegion[] DefaultRegions =
     {
         BodyRegion.Head,
@@ -197,9 +195,6 @@ public static class HumanMedicalLedger
         EnsureInitialized(medical);
         var regions = (RegionState[]) medical.Regions.Clone();
         var injuries = new List<InjuryRecord>(medical.Injuries);
-        var profile = BuildTreatedRecoveryProfile(injuries, regions);
-        bool[]? removeInjuries = null;
-        var removedInjuries = 0;
         var changed = false;
         var bruteHealed = FixedPoint2.Zero;
         var burnHealed = FixedPoint2.Zero;
@@ -210,20 +205,30 @@ public static class HumanMedicalLedger
             if (region.Region == BodyRegion.None)
                 continue;
 
-            var injuryIndexes = profile.InjuryIndexes[regionIndex];
-            var bruteRecoveryBudget = profile.BruteRecoveryRates[regionIndex] * seconds;
-            var burnRecoveryBudget = profile.BurnRecoveryRates[regionIndex] * seconds;
+            CalculateTreatedRecoveryRates(
+                medical,
+                region.Region,
+                out var bruteRecoveryBudget,
+                out var burnRecoveryBudget,
+                out _);
+
+            bruteRecoveryBudget *= seconds;
+            burnRecoveryBudget *= seconds;
             if (bruteRecoveryBudget <= FixedPoint2.Zero &&
-                burnRecoveryBudget <= FixedPoint2.Zero ||
-                injuryIndexes is null)
+                burnRecoveryBudget <= FixedPoint2.Zero)
             {
                 continue;
             }
 
-            for (var index = injuryIndexes.Count - 1; index >= 0; index--)
+            for (var i = injuries.Count - 1; i >= 0; i--)
             {
-                var i = injuryIndexes[index];
                 var injury = injuries[i];
+                if (injury.Region != region.Region ||
+                    !CanTreatedInjuryRecover(injury))
+                {
+                    continue;
+                }
+
                 var remainingBudget = injury.Kind == InjuryKind.Burn
                     ? burnRecoveryBudget
                     : bruteRecoveryBudget;
@@ -255,12 +260,7 @@ public static class HumanMedicalLedger
                 {
                     if (CanRemoveRecoveredInjury(injury))
                     {
-                        removeInjuries ??= new bool[injuries.Count];
-                        if (!removeInjuries[i])
-                        {
-                            removeInjuries[i] = true;
-                            removedInjuries++;
-                        }
+                        injuries.RemoveAt(i);
                     }
                     else
                     {
@@ -284,9 +284,7 @@ public static class HumanMedicalLedger
             return new MedicalTransactionResult(false, medical.Revision, MedicalDirtyFlags.None, "No treated wounds are recovering.");
 
         medical.Regions = regions;
-        medical.Injuries = removeInjuries is null
-            ? injuries
-            : CompactRecoveredInjuries(injuries, removeInjuries, removedInjuries);
+        medical.Injuries = injuries;
         medical.Revision++;
         medical.DirtyFlags |= MedicalDirtyFlags.Regions | MedicalDirtyFlags.Injuries | MedicalDirtyFlags.Summary;
 
@@ -297,52 +295,6 @@ public static class HumanMedicalLedger
             string.Empty,
             bruteHealed,
             burnHealed);
-    }
-
-    private static TreatedRecoveryProfile BuildTreatedRecoveryProfile(
-        List<InjuryRecord> injuries,
-        RegionState[] regions)
-    {
-        var profile = new TreatedRecoveryProfile();
-        for (var i = 0; i < injuries.Count; i++)
-        {
-            var injury = injuries[i];
-            if (!CanTreatedInjuryRecover(injury))
-                continue;
-
-            var regionIndex = (int) injury.Region;
-            if (regionIndex <= 0 ||
-                regionIndex >= regions.Length ||
-                regionIndex >= HumanMedicalComponent.RegionSlotCount ||
-                regions[regionIndex].Region != injury.Region)
-            {
-                continue;
-            }
-
-            (profile.InjuryIndexes[regionIndex] ??= new List<int>()).Add(i);
-
-            if (injury.Kind == InjuryKind.Burn)
-                profile.BurnRecoveryRates[regionIndex] = FixedPoint2.Max(profile.BurnRecoveryRates[regionIndex], injury.RecoveryRate);
-            else
-                profile.BruteRecoveryRates[regionIndex] = FixedPoint2.Max(profile.BruteRecoveryRates[regionIndex], injury.RecoveryRate);
-        }
-
-        return profile;
-    }
-
-    private static List<InjuryRecord> CompactRecoveredInjuries(
-        List<InjuryRecord> injuries,
-        bool[] removeInjuries,
-        int removedInjuries)
-    {
-        var compacted = new List<InjuryRecord>(injuries.Count - removedInjuries);
-        for (var i = 0; i < injuries.Count; i++)
-        {
-            if (!removeInjuries[i])
-                compacted.Add(injuries[i]);
-        }
-
-        return compacted;
     }
 
     public static void CalculateTreatedRecoveryRates(
@@ -624,49 +576,8 @@ public static class HumanMedicalLedger
         }
 
         var region = stage.Regions[index];
-        var previousBrute = region.BruteDamage;
-        var previousBurn = region.BurnDamage;
-        var nextBrute = FixedPoint2.Max(FixedPoint2.Zero, previousBrute + FixedPoint2.Min(FixedPoint2.Zero, effect.BruteDamage));
-        var nextBurn = FixedPoint2.Max(FixedPoint2.Zero, previousBurn + FixedPoint2.Min(FixedPoint2.Zero, effect.BurnDamage));
-        var bruteIncrease = FixedPoint2.Max(FixedPoint2.Zero, effect.BruteDamage);
-        var burnIncrease = FixedPoint2.Max(FixedPoint2.Zero, effect.BurnDamage);
-        var increase = bruteIncrease + burnIncrease;
-
-        if (increase > FixedPoint2.Zero)
-        {
-            var currentTotal = GetTotalRegionTraumaDamage(stage.Regions)
-                - (previousBrute - nextBrute)
-                - (previousBurn - nextBurn);
-            var remaining = FixedPoint2.Max(FixedPoint2.Zero, MaxTotalRegionTraumaDamage - currentTotal);
-
-            if (remaining < increase)
-            {
-                if (bruteIncrease > FixedPoint2.Zero && burnIncrease > FixedPoint2.Zero)
-                {
-                    var ratio = remaining / increase;
-                    bruteIncrease = FixedPoint2.Min(bruteIncrease, bruteIncrease * ratio);
-                    burnIncrease = FixedPoint2.Min(burnIncrease, FixedPoint2.Max(FixedPoint2.Zero, remaining - bruteIncrease));
-                }
-                else if (bruteIncrease > FixedPoint2.Zero)
-                {
-                    bruteIncrease = remaining;
-                }
-                else
-                {
-                    burnIncrease = remaining;
-                }
-            }
-        }
-
-        region.BruteDamage = nextBrute + bruteIncrease;
-        region.BurnDamage = nextBurn + burnIncrease;
-
-        if (region.BruteDamage == previousBrute && region.BurnDamage == previousBurn)
-        {
-            failureReason = string.Empty;
-            return true;
-        }
-
+        region.BruteDamage = FixedPoint2.Max(FixedPoint2.Zero, region.BruteDamage + effect.BruteDamage);
+        region.BurnDamage = FixedPoint2.Max(FixedPoint2.Zero, region.BurnDamage + effect.BurnDamage);
         stage.Regions[index] = region;
 
         dirty = MedicalDirtyFlags.Regions;
@@ -729,20 +640,6 @@ public static class HumanMedicalLedger
 
         failureReason = string.Empty;
         return true;
-    }
-
-    private static FixedPoint2 GetTotalRegionTraumaDamage(RegionState[] regions)
-    {
-        var total = FixedPoint2.Zero;
-        foreach (var region in regions)
-        {
-            if (region.Region == BodyRegion.None)
-                continue;
-
-            total += region.BruteDamage + region.BurnDamage;
-        }
-
-        return total;
     }
 
     private static bool TryApplyInjury(
@@ -2099,13 +1996,6 @@ public static class HumanMedicalLedger
             index > 0 &&
             index < organs.Length &&
             organs[index].Slot == slot;
-    }
-
-    private sealed class TreatedRecoveryProfile
-    {
-        public readonly FixedPoint2[] BruteRecoveryRates = new FixedPoint2[HumanMedicalComponent.RegionSlotCount];
-        public readonly FixedPoint2[] BurnRecoveryRates = new FixedPoint2[HumanMedicalComponent.RegionSlotCount];
-        public readonly List<int>?[] InjuryIndexes = new List<int>?[HumanMedicalComponent.RegionSlotCount];
     }
 
     private sealed class LedgerStage

@@ -25,7 +25,6 @@ public sealed partial class CMUExplosionMedicalTraumaSystem : EntitySystem
     [Dependency] private DamageableSystem _damageable = default!;
     [Dependency] private SharedHumanMedicalSystem _humanMedical = default!;
     [Dependency] private SharedCMUShrapnelSystem _shrapnel = default!;
-    [Dependency] private SharedCMUTraumaSystem _trauma = default!;
     [Dependency] private IRobustRandom _random = default!;
 
     private const float ExposureFalloffTiles = 9f;
@@ -84,14 +83,14 @@ public sealed partial class CMUExplosionMedicalTraumaSystem : EntitySystem
         HumanMedicalLedger.EnsureInitialized(body.Comp);
         var previousRegionState = HumanMedicalLedger.GetRegion(body.Comp, region);
 
-        var trauma = _trauma.CreateContactResult(
+        var trauma = CMUTraumaContactModel.Create(
+            CMUTraumaMechanism.Explosive,
+            DamageImpact.Explosion,
             weighted.Type,
-            damage,
+            brute,
             HasOrgans(region),
-            origin: null,
-            tool: null,
-            impact: DamageImpact.Explosion,
-            explicitMechanism: CMUTraumaMechanism.Explosive);
+            _random.NextFloat(),
+            CMUTraumaContactSettings.Default);
         var context = new MedicalDamageContext(
             GetPrimaryInjuryKind(damage, brute, burn),
             trauma.BoneContact,
@@ -105,9 +104,11 @@ public sealed partial class CMUExplosionMedicalTraumaSystem : EntitySystem
             brute,
             burn,
             context,
-            new MedicalRngContext(OrganRoll: _random.NextFloat()),
-            organs: body.Comp.Organs,
-            policy: _trauma.DamagePolicy);
+            new MedicalRngContext(
+                BoneRoll: _random.NextFloat(),
+                OrganRoll: _random.NextFloat(),
+                VascularRoll: _random.NextFloat()),
+            organs: body.Comp.Organs);
 
         var result = _humanMedical.ApplyTransaction(body, transaction);
         if (!result.Applied)

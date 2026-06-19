@@ -1,5 +1,4 @@
 using Content.Shared._CMU14.Medical.Foundation;
-using Content.Shared._CMU14.Medical.Human.Rules;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
 using Content.Shared.Body.Part;
@@ -8,6 +7,7 @@ using Content.Shared._AU14.Abominations;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.ClawSharpness;
 using Robust.Shared.Configuration;
+using Robust.Shared.Random;
 
 namespace Content.Shared._CMU14.Medical.Human.Damage;
 
@@ -17,26 +17,13 @@ public sealed partial class SharedCMUTraumaSystem : EntitySystem
     private const int XenoTorsoOrganPassThroughMinimumTier = 2;
 
     [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IRobustRandom _random = default!;
 
     private EntityQuery<XenoComponent> _xenoQuery;
     private EntityQuery<XenoClawsComponent> _xenoClawsQuery;
     private EntityQuery<AbominationComponent> _abominationQuery;
 
     private CMUTraumaContactSettings _settings = CMUTraumaContactSettings.Default;
-    private bool _medicalEnabled = true;
-    private bool _boneEnabled = true;
-    private bool _organEnabled = true;
-    private bool _woundsEnabled = true;
-    private FixedPoint2 _escharBurnThreshold = FixedPoint2.New(30);
-
-    public bool MedicalEnabled => _medicalEnabled;
-
-    public MedicalDamagePolicy DamagePolicy => new(
-        _medicalEnabled,
-        _boneEnabled,
-        _organEnabled,
-        _woundsEnabled,
-        _escharBurnThreshold);
 
     public override void Initialize()
     {
@@ -45,12 +32,6 @@ public sealed partial class SharedCMUTraumaSystem : EntitySystem
         _xenoQuery = GetEntityQuery<XenoComponent>();
         _xenoClawsQuery = GetEntityQuery<XenoClawsComponent>();
         _abominationQuery = GetEntityQuery<AbominationComponent>();
-
-        _cfg.OnValueChanged(CMUMedicalCCVars.Enabled, v => _medicalEnabled = v, true);
-        _cfg.OnValueChanged(CMUMedicalCCVars.BoneEnabled, v => _boneEnabled = v, true);
-        _cfg.OnValueChanged(CMUMedicalCCVars.OrganEnabled, v => _organEnabled = v, true);
-        _cfg.OnValueChanged(CMUMedicalCCVars.WoundsEnabled, v => _woundsEnabled = v, true);
-        _cfg.OnValueChanged(CMUMedicalCCVars.EscharBurnThreshold, v => _escharBurnThreshold = (FixedPoint2)v, true);
 
         _cfg.OnValueChanged(CMUMedicalCCVars.BoneProjectileHighDamageThreshold, v => _settings = _settings with { BallisticHighDamageThreshold = (FixedPoint2)v }, true);
         _cfg.OnValueChanged(CMUMedicalCCVars.TraumaMeleeHighDamageThreshold, v => _settings = _settings with { MeleeHighDamageThreshold = (FixedPoint2)v }, true);
@@ -110,6 +91,7 @@ public sealed partial class SharedCMUTraumaSystem : EntitySystem
             partType,
             brute,
             hasOrgans,
+            _random.NextFloat(),
             settings);
     }
 

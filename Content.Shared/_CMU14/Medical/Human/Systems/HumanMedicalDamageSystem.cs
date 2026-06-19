@@ -23,7 +23,6 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPainShockSystem _pain = default!;
     [Dependency] private IRobustRandom _random = default!;
-    [Dependency] private SharedCMUTraumaSystem _trauma = default!;
 
     private readonly Dictionary<EntityUid, ResolvedHit> _pendingHits = new();
     private const float SplintBreakPainPulse = 8f;
@@ -39,10 +38,9 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
     public static bool CanProcessBody(
         bool hasHumanLedger,
         bool isSynth,
-        bool isXeno,
-        bool medicalEnabled = true)
+        bool isXeno)
     {
-        return medicalEnabled && hasHumanLedger && !isSynth && !isXeno;
+        return hasHumanLedger && !isSynth && !isXeno;
     }
 
     public static BodyRegion ResolveBodyRegion(
@@ -71,11 +69,9 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
         CMUTraumaContactResult trauma,
         MedicalRngContext rng,
         bool isSynth = false,
-        bool isXeno = false,
-        MedicalDamagePolicy? policy = null)
+        bool isXeno = false)
     {
-        var effectivePolicy = policy ?? MedicalDamagePolicy.Default;
-        if (!CanProcessBody(hasHumanLedger: true, isSynth, isXeno, effectivePolicy.MedicalEnabled))
+        if (!CanProcessBody(hasHumanLedger: true, isSynth, isXeno))
         {
             return new MedicalTransactionResult(
                 false,
@@ -124,8 +120,7 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
             burn,
             context,
             rng,
-            organs: medical.Organs,
-            policy: effectivePolicy);
+            organs: medical.Organs);
 
         return HumanMedicalLedger.ApplyTransaction(medical, transaction);
     }
@@ -145,8 +140,7 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
             !CanProcessBody(
                 hasHumanLedger: true,
                 HasComp<SynthComponent>(ent.Owner),
-                HasComp<XenoComponent>(ent.Owner),
-                _trauma.MedicalEnabled))
+                HasComp<XenoComponent>(ent.Owner)))
         {
             _pendingHits.Remove(ent.Owner);
             return;
@@ -160,7 +154,11 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
                 hit.Part is { } partUid && TryComp<AnatomyRegionComponent>(partUid, out var anatomy)
                     ? anatomy
                     : null);
-        var trauma = CreateTrauma(region, hit.PartType, damage, args.Origin, args.Tool, args.Impact);
+        var trauma = CreateTrauma(region, hit.PartType, damage, args.Impact);
+        var rng = new MedicalRngContext(
+            BoneRoll: _random.NextFloat(),
+            OrganRoll: _random.NextFloat(),
+            VascularRoll: _random.NextFloat());
 
         HumanMedicalLedger.EnsureInitialized(ent.Comp);
 
@@ -221,9 +219,8 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
             brute,
             burn,
             context,
-            new MedicalRngContext(OrganRoll: _random.NextFloat()),
-            organs: ent.Comp.Organs,
-            policy: _trauma.DamagePolicy);
+            rng,
+            organs: ent.Comp.Organs);
 
         var result = _humanMedical.ApplyTransaction(ent, transaction);
         if (result.Applied)
@@ -295,17 +292,17 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
         BodyRegion region,
         BodyPartType partType,
         DamageSpecifier damage,
-        EntityUid? origin,
-        EntityUid? tool,
         DamageImpact impact)
     {
-        return _trauma.CreateContactResult(
+        var brute = ExtractBruteDamage(damage);
+        return CMUTraumaContactModel.Create(
+            InferMechanism(damage, brute, ExtractBurnDamage(damage)),
+            impact,
             partType,
-            damage,
+            brute,
             HasOrgans(region),
-            origin,
-            tool,
-            impact);
+            _random.NextFloat(),
+            CMUTraumaContactSettings.Default);
     }
 
     private static FixedPoint2 ExtractBruteDamage(DamageSpecifier damage)
@@ -338,6 +335,28 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
             return InjuryKind.Cut;
 
         return InjuryKind.Bruise;
+    }
+
+    private static CMUTraumaMechanism InferMechanism(
+        DamageSpecifier damage,
+        FixedPoint2 brute,
+        FixedPoint2 burn)
+    {
+        if (burn > brute)
+            return CMUTraumaMechanism.Generic;
+
+        var piercing = GetPositiveDamageType(damage, "Piercing");
+        var slash = GetPositiveDamageType(damage, "Slash");
+        var blunt = GetPositiveDamageType(damage, "Blunt");
+
+        if (piercing > FixedPoint2.Zero && piercing >= slash && piercing >= blunt)
+            return CMUTraumaMechanism.Pierce;
+        if (slash > FixedPoint2.Zero && slash >= blunt)
+            return CMUTraumaMechanism.Slash;
+        if (blunt > FixedPoint2.Zero)
+            return CMUTraumaMechanism.Blunt;
+
+        return CMUTraumaMechanism.Generic;
     }
 
     private static bool HasOrgans(BodyRegion region)

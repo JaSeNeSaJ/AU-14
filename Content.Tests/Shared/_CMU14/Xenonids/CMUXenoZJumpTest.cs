@@ -1,4 +1,3 @@
-using System;
 using System.Numerics;
 using Content.Shared._CMU14.Xenonids.ZJump;
 using NUnit.Framework;
@@ -99,39 +98,5 @@ public sealed class CMUXenoZJumpTest
         var component = new CMUXenoZJumpComponent();
 
         Assert.That(CMUXenoZJumpSystem.ShouldUseWindupDoAfter(component.Windup), Is.True);
-    }
-
-    [Test]
-    public void SameZFallbackPenaltyRequiresLeavingAndReturningToOriginMap()
-    {
-        Assert.That(CMUXenoZJumpSystem.ShouldPenalizeSameZFallback(false, true), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldPenalizeSameZFallback(true, false), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldPenalizeSameZFallback(true, true), Is.True);
-    }
-
-    [Test]
-    public void StableUpperLandingClearsZJumpTracking()
-    {
-        Assert.That(CMUXenoZJumpSystem.ShouldClearSameZFallbackTracking(false, false, 0f, 0f), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldClearSameZFallbackTracking(true, true, 0f, 0f), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldClearSameZFallbackTracking(true, false, 0.1f, 0f), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldClearSameZFallbackTracking(true, false, 0f, 0.1f), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldClearSameZFallbackTracking(true, false, 0f, 0f), Is.True);
-    }
-
-    [Test]
-    public void ZJumpAirControlOnlyBlocksOffGround()
-    {
-        Assert.That(CMUXenoZJumpSystem.ShouldBlockZJumpAirControl(0f), Is.False);
-        Assert.That(CMUXenoZJumpSystem.ShouldBlockZJumpAirControl(CMUXenoZJumpSystem.ZJumpTakeoffLocalPosition), Is.True);
-    }
-
-    [Test]
-    public void DefaultSameZFallbackPenaltyIsMeaningful()
-    {
-        var component = new CMUXenoZJumpComponent();
-
-        Assert.That(component.SameZFallbackStun, Is.GreaterThanOrEqualTo(TimeSpan.FromSeconds(2)));
-        Assert.That(component.SameZFallbackDamage.DamageDict, Is.Not.Empty);
     }
 }

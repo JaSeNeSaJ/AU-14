@@ -154,42 +154,6 @@ public static class HumanSurgeryProcedureRules
             operations[index].Committed;
     }
 
-    public static bool IsOperationTargetCurrent(
-        HumanMedicalComponent medical,
-        SurgeryOperationState operation)
-    {
-        if (operation.Region == BodyRegion.None)
-            return false;
-
-        return operation.ProcedureId switch
-        {
-            SurgeryProcedureId.None => false,
-            SurgeryProcedureId.SurgicalAccess => HasOpenSurgicalAccess(medical, operation.Region),
-            SurgeryProcedureId.CloseIncision => HasOpenSurgicalAccess(medical, operation.Region),
-            SurgeryProcedureId.SutureWound => TryFindSuturableWound(medical, operation.Region, out _),
-            SurgeryProcedureId.RemoveForeignObject => TryFindSurgicalForeignObject(medical, operation.Region, out _),
-            SurgeryProcedureId.SealStump => TryFindOpenStump(medical, operation.Region, out _),
-            SurgeryProcedureId.RepairInternalBleeding => TryFindInternalBleed(medical, operation.Region, out _),
-            SurgeryProcedureId.RemoveEschar => TryFindDebridementBurn(medical, operation.Region, out _),
-            SurgeryProcedureId.RepairOrgan => TryFindDamagedOrgan(medical, operation.Region, out _),
-            SurgeryProcedureId.RepairFracture => HumanMedicalLedger.GetRegion(medical, operation.Region).Skeletal.Broken,
-            SurgeryProcedureId.EyeSurgery => TryFindDamagedOrganSlot(medical, operation.Region, OrganSlot.Eyes, out _),
-            SurgeryProcedureId.BrainDamageSurgery =>
-                TryFindDamagedOrganSlot(medical, operation.Region, OrganSlot.Brain, out _) ||
-                TryFindSurgicalForeignObject(medical, operation.Region, out _),
-            _ => true,
-        };
-    }
-
-    public static bool HasOpenSurgicalAccess(
-        HumanMedicalComponent medical,
-        BodyRegion region)
-    {
-        var state = HumanMedicalLedger.GetRegion(medical, region);
-        return state.Incision != IncisionDepth.Closed ||
-            TryFindOpenStump(medical, region, out _);
-    }
-
     public static bool IsProcedureCompleteAfterStep(SurgeryAttempt attempt)
     {
         if (attempt.Step == SurgeryStepKind.RemoveForeignObject &&
@@ -304,42 +268,6 @@ public static class HumanSurgeryProcedureRules
 
         burn = default;
         return false;
-    }
-
-    public static bool TryFindSurgicalForeignObject(
-        HumanMedicalComponent medical,
-        BodyRegion region,
-        out ForeignObjectRecord foreignObject)
-    {
-        foreach (var candidate in medical.ForeignObjects)
-        {
-            if (candidate.Region != region ||
-                candidate.Kind != ForeignObjectKind.Shrapnel ||
-                !candidate.Active ||
-                candidate.Depth is < ForeignObjectDepth.Deep or > ForeignObjectDepth.Surgical)
-            {
-                continue;
-            }
-
-            foreignObject = candidate;
-            return true;
-        }
-
-        foreignObject = default;
-        return false;
-    }
-
-    public static bool TryFindDamagedOrganSlot(
-        HumanMedicalComponent medical,
-        BodyRegion region,
-        OrganSlot slot,
-        out OrganState organ)
-    {
-        organ = HumanMedicalLedger.GetOrgan(medical, slot);
-        return organ.Slot == slot &&
-            organ.Region == region &&
-            organ.Damage > 0 &&
-            !organ.Missing;
     }
 
     public static bool IsDebridementBurn(InjuryRecord injury)

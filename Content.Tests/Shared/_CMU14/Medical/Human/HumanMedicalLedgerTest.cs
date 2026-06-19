@@ -93,65 +93,6 @@ public sealed class HumanMedicalLedgerTest
     }
 
     [Test]
-    public void RegionDamageCapsTotalBruteAndBurnAcrossBodyAtSixHundred()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        var transaction = new MedicalTransaction(BodyRegion.Chest);
-        transaction.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.Chest,
-            FixedPoint2.New(500),
-            FixedPoint2.Zero));
-        transaction.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.LeftArm,
-            FixedPoint2.Zero,
-            FixedPoint2.New(100)));
-        transaction.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.RightArm,
-            FixedPoint2.New(200),
-            FixedPoint2.Zero));
-
-        var result = HumanMedicalLedger.ApplyTransaction(medical, transaction);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.Applied, Is.True);
-            Assert.That(HumanMedicalLedger.GetRegion(medical, BodyRegion.Chest).BruteDamage, Is.EqualTo(FixedPoint2.New(500)));
-            Assert.That(HumanMedicalLedger.GetRegion(medical, BodyRegion.LeftArm).BurnDamage, Is.EqualTo(FixedPoint2.New(100)));
-            Assert.That(HumanMedicalLedger.GetRegion(medical, BodyRegion.RightArm).BruteDamage, Is.EqualTo(FixedPoint2.Zero));
-            Assert.That(GetTotalRegionDamage(medical), Is.EqualTo(FixedPoint2.New(600)));
-        });
-    }
-
-    [Test]
-    public void RegionDamagePartiallyClipsMixedBruteAndBurnAtBodyCap()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        var initial = new MedicalTransaction(BodyRegion.Chest);
-        initial.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.Chest,
-            FixedPoint2.New(590),
-            FixedPoint2.Zero));
-        HumanMedicalLedger.ApplyTransaction(medical, initial);
-
-        var mixed = new MedicalTransaction(BodyRegion.RightArm);
-        mixed.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.RightArm,
-            FixedPoint2.New(10),
-            FixedPoint2.New(10)));
-
-        var result = HumanMedicalLedger.ApplyTransaction(medical, mixed);
-        var arm = HumanMedicalLedger.GetRegion(medical, BodyRegion.RightArm);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(result.Applied, Is.True);
-            Assert.That(arm.BruteDamage, Is.EqualTo(FixedPoint2.New(5)));
-            Assert.That(arm.BurnDamage, Is.EqualTo(FixedPoint2.New(5)));
-            Assert.That(GetTotalRegionDamage(medical), Is.EqualTo(FixedPoint2.New(600)));
-        });
-    }
-
-    [Test]
     public void SummaryRevisionOnlyAdvancesWhenProjectedSummaryChanges()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -450,19 +391,5 @@ public sealed class HumanMedicalLedgerTest
             Assert.That(heart.Damage, Is.EqualTo(FixedPoint2.New(20)));
             Assert.That(heart.Status, Is.EqualTo(OrganDamageStatus.Bruised));
         });
-    }
-
-    private static FixedPoint2 GetTotalRegionDamage(HumanMedicalComponent medical)
-    {
-        var total = FixedPoint2.Zero;
-        foreach (var region in medical.Regions)
-        {
-            if (region.Region == BodyRegion.None)
-                continue;
-
-            total += region.BruteDamage + region.BurnDamage;
-        }
-
-        return total;
     }
 }
