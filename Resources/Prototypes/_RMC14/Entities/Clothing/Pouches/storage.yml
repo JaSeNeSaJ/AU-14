@@ -281,7 +281,7 @@
     items:
       tags:
       - RMCShellShotgun
-c     - RMCShellShotgunHDSG
+      - RMCShellShotgunHDSG
   - type: Tag
     tags:
     - Pouch
