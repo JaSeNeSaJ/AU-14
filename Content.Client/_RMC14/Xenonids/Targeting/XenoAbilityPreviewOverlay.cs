@@ -94,6 +94,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
     private readonly EntityQuery<XenoStompComponent> _stompQ;
     private readonly EntityQuery<TransformComponent> _xformQ;
     private readonly EntityQuery<XenoDespoilerCausticEmbraceActionComponent> _causticEmbraceQ;
+    private readonly EntityQuery<XenoDespoilerComponent> _despoilerQ;
 
     public XenoAbilityPreviewOverlay(IEntityManager ents)
     {
@@ -128,6 +129,7 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
         _stompQ = ents.GetEntityQuery<XenoStompComponent>();
         _xformQ = ents.GetEntityQuery<TransformComponent>();
         _causticEmbraceQ = ents.GetEntityQuery<XenoDespoilerCausticEmbraceActionComponent>();
+        _despoilerQ = ents.GetEntityQuery<XenoDespoilerComponent>();
     }
 
     protected override void Draw(in OverlayDrawArgs args)
@@ -242,7 +244,12 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 if (!_causticEmbraceQ.TryComp(action, out var embrace))
                     break;
 
-                DrawCausticEmbrace(args, originMap, mousePos, embrace);
+                DrawCausticEmbrace(
+                    args,
+                    originMap,
+                    mousePos,
+                    embrace,
+                    player.Value);
                 break;
         }
     }
@@ -473,20 +480,30 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
         in OverlayDrawArgs args,
         MapCoordinates originMap,
         MapCoordinates mousePos,
-        XenoDespoilerCausticEmbraceActionComponent embrace)
+        XenoDespoilerCausticEmbraceActionComponent embrace,
+        EntityUid player)
     {
         {
             if (!_mapManager.TryFindGridAt(originMap, out var gridUid, out var grid))
                 return;
+
+            var empowered =
+                _despoilerQ.TryComp(player, out var despoiler) &&
+                despoiler.NextAbilityEmpowered;
 
             var direction = mousePos.Position - originMap.Position;
 
             if (direction.Length() < 0.1f)
                 return;
 
+            var range =
+                empowered
+                    ? embrace.EmpoweredRange
+                    : embrace.NormalRange;
+
             var landingPos =
                 originMap.Position +
-                direction.Normalized() * (embrace.NormalRange);
+                direction.Normalized() * range;
 
             var landingMap = new MapCoordinates(
                 landingPos + new Vector2(0f, 0.001f),
@@ -496,6 +513,18 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 gridUid,
                 grid,
                 landingMap);
+
+            if (empowered)
+            {
+                DrawTileBorder(
+                    args.WorldHandle,
+                    gridUid,
+                    grid,
+                    new HashSet<Vector2i> { landingTile },
+                    Color.Red.WithAlpha(OutlineAlpha));
+
+                return;
+            }
 
             var dir = direction.Normalized();
 
@@ -523,14 +552,16 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 gridUid,
                 grid,
                 splashTiles,
-                Color.Lime.WithAlpha(OutlineAlpha));
+                (empowered ? Color.OrangeRed : Color.Lime)
+                .WithAlpha(OutlineAlpha));
 
             DrawTileBorder(
                 args.WorldHandle,
                 gridUid,
                 grid,
                 new HashSet<Vector2i> { landingTile },
-                Color.Yellow.WithAlpha(OutlineAlpha));
+                (empowered ? Color.Red : Color.Yellow)
+                .WithAlpha(OutlineAlpha));
         }
     }
 
