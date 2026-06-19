@@ -10,7 +10,6 @@ using Content.Shared._RMC14.Xenonids;
 using Content.Shared.Body.Part;
 using Content.Shared.Damage;
 using Content.Shared.FixedPoint;
-using Robust.Shared.Network;
 using Robust.Shared.Random;
 using HumanOrganSlot = Content.Shared._CMU14.Medical.Human.Data.OrganSlot;
 
@@ -18,11 +17,10 @@ namespace Content.Shared._CMU14.Medical.Human.Systems;
 
 public sealed partial class HumanMedicalDamageSystem : EntitySystem
 {
+    [Dependency] private IRobustRandom _random = default!;
     [Dependency] private HumanMedicalDamageableBridgeSystem _damageableBridge = default!;
     [Dependency] private SharedHumanMedicalSystem _humanMedical = default!;
-    [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPainShockSystem _pain = default!;
-    [Dependency] private IRobustRandom _random = default!;
 
     private readonly Dictionary<EntityUid, ResolvedHit> _pendingHits = new();
     private const float SplintBreakPainPulse = 8f;
@@ -127,16 +125,12 @@ public sealed partial class HumanMedicalDamageSystem : EntitySystem
 
     private void OnHitLocationResolved(Entity<HumanMedicalComponent> ent, ref HitLocationResolvedEvent args)
     {
-        if (_net.IsClient)
-            return;
-
         _pendingHits[ent.Owner] = new ResolvedHit(args.ResolvedPart, args.ResolvedPartEntity, args.ResolvedRegion);
     }
 
     private void OnDamageChanged(Entity<HumanMedicalComponent> ent, ref DamageChangedEvent args)
     {
-        if (_net.IsClient ||
-            args.DamageDelta is not { } damage ||
+        if (args.DamageDelta is not { } damage ||
             !CanProcessBody(
                 hasHumanLedger: true,
                 HasComp<SynthComponent>(ent.Owner),

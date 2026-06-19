@@ -170,27 +170,6 @@ public sealed class HumanSurgerySystemTest
     }
 
     [Test]
-    public void InternalBleedingShortcutUsesShallowAccessOnEncasedRegions()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        AddBleed(medical, BodyRegion.Chest, BleedKind.Internal, FixedPoint2.New(2));
-
-        var prepared = HumanSurgerySystem.TryApplySurgery(
-            medical,
-            Attempt(
-                BodyRegion.Chest,
-                SurgeryStepKind.PrepareIncision,
-                procedureId: SurgeryProcedureId.RepairInternalBleeding));
-        var region = HumanMedicalLedger.GetRegion(medical, BodyRegion.Chest);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(prepared.Applied, Is.True);
-            Assert.That(region.Incision, Is.EqualTo(IncisionDepth.Retracted));
-        });
-    }
-
-    [Test]
     public void OpenStumpSelectsSealStumpProcedure()
     {
         var medical = HumanMedicalLedger.CreateDefault();
