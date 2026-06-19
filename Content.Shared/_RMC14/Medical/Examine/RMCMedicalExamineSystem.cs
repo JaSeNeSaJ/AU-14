@@ -1,9 +1,11 @@
-using Content.Shared._CMU14.Medical.Foundation;
-using Content.Shared._CMU14.Medical.Human.Components;
-using Content.Shared._CMU14.Medical.Human.Data;
+using System.Text;
+using Content.Shared._CMU14.Medical;
+using Content.Shared._CMU14.Medical.Wounds;
 using Content.Shared._RMC14.Medical.Unrevivable;
 using Content.Shared._RMC14.Stun;
 using Content.Shared.Body.Components;
+using Content.Shared.Body.Part;
+using Content.Shared.Body.Systems;
 using Content.Shared.Examine;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Verbs;
@@ -17,6 +19,7 @@ public sealed partial class RMCMedicalExamineSystem : EntitySystem
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private RMCSizeStunSystem _sizeStun = default!;
     [Dependency] private RMCUnrevivableSystem _unrevivable = default!;
+    [Dependency] private SharedBodySystem _body = default!;
     [Dependency] private IConfigurationManager _cfg = default!;
 
     public override void Initialize()
@@ -74,14 +77,17 @@ public sealed partial class RMCMedicalExamineSystem : EntitySystem
     {
         if (!_cfg.GetCVar(CMUMedicalCCVars.Enabled) ||
             !_cfg.GetCVar(CMUMedicalCCVars.WoundsEnabled) ||
-            !TryComp<HumanMedicalComponent>(body, out var medical))
+            !HasComp<CMUHumanMedicalComponent>(body))
         {
             return false;
         }
 
-        foreach (var bleed in medical.BleedSources)
+        foreach (var (partUid, _) in _body.GetBodyChildren(body))
         {
-            if (bleed.Active && bleed.Kind != BleedKind.Internal)
+            if (!TryComp<BodyPartWoundComponent>(partUid, out var pw))
+                continue;
+
+            if (pw.ExternalBleeding != ExternalBleedTier.None)
                 return true;
         }
 
@@ -90,6 +96,47 @@ public sealed partial class RMCMedicalExamineSystem : EntitySystem
 
     private string? GetBleedingPartsText(EntityUid body)
     {
-        return null;
+        var seen = new HashSet<(BodyPartType, BodyPartSymmetry)>();
+        StringBuilder? sb = null;
+
+        foreach (var (partUid, partComp) in _body.GetBodyChildren(body))
+        {
+            if (!TryComp<BodyPartWoundComponent>(partUid, out var pw))
+                continue;
+
+            if (pw.ExternalBleeding == ExternalBleedTier.None)
+                continue;
+
+            if (!seen.Add((partComp.PartType, partComp.Symmetry)))
+                continue;
+
+            sb ??= new StringBuilder();
+            if (sb.Length > 0)
+                sb.Append(", ");
+            sb.Append(FormatPart(partComp.PartType, partComp.Symmetry));
+        }
+
+        return sb?.ToString();
+    }
+
+    private static string FormatPart(BodyPartType type, BodyPartSymmetry symmetry)
+    {
+        var typeText = type switch
+        {
+            BodyPartType.Head => "head",
+            BodyPartType.Torso => "torso",
+            BodyPartType.Arm => "arm",
+            BodyPartType.Hand => "hand",
+            BodyPartType.Leg => "leg",
+            BodyPartType.Foot => "foot",
+            BodyPartType.Tail => "tail",
+            _ => type.ToString().ToLowerInvariant(),
+        };
+        return symmetry switch
+        {
+            BodyPartSymmetry.Left => $"left {typeText}",
+            BodyPartSymmetry.Right => $"right {typeText}",
+            _ => typeText,
+        };
     }
 }
