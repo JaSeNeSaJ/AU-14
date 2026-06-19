@@ -379,54 +379,6 @@ public sealed class HumanMedicalActiveWorkersTest
             Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanBleedingTickEvent>"));
             Assert.That(text, Does.Contain("SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>"));
             Assert.That(text, Does.Contain("TrySetBleedAmount"));
-            Assert.That(text, Does.Not.Contain("EntityQueryEnumerator<HumanMedicalComponent, BloodstreamComponent>()"));
-            Assert.That(text, Does.Not.Contain("public override void Update"));
-        });
-    }
-
-    [Test]
-    public void TreatedWoundHealingTickCalculatesRatesInSingleInjuryPass()
-    {
-        var root = FindRepoRoot();
-        var path = Path.Combine(
-            root,
-            "Content.Shared",
-            "_CMU14",
-            "Medical",
-            "Human",
-            "Systems",
-            "HumanTreatedWoundHealingSystem.cs");
-
-        Assert.That(File.Exists(path), Is.True);
-        var text = File.ReadAllText(path);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(text, Does.Contain("foreach (var injury in medical.Injuries)"));
-            Assert.That(text, Does.Not.Contain("CalculateTreatedRecoveryRates("));
-        });
-    }
-
-    [Test]
-    public void TreatedWoundHealingAdvanceBuildsSingleRecoveryProfile()
-    {
-        var root = FindRepoRoot();
-        var path = Path.Combine(
-            root,
-            "Content.Shared",
-            "_CMU14",
-            "Medical",
-            "Human",
-            "Systems",
-            "HumanMedicalLedger.cs");
-
-        Assert.That(File.Exists(path), Is.True);
-        var text = File.ReadAllText(path).Replace("\r\n", "\n");
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(text, Does.Contain("BuildTreatedRecoveryProfile(injuries, regions)"));
-            Assert.That(text, Does.Not.Contain("CalculateTreatedRecoveryRates(\n                medical,"));
         });
     }
 

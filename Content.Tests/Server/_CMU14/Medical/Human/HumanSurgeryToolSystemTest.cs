@@ -147,34 +147,6 @@ public sealed class HumanSurgeryToolSystemTest
     }
 
     [Test]
-    public void AutoSurgeryModeStartsValidAttemptFromSameClick()
-    {
-        var text = SliceBetween(
-            ReadSurgeryToolSystem(),
-            "public bool TryHandleSurgeryToolInteraction",
-            "var skillMultiplier");
-        var procedureSelection = text.IndexOf("TryCreateSurgeryAttempt(user, patient, tool, medical, painkilled, out var attempt)", StringComparison.Ordinal);
-        var noAttemptMessage = text.IndexOf("GetNoSurgeryAttemptMessage(user, medical)", StringComparison.Ordinal);
-        var reserve = text.IndexOf("_humanSurgery.TryReserveOperation(patient, attempt", StringComparison.Ordinal);
-        var conditionGate = text.IndexOf("TryValidateCM13SurgeryConditions(user, patient, tool, medical, attempt", StringComparison.Ordinal);
-        var armorGate = text.IndexOf("TryValidateArmorForSurgery(patient, attempt.Region", StringComparison.Ordinal);
-        var modeGate = text.IndexOf("if (!_humanSurgeryMode.IsSurgeryModeEnabled(user))", StringComparison.Ordinal);
-        var autoEnable = text.IndexOf("_humanSurgeryMode.SetSurgeryMode(user, true);", StringComparison.Ordinal);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(procedureSelection, Is.GreaterThanOrEqualTo(0));
-            Assert.That(noAttemptMessage, Is.GreaterThan(procedureSelection));
-            Assert.That(reserve, Is.GreaterThan(noAttemptMessage));
-            Assert.That(conditionGate, Is.GreaterThan(reserve));
-            Assert.That(armorGate, Is.GreaterThan(conditionGate));
-            Assert.That(modeGate, Is.GreaterThan(armorGate));
-            Assert.That(autoEnable, Is.GreaterThan(modeGate));
-            Assert.That(text, Does.Not.Contain("cmu-medical-surgery-mode-required"));
-        });
-    }
-
-    [Test]
     public void AutoSurgeryToolPathSkipsMissingRegionsExceptStumps()
     {
         var text = ReadSurgeryToolSystem();
@@ -205,44 +177,10 @@ public sealed class HumanSurgeryToolSystemTest
 
         Assert.Multiple(() =>
         {
-            Assert.That(closeBranch, Does.Contain("IsCloseIncisionTool(tool)"));
             Assert.That(closeBranch, Does.Contain("lockedProcedure == SurgeryProcedureId.SurgicalAccess"));
             Assert.That(closeBranch, Does.Contain("procedureId: closingActiveSurgicalAccess"));
             Assert.That(closeBranch, Does.Contain("SurgeryStepKind.CloseIncision"));
         });
-    }
-
-    [Test]
-    public void CauteryCanCloseCommittedLockedRepairProcedure()
-    {
-        var text = ReadSurgeryToolSystem();
-        var activeProcedureSelection = SliceBetween(
-            text,
-            "var activeOperationFound",
-            "if (TryCreateStumpRepairAttempt");
-        var closeBranch = SliceBetween(
-            text,
-            "var closingActiveSurgicalAccess",
-            "attempt = default;");
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(activeProcedureSelection, Does.Contain("activeOperationCommitted"));
-            Assert.That(closeBranch, Does.Contain("activeOperationCommitted"));
-            Assert.That(closeBranch, Does.Contain("lockedProcedure != SurgeryProcedureId.None"));
-            Assert.That(closeBranch, Does.Contain("? lockedProcedure"));
-        });
-    }
-
-    [Test]
-    public void FracturesDoNotBlockIncisionClosureAfterOtherRepairs()
-    {
-        var repairableProblem = SliceBetween(
-            ReadSurgeryToolSystem(),
-            "private bool HasRepairableProblem",
-            "private static bool TryFindInternalBleed");
-
-        Assert.That(repairableProblem, Does.Not.Contain("Skeletal.Broken"));
     }
 
     [Test]

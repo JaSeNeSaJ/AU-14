@@ -12,20 +12,6 @@ public readonly record struct MedicalDamageContext(
     float OrganDamageScale = 0f,
     FixedPoint2 InternalBleedRate = default);
 
-public readonly record struct MedicalDamagePolicy(
-    bool MedicalEnabled = true,
-    bool BoneEnabled = true,
-    bool OrganEnabled = true,
-    bool WoundsEnabled = true,
-    FixedPoint2 EscharBurnThreshold = default)
-{
-    public static MedicalDamagePolicy Default => new(
-        MedicalEnabled: true,
-        BoneEnabled: true,
-        OrganEnabled: true,
-        WoundsEnabled: true);
-}
-
 public static class MedicalDamageRules
 {
     private static readonly FixedPoint2 MinimumTrackedInjuryDamage = FixedPoint2.New(5);
@@ -40,25 +26,20 @@ public static class MedicalDamageRules
         MedicalDamageContext context,
         MedicalRngContext rng,
         FixedPoint2 escharBurnThreshold = default,
-        OrganState[]? organs = null,
-        MedicalDamagePolicy? policy = null)
+        OrganState[]? organs = null)
     {
-        var effectivePolicy = policy ?? MedicalDamagePolicy.Default;
-        if (escharBurnThreshold > FixedPoint2.Zero)
-            effectivePolicy = effectivePolicy with { EscharBurnThreshold = escharBurnThreshold };
-
         var transaction = new MedicalTransaction(region);
-        if (!effectivePolicy.MedicalEnabled || region == BodyRegion.None)
+        if (region == BodyRegion.None)
             return transaction;
 
         if (brute > FixedPoint2.Zero || burn > FixedPoint2.Zero)
             transaction.Add(MedicalEffect.AddRegionDamage(region, brute, burn));
 
-        AddPrimaryInjury(transaction, region, brute, burn, context, effectivePolicy);
-        AddExternalBleeding(transaction, region, brute, context, effectivePolicy);
-        AddFracture(transaction, region, brute, context, effectivePolicy);
-        AddOrganDamage(transaction, region, brute, burn, context, rng, organs, effectivePolicy);
-        AddInternalBleeding(transaction, region, context, effectivePolicy);
+        AddPrimaryInjury(transaction, region, brute, burn, context, escharBurnThreshold);
+        AddExternalBleeding(transaction, region, brute, context);
+        AddFracture(transaction, region, brute, context, rng);
+        AddOrganDamage(transaction, region, brute, burn, context, rng, organs);
+        AddInternalBleeding(transaction, region, context);
 
         return transaction;
     }
@@ -69,16 +50,13 @@ public static class MedicalDamageRules
         FixedPoint2 brute,
         FixedPoint2 burn,
         MedicalDamageContext context,
-        MedicalDamagePolicy policy)
+        FixedPoint2 escharBurnThreshold)
     {
-        if (!policy.WoundsEnabled)
-            return;
-
         var injuryDamage = context.PrimaryInjuryKind == InjuryKind.Burn ? burn : brute;
         if (injuryDamage < MinimumTrackedInjuryDamage)
             return;
 
-        var burnThreshold = GetBurnFlagThreshold(context.PrimaryInjuryKind, policy.EscharBurnThreshold);
+        var burnThreshold = GetBurnFlagThreshold(context.PrimaryInjuryKind, escharBurnThreshold);
         var injuryFlags = burnThreshold > FixedPoint2.Zero && injuryDamage >= burnThreshold
             ? InjuryFlags.Necrotic
             : InjuryFlags.None;
@@ -108,11 +86,9 @@ public static class MedicalDamageRules
         MedicalTransaction transaction,
         BodyRegion region,
         FixedPoint2 brute,
-        MedicalDamageContext context,
-        MedicalDamagePolicy policy)
+        MedicalDamageContext context)
     {
-        if (!policy.WoundsEnabled ||
-            context.PrimaryInjuryKind is not (InjuryKind.Cut or InjuryKind.Puncture) ||
+        if (context.PrimaryInjuryKind is not (InjuryKind.Cut or InjuryKind.Puncture) ||
             brute < MinimumExternalBleedDamage)
         {
             return;
@@ -133,18 +109,19 @@ public static class MedicalDamageRules
         BodyRegion region,
         FixedPoint2 brute,
         MedicalDamageContext context,
-        MedicalDamagePolicy policy)
+        MedicalRngContext rng)
     {
-        if (!policy.BoneEnabled || !context.BoneContact)
+        if (!context.BoneContact)
             return;
 
-        var fracture = SkeletalRules.EvaluateContactFracture(
+        var fracture = SkeletalRules.EvaluateFracture(
             new SkeletalRuleInput(
                 region,
                 brute,
                 BoneContact: true,
                 AlreadyBroken: false,
-                Splinted: false));
+                Splinted: false),
+            rng);
 
         if (fracture.ShouldBreak)
         {
@@ -163,11 +140,9 @@ public static class MedicalDamageRules
         FixedPoint2 burn,
         MedicalDamageContext context,
         MedicalRngContext rng,
-        OrganState[]? organs,
-        MedicalDamagePolicy policy)
+        OrganState[]? organs)
     {
-        if (!policy.OrganEnabled ||
-            !context.OrganContact ||
+        if (!context.OrganContact ||
             context.OrganDamageScale <= 0f)
         {
             return;
@@ -192,15 +167,10 @@ public static class MedicalDamageRules
     private static void AddInternalBleeding(
         MedicalTransaction transaction,
         BodyRegion region,
-        MedicalDamageContext context,
-        MedicalDamagePolicy policy)
+        MedicalDamageContext context)
     {
-        if (!policy.WoundsEnabled ||
-            !context.VascularContact ||
-            context.InternalBleedRate <= FixedPoint2.Zero)
-        {
+        if (!context.VascularContact || context.InternalBleedRate <= FixedPoint2.Zero)
             return;
-        }
 
         transaction.Add(MedicalEffect.AddBleedSource(
             region,

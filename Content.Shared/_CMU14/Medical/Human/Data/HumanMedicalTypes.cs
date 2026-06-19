@@ -166,7 +166,6 @@ public enum InjuryFlags : ushort
     Surgical = 1 << 6,
     Closed = 1 << 7,
     Debrided = 1 << 8,
-    Grafted = 1 << 9,
 }
 
 [Flags, Serializable, NetSerializable]

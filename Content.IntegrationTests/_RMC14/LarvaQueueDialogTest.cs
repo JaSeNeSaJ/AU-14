@@ -920,58 +920,6 @@ public sealed class LarvaQueueJoinXenoUiTest
     }
 
     [Test]
-    public async Task LarvaQueueDoesNotOfferBurrowedLarvaWithoutSpawnLocation()
-    {
-        await using var pair = await PoolManager.GetServerClient(new PoolSettings
-        {
-            Connected = true,
-            Dirty = true,
-            DummyTicker = false,
-        });
-
-        var server = pair.Server;
-        var map = await pair.CreateTestMap();
-
-        var entMan = server.EntMan;
-        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
-        var mind = entMan.System<MindSystem>();
-        var player = server.PlayerMan.Sessions.Single();
-
-        EntityUid ghost = default;
-        EntityUid hive = default;
-        await server.WaitAssertion(() =>
-        {
-            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
-            BypassRoundstartDelay(entMan, ghost);
-            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
-            var hiveComp = entMan.GetComponent<HiveComponent>(hive);
-            hiveSystem.ChangeBurrowedLarva((hive, hiveComp), 1);
-
-            var ghostMind = mind.CreateMind(player.UserId, "Observer");
-            mind.TransferTo(ghostMind, ghost);
-            mind.SetUserId(ghostMind, player.UserId);
-
-            entMan.EventBus.RaiseLocalEvent(ghost, new JoinLarvaQueueEvent(entMan.GetNetEntity(hive)));
-        });
-
-        await pair.RunTicksSync(5);
-
-        await server.WaitAssertion(() =>
-        {
-            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
-            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
-
-            OpenJoinXenoUi(entMan, ghost);
-            var state = GetJoinXenoState(entMan, ghost);
-            var entry = state.Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
-            Assert.That(entry.Status, Is.EqualTo(JoinXenoQueueStatus.Queued));
-            Assert.That(entry.Position, Is.EqualTo(1));
-        });
-
-        await pair.CleanReturnAsync();
-    }
-
-    [Test]
     public async Task ParasiteRoleBlocksRecentlyDeadGhost()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings

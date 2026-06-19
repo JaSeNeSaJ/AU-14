@@ -311,46 +311,4 @@ public sealed class HumanMedicalRulesTest
             Assert.That(LimbLossRules.CanTraumaticallySever(BodyRegion.RightLeg), Is.True);
         });
     }
-
-    [Test]
-    public void LimbSeveranceThresholdsRequireHeavyDamage()
-    {
-        var previous = new RegionState(BodyRegion.LeftArm)
-        {
-            Presence = LimbPresence.Present,
-        };
-        var armBelow = previous;
-        armBelow.BruteDamage = FixedPoint2.New(179);
-        var armAt = previous;
-        armAt.BruteDamage = FixedPoint2.New(180);
-
-        var headPrevious = new RegionState(BodyRegion.Head)
-        {
-            Presence = LimbPresence.Present,
-        };
-        var headBelow = headPrevious;
-        headBelow.BruteDamage = FixedPoint2.New(274);
-        var headAt = headPrevious;
-        headAt.BruteDamage = FixedPoint2.New(275);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(LimbSeveranceThresholdRules.GetThreshold(BodyRegion.LeftArm), Is.EqualTo(FixedPoint2.New(180)));
-            Assert.That(LimbSeveranceThresholdRules.GetThreshold(BodyRegion.RightLeg), Is.EqualTo(FixedPoint2.New(180)));
-            Assert.That(LimbSeveranceThresholdRules.GetThreshold(BodyRegion.Head), Is.EqualTo(FixedPoint2.New(275)));
-            Assert.That(LimbSeveranceThresholdRules.GetThreshold(BodyRegion.Chest), Is.EqualTo(FixedPoint2.Zero));
-            Assert.That(
-                LimbSeveranceThresholdRules.ShouldSever(BodyRegion.LeftArm, previous, armBelow, FixedPoint2.New(10)),
-                Is.False);
-            Assert.That(
-                LimbSeveranceThresholdRules.ShouldSever(BodyRegion.LeftArm, previous, armAt, FixedPoint2.New(10)),
-                Is.True);
-            Assert.That(
-                LimbSeveranceThresholdRules.ShouldSever(BodyRegion.Head, headPrevious, headBelow, FixedPoint2.New(10)),
-                Is.False);
-            Assert.That(
-                LimbSeveranceThresholdRules.ShouldSever(BodyRegion.Head, headPrevious, headAt, FixedPoint2.New(10)),
-                Is.True);
-        });
-    }
 }

@@ -1,4 +1,3 @@
-using System.Text;
 using Content.Shared._CMU14.Medical.Foundation;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
@@ -35,19 +34,11 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     private const string DetailedBleedColor = "#ff5f5f";
     private const string DetailedUntreatedColor = "#ffd166";
 
-    private readonly Dictionary<EntityUid, CachedBodyPartExamine> _bodyPartLineCache = new();
-
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<HumanMedicalComponent, ExaminedEvent>(OnExamined);
-        SubscribeLocalEvent<HumanMedicalComponent, ComponentShutdown>(OnMedicalShutdown);
-    }
-
-    private void OnMedicalShutdown(Entity<HumanMedicalComponent> ent, ref ComponentShutdown args)
-    {
-        _bodyPartLineCache.Remove(ent.Owner);
     }
 
     private void OnExamined(Entity<HumanMedicalComponent> ent, ref ExaminedEvent args)
@@ -77,24 +68,6 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         bool includeMissingParts,
         bool includeSurgeryDetails)
     {
-        var cacheKey = new BodyPartExamineCacheKey(
-            medical.Revision,
-            includeWounds,
-            includeFractures,
-            includeMissingParts);
-        if (!includeSurgeryDetails &&
-            _bodyPartLineCache.TryGetValue(body, out var cached) &&
-            cached.Key == cacheKey)
-        {
-            PushBodyPartSummaries(args, cached.Summaries);
-            return;
-        }
-
-        TryComp<ActiveHumanSurgeryOperationComponent>(body, out var activeSurgery);
-        var index = new MedicalExamineIndex(
-            medical,
-            activeSurgery,
-            includeInjuriesAndBleeds: includeWounds || includeMissingParts);
         var partSummaries = new List<BodyPartExamineSummary>();
 
         foreach (var region in medical.Regions)
@@ -104,7 +77,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
 
             var sections = new List<string>();
             if (includeWounds)
-                AddVisibleWoundSections(index, region.Region, sections);
+                AddVisibleWoundSections(body, medical, region.Region, sections);
 
             if (includeFractures && region.Skeletal.Broken)
             {
@@ -118,10 +91,10 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             {
                 sections.Add(Color(DescribePresence(region.Presence), PresenceColor(region.Presence)));
                 if (region.Presence != LimbPresence.Prosthetic)
-                    AddVisibleLinkedStumpSections(index, region.Region, sections);
+                    AddVisibleLinkedStumpSections(medical, region.Region, sections);
             }
 
-            AddVisibleSurgerySections(medical, index, region, sections, includeSurgeryDetails);
+            AddVisibleSurgerySections(body, medical, region, sections, includeSurgeryDetails);
 
             if (sections.Count == 0)
                 continue;
@@ -135,17 +108,8 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         }
 
         partSummaries.Sort((a, b) => a.Order.CompareTo(b.Order));
-        var summaries = partSummaries.ToArray();
 
-        if (!includeSurgeryDetails)
-            _bodyPartLineCache[body] = new CachedBodyPartExamine(cacheKey, summaries);
-
-        PushBodyPartSummaries(args, summaries);
-    }
-
-    private void PushBodyPartSummaries(ExaminedEvent args, IReadOnlyList<BodyPartExamineSummary> summaries)
-    {
-        foreach (var summary in summaries)
+        foreach (var summary in partSummaries)
         {
             if (summary.Multiline)
             {
@@ -165,7 +129,6 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         if (!TryComp<HumanMedicalComponent>(body, out var medical))
             return Loc.GetString("cmu-medical-detailed-examine-none");
 
-        var index = new MedicalExamineIndex(medical);
         var partSummaries = new List<BodyPartExamineSummary>();
 
         foreach (var region in medical.Regions)
@@ -174,7 +137,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
                 continue;
 
             var sections = new List<string>();
-            AddDetailedRegionSections(index, region, sections);
+            AddDetailedRegionSections(body, medical, region, sections);
             if (sections.Count == 0)
                 continue;
 
@@ -202,7 +165,6 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         if (!TryComp<HumanMedicalComponent>(body, out var medical))
             return Loc.GetString("cmu-medical-detailed-examine-none");
 
-        var index = new MedicalExamineIndex(medical, includeInjuriesAndBleeds: false);
         var groups = new Dictionary<string, InspectInjuryGroup>();
 
         foreach (var injury in medical.Injuries)
@@ -252,7 +214,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         foreach (var region in medical.Regions)
         {
             if (region.Region == BodyRegion.None ||
-                !index.TryGetShrapnelSummary(region.Region, out var shrapnel))
+                !TryGetShrapnelSummary(medical, region.Region, out var shrapnel))
             {
                 continue;
             }
@@ -343,8 +305,9 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         return $"{DescribeBleedSeverity(severity)}{source} bleeding";
     }
 
-    private static void AddVisibleWoundSections(
-        MedicalExamineIndex index,
+    private void AddVisibleWoundSections(
+        EntityUid body,
+        HumanMedicalComponent medical,
         BodyRegion region,
         List<string> sections)
     {
@@ -353,29 +316,23 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         var suppressedBleeds = new List<SuppressedBleedBucket>();
         var treatedWounds = 0;
 
-        if (index.GetInjuries(region) is { } injuries)
+        foreach (var injury in medical.Injuries)
         {
-            foreach (var injury in injuries)
-            {
-                if (IsInjuryClosed(injury))
-                    continue;
+            if (injury.Region != region || IsInjuryClosed(injury))
+                continue;
 
-                if (IsInjuryTreated(injury))
-                    treatedWounds++;
-                else
-                    AddVisibleInjuryBucket(untreated, injury);
-            }
+            if (IsInjuryTreated(injury))
+                treatedWounds++;
+            else
+                AddVisibleInjuryBucket(untreated, injury);
         }
 
-        if (index.GetBleeds(region) is { } bleeds)
+        foreach (var bleed in medical.BleedSources)
         {
-            foreach (var bleed in bleeds)
-            {
-                if (bleed.Active && bleed.Kind != BleedKind.Internal)
-                    AddVisibleBleedBucket(activeBleeds, bleed);
-                else if (IsBleedSuppressedButUnrepaired(bleed))
-                    AddSuppressedBleedBucket(suppressedBleeds, bleed);
-            }
+            if (bleed.Region == region && bleed.Active && bleed.Kind != BleedKind.Internal)
+                AddVisibleBleedBucket(activeBleeds, bleed);
+            else if (bleed.Region == region && IsBleedSuppressedButUnrepaired(bleed))
+                AddSuppressedBleedBucket(suppressedBleeds, bleed);
         }
 
         if (untreated.Count > 0)
@@ -387,7 +344,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         if (suppressedBleeds.Count > 0)
             sections.Add(Color(ToSentence(DescribeSuppressedBleeds(suppressedBleeds)), UntreatedWoundColor));
 
-        if (index.TryGetShrapnelSummary(region, out var shrapnel))
+        if (TryGetShrapnelSummary(medical, region, out var shrapnel))
             sections.Add(Color(DescribeVisibleShrapnel(shrapnel), UntreatedWoundColor));
 
         if (treatedWounds > 0)
@@ -395,7 +352,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     }
 
     private static void AddVisibleLinkedStumpSections(
-        MedicalExamineIndex index,
+        HumanMedicalComponent medical,
         BodyRegion missingRegion,
         List<string> sections)
     {
@@ -409,23 +366,25 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         var untreated = new List<VisibleInjuryBucket>();
         var activeBleeds = new List<VisibleBleedBucket>();
 
-        if (index.GetInjuries(stumpRegion) is { } injuries)
+        foreach (var injury in medical.Injuries)
         {
-            foreach (var injury in injuries)
+            if (injury.Region != stumpRegion ||
+                !injury.IsOpenStump ||
+                IsInjuryClosed(injury))
             {
-                if (!injury.IsOpenStump || IsInjuryClosed(injury))
-                    continue;
-
-                AddVisibleInjuryBucket(untreated, injury);
+                continue;
             }
+
+            AddVisibleInjuryBucket(untreated, injury);
         }
 
-        if (index.GetBleeds(stumpRegion) is { } bleeds)
+        foreach (var bleed in medical.BleedSources)
         {
-            foreach (var bleed in bleeds)
+            if (bleed.Region == stumpRegion &&
+                bleed.Active &&
+                bleed.Kind == BleedKind.Stump)
             {
-                if (bleed.Active && bleed.Kind == BleedKind.Stump)
-                    AddVisibleBleedBucket(activeBleeds, bleed);
+                AddVisibleBleedBucket(activeBleeds, bleed);
             }
         }
 
@@ -436,15 +395,15 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             sections.Add(Color(ToSentence(DescribeVisibleBleeds(activeBleeds)), UntreatedWoundColor));
     }
 
-    private static void AddVisibleSurgerySections(
+    private void AddVisibleSurgerySections(
+        EntityUid body,
         HumanMedicalComponent medical,
-        MedicalExamineIndex index,
         RegionState region,
         List<string> sections,
         bool includeSurgeryDetails)
     {
         SurgeryOperationState operation = default;
-        var hasOperation = includeSurgeryDetails && index.TryGetSurgeryOperation(region.Region, out operation);
+        var hasOperation = includeSurgeryDetails && TryGetSurgeryOperation(body, region.Region, out operation);
         if (region.Incision == IncisionDepth.Closed && !hasOperation)
             return;
 
@@ -498,7 +457,7 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
             return $"{Color("surgery", DetailedWoundColor)}\n    {string.Join("\n    ", lines)}";
         }
 
-        var possibleSteps = DescribeNoRepairSurgeryStep(region);
+        var possibleSteps = DescribePossibleSurgerySteps(region);
         if (!string.IsNullOrEmpty(possibleSteps))
             lines.Add(Color($"next: {possibleSteps}", DetailedUntreatedColor));
 
@@ -512,8 +471,30 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         return _skills.HasSkill(examiner, SurgerySkill, SurgerySkillNovice);
     }
 
-    private static void AddDetailedRegionSections(
-        MedicalExamineIndex index,
+    private bool TryGetSurgeryOperation(
+        EntityUid body,
+        BodyRegion region,
+        out SurgeryOperationState operation)
+    {
+        if (TryComp<ActiveHumanSurgeryOperationComponent>(body, out var active))
+        {
+            foreach (var candidate in active.Operations)
+            {
+                if (candidate.Region != region)
+                    continue;
+
+                operation = candidate;
+                return true;
+            }
+        }
+
+        operation = default;
+        return false;
+    }
+
+    private void AddDetailedRegionSections(
+        EntityUid body,
+        HumanMedicalComponent medical,
         RegionState region,
         List<string> sections)
     {
@@ -537,35 +518,32 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         if (region.Incision != IncisionDepth.Closed)
             sections.Add(Color($"incision: {region.Incision}", DetailedWoundColor));
 
-        if (index.TryGetShrapnelSummary(region.Region, out var shrapnel))
+        if (TryGetShrapnelSummary(medical, region.Region, out var shrapnel))
             sections.Add(Color($"foreign object: {DescribeVisibleShrapnel(shrapnel)}", DetailedBleedColor));
 
-        if (index.GetInjuries(region.Region) is { } injuries)
+        foreach (var injury in medical.Injuries)
         {
-            foreach (var injury in injuries)
-            {
-                if (IsInjuryClosed(injury))
-                    continue;
+            if (injury.Region != region.Region || IsInjuryClosed(injury))
+                continue;
 
-                sections.Add(DescribeDetailedInjury(injury));
-            }
+            sections.Add(DescribeDetailedInjury(injury));
         }
 
         var activeBleeds = new List<VisibleBleedBucket>();
         var suppressedBleeds = new List<SuppressedBleedBucket>();
-        if (index.GetBleeds(region.Region) is { } bleeds)
+        foreach (var bleed in medical.BleedSources)
         {
-            foreach (var bleed in bleeds)
-            {
-                if (bleed.Active)
-                {
-                    AddVisibleBleedBucket(activeBleeds, bleed);
-                    continue;
-                }
+            if (bleed.Region != region.Region)
+                continue;
 
-                if (IsBleedSuppressedButUnrepaired(bleed))
-                    AddSuppressedBleedBucket(suppressedBleeds, bleed);
+            if (bleed.Active)
+            {
+                AddVisibleBleedBucket(activeBleeds, bleed);
+                continue;
             }
+
+            if (IsBleedSuppressedButUnrepaired(bleed))
+                AddSuppressedBleedBucket(suppressedBleeds, bleed);
         }
 
         foreach (var bleed in activeBleeds)
@@ -728,20 +706,20 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     {
         return operation.ProcedureId switch
         {
-            SurgeryProcedureId.SurgicalAccess => DescribeNoRepairSurgeryStep(region),
+            SurgeryProcedureId.SurgicalAccess => DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.SutureWound => "suture the wound",
             SurgeryProcedureId.RemoveForeignObject => "remove the foreign object",
             SurgeryProcedureId.SealStump => "seal the stump",
             SurgeryProcedureId.RepairInternalBleeding => HasShallowAccess(medical, region.Region)
                 ? "repair the internal bleed"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.RemoveEschar => "remove the eschar",
             SurgeryProcedureId.RepairOrgan => HasRequiredRepairAccess(medical, region.Region)
                 ? "repair the organ damage"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.RepairFracture => HasRequiredRepairAccess(medical, region.Region)
                 ? "set and mend the fracture"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.CloseIncision => "close the incision",
             SurgeryProcedureId.AlienEmbryoRemoval => operation.StepIndex <= 0
                 ? "cut the embryo roots"
@@ -760,29 +738,17 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         };
     }
 
-    private static string DescribeRequiredAccessStep(RegionState region)
+    private static string DescribePossibleSurgerySteps(RegionState region)
     {
         return region.Incision switch
         {
             IncisionDepth.OpenSkin => "clamp surgical bleeders, then retract the incision",
             IncisionDepth.Retracted when IsEncasedRegion(region.Region) && !HasFracturedBoneAccess(region) =>
-                "cut bone for deep access",
-            IncisionDepth.Retracted => "use the required repair tool",
-            IncisionDepth.DeepAccess => "use the required repair tool",
-            _ => string.Empty,
-        };
-    }
-
-    private static string DescribeNoRepairSurgeryStep(RegionState region)
-    {
-        return region.Incision switch
-        {
-            IncisionDepth.OpenSkin => "close the incision with cautery or surgical line",
-            IncisionDepth.Retracted when IsEncasedRegion(region.Region) && !HasFracturedBoneAccess(region) =>
-                "close the incision with cautery or surgical line",
-            IncisionDepth.Retracted => "close the incision with cautery or surgical line",
+                "cut bone for deep access, or close the incision if no repair remains",
+            IncisionDepth.Retracted =>
+                "repair exposed damage, or close the incision if no repair remains",
             IncisionDepth.DeepAccess =>
-                "mend bone access with bone gel, bone setter, or bone graft, then close with cautery or surgical line",
+                "repair deep damage, then mend bone access",
             _ => string.Empty,
         };
     }
@@ -796,21 +762,21 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         {
             SurgeryProcedureId.SealStump => HasShallowAccess(medical, region.Region)
                 ? "seal the stump"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.SutureWound => "suture the wound",
             SurgeryProcedureId.RepairInternalBleeding => HasShallowAccess(medical, region.Region)
                 ? "repair the internal bleed"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.RemoveEschar => HasShallowAccess(medical, region.Region)
                 ? "remove the eschar"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.RepairOrgan => HasRequiredRepairAccess(medical, region.Region)
                 ? "repair the organ damage"
-                : DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
             SurgeryProcedureId.RepairFracture => HasRequiredRepairAccess(medical, region.Region)
                 ? "set and mend the fracture"
-                : DescribeRequiredAccessStep(region),
-            _ => DescribeRequiredAccessStep(region),
+                : DescribePossibleSurgerySteps(region),
+            _ => DescribePossibleSurgerySteps(region),
         };
     }
 
@@ -844,6 +810,34 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
     private static bool IsEncasedRegion(BodyRegion region)
     {
         return region is BodyRegion.Head or BodyRegion.Chest;
+    }
+
+    private static bool TryGetShrapnelSummary(
+        HumanMedicalComponent medical,
+        BodyRegion region,
+        out ShrapnelExamineSummary summary)
+    {
+        var fragments = 0;
+        var severity = 0f;
+        var depth = ForeignObjectDepth.Surface;
+
+        foreach (var shrapnel in medical.ForeignObjects)
+        {
+            if (shrapnel.Region != region ||
+                shrapnel.Kind != ForeignObjectKind.Shrapnel ||
+                shrapnel.Fragments <= 0)
+            {
+                continue;
+            }
+
+            fragments += shrapnel.Fragments;
+            severity = MathF.Max(severity, shrapnel.Severity);
+            if (shrapnel.Depth > depth)
+                depth = shrapnel.Depth;
+        }
+
+        summary = new ShrapnelExamineSummary(fragments, severity, depth);
+        return fragments > 0;
     }
 
     private static string DescribeVisibleShrapnel(ShrapnelExamineSummary summary)
@@ -1050,24 +1044,13 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
 
     private static string ToSentence(List<string> parts)
     {
-        switch (parts.Count)
+        return parts.Count switch
         {
-            case 0:
-                return string.Empty;
-            case 1:
-                return parts[0];
-            case 2:
-                return $"{parts[0]} and {parts[1]}";
-        }
-
-        var builder = new StringBuilder(parts[0]);
-        for (var i = 1; i < parts.Count; i++)
-        {
-            builder.Append(i == parts.Count - 1 ? ", and " : ", ");
-            builder.Append(parts[i]);
-        }
-
-        return builder.ToString();
+            0 => string.Empty,
+            1 => parts[0],
+            2 => $"{parts[0]} and {parts[1]}",
+            _ => $"{string.Join(", ", parts.GetRange(0, parts.Count - 1))}, and {parts[parts.Count - 1]}",
+        };
     }
 
     private static string ToVisibleConditionList(List<string> parts, out bool multiline)
@@ -1104,134 +1087,10 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         string Conditions,
         bool Multiline);
 
-    private readonly record struct BodyPartExamineCacheKey(
-        int Revision,
-        bool IncludeWounds,
-        bool IncludeFractures,
-        bool IncludeMissingParts);
-
-    private readonly record struct CachedBodyPartExamine(
-        BodyPartExamineCacheKey Key,
-        BodyPartExamineSummary[] Summaries);
-
     private readonly record struct ShrapnelExamineSummary(
         int Fragments,
         float Severity,
         ForeignObjectDepth Depth);
-
-    private sealed class MedicalExamineIndex
-    {
-        private readonly List<InjuryRecord>?[] _injuriesByRegion = new List<InjuryRecord>?[HumanMedicalComponent.RegionSlotCount];
-        private readonly List<BleedSource>?[] _bleedsByRegion = new List<BleedSource>?[HumanMedicalComponent.RegionSlotCount];
-        private readonly ShrapnelExamineSummary[] _shrapnelByRegion = new ShrapnelExamineSummary[HumanMedicalComponent.RegionSlotCount];
-        private readonly bool[] _hasShrapnelByRegion = new bool[HumanMedicalComponent.RegionSlotCount];
-        private readonly SurgeryOperationState[] _operationsByRegion = new SurgeryOperationState[HumanMedicalComponent.RegionSlotCount];
-        private readonly bool[] _hasOperationByRegion = new bool[HumanMedicalComponent.RegionSlotCount];
-
-        public MedicalExamineIndex(
-            HumanMedicalComponent medical,
-            ActiveHumanSurgeryOperationComponent? activeSurgery = null,
-            bool includeInjuriesAndBleeds = true)
-        {
-            if (includeInjuriesAndBleeds)
-            {
-                foreach (var injury in medical.Injuries)
-                {
-                    if (!TryGetRegionIndex(injury.Region, out var region))
-                        continue;
-
-                    (_injuriesByRegion[region] ??= new List<InjuryRecord>()).Add(injury);
-                }
-
-                foreach (var bleed in medical.BleedSources)
-                {
-                    if (!TryGetRegionIndex(bleed.Region, out var region))
-                        continue;
-
-                    (_bleedsByRegion[region] ??= new List<BleedSource>()).Add(bleed);
-                }
-            }
-
-            foreach (var shrapnel in medical.ForeignObjects)
-            {
-                if (shrapnel.Kind != ForeignObjectKind.Shrapnel ||
-                    shrapnel.Fragments <= 0 ||
-                    !TryGetRegionIndex(shrapnel.Region, out var region))
-                {
-                    continue;
-                }
-
-                var current = _shrapnelByRegion[region];
-                _shrapnelByRegion[region] = new ShrapnelExamineSummary(
-                    current.Fragments + shrapnel.Fragments,
-                    MathF.Max(current.Severity, shrapnel.Severity),
-                    shrapnel.Depth > current.Depth ? shrapnel.Depth : current.Depth);
-                _hasShrapnelByRegion[region] = true;
-            }
-
-            if (activeSurgery == null)
-                return;
-
-            foreach (var operation in activeSurgery.Operations)
-            {
-                if (!TryGetRegionIndex(operation.Region, out var region) ||
-                    _hasOperationByRegion[region])
-                {
-                    continue;
-                }
-
-                _operationsByRegion[region] = operation;
-                _hasOperationByRegion[region] = true;
-            }
-        }
-
-        public List<InjuryRecord>? GetInjuries(BodyRegion region)
-        {
-            return TryGetRegionIndex(region, out var index)
-                ? _injuriesByRegion[index]
-                : null;
-        }
-
-        public List<BleedSource>? GetBleeds(BodyRegion region)
-        {
-            return TryGetRegionIndex(region, out var index)
-                ? _bleedsByRegion[index]
-                : null;
-        }
-
-        public bool TryGetShrapnelSummary(BodyRegion region, out ShrapnelExamineSummary summary)
-        {
-            if (TryGetRegionIndex(region, out var index) &&
-                _hasShrapnelByRegion[index])
-            {
-                summary = _shrapnelByRegion[index];
-                return true;
-            }
-
-            summary = default;
-            return false;
-        }
-
-        public bool TryGetSurgeryOperation(BodyRegion region, out SurgeryOperationState operation)
-        {
-            if (TryGetRegionIndex(region, out var index) &&
-                _hasOperationByRegion[index])
-            {
-                operation = _operationsByRegion[index];
-                return true;
-            }
-
-            operation = default;
-            return false;
-        }
-
-        private static bool TryGetRegionIndex(BodyRegion region, out int index)
-        {
-            index = (int) region;
-            return index > (int) BodyRegion.None &&
-                index < HumanMedicalComponent.RegionSlotCount;
-        }
-    }
 
     private sealed class VisibleInjuryBucket
     {

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Content.Shared._CMU14.Medical.Foundation;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
@@ -14,13 +13,6 @@ namespace Content.Shared._CMU14.Medical.Human.Surgery;
 public sealed partial class HumanSurgerySystem : EntitySystem
 {
     [Dependency] private SharedHumanMedicalSystem _medical = default!;
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        SubscribeLocalEvent<HumanMedicalLedgerChangedEvent>(OnHumanMedicalLedgerChanged);
-    }
 
     public SurgeryResult TryApplySurgery(
         EntityUid patient,
@@ -134,107 +126,6 @@ public sealed partial class HumanSurgerySystem : EntitySystem
         if (!HumanSurgeryProcedureRules.MarkOperationApplied(operation.Operations, attempt, complete))
             return;
 
-        if (operation.Operations.Count > 0 &&
-            TryComp<HumanMedicalComponent>(patient, out var medical))
-        {
-            RefreshActiveOperations(medical, operation.Operations);
-        }
-
-        DirtyOrRemoveOperationComponent(patient, operation);
-    }
-
-    public static bool RefreshActiveOperations(
-        HumanMedicalComponent medical,
-        List<SurgeryOperationState> operations)
-    {
-        var changed = false;
-        for (var i = operations.Count - 1; i >= 0; i--)
-        {
-            var operation = operations[i];
-            if (!operation.Committed)
-            {
-                continue;
-            }
-
-            if (OperationRequiresSurgicalAccess(operation.ProcedureId) &&
-                !HumanSurgeryProcedureRules.HasOpenSurgicalAccess(medical, operation.Region))
-            {
-                operations.RemoveAt(i);
-                changed = true;
-                continue;
-            }
-
-            if (HumanSurgeryProcedureRules.IsOperationTargetCurrent(medical, operation))
-                continue;
-
-            if (HumanSurgeryProcedureRules.TryGetRequiredProcedureForRegion(
-                    medical,
-                    operation.Region,
-                    out var requiredProcedure) &&
-                requiredProcedure != SurgeryProcedureId.None)
-            {
-                operations[i] = operation with
-                {
-                    ProcedureId = requiredProcedure,
-                    StepIndex = 0,
-                    Committed = true,
-                };
-                changed = true;
-                continue;
-            }
-
-            if (HumanSurgeryProcedureRules.HasOpenSurgicalAccess(medical, operation.Region))
-            {
-                operations[i] = operation with
-                {
-                    ProcedureId = SurgeryProcedureId.SurgicalAccess,
-                    StepIndex = 0,
-                    Committed = true,
-                };
-                changed = true;
-                continue;
-            }
-
-            operations.RemoveAt(i);
-            changed = true;
-        }
-
-        return changed;
-    }
-
-    private static bool OperationRequiresSurgicalAccess(SurgeryProcedureId procedureId)
-    {
-        return procedureId is
-            SurgeryProcedureId.SurgicalAccess or
-            SurgeryProcedureId.CloseIncision or
-            SurgeryProcedureId.RemoveForeignObject or
-            SurgeryProcedureId.SealStump or
-            SurgeryProcedureId.RepairInternalBleeding or
-            SurgeryProcedureId.RemoveEschar or
-            SurgeryProcedureId.RepairOrgan or
-            SurgeryProcedureId.RepairFracture or
-            SurgeryProcedureId.AlienEmbryoRemoval or
-            SurgeryProcedureId.EyeSurgery or
-            SurgeryProcedureId.BrainDamageSurgery or
-            SurgeryProcedureId.Amputation;
-    }
-
-    private void OnHumanMedicalLedgerChanged(ref HumanMedicalLedgerChangedEvent args)
-    {
-        if (!TryComp<HumanMedicalComponent>(args.Body, out var medical) ||
-            !TryComp<ActiveHumanSurgeryOperationComponent>(args.Body, out var operation) ||
-            !RefreshActiveOperations(medical, operation.Operations))
-        {
-            return;
-        }
-
-        DirtyOrRemoveOperationComponent(args.Body, operation);
-    }
-
-    private void DirtyOrRemoveOperationComponent(
-        EntityUid patient,
-        ActiveHumanSurgeryOperationComponent operation)
-    {
         if (operation.Operations.Count == 0)
         {
             RemComp<ActiveHumanSurgeryOperationComponent>(patient);

@@ -20,21 +20,6 @@ public readonly record struct SkeletalRuleResult(
 
 public static class SkeletalRules
 {
-    public static SkeletalRuleResult EvaluateContactFracture(SkeletalRuleInput input)
-    {
-        var rollDamage = GetFractureRollDamage(input.BruteDamage);
-        var chancePercent = GetFractureChancePercent(rollDamage);
-
-        if (!input.BoneContact || input.AlreadyBroken || input.BruteDamage <= FixedPoint2.Zero)
-            return new SkeletalRuleResult(false, chancePercent, rollDamage, FractureSeverity.None);
-
-        return new SkeletalRuleResult(
-            true,
-            chancePercent,
-            rollDamage,
-            GetSeverity(rollDamage));
-    }
-
     public static SkeletalRuleResult EvaluateFracture(
         SkeletalRuleInput input,
         MedicalRngContext rng)

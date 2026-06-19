@@ -1,6 +1,5 @@
 using System;
 using Content.Shared._CMU14.Medical.Chemistry.Data;
-using Content.Shared._CMU14.Medical.Foundation;
 using Content.Shared._CMU14.Medical.Human.Components;
 using Content.Shared._CMU14.Medical.Human.Data;
 using Content.Shared._CMU14.Medical.Human.Systems;
@@ -58,7 +57,6 @@ public static class HumanChemicalLedgerRules
         new("CMUOxycodone"),
         new("CMUTramadol"),
         new("CMUParacetamol"),
-        new("CMUOsteoCalc", BoneRepairMaxSeverity: FractureSeverity.Simple),
     };
 
     public static HumanChemicalLedgerPlan CreatePlan(
@@ -83,7 +81,6 @@ public static class HumanChemicalLedgerRules
             InjuryKind.Burn,
             rule.BurnRecovery * scale);
         AddOrganRepairEffects(transaction, rule.OrganRepairSlot, rule.OrganRepair * scale);
-        AddBoneRepairEffects(medical, transaction, rule.BoneRepairMaxSeverity);
 
         var stasisDuration = TimeSpan.Zero;
         if (rule.OrganStasisDuration > TimeSpan.Zero &&
@@ -158,33 +155,6 @@ public static class HumanChemicalLedgerRules
             return;
 
         transaction.Add(MedicalEffect.AddOrganDamage(organSlot, -amount));
-    }
-
-    private static void AddBoneRepairEffects(
-        HumanMedicalComponent medical,
-        MedicalTransaction transaction,
-        FractureSeverity maxSeverity)
-    {
-        if (maxSeverity == FractureSeverity.None)
-            return;
-
-        for (var i = 1; i < medical.Regions.Length; i++)
-        {
-            var region = medical.Regions[i];
-            if (!region.Skeletal.Broken)
-                continue;
-
-            var severity = region.Skeletal.Severity == FractureSeverity.None
-                ? FractureSeverity.Simple
-                : region.Skeletal.Severity;
-            if ((byte) severity > (byte) maxSeverity)
-                continue;
-
-            transaction.Add(MedicalEffect.SetSkeletalState(
-                region.Region,
-                broken: false,
-                splinted: false));
-        }
     }
 
     private static bool AddOrganStasisEffects(
@@ -270,6 +240,5 @@ public static class HumanChemicalLedgerRules
         bool PreventCriticalOxygen = false,
         OrganSlot OrganRepairSlot = OrganSlot.None,
         FixedPoint2 OrganRepair = default,
-        TimeSpan OrganStasisDuration = default,
-        FractureSeverity BoneRepairMaxSeverity = FractureSeverity.None);
+        TimeSpan OrganStasisDuration = default);
 }

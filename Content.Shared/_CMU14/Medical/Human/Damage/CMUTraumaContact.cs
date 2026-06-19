@@ -80,25 +80,25 @@ public readonly record struct CMUTraumaContactSettings
         BallisticHighDamageThreshold = FixedPoint2.New(45),
         MeleeHighDamageThreshold = FixedPoint2.New(45),
 
-        BallisticHeadBoneChance = 0.13f,
-        BallisticTorsoBoneChance = 0.06f,
-        BallisticArmBoneChance = 0.12f,
-        BallisticLegBoneChance = 0.12f,
-        BallisticOtherBoneChance = 0.07f,
-        BallisticHeadOrganChance = 0.016f,
-        BallisticTorsoOrganChance = 0.05f,
+        BallisticHeadBoneChance = 0.65f,
+        BallisticTorsoBoneChance = 0.30f,
+        BallisticArmBoneChance = 0.60f,
+        BallisticLegBoneChance = 0.60f,
+        BallisticOtherBoneChance = 0.35f,
+        BallisticHeadOrganChance = 0.08f,
+        BallisticTorsoOrganChance = 0.25f,
         BallisticVascularChance = 0.03f,
 
-        PierceBoneChance = 0.04f,
-        PierceOrganChance = 0.035f,
+        PierceBoneChance = 0.20f,
+        PierceOrganChance = 0.175f,
         PierceVascularChance = 0.04f,
 
-        SlashBoneChance = 0.02f,
-        SlashOrganChance = 0.02f,
+        SlashBoneChance = 0.10f,
+        SlashOrganChance = 0.10f,
         SlashVascularChance = 0.05f,
 
-        BluntBoneChance = 0.10f,
-        BluntOrganChance = 0.01f,
+        BluntBoneChance = 0.50f,
+        BluntOrganChance = 0.05f,
         BluntVascularChance = 0.02f,
 
         BallisticOrganPassThrough = 0.35f,
@@ -117,9 +117,6 @@ public readonly record struct CMUTraumaContactSettings
 
 public static class CMUTraumaContactModel
 {
-    private const float BoneDepthScore = 0.30f;
-    private const float DeepDepthScore = 0.70f;
-
     public static CMUTraumaContactResult Create(
         CMUTraumaMechanism mechanism,
         BodyPartType partType,
@@ -128,17 +125,7 @@ public static class CMUTraumaContactModel
         float roll,
         CMUTraumaContactSettings settings)
     {
-        return Create(mechanism, default, partType, bruteDamage, hasOrgans, settings);
-    }
-
-    public static CMUTraumaContactResult Create(
-        CMUTraumaMechanism mechanism,
-        BodyPartType partType,
-        FixedPoint2 bruteDamage,
-        bool hasOrgans,
-        CMUTraumaContactSettings settings)
-    {
-        return Create(mechanism, default, partType, bruteDamage, hasOrgans, settings);
+        return Create(mechanism, default, partType, bruteDamage, hasOrgans, roll, settings);
     }
 
     public static CMUTraumaContactResult Create(
@@ -150,18 +137,8 @@ public static class CMUTraumaContactModel
         float roll,
         CMUTraumaContactSettings settings)
     {
-        return Create(mechanism, impact, partType, bruteDamage, hasOrgans, settings);
-    }
+        roll = Math.Clamp(roll, 0f, 1f);
 
-    public static CMUTraumaContactResult Create(
-        CMUTraumaMechanism mechanism,
-        DamageImpact impact,
-        BodyPartType partType,
-        FixedPoint2 bruteDamage,
-        bool hasOrgans,
-        CMUTraumaContactSettings settings)
-    {
-        impact = NormalizeImpact(mechanism, impact);
         if (mechanism == CMUTraumaMechanism.Explosive)
         {
             return new CMUTraumaContactResult(
@@ -169,16 +146,13 @@ public static class CMUTraumaContactModel
                 CMUTraumaDepth.Severe,
                 true,
                 hasOrgans,
-                true,
+                false,
                 hasOrgans ? settings.ExplosiveOrganPassThrough : 0f,
-                GetInternalBleedRate(mechanism, impact, settings),
+                0f,
                 true);
         }
 
         if (bruteDamage <= FixedPoint2.Zero || mechanism == CMUTraumaMechanism.Generic)
-            return CMUTraumaContactResult.SoftTissue(mechanism);
-
-        if (impact.IsSpecified && impact.Contact is DamageImpactContact.Burn or DamageImpactContact.Snag)
             return CMUTraumaContactResult.SoftTissue(mechanism);
 
         if (IsHighEnergy(mechanism, impact, bruteDamage, settings))
@@ -188,16 +162,21 @@ public static class CMUTraumaContactModel
                 CMUTraumaDepth.Severe,
                 true,
                 hasOrgans,
-                true,
+                false,
                 hasOrgans ? settings.HighEnergyOrganPassThrough : 0f,
-                GetInternalBleedRate(mechanism, impact, settings),
+                0f,
                 true);
         }
 
-        var depth = ResolveDepth(mechanism, impact, partType, bruteDamage, settings);
-        var bone = depth >= CMUTraumaDepth.Bone;
-        var organ = hasOrgans && depth >= CMUTraumaDepth.Deep;
-        var vascular = ShouldCauseVascularContact(depth, mechanism, impact);
+        var bone = roll < Chance(GetBoneChance(mechanism, impact, partType, settings));
+        var organ = hasOrgans && roll < Chance(GetOrganChance(mechanism, impact, partType, settings));
+        var vascular = roll < Chance(GetVascularChance(mechanism, impact, settings));
+
+        var depth = CMUTraumaDepth.SoftTissue;
+        if (bone)
+            depth = CMUTraumaDepth.Bone;
+        if (organ || vascular)
+            depth = CMUTraumaDepth.Deep;
 
         return new CMUTraumaContactResult(
             mechanism,
@@ -208,144 +187,6 @@ public static class CMUTraumaContactModel
             organ ? GetOrganPassThrough(mechanism, impact, settings) : 0f,
             vascular ? GetInternalBleedRate(mechanism, impact, settings) : 0f,
             false);
-    }
-
-    private static CMUTraumaDepth ResolveDepth(
-        CMUTraumaMechanism mechanism,
-        DamageImpact impact,
-        BodyPartType partType,
-        FixedPoint2 bruteDamage,
-        CMUTraumaContactSettings settings)
-    {
-        var threshold = GetHighDamageThreshold(mechanism, settings);
-        if (threshold <= FixedPoint2.Zero)
-            return CMUTraumaDepth.SoftTissue;
-
-        var score = bruteDamage.Float() / threshold.Float();
-        score *= GetMechanismDepthMultiplier(mechanism);
-        score *= GetContactDepthMultiplier(impact);
-        score *= GetPenetrationDepthMultiplier(impact);
-        score *= GetEnergyDepthMultiplier(impact);
-        score *= GetPartDepthMultiplier(partType);
-
-        if (score >= DeepDepthScore)
-            return CMUTraumaDepth.Deep;
-        if (score >= BoneDepthScore)
-            return CMUTraumaDepth.Bone;
-
-        return CMUTraumaDepth.SoftTissue;
-    }
-
-    private static FixedPoint2 GetHighDamageThreshold(
-        CMUTraumaMechanism mechanism,
-        CMUTraumaContactSettings settings)
-    {
-        return mechanism == CMUTraumaMechanism.Ballistic
-            ? settings.BallisticHighDamageThreshold
-            : settings.MeleeHighDamageThreshold;
-    }
-
-    private static DamageImpact NormalizeImpact(CMUTraumaMechanism mechanism, DamageImpact impact)
-    {
-        if (impact.IsSpecified)
-            return impact;
-
-        return mechanism switch
-        {
-            CMUTraumaMechanism.Ballistic => DamageImpact.Projectile,
-            CMUTraumaMechanism.Pierce => new DamageImpact(
-                DamageImpactDelivery.Melee,
-                DamageImpactContact.Stab,
-                DamageImpactPenetration.Medium,
-                DamageImpactEnergy.Medium),
-            CMUTraumaMechanism.Slash => DamageImpact.MeleeSlash,
-            CMUTraumaMechanism.Blunt => new DamageImpact(
-                DamageImpactDelivery.Melee,
-                DamageImpactContact.Crush,
-                DamageImpactPenetration.None,
-                DamageImpactEnergy.Medium),
-            CMUTraumaMechanism.Explosive => DamageImpact.Explosion,
-            _ => impact,
-        };
-    }
-
-    private static float GetMechanismDepthMultiplier(CMUTraumaMechanism mechanism)
-    {
-        return mechanism switch
-        {
-            CMUTraumaMechanism.Ballistic => 1.15f,
-            CMUTraumaMechanism.Pierce => 1.05f,
-            CMUTraumaMechanism.Slash => 0.75f,
-            CMUTraumaMechanism.Blunt => 1f,
-            CMUTraumaMechanism.Explosive => 2f,
-            _ => 0f,
-        };
-    }
-
-    private static float GetContactDepthMultiplier(DamageImpact impact)
-    {
-        return impact.Contact switch
-        {
-            DamageImpactContact.Blast => 2f,
-            DamageImpactContact.Crush => 1.25f,
-            DamageImpactContact.Stab => 1.1f,
-            DamageImpactContact.Fragment => 0.85f,
-            DamageImpactContact.Burn or DamageImpactContact.Snag => 0f,
-            _ => 1f,
-        };
-    }
-
-    private static float GetPenetrationDepthMultiplier(DamageImpact impact)
-    {
-        return impact.Penetration switch
-        {
-            DamageImpactPenetration.None => impact.Contact == DamageImpactContact.Crush ? 1f : 0.25f,
-            DamageImpactPenetration.Low => 0.45f,
-            DamageImpactPenetration.Medium => 1.15f,
-            DamageImpactPenetration.High => 1.65f,
-            DamageImpactPenetration.Forced => 2.25f,
-            _ => 1f,
-        };
-    }
-
-    private static float GetEnergyDepthMultiplier(DamageImpact impact)
-    {
-        return impact.Energy switch
-        {
-            DamageImpactEnergy.Low => 0.75f,
-            DamageImpactEnergy.High => 1.15f,
-            DamageImpactEnergy.Severe => 1.5f,
-            _ => 1f,
-        };
-    }
-
-    private static float GetPartDepthMultiplier(BodyPartType partType)
-    {
-        return partType switch
-        {
-            BodyPartType.Head => 1.1f,
-            BodyPartType.Arm or BodyPartType.Hand => 1.05f,
-            BodyPartType.Leg or BodyPartType.Foot => 1.05f,
-            _ => 1f,
-        };
-    }
-
-    private static bool ShouldCauseVascularContact(
-        CMUTraumaDepth depth,
-        CMUTraumaMechanism mechanism,
-        DamageImpact impact)
-    {
-        if (depth < CMUTraumaDepth.Deep)
-            return false;
-        if (depth >= CMUTraumaDepth.Severe)
-            return true;
-
-        return mechanism switch
-        {
-            CMUTraumaMechanism.Ballistic or CMUTraumaMechanism.Pierce => true,
-            CMUTraumaMechanism.Slash => impact.Penetration >= DamageImpactPenetration.Medium,
-            _ => false,
-        };
     }
 
     private static bool IsHighEnergy(
@@ -363,10 +204,89 @@ public static class CMUTraumaContactModel
             return true;
         }
 
-        var threshold = GetHighDamageThreshold(mechanism, settings);
+        var threshold = mechanism == CMUTraumaMechanism.Ballistic
+            ? settings.BallisticHighDamageThreshold
+            : settings.MeleeHighDamageThreshold;
 
         return threshold > FixedPoint2.Zero && bruteDamage >= threshold;
     }
+
+    private static float GetBoneChance(
+        CMUTraumaMechanism mechanism,
+        DamageImpact impact,
+        BodyPartType partType,
+        CMUTraumaContactSettings settings)
+    {
+        if (mechanism == CMUTraumaMechanism.Ballistic)
+        {
+            return partType switch
+            {
+                BodyPartType.Head => settings.BallisticHeadBoneChance,
+                BodyPartType.Torso => settings.BallisticTorsoBoneChance,
+                BodyPartType.Arm or BodyPartType.Hand => settings.BallisticArmBoneChance,
+                BodyPartType.Leg or BodyPartType.Foot => settings.BallisticLegBoneChance,
+                _ => settings.BallisticOtherBoneChance,
+            };
+        }
+
+        var chance = mechanism switch
+        {
+            CMUTraumaMechanism.Pierce => settings.PierceBoneChance,
+            CMUTraumaMechanism.Slash => settings.SlashBoneChance,
+            CMUTraumaMechanism.Blunt => settings.BluntBoneChance,
+            _ => 0f,
+        };
+
+        chance *= GetBoneDepthMultiplier(mechanism, impact);
+
+        return partType switch
+        {
+            BodyPartType.Head => chance * 1.25f,
+            BodyPartType.Arm or BodyPartType.Hand => chance * 1.15f,
+            BodyPartType.Leg or BodyPartType.Foot => chance * 1.15f,
+            _ => chance,
+        };
+    }
+
+    private static float GetOrganChance(
+        CMUTraumaMechanism mechanism,
+        DamageImpact impact,
+        BodyPartType partType,
+        CMUTraumaContactSettings settings)
+    {
+        if (mechanism == CMUTraumaMechanism.Ballistic)
+        {
+            return partType switch
+            {
+                BodyPartType.Head => settings.BallisticHeadOrganChance,
+                BodyPartType.Torso => settings.BallisticTorsoOrganChance,
+                _ => 0f,
+            };
+        }
+
+        if (partType is not (BodyPartType.Head or BodyPartType.Torso))
+            return 0f;
+
+        var chance = mechanism switch
+        {
+            CMUTraumaMechanism.Pierce => settings.PierceOrganChance,
+            CMUTraumaMechanism.Slash => settings.SlashOrganChance,
+            CMUTraumaMechanism.Blunt => settings.BluntOrganChance,
+            _ => 0f,
+        };
+
+        return chance * GetOrganDepthMultiplier(mechanism, impact);
+    }
+
+    private static float GetVascularChance(CMUTraumaMechanism mechanism, DamageImpact impact, CMUTraumaContactSettings settings)
+        => mechanism switch
+        {
+            CMUTraumaMechanism.Ballistic => settings.BallisticVascularChance,
+            CMUTraumaMechanism.Pierce => settings.PierceVascularChance,
+            CMUTraumaMechanism.Slash => settings.SlashVascularChance,
+            CMUTraumaMechanism.Blunt => settings.BluntVascularChance,
+            _ => 0f,
+        } * GetVascularDepthMultiplier(mechanism, impact);
 
     private static float GetOrganPassThrough(CMUTraumaMechanism mechanism, DamageImpact impact, CMUTraumaContactSettings settings)
         => Chance((mechanism switch
@@ -385,7 +305,6 @@ public static class CMUTraumaContactModel
             CMUTraumaMechanism.Pierce => settings.PierceInternalBleedRate,
             CMUTraumaMechanism.Slash => settings.SlashInternalBleedRate,
             CMUTraumaMechanism.Blunt => settings.BluntInternalBleedRate,
-            CMUTraumaMechanism.Explosive => MathF.Max(settings.BallisticInternalBleedRate, settings.BluntInternalBleedRate),
             _ => 0f,
         }) * GetVascularDepthMultiplier(mechanism, impact));
 

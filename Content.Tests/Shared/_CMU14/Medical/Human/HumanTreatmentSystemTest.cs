@@ -233,61 +233,6 @@ public sealed class HumanTreatmentSystemTest
     }
 
     [Test]
-    public void SurgicalLineKeepsTraumaKitRecoveryActiveWhenOtherWoundsRemain()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        var transaction = new MedicalTransaction(BodyRegion.RightArm);
-        transaction.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.RightArm,
-            FixedPoint2.New(30),
-            FixedPoint2.Zero));
-        transaction.Add(MedicalEffect.AddInjury(
-            BodyRegion.RightArm,
-            InjuryKind.Cut,
-            InjuryStage.Small,
-            FixedPoint2.New(8)));
-        transaction.Add(MedicalEffect.AddInjury(
-            BodyRegion.RightArm,
-            InjuryKind.Bruise,
-            InjuryStage.Massive,
-            FixedPoint2.New(22)));
-        HumanMedicalLedger.ApplyTransaction(medical, transaction);
-        var treatedId = medical.Injuries[0].Id;
-        var untreatedId = medical.Injuries[1].Id;
-
-        var traumaKit = HumanTreatmentSystem.TryApplyTreatment(
-            medical,
-            new TreatmentAttempt(
-                TreatmentKind.Gauze,
-                BodyRegion.RightArm,
-                InjuryId: treatedId,
-                Amount: FixedPoint2.New(9)));
-        var line = HumanTreatmentSystem.TryApplyTreatment(
-            medical,
-            new TreatmentAttempt(TreatmentKind.SurgicalLine, BodyRegion.RightArm));
-        var tick = HumanTreatedWoundHealingSystem.CalculateTreatedWoundHealingTick(medical);
-        var passiveHeal = HumanMedicalLedger.AdvanceTreatedWoundHealing(medical, FixedPoint2.New(2));
-        var region = HumanMedicalLedger.GetRegion(medical, BodyRegion.RightArm);
-        var hasTreated = TryFindInjury(medical, treatedId, out var treated);
-        var hasUntreated = TryFindInjury(medical, untreatedId, out var untreated);
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(traumaKit.Applied, Is.True);
-            Assert.That(line.Applied, Is.True);
-            Assert.That(tick.ActiveInjuries, Is.EqualTo(1));
-            Assert.That(passiveHeal.Applied, Is.True);
-            Assert.That(region.BruteDamage, Is.LessThan(FixedPoint2.New(20)));
-            Assert.That(hasTreated, Is.True);
-            Assert.That(treated.RecoveryRate, Is.GreaterThan(FixedPoint2.Zero));
-            Assert.That(treated.Damage, Is.LessThan(FixedPoint2.New(8)));
-            Assert.That(hasUntreated, Is.True);
-            Assert.That(untreated.Damage, Is.EqualTo(FixedPoint2.New(12)));
-            Assert.That(untreated.Flags.HasFlag(InjuryFlags.Sutured), Is.True);
-        });
-    }
-
-    [Test]
     public void SurgicalLineClosesOnlySurfaceBleedsWithoutTemporarySuppression()
     {
         var medical = HumanMedicalLedger.CreateDefault();
@@ -466,51 +411,6 @@ public sealed class HumanTreatmentSystemTest
             Assert.That(injury.Damage, Is.EqualTo(FixedPoint2.New(20)));
             Assert.That(injury.Flags.HasFlag(InjuryFlags.Salved), Is.True);
             Assert.That(injury.RecoveryRate, Is.EqualTo(FixedPoint2.Zero));
-        });
-    }
-
-    [Test]
-    public void SyntheticGraftKeepsBurnKitRecoveryActive()
-    {
-        var medical = HumanMedicalLedger.CreateDefault();
-        var transaction = new MedicalTransaction(BodyRegion.RightArm);
-        transaction.Add(MedicalEffect.AddRegionDamage(
-            BodyRegion.RightArm,
-            FixedPoint2.Zero,
-            FixedPoint2.New(30)));
-        transaction.Add(MedicalEffect.AddInjury(
-            BodyRegion.RightArm,
-            InjuryKind.Burn,
-            InjuryStage.Severe,
-            FixedPoint2.New(30)));
-        HumanMedicalLedger.ApplyTransaction(medical, transaction);
-        var injuryId = medical.Injuries[0].Id;
-
-        var burnKit = HumanTreatmentSystem.TryApplyTreatment(
-            medical,
-            new TreatmentAttempt(
-                TreatmentKind.Salve,
-                BodyRegion.RightArm,
-                InjuryId: injuryId,
-                Amount: FixedPoint2.New(9)));
-        var graft = HumanTreatmentSystem.TryApplyTreatment(
-            medical,
-            new TreatmentAttempt(TreatmentKind.SyntheticGraft, BodyRegion.RightArm));
-        var tick = HumanTreatedWoundHealingSystem.CalculateTreatedWoundHealingTick(medical);
-        var passiveHeal = HumanMedicalLedger.AdvanceTreatedWoundHealing(medical, FixedPoint2.New(2));
-        var region = HumanMedicalLedger.GetRegion(medical, BodyRegion.RightArm);
-        var injury = medical.Injuries[0];
-
-        Assert.Multiple(() =>
-        {
-            Assert.That(burnKit.Applied, Is.True);
-            Assert.That(graft.Applied, Is.True);
-            Assert.That(tick.ActiveInjuries, Is.EqualTo(1));
-            Assert.That(passiveHeal.Applied, Is.True);
-            Assert.That(region.BurnDamage, Is.LessThan(FixedPoint2.New(20)));
-            Assert.That(injury.Damage, Is.LessThan(FixedPoint2.New(20)));
-            Assert.That(injury.Flags.HasFlag(InjuryFlags.Salved), Is.True);
-            Assert.That(injury.RecoveryRate, Is.GreaterThan(FixedPoint2.Zero));
         });
     }
 
@@ -808,23 +708,5 @@ public sealed class HumanTreatmentSystemTest
         var transaction = new MedicalTransaction(region);
         transaction.Add(MedicalEffect.AddBleedSource(region, kind, rate));
         HumanMedicalLedger.ApplyTransaction(medical, transaction);
-    }
-
-    private static bool TryFindInjury(
-        HumanMedicalComponent medical,
-        int id,
-        out InjuryRecord injury)
-    {
-        foreach (var candidate in medical.Injuries)
-        {
-            if (candidate.Id != id)
-                continue;
-
-            injury = candidate;
-            return true;
-        }
-
-        injury = default;
-        return false;
     }
 }
