@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using System.Collections.Concurrent;
 using System.Text.Json;
 
@@ -16,7 +17,7 @@ sealed class PlayerStore
     public PlayerStore(string path, TimeSpan ttl)
     {
         _path = path;
-        _ttl  = ttl;
+        _ttl = ttl;
     }
 
     public void Upsert(string userId, string? userName, string server)
@@ -49,7 +50,7 @@ sealed class PlayerStore
         try
         {
             var records = JsonSerializer.Deserialize<PlayerRecord[]>(File.ReadAllText(_path), JsonOpts) ?? [];
-            var stale   = 0;
+            var stale = 0;
             foreach (var r in records)
             {
                 if (IsStale(r)) { stale++; continue; }
