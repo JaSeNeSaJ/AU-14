@@ -12,6 +12,12 @@ using Content.Shared.Stunnable;
 using Robust.Server.Audio;
 using Robust.Shared.Map;
 using Robust.Shared.Random;
+using Robust.Shared.Physics.Systems;
+using Robust.Shared.Physics.Components;
+using Content.Shared._RMC14.Xenonids.Leap;
+using Content.Shared.Throwing;
+using Robust.Shared.Physics.Events;
+using Robust.Shared.Timing;
 
 namespace Content.Server._RMC14.Xenonids.Despoiler;
 
@@ -33,14 +39,19 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private XenoDespoilerCatalyzeFlagSystem _catalyze = default!;
     [Dependency] private XenoDespoilerAcidSystem _acid = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private IGameTiming _timing = default!;
 
     private EntityQuery<XenoDespoilerLingeringAcidComponent> _lingeringQuery;
+    private EntityQuery<PhysicsComponent> _physicsQuery;
 
     public override void Initialize()
     {
         _lingeringQuery = GetEntityQuery<XenoDespoilerLingeringAcidComponent>();
+        _physicsQuery = GetEntityQuery<PhysicsComponent>();
 
         SubscribeLocalEvent<XenoDespoilerComponent, XenoDespoilerCausticEmbraceActionEvent>(OnUse);
+        SubscribeLocalEvent<XenoDespoilerEmbracingComponent, StartCollideEvent>(OnEmbraceCollide);
     }
 
     private void OnUse(EntityUid uid, XenoDespoilerComponent comp, XenoDespoilerCausticEmbraceActionEvent args)
@@ -50,6 +61,8 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
 
         if (!TryComp<XenoDespoilerCausticEmbraceActionComponent>(args.Action, out var action))
             return;
+
+        Logger.Info($"Range = {action.NormalRange}");
 
         var ownerXform = Transform(uid);
         var ownerMap = _xform.ToMapCoordinates(ownerXform.Coordinates);
@@ -92,14 +105,82 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
         if (!_rmcActions.TryUseAction(args))
             return;
 
-        _xform.SetCoordinates(uid, landing);
+        if (!_physicsQuery.TryGetComponent(uid, out var physics))
+            return;
+
+        var embracing = EnsureComp<XenoDespoilerEmbracingComponent>(uid);
+        embracing.Landing = landing;
+        embracing.Direction = direction;
+        embracing.Action = args.Action;
+
+        embracing.Origin = ownerMap.Position;
+        embracing.MaxDistance = action.NormalRange;
+
+        _physics.ResetDynamics(uid, physics);
+
+        var impulse = direction * 12f * physics.Mass;
+
+        _physics.ApplyLinearImpulse(uid, impulse, body: physics);
+        _physics.SetBodyStatus(uid, physics, BodyStatus.InAir);
 
         if (action.PounceSound is { } sound)
             _audio.PlayPvs(sound, uid);
 
-        SpawnSplashAroundExceptBack(uid, action, landing, direction);
-
         args.Handled = true;
+    }
+
+    private void OnEmbraceCollide(
+    Entity<XenoDespoilerEmbracingComponent> ent,
+    ref StartCollideEvent args)
+{
+    if (ent.Comp.Action == null)
+        return;
+
+    if (!TryComp<XenoDespoilerCausticEmbraceActionComponent>(
+            ent.Comp.Action,
+            out var action))
+        return;
+
+    if (_physicsQuery.TryGetComponent(ent.Owner, out var physics))
+    {
+        _physics.SetBodyStatus(ent.Owner, physics, BodyStatus.OnGround);
+        _physics.ResetDynamics(ent.Owner, physics);
+    }
+
+    SpawnSplashAroundExceptBack(
+        ent.Owner,
+        action,
+        ent.Comp.Landing,
+        ent.Comp.Direction);
+
+    RemCompDeferred<XenoDespoilerEmbracingComponent>(ent);
+}
+
+    public override void Update(float frameTime)
+    {
+        var query = EntityQueryEnumerator<XenoDespoilerEmbracingComponent>();
+
+        while (query.MoveNext(out var uid, out var embracing))
+        {
+            var current =
+                _xform.ToMapCoordinates(Transform(uid).Coordinates).Position;
+
+            var traveled =
+                (current - embracing.Origin).Length();
+
+            if (traveled >= embracing.MaxDistance)
+            {
+                if (_physicsQuery.TryGetComponent(uid, out var physics))
+                {
+                    _physics.ResetDynamics(uid, physics);
+                    _physics.SetBodyStatus(uid, physics, BodyStatus.OnGround);
+                }
+
+                _xform.SetCoordinates(uid, embracing.Landing);
+
+                RemComp<XenoDespoilerEmbracingComponent>(uid);
+            }
+        }
     }
 
     private static Vector2 SnapDirectionToTile(Vector2 dir)
