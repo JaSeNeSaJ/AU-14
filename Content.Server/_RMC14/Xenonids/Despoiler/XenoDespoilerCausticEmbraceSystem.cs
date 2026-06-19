@@ -62,8 +62,6 @@ public sealed partial class XenoDespoilerCausticEmbraceSystem : EntitySystem
         if (!TryComp<XenoDespoilerCausticEmbraceActionComponent>(args.Action, out var action))
             return;
 
-        Logger.Info($"Range = {action.NormalRange}");
-
         var ownerXform = Transform(uid);
         var ownerMap = _xform.ToMapCoordinates(ownerXform.Coordinates);
         var targetMap = _xform.ToMapCoordinates(args.Target);
