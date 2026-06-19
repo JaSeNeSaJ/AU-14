@@ -42,12 +42,12 @@ public sealed partial class CMUMedicalExamineSystem : EntitySystem
         base.Initialize();
 
         SubscribeLocalEvent<HumanMedicalComponent, ExaminedEvent>(OnExamined);
-        SubscribeLocalEvent<HumanMedicalComponent, ComponentShutdown>(OnMedicalShutdown);
+        SubscribeLocalEvent<HumanMedicalShutdownEvent>(OnMedicalShutdown);
     }
 
-    private void OnMedicalShutdown(Entity<HumanMedicalComponent> ent, ref ComponentShutdown args)
+    private void OnMedicalShutdown(ref HumanMedicalShutdownEvent args)
     {
-        _bodyPartLineCache.Remove(ent.Owner);
+        _bodyPartLineCache.Remove(args.Body);
     }
 
     private void OnExamined(Entity<HumanMedicalComponent> ent, ref ExaminedEvent args)
