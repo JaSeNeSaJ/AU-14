@@ -1,8 +1,6 @@
 - type: job
   parent: AU14JobAuxSupportSynthBase
   id: AU14JobOPFORAuxSupportSynth
-  name: au14-job-name-opforauxsupportsynth
-  description: au14-job-description-opforauxsupportsynth
   icon: "AU14JobIconOPFORSynth"
   spawnMenuRoleName: Support Synth (OPFOR)
   supervisors: au14-job-supervisors-opforplatco
@@ -24,7 +22,7 @@
       - OPFOR
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_AU14/Interface/au14opforhud.rsi
+        sprite: /Textures/_AU14/Interface/au14opforjobicons.rsi
         state: synth
 
 - type: startingGear

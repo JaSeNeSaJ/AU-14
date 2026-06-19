@@ -4,7 +4,7 @@
   id: AU14JobMilitaryPoliceBaseAbstract
   name: au14-job-name-govformilitarypoliceman
   description: au14-job-description-govformilitarypoliceman
-  icon: "AU14JobIconRFN"
+  icon: "AU14JobIconMP"
   spawnMenuRoleName: Military Policeman (GOVFOR)
   supervisors: au14-job-supervisors-govforplatco
   startingGear: AU14GearGOVFORMilitaryPoliceMan
@@ -61,8 +61,8 @@
       prefix: au14-job-prefix-govformilitarypoliceman
     - type: TacticalMapIcon
       icon:
-        sprite: /Textures/_AU14/Interface/au14govforhud.rsi
-        state: govfor_rfn
+        sprite: /Textures/_AU14/Interface/au14govforjobicons.rsi
+        state: govfor_mp
 
 - type: playTimeTracker
   id: AU14JobGOVFORMilitaryPoliceMan
