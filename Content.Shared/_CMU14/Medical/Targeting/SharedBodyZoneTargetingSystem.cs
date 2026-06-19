@@ -33,7 +33,9 @@ public abstract partial class SharedBodyZoneTargetingSystem : EntitySystem
         if (!TryComp<BodyZoneTargetingComponent>(shooter, out var aim))
             return;
 
-        SelectZone((shooter, aim), msg.Zone);
+        aim.Selected = msg.Zone;
+        aim.LastSelectedAt = Timing.CurTime;
+        Dirty(shooter, aim);
     }
 
     public TargetBodyZone? TryGetFreshSelection(Entity<BodyZoneTargetingComponent?> shooter)
@@ -59,29 +61,14 @@ public abstract partial class SharedBodyZoneTargetingSystem : EntitySystem
         return shooter.Comp.Selected;
     }
 
-    public bool SelectZone(
-        Entity<BodyZoneTargetingComponent?> shooter,
-        TargetBodyZone zone,
-        bool dirty = true)
+    public void SelectZone(Entity<BodyZoneTargetingComponent?> shooter, TargetBodyZone zone)
     {
         if (!Resolve(shooter.Owner, ref shooter.Comp, logMissing: false))
-            return false;
-
-        if (shooter.Comp.Selected == zone &&
-            shooter.Comp.LastSelectedAt != TimeSpan.Zero)
-        {
-            return false;
-        }
+            return;
 
         shooter.Comp.Selected = zone;
         shooter.Comp.LastSelectedAt = Timing.CurTime;
-        if (dirty)
-        {
-            DirtyField(shooter.Owner, shooter.Comp, nameof(BodyZoneTargetingComponent.Selected));
-            DirtyField(shooter.Owner, shooter.Comp, nameof(BodyZoneTargetingComponent.LastSelectedAt));
-        }
-
-        return true;
+        Dirty(shooter.Owner, shooter.Comp);
     }
 
     public static (BodyPartType Type, BodyPartSymmetry Symmetry) ToBodyPart(TargetBodyZone zone) => zone switch
