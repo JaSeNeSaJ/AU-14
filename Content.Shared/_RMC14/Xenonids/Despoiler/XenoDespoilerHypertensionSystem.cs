@@ -19,7 +19,7 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
         Entity<XenoDespoilerHypertensionComponent> ent,
         ref CMGetArmorEvent args)
     {
-        args.XenoArmor += (ent.Comp.Stacks / 2) * 10;
+        args.XenoArmor += (ent.Comp.Stacks / 2) * 5;
     }
 
     private void RefreshArmor(EntityUid uid)

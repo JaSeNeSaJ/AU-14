@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Shared._RMC14.Actions;
+using Content.Shared._RMC14.Armor;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Despoiler;
 using Content.Shared.Coordinates.Helpers;
@@ -22,6 +23,7 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
     [Dependency] private SharedRMCActionsSystem _rmcActions = default!;
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private XenoDespoilerCatalyzeFlagSystem _catalyze = default!;
+    [Dependency] private CMArmorSystem _armor = default!;
 
     private EntityQuery<XenoDespoilerAcidSprayComponent> _sprayQuery;
     private EntityQuery<XenoDespoilerLingeringAcidComponent> _lingeringQuery;
@@ -44,6 +46,16 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
 
         if (!_rmcActions.TryUseAction(args))
             return;
+
+        if (TryComp<XenoDespoilerHypertensionComponent>(uid, out var hypertension))
+        {
+            hypertension.Stacks = 0;
+
+            Dirty(uid, hypertension);
+
+            if (TryComp<CMArmorComponent>(uid, out var armor))
+                _armor.UpdateArmorValue((uid, armor));
+        }
 
         var empowered = _catalyze.TakeEmpowerment(uid, comp);
 
