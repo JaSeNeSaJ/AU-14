@@ -1,0 +1,9 @@
+{
+  "AuthServers": [
+    "https://auth.spacestation14.com/",
+    "https://auth.playss14.com/"
+  ],
+  "TimeoutMs": 1500,
+  "CacheTtlMinutes": 10,
+  "Listen": "http://127.0.0.1:9119"
+}
