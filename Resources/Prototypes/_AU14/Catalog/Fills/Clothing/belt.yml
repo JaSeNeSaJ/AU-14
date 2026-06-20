@@ -1,6 +1,6 @@
 - type: entity
   parent: RMCBeltBrowne
-  id: RMCBeltBrowneFilled
+  id: AU14BeltBrowneFilled
   suffix: Filled
   components:
   - type: StorageFill
