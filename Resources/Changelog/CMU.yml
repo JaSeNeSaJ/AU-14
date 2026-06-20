@@ -4404,5 +4404,23 @@
   id: 312
   time: '2026-06-19T19:03:32.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1362
+- author: HotdogMan52
+  changes:
+  - message: added four M19-NL Tear Gas nades into SecTech vendors
+    type: Add
+  - message: added four gas mask and eight filters
+    type: Add
+  id: 313
+  time: '2026-06-20T01:24:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1388
+- author: wray-git
+  changes:
+  - message: M-19 Treadnailers now only destroys weeds and weed nodes
+    type: Fix
+  - message: M-19 Treadnailers are only active when the wearer is standing
+    type: Fix
+  id: 314
+  time: '2026-06-20T01:31:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1389
 Name: CMU
 Order: -1
