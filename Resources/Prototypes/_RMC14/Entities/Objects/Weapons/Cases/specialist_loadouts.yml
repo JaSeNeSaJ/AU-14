@@ -199,6 +199,7 @@
       amount: 2
     - id: RMCLaserDesignatorScout
     - id: RMCScoutShoes
+    - id: AU14ScoutWebbing
   - type: CMChangeUserOnVend
     addComponents:
     - type: ScoutWhitelist
