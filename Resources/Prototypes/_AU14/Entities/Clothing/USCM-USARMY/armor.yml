@@ -337,6 +337,8 @@
     - 0,0,5,1 # 4 slots
   - type: RMCArmorSpeedTier
     speedTier: light
+  - type: Corrodible
+    isCorrodible: false
   - type: CMArmor
     bullet: 15
     bio: 15
