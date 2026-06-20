@@ -135,9 +135,19 @@ public sealed partial class AuThirdPartySystem : EntitySystem
 
             var dropshipMapCoordinates = _transform.ToMapCoordinates(
                 _entityManager.GetComponent<TransformComponent>(mainGridUid).Coordinates);
-            var returnDestination = _entityManager.SpawnEntity(
-                "CMDropshipDestinationThirdPartyReturn",
-                dropshipMapCoordinates);
+            EntityUid returnDestination;
+            try
+            {
+                returnDestination = _entityManager.SpawnEntity(
+                    "CMDropshipDestinationThirdPartyReturn",
+                    dropshipMapCoordinates);
+            }
+            catch (Exception ex)
+            {
+                _sawmill.Error($"[AuThirdPartySystem] Failed to spawn return destination entity at {dropshipMapCoordinates}: {ex}
+                ");
+                return false;
+            }
             var returnDestinationComp = EnsureComp<ThirdPartyDropshipReturnDestinationComponent>(returnDestination);
             returnDestinationComp.Shuttle = mainGridUid;
 
@@ -178,9 +188,13 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             var query = _entityManager.EntityQueryEnumerator<AuInsertMarkerComponent>();
             while (query.MoveNext(out var uid, out _))
             {
-                var gridUid = _entityManager.GetComponent<TransformComponent>(uid).GridUid;
-                if (gridUid != null && gridUid.Value == mainGridUid)
-                    markerEntities.Add(uid);
+                try
+                {
+                    var gridUid = _entityManager.GetComponent<TransformComponent>(uid).GridUid;
+                    if (gridUid != null && gridUid.Value == mainGridUid)
+                        markerEntities.Add(uid);
+                }
+                catch (Exception ex) { _sawmill.Debug($"[AuThirdPartySystem] Skipping deleted marker {uid} during dropship collection: {ex}"); }
             }
             _sawmill.Debug($"[AuThirdPartySystem] Dropship markers collected: {markerEntities.Count}");
             // Spawn consoles
@@ -188,20 +202,32 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             int consoleCount = 0;
             while (vmarkerQuery.MoveNext(out var vmarkerUid, out var vmarkerComp))
             {
-                var markerXform = _entityManager.GetComponent<TransformComponent>(vmarkerUid);
-                if (markerXform.GridUid != mainGridUid)
-                    continue;
-                switch (vmarkerComp.Class)
+                try
                 {
-                    case PlatoonMarkerClass.DSPilot:
-                        _entityManager.SpawnEntity("CMComputerDropshipNavigationThirdParty", markerXform.Coordinates);
-                        consoleCount++;
-                        break;
-                    case PlatoonMarkerClass.DSWeapons:
-                        _entityManager.SpawnEntity("CMComputerDropshipWeapons", markerXform.Coordinates);
-                        consoleCount++;
-                        break;
+                    var markerXform = _entityManager.GetComponent<TransformComponent>(vmarkerUid);
+                    if (markerXform.GridUid != mainGridUid)
+                        continue;
+                    switch (vmarkerComp.Class)
+                    {
+                        case PlatoonMarkerClass.DSPilot:
+                            try
+                            {
+                                _entityManager.SpawnEntity("CMComputerDropshipNavigationThirdParty", markerXform.Coordinates);
+                                consoleCount++;
+                            }
+                            catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Failed to spawn Dropship Navigation console: {ex}"); }
+                            break;
+                        case PlatoonMarkerClass.DSWeapons:
+                            try
+                            {
+                                _entityManager.SpawnEntity("CMComputerDropshipWeapons", markerXform.Coordinates);
+                                consoleCount++;
+                            }
+                            catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Failed to spawn Dropship Weapons console: {ex}"); }
+                            break;
+                    }
                 }
+                catch (Exception ex) { _sawmill.Debug($"[AuThirdPartySystem] Skipping vendor marker {vmarkerUid} (class=markerComp.Class) due to component error: {ex}"); }
             }
             _sawmill.Debug($"[AuThirdPartySystem] Dropship consoles spawned: {consoleCount}");
         }
@@ -213,7 +239,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             while (pQuery.MoveNext(out var uid, out var pComp, out var pxform))
             {
                 // Parachute markers are reusable and do not need to be marked as used; include all of them.
-                markerEntities.Add(uid);
+                try { markerEntities.Add(uid); }
+                catch (Exception ex) { _sawmill.Debug($"[AuThirdPartySystem] Skipping deleted parachute marker {uid}: {ex}"); }
             }
             _sawmill.Debug($"[AuThirdPartySystem] Parachute markers collected: {markerEntities.Count}");
         }
@@ -223,7 +250,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             var query = _entityManager.EntityQueryEnumerator<AuInsertMarkerComponent>();
             while (query.MoveNext(out var uid, out _))
             {
-                markerEntities.Add(uid);
+                try { markerEntities.Add(uid); }
+                catch (Exception ex) { _sawmill.Debug($"[AuThirdPartySystem] Skipping deleted marker {uid} during ground collection: {ex}"); }
             }
             _sawmill.Debug($"[AuThirdPartySystem] Main map markers collected: {markerEntities.Count}");
         }
@@ -375,9 +403,9 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         var gruntReq = spawnProto.GruntsToSpawn.Values.Sum();
         var entityReq = spawnProto.entitiestospawn.Values.Sum();
 
-        var leaderMarkers = GetSpawnMarkers(Content.Shared.AU14.Threats.ThreatMarkerType.Leader);
-        var gruntMarkers = GetSpawnMarkers(Content.Shared.AU14.Threats.ThreatMarkerType.Member);
-        var entityMarkers = GetSpawnMarkers(Content.Shared.AU14.Threats.ThreatMarkerType.Entity);
+        var leaderMarkers = GetSpawnMarkers(ThreatMarkerType.Leader);
+        var gruntMarkers = GetSpawnMarkers(ThreatMarkerType.Member);
+        var entityMarkers = GetSpawnMarkers(ThreatMarkerType.Entity);
 
         // If parachute mode, use the parachute marker pool for all types; make local mutable copies so we can pick without replacement during this spawn
         if (parachuteMode)
@@ -460,18 +488,20 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     }
                     spawnedLeaders.Add(ent);
                     // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
                     {
                         lmComp.Used = true;
                         Dirty(marker, lmComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
+                    if (!parachuteMode)
+                        leaderMarkers.Remove(marker);
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned leader {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
                 {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn leader ({protoId})! {ex.Message}");
+                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn leader ({protoId}) at {coords}! {ex.Message}");
                     continue;
                 }
             }
@@ -514,18 +544,20 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     }
                     spawnedGrunts.Add(ent);
                     // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var gmComp) && !gmComp.Used)
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
                     {
-                        gmComp.Used = true;
-                        Dirty(marker, gmComp);
+                        lmComp.Used = true;
+                        Dirty(marker, lmComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
+                    if (!parachuteMode)
+                        gruntMarkers.Remove(marker);
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned grunt {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
                 {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn grunt ({protoId})! {ex.Message}");
+                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn grunt ({protoId}) at {coords}! {ex.Message}");
                     continue;
                 }
             }
@@ -568,18 +600,20 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     }
                     SpawnedEnts.Add(ent);
                     // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var emComp) && !emComp.Used)
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
                     {
-                        emComp.Used = true;
-                        Dirty(marker, emComp);
+                        lmComp.Used = true;
+                        Dirty(marker, lmComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
+                    if (!parachuteMode)
+                        entityMarkers.Remove(marker);
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned ent {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
                 {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn entity ({protoId})! {ex.Message}");
+                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn entity ({protoId}) at {coords}! {ex.Message}");
                     continue;
                 }
             }
@@ -636,35 +670,43 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             {
                 var playerNetId = leaderPlayers[i];
                 var entity = spawnedLeaders[i];
-                if (!_playerManager.TryGetSessionById(playerNetId, out var session))
-                    continue;
-                var ticker = _entityManager.System<GameTicker>();
-                ticker.PlayerJoinGame(session, silent: true);
-                var data = session.ContentData();
-                var mind = mindSystem.GetMind(playerNetId);
-                var characterName = GetPlayerCharacterName(session, mind, data?.Name ?? "Third Party Player");
-                ApplyPlayerCharacterName(entity, characterName);
-                mind ??= mindSystem.CreateMind(playerNetId, characterName);
-                mindSystem.SetUserId(mind.Value, playerNetId);
-                mindSystem.TransferTo(mind.Value, entity);
-                roleSystem.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThirdPartyLeader");
+                try
+                {
+                    if (!_playerManager.TryGetSessionById(playerNetId, out var session))
+                        continue;
+                    var ticker = _entityManager.System<GameTicker>();
+                    ticker.PlayerJoinGame(session, silent: true);
+                    var data = session.ContentData();
+                    var mind = mindSystem.GetMind(playerNetId);
+                    var characterName = GetPlayerCharacterName(session, mind, data?.Name ?? "Third Party Player");
+                    ApplyPlayerCharacterName(entity, characterName);
+                    mind ??= mindSystem.CreateMind(playerNetId, characterName);
+                    mindSystem.SetUserId(mind.Value, playerNetId);
+                    mindSystem.TransferTo(mind.Value, entity);
+                    roleSystem.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThirdPartyLeader");
+                }
+                catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Failed to assign leader mind (player {playerNetId}, entity {entity}) {ex}"); }
             }
             for (int i = 0; i < memberPlayers.Count && i < spawnedGrunts.Count; i++)
             {
                 var playerNetId = memberPlayers[i];
                 var entity = spawnedGrunts[i];
-                if (!_playerManager.TryGetSessionById(playerNetId, out var session))
-                    continue;
-                var ticker = _entityManager.System<GameTicker>();
-                ticker.PlayerJoinGame(session, silent: true);
-                var data = session.ContentData();
-                var mind = mindSystem.GetMind(playerNetId);
-                var characterName = GetPlayerCharacterName(session, mind, data?.Name ?? "Third Party Player");
-                ApplyPlayerCharacterName(entity, characterName);
-                mind ??= mindSystem.CreateMind(playerNetId, characterName);
-                mindSystem.SetUserId(mind.Value, playerNetId);
-                mindSystem.TransferTo(mind.Value, entity);
-                roleSystem.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThirdPartyMember");
+                try
+                {
+                    if (!_playerManager.TryGetSessionById(playerNetId, out var session))
+                        continue;
+                    var ticker = _entityManager.System<GameTicker>();
+                    ticker.PlayerJoinGame(session, silent: true);
+                    var data = session.ContentData();
+                    var mind = mindSystem.GetMind(playerNetId);
+                    var characterName = GetPlayerCharacterName(session, mind, data?.Name ?? "Third Party Player");
+                    ApplyPlayerCharacterName(entity, characterName);
+                    mind ??= mindSystem.CreateMind(playerNetId, characterName);
+                    mindSystem.SetUserId(mind.Value, playerNetId);
+                    mindSystem.TransferTo(mind.Value, entity);
+                    roleSystem.MindAddJobRole(mind.Value, silent: true, jobPrototype: "AU14JobThirdPartyMember");
+                }
+                catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Failed to assign member mind (player {playerNetId}, entity {entity}) {ex}"); }
             }
         }
         if (!string.IsNullOrWhiteSpace(party.AnnounceArrival))
@@ -720,6 +762,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             _spawningActive = false;
             return;
         }
+
         _spawnTimer += frameTime;
         var party = _thirdPartyList[_nextThirdPartyIndex];
         if (party.RoundStart)
@@ -727,41 +770,41 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             _nextThirdPartyIndex++;
             return;
         }
+
         int ghostCount = _playerManager.Sessions.Count(s => s.AttachedEntity == null || _entityManager.HasComponent<GhostComponent>(s.AttachedEntity));
         if (ghostCount < party.GhostsNeeded)
-        {
             return;
-        }
+
         var interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks * _signalIntervalMultiplier));
         if (_spawnTimer < interval.TotalSeconds)
             return;
+
         _spawnTimer = 0f;
         int roll = _random.Next(1, 101);
         int chance = Math.Clamp(party.weight * 10, 5, 100); // Example: weight 1 = 10%, weight 10 = 100%
-        if (roll <= chance)
-        {
-            if (_prototypeManager.TryIndex(party.PartySpawn, out var spawnProto))
-            {
-                if (SpawnThirdParty(party, spawnProto, false))
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Spawned third party {party.ID} (roll {roll} <= {chance})");
-                    _nextThirdPartyIndex++;
-                }
-                else
-                {
-                    _sawmill.Warning($"[AuThirdPartySystem] Spawn attempt for third party {party.ID} failed; keeping it queued for a later retry.");
-                }
-            }
-            else
-            {
-                _sawmill.Error($"[AuThirdPartySystem] No spawn proto for third party {party.ID} (PartySpawn={party.PartySpawn})");
-                _nextThirdPartyIndex++;
-            }
-        }
-        else
+
+        if (roll > chance)
         {
             _sawmill.Debug($"[AuThirdPartySystem] Did not spawn {party.ID} (roll {roll} > {chance})");
+            return;
         }
+
+        if (!_prototypeManager.TryIndex(party.PartySpawn, out var spawnProto))
+        {
+            _sawmill.Error($"[AuThirdPartySystem] No spawn proto for {party.ID} (PartySpawn={party.PartySpawn})");
+            _nextThirdPartyIndex++;
+            return;
+        }
+
+        try
+        {
+            if (SpawnThirdParty(party, spawnProto, false))
+                _sawmill.Debug($"[AuThirdPartySystem] Spawned {party.ID} (roll {roll} <= {chance})");
+            else
+                _sawmill.Warning($"[AuThirdPartySystem] Spawn of {party.ID} failed; skipping.");
+        }
+        catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Exception spawning {party.ID}: {ex}"); }
+        _nextThirdPartyIndex++;
     }
 
 
@@ -771,14 +814,9 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         _thirdPartyList = _auRoundSystem.SelectedThirdParties.ToList();
         _nextThirdPartyIndex = 0;
         _spawnTimer = 0f;
-        try
-        {
-            _spawnInterval = TimeSpan.FromSeconds(Math.Max(1, _currentThreat.ThirdPartyInterval));
-        }
-        catch
-        {
-            _sawmill.Warning("[AuThirdPartySystem] Invalid ThirdPartyInterval on threat; using default interval.");
-        }
+
+        try { _spawnInterval = TimeSpan.FromSeconds(Math.Max(1, _currentThreat.ThirdPartyInterval)); }
+        catch { _sawmill.Warning("[AuThirdPartySystem] Invalid ThirdPartyInterval on threat {_currentThreat?.ID}; using default interval."); }
 
         if (_thirdPartyList == null || _thirdPartyList.Count == 0)
         {
@@ -804,9 +842,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         _sawmill.Warning($"[AuThirdPartySystem] Roundstart spawn attempt for third party {party.ID} failed.");
                 }
                 else
-                {
                     _sawmill.Error($"[AuThirdPartySystem] No spawn proto for roundstart third party {party.ID} (PartySpawn={party.PartySpawn})");
-                }
+
                 _nextThirdPartyIndex++;
             }
         }
