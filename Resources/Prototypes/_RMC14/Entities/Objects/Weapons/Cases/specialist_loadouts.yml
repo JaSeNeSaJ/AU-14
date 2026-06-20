@@ -187,9 +187,9 @@
     contents:
     - id: RMCGlassesM4SPRBattleSight
     - id: RMCMagazineRifleM4SPRA19
-      amount: 6
+      amount: 8
     - id: RMCMagazineRifleM4SPRA19Incendiary
-      amount: 4
+      amount: 2
     - id: RMCMagazineRifleM4SPRA19Impact
       amount: 4
     - id: RMCBackpackScout
