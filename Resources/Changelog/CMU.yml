@@ -4422,5 +4422,18 @@
   id: 314
   time: '2026-06-20T01:31:30.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1389
+- author: maertayn
+  changes:
+  - message: Bumped round end to 5 minutes
+    type: Tweak
+  - message: Added some internet slang to chatsan
+    type: Tweak
+  - message: Pamphlets can give marine orders if leadership becomes >= 1
+    type: Fix
+  - message: Fixes Bush not loading platoons & vendors
+    type: Fix
+  id: 315
+  time: '2026-06-20T04:35:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1391
 Name: CMU
 Order: -1
