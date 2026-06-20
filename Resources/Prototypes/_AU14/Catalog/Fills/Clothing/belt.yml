@@ -10,5 +10,4 @@
     - id: CMStunbaton
     - id: RMCHandcuffs
     - id: RMCHandcuffs
-#    - id: Pepperspray # TODO RMC14
     - id: ForensicScanner
