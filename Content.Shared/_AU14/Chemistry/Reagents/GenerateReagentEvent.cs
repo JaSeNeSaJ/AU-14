@@ -19,3 +19,14 @@ public sealed class GeneratedReagentDataEvent(Dictionary<string, GeneratedReagen
 {
     public Dictionary<string, GeneratedReagentData> Reagents = Reagents;
 }
+[Serializable, NetSerializable]
+public sealed class RequestReagentGenerationEvent(GeneratedReagentData reagent) : CancellableEntityEventArgs
+{
+    public GeneratedReagentData Reagent = reagent;
+}
+[Serializable, NetSerializable]
+public sealed class UpdateResearchConsoleEvent(List<GeneratedReagentData> reagents, TimeSpan nextUpdate) : EntityEventArgs
+{
+    public List<GeneratedReagentData> Reagents = reagents;
+    public TimeSpan NextUpdate = nextUpdate;
+}
