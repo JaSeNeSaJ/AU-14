@@ -43,7 +43,7 @@
       - id: RMCWeaponRifleType73
         amount: 1
         points: 16
-       - id: RMCType88SniperRifle
+      - id: RMCType88SniperRifle
         amount: 1
         points: 20
     - name: Shotguns
