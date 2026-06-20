@@ -187,19 +187,19 @@
     contents:
     - id: RMCGlassesM4SPRBattleSight
     - id: RMCMagazineRifleM4SPRA19
-      amount: 8
+      amount: 6
     - id: RMCMagazineRifleM4SPRA19Incendiary
-      amount: 2
+      amount: 4
     - id: RMCMagazineRifleM4SPRA19Impact
       amount: 4
     - id: RMCBackpackScout
     - id: WeaponRifleM4SPRCustom
     - id: RMCThermalTarpFolded
+      amount: 2
     - id: RMCExplosivePlastic
       amount: 2
     - id: RMCLaserDesignatorScout
     - id: RMCScoutShoes
-    - id: AU14ScoutWebbing
   - type: CMChangeUserOnVend
     addComponents:
     - type: ScoutWhitelist
