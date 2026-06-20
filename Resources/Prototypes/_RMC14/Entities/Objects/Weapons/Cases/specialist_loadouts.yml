@@ -195,11 +195,11 @@
     - id: RMCBackpackScout
     - id: WeaponRifleM4SPRCustom
     - id: RMCThermalTarpFolded
-      amount: 2
     - id: RMCExplosivePlastic
       amount: 2
     - id: RMCLaserDesignatorScout
     - id: RMCScoutShoes
+    - id: AU14ScoutWebbing
   - type: CMChangeUserOnVend
     addComponents:
     - type: ScoutWhitelist
@@ -235,6 +235,7 @@
       amount: 2
     - id: RMCLaserDesignatorScout
     - id: RMCScoutShoes
+    - id: AU14ScoutWebbing
   - type: CMChangeUserOnVend
     addComponents:
     - type: ScoutWhitelist
@@ -269,6 +270,7 @@
     - id: RMCLaserDesignatorScout
     - id: RMCGlassesM4SPRBattleSight
     - id: RMCScoutShoes
+    - id: AU14ScoutWebbing
   - type: CMChangeUserOnVend
     addComponents:
     - type: ScoutWhitelist
