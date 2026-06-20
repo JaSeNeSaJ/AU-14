@@ -7,7 +7,7 @@ After=network.target
 [Service]
 Type=simple
 WorkingDirectory=/opt/cmu-multiauth
-ExecStart=/opt/cmu-multiauth/Content.MultiAuthProxy
+ExecStart=/usr/bin/dotnet Content.MultiAuthProxy.dll
 Restart=always
 RestartSec=5
 

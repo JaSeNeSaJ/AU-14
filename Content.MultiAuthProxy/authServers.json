@@ -3,7 +3,9 @@
     "https://auth.spacestation14.com/",
     "https://auth.playss14.com/"
   ],
-  "TimeoutMs": 1500,
-  "CacheTtlMinutes": 10,
+  "TimeoutMs": 2000,
+  "CacheTtlDays": 60,
+  "StorePath": "player-store.json",
+  "FlushIntervalSeconds": 60,
   "Listen": "http://127.0.0.1:9119"
 }

@@ -19,7 +19,7 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }}
 
       - name: Publish proxy
-        run: dotnet publish Content.MultiAuthProxy -c ${{ env.CONFIGURATION }} -r linux-x64 --no-self-contained -o publish/proxy
+        run: dotnet publish Content.MultiAuthProxy -c ${{ env.CONFIGURATION }} -o publish/proxy
 
       - name: Upload proxy artifact
         uses: actions/upload-artifact@v7.0.1
