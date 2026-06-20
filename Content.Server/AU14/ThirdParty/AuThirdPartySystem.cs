@@ -25,6 +25,7 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Server.AU14.ThirdParty;
 
@@ -43,6 +44,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private IdCardSystem _idCard = default!;
     [Dependency] private IdentitySystem _identity = default!;
+    [Dependency] private IGameTiming _timing = default!;
     private readonly ISawmill _sawmill = Logger.GetSawmill("thirdparty");
 
     // --- State for round third party spawning ---
@@ -144,8 +146,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             }
             catch (Exception ex)
             {
-                _sawmill.Error($"[AuThirdPartySystem] Failed to spawn return destination entity at {dropshipMapCoordinates}: {ex}
-                ");
+                _sawmill.Error($"[AuThirdPartySystem] Failed to spawn return destination entity at {dropshipMapCoordinates}: {ex}");
                 return false;
             }
             var returnDestinationComp = EnsureComp<ThirdPartyDropshipReturnDestinationComponent>(returnDestination);
@@ -182,8 +183,6 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 _sawmill.Warning($"[AuThirdPartySystem] Could not find navigation computer on dropship grid {mainGridUid}; the dropship may not be able to travel.");
             }
 
-
-
             // Collect markers on dropship grid
             var query = _entityManager.EntityQueryEnumerator<AuInsertMarkerComponent>();
             while (query.MoveNext(out var uid, out _))
@@ -197,6 +196,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 catch (Exception ex) { _sawmill.Debug($"[AuThirdPartySystem] Skipping deleted marker {uid} during dropship collection: {ex}"); }
             }
             _sawmill.Debug($"[AuThirdPartySystem] Dropship markers collected: {markerEntities.Count}");
+
             // Spawn consoles
             var vmarkerQuery = _entityManager.EntityQueryEnumerator<VendorMarkerComponent>();
             int consoleCount = 0;
@@ -264,12 +264,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         {
             var markerId = newpartySpawn != null && newpartySpawn.Markers.TryGetValue(markerType, out var id) ? id : "";
             var markers = new List<EntityUid>();
+            var time = _timing.CurTime;
             var query = _entityManager.EntityQueryEnumerator<ThreatSpawnMarkerComponent>();
             while (query.MoveNext(out var uid, out var comp))
             {
                 // Only include markers that are of the requested type, match the optional marker ID,
-                // are explicitly marked as ThirdParty, and are unused.
-                if (comp.ThreatMarkerType != markerType || !(comp.ID == markerId || (comp.ID == "" && markerId == "")) || !comp.ThirdParty)
+                // are explicitly marked as ThirdParty, and are unused - and aren't on a Cooldown
+                if (comp.ThreatMarkerType != markerType
+                        || !(comp.ID == markerId || (comp.ID == "" && markerId == ""))
+                        || !comp.ThirdParty
+                        || comp.NextAvailableAt > time)
                     continue;
 
                 if (useDropship && mainGridUid != EntityUid.Invalid)
@@ -285,8 +289,8 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 }
 
                 // Only include markers that are not already used
-                if (!comp.Used)
-                    markers.Add(uid);
+                //if (!comp.Used) // <- now handled by Cooldowns
+                markers.Add(uid);
             }
 
             _sawmill.Debug($"[AuThirdPartySystem] GetMarkers({markerType}): Found {markers.Count} unused markers with markerId '{markerId}' on map {mapId}");
@@ -374,8 +378,6 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             return false;
         }
 
-
-
         EntityUid PickSafeMarker(List<EntityUid> candidates)
         {
             if (candidates.Count == 0)
@@ -411,9 +413,9 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         if (parachuteMode)
         {
             // Parachute markers must still have a ThreatSpawnMarkerComponent with ThirdParty==true
-            leaderMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Leader && !comp.Used).ToList();
-            gruntMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Member && !comp.Used).ToList();
-            entityMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Entity && !comp.Used).ToList();
+            leaderMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Leader).ToList();
+            gruntMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Member).ToList();
+            entityMarkers = markerEntities.Where(m => _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(m, out var comp) && comp.ThirdParty && comp.ThreatMarkerType == ThreatMarkerType.Entity).ToList();
         }
 
         // If this is a groundside spawn, ensure there are enough *safe* markers (unused and not near alive players).
@@ -461,7 +463,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     else
                         marker = safe[_random.Next(safe.Count)];
 
-                    leaderMarkers.Remove(marker);
+                    leaderMarkers.Remove(marker); // prevent stacking
                 }
                 else
                     marker = useDropship ? leaderMarkers[_random.Next(leaderMarkers.Count)] : PickSafeMarker(leaderMarkers);
@@ -487,16 +489,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         }
                     }
                     spawnedLeaders.Add(ent);
-                    // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
+                    // Put marker on a cooldown
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
                     {
-                        lmComp.Used = true;
-                        Dirty(marker, lmComp);
+                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
+                        Dirty(marker, markerComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
                     if (!parachuteMode)
-                        leaderMarkers.Remove(marker);
+                        leaderMarkers.Remove(marker); // prevent stacking
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned leader {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
@@ -519,7 +521,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         marker = PickSafeMarker(gruntMarkers);
                     else
                         marker = safe[_random.Next(safe.Count)];
-                    gruntMarkers.Remove(marker);
+                    gruntMarkers.Remove(marker); // prevent stacking
                 }
                 else
                 {
@@ -543,16 +545,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         }
                     }
                     spawnedGrunts.Add(ent);
-                    // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
+                    // Put marker on a cooldown
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
                     {
-                        lmComp.Used = true;
-                        Dirty(marker, lmComp);
+                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
+                        Dirty(marker, markerComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
                     if (!parachuteMode)
-                        gruntMarkers.Remove(marker);
+                        gruntMarkers.Remove(marker); // prevent stacking
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned grunt {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
@@ -575,7 +577,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         marker = PickSafeMarker(entityMarkers);
                     else
                         marker = safe[_random.Next(safe.Count)];
-                    entityMarkers.Remove(marker);
+                    entityMarkers.Remove(marker); // prevent stacking
                 }
                 else
                 {
@@ -599,16 +601,16 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                         }
                     }
                     SpawnedEnts.Add(ent);
-                    // Mark this marker's component as used (do NOT mark neighbors yet)
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var lmComp) && !lmComp.Used)
+                    // Put marker on a cooldown
+                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
                     {
-                        lmComp.Used = true;
-                        Dirty(marker, lmComp);
+                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
+                        Dirty(marker, markerComp);
                     }
                     // Parachute markers are intentionally NOT marked as used so they may be reused.
                     lastUsedMarker = marker;
                     if (!parachuteMode)
-                        entityMarkers.Remove(marker);
+                        entityMarkers.Remove(marker); // prevent stacking
                     _sawmill.Debug($"[AuThirdPartySystem] Spawned ent {protoId} at {coords} (entity {ent})");
                 }
                 catch (Exception ex)
@@ -645,9 +647,9 @@ public sealed partial class AuThirdPartySystem : EntitySystem
 
                 if (_transform.InRange(otherXform.Coordinates, centerCoords, SpawnTogetherRadius))
                 {
-                    if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(otherUid, out var otherComp) && !otherComp.Used)
+                    if (_entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(otherUid, out var otherComp))
                     {
-                        otherComp.Used = true;
+                        otherComp.NextAvailableAt = _timing.CurTime + otherComp.Cooldown;
                         Dirty(otherUid, otherComp);
                     }
                 }
