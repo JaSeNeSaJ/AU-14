@@ -47,6 +47,7 @@
         whitelist:
           tags:
           - CMMagazineSniperM96S
+          - CMMagazineSniperM96SFlak
   - type: GunRequiresWield
   - type: Corrodible
     isCorrodible: false
