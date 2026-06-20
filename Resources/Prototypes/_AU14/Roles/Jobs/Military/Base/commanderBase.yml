@@ -55,6 +55,7 @@
       preset: AU14SkillPresetPlatoonCommander
     - type: JobPrefix
       prefix: au14-job-prefix-govforplatco
+    - type: AU14SilenceOrderAbility
     - type: RMCSpeechBubbleSpecificStyle
       speechStyleClass: commanderSpeech
     - type: TacticalMapIcon
