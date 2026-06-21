@@ -30,3 +30,8 @@ public sealed class UpdateResearchConsoleEvent(List<GeneratedReagentData> reagen
     public List<GeneratedReagentData> Reagents = reagents;
     public TimeSpan NextUpdate = nextUpdate;
 }
+[Serializable, NetSerializable]
+public sealed class TerminalPickReagentEven(string reagent) : EntityEventArgs
+{
+    public string Reagent = reagent;
+}

@@ -21,6 +21,7 @@
   - type: Corrodible
     isCorrodible: false
   - type: InteractionOutline
+  - type: ResearchDataTerminal
   - type: ActivatableUI
     key: enum.ResearchDataTerminalUI.Key
   - type: UserInterface
