@@ -79,11 +79,64 @@ public sealed partial class AuThirdPartySystem : EntitySystem
 
     public float GetSignalIntervalMultiplier() => _signalIntervalMultiplier;
 
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+        if (!_spawningActive || _thirdPartyList == null)
+            return;
+        if (_nextThirdPartyIndex >= _thirdPartyList.Count)
+        {
+            _spawningActive = false;
+            return;
+        }
+
+        _spawnTimer += frameTime;
+        var party = _thirdPartyList[_nextThirdPartyIndex];
+        if (party.RoundStart)
+        {
+            _nextThirdPartyIndex++;
+            return;
+        }
+
+        int ghostCount = _playerManager.Sessions.Count(s => s.AttachedEntity == null || _entityManager.HasComponent<GhostComponent>(s.AttachedEntity));
+        if (ghostCount < party.GhostsNeeded)
+            return;
+
+        var interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks * _signalIntervalMultiplier));
+        if (_spawnTimer < interval.TotalSeconds)
+            return;
+
+        _spawnTimer = 0f;
+        int roll = _random.Next(1, 101);
+        int chance = Math.Clamp(party.weight * 10, 5, 100); // Example: weight 1 = 10%, weight 10 = 100%
+
+        if (roll > chance)
+        {
+            _sawmill.Debug($"[AuThirdPartySystem] Did not spawn {party.ID} (roll {roll} > {chance})");
+            return;
+        }
+
+        if (!_prototypeManager.TryIndex(party.PartySpawn, out var spawnProto))
+        {
+            _sawmill.Error($"[AuThirdPartySystem] No spawn proto for {party.ID} (PartySpawn={party.PartySpawn})");
+            _nextThirdPartyIndex++;
+            return;
+        }
+
+        try
+        {
+            if (SpawnThirdParty(party, spawnProto, false))
+                _sawmill.Debug($"[AuThirdPartySystem] Spawned {party.ID} (roll {roll} <= {chance})");
+            else
+                _sawmill.Warning($"[AuThirdPartySystem] Spawn of {party.ID} failed; skipping.");
+        }
+        catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Exception spawning {party.ID}: {ex}"); }
+        _nextThirdPartyIndex++;
+    }
+
     public bool SpawnThirdParty(AuThirdPartyPrototype party, PartySpawnPrototype spawnProto, bool roundStart, Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null, bool? overrideDropship = null)
     {
         const float SpawnTogetherRadius = 8f;
-
-        const float PlayerAvoidRadius = 8f;
         _sawmill.Debug($"[AuThirdPartySystem] Spawning third party: {party.ID}");
 
         // Determine entry method. If overrideDropship is provided, it takes precedence (true => shuttle, false => ground).
@@ -179,9 +232,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 _sawmill.Debug($"[AuThirdPartySystem] Commanded dropship nav computer {navUid} to fly to destination {chosenDestination}");
             }
             else
-            {
                 _sawmill.Warning($"[AuThirdPartySystem] Could not find navigation computer on dropship grid {mainGridUid}; the dropship may not be able to travel.");
-            }
 
             // Collect markers on dropship grid
             var query = _entityManager.EntityQueryEnumerator<AuInsertMarkerComponent>();
@@ -207,6 +258,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                     var markerXform = _entityManager.GetComponent<TransformComponent>(vmarkerUid);
                     if (markerXform.GridUid != mainGridUid)
                         continue;
+
                     switch (vmarkerComp.Class)
                     {
                         case PlatoonMarkerClass.DSPilot:
@@ -296,13 +348,14 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             _sawmill.Debug($"[AuThirdPartySystem] GetMarkers({markerType}): Found {markers.Count} unused markers with markerId '{markerId}' on map {mapId}");
             return markers;
         }
+
         bool spawnTogether = newpartySpawn?.SpawnTogether == true;
         Dictionary<ThreatMarkerType, List<EntityUid>> markerCache = new();
         EntityUid? centerMarker = null;
         if (spawnTogether)
         {
             var allMarkers = new List<EntityUid>();
-            foreach (ThreatMarkerType type in System.Enum.GetValues(typeof(ThreatMarkerType)))
+            foreach (ThreatMarkerType type in Enum.GetValues(typeof(ThreatMarkerType)))
             {
                 allMarkers.AddRange(GetMarkers(type));
             }
@@ -310,7 +363,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             {
                 centerMarker = allMarkers[_random.Next(allMarkers.Count)];
                 var centerCoords = _entityManager.GetComponent<TransformComponent>(centerMarker.Value).Coordinates;
-                foreach (ThreatMarkerType type in System.Enum.GetValues(typeof(ThreatMarkerType)))
+                foreach (ThreatMarkerType type in Enum.GetValues(typeof(ThreatMarkerType)))
                 {
                     var markers = GetMarkers(type);
                     var filtered = markers.Where(m =>
@@ -323,76 +376,12 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 }
             }
         }
+
         List<EntityUid> GetSpawnMarkers(ThreatMarkerType type)
         {
             if (spawnTogether && markerCache.TryGetValue(type, out var cached))
                 return cached;
             return GetMarkers(type);
-        }
-
-        bool IsMarkerBlockedByPlayers(EntityUid marker)
-        {
-            // Only check main-map/groundside markers; dropship spawns handled elsewhere via useDropship
-
-            var markerCoords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
-            _sawmill.Debug($"[AuThirdPartySystem] Checking marker {marker} at coords {markerCoords}");
-
-            foreach (var session in _playerManager.Sessions)
-            {
-                if (!session.AttachedEntity.HasValue)
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Session has no attached entity, skipping");
-                    continue;
-                }
-
-                var attached = session.AttachedEntity.Value;
-                _sawmill.Debug($"[AuThirdPartySystem] Found attached entity {attached} for session");
-
-                // Skip ghosts
-                if (_entityManager.HasComponent<GhostComponent>(attached))
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Attached entity {attached} is a ghost, skipping");
-                    continue;
-                }
-
-                if (!_entityManager.TryGetComponent<TransformComponent>(attached, out var playerXform))
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Could not get TransformComponent for attached entity {attached}, skipping");
-                    continue;
-                }
-
-                // Log check steps for debugging
-                _sawmill.Debug($"[AuThirdPartySystem] Checking player {attached} for proximity to marker {marker} (player coords={playerXform.Coordinates}, marker coords={markerCoords})");
-
-                if (_transform.InRange(playerXform.Coordinates, markerCoords, PlayerAvoidRadius))
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Marker {marker} is blocked by player {attached} within radius {PlayerAvoidRadius}");
-                    return true;
-                }
-                else
-                {
-                    _sawmill.Debug($"[AuThirdPartySystem] Player {attached} not within avoid radius of marker {marker}");
-                }
-            }
-
-            return false;
-        }
-
-        EntityUid PickSafeMarker(List<EntityUid> candidates)
-        {
-            if (candidates.Count == 0)
-                return EntityUid.Invalid;
-
-            // Shuffle candidates for fairness
-            var shuffled = candidates.OrderBy(_ => _random.Next()).ToList();
-            foreach (var m in shuffled)
-            {
-                if (!IsMarkerBlockedByPlayers(m))
-                    return m;
-            }
-
-            // Fallback: no safe marker found, return a random one
-            return candidates[_random.Next(candidates.Count)];
         }
 
         var spawnedLeaders = new List<EntityUid>();
@@ -446,180 +435,26 @@ public sealed partial class AuThirdPartySystem : EntitySystem
             }
         }
 
-        _sawmill.Debug($"[AuThirdPartySystem] Spawning leaders...");
         // Spawn leaders
+        _sawmill.Debug($"[AuThirdPartySystem] Spawning leaders...");
         foreach (var (protoId, count) in spawnProto.LeadersToSpawn)
-        {
             for (int i = 0; i < count; i++)
-            {
-                // Select a groundside marker that is not too close to alive players (exclude freshly spawned entities)
-                EntityUid marker;
-                if (parachuteMode && !useDropship)
-                {
-                    // pick a random safe marker from leaderMarkers and remove it so it's not reused this spawn
-                    var safe = leaderMarkers.Where(m => !IsMarkerBlockedByPlayers(m)).ToList();
-                    if (safe.Count == 0)
-                        marker = PickSafeMarker(leaderMarkers);
-                    else
-                        marker = safe[_random.Next(safe.Count)];
+                if (!TrySpawnAtMarker(protoId, leaderMarkers, spawnedLeaders, parachuteMode, useDropship, "leader", ref lastUsedMarker))
+                    _sawmill.Warning($"[AuThirdPartySystem] Failed to spawn leader {protoId}");
 
-                    leaderMarkers.Remove(marker); // prevent stacking
-                }
-                else
-                    marker = useDropship ? leaderMarkers[_random.Next(leaderMarkers.Count)] : PickSafeMarker(leaderMarkers);
-
-                var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
-                try
-                {
-                    EntityUid ent = _entityManager.SpawnEntity(protoId, coords);
-                    // If parachute mode, hand off to the shared paradrop system so the entity falls from the sky.
-                    if (parachuteMode)
-                    {
-                        // Ensure the entity is paradroppable; SharedParaDropSystem will fall back to crash-land if missing.
-                        var paraComp = EnsureComp<ParaDroppableComponent>(ent);
-                        Dirty(ent, paraComp);
-
-                        // Raise AttemptCrashLandEvent on the grid entity that the parachute marker resides on so the para-drop handler will run.
-                        var markerXform = _entityManager.GetComponent<TransformComponent>(marker);
-                        if (markerXform.GridUid.HasValue)
-                        {
-                            var gridEntity = markerXform.GridUid.Value;
-                            var attemptEvent = new AttemptCrashLandEvent(ent);
-                            RaiseLocalEvent(gridEntity, ref attemptEvent);
-                        }
-                    }
-                    spawnedLeaders.Add(ent);
-                    // Put marker on a cooldown
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
-                    {
-                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
-                        Dirty(marker, markerComp);
-                    }
-                    // Parachute markers are intentionally NOT marked as used so they may be reused.
-                    lastUsedMarker = marker;
-                    if (!parachuteMode)
-                        leaderMarkers.Remove(marker); // prevent stacking
-                    _sawmill.Debug($"[AuThirdPartySystem] Spawned leader {protoId} at {coords} (entity {ent})");
-                }
-                catch (Exception ex)
-                {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn leader ({protoId}) at {coords}! {ex.Message}");
-                    continue;
-                }
-            }
-        }
+        // Spawn grunts
         _sawmill.Debug($"[AuThirdPartySystem] Spawning grunts...");
         foreach (var (protoId, count) in spawnProto.GruntsToSpawn)
-        {
             for (int i = 0; i < count; i++)
-            {
-                EntityUid marker;
-                if (parachuteMode && !useDropship)
-                {
-                    var safe = gruntMarkers.Where(m => !IsMarkerBlockedByPlayers(m)).ToList();
-                    if (safe.Count == 0)
-                        marker = PickSafeMarker(gruntMarkers);
-                    else
-                        marker = safe[_random.Next(safe.Count)];
-                    gruntMarkers.Remove(marker); // prevent stacking
-                }
-                else
-                {
-                    marker = useDropship ? gruntMarkers[_random.Next(gruntMarkers.Count)] : PickSafeMarker(gruntMarkers);
-                }
-                var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
-                try
-                {
-                    EntityUid ent = _entityManager.SpawnEntity(protoId, coords);
-                    if (parachuteMode)
-                    {
-                        var paraComp = EnsureComp<ParaDroppableComponent>(ent);
-                        Dirty(ent, paraComp);
+                if (!TrySpawnAtMarker(protoId, gruntMarkers, spawnedGrunts, parachuteMode, useDropship, "grunt", ref lastUsedMarker))
+                    _sawmill.Warning($"[AuThirdPartySystem] Failed to spawn grunt {protoId}");
 
-                        var markerXform = _entityManager.GetComponent<TransformComponent>(marker);
-                        if (markerXform.GridUid.HasValue)
-                        {
-                            var gridEntity = markerXform.GridUid.Value;
-                            var attemptEvent = new AttemptCrashLandEvent(ent);
-                            RaiseLocalEvent(gridEntity, ref attemptEvent);
-                        }
-                    }
-                    spawnedGrunts.Add(ent);
-                    // Put marker on a cooldown
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
-                    {
-                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
-                        Dirty(marker, markerComp);
-                    }
-                    // Parachute markers are intentionally NOT marked as used so they may be reused.
-                    lastUsedMarker = marker;
-                    if (!parachuteMode)
-                        gruntMarkers.Remove(marker); // prevent stacking
-                    _sawmill.Debug($"[AuThirdPartySystem] Spawned grunt {protoId} at {coords} (entity {ent})");
-                }
-                catch (Exception ex)
-                {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn grunt ({protoId}) at {coords}! {ex.Message}");
-                    continue;
-                }
-            }
-        }
+        // Spawn ents
         _sawmill.Debug($"[AuThirdPartySystem] Spawning ents...");
         foreach (var (protoId, count) in spawnProto.entitiestospawn)
-        {
             for (int i = 0; i < count; i++)
-            {
-                EntityUid marker;
-                if (parachuteMode && !useDropship)
-                {
-                    var safe = entityMarkers.Where(m => !IsMarkerBlockedByPlayers(m)).ToList();
-                    if (safe.Count == 0)
-                        marker = PickSafeMarker(entityMarkers);
-                    else
-                        marker = safe[_random.Next(safe.Count)];
-                    entityMarkers.Remove(marker); // prevent stacking
-                }
-                else
-                {
-                    marker = useDropship ? entityMarkers[_random.Next(entityMarkers.Count)] : PickSafeMarker(entityMarkers);
-                }
-                var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
-                try
-                {
-                    EntityUid ent = _entityManager.SpawnEntity(protoId, coords);
-                    if (parachuteMode)
-                    {
-                        var paraComp = EnsureComp<ParaDroppableComponent>(ent);
-                        Dirty(ent, paraComp);
-
-                        var markerXform = _entityManager.GetComponent<TransformComponent>(marker);
-                        if (markerXform.GridUid.HasValue)
-                        {
-                            var gridEntity = markerXform.GridUid.Value;
-                            var attemptEvent = new AttemptCrashLandEvent(ent);
-                            RaiseLocalEvent(gridEntity, ref attemptEvent);
-                        }
-                    }
-                    SpawnedEnts.Add(ent);
-                    // Put marker on a cooldown
-                    if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
-                    {
-                        markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
-                        Dirty(marker, markerComp);
-                    }
-                    // Parachute markers are intentionally NOT marked as used so they may be reused.
-                    lastUsedMarker = marker;
-                    if (!parachuteMode)
-                        entityMarkers.Remove(marker); // prevent stacking
-                    _sawmill.Debug($"[AuThirdPartySystem] Spawned ent {protoId} at {coords} (entity {ent})");
-                }
-                catch (Exception ex)
-                {
-                    _sawmill.Error($"[AuThirdPartySystem] Failed to spawn entity ({protoId}) at {coords}! {ex.Message}");
-                    continue;
-                }
-            }
-        }
+                if (!TrySpawnAtMarker(protoId, entityMarkers, SpawnedEnts, parachuteMode, useDropship, "ent", ref lastUsedMarker))
+                    _sawmill.Warning($"[AuThirdPartySystem] Failed to spawn entity {protoId}");
 
         // After all spawns: if spawnTogether is true, mark nearby unused markers around the last used marker.
         void MarkNeighborsIfNeeded()
@@ -754,62 +589,6 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         _identity.QueueIdentityUpdate(mob);
     }
 
-    public override void Update(float frameTime)
-    {
-        base.Update(frameTime);
-        if (!_spawningActive || _thirdPartyList == null)
-            return;
-        if (_nextThirdPartyIndex >= _thirdPartyList.Count)
-        {
-            _spawningActive = false;
-            return;
-        }
-
-        _spawnTimer += frameTime;
-        var party = _thirdPartyList[_nextThirdPartyIndex];
-        if (party.RoundStart)
-        {
-            _nextThirdPartyIndex++;
-            return;
-        }
-
-        int ghostCount = _playerManager.Sessions.Count(s => s.AttachedEntity == null || _entityManager.HasComponent<GhostComponent>(s.AttachedEntity));
-        if (ghostCount < party.GhostsNeeded)
-            return;
-
-        var interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks * _signalIntervalMultiplier));
-        if (_spawnTimer < interval.TotalSeconds)
-            return;
-
-        _spawnTimer = 0f;
-        int roll = _random.Next(1, 101);
-        int chance = Math.Clamp(party.weight * 10, 5, 100); // Example: weight 1 = 10%, weight 10 = 100%
-
-        if (roll > chance)
-        {
-            _sawmill.Debug($"[AuThirdPartySystem] Did not spawn {party.ID} (roll {roll} > {chance})");
-            return;
-        }
-
-        if (!_prototypeManager.TryIndex(party.PartySpawn, out var spawnProto))
-        {
-            _sawmill.Error($"[AuThirdPartySystem] No spawn proto for {party.ID} (PartySpawn={party.PartySpawn})");
-            _nextThirdPartyIndex++;
-            return;
-        }
-
-        try
-        {
-            if (SpawnThirdParty(party, spawnProto, false))
-                _sawmill.Debug($"[AuThirdPartySystem] Spawned {party.ID} (roll {roll} <= {chance})");
-            else
-                _sawmill.Warning($"[AuThirdPartySystem] Spawn of {party.ID} failed; skipping.");
-        }
-        catch (Exception ex) { _sawmill.Error($"[AuThirdPartySystem] Exception spawning {party.ID}: {ex}"); }
-        _nextThirdPartyIndex++;
-    }
-
-
     public void StartThirdPartySpawning(ThreatPrototype threat, Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null)
     {
         _currentThreat = threat;
@@ -836,7 +615,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 if (!party.RoundStart)
                     break;
 
-                if (_prototypeManager.TryIndex<PartySpawnPrototype>(party.PartySpawn, out var spawnProto))
+                if (_prototypeManager.TryIndex(party.PartySpawn, out var spawnProto))
                 {
                     if (SpawnThirdParty(party, spawnProto, true, assignedJobs))
                         _sawmill.Debug($"[AuThirdPartySystem] Spawned roundstart third party {party.ID}");
@@ -849,5 +628,134 @@ public sealed partial class AuThirdPartySystem : EntitySystem
                 _nextThirdPartyIndex++;
             }
         }
+    }
+
+    private bool TrySpawnAtMarker(string protoId, List<EntityUid> markerPool, List<EntityUid> spawnedList,
+    bool parachuteMode, bool useDropship, string label, ref EntityUid? lastUsedMarker)
+    {
+        // Select a groundside marker that is not too close to alive players (exclude freshly spawned entities)
+        EntityUid marker;
+        if (parachuteMode && !useDropship)
+        {
+            // pick a random safe marker from leaderMarkers and remove it so it's not reused this spawn
+            var safe = markerPool.Where(m => !IsMarkerBlockedByPlayers(m)).ToList();
+            marker = safe.Count > 0
+                ? safe[_random.Next(safe.Count)]
+                : PickSafeMarker(markerPool);
+
+            markerPool.Remove(marker); // prevent stacking
+        }
+        else
+            marker = useDropship
+                ? markerPool[_random.Next(markerPool.Count)]
+                : PickSafeMarker(markerPool);
+
+        var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
+        try
+        {
+            EntityUid ent = _entityManager.SpawnEntity(protoId, coords);
+            // If parachute mode, hand off to the shared paradrop system so the entity falls from the sky.
+            if (parachuteMode)
+            {
+                // Ensure the entity is paradroppable; SharedParaDropSystem will fall back to crash-land if missing.
+                var paraComp = EnsureComp<ParaDroppableComponent>(ent);
+                Dirty(ent, paraComp);
+
+                // Raise AttemptCrashLandEvent on the grid entity that the parachute marker resides on so the para-drop handler will run.
+                var markerXform = _entityManager.GetComponent<TransformComponent>(marker);
+                if (markerXform.GridUid.HasValue)
+                {
+                    var attemptEvent = new AttemptCrashLandEvent(ent);
+                    RaiseLocalEvent(markerXform.GridUid.Value, ref attemptEvent);
+                }
+            }
+            spawnedList.Add(ent);
+
+            // Put marker on a cooldown
+            if (!parachuteMode && _entityManager.TryGetComponent<ThreatSpawnMarkerComponent>(marker, out var markerComp))
+            {
+                markerComp.NextAvailableAt = _timing.CurTime + markerComp.Cooldown;
+                Dirty(marker, markerComp);
+            }
+
+            // Parachute markers are intentionally NOT marked as used so they may be reused.
+            lastUsedMarker = marker;
+            if (!parachuteMode)
+                markerPool.Remove(marker); // prevent stacking
+
+            _sawmill.Debug($"[AuThirdPartySystem] Spawned {label} {protoId} at {coords} (entity {ent})");
+            return true;
+        }
+        catch (Exception ex)
+        {
+            _sawmill.Error($"[AuThirdPartySystem] Failed to spawn {label} ({protoId}) at {coords}! {ex.Message}");
+            return false;
+        }
+    }
+
+    private bool IsMarkerBlockedByPlayers(EntityUid marker)
+    {
+        const float PlayerAvoidRadius = 8f;
+
+        // Only check main-map/groundside markers; dropship spawns handled elsewhere via useDropship
+        var markerCoords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
+        _sawmill.Debug($"[AuThirdPartySystem] Checking marker {marker} at coords {markerCoords}");
+
+        foreach (var session in _playerManager.Sessions)
+        {
+            if (!session.AttachedEntity.HasValue)
+            {
+                _sawmill.Debug($"[AuThirdPartySystem] Session has no attached entity, skipping");
+                continue;
+            }
+
+            var attached = session.AttachedEntity.Value;
+            _sawmill.Debug($"[AuThirdPartySystem] Found attached entity {attached} for session");
+
+            // Skip ghosts
+            if (_entityManager.HasComponent<GhostComponent>(attached))
+            {
+                _sawmill.Debug($"[AuThirdPartySystem] Attached entity {attached} is a ghost, skipping");
+                continue;
+            }
+
+            if (!_entityManager.TryGetComponent<TransformComponent>(attached, out var playerXform))
+            {
+                _sawmill.Debug($"[AuThirdPartySystem] Could not get TransformComponent for attached entity {attached}, skipping");
+                continue;
+            }
+
+            // Log check steps for debugging
+            _sawmill.Debug($"[AuThirdPartySystem] Checking player {attached} for proximity to marker {marker} (player coords={playerXform.Coordinates}, marker coords={markerCoords})");
+
+            if (_transform.InRange(playerXform.Coordinates, markerCoords, PlayerAvoidRadius))
+            {
+                _sawmill.Debug($"[AuThirdPartySystem] Marker {marker} is blocked by player {attached} within radius {PlayerAvoidRadius}");
+                return true;
+            }
+            else
+            {
+                _sawmill.Debug($"[AuThirdPartySystem] Player {attached} not within avoid radius of marker {marker}");
+            }
+        }
+
+        return false;
+    }
+
+    private EntityUid PickSafeMarker(List<EntityUid> candidates)
+    {
+        if (candidates.Count == 0)
+            return EntityUid.Invalid;
+
+        // Shuffle candidates for fairness
+        var shuffled = candidates.OrderBy(_ => _random.Next()).ToList();
+        foreach (var m in shuffled)
+        {
+            if (!IsMarkerBlockedByPlayers(m))
+                return m;
+        }
+
+        // Fallback: no safe marker found, return a random one
+        return candidates[_random.Next(candidates.Count)];
     }
 }
