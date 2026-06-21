@@ -4472,5 +4472,90 @@
   id: 316
   time: '2026-06-20T11:19:31.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1394
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: ATMs in the dorms, administration building, and Octanis
+      Complex.'
+    type: Add
+  - message: 'Hope''s Retreat: Communications and budget console in the both the administration
+      building and the Octanis Complex.'
+    type: Add
+  - message: 'Hope''s Retreat: Survivors should now spawn.'
+    type: Add
+  - message: 'Hope''s Retreat: Extra detailing around the spaceport and colony.'
+    type: Add
+  - message: 'Hope''s Retreat: Fort Beauregard''s second LZ can now load armored vehicles.'
+    type: Fix
+  - message: 'Hope''s Retreat: Lights on the second floor of dorms.'
+    type: Fix
+  - message: 'Hope''s Retreat: Edge case where someone fell in the opening in admin
+      resolved by adding windows to see into the affected area.'
+    type: Fix
+  id: 317
+  time: '2026-06-20T22:47:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1390
+- author: KeiKiyomi
+  changes:
+  - message: Added all weapon spec ammo to ASRS
+    type: Add
+  - message: Sniper Spec Waistrig can now be equipped to the belt
+    type: Tweak
+  - message: Scout specs now get waist rigs (RIP scout armor)
+    type: Tweak
+  - message: WeYu Scout Spec gun can now take normal scout spec mags
+    type: Tweak
+  - message: Scout gets 2 thermal tarps now (from 1)
+    type: Tweak
+  - message: Scout now gets 4 impact 4 incen and 6 standard mags in their crate
+    type: Tweak
+  - message: ': sniper spec now gets 8 standard 4 incen and 4 flak mags in their kit.'
+    type: Tweak
+  id: 318
+  time: '2026-06-20T23:35:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1397
+- author: KeiKiyomi
+  changes:
+  - message: Added specialized scout webbing in scout kit
+    type: Add
+  id: 319
+  time: '2026-06-20T23:36:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1396
+- author: HolySSSS
+  changes:
+  - message: universal recorder can be put into law enforcement belts.
+    type: Tweak
+  - message: Sam Browne belt is now filled in MP vendors.
+    type: Fix
+  id: 320
+  time: '2026-06-20T23:38:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1395
+- author: wray-git
+  changes:
+  - message: GOVFOR Platoon Commanders have a new Silence Order ability. Activating
+      it forces nearby marines to whisper only for 10 seconds and sends them a subtle
+      notification. The CO emotes a loud throat clear instead of shouting a callout.
+      Has its own 10 second cooldown separate from the other orders.
+    type: Add
+  id: 321
+  time: '2026-06-21T00:37:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1399
+- author: maertayn
+  changes:
+  - message: Third Party extract method refactoring (DRY) & try/catch redundancies
+    type: Code
+  - message: Lowered the Dylovene efficiency so that it doesn't make you immune to
+      nerve gas
+    type: Tweak
+  - message: Third Party to use 5min cooldowns for spawn marker reusage instead of
+      a used flag
+    type: Tweak
+  - message: jobBlacklistGroup for antags.yml - much easier to maintain - works alongside
+      normal jobBlacklist (look at CLFVeteran for usage)
+    type: Code
+  - message: CLF doctors/surgeons get colony medical access on their IDs
+    type: Fix
+  id: 322
+  time: '2026-06-21T09:52:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1398
 Name: CMU
 Order: -1
