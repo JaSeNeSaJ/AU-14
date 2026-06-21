@@ -338,7 +338,10 @@ public sealed class VehicleSupplyLoadoutTest
             Assert.That(prototypes.TryIndex<EntityPrototype>(ConsoleId, out var consoleProto), Is.True);
             Assert.That(consoleProto!.TryGetComponent<VehicleSupplyConsoleComponent>(out var console, factory), Is.True);
 
-            var entry = console!.Vehicles.Single(v => v.Vehicle.Id == "VehicleBlackfoot");
+            // NOTE: VehicleBlackfoot was commented out in vehicle_supply.yml - so it's throwing
+            //var entry = console!.Vehicles.Single(v => v.Vehicle.Id == "VehicleBlackfoot");
+
+            var entry = console!.Vehicles.Single(v => v.Vehicle.Id == "VehicleBlackfootRecon");
             Assert.That(supply.DebugSpawnBundleForTest(lift, entry), Is.True);
         });
 
