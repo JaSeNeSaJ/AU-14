@@ -47,9 +47,21 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
         if (!_rmcActions.TryUseAction(args))
             return;
 
+        var severity = ComputeSeverity(uid, action);
+
         if (TryComp<XenoDespoilerHypertensionComponent>(uid, out var hypertension))
         {
-            hypertension.Stacks = 0;
+
+            var stacksToRemove = severity switch
+            {
+                0 => 3,
+                1 => 2,
+                2 => 1,
+                _ => 3
+            };
+
+            hypertension.Stacks =
+                Math.Max(0, hypertension.Stacks - stacksToRemove);
 
             Dirty(uid, hypertension);
 
@@ -59,7 +71,6 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
 
         var empowered = _catalyze.TakeEmpowerment(uid, comp);
 
-        var severity = ComputeSeverity(uid, action);
         var radius = action.BaseRadius + severity;
         var origin = Transform(uid).Coordinates;
         var sprayProto = empowered ? action.AcidSprayEmpoweredProto : action.AcidSprayProto;
