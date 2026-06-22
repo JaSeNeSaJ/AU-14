@@ -221,10 +221,10 @@
         amount: 12
         points: 6
       - id: AU14IEDVest
-        amount: 3
+        amount: 2
         points: 10
       - id: AU14IEDLarge
-        amount: 5
+        amount: 3
         points: 15
     - name: Protective Equipment
       entries:
