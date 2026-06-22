@@ -73,7 +73,7 @@
     - type: Synth
       generation: rmc-species-synth-generation-second
   hidden: true
-  useLoadoutOfJob: RMCSyntheticColony # for inheritance
+  useLoadoutOfJob: RMCJobSyntheticColony # for inheritance
 
 - type: startingGear
   id: RMCGearSyntheticColonistBase
@@ -98,7 +98,7 @@
   name: synthetic colonist spawn point
   components:
   - type: SpawnPoint
-    job_id: RMCSyntheticColony
+    job_id: RMCJobSyntheticColony
   - type: Sprite
     state: syn_spawn
 

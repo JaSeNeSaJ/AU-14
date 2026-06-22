@@ -1,5 +1,5 @@
 - type: job
-  parent: RMCSyntheticColony
+  parent: RMCJobSyntheticColony
   id: RMCSyntheticColonyHybrisaDetective
   startingGear: RMCGearSyntheticColonistHybrisaDetective
   spawnMenuRoleName: Detective Synth (Hybrisa Survivor)

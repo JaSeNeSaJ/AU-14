@@ -1,5 +1,5 @@
 - type: job
-  parent: RMCSyntheticColony
+  parent: RMCJobSyntheticColony
   id: RMCSyntheticColonyHybrisaTSEPA
   startingGear: RMCGearSyntheticColonistHybrisaTSEPA
   spawnMenuRoleName: TSEPA Support Synth (Hybrisa Survivor)

@@ -1,5 +1,5 @@
 - type: job
-  parent: RMCSyntheticColony
+  parent: RMCJobSyntheticColony
   id: RMCSyntheticColonyHybrisaEngineer
   startingGear: RMCGearSyntheticColonistHybrisaEngineer
   spawnMenuRoleName: Engineer Synth (Hybrisa Survivor)
