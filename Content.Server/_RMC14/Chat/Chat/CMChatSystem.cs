@@ -1,8 +1,10 @@
 using System.Linq;
 using Content.Server.Chat.Managers;
+using Content.Server.Chat.Systems;
 using Content.Server.Radio.Components;
 using Content.Server.Speech.EntitySystems;
 using Content.Server.Speech.Prototypes;
+using Content.Server.Players;
 using Content.Shared._AU14.Xeno;
 using Content.Shared._CMU14.Yautja;
 using Content.Shared._RMC14.Chat;
@@ -17,19 +19,23 @@ using Content.Shared.Inventory;
 using Content.Shared.Popups;
 using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
-using Robust.Shared.Console;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
+using Content.Shared.Players;
+using Content.Shared.Chat.Prototypes;
+using Robust.Shared.Replays;
+using Robust.Shared.Network;
+using Robust.Server.GameObjects;
 
 namespace Content.Server._RMC14.Chat.Chat;
 
 public sealed partial class CMChatSystem : SharedCMChatSystem
 {
 
-    [Dependency] private readonly IChatManager _chat = default!;
-    [Dependency] private readonly SharedChatSystem _chatSystem = default!;
+    [Dependency] private readonly IChatManager _chatManager = default!;
+    [Dependency] private readonly ChatSystem _chatSystem = default!;
     [Dependency] private readonly InventorySystem _inventory = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
@@ -41,6 +47,7 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
     private static readonly ProtoId<ReplacementAccentPrototype> ChatSanitize = "CMChatSanitize";
     private static readonly ProtoId<ReplacementAccentPrototype> MarineChatSanitize = "CMChatSanitizeMarine";
     private static readonly ProtoId<ReplacementAccentPrototype> XenoChatSanitize = "CMChatSanitizeXeno";
+    private readonly HashSet<ICommonSession> _toRemove = new();
 
     public override void Initialize()
     {
@@ -60,47 +67,55 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
 
         foreach (var (session, data) in args.Recipients)
         {
-            if (data.Observer)
+            if (session.AttachedEntity is not { } uid)
                 continue;
 
-            if (session.AttachedEntity is { } attached &&
-                HasComp<XenoComponent>(attached) &&
-                !IsHivebrokenXeno(attached))
+            if (HasComp<XenoComponent>(uid) && !IsHivebrokenXeno(uid))
             {
-                if ((TryComp<HiveMemberComponent>(session.AttachedEntity, out var hivem) &&
-                    TryComp<HiveComponent>(hivem.Hive, out var hive) && hive.Corrupted == true))
+                if (TryComp<HiveMemberComponent>(uid, out var hivem) &&
+                    TryComp<HiveComponent>(hivem.Hive, out var hive) &&
+                    hive.Corrupted)
+                {
                     continue;
+                }
+
                 _toRemove.Add(session);
             }
-
         }
 
         foreach (var session in _toRemove)
-        {
             args.Recipients.Remove(session);
-        }
     }
 
     private void OnXenoAfterGetRecipients(Entity<XenoComponent> ent, ref ChatMessageAfterGetRecipients args)
     {
         _toRemove.Clear();
+
         var hive = _hive.GetHive(ent.Owner);
+
         if (!IsHivebrokenXeno(ent.Owner))
         {
             foreach (var (session, data) in args.Recipients)
             {
                 if (data.Observer)
                     continue;
-                if (!HasComp<XenoComponent>(session.AttachedEntity) &&
-                    !HasComp<HasKnowledgeOfXenoLanguageComponent>(session.AttachedEntity) &&
-                    !(HasComp<ManageHiveComponent>(ent) && hive is not null && hive.Value.Comp.Corrupted))
+
+                if (session.AttachedEntity is not { } uid)
+                    continue;
+
+                if (!HasComp<XenoComponent>(uid) &&
+                    !HasComp<HasKnowledgeOfXenoLanguageComponent>(uid) &&
+                    !(HasComp<ManageHiveComponent>(ent) &&
+                    hive is not null &&
+                    hive.Value.Comp.Corrupted))
+                {
                     _toRemove.Add(session);
+                }
             }
         }
+
         foreach (var session in _toRemove)
-        {
             args.Recipients.Remove(session);
-        }
     }
 
     private void OnImaginaryFriendGetRecipients(Entity<ImaginaryFriendComponent> ent, ref ChatMessageAfterGetRecipients args)
@@ -112,14 +127,12 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
             if (data.Observer)
                 continue;
 
-            if (ent.Comp.Imaginer != session.AttachedEntity)
+            if (session.AttachedEntity != ent.Comp.Imaginer)
                 _toRemove.Add(session);
         }
 
         foreach (var session in _toRemove)
-        {
             args.Recipients.Remove(session);
-        }
     }
 
 
@@ -148,7 +161,7 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
         float audioVolume = 0,
         NetUserId? author = null)
     {
-        _chat.ChatMessageToOne(
+        _chatManager.ChatMessageToOne(
             channel,
             message,
             wrappedMessage,
@@ -176,7 +189,7 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
         float audioVolume = 0,
         NetUserId? author = null)
     {
-        _chat.ChatMessageToManyFiltered(
+        _chatManager.ChatMessageToManyFiltered(
             filter,
             channel,
             message,
@@ -190,30 +203,26 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
         );
     }
 
-    public override void Emote(
-        EntityUid source,
-        string message,
-        string? nameOverride = null,
-        bool checkRadioPrefix = true,
-        bool ignoreActionBlocker = false)
-    {
-        ICommonSession? player = null;
-        if (TryComp(source, out ActorComponent? actor))
-            player = actor.PlayerSession;
-
-        _chatSystem.TrySendInGameICMessage(
-            source,
-            message,
-            InGameICChatType.Emote,
-            ChatTransmitRange.Normal,
-            false,
-            null,
-            player,
-            nameOverride,
-            checkRadioPrefix,
-            ignoreActionBlocker
-        );
-    }
+public override void Emote(
+    EntityUid source,
+    string message,
+    string? nameOverride = null,
+    bool checkRadioPrefix = true,
+    bool ignoreActionBlocker = false)
+{
+    _chatSystem.TrySendInGameICMessage(
+        source,
+        message,
+        InGameICChatType.Emote,
+        ChatTransmitRange.Normal,
+        false,
+        null,
+        null,
+        nameOverride,
+        checkRadioPrefix,
+        ignoreActionBlocker
+    );
+}
 
     private bool IsValidRadioPrefix(EntityUid headset, string prefixPart)
     {

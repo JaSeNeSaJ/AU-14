@@ -1,3 +1,6 @@
+using Content.Server.Chat.Managers;
+using Content.Server.Players;
+using Content.Server._RMC14.Chat.Chat;
 using Content.Shared._RMC14.Chat;
 using Content.Shared._RMC14.IdentityManagement;
 using Content.Shared._RMC14.Language;
@@ -8,10 +11,12 @@ using Content.Shared.Database;
 using Content.Shared.IdentityManagement;
 using Content.Shared.Players;
 using Content.Shared.Radio;
+using Robust.Server.GameObjects;
 using Robust.Server.Player;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Robust.Shared.Player;
 
 namespace Content.Server.Chat.Systems;
 
@@ -102,7 +107,7 @@ public sealed partial class ChatSystem
         var wrappedMessageTemplate = Loc.GetString(
             speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
             ("entityName", "{1}" + languageIndicator),
-            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
             ("fontType", typefaceToUse),
             ("fontSize", sizeToUse),
             ("message", "{0}"));

@@ -87,7 +87,7 @@ namespace Content.Server.Speech
         // RMC14
 
         // RMC14
-        private void OnEntitySpoke(Entity<SpeechComponent> ent, EntitySpokeEvent args)
+        private void OnEntitySpoke(Entity<SpeechComponent> ent, ref EntitySpokeEvent args)
         {
             var effectiveSpeechSounds = GetSpeechSoundOverride(ent.Owner, args.Language) ?? ent.Comp.SpeechSounds;
             if (effectiveSpeechSounds == null)
@@ -101,6 +101,9 @@ namespace Content.Server.Speech
                 return;
 
             var sound = GetSpeechSound(ent, args.Message, effectiveSpeechSounds);
+            if (sound == null)
+                return;
+
             ent.Comp.LastTimeSoundPlayed = currentTime;
             _audio.PlayPvs(sound, ent.Owner);
         }

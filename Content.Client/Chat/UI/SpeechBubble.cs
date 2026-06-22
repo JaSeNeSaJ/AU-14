@@ -22,6 +22,8 @@ using Robust.Shared.IoC;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Robust.Shared.Player;
+using Robust.Client.Player;
 
 namespace Content.Client.Chat.UI
 {
@@ -30,8 +32,8 @@ namespace Content.Client.Chat.UI
         [Dependency] private IGameTiming _timing = default!;
         [Dependency] private IEyeManager _eyeManager = default!;
         [Dependency] private IEntityManager _entityManager = default!;
-        [Dependency] private IPlayerManager _player = default!;
         [Dependency] protected IConfigurationManager ConfigManager = default!;
+        [Dependency] private IPlayerManager _playerManager = default!;
         private readonly SharedTransformSystem _transformSystem;
         private readonly CMUClientZLevelsSystem _zLevels;
 
@@ -204,7 +206,7 @@ namespace Content.Client.Chat.UI
             if (!_entityManager.TryGetComponent<SpriteComponent>(_senderEntity, out var sprite))
                 return 1f;
 
-            if (!sprite.Visible && _senderEntity != _player.LocalEntity)
+            if (!sprite.Visible && _entityManager.IsClientSide(_senderEntity))
                 return 0f;
 
             if (_entityManager.TryGetComponent<EntityActiveInvisibleComponent>(_senderEntity, out var invisible))

@@ -1,5 +1,4 @@
 using Content.Shared.Chat;
-using Content.Shared.Chat;
 // RMC14
 using Content.Shared._RMC14.Language.Prototypes;
 // RMC14

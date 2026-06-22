@@ -46,6 +46,8 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Replays;
 using Robust.Shared.Utility;
+using Content.Shared._CMU14.Yautja;
+using Content.Shared._RMC14.Mentor.ImaginaryFriend;
 
 namespace Content.Server.Chat.Systems;
 
@@ -940,7 +942,7 @@ public sealed partial class ChatSystem : SharedChatSystem
         var sb = new StringBuilder();
         for (var i = 0; i < length; i++)
         {
-            sb.Append(_random.Pick(charOptions));
+            sb.Append(_random.Pick(charOptions.ToArray()));
         }
         return sb.ToString();
     }

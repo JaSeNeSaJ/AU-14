@@ -14,6 +14,7 @@ using Content.Shared._RMC14.Radio;
 using Content.Shared._RMC14.Tracker.SquadLeader;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared.Chat;
+using Content.Shared.Players;
 using Content.Shared.Database;
 using Content.Shared.Ghost;
 using Content.Shared.Radio;
@@ -78,7 +79,7 @@ public sealed partial class RadioSystem : EntitySystem
         if (args.Channel != null && ent.Comp.Channels.Contains(args.Channel.ID))
         {
             var language = _prototype.TryIndex(args.Language, out var languageProto) ? languageProto : null;
-            SendRadioMessage(ent.Owner, args.Message, args.Channel, ent.Owner, language);
+            SendRadioMessage(ent.Owner, args.Message, args.Channel, ent.Owner, args.Language);
             args.Channel = null; // prevent duplicate messages from other listeners.
         }
     }
@@ -148,16 +149,20 @@ public sealed partial class RadioSystem : EntitySystem
             return;
 
         // RMC14
-        var currentLanguage = language?.ID ?? _language.GetCurrentLanguage(messageSource);
+        var languageProto = language != null
+            ? _prototype.Index(language.Value)
+            : null;
 
-        if (language != null && !language.CanUseRadio)
+        var currentLanguage = languageProto ?? _language.GetCurrentLanguage(messageSource);
+
+        if (languageProto != null && !languageProto.CanUseRadio)
         {
             _messages.Remove(message);
             return;
         }
 
-        bool showLanguageName = language?.ShowLanguageName ?? false;
-        string? languageIcon = showLanguageName ? language?.DisplayedLanguageIcon : null;
+        bool showLanguageName = languageProto?.ShowLanguageName ?? false;
+        string? languageIcon = showLanguageName && languageProto != null ? languageProto.DisplayedLanguageIcon : null;
         // RMC14
 
         var evt = new TransformSpeakerNameEvent(messageSource, MetaData(messageSource).EntityName);
@@ -177,7 +182,7 @@ public sealed partial class RadioSystem : EntitySystem
 
         // RMC14
         var radioFontSize = speech.FontSize;
-        var radioFontId = language?.TypefaceId ?? speech.FontId;
+        var radioFontId = languageProto?.TypefaceId ?? speech.FontId;
         // RMC14
         if (TryComp<WearingHeadsetComponent>(messageSource, out var wearingHeadset) &&
             TryComp<RMCHeadsetComponent>(wearingHeadset.Headset, out var headsetComp))
@@ -189,14 +194,14 @@ public sealed partial class RadioSystem : EntitySystem
             radioFontSize += innateRadioIncrease.RadioTextIncrease;
         }
 
-        var verb = Loc.GetString(_random.Pick(speech.SpeechVerbStrings));
+        var verb = Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)]);
         var wrappedMessage = Loc.GetString(speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
             ("color", channel.Color),
             // RMC14
-            ("fontType", radioFontId),
+            ("fontType", radioFontId ?? speech.FontId),
             ("fontSize", radioFontSize),
             // RMC14
-            ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+            ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
             ("channel", $"\\[{channel.LocalizedName}\\]"),
             ("name", name),
             ("message", content));
@@ -250,12 +255,12 @@ public sealed partial class RadioSystem : EntitySystem
                 actualWrappedMessage = Loc.GetString(
                     speech.Bold ? "chat-radio-message-wrap-bold" : "chat-radio-message-wrap",
                     ("color", channel.Color),
-                    ("fontType", radioFontId),
+                    ("fontType", radioFontId ?? speech.FontId),
                     ("fontSize", radioFontSize),
-                    ("verb", Loc.GetString(_random.Pick(speech.SpeechVerbStrings))),
+                    ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
                     ("channel", $"\\[{channel.LocalizedName}\\]"),
                     ("name", FormattedMessage.EscapeText(actualName)),
-                    ("message", escapeMarkup ? FormattedMessage.EscapeText(obfuscatedMessage) : obfuscatedMessage));
+                    ("message", escapeMarkup ? FormattedMessage.EscapeText(actualMessage) : actualMessage));
             }
 
             var chat = new ChatMessage(
@@ -268,7 +273,13 @@ public sealed partial class RadioSystem : EntitySystem
                 repeatCheckSender: !HasComp<ChatRepeatIgnoreSenderComponent>(radioSource));
 
             var chatMsg = new MsgChatMessage { Message = chat };
-            var ev = new RadioReceiveEvent(actualMessage, messageSource, channel, radioSource, chatMsg);
+            var ev = new RadioReceiveEvent(
+                actualMessage,
+                messageSource,
+                channel,
+                radioSource,
+                chatMsg,
+                currentLanguage);
             // RMC14
             RaiseLocalEvent(receiver, ref ev);
         }
