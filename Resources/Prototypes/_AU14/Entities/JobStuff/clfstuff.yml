@@ -252,9 +252,6 @@
       - id: AU14ScoutWebbing
         amount: 2
         points: 6
-      - id: RMCArmorVestSquad
-        amount: 3
-        points: 6
       - id: CMMaskCoif
         amount: 15
         points: 1
