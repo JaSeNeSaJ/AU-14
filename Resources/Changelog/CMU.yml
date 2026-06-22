@@ -4557,5 +4557,58 @@
   id: 322
   time: '2026-06-21T09:52:49.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1398
+- author: deepdarkdepths
+  changes:
+  - message: Queen has time requirements again
+    type: Tweak
+  id: 323
+  time: '2026-06-21T19:30:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1401
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: An accounting error has been rectified in Weyland-Yutani''s
+      research budget, allowing for an expanded Octanis Complex Security Post now
+      fitting of an installation of the Octanis Complex''s size--including a bullpen,
+      forensic laboratory, reception area, armory (now featuring lethals and incendiary
+      equipment), briefing room and jail.'
+    type: Add
+  - message: 'Hope''s Retreat: The UPP and ICSC''s ambassadors have swapped places
+      after the conclusion of what has been described as a "Freaky Friday"-type scenario.'
+    type: Tweak
+  - message: 'Hope''s Retreat: A wood submission point, unearthed in the northern
+      mineshaft, has been installed in Colony Shipping & Receiving.'
+    type: Fix
+  id: 324
+  time: '2026-06-22T03:29:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1403
+- author: OverusedMeme
+  changes:
+  - message: Added Spotter Pamphlets to both the M96S & XM43E1 spotter kits.
+    type: Add
+  id: 325
+  time: '2026-06-22T03:30:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1405
+- author: JaSeNeSaJ
+  changes:
+  - message: 'Sheperds'': Ghost spawn point (fix tacmap?)'
+    type: Fix
+  - message: 'Sheperds'': Preliminary experiment subject crate'
+    type: Add
+  - message: 'Sheperds'': Kill carp objective for CLF'
+    type: Fix
+  id: 326
+  time: '2026-06-22T06:40:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1408
+- author: Arcticular1
+  changes:
+  - message: Added 1 bomb vest and 1 huge IED to clf rack
+    type: Add
+  - message: 6B armor is a little more expensive and has no slowdown.
+    type: Tweak
+  - message: type 88 ammo is a little cheaper, and gets one more mag.
+    type: Tweak
+  id: 327
+  time: '2026-06-22T06:58:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1407
 Name: CMU
 Order: -1
