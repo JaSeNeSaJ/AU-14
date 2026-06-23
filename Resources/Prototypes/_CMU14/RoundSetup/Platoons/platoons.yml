@@ -3,19 +3,7 @@
   name: exampleplatoon
   lorePrimer: AU14PrimerPlatoonHAZOPS
   reqlist: USCMCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Corpsman: AU14USCMcorpsmanvendor
-    Arifleman: AU14USCMequipmentvendor
-    Dcc: AU14AircrewWeaponsVendor
-    OperationsOfficer: AU14USCMsectionleaderequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14USCMsectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendor
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
+  vendorSet: Example
   possibleships:
       - USSBushRedux
   jobSlotOverride:
@@ -31,23 +19,7 @@
   lorePrimer: AU14PrimerPlatoonUSCM
   Allegiance: UA
   reqlist: USCMCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14USCMclothingequipmentvendor
-    Weapons: AU14USCMWeaponsVendor
-    SWeapons: AU14USCMSpecialWeaponsVendor
-    Corpsman: AU14USCMcorpsmanvendor
-    Arifleman: AU14USCMSGequipmentvendor
-    Dcc: AU14USCMaircrewvendor
-    OperationsOfficer: AU14USCMcommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14USCMsectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    MilitaryPolice: AU14MilitaryPolicemanVendorUSCM
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14USCMRequisitionVendor
+  vendorSet: USCM
   #platoonflag:  uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -64,23 +36,7 @@
   lorePrimer: AU14PrimerPlatoonLACN
   Allegiance: UA
   reqlist: LACNCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14LACNclothingequipmentvendor
-    Weapons: AU14LACNWeaponsVendor
-    SWeapons: AU14LACNSpecialWeaponsVendor
-    Corpsman: AU14LACNcorpsmanvendor
-    Arifleman: AU14LACNMGequipmentvendor
-    Dcc: AU14LACNaircrewvendor
-    OperationsOfficer: AU14LACNcommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14USCMsectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    MilitaryPolice: AU14MilitaryPolicemanVendorLACN
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14LACNRequisitionVendor
+  vendorSet: LACN
   possibleships:
     - USSBushRedux
   #platoonflag: uaflag
@@ -96,23 +52,7 @@
   lorePrimer: AU14PrimerPlatoonUPP
   Allegiance: UPP
   reqlist: UPPCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14UPPequipmentvendor # unique
-    Clothing: AU14UPPclothingapparelvendor
-    Weapons: AU14UPPWeaponsVendor
-    SWeapons: AU14UPPSpecialWeaponsVendor
-    Corpsman: AU14UPPMedicalVendor
-    Arifleman: AU14UPPgunnerequipment
-    Dcc: AU14UPPaircrewvendor
-    OperationsOfficer: AU14UPPcommandvendor
-    Rto: AU14RTOVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    SectionSergeant: AU14UPPSectionLeaderVendor
-    Pilot: AU14UPPAirCrewWeaponsVendor
-    MilitaryPolice: AU14MilitaryPolicemanVendorUPP
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14UPPRequisitionVendor
+  vendorSet: UPP
   possibleships:
       - USSBushRedux
   # jobClassOverride:
@@ -138,23 +78,7 @@
   name: WY PMC
   lorePrimer: AU14PrimerPlatoonWEYU
   reqlist: WEYUCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14WYclothingequipmentvendor
-    Weapons: AU14WYWeaponsVendor
-    SWeapons: AU14WYSpecialWeaponsVendor
-    Corpsman: AU14WYcorpsmanvendor
-    Arifleman: AU14WYSGequipmentvendor
-    Dcc: AU14WYaircrewvendor
-    OperationsOfficer: AU14WYdirectorequipmentvendor
-    Rto: AU14RTOVendor
-    JuniorOfficer: AU14JOGenericVendor
-    SectionSergeant: AU14WYsupervisorequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendor
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14WYPMCRequisitionVendor
+  vendorSet: WEYU
   # jobClassOverride:
   #   SquadRifleman: AU14JobGOVFORSquadRiflemanWYPMC
   #   PlatCo: AU14JobGOVFORPlatCoWYPMC
@@ -184,23 +108,7 @@
   lorePrimer: AU14PrimerPlatoonCMBCIU
   Allegiance: UA
   reqlist: CMBCIUCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14CMBCIUapparelvendor
-    Weapons: AU14CMBCIUWeaponsVendor
-    SWeapons: AU14SpecVend
-    Corpsman: AU14CMBCIUTacticalMedicVendor
-    Arifleman: AU14CMBCIUGunnerVendor
-    Dcc: AU14CMBCIUWeaponsVendor
-    OperationsOfficer: AU14CMBCIUCommandVendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14CMBCIUSectionLeader
-    Pilot: AU14CMBCIUPilotVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendorCIU
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14CMBCIURequisitionVendor
+  vendorSet: CMBCIU
   # jobClassOverride:
   #   SquadRifleman: AU14JobGOVFORSquadRiflemanCMBCIU
   #   PlatCo: AU14JobGOVFORPlatCoCMBCIU
@@ -229,23 +137,7 @@
   lorePrimer: AU14PrimerPlatoonHAZOPS
   Allegiance: UA
   reqlist: HAZOPSCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14HAZOPSclothingequipmentvendor
-    Weapons: AU14HAZOPSWeaponsVendor
-    SWeapons: AU14HAZOPSSpecialWeaponsVendor
-    Corpsman: AU14USCMcorpsmanvendor
-    Arifleman: AU14HAZOPSMGequipmentvendor
-    Dcc: AU14USCMaircrewvendor
-    OperationsOfficer: AU14HAZOPScommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14HAZOPSsectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    MilitaryPolice: AU14MilitaryPolicemanVendorUSCM
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14HAZOPSRequisitionVendor
+  vendorSet: HAZOPS
   possibleships:
       - USSBushRedux
   CompatibleDropships:
@@ -261,25 +153,7 @@
   name: Prodigy Security Forces
   lorePrimer: AU14PrimerPlatoonProdigySF
   reqlist: ProdigyCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14prodigyclothingequipmentvendor
-    Weapons: AU14prodigyWeaponsVendor
-    SWeapons: AU14SpecVend
-    Corpsman: AU14prodigycorpsmanvendor
-    Arifleman: AU14prodigySGequipmentvendor
-    Dcc: AU14prodigyaircrewvendor
-    OperationsOfficer: AU14prodigycommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14prodigysectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendor
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14ProdigyRequisitionVendor
+  vendorSet: ProdigySF
   #platoonflag:  uaflag
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
@@ -296,25 +170,7 @@
   name: VAI Primary Operations
   lorePrimer: AU14PrimerPlatoonVAIPO
   reqlist: VAIPOCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14USCMequipmentvendor
-    Clothing: AU14VAIPOclothingequipmentvendor
-    Weapons: AU14VAIPOWeaponsVendor
-    SWeapons: AU14SpecVend
-    Corpsman: AU14VAIPOcorpsmanvendor
-    Arifleman: AU14VAIPOSGequipmentvendor
-    Dcc: AU14VAIPOaircrewvendor
-    OperationsOfficer: AU14VAIPOcommandequipmentvendor
-    Rto: AU14RTOVendor
-    SectionSergeant: AU14VAIPOsectionleaderequipmentvendor
-    Pilot: AU14AircrewWeaponsVendor
-    combattech: AU14ComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendor
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14VAIPORequisitionVendor
+  vendorSet: VAIPO
   CompatibleDropships:
   - /Maps/_CMU14/Shuttles/alamo.yml
   - /Maps/_CMU14/Shuttles/lexingtonsmall.yml
@@ -331,25 +187,7 @@
   lorePrimer: AU14PrimerPlatoonRMC
   Allegiance: TWE
   reqlist: RMCCargoCatalog
-  VendorToMarker:
-    Rifleman: AU14RMCequipmentvendor # unique
-    Clothing: AU14RMCclothingequipmentvendor
-    Weapons: AU14RMCWeaponsVendor
-    SWeapons: AU14RMCSpecialWeaponsVendor
-    Corpsman: AU14RMCcorpsmanvendor
-    Arifleman: AU14RMCSGequipmentvendor
-    Dcc: AU14RMCaircrewvendor
-    OperationsOfficer: AU14RMCcommandequipmentvendor
-    Rto: AU14RMCRTOVendor # TODO: RMC RTO's
-    SectionSergeant: AU14RMCsectionleaderequipmentvendor
-    Pilot: AU14RMCAircrewWeaponsVendor
-    combattech: AU14RMCComtechGearVendor
-    JuniorOfficer: AU14JOGenericVendor
-    ExtraVendor1: VMarkerOpforDeco5
-    Deco1: VMarkerOpforDeco5
-    MilitaryPolice: AU14MilitaryPolicemanGenericVendor
-    MilitaryDoctor: AU14MilitaryDoctorGenericVendor
-    ReqVend: AU14RMCRequisitionVendor
+  vendorSet: RMC
   # jobClassOverride:
   #   SquadRifleman: AU14JobGOVFORSquadRiflemanRMC
   #   PlatCo: AU14JobGOVFORPlatCoRMC
