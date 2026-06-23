@@ -115,11 +115,14 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
     private void ListLogFiles(IConsoleShell shell)
     {
-        var fileInfos = Directory.GetFiles(logDir, "*.log").Select(f => new FileInfo(f)).ToList();
+        var fileInfos = Directory.GetFiles(logDir, "*.log").Concat(Directory.GetFiles(logDir, "*.txt")).Select(f => new FileInfo(f)).ToList();
 
         var logsSub = Path.Combine(logDir, "logs");
         if (Directory.Exists(logsSub))
+        {
             fileInfos.AddRange(Directory.GetFiles(logsSub, "*.log").Select(f => new FileInfo(f)));
+            fileInfos.AddRange(Directory.GetFiles(logsSub, "*.txt").Select(f => new FileInfo(f)));
+        }
 
         fileInfos = fileInfos.OrderBy(f => f.LastWriteTimeUtc).ToList();
 
@@ -150,6 +153,16 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
                 var fullPath = Path.GetFullPath(Path.Combine(logDir, sub, fileName));
                 if (fullPath.StartsWith(Path.GetFullPath(logDir)) && File.Exists(fullPath))
                     return new FileInfo(fullPath);
+
+                if (!Path.HasExtension(fileName))
+                {
+                    foreach (var ext in new[] { ".txt", ".log" })
+                    {
+                        var withExt = Path.GetFullPath(Path.Combine(logDir, sub, fileName + ext));
+                        if (withExt.StartsWith(Path.GetFullPath(logDir)) && File.Exists(withExt))
+                            return new FileInfo(withExt);
+                    }
+                }
             }
             return null;
         }
@@ -157,12 +170,13 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         if (!string.IsNullOrEmpty(explicitFile))
             return TryFind(explicitFile);
 
-        return TryFind("server.log")
-            ?? Directory.GetFiles(logDir, "server*.log")
-                .Concat(Directory.Exists(Path.Combine(logDir, "logs"))
-                    ? Directory.GetFiles(Path.Combine(logDir, "logs"), "server*.log")
-                    : Array.Empty<string>())
-                .Select(f => new FileInfo(f)).OrderByDescending(f => f.LastWriteTimeUtc).FirstOrDefault();
+        return Directory.GetFiles(logDir, "server-log*.txt")
+            .Concat(Directory.Exists(Path.Combine(logDir, "logs"))
+                ? Directory.GetFiles(Path.Combine(logDir, "logs"), "server*.txt")
+                : Array.Empty<string>())
+            .Select(f => new FileInfo(f))
+            .OrderByDescending(f => f.LastWriteTimeUtc)
+            .FirstOrDefault();
     }
 
     // supports standard SGR colours (30‑37 + 90‑97) and reset (0)
@@ -394,20 +408,28 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
                 new[] { "--list", "--follow", "--stop", "--file", "--filter" },
                 "option");
 
-        bool completingEmpty = string.IsNullOrEmpty(args[^1]);
-        string currentArg = completingEmpty ? "" : args[^1];
+        string lastArg = args[^1];
 
-        if (completingEmpty)
+        if (lastArg == "--file")
+            return CompletionResult.FromHintOptions(GetLogFileCompletions(""), "log file");
+
+        if (args.Length >= 2 && args[^2] == "--file")
         {
-            string prevArg = args.Length >= 2 ? args[^2] : "";
+            string currentPath = lastArg;
+            return CompletionResult.FromHintOptions(GetLogFileCompletions(currentPath), "log file");
+        }
+
+        if (string.IsNullOrEmpty(lastArg) && args.Length >= 2)
+        {
+            string prevArg = args[^2];
             if (prevArg == "--filter")
                 return CompletionResult.FromHint("filter pattern");
             if (prevArg == "--file")
-                return CompletionResult.FromHintOptions(GetLogFileCompletions(currentArg), "log file");
+                return CompletionResult.FromHintOptions(GetLogFileCompletions(""), "log file");
             return CompletionResult.FromHint("filter pattern or number of lines");
         }
 
-        if (currentArg.StartsWith('-'))
+        if (lastArg.StartsWith('-'))
         {
             var usedFlags = args.Where(a => a.StartsWith('-')).ToHashSet();
             var flags = new List<string>();
@@ -422,10 +444,8 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         var options = new List<CompletionOption>
         {
             new("50", "number of lines (default)"),
-            new("200", "number of lines"),
             new(maxLines.ToString(), "number of lines (max)"),
         };
-
         return CompletionResult.FromHintOptions(options, "filter pattern or number of lines");
     }
 
@@ -434,15 +454,21 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         var completions = new List<CompletionOption>();
         try
         {
-            string dir = logDir;
-            var files = Directory.GetFiles(dir, "*.log", SearchOption.TopDirectoryOnly);
-            string logsSubDir = Path.Combine(dir, "logs");
+            var files = Directory.GetFiles(logDir, "*.log", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.GetFiles(logDir, "*.txt", SearchOption.TopDirectoryOnly));
+
+            string logsSubDir = Path.Combine(logDir, "logs");
             if (Directory.Exists(logsSubDir))
-                files = files.Concat(Directory.GetFiles(logsSubDir, "*.log", SearchOption.TopDirectoryOnly)).ToArray();
+                files = files
+                    .Concat(Directory.GetFiles(logsSubDir, "*.log", SearchOption.TopDirectoryOnly))
+                    .Concat(Directory.GetFiles(logsSubDir, "*.txt", SearchOption.TopDirectoryOnly))
+                    .ToArray();
+            else
+                files = files.ToArray();
 
             foreach (var fullPath in files)
             {
-                string relPath = Path.GetRelativePath(dir, fullPath);
+                string relPath = Path.GetRelativePath(logDir, fullPath);
                 if (relPath.StartsWith(filter, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(filter))
                     completions.Add(new CompletionOption(relPath, "log file"));
             }

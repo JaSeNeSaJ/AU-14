@@ -23,7 +23,6 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
         "] battlebuddy: ",
         "] con: ",
         "] net.ent: ",
-        "ms | Net: (" // System.Console.Title
     };
 
     public override void Update(float frameTime)

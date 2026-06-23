@@ -11,7 +11,7 @@ public sealed partial class ServerSawmillsCommand : LocalizedCommands
     [Dependency] private ILogManager _logManager = default!;
 
     public override string Command => "serversawmills";
-    public override string Description => "Lists sawmills (non-inherited) log level (or use --all/filters).";
+    public override string Description => "Lists sawmills (non-info) log level (or use --all/filters).";
     public override string Help => $"Usage: {Command} [--all] [filter|level] [level]";
 
     private static readonly string primaryClr = Color.Green.ToHex();
@@ -39,7 +39,7 @@ public sealed partial class ServerSawmillsCommand : LocalizedCommands
                 if (hasLevelFilter)
                     return wantInherited ? s.Level == null : s.Level == levelFilter;
                 if (!showAll) // skip inherited/default
-                    return s.Level != null;
+                    return s.Level != null && s.Level != LogLevel.Info;
                 return true;
             }).OrderBy(s => s.Name, StringComparer.OrdinalIgnoreCase).ToList();
 
