@@ -306,8 +306,8 @@
     - id: RMCBackpackBroiler
     - id: RMCWeaponFlamerSpec
     - id: RMCTankFlamerLarge
-    - id: RMCTankFlamerlargeB
-    - id: RMCTankFlamerlargeX
+    - id: RMCTankFlamerLargeB
+    - id: RMCTankFlamerLargeX
     - id: RMCPouchFuelTank
     - id: CMFireExtinguisher
     - id: CMFireExtinguisherPortable
