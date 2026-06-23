@@ -129,7 +129,7 @@
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointGOVFORPlatoonCorpsman
-  name: Spawn Point GOVFOR Squad Sergeant
+  name: Spawn Point GOVFOR Platoon Corpsman
   components:
   - type: SpawnPoint
     job_id: AU14JobGOVFORPlatoonCorpsman
@@ -266,7 +266,7 @@
 - type: entity
   parent: CMSpawnPointJobBase
   id: AU14SpawnPointopforPlatoonCorpsman
-  name: Spawn Point opfor Squad Sergeant
+  name: Spawn Point opfor Platoon Corpsman
   components:
   - type: SpawnPoint
     job_id: AU14JobOPFORPlatoonCorpsman

@@ -265,11 +265,15 @@ namespace Content.Server.GameTicking
             _auThreatVoteSystem.ClearRoundJoinBlocks();
             var usesPostRoundstartThreatVote = _auRoundSystem.UsesPostRoundstartThreatVote();
             var threatVotePrepared = false;
+            _sawmill.Debug(
+                $"[RoundStart] SpawnPlayers begin: preset={presetId ?? "null"}, readyPlayers={readyPlayers.Count}, profiles={profiles.Count}, assignmentProfiles={assignmentProfiles.Count}, defaultMap={DefaultMap}, planet={_auRoundSystem.GetSelectedPlanet()?.MapId ?? "null"}, selectedThreat={_auRoundSystem.SelectedThreat?.ID ?? "null"}, postRoundstartThreatVote={usesPostRoundstartThreatVote}");
             if (usesPostRoundstartThreatVote)
             {
+                _sawmill.Debug("[RoundStart] Preparing post-roundstart threat vote.");
                 try
                 {
                     threatVotePrepared = _auThreatVoteSystem.TryPrepareThreatVote(assignmentProfiles, DefaultMap);
+                    _sawmill.Debug($"[RoundStart] TryPrepareThreatVote result={threatVotePrepared}.");
                 }
                 catch (Exception threatVoteEx)
                 {
@@ -280,6 +284,7 @@ namespace Content.Server.GameTicking
             }
             else
             {
+                _sawmill.Debug("[RoundStart] Assigning immediate threat jobs.");
                 _auJobSelectionSystem.AssignThreatAndThirdPartyJobs(assignmentProfiles);
             }
 
@@ -300,7 +305,10 @@ namespace Content.Server.GameTicking
             }
 
             var spawnableStations = GetSpawnableStations();
+            _sawmill.Debug($"[RoundStart] Found {spawnableStations.Count} spawnable station(s).");
             var assignedJobs = _stationJobs.AssignJobs(assignmentProfiles, spawnableStations);
+            _sawmill.Debug(
+                $"[RoundStart] Station job assignment complete: assigned={assignedJobs.Count}, noJob={assignedJobs.Count(x => x.Value.Item1 == null)}, threatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, threatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}, thirdPartyLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyLeader")}, thirdPartyMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyMember")}");
 
             // Defensive: any exception inside SpawnPlayers propagates to StartRound's
             // EXCEPTION_TOLERANCE catch (only enabled in Release/Tools builds), which calls
@@ -309,9 +317,13 @@ namespace Content.Server.GameTicking
             var selectedThreat = _auRoundSystem.SelectedThreat;
             if (!usesPostRoundstartThreatVote && selectedThreat != null)
             {
+                _sawmill.Debug(
+                    $"[RoundStart] Starting immediate threat spawn for '{selectedThreat.ID}' on map {DefaultMap}; assignedThreatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, assignedThreatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}.");
                 try
                 {
                     _auThreatSystem.SpawnThreatAtRoundStart(selectedThreat, DefaultMap, assignedJobs);
+                    _sawmill.Debug(
+                        $"[RoundStart] Threat spawn returned for '{selectedThreat.ID}'; remainingThreatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, remainingThreatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}.");
                 }
                 catch (Exception threatEx)
                 {
@@ -321,12 +333,18 @@ namespace Content.Server.GameTicking
                         Log.Warning($"Removed {removed} threat assignment(s) after threat spawning failed so overflow assignment can handle those players.");
                 }
             }
+            else if (usesPostRoundstartThreatVote)
+            {
+                _sawmill.Debug("[RoundStart] Threat spawn deferred until post-roundstart threat vote finishes.");
+            }
             else
             {
                 Log.Debug("SpawnThreatAtRoundStart debug — no threat selected, skipping threat spawn.");
             }
 
             _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, assignmentProfiles, spawnableStations);
+            _sawmill.Debug(
+                $"[RoundStart] Overflow assignment complete: assigned={assignedJobs.Count}, noJob={assignedJobs.Count(x => x.Value.Item1 == null)}, threatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, threatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}, thirdPartyLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyLeader")}, thirdPartyMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyMember")}");
 
             // Calculate extended access for stations.
             var stationJobCounts = spawnableStations.ToDictionary(e => e, _ => 0);
@@ -389,9 +407,11 @@ namespace Content.Server.GameTicking
             // this, an exception inside third-party spawning kills the entire round at start.
             if (threatVotePrepared)
             {
+                _sawmill.Debug("[RoundStart] Starting prepared post-roundstart threat vote.");
                 try
                 {
                     _auThreatVoteSystem.StartPreparedThreatVote(assignedJobs);
+                    _sawmill.Debug("[RoundStart] Prepared threat vote started; threat and third-party spawn will continue from vote completion.");
                 }
                 catch (Exception threatVoteEx)
                 {
@@ -407,12 +427,15 @@ namespace Content.Server.GameTicking
                 selectedThreat = _auRoundSystem.SelectedThreat;
                 if (selectedThreat != null)
                 {
-                try
-                {
-                    _auThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
-                }
-                catch (Exception thirdPartyEx)
-                {
+                    _sawmill.Debug(
+                        $"[RoundStart] Starting third-party spawning for threat '{selectedThreat.ID}'; selectedThirdParties={_auRoundSystem.SelectedThirdParties.Count}, roundstartThirdParties={_auRoundSystem.SelectedThirdParties.Count(x => x.RoundStart)}.");
+                    try
+                    {
+                        _auThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
+                        _sawmill.Debug($"[RoundStart] StartThirdPartySpawning returned for threat '{selectedThreat.ID}'.");
+                    }
+                    catch (Exception thirdPartyEx)
+                    {
                     Log.Error($"StartThirdPartySpawning threw — round will continue without third-party spawn. {thirdPartyEx}");
                 }
             }
