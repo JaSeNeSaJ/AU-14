@@ -33,7 +33,7 @@
         RMCSkillIntel: 1
         RMCSkillOverwatch: 1
     - type: CMVendorUser
-      id: AU14JobCivilianCorporateLiaison
+      id: AU14JobCivilianAmbassadorICSC
       points: 70
     - type: JobPrefix
       prefix: au14-job-prefix-civilianambassadoricsc
@@ -52,12 +52,12 @@
   equipment:
     jumpsuit: CMJumpsuitLiaisonBlack
     shoes: RMCShoesLaceupBrown
-    id: AU14IDCardColonyCorporateLiaison
+    id: AU14IDCardICSCAmbassador
     outerClothing: RMCJacketCorporateBlack
     ears: AU14AmbassadorICSCHeadset
     pocket1: AU14StampICSCA
   inhand:
-  - RMCPortableVendorCorporate
+  - AU14PortableVendorICSC
 
 - type: entity
   parent: CMSpawnPointJobBase

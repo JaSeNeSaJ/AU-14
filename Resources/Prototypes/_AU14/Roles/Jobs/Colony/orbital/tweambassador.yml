@@ -33,7 +33,7 @@
         RMCSkillIntel: 1
         RMCSkillOverwatch: 1
     - type: CMVendorUser
-      id: AU14JobCivilianCorporateLiaison
+      id: AU14JobCivilianAmbassadorTWE
       points: 70
     - type: JobPrefix
       prefix: au14-job-prefix-civilianambassadortwe
@@ -52,12 +52,12 @@
   equipment:
     jumpsuit: AU14CivilianWorkwearPink
     shoes: RMCShoesLaceupBrown
-    id: AU14IDCardColonyCorporateLiaison
+    id: AU14IDCardTWEAmbassador
     outerClothing: AU14CivilianJacketOldCoat
     ears: AU14ColonyAmbassadorTWEHeadset
     pocket1: AU14StampTWEA
   inhand:
-  - RMCPortableVendorCorporate
+  - AU14PortableVendorTWE
 
 - type: entity
   parent: CMSpawnPointJobBase
