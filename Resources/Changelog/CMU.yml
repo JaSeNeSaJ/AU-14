@@ -4672,5 +4672,12 @@
   id: 331
   time: '2026-06-23T03:39:16.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1416
+- author: ProspectorAres
+  changes:
+  - message: new lobby art
+    type: Add
+  id: 332
+  time: '2026-06-23T12:20:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1418
 Name: CMU
 Order: -1
