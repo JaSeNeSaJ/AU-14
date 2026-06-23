@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Content.Server.AU14.Round;
+using Content.Server.AU14.Scenario;
 using Content.Server.AU14.ThirdParty;
 using Content.Server.Chat.Managers;
 using Content.Server.GameTicking;
@@ -27,6 +28,7 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
 
     [Dependency] private AuRoundSystem _auRound = default!;
     [Dependency] private AuJobSelectionSystem _jobSelection = default!;
+    [Dependency] private ScenarioPlanSystem _scenarioPlan = default!;
     [Dependency] private AuThreatSystem _threat = default!;
     [Dependency] private AuThirdPartySystem _thirdParty = default!;
     [Dependency] private IChatManager _chat = default!;
@@ -99,7 +101,29 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             return false;
         }
 
-        var candidates = BuildCandidates(planet, presetId, profiles.Count);
+        var playerCount = Math.Max(_player.PlayerCount, profiles.Count);
+        var candidates = new List<ThreatVoteCandidate>();
+        ThreatVoteBodyCount heldBodyCount;
+        if (!TryBuildCandidatesFromScenarioPlan(planet, presetId, playerCount, out candidates, out heldBodyCount, out var diagnostic))
+        {
+            if (HasCoveredScenarioThreatCandidate(planet, presetId))
+            {
+                _jobSelection.ForcedJobAssignments.Clear();
+                Logger.GetSawmill("au14.threat").Error(
+                    $"[AuThreatVoteSystem] Could not resolve deferred threat vote from Scenario Plan for covered Round Groups; vote will not start instead of falling back to legacy body-count calculation. {diagnostic}");
+                return false;
+            }
+
+            Logger.GetSawmill("au14.threat").Warning(
+                $"[AuThreatVoteSystem] Could not resolve deferred threat vote from Scenario Plan; falling back to legacy body-count calculation. {diagnostic}");
+
+            candidates = BuildLegacyCandidates(planet, presetId, playerCount);
+            heldBodyCount = candidates
+                .OrderBy(candidate => candidate.BodyCount.Total)
+                .Select(candidate => candidate.BodyCount)
+                .FirstOrDefault();
+        }
+
         if (candidates.Count == 0)
         {
             _jobSelection.ForcedJobAssignments.Clear();
@@ -108,10 +132,6 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             return false;
         }
 
-        var heldBodyCount = candidates
-            .OrderBy(candidate => candidate.BodyCount.Total)
-            .Select(candidate => candidate.BodyCount)
-            .First();
         var candidateIds = candidates
             .Select(candidate => new ProtoId<ThreatPrototype>(candidate.Threat.ID))
             .ToList();
@@ -120,6 +140,15 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             candidateIds,
             heldBodyCount,
             presetId);
+        if (heldPlayers.Count == 0)
+        {
+            _jobSelection.ForcedJobAssignments.Clear();
+            ClearRoundJoinBlocks();
+            Logger.GetSawmill("au14.threat").Warning(
+                $"[AuThreatVoteSystem] Threat vote for preset {presetId} on planet {planet.MapId} had no held voters; vote will not start.");
+            return false;
+        }
+
         BlockRoundJoinsForHeldPlayers(heldPlayers);
 
         _prepared = new PreparedThreatVote
@@ -188,15 +217,82 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
         return true;
     }
 
-    private List<ThreatVoteCandidate> BuildCandidates(
+    private bool TryBuildCandidatesFromScenarioPlan(
         RMCPlanetMapPrototypeComponent planet,
         string presetId,
-        int readyPlayerCount)
+        int playerCount,
+        out List<ThreatVoteCandidate> candidates,
+        out ThreatVoteBodyCount heldBodyCount,
+        out string diagnostic)
+    {
+        candidates = new List<ThreatVoteCandidate>();
+        heldBodyCount = default;
+
+        var request = new ScenarioPlanValidationRequest(
+            presetId,
+            playerCount,
+            GetSelectedGovforPlatoonId(),
+            GetSelectedOpforPlatoonId(),
+            _auRound.GetSelectedPlanetId(),
+            planet.MapId,
+            null,
+            _auRound.GetSelectedGovforShip(),
+            _auRound.GetSelectedOpforShip());
+
+        if (!_scenarioPlan.TryResolveDeferredThreatVote(request, out var deferredChoice, out diagnostic) ||
+            deferredChoice == null)
+        {
+            return false;
+        }
+
+        foreach (var resolved in deferredChoice.Candidates)
+        {
+            if (!_prototype.TryIndex<ThreatPrototype>(resolved.ThreatId, out var threat))
+            {
+                diagnostic = $"Resolved deferred threat candidate '{resolved.ThreatId}' could not be indexed.";
+                candidates.Clear();
+                return false;
+            }
+
+            candidates.Add(new ThreatVoteCandidate(
+                threat,
+                new ThreatVoteBodyCount(resolved.LeaderBodies, resolved.MemberBodies)));
+        }
+
+        heldBodyCount = new ThreatVoteBodyCount(
+            deferredChoice.ReservationPolicy.ReservedLeaderBodies,
+            deferredChoice.ReservationPolicy.ReservedMemberBodies);
+        if (candidates.Count == 0 || heldBodyCount.Total <= 0)
+        {
+            diagnostic = $"Resolved deferred threat choice '{deferredChoice.ChoiceId}' did not produce reservable bodies.";
+            candidates.Clear();
+            heldBodyCount = default;
+            return false;
+        }
+
+        diagnostic = string.Empty;
+        return true;
+    }
+
+    private bool HasCoveredScenarioThreatCandidate(RMCPlanetMapPrototypeComponent planet, string presetId)
+    {
+        foreach (var threatId in planet.AllowedThreats)
+        {
+            if (_scenarioPlan.HasMappedHostileRoundGroup(presetId, threatId.Id))
+                return true;
+        }
+
+        return false;
+    }
+
+    private List<ThreatVoteCandidate> BuildLegacyCandidates(
+        RMCPlanetMapPrototypeComponent planet,
+        string presetId,
+        int playerCount)
     {
         var platoonSpawnRuleSystem = EntityManager.EntitySysManager.GetEntitySystem<PlatoonSpawnRuleSystem>();
         var govforId = platoonSpawnRuleSystem.SelectedGovforPlatoon?.ID;
         var opforId = platoonSpawnRuleSystem.SelectedOpforPlatoon?.ID;
-        var playerCount = Math.Max(_player.PlayerCount, readyPlayerCount);
         var candidates = new List<ThreatVoteCandidate>();
 
         foreach (var threatId in planet.AllowedThreats)
@@ -245,6 +341,27 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
     {
         _auRound.SetSelectedThreat(selected);
         _auRound.PreselectThirdPartiesForSelectedThreat();
+        try
+        {
+            _scenarioPlan.GenerateShadowPlan(
+                new ScenarioPlanValidationRequest(
+                    prepared.PresetId,
+                    Math.Max(_player.PlayerCount, prepared.HeldPlayers.Count),
+                    GetSelectedGovforPlatoonId(),
+                    GetSelectedOpforPlatoonId(),
+                    _auRound.GetSelectedPlanetId(),
+                    _auRound.GetSelectedPlanet()?.MapId,
+                    selected.ID,
+                    _auRound.GetSelectedGovforShip(),
+                    _auRound.GetSelectedOpforShip()),
+                "PostRoundstartThreatVoteFinished");
+        }
+        catch (Exception scenarioEx)
+        {
+            Logger.GetSawmill("au14.threat").Error(
+                $"[AuThreatVoteSystem] GenerateShadowPlan threw after threat vote: {scenarioEx}");
+        }
+
         MoveHeldPlayersToObservers(prepared.HeldPlayers, selected);
 
         try
@@ -300,6 +417,18 @@ public sealed partial class AuThreatVoteSystem : EntitySystem
             .Order(StringComparer.OrdinalIgnoreCase);
 
         return $"au14-threat:{prepared.PresetId}:{string.Join(",", candidateIds)}";
+    }
+
+    private string? GetSelectedGovforPlatoonId()
+    {
+        var platoonSpawnRuleSystem = EntityManager.EntitySysManager.GetEntitySystem<PlatoonSpawnRuleSystem>();
+        return platoonSpawnRuleSystem.SelectedGovforPlatoon?.ID;
+    }
+
+    private string? GetSelectedOpforPlatoonId()
+    {
+        var platoonSpawnRuleSystem = EntityManager.EntitySysManager.GetEntitySystem<PlatoonSpawnRuleSystem>();
+        return platoonSpawnRuleSystem.SelectedOpforPlatoon?.ID;
     }
 
     private string GetLocalizedThreatDisplayName(string threatId)

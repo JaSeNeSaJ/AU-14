@@ -1,6 +1,48 @@
 - type: job
   parent: CMJobBase
   id: AU14JobCultist
+  roundSide: Threat
+  roundForce: THREAT
+  roundRole: Cultist
+  roundComponents:
+  - type: Skills
+    skills:
+      RMCSkillFireman: 1
+      RMCSkillVehicles: 1
+      RMCSkillDomestics: 1
+      RMCSkillFirearms: 2
+  - type: JobPrefix
+    prefix: au14-job-prefix-civiliancolonist
+  - type: TacticalMapIcon
+    icon:
+      sprite: /Textures/_RMC14/Interface/map_blips.rsi
+      state: synth
+  - type: UserIFF
+    factions:
+    -  FactionXeno
+  - type: NpcFactionMember
+    factions:
+    - RMCXeno
+  - type: Access
+    tags:
+    - CMAccessXeno
+  - type: HasKnowledgeOfXenoLanguage
+  - type: RemoveComponents
+    components:
+    - type: Infectable
+  - type: Cultist
+  - type: IntrinsicRadioReceiver
+  - type: IntrinsicRadioTransmitter
+    channels:
+    - Hivemind
+  - type: ActiveRadio
+    channels:
+    - Hivemind
+  - type: StartingMindRole
+    mindRole: MindRoleCultist
+  - type: CMVendorUser
+    id: AU14JobCultist
+    points: 70
   name: cm-cultist-name
   description: cm-cultist-description
   setPreference: true
@@ -15,47 +57,6 @@
   accessGroups:
   - Colonist
   roleWeight: 0.25
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Skills
-      skills:
-        RMCSkillFireman: 1
-        RMCSkillVehicles: 1
-        RMCSkillDomestics: 1
-        RMCSkillFirearms: 2
-    - type: JobPrefix
-      prefix: au14-job-prefix-civiliancolonist
-    - type: TacticalMapIcon
-      icon:
-        sprite: /Textures/_RMC14/Interface/map_blips.rsi
-        state: synth
-    - type: UserIFF
-      factions:
-      -  FactionXeno
-    - type: NpcFactionMember
-      factions:
-      - RMCXeno
-    - type: Access
-      tags:
-      - CMAccessXeno
-    - type: HasKnowledgeOfXenoLanguage
-    - type: RemoveComponents
-      components:
-      - type: Infectable
-    - type: Cultist
-    - type: IntrinsicRadioReceiver
-    - type: IntrinsicRadioTransmitter
-      channels:
-      - Hivemind
-    - type: ActiveRadio
-      channels:
-      - Hivemind
-    - type: StartingMindRole
-      mindRole: MindRoleCultist
-    - type: CMVendorUser
-      id: AU14JobCultist
-      points: 70
   hidden: false
 
 - type: entity
