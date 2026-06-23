@@ -838,7 +838,7 @@
       - id: RMCPyroSpecEquipmentCase
         giveSquadRoleName: rmc-job-name-weapons-specialist-pyro
         isAppendSquadRoleName: false
-        giveprefix: au14-job-prefix-specialist-pyro
+        givePrefix: au14-job-prefix-specialist-pyro
         isAppendPrefix: true
 
 # Equipment Vendor (universal except UPP/RMC)
