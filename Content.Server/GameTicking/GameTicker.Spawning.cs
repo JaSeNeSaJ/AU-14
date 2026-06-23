@@ -30,6 +30,7 @@ using Robust.Shared.Utility;
 using Content.Server._RMC14.Announce;
 using Content.Server._RMC14.Xenonids.Hive;
 using Content.Server.AU14.Round;
+using Content.Server.AU14.Scenario;
 using Content.Server.AU14.Threats;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared.AU14.util;
@@ -45,6 +46,7 @@ namespace Content.Server.GameTicking
         [Dependency] private AdminSystem _admin = default!;
         [Dependency] private MarinePresenceAnnounceSystem _marinePresenceAnnounce = default!;
         [Dependency] private AuJobSelectionSystem _auJobSelectionSystem = default!;
+        [Dependency] private ScenarioPlanSystem _scenarioPlan = default!;
         [Dependency] private AuThreatSystem _auThreatSystem = default!;
         [Dependency] private AuThreatVoteSystem _auThreatVoteSystem = default!;
         [Dependency] private Content.Server.AU14.ThirdParty.AuThirdPartySystem _auThirdParty = default!;
@@ -70,6 +72,28 @@ namespace Content.Server.GameTicking
                 return _platoonSpawnRuleSystem.SelectedOpforPlatoon;
 
             return null;
+        }
+
+        private ScenarioPlanValidationRequest BuildScenarioPlanRuntimeRequest(string? presetId, int playerCount)
+        {
+            return new ScenarioPlanValidationRequest(
+                presetId ?? string.Empty,
+                playerCount,
+                _platoonSpawnRuleSystem.SelectedGovforPlatoon?.ID,
+                _platoonSpawnRuleSystem.SelectedOpforPlatoon?.ID,
+                _auRoundSystem.GetSelectedPlanetId(),
+                _auRoundSystem.GetSelectedPlanet()?.MapId,
+                _auRoundSystem.SelectedThreat?.ID,
+                _auRoundSystem.GetSelectedGovforShip(),
+                _auRoundSystem.GetSelectedOpforShip());
+        }
+
+        private static bool ShouldGenerateScenarioPlanShadow(string? presetId)
+        {
+            return presetId != null &&
+                   (presetId.Equals("DistressSignal", StringComparison.OrdinalIgnoreCase) ||
+                    presetId.Equals("Insurgency", StringComparison.OrdinalIgnoreCase) ||
+                    presetId.Equals("ColonyFall", StringComparison.OrdinalIgnoreCase));
         }
 
         /// <summary>
@@ -259,6 +283,22 @@ namespace Content.Server.GameTicking
                 _auJobSelectionSystem.AssignThreatAndThirdPartyJobs(assignmentProfiles);
             }
 
+            if (ShouldGenerateScenarioPlanShadow(presetId))
+            {
+                try
+                {
+                    _scenarioPlan.GenerateShadowPlan(
+                        BuildScenarioPlanRuntimeRequest(presetId, assignmentProfiles.Count),
+                        usesPostRoundstartThreatVote
+                            ? "RoundStartDeferredThreatVotePrepared"
+                            : "RoundStartThreatAssignmentPrepared");
+                }
+                catch (Exception scenarioEx)
+                {
+                    Log.Error($"GenerateShadowPlan threw - round will continue without a shadow Scenario Plan. {scenarioEx}");
+                }
+            }
+
             var spawnableStations = GetSpawnableStations();
             var assignedJobs = _stationJobs.AssignJobs(assignmentProfiles, spawnableStations);
 
@@ -266,11 +306,12 @@ namespace Content.Server.GameTicking
             // EXCEPTION_TOLERANCE catch (only enabled in Release/Tools builds), which calls
             // RestartRound() — making the round appear to "instantly restart at start" in
             // production. Wrap the threat spawn so a single subsystem can't take the round down.
-            if (!usesPostRoundstartThreatVote && _auRoundSystem._selectedthreat != null)
+            var selectedThreat = _auRoundSystem.SelectedThreat;
+            if (!usesPostRoundstartThreatVote && selectedThreat != null)
             {
                 try
                 {
-                    _auThreatSystem.SpawnThreatAtRoundStart(_auRoundSystem._selectedthreat, DefaultMap, assignedJobs);
+                    _auThreatSystem.SpawnThreatAtRoundStart(selectedThreat, DefaultMap, assignedJobs);
                 }
                 catch (Exception threatEx)
                 {
@@ -280,7 +321,8 @@ namespace Content.Server.GameTicking
                         Log.Warning($"Removed {removed} threat assignment(s) after threat spawning failed so overflow assignment can handle those players.");
                 }
             }
-            else {
+            else
+            {
                 Log.Debug("SpawnThreatAtRoundStart debug — no threat selected, skipping threat spawn.");
             }
 
@@ -360,19 +402,24 @@ namespace Content.Server.GameTicking
                         Log.Warning($"Removed {removed} held threat assignment(s) after threat vote start failed.");
                 }
             }
-            else if (_auRoundSystem._selectedthreat != null)
+            if (!threatVotePrepared)
             {
+                selectedThreat = _auRoundSystem.SelectedThreat;
+                if (selectedThreat != null)
+                {
                 try
                 {
-                    _auThirdParty.StartThirdPartySpawning(_auRoundSystem._selectedthreat, assignedJobs);
+                    _auThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
                 }
                 catch (Exception thirdPartyEx)
                 {
                     Log.Error($"StartThirdPartySpawning threw — round will continue without third-party spawn. {thirdPartyEx}");
                 }
             }
-            else {
+                else
+                {
                 Log.Debug("StartThirdPartySpawning debug — no threat selected, skipping third-party spawn.");
+            }
             }
 
             // Allow rules to add roles to players who have been spawned in. (For example, on-station traitors)
