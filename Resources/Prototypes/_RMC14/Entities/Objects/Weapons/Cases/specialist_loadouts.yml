@@ -306,13 +306,12 @@
     - id: RMCBackpackBroiler
     - id: RMCWeaponFlamerSpec
     - id: RMCTankFlamerLarge
+    - id: RMCTankFlamerlargeB
+    - id: RMCTankFlamerlargeX
     - id: RMCPouchFuelTank
     - id: CMFireExtinguisher
     - id: CMFireExtinguisherPortable
-    - id: RMCMK80
-    - id: CMMagazinePistolMK80
-      amount: 2
-    - id: RMCBinoculars
+    - id: RMCBinoculars #Note, removed the MK80 (VP-78) and it's two mags since most factions don't have access to further ammo (bar TWE)
   - type: CMChangeUserOnVend
     addComponents:
     - type: PyroWhitelist
