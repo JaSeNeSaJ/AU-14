@@ -27,7 +27,7 @@
         RMCSkillVehicles: 1
         RMCSkillDomestics: 1
         RMCSkillEngineer: 4
-        RMCSkillFirearms: 2
+        RMCSkillFirearms: 1
         RMCSkillConstruction: 4
         RMCSkillPowerLoader: 2
     - type: JobPrefix

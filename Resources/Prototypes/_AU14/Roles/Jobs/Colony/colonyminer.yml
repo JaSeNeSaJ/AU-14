@@ -24,7 +24,7 @@
         RMCSkillFireman: 2
         RMCSkillVehicles: 2
         RMCSkillDomestics: 1
-        RMCSkillFirearms: 2
+        RMCSkillFirearms: 1
     - type: JobPrefix
       prefix: au14-job-prefix-civilianminer
     - type: TacticalMapIcon
