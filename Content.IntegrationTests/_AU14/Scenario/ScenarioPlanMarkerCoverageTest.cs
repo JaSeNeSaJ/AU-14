@@ -27,9 +27,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
     private const string SelectedThreatAssignmentPreset = "Prometheus";
     private const string ColonyCivilianJobId = "AU14JobCivilianColonist";
     private const string StandaloneCooldownMarkerId = "scenario-plan-cooldown";
-    private static readonly ProtoId<GamePresetPrototype> InsurgencyPreset = "Insurgency";
-    private static readonly ProtoId<GamePresetPrototype> DistressSignalPreset = "DistressSignal";
-    private static readonly ProtoId<GamePresetPrototype> ColonyFallPreset = "ColonyFall";
+    private const string InsurgencyPreset = "Insurgency";
+    private const string DistressSignalPreset = "DistressSignal";
+    private const string ColonyFallPreset = "ColonyFall";
     private const string DistressSignalSeededSlicePlanetId = "CMUPlanetHopesRetreat";
     private const string ColonyFallSeededSlicePlanetId = "AUPlanetShepherdsPride";
     private static readonly ProtoId<ThreatPrototype> SelectedThreatAssignmentThreat = "XenoThreat";
@@ -40,9 +40,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
     private static readonly ProtoId<ThreatPrototype> CustomMarkerThreat = "cultistThreatOnMarker";
     private static readonly ProtoId<ThreatPrototype> WendigoThreat = "wendigoThreat";
     private static readonly ProtoId<AuThirdPartyPrototype> GroundThirdParty = "USArmyAlt";
-    private static readonly ProtoId<AuThirdPartyPrototype> StandaloneGroundThirdParty = "ScenarioPlanStandaloneThirdParty";
-    private static readonly ProtoId<AuThirdPartyPrototype> StandaloneCooldownThirdParty = "ScenarioPlanStandaloneCooldownThirdParty";
-    private static readonly ProtoId<AuThirdPartyPrototype> ParachuteThirdParty = "ScenarioPlanParachuteThirdParty";
+    private const string StandaloneGroundThirdParty = "ScenarioPlanStandaloneThirdParty";
+    private const string StandaloneCooldownThirdParty = "ScenarioPlanStandaloneCooldownThirdParty";
+    private const string ParachuteThirdParty = "ScenarioPlanParachuteThirdParty";
     private static readonly ProtoId<AuThirdPartyPrototype> DropshipThirdParty = "WYPMCParty";
     private static readonly EntProtoId ThreatEntityMarker = "threatentityspawnmarker";
     private static readonly EntProtoId ThreatLeaderMarker = "threatleaderspawnmarker";
@@ -55,11 +55,11 @@ public sealed class ScenarioPlanMarkerCoverageTest
     private static readonly EntProtoId ThirdPartyEntityMarker = "thirdpartyentityspawnmarker";
     private static readonly EntProtoId ThirdPartyLeaderMarker = "thirdpartyleaderspawnmarker";
     private static readonly EntProtoId ThirdPartyMemberMarker = "thirdpartymemberspawnmarker";
-    private static readonly EntProtoId StandaloneThirdPartyLeaderMarker = "ScenarioPlanStandaloneThirdPartyLeaderMarker";
-    private static readonly EntProtoId StandaloneThirdPartyMemberMarker = "ScenarioPlanStandaloneThirdPartyMemberMarker";
-    private static readonly EntProtoId StandaloneThirdPartyCooldownLeaderMarker = "ScenarioPlanStandaloneThirdPartyCooldownLeaderMarker";
-    private static readonly EntProtoId StandaloneThirdPartyCooldownMemberMarker = "ScenarioPlanStandaloneThirdPartyCooldownMemberMarker";
-    private static readonly EntProtoId StandaloneClfCivilianMarker = "ScenarioPlanStandaloneClfCivilianMarker";
+    private const string StandaloneThirdPartyLeaderMarker = "ScenarioPlanStandaloneThirdPartyLeaderMarker";
+    private const string StandaloneThirdPartyMemberMarker = "ScenarioPlanStandaloneThirdPartyMemberMarker";
+    private const string StandaloneThirdPartyCooldownLeaderMarker = "ScenarioPlanStandaloneThirdPartyCooldownLeaderMarker";
+    private const string StandaloneThirdPartyCooldownMemberMarker = "ScenarioPlanStandaloneThirdPartyCooldownMemberMarker";
+    private const string StandaloneClfCivilianMarker = "ScenarioPlanStandaloneClfCivilianMarker";
     private static readonly EntProtoId ScenarioClfSafehouseMarker = "scenarioclfsafehousespawnmarker";
     private static readonly EntProtoId CultistCfLeaderMarker = "cultistcfthreatleaderspawnmarker";
     private static readonly EntProtoId CultistCfMemberMarker = "cultistcfthreatmemberspawnmarker";
@@ -67,9 +67,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
     private static readonly EntProtoId CivilianColonistSpawnPoint = "AU14SpawnPointCivilianColonist";
     private static readonly EntProtoId ScenarioClfCivilianColonistSpawnMarker = "ScenarioClfCivilianColonistSpawnMarker";
     private static readonly EntProtoId SafehouseMarker = "safehousemarker";
-    private static readonly ProtoId<VotingChoicesPrototype> PrototypeShapeVotingChoices = "ScenarioPlanPrototypeShapeVotingChoices";
-    private static readonly ProtoId<RoundGroupPrototype> PrototypeShapeRoundGroup = "ScenarioPlanPrototypeShapeRoundGroup";
-    private static readonly ProtoId<SpawnMarkerPrototype> PrototypeShapeSpawnMarker = "ScenarioPlanPrototypeShapeSpawnMarker";
+    private const string PrototypeShapeVotingChoices = "ScenarioPlanPrototypeShapeVotingChoices";
+    private const string PrototypeShapeRoundGroup = "ScenarioPlanPrototypeShapeRoundGroup";
+    private const string PrototypeShapeSpawnMarker = "ScenarioPlanPrototypeShapeSpawnMarker";
     private static readonly ProtoId<SpawnMarkerPrototype> ThreatLeaderGenericSpawnMarker = "ThreatLeaderGenericSpawnMarker";
     private static readonly ProtoId<SpawnMarkerPrototype> ThreatMemberGenericSpawnMarker = "ThreatMemberGenericSpawnMarker";
     private static readonly ProtoId<SpawnMarkerPrototype> ThreatEntityGenericSpawnMarker = "ThreatEntityGenericSpawnMarker";
@@ -384,7 +384,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 - type: gameMap
   id: ScenarioPlanShadowFallbackMap
   mapName: Scenario Plan Shadow Fallback Test Map
-  mapPath: /Maps/_CMU14/ScenarioPlanShadowFallbackNoMarkers.yml
+  mapPath: /Maps/Test/empty.yml
   minPlayers: 0
   stations: {}
 
@@ -469,73 +469,73 @@ public sealed class ScenarioPlanMarkerCoverageTest
     {
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AUPlanetCorsatStation",
                 new[] { SelectedThreatAssignmentThreat.Id })
             .SetName("DistressSignal Corsat xeno-only package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AUPlanetTrijent",
                 new[] { SelectedThreatAssignmentThreat.Id })
             .SetName("DistressSignal Trijent xeno-only package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AuPlanetKutjevo",
                 new[] { SelectedThreatAssignmentThreat.Id })
             .SetName("DistressSignal Kutjevo xeno-only package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AuPlanetShivasSnowball",
                 new[] { SelectedThreatAssignmentThreat.Id })
             .SetName("DistressSignal Shivas xeno-only package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AUPlanetSorokyne",
                 new[] { SelectedThreatAssignmentThreat.Id, DistressSignalAbominationThreat.Id })
             .SetName("DistressSignal Sorokyne xeno-abomination package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AUPlanetLV327",
                 new[] { SelectedThreatAssignmentThreat.Id, DistressSignalAbominationThreat.Id })
             .SetName("DistressSignal LV327 xeno-abomination package slice matches adapter");
         yield return new TestCaseData(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 "AuPlanetChances",
                 new[] { DistressSignalAbominationThreat.Id, SelectedThreatAssignmentThreat.Id })
             .SetName("DistressSignal Chances abomination-xeno package slice matches adapter");
         yield return new TestCaseData(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 "AUPlanetStableGarrison",
                 new[] { ColonyFallCultistThreat.Id, ColonyFallXenoThreat.Id, WendigoThreat.Id, ColonyFallAbominationThreat.Id })
             .SetName("ColonyFall Stable Garrison package slice matches adapter");
         yield return new TestCaseData(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 "AUPlanetLV327",
                 new[] { ColonyFallCultistThreat.Id, ColonyFallXenoThreat.Id, WendigoThreat.Id })
             .SetName("ColonyFall LV327 package slice matches adapter");
         yield return new TestCaseData(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 "AUPlanetSorokyne",
                 new[] { ColonyFallCultistThreat.Id, WendigoThreat.Id })
             .SetName("ColonyFall Sorokyne package slice matches adapter");
         yield return new TestCaseData(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 "CMUPlanetLament",
                 new[] { CustomMarkerThreat.Id, ColonyFallXenoThreat.Id, WendigoThreat.Id, ColonyFallAbominationThreat.Id })
             .SetName("ColonyFall Lament marker-cultist package slice matches adapter");
         yield return new TestCaseData(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 "CMUPlanetHopesRetreat",
                 new[] { CustomMarkerThreat.Id, ColonyFallAbominationThreat.Id })
             .SetName("ColonyFall Hope's Retreat marker-cultist package slice matches adapter");
@@ -1490,7 +1490,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             Assert.That(prototypeForce, Is.Not.Null);
 
             var request = new ScenarioPlanValidationRequest(
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 playerCount,
                 SelectedThreatId: ColonyFallXenoThreat.Id);
 
@@ -2411,9 +2411,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
         {
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var package = prototypes.Index(PrototypeShapeVotingChoices);
-            var force = prototypes.Index(PrototypeShapeRoundGroup);
-            var marker = prototypes.Index(PrototypeShapeSpawnMarker);
+            var package = prototypes.Index<VotingChoicesPrototype>(PrototypeShapeVotingChoices);
+            var force = prototypes.Index<RoundGroupPrototype>(PrototypeShapeRoundGroup);
+            var marker = prototypes.Index<SpawnMarkerPrototype>(PrototypeShapeSpawnMarker);
             var spawnPlan = force.Spawn;
 
             Assert.Multiple(() =>
@@ -2619,10 +2619,10 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var package = prototypes.Index(InsurgencyVotingChoices);
             var force = prototypes.Index(InsurgencyClfRoundGroup);
             var spawnPlan = force.Spawn;
-            var preset = prototypes.Index(InsurgencyPreset);
-            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset.Id);
+            var preset = prototypes.Index<GamePresetPrototype>(InsurgencyPreset);
+            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset);
             var plan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    InsurgencyPreset.Id,
+                    InsurgencyPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -2640,7 +2640,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(package.Presets, Does.Contain(InsurgencyPreset.Id));
+                Assert.That(package.Presets, Does.Contain(InsurgencyPreset));
                 Assert.That(package.SupportedPlanets, Is.EquivalentTo(preset.SupportedPlanets));
                 Assert.That(package.Groups.Select(groupId => groupId.Id), Does.Contain(force.ID));
                 Assert.That(plan.DeferredForceChoices.Select(choice => choice.ChoiceId), Does.Contain("GovforPlatoon"));
@@ -2679,9 +2679,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset.Id);
+            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset);
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    InsurgencyPreset.Id,
+                    InsurgencyPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -2690,7 +2690,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             Assert.That(
                 generator.TryResolveVotingChoicesPrototype(
                     InsurgencyVotingChoices.Id,
-                    InsurgencyPreset.Id,
+                    InsurgencyPreset,
                     planetId,
                     planet.MapId,
                     MarkerValidationPlayerCount,
@@ -2737,7 +2737,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{DistressSignalSeededSlicePlanetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: DistressSignalSeededSlicePlanetId,
                     MapId: planet.MapId))
@@ -2746,7 +2746,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             Assert.That(
                 generator.TryResolveVotingChoicesPrototype(
                     DistressSignalVotingChoices.Id,
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     DistressSignalSeededSlicePlanetId,
                     planet.MapId,
                     MarkerValidationPlayerCount,
@@ -2758,7 +2758,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             var packageReport = generator.ValidateVotingChoicesPrototypeCoverage(
                 DistressSignalVotingChoices.Id,
-                DistressSignalPreset.Id,
+                DistressSignalPreset,
                 DistressSignalSeededSlicePlanetId,
                 planet.MapId,
                 MarkerValidationPlayerCount);
@@ -2777,7 +2777,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(package.Presets, Does.Contain(DistressSignalPreset.Id));
+                Assert.That(package.Presets, Does.Contain(DistressSignalPreset));
                 Assert.That(package.SupportedPlanets, Does.Contain(DistressSignalSeededSlicePlanetId));
                 Assert.That(package.Groups, Is.Empty);
                 Assert.That(package.DeferredForceChoices, Is.Empty);
@@ -2842,7 +2842,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var preset = prototypes.Index(ColonyFallPreset);
+            var preset = prototypes.Index<GamePresetPrototype>(ColonyFallPreset);
             var playerCount = GetPresetValidPlayerCount(preset);
             Assert.That(
                 TryGetPlanet(prototypes, componentFactory, ColonyFallSeededSlicePlanetId, out var planet),
@@ -2850,7 +2850,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{ColonyFallSeededSlicePlanetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    ColonyFallPreset.Id,
+                    ColonyFallPreset,
                     playerCount,
                     PlanetId: ColonyFallSeededSlicePlanetId,
                     MapId: planet.MapId))
@@ -2859,7 +2859,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             Assert.That(
                 generator.TryResolveVotingChoicesPrototype(
                     ColonyFallVotingChoices.Id,
-                    ColonyFallPreset.Id,
+                    ColonyFallPreset,
                     ColonyFallSeededSlicePlanetId,
                     planet.MapId,
                     playerCount,
@@ -2871,7 +2871,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             var packageReport = generator.ValidateVotingChoicesPrototypeCoverage(
                 ColonyFallVotingChoices.Id,
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 ColonyFallSeededSlicePlanetId,
                 planet.MapId,
                 playerCount);
@@ -2894,7 +2894,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             Assert.Multiple(() =>
             {
-                Assert.That(package.Presets, Does.Contain(ColonyFallPreset.Id));
+                Assert.That(package.Presets, Does.Contain(ColonyFallPreset));
                 Assert.That(package.SupportedPlanets, Does.Contain(ColonyFallSeededSlicePlanetId));
                 Assert.That(package.Groups, Is.Empty);
                 Assert.That(package.DeferredForceChoices, Is.Empty);
@@ -2910,7 +2910,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.That(validatedPlan.Forces.Count, Is.EqualTo(prototypePlan.Forces.Count));
                 Assert.That(validatedPlan.DeferredForceChoices.Count, Is.EqualTo(prototypePlan.DeferredForceChoices.Count));
                 Assert.That(validatedPlan.SpawnMarkers, Is.Not.Empty);
-                Assert.That(prototypeThreatChoice.ChoiceId, Is.EqualTo($"DeferredThreat:{ColonyFallPreset.Id}:{ColonyFallSeededSlicePlanetId}"));
+                Assert.That(prototypeThreatChoice.ChoiceId, Is.EqualTo($"DeferredThreat:{ColonyFallPreset}:{ColonyFallSeededSlicePlanetId}"));
                 Assert.That(
                     prototypeThreatChoice.Candidates.Select(candidate => candidate.SourcePrototypeId),
                     Is.EqualTo(expectedThreatCandidates));
@@ -3061,7 +3061,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var preset = prototypes.Index(ColonyFallPreset);
+            var preset = prototypes.Index<GamePresetPrototype>(ColonyFallPreset);
             var playerCount = GetPresetValidPlayerCount(preset);
             const string planetId = "AuPlanetChances";
             Assert.That(
@@ -3074,7 +3074,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             Assert.That(
                 generator.TryResolveVotingBackup(
-                    ColonyFallPreset.Id,
+                    ColonyFallPreset,
                     planetId,
                     planet.MapId,
                     playerCount,
@@ -3109,7 +3109,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
 
-            foreach (var presetId in new[] { DistressSignalPreset.Id, InsurgencyPreset.Id, ColonyFallPreset.Id })
+            foreach (var presetId in new[] { DistressSignalPreset, InsurgencyPreset, ColonyFallPreset })
             {
                 var preset = prototypes.Index<GamePresetPrototype>(presetId);
                 var playerCount = GetPresetValidPlayerCount(preset);
@@ -3342,7 +3342,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset.Id);
+            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, InsurgencyPreset);
 
             Assert.That(
                 generator.TryResolveRoundGroupPrototype(
@@ -3355,7 +3355,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             Assert.That(prototypeForce, Is.Not.Null);
 
             var adaptedForce = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    InsurgencyPreset.Id,
+                    InsurgencyPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3426,7 +3426,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3470,7 +3470,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3516,7 +3516,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3562,7 +3562,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var adaptedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3604,7 +3604,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var spawnPlan = force.Spawn;
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, MarkerValidationPlayerCount);
             var request = new ScenarioPlanValidationRequest(
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 MarkerValidationPlayerCount,
                 SelectedThreatId: threat.ID);
 
@@ -3660,7 +3660,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var spawnPlan = force.Spawn;
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, MarkerValidationPlayerCount);
             var request = new ScenarioPlanValidationRequest(
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 MarkerValidationPlayerCount,
                 SelectedThreatId: threat.ID);
 
@@ -3720,7 +3720,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var spawnPlan = force.Spawn;
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, MarkerValidationPlayerCount);
             var request = new ScenarioPlanValidationRequest(
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 MarkerValidationPlayerCount,
                 SelectedThreatId: threat.ID);
 
@@ -3816,7 +3816,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
         {
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var preset = prototypes.Index(ColonyFallPreset);
+            var preset = prototypes.Index<GamePresetPrototype>(ColonyFallPreset);
             var playerCount = GetPresetValidPlayerCount(preset);
             var threat = prototypes.Index(ColonyFallAbominationThreat);
             var partySpawn = prototypes.Index(threat.RoundStartSpawn);
@@ -3824,7 +3824,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var spawnPlan = force.Spawn;
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, playerCount);
             var request = new ScenarioPlanValidationRequest(
-                ColonyFallPreset.Id,
+                ColonyFallPreset,
                 playerCount,
                 SelectedThreatId: threat.ID);
 
@@ -3880,9 +3880,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var force = prototypes.Index(DistressSignalWypmcPartyRoundGroup);
             var spawnPlan = force.Spawn;
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, playerCount: 40);
-            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, DistressSignalPreset.Id);
+            var (planetId, planet) = GetFirstSupportedPlanet(prototypes, componentFactory, DistressSignalPreset);
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     MarkerValidationPlayerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -3969,7 +3969,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4039,7 +4039,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4109,7 +4109,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4179,7 +4179,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4249,7 +4249,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4319,7 +4319,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 $"{planetId} did not resolve to a planet map prototype.");
 
             var generatedPlan = generator.GeneratePlans(new ScenarioPlanValidationRequest(
-                    DistressSignalPreset.Id,
+                    DistressSignalPreset,
                     playerCount,
                     PlanetId: planetId,
                     MapId: planet.MapId))
@@ -4372,7 +4372,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
         string expectedMarkerSource)
     {
         await AssertSimpleThirdPartyRoundGroupPrototypesMatchLegacyPartySpawn(
-            DistressSignalPreset.Id,
+            DistressSignalPreset,
             SelectedThreatAssignmentThreat.Id,
             thirdPartyId,
             RoundGroupId,

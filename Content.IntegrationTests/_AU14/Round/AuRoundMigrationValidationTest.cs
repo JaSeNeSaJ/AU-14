@@ -15,7 +15,7 @@ namespace Content.IntegrationTests._AU14.Round;
 [TestFixture]
 public sealed class AuRoundMigrationValidationTest
 {
-    private static readonly ProtoId<GamePresetPrototype> PrometheusPreset = "Prometheus";
+    private const string PrometheusPreset = "Prometheus";
 
     private static IEnumerable<TestCaseData> MigratedPresetCases()
     {
@@ -158,12 +158,12 @@ public sealed class AuRoundMigrationValidationTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var ticker = server.System<GameTicker>();
             var round = server.System<AuRoundSystem>();
-            var preset = prototypes.Index(PrometheusPreset);
+            var preset = prototypes.Index<GamePresetPrototype>(PrometheusPreset);
 
             ticker.SetGamePreset(preset);
 
-            Assert.That(ticker.Preset?.ID, Is.EqualTo(PrometheusPreset.Id));
-            Assert.That(round.SelectedPreset?.ID, Is.EqualTo(PrometheusPreset.Id));
+            Assert.That(ticker.Preset?.ID, Is.EqualTo(PrometheusPreset));
+            Assert.That(round.SelectedPreset?.ID, Is.EqualTo(PrometheusPreset));
         });
 
         await pair.CleanReturnAsync();

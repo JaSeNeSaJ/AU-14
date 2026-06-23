@@ -567,6 +567,11 @@
   hidden: false
   setPreference: true
   basePlaytimeTracker: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
 
 - type: job
   parent: AU14JobPlatCoBase
@@ -574,6 +579,11 @@
   hidden: false
   setPreference: true
   basePlaytimeTracker: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
 
 - type: job
   parent: AU14JobPlatOpBase
@@ -581,6 +591,11 @@
   hidden: false
   setPreference: true
   basePlaytimeTracker: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
 
 - type: job
   parent: AU14JobSectionSergeantBase
@@ -588,6 +603,11 @@
   # hidden: false # plt. sgt. is disabled
   # setPreference: true # don't show in loadout menu
   basePlaytimeTracker: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
 
 - type: job
   parent: AU14JobSquadSergeantBase # parent does the heavy lifting
@@ -595,6 +615,11 @@
   hidden: false
   setPreference: true
   basePlaytimeTracker: true
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: RMCSpeechBubbleSpecificStyle
+      speechStyleClass: commanderSpeech
 
 - type: job
   parent: AU14JobadvisorBase
