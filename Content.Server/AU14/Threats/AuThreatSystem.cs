@@ -29,10 +29,17 @@ public sealed partial class AuThreatSystem : EntitySystem
 {
     private static readonly ProtoId<JobPrototype> ThreatLeaderJobId = new("AU14JobThreatLeader");
     private static readonly ProtoId<JobPrototype> ThreatMemberJobId = new("AU14JobThreatMember");
+    private static readonly ProtoId<NpcFactionPrototype> ThreatNpcFaction = new("THREAT");
+    private static readonly IReadOnlyDictionary<string, JobScaleEntry> EmptyScaling = new Dictionary<string, JobScaleEntry>();
+    private static readonly ThreatMarkerType[] ThreatMarkerTypes = Enum.GetValues<ThreatMarkerType>();
 
+    [Dependency] private AuRoundSystem _auRound = default!;
+    [Dependency] private AuThreatVoteSystem _threatVote = default!;
+    [Dependency] private GameTicker _ticker = default!;
     [Dependency] private IEntityManager _entityManager = default!;
     [Dependency] private SharedMindSystem _mindSystem = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private PlatoonSpawnRuleSystem _platoonSpawnRule = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private ScenarioPlanSystem _scenarioPlan = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -41,12 +48,15 @@ public sealed partial class AuThreatSystem : EntitySystem
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    public readonly ProtoId<NpcFactionPrototype> threatnpcfaction = "THREAT";
+
+    private readonly ISawmill _sawmill = Logger.GetSawmill("au14.threat");
 
     internal sealed record PendingThreatSpawnDebugView(
         string ThreatId,
         TimeSpan FireAt,
         ResolvedThreatForcePlan? PlannedForce);
+
+    private readonly record struct ThreatAssignmentCounts(int Leaders, int Members);
 
     private readonly record struct ThreatSpawnExecutionResult(
         ResolvedThreatForcePlan? ResolvedForce,
@@ -78,11 +88,20 @@ public sealed partial class AuThreatSystem : EntitySystem
         return job == ThreatLeaderJobId || job == ThreatMemberJobId;
     }
 
-    private static int CountAssignedJobs(
-        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
-        ProtoId<JobPrototype> job)
+    private static ThreatAssignmentCounts CountThreatAssignments(
+        Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
     {
-        return assignedJobs.Count(pair => pair.Value.Item1 == job);
+        var leaders = 0;
+        var members = 0;
+        foreach (var (_, (job, _)) in assignedJobs)
+        {
+            if (job == ThreatLeaderJobId)
+                leaders++;
+            else if (job == ThreatMemberJobId)
+                members++;
+        }
+
+        return new ThreatAssignmentCounts(leaders, members);
     }
 
     private static string FormatSpawnBodies(IReadOnlyDictionary<string, int> bodies)
@@ -121,17 +140,15 @@ public sealed partial class AuThreatSystem : EntitySystem
         if (voteHeldPlayers == null || voteHeldPlayers.Count == 0)
             return;
 
-        var threatVote = _entityManager.EntitySysManager.GetEntitySystem<AuThreatVoteSystem>();
-        threatVote.UnblockRoundJoinsForPlayers(voteHeldPlayers);
+        _threatVote.UnblockRoundJoinsForPlayers(voteHeldPlayers);
 
         if (!respawn)
         {
-            Logger.GetSawmill("au14.threat").Debug(
+            _sawmill.Debug(
                 $"[AuThreatSystem] Released {voteHeldPlayers.Count} held threat vote player(s) after {reason} for '{threatId}'.");
             return;
         }
 
-        var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
         foreach (var playerId in voteHeldPlayers)
         {
             if (!_playerManager.TryGetSessionById(playerId, out var session) ||
@@ -140,9 +157,9 @@ public sealed partial class AuThreatSystem : EntitySystem
                 continue;
             }
 
-            Logger.GetSawmill("au14.threat").Info(
+            _sawmill.Info(
                 $"[AuThreatSystem] Releasing held threat vote player {session.Name} ({playerId}) for '{threatId}' because {reason}; returning them to lobby.");
-            ticker.Respawn(session);
+            _ticker.Respawn(session);
         }
     }
 
@@ -176,7 +193,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             }
             catch (Exception ex)
             {
-                Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Delayed threat spawn threw: {ex}");
+                _sawmill.Error($"[AuThreatSystem] Delayed threat spawn threw: {ex}");
                 ReleaseVoteHeldPlayers(pending.VoteHeldPlayers, pending.Threat.ID, "delayed threat spawn threw", true);
             }
         }
@@ -198,20 +215,23 @@ public sealed partial class AuThreatSystem : EntitySystem
     {
         if (threat == null)
         {
-            Logger.GetSawmill("au14.threat").Debug("[AuThreatSystem] No threat selected for round start, skipping threat spawn.");
+            _sawmill.Debug("[AuThreatSystem] No threat selected for round start, skipping threat spawn.");
             return;
         }
 
-        Logger.GetSawmill("au14.threat").Debug(
-            $"[AuThreatSystem] Roundstart threat spawn requested: threat={threat.ID}, map={mapId}, assignedJobs={assignedJobs.Count}, threatLeaders={CountAssignedJobs(assignedJobs, ThreatLeaderJobId)}, threatMembers={CountAssignedJobs(assignedJobs, ThreatMemberJobId)}, roundStartSpawn={threat.RoundStartSpawn}.");
+        if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+        {
+            var assignmentCounts = CountThreatAssignments(assignedJobs);
+            _sawmill.Debug(
+                $"[AuThreatSystem] Roundstart threat spawn requested: threat={threat.ID}, map={mapId}, assignedJobs={assignedJobs.Count}, threatLeaders={assignmentCounts.Leaders}, threatMembers={assignmentCounts.Members}, roundStartSpawn={threat.RoundStartSpawn}.");
+        }
 
-        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
-        var isColonyFall = string.Equals(roundSystem.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
+        var isColonyFall = string.Equals(_auRound.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
 
         if (isColonyFall)
         {
             var delaySeconds = _random.NextDouble() * (threat.SpawnDelayMax - threat.SpawnDelayMin) + threat.SpawnDelayMin;
-            Logger.GetSawmill("au14.threat").Debug($"[AuThreatSystem] Colony Fall threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
+            _sawmill.Debug($"[AuThreatSystem] Colony Fall threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
             SchedulePendingThreatSpawn(
                 threat,
                 mapId,
@@ -234,21 +254,24 @@ public sealed partial class AuThreatSystem : EntitySystem
     {
         if (threat == null)
         {
-            Logger.GetSawmill("au14.threat").Debug("[AuThreatSystem] No threat selected from vote, skipping threat spawn.");
+            _sawmill.Debug("[AuThreatSystem] No threat selected from vote, skipping threat spawn.");
             ReleaseVoteHeldPlayers(heldPlayers, "null", "no threat was selected", true);
             return;
         }
 
-        Logger.GetSawmill("au14.threat").Debug(
-            $"[AuThreatSystem] Voted threat spawn requested: threat={threat.ID}, map={mapId}, assignedJobs={assignedJobs.Count}, heldPlayers={heldPlayers.Count}, threatLeaders={CountAssignedJobs(assignedJobs, ThreatLeaderJobId)}, threatMembers={CountAssignedJobs(assignedJobs, ThreatMemberJobId)}, roundStartSpawn={threat.RoundStartSpawn}.");
+        if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+        {
+            var assignmentCounts = CountThreatAssignments(assignedJobs);
+            _sawmill.Debug(
+                $"[AuThreatSystem] Voted threat spawn requested: threat={threat.ID}, map={mapId}, assignedJobs={assignedJobs.Count}, heldPlayers={heldPlayers.Count}, threatLeaders={assignmentCounts.Leaders}, threatMembers={assignmentCounts.Members}, roundStartSpawn={threat.RoundStartSpawn}.");
+        }
 
-        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
-        var isColonyFall = string.Equals(roundSystem.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
+        var isColonyFall = string.Equals(_auRound.SelectedPreset?.ID, "ColonyFall", StringComparison.OrdinalIgnoreCase);
 
         if (isColonyFall)
         {
             var delaySeconds = _random.NextDouble() * (threat.SpawnDelayMax - threat.SpawnDelayMin) + threat.SpawnDelayMin;
-            Logger.GetSawmill("au14.threat").Debug($"[AuThreatSystem] Colony Fall voted threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
+            _sawmill.Debug($"[AuThreatSystem] Colony Fall voted threat '{threat.ID}' will spawn in {delaySeconds:F1}s.");
             SchedulePendingThreatSpawn(
                 threat,
                 mapId,
@@ -301,7 +324,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 force != null)
             {
                 pending.PlannedForce = force;
-                Logger.GetSawmill("au14.threat").Debug(
+                _sawmill.Debug(
                     $"[AuThreatSystem] Planned delayed threat force '{force.ForceId}' for threat '{pending.Threat.ID}'.");
                 return;
             }
@@ -309,7 +332,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             var backupDiagnostic = coveredScenarioForce
                 ? "covered Round Groups do not use legacy marker lookup"
                 : "delayed spawn will use live resolution or legacy markers";
-            Logger.GetSawmill("au14.threat").Warning(
+            _sawmill.Warning(
                 $"[AuThreatSystem] Could not resolve delayed threat Force Plan for '{pending.Threat.ID}'; {backupDiagnostic}. {diagnostic}");
         }
         catch (Exception ex)
@@ -317,7 +340,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             var backupDiagnostic = coveredScenarioForce
                 ? "covered Round Groups do not use legacy marker lookup"
                 : "delayed spawn will use live resolution or legacy markers";
-            Logger.GetSawmill("au14.threat").Error(
+            _sawmill.Error(
                 $"[AuThreatSystem] Delayed threat Force Plan resolution threw for '{pending.Threat.ID}'; {backupDiagnostic}. {ex}");
         }
     }
@@ -341,23 +364,24 @@ public sealed partial class AuThreatSystem : EntitySystem
         bool requireObserverForVotePlayers = false,
         ResolvedThreatForcePlan? plannedForce = null)
     {
+        var threatId = threat.ID;
         var partySpawn = threat.RoundStartSpawn;
         if (string.IsNullOrWhiteSpace(partySpawn))
         {
-            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
+            _sawmill.Debug($"[DEBUG] Threat '{threat.ID}' has no RoundStartSpawn configured, skipping spawn.");
             var removed = RemoveThreatJobAssignments(assignedJobs);
             if (removed > 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with no roundstart spawn so normal overflow assignment can handle them.");
+                _sawmill.Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with no roundstart spawn so normal overflow assignment can handle them.");
             ReleaseVoteHeldPlayers(voteHeldPlayers, threat.ID, "no roundstart spawn was configured", true);
             return new ThreatSpawnExecutionResult(null, false);
         }
         var newPartySpawn = _prototypeManager.TryIndex(partySpawn, out var spawn) ? spawn : null;
         if (newPartySpawn == null)
         {
-            Logger.GetSawmill("au14.threat").Error($"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
+            _sawmill.Error($"[ERROR] Could not find RoundStartSpawn prototype '{partySpawn}' for threat '{threat.ID}'. Skipping threat spawn.");
             var removed = RemoveThreatJobAssignments(assignedJobs);
             if (removed > 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with missing roundstart spawn '{partySpawn}' so normal overflow assignment can handle them.");
+                _sawmill.Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) for threat '{threat.ID}' with missing roundstart spawn '{partySpawn}' so normal overflow assignment can handle them.");
             ReleaseVoteHeldPlayers(voteHeldPlayers, threat.ID, $"roundstart spawn '{partySpawn}' was missing", true);
             return new ThreatSpawnExecutionResult(null, false);
         }
@@ -370,27 +394,38 @@ public sealed partial class AuThreatSystem : EntitySystem
             plannedForce,
             out var scenarioMarkers,
             out var resolvedForce);
-        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
-        var presetId = roundSystem.SelectedPreset?.ID ?? string.Empty;
+        var presetId = _auRound.SelectedPreset?.ID ?? string.Empty;
         if (scenarioMarkers == null &&
             _scenarioPlan.HasMappedHostileRoundGroup(presetId, threat.ID))
         {
-            Logger.GetSawmill("au14.threat").Error(
+            _sawmill.Error(
                 $"[AuThreatSystem] Covered Round Group for threat '{threat.ID}' resolved without live Spawn Markers on map {mapId}; aborting authoritative Scenario Plan threat spawn instead of using legacy marker lookup.");
             var removed = RemoveThreatJobAssignments(assignedJobs);
             if (removed > 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) after authoritative Scenario Plan marker resolution failed.");
+                _sawmill.Warning($"[AuThreatSystem] Removed {removed} threat assignment(s) after authoritative Scenario Plan marker resolution failed.");
             ReleaseVoteHeldPlayers(voteHeldPlayers, threat.ID, "Scenario Plan marker resolution failed", true);
             return new ThreatSpawnExecutionResult(resolvedForce, false);
         }
 
+        var markerCache = new Dictionary<ThreatMarkerType, List<EntityUid>>();
+
         // Helper to get marker entity Uids by marker type
         List<EntityUid> GetMarkers(ThreatMarkerType markerType)
+        {
+            if (markerCache.TryGetValue(markerType, out var cachedMarkers))
+                return cachedMarkers;
+
+            var markers = ResolveMarkers(markerType);
+            markerCache[markerType] = markers;
+            return markers;
+        }
+
+        List<EntityUid> ResolveMarkers(ThreatMarkerType markerType)
         {
             if (scenarioMarkers != null &&
                 scenarioMarkers.TryGetMarkers(markerType.ToString(), out var plannedMarkers))
             {
-                Logger.GetSawmill("au14.threat").Debug(
+                _sawmill.Debug(
                     $"[DEBUG] GetMarkers({markerType}): Using {plannedMarkers.Count} Scenario Plan marker(s) on map {mapId}");
                 return plannedMarkers.ToList();
             }
@@ -406,7 +441,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                         legacyMarkers.Add(uid);
                 }
             }
-            Logger.GetSawmill("au14.threat").Debug(
+            _sawmill.Debug(
                 $"[DEBUG] GetMarkers({markerType}): Found {legacyMarkers.Count} markers with markerId '{markerId}' on map {mapId}");
             return legacyMarkers;
         }
@@ -414,42 +449,44 @@ public sealed partial class AuThreatSystem : EntitySystem
         // --- Spawn entities and collect them for mind assignment ---
         var spawnedLeaders = new List<EntityUid>();
         var spawnedMembers = new List<EntityUid>();
-        Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Begin spawning threat entities for threat: {threat?.ID ?? "null"}");
+        _sawmill.Debug($"[DEBUG] Begin spawning threat entities for threat: {threat?.ID ?? "null"}");
 
         // --- Spawn Together logic ---
         bool spawnTogether = newPartySpawn?.SpawnTogether == true;
-        Dictionary<ThreatMarkerType, List<EntityUid>> markerCache = new();
-        EntityUid? centerMarker = null;
+        Dictionary<ThreatMarkerType, List<EntityUid>> spawnTogetherMarkers = new();
         if (spawnTogether)
         {
             // Gather all markers of all types
             var allMarkers = new List<EntityUid>();
-            foreach (ThreatMarkerType type in System.Enum.GetValues(typeof(ThreatMarkerType)))
+            foreach (var type in ThreatMarkerTypes)
             {
                 allMarkers.AddRange(GetMarkers(type));
             }
 
             if (allMarkers.Count > 0)
             {
-                centerMarker = allMarkers[_random.Next(allMarkers.Count)];
-                var centerCoords = _entityManager.GetComponent<TransformComponent>(centerMarker.Value).Coordinates;
-                foreach (ThreatMarkerType type in System.Enum.GetValues(typeof(ThreatMarkerType)))
+                var centerMarker = allMarkers[_random.Next(allMarkers.Count)];
+                var centerCoords = _entityManager.GetComponent<TransformComponent>(centerMarker).Coordinates;
+                foreach (var type in ThreatMarkerTypes)
                 {
                     var markers = GetMarkers(type);
-                    var filtered = markers.Where(m =>
+                    var filtered = new List<EntityUid>();
+                    foreach (var marker in markers)
                     {
-                        var coords = _entityManager.GetComponent<TransformComponent>(m).Coordinates;
-                        return _transform.InRange(coords, centerCoords, 50f);
-                    }).ToList();
+                        var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
+                        if (_transform.InRange(coords, centerCoords, 50f))
+                            filtered.Add(marker);
+                    }
+
                     // Fallback to all markers if none are in range
-                    markerCache[type] = filtered.Count > 0 ? filtered : markers;
+                    spawnTogetherMarkers[type] = filtered.Count > 0 ? filtered : markers;
                 }
             }
         }
 
         List<EntityUid> GetSpawnMarkers(ThreatMarkerType type)
         {
-            if (spawnTogether && markerCache.TryGetValue(type, out var cached))
+            if (spawnTogether && spawnTogetherMarkers.TryGetValue(type, out var cached))
                 return cached;
             return GetMarkers(type);
         }
@@ -475,7 +512,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 resolvedForce?.SpawnPlan,
                 ThreatMarkerType.Entity,
                 newPartySpawn.EntitiesToSpawn,
-                new Dictionary<string, JobScaleEntry>(),
+                EmptyScaling,
                 playerCount);
             var leaderReq = leaderBodies.Values.Sum();
             var memberReq = memberBodies.Values.Sum();
@@ -483,88 +520,79 @@ public sealed partial class AuThreatSystem : EntitySystem
             var leaderMarkers = GetSpawnMarkers(ThreatMarkerType.Leader);
             var memberMarkers = GetSpawnMarkers(ThreatMarkerType.Member);
             var entityMarkers = GetSpawnMarkers(ThreatMarkerType.Entity);
-            Logger.GetSawmill("au14.threat").Debug(
-                $"[AuThreatSystem] Threat spawn plan for '{threat!.ID}': force={resolvedForce?.ForceId ?? "legacy"}, partySpawn={newPartySpawn!.ID}, leaders[{FormatSpawnBodies(leaderBodies)}] requested={leaderReq} markers={leaderMarkers.Count}, members[{FormatSpawnBodies(memberBodies)}] requested={memberReq} markers={memberMarkers.Count}, entities[{FormatSpawnBodies(entityBodies)}] requested={entityReq} markers={entityMarkers.Count}, assignedThreatLeaders={CountAssignedJobs(assignedJobs, ThreatLeaderJobId)}, assignedThreatMembers={CountAssignedJobs(assignedJobs, ThreatMemberJobId)}.");
+            if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+            {
+                var assignmentCounts = CountThreatAssignments(assignedJobs);
+                _sawmill.Debug(
+                    $"[AuThreatSystem] Threat spawn plan for '{threatId}': force={resolvedForce?.ForceId ?? "legacy"}, partySpawn={newPartySpawn!.ID}, leaders[{FormatSpawnBodies(leaderBodies)}] requested={leaderReq} markers={leaderMarkers.Count}, members[{FormatSpawnBodies(memberBodies)}] requested={memberReq} markers={memberMarkers.Count}, entities[{FormatSpawnBodies(entityBodies)}] requested={entityReq} markers={entityMarkers.Count}, assignedThreatLeaders={assignmentCounts.Leaders}, assignedThreatMembers={assignmentCounts.Members}.");
+            }
 
             if (leaderReq > 0 && leaderMarkers.Count == 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Threat '{threat.ID}' requested {leaderReq} leader body/bodies but found no leader markers on map {mapId}.");
+                _sawmill.Warning($"[AuThreatSystem] Threat '{threatId}' requested {leaderReq} leader body/bodies but found no leader markers on map {mapId}.");
             if (memberReq > 0 && memberMarkers.Count == 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Threat '{threat.ID}' requested {memberReq} member body/bodies but found no member markers on map {mapId}.");
+                _sawmill.Warning($"[AuThreatSystem] Threat '{threatId}' requested {memberReq} member body/bodies but found no member markers on map {mapId}.");
             if (entityReq > 0 && entityMarkers.Count == 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Threat '{threat.ID}' requested {entityReq} entity spawn(s) but found no entity markers on map {mapId}.");
+                _sawmill.Warning($"[AuThreatSystem] Threat '{threatId}' requested {entityReq} entity spawn(s) but found no entity markers on map {mapId}.");
+
+            int SpawnBodies(string protoId, int count, List<EntityUid> markers, List<EntityUid>? spawnedList, string label)
+            {
+                _sawmill.Debug(
+                    $"[DEBUG] Spawning {count} {label}(s) of protoId {protoId} at {markers.Count} markers");
+
+                if (count > markers.Count)
+                {
+                    _sawmill.Warning(
+                        $"[AuThreatSystem] Threat '{threatId}' requested {count} {label} body/bodies for {protoId} but only {markers.Count} marker(s) are available; remaining bodies will not spawn instead of stacking on reused markers.");
+                }
+
+                var spawned = 0;
+                for (var i = 0; i < count && markers.Count > 0; i++)
+                {
+                    var markerIndex = _random.Next(markers.Count);
+                    var marker = markers[markerIndex];
+                    markers.RemoveAt(markerIndex);
+                    var coords = _entityManager.GetComponent<TransformComponent>(marker).Coordinates;
+
+                    try
+                    {
+                        var ent = _entityManager.SpawnEntity(protoId, coords);
+                        spawnedList?.Add(ent);
+                        spawned++;
+                        _sawmill.Debug($"[DEBUG] Spawned {label} entity {ent} at marker {marker}");
+                    }
+                    catch (Exception ex)
+                    {
+                        _sawmill.Error($"[AuThreatSystem] Failed to spawn {label} ({protoId}) for threat '{threatId}' at marker {marker}: {ex}");
+                    }
+                }
+
+                return spawned;
+            }
 
             // Spawn leaders — each entity proto gets its own scaled count
             foreach (var (protoId, count) in leaderBodies)
             {
-                var markers = leaderMarkers;
-                Logger.GetSawmill("au14.threat").Debug(
-                    $"[DEBUG] Spawning {count} leaders of protoId {protoId} at {markers.Count} markers");
-                for (int i = 0; i < count; i++)
-                {
-                    var marker = markers.Count > 0 ? markers[i % markers.Count] : EntityUid.Invalid;
-                    if (marker != EntityUid.Invalid)
-                    {
-                        try
-                        {
-                            EntityUid ent = _entityManager.SpawnEntity(protoId, _entityManager.GetComponent<TransformComponent>(marker).Coordinates);
-                            spawnedLeaders.Add(ent);
-                            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned leader entity {ent} at marker {marker}");
-                        }
-                        catch (Exception ex) { Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Failed to spawn leader ({protoId}) for threat '{threat.ID}' at marker {marker}: {ex}"); }
-                    }
-                }
+                SpawnBodies(protoId, count, leaderMarkers, spawnedLeaders, "leader");
             }
 
             // Spawn grunts/members — each entity proto gets its own scaled count
             foreach (var (protoId, count) in memberBodies)
             {
-                var markers = memberMarkers;
-                Logger.GetSawmill("au14.threat").Debug(
-                    $"[DEBUG] Spawning {count} members of protoId {protoId} at {markers.Count} markers");
-                for (int i = 0; i < count; i++)
-                {
-                    var marker = markers.Count > 0 ? markers[i % markers.Count] : EntityUid.Invalid;
-                    if (marker != EntityUid.Invalid)
-                    {
-                        try
-                        {
-                            EntityUid ent = _entityManager.SpawnEntity(protoId, _entityManager.GetComponent<TransformComponent>(marker).Coordinates);
-                            spawnedMembers.Add(ent);
-                            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned member entity {ent} at marker {marker}");
-                        }
-                        catch (Exception ex) { Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Failed to spawn member ({protoId}) for threat '{threat.ID}' at marker {marker}: {ex}"); }
-                    }
-                }
+                SpawnBodies(protoId, count, memberMarkers, spawnedMembers, "member");
             }
 
-            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned {spawnedMembers.Count} threat members.");
+            _sawmill.Debug($"[DEBUG] Spawned {spawnedMembers.Count} threat members.");
 
             // Spawn other entities
             var spawnedEntities = 0;
             foreach (var (protoId, count) in entityBodies)
             {
-                var markers = entityMarkers;
-                Logger.GetSawmill("au14.threat").Debug(
-                    $"[DEBUG] Spawning {count} other entities of protoId {protoId} at {markers.Count} markers");
-                for (int i = 0; i < count; i++)
-                {
-                    var marker = markers.Count > 0 ? markers[i % markers.Count] : EntityUid.Invalid;
-                    if (marker != EntityUid.Invalid)
-                    {
-                        try
-                        {
-                            _entityManager.SpawnEntity(protoId, _entityManager.GetComponent<TransformComponent>(marker).Coordinates);
-                            spawnedEntities++;
-                            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned other entity of protoId {protoId} at marker {marker}");
-                        }
-                        catch (Exception ex) { Logger.GetSawmill("au14.threat").Error($"[AuThreatSystem] Failed to spawn entity ({protoId}) for threat '{threat.ID}' at marker {marker}: {ex}"); }
-                    }
-                }
+                spawnedEntities += SpawnBodies(protoId, count, entityMarkers, null, "entity");
             }
 
-            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Spawned {spawnedEntities} other threat entities.");
-            Logger.GetSawmill("au14.threat").Info(
-                $"[AuThreatSystem] Threat spawn result for '{threat.ID}': spawnedLeaders={spawnedLeaders.Count}/{leaderReq}, spawnedMembers={spawnedMembers.Count}/{memberReq}, spawnedEntities={spawnedEntities}/{entityReq}.");
+            _sawmill.Debug($"[DEBUG] Spawned {spawnedEntities} other threat entities.");
+            _sawmill.Info(
+                $"[AuThreatSystem] Threat spawn result for '{threatId}': spawnedLeaders={spawnedLeaders.Count}/{leaderReq}, spawnedMembers={spawnedMembers.Count}/{memberReq}, spawnedEntities={spawnedEntities}/{entityReq}.");
 
             var spawnedThreatPlayers = new HashSet<NetUserId>();
 
@@ -572,82 +600,92 @@ public sealed partial class AuThreatSystem : EntitySystem
             {
                 var eligibleHeldPlayers = GetEligibleVoteHeldPlayers(voteHeldPlayers, requireObserverForVotePlayers);
                 _random.Shuffle(eligibleHeldPlayers);
-                var heldAssignments = eligibleHeldPlayers
-                    .Select(player =>
-                    {
-                        var job = assignedJobs.TryGetValue(player, out var assigned) &&
-                                  assigned.Item1 == ThreatLeaderJobId
-                            ? ThreatLeaderJobId
-                            : ThreatMemberJobId;
+                var heldAssignments = new List<ThreatVoteAssignment>(eligibleHeldPlayers.Count);
+                foreach (var player in eligibleHeldPlayers)
+                {
+                    var job = assignedJobs.TryGetValue(player, out var assigned) &&
+                              assigned.Item1 == ThreatLeaderJobId
+                        ? ThreatLeaderJobId
+                        : ThreatMemberJobId;
 
-                        return new ThreatVoteAssignment(player, job);
-                    })
-                    .ToList();
+                    heldAssignments.Add(new ThreatVoteAssignment(player, job));
+                }
 
                 var voteAssignments = ThreatVoteSelection.BuildSpawnAssignments(
                     heldAssignments,
                     spawnedLeaders.Count,
                     spawnedMembers.Count);
+                var leaderAssignments = new List<ThreatVoteAssignment>(spawnedLeaders.Count);
+                var memberAssignments = new List<ThreatVoteAssignment>(spawnedMembers.Count);
+                foreach (var assignment in voteAssignments)
+                {
+                    if (assignment.Job == ThreatLeaderJobId)
+                        leaderAssignments.Add(assignment);
+                    else if (assignment.Job == ThreatMemberJobId)
+                        memberAssignments.Add(assignment);
+                }
 
                 var assignedLeaders = AssignThreatMinds(
-                    voteAssignments.Where(assignment => assignment.Job == ThreatLeaderJobId),
+                    leaderAssignments,
                     spawnedLeaders,
                     spawnedThreatPlayers);
                 var assignedMembers = AssignThreatMinds(
-                    voteAssignments.Where(assignment => assignment.Job == ThreatMemberJobId),
+                    memberAssignments,
                     spawnedMembers,
                     spawnedThreatPlayers);
-                Logger.GetSawmill("au14.threat").Info(
-                    $"[AuThreatSystem] Voted threat assignment result for '{threat.ID}': eligibleHeldPlayers={eligibleHeldPlayers.Count}, assignedLeaders={assignedLeaders}/{spawnedLeaders.Count}, assignedMembers={assignedMembers}/{spawnedMembers.Count}.");
+                _sawmill.Info(
+                    $"[AuThreatSystem] Voted threat assignment result for '{threatId}': eligibleHeldPlayers={eligibleHeldPlayers.Count}, assignedLeaders={assignedLeaders}/{spawnedLeaders.Count}, assignedMembers={assignedMembers}/{spawnedMembers.Count}.");
 
-                var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
-                var unassigned = eligibleHeldPlayers.Where(p => !spawnedThreatPlayers.Contains(p)).ToList();
-                foreach (var playerId in unassigned)
+                foreach (var playerId in eligibleHeldPlayers)
                 {
+                    if (spawnedThreatPlayers.Contains(playerId))
+                        continue;
+
                     if (!_playerManager.TryGetSessionById(playerId, out var session))
                         continue;
 
-                    Logger.GetSawmill("au14.threat").Info($"[AuThreatSystem] Player {session.Name} ({playerId}) returning to lobby as there was no threat mob available for them.");
-                    ticker.Respawn(session);
+                    _sawmill.Info($"[AuThreatSystem] Player {session.Name} ({playerId}) returning to lobby as there was no threat mob available for them.");
+                    _ticker.Respawn(session);
                 }
 
                 AddGhostRolesForUnassigned(spawnedLeaders, assignedLeaders, ThreatLeaderJobId);
                 AddGhostRolesForUnassigned(spawnedMembers, assignedMembers, ThreatMemberJobId);
 
-                Logger.GetSawmill("au14.threat").Debug(
+                _sawmill.Debug(
                     $"[DEBUG] Voted threat assigned {assignedLeaders} leader(s), {assignedMembers} member(s), exposed {spawnedLeaders.Count - assignedLeaders + spawnedMembers.Count - assignedMembers} ghost role body/bodies.");
 
                 var removedVoteAssignments = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
                 if (removedVoteAssignments > 0)
-                    Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removedVoteAssignments} unspawned voted threat assignment(s).");
-                ReleaseVoteHeldPlayers(voteHeldPlayers, threat.ID, "voted threat spawn completed", false);
+                    _sawmill.Warning($"[AuThreatSystem] Removed {removedVoteAssignments} unspawned voted threat assignment(s).");
+                ReleaseVoteHeldPlayers(voteHeldPlayers, threatId, "voted threat spawn completed", false);
                 return new ThreatSpawnExecutionResult(resolvedForce, true);
             }
 
-            var leaderPlayers = assignedJobs.Where(x => x.Value.Item1 == ThreatLeaderJobId).Select(x => x.Key).ToList();
-            var memberPlayers = assignedJobs.Where(x => x.Value.Item1 == ThreatMemberJobId).Select(x => x.Key).ToList();
-            var leaderAssignments = leaderPlayers
-                .Select(player => new ThreatVoteAssignment(player, ThreatLeaderJobId))
-                .ToList();
-            var memberAssignments = memberPlayers
-                .Select(player => new ThreatVoteAssignment(player, ThreatMemberJobId))
-                .ToList();
+            var roundstartLeaderAssignments = new List<ThreatVoteAssignment>();
+            var roundstartMemberAssignments = new List<ThreatVoteAssignment>();
+            foreach (var (player, (job, _)) in assignedJobs)
+            {
+                if (job == ThreatLeaderJobId)
+                    roundstartLeaderAssignments.Add(new ThreatVoteAssignment(player, ThreatLeaderJobId));
+                else if (job == ThreatMemberJobId)
+                    roundstartMemberAssignments.Add(new ThreatVoteAssignment(player, ThreatMemberJobId));
+            }
 
-            var assignedRoundstartLeaders = AssignThreatMinds(leaderAssignments, spawnedLeaders, spawnedThreatPlayers);
-            Logger.GetSawmill("au14.threat").Debug(
+            var assignedRoundstartLeaders = AssignThreatMinds(roundstartLeaderAssignments, spawnedLeaders, spawnedThreatPlayers);
+            _sawmill.Debug(
                 $"[DEBUG] Assigned {assignedRoundstartLeaders} leader minds");
-            var assignedRoundstartMembers = AssignThreatMinds(memberAssignments, spawnedMembers, spawnedThreatPlayers);
-            Logger.GetSawmill("au14.threat").Debug(
+            var assignedRoundstartMembers = AssignThreatMinds(roundstartMemberAssignments, spawnedMembers, spawnedThreatPlayers);
+            _sawmill.Debug(
                 $"[DEBUG] Assigned {assignedRoundstartMembers} member minds");
-            Logger.GetSawmill("au14.threat").Info(
-                $"[AuThreatSystem] Roundstart threat assignment result for '{threat.ID}': leaderPlayers={leaderPlayers.Count}, assignedLeaders={assignedRoundstartLeaders}/{spawnedLeaders.Count}, memberPlayers={memberPlayers.Count}, assignedMembers={assignedRoundstartMembers}/{spawnedMembers.Count}.");
-            if (leaderPlayers.Count > spawnedLeaders.Count)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Threat '{threat.ID}' had {leaderPlayers.Count} assigned leader player(s) but only {spawnedLeaders.Count} leader body/bodies spawned.");
-            if (memberPlayers.Count > spawnedMembers.Count)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Threat '{threat.ID}' had {memberPlayers.Count} assigned member player(s) but only {spawnedMembers.Count} member body/bodies spawned.");
+            _sawmill.Info(
+                $"[AuThreatSystem] Roundstart threat assignment result for '{threatId}': leaderPlayers={roundstartLeaderAssignments.Count}, assignedLeaders={assignedRoundstartLeaders}/{spawnedLeaders.Count}, memberPlayers={roundstartMemberAssignments.Count}, assignedMembers={assignedRoundstartMembers}/{spawnedMembers.Count}.");
+            if (roundstartLeaderAssignments.Count > spawnedLeaders.Count)
+                _sawmill.Warning($"[AuThreatSystem] Threat '{threatId}' had {roundstartLeaderAssignments.Count} assigned leader player(s) but only {spawnedLeaders.Count} leader body/bodies spawned.");
+            if (roundstartMemberAssignments.Count > spawnedMembers.Count)
+                _sawmill.Warning($"[AuThreatSystem] Threat '{threatId}' had {roundstartMemberAssignments.Count} assigned member player(s) but only {spawnedMembers.Count} member body/bodies spawned.");
             var removed = RemoveThreatJobAssignments(assignedJobs, spawnedThreatPlayers);
             if (removed > 0)
-                Logger.GetSawmill("au14.threat").Warning($"[AuThreatSystem] Removed {removed} unspawned threat assignment(s) so normal overflow assignment can handle them.");
+                _sawmill.Warning($"[AuThreatSystem] Removed {removed} unspawned threat assignment(s) so normal overflow assignment can handle them.");
         }
 
         return new ThreatSpawnExecutionResult(resolvedForce, true);
@@ -681,17 +719,16 @@ public sealed partial class AuThreatSystem : EntitySystem
 
     private void StartThreatWinConditions(ThreatPrototype threat, ResolvedThreatForcePlan? resolvedForce)
     {
-        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
         if (resolvedForce != null &&
             resolvedForce.ThreatId.Equals(threat.ID, StringComparison.OrdinalIgnoreCase))
         {
-            roundSystem.StartThreatWinConditions(
+            _auRound.StartThreatWinConditions(
                 resolvedForce.WinConditionRuleIds,
                 $"planned threat '{resolvedForce.ThreatId}'");
             return;
         }
 
-        roundSystem.StartThreatWinConditions(threat);
+        _auRound.StartThreatWinConditions(threat);
     }
 
     private bool TryResolveScenarioPlanSpawnMarkers(
@@ -716,7 +753,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                 if (_scenarioPlan.TryResolveSelectedThreatForce(request, out resolvedForce, out var forceDiagnostic) &&
                     resolvedForce != null)
                 {
-                    Logger.GetSawmill("au14.threat").Debug(
+                    _sawmill.Debug(
                         $"[AuThreatSystem] Resolved Scenario Plan Force Plan '{resolvedForce.ForceId}' for threat '{threat.ID}'.");
                 }
                 else
@@ -724,7 +761,7 @@ public sealed partial class AuThreatSystem : EntitySystem
                     var backupDiagnostic = coveredScenarioForce
                         ? "covered Round Groups do not use legacy marker lookup"
                         : "falling back to legacy marker lookup";
-                    Logger.GetSawmill("au14.threat").Warning(
+                    _sawmill.Warning(
                         $"[AuThreatSystem] Could not resolve Scenario Plan Force Plan for threat '{threat.ID}'; {backupDiagnostic}. {forceDiagnostic}");
                     resolvedForce = null;
                     return false;
@@ -735,12 +772,12 @@ public sealed partial class AuThreatSystem : EntitySystem
             {
                 if (_scenarioPlan.TryResolveThreatSpawnMarkers(resolvedForce, mapId, out markers, out var plannedDiagnostic))
                 {
-                    Logger.GetSawmill("au14.threat").Debug(
+                    _sawmill.Debug(
                         $"[AuThreatSystem] Using Scenario Plan Spawn Markers for threat '{threat.ID}' on map {mapId}.");
                     return true;
                 }
 
-                Logger.GetSawmill("au14.threat").Warning(
+                _sawmill.Warning(
                     coveredScenarioForce
                         ? $"[AuThreatSystem] Could not resolve Scenario Plan Spawn Markers for covered threat '{threat.ID}' on map {mapId}. {plannedDiagnostic}"
                         : $"[AuThreatSystem] Could not resolve Scenario Plan Spawn Markers for threat '{threat.ID}' on map {mapId}; falling back to legacy marker lookup. {plannedDiagnostic}");
@@ -751,7 +788,7 @@ public sealed partial class AuThreatSystem : EntitySystem
             var backupDiagnostic = coveredScenarioForce
                 ? "covered Round Groups do not use legacy marker lookup"
                 : "falling back to legacy marker lookup";
-            Logger.GetSawmill("au14.threat").Error(
+            _sawmill.Error(
                 $"[AuThreatSystem] Scenario Plan Spawn Marker resolution threw for threat '{threat.ID}' on map {mapId}; {backupDiagnostic}. {ex}");
         }
 
@@ -764,22 +801,20 @@ public sealed partial class AuThreatSystem : EntitySystem
         Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs,
         IReadOnlyCollection<NetUserId>? voteHeldPlayers)
     {
-        var roundSystem = _entityManager.EntitySysManager.GetEntitySystem<AuRoundSystem>();
-        var platoonSpawnRuleSystem = _entityManager.EntitySysManager.GetEntitySystem<PlatoonSpawnRuleSystem>();
         var playerCount = Math.Max(_playerManager.PlayerCount, assignedJobs.Count);
         if (voteHeldPlayers != null)
             playerCount = Math.Max(playerCount, voteHeldPlayers.Count);
 
         return new ScenarioPlanValidationRequest(
-            roundSystem.SelectedPreset?.ID ?? string.Empty,
+            _auRound.SelectedPreset?.ID ?? string.Empty,
             playerCount,
-            platoonSpawnRuleSystem.SelectedGovforPlatoon?.ID,
-            platoonSpawnRuleSystem.SelectedOpforPlatoon?.ID,
-            roundSystem.GetSelectedPlanetId(),
-            roundSystem.GetSelectedPlanet()?.MapId,
+            _platoonSpawnRule.SelectedGovforPlatoon?.ID,
+            _platoonSpawnRule.SelectedOpforPlatoon?.ID,
+            _auRound.GetSelectedPlanetId(),
+            _auRound.GetSelectedPlanet()?.MapId,
             threat.ID,
-            roundSystem.GetSelectedGovforShip(),
-            roundSystem.GetSelectedOpforShip());
+            _auRound.GetSelectedGovforShip(),
+            _auRound.GetSelectedOpforShip());
     }
 
     private List<NetUserId> GetEligibleVoteHeldPlayers(
@@ -808,16 +843,17 @@ public sealed partial class AuThreatSystem : EntitySystem
     }
 
     private int AssignThreatMinds(
-        IEnumerable<ThreatVoteAssignment> assignments,
+        IReadOnlyList<ThreatVoteAssignment> assignments,
         IReadOnlyList<EntityUid> entities,
         HashSet<NetUserId> spawnedThreatPlayers)
     {
         var assigned = 0;
-        foreach (var assignment in assignments)
+        for (var i = 0; i < assignments.Count; i++)
         {
             if (assigned >= entities.Count)
                 break;
 
+            var assignment = assignments[i];
             if (!TryAssignThreatMind(assignment.Player, entities[assigned], assignment.Job))
                 continue;
 
@@ -835,12 +871,11 @@ public sealed partial class AuThreatSystem : EntitySystem
     {
         if (!_playerManager.TryGetSessionById(playerNetId, out var session))
         {
-            Logger.GetSawmill("content").Error($"[THREAT SPAWN] Could not find session for player {playerNetId}");
+            _sawmill.Error($"[THREAT SPAWN] Could not find session for player {playerNetId}");
             return false;
         }
 
-        var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
-        ticker.PlayerJoinGame(session, silent: true);
+        _ticker.PlayerJoinGame(session, silent: true);
 
         GhostRoleComponent? ghostRole = null;
         if (TryComp(entity, out ghostRole) && ghostRole.MakeSentient)
@@ -852,11 +887,11 @@ public sealed partial class AuThreatSystem : EntitySystem
         {
             mind = _mindSystem.CreateMind(playerNetId, data?.Name ?? "Threat Player");
             _mindSystem.SetUserId(mind.Value, playerNetId);
-            Logger.GetSawmill("au14.threat").Debug($"[DEBUG] Created mind for threat player {playerNetId}");
+            _sawmill.Debug($"[DEBUG] Created mind for threat player {playerNetId}");
         }
 
         _mindSystem.TransferTo(mind.Value, entity);
-        Logger.GetSawmill("au14.threat").Debug(
+        _sawmill.Debug(
             $"[DEBUG] Assigned threat mind {mind.Value} to entity {entity} for player {playerNetId} as {jobId.Id}");
 
         var entityJob = ghostRole?.JobProto ?? jobId;
@@ -909,6 +944,6 @@ public sealed partial class AuThreatSystem : EntitySystem
     private void AddThreatFaction(EntityUid entity)
     {
         EnsureComp<NpcFactionMemberComponent>(entity);
-        _npcFaction.AddFaction((entity, CompOrNull<NpcFactionMemberComponent>(entity)), threatnpcfaction);
+        _npcFaction.AddFaction((entity, CompOrNull<NpcFactionMemberComponent>(entity)), ThreatNpcFaction);
     }
 }

@@ -1,4 +1,4 @@
-using System.Linq;
+using System.Collections.Frozen;
 using Content.Server.Access.Systems;
 using Content.Server.AU14.Roles;
 using Content.Server.AU14.Round;
@@ -33,6 +33,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 using Content.Shared.AU14.util;
 using Content.Shared.NPC.Components;
+using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 
 namespace Content.Server.Station.Systems;
@@ -44,6 +45,9 @@ namespace Content.Server.Station.Systems;
 [PublicAPI]
 public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
 {
+    private static readonly ProtoId<NpcFactionPrototype> GovforNpcFaction = new("GOVFOR");
+    private static readonly ProtoId<NpcFactionPrototype> OpforNpcFaction = new("OPFOR");
+
     [Dependency] private SharedAccessSystem _accessSystem = default!;
     [Dependency] private ActorSystem _actors = default!;
     [Dependency] private IdCardSystem _cardSystem = default!;
@@ -57,6 +61,9 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private PlatoonSpawnRuleSystem _platoonSpawnRuleSystem = default!;
     [Dependency] private SquadSystem _squadSystem = default!;
     [Dependency] private NpcFactionSystem _npcFaction = default!;
+
+    private static readonly PlatoonJobClass[] PlatoonJobClasses = Enum.GetValues<PlatoonJobClass>();
+    private static readonly FrozenDictionary<PlatoonJobClass, string> PlatoonJobClassNames = PlatoonJobClasses.ToFrozenDictionary(v => v, v => v.ToString());
 
     // Round-robin rotation indices for squads per side
     private readonly string[] _govforSquads = { "SquadGovfor", "SquadGovforBravo", "SquadGovforCharlie" };
@@ -168,7 +175,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                     foreach (var kvp in platoon.JobClassOverride)
                     {
                         // If the jobId ends with the enum name (e.g., AU14JobGOVFORSquadRifleman ends with SquadRifleman)
-                        if (jobId.EndsWith(kvp.Key.ToString(), StringComparison.OrdinalIgnoreCase))
+                        if (jobId.EndsWith(PlatoonJobClassNames[kvp.Key], StringComparison.OrdinalIgnoreCase))
                         {
                             job = kvp.Value;
                             break;
@@ -346,7 +353,6 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         if (assignToSquad)
         {
             string protoId;
-            var jobIdLower = jobId?.ToLowerInvariant() ?? string.Empty;
 
             // Roles that should go into the intel/auxiliary squad
             if (IsAuxiliarySquadRole(originalPrototype, jobId))
@@ -358,16 +364,16 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 // New: prioritize distributing Sergeants, Automatic Riflemen, and Radio Telephone Operators
                 var isSergeant = IsSquadLeaderRole(originalPrototype, jobId);
                 var isAutomaticRifleman = IsRoundRole(originalPrototype, "SquadAutomaticRifleman") ||
-                                          jobIdLower.Contains("automaticrifleman") ||
-                                          jobIdLower.Contains("autora") ||
-                                          jobIdLower.Contains("auto") ||
-                                          jobIdLower.Contains("afn") ||
-                                          jobIdLower.EndsWith("squadautomaticrifleman", StringComparison.OrdinalIgnoreCase);
+                                          jobId?.Contains("automaticrifleman", StringComparison.OrdinalIgnoreCase) == true ||
+                                          jobId?.Contains("autora", StringComparison.OrdinalIgnoreCase) == true ||
+                                          jobId?.Contains("auto", StringComparison.OrdinalIgnoreCase) == true ||
+                                          jobId?.Contains("afn", StringComparison.OrdinalIgnoreCase) == true ||
+                                          jobId?.EndsWith("squadautomaticrifleman", StringComparison.OrdinalIgnoreCase) == true;
                 var isRadioTelephone = IsRoundRole(originalPrototype, "RadioTelephoneOperator") ||
-                                       jobIdLower.Contains("radiotelephoneoperator") ||
-                                       jobIdLower.Contains("radio") ||
-                                       jobIdLower.Contains("rto") ||
-                                       jobIdLower.EndsWith("radiotelephoneoperator", StringComparison.OrdinalIgnoreCase);
+                                       jobId?.Contains("radiotelephoneoperator", StringComparison.OrdinalIgnoreCase) == true ||
+                                       jobId?.Contains("radio", StringComparison.OrdinalIgnoreCase) == true ||
+                                       jobId?.Contains("rto", StringComparison.OrdinalIgnoreCase) == true ||
+                                       jobId?.EndsWith("radiotelephoneoperator", StringComparison.OrdinalIgnoreCase) == true;
 
                 // Sergeants: try to place into a squad without a leader where possible (existing behavior)
                 if (isSergeant)
@@ -497,11 +503,8 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         // --- Add opfor/govfor faction after player is spawned ---
         if (team == "govfor" || team == "opfor")
         {
-            // var faction = team.ToUpperInvariant(); // *nods
-            // if (!HasComp<NpcFactionMemberComponent>(entity.Value))
-            //     EnsureComp<NpcFactionMemberComponent>(entity.Value); // *blinks
-            // _npcFaction.AddFaction((entity.Value, CompOrNull<NpcFactionMemberComponent>(entity.Value)), faction); // *stares
-            _npcFaction.AddFaction((entity.Value, default), team.ToUpperInvariant());
+            var faction = team == "govfor" ? GovforNpcFaction : OpforNpcFaction;
+            _npcFaction.AddFaction((entity.Value, default), faction);
 
             // Add additional factions from platoon if present
             PlatoonPrototype? selectedPlatoon = team == "govfor"
@@ -528,8 +531,13 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         if (string.IsNullOrEmpty(fallbackJobId))
             return false;
 
-        return !NoSquadJobIdFragments.Any(fragment =>
-            fallbackJobId.Contains(fragment, StringComparison.OrdinalIgnoreCase));
+        foreach (var fragment in NoSquadJobIdFragments)
+        {
+            if (fallbackJobId.Contains(fragment, StringComparison.OrdinalIgnoreCase))
+                return false;
+        }
+
+        return true;
     }
 
     private static bool IsAuxiliarySquadRole(JobPrototype? job, string? fallbackJobId)
@@ -540,8 +548,13 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         if (string.IsNullOrEmpty(fallbackJobId))
             return false;
 
-        return AuxiliarySquadJobIdFragments.Any(fragment =>
-            fallbackJobId.Contains(fragment, StringComparison.OrdinalIgnoreCase));
+        foreach (var fragment in AuxiliarySquadJobIdFragments)
+        {
+            if (fallbackJobId.Contains(fragment, StringComparison.OrdinalIgnoreCase))
+                return true;
+        }
+
+        return false;
     }
 
     private static bool IsSquadLeaderRole(JobPrototype? job, string? fallbackJobId)
@@ -552,12 +565,21 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         return fallbackJobId?.Contains("sergeant", StringComparison.OrdinalIgnoreCase) == true;
     }
 
-    private static bool IsRoundRole(JobPrototype? job, params string[] roundRoles)
+    private static bool IsRoundRole(JobPrototype? job, string expectedRoundRole)
     {
         if (job?.RoundRole is not { } roundRole)
             return false;
 
-        return roundRoles.Any(role => role.Equals(roundRole, StringComparison.OrdinalIgnoreCase));
+        return roundRole.Equals(expectedRoundRole, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static bool IsRoundRole(JobPrototype? job, string firstRoundRole, string secondRoundRole)
+    {
+        if (job?.RoundRole is not { } roundRole)
+            return false;
+
+        return roundRole.Equals(firstRoundRole, StringComparison.OrdinalIgnoreCase) ||
+               roundRole.Equals(secondRoundRole, StringComparison.OrdinalIgnoreCase);
     }
 
     private static bool TryGetPlatoonJobClass(
@@ -571,9 +593,9 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             return true;
         }
 
-        foreach (var value in Enum.GetValues<PlatoonJobClass>())
+        foreach (var value in PlatoonJobClasses)
         {
-            if (!fallbackJobId.EndsWith(value.ToString(), StringComparison.OrdinalIgnoreCase))
+            if (!fallbackJobId.EndsWith(PlatoonJobClassNames[value], StringComparison.OrdinalIgnoreCase))
                 continue;
 
             jobClass = value;

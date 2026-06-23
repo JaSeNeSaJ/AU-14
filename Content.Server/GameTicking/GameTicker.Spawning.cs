@@ -53,8 +53,51 @@ namespace Content.Server.GameTicking
         [Dependency] private Content.Server.AU14.Allegiance.AllegianceSystem _allegianceSystem = default!;
         [Dependency] private Content.Server.AU14.Origin.OriginSystem _originSystem = default!;
 
+        private const string AuThreatLeaderJob = "AU14JobThreatLeader";
+        private const string AuThreatMemberJob = "AU14JobThreatMember";
+        private const string AuThirdPartyLeaderJob = "AU14JobThirdPartyLeader";
+        private const string AuThirdPartyMemberJob = "AU14JobThirdPartyMember";
+
         public static readonly EntProtoId ObserverPrototypeName = "MobObserver";
         public static readonly EntProtoId AdminObserverPrototypeName = "RMCAdminObserver";
+
+        private readonly record struct AuAssignmentCounts(
+            int NoJob,
+            int ThreatLeaders,
+            int ThreatMembers,
+            int ThirdPartyLeaders,
+            int ThirdPartyMembers);
+
+        private static AuAssignmentCounts CountAuAssignments(
+            Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)> assignedJobs)
+        {
+            var noJob = 0;
+            var threatLeaders = 0;
+            var threatMembers = 0;
+            var thirdPartyLeaders = 0;
+            var thirdPartyMembers = 0;
+
+            foreach (var (_, (job, _)) in assignedJobs)
+            {
+                if (job == null)
+                    noJob++;
+                else if (job == AuThreatLeaderJob)
+                    threatLeaders++;
+                else if (job == AuThreatMemberJob)
+                    threatMembers++;
+                else if (job == AuThirdPartyLeaderJob)
+                    thirdPartyLeaders++;
+                else if (job == AuThirdPartyMemberJob)
+                    thirdPartyMembers++;
+            }
+
+            return new AuAssignmentCounts(
+                noJob,
+                threatLeaders,
+                threatMembers,
+                thirdPartyLeaders,
+                thirdPartyMembers);
+        }
 
         /// <summary>
         /// Determines which platoon a job belongs to based on its ID.
@@ -237,7 +280,13 @@ namespace Content.Server.GameTicking
             // Allow game rules to spawn players by themselves if needed. (For example, nuke ops or wizard)
             RaiseLocalEvent(new RulePlayerSpawningEvent(readyPlayers, profiles, force));
 
-            var playerNetIds = readyPlayers.Select(o => o.UserId).ToHashSet();
+            var readySessions = new Dictionary<NetUserId, ICommonSession>(readyPlayers.Count);
+            var playerNetIds = new HashSet<NetUserId>(readyPlayers.Count);
+            foreach (var player in readyPlayers)
+            {
+                readySessions[player.UserId] = player;
+                playerNetIds.Add(player.UserId);
+            }
 
             // RulePlayerSpawning feeds a readonlydictionary of profiles.
             // We need to take these players out of the pool of players available as they've been used.
@@ -277,7 +326,7 @@ namespace Content.Server.GameTicking
                 }
                 catch (Exception threatVoteEx)
                 {
-                    Log.Error($"TryPrepareThreatVote threw â€” round will continue without a threat vote. {threatVoteEx}");
+                    Log.Error($"TryPrepareThreatVote threw - round will continue without a threat vote. {threatVoteEx}");
                     _auThreatVoteSystem.ClearRoundJoinBlocks();
                     _auJobSelectionSystem.ForcedJobAssignments.Clear();
                 }
@@ -307,8 +356,12 @@ namespace Content.Server.GameTicking
             var spawnableStations = GetSpawnableStations();
             _sawmill.Debug($"[RoundStart] Found {spawnableStations.Count} spawnable station(s).");
             var assignedJobs = _stationJobs.AssignJobs(assignmentProfiles, spawnableStations);
-            _sawmill.Debug(
-                $"[RoundStart] Station job assignment complete: assigned={assignedJobs.Count}, noJob={assignedJobs.Count(x => x.Value.Item1 == null)}, threatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, threatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}, thirdPartyLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyLeader")}, thirdPartyMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyMember")}");
+            if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+            {
+                var stationAssignmentCounts = CountAuAssignments(assignedJobs);
+                _sawmill.Debug(
+                    $"[RoundStart] Station job assignment complete: assigned={assignedJobs.Count}, noJob={stationAssignmentCounts.NoJob}, threatLeaders={stationAssignmentCounts.ThreatLeaders}, threatMembers={stationAssignmentCounts.ThreatMembers}, thirdPartyLeaders={stationAssignmentCounts.ThirdPartyLeaders}, thirdPartyMembers={stationAssignmentCounts.ThirdPartyMembers}");
+            }
 
             // Defensive: any exception inside SpawnPlayers propagates to StartRound's
             // EXCEPTION_TOLERANCE catch (only enabled in Release/Tools builds), which calls
@@ -317,13 +370,22 @@ namespace Content.Server.GameTicking
             var selectedThreat = _auRoundSystem.SelectedThreat;
             if (!usesPostRoundstartThreatVote && selectedThreat != null)
             {
-                _sawmill.Debug(
-                    $"[RoundStart] Starting immediate threat spawn for '{selectedThreat.ID}' on map {DefaultMap}; assignedThreatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, assignedThreatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}.");
+                if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+                {
+                    var beforeThreatCounts = CountAuAssignments(assignedJobs);
+                    _sawmill.Debug(
+                        $"[RoundStart] Starting immediate threat spawn for '{selectedThreat.ID}' on map {DefaultMap}; assignedThreatLeaders={beforeThreatCounts.ThreatLeaders}, assignedThreatMembers={beforeThreatCounts.ThreatMembers}.");
+                }
+
                 try
                 {
                     _auThreatSystem.SpawnThreatAtRoundStart(selectedThreat, DefaultMap, assignedJobs);
-                    _sawmill.Debug(
-                        $"[RoundStart] Threat spawn returned for '{selectedThreat.ID}'; remainingThreatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, remainingThreatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}.");
+                    if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+                    {
+                        var afterThreatCounts = CountAuAssignments(assignedJobs);
+                        _sawmill.Debug(
+                            $"[RoundStart] Threat spawn returned for '{selectedThreat.ID}'; remainingThreatLeaders={afterThreatCounts.ThreatLeaders}, remainingThreatMembers={afterThreatCounts.ThreatMembers}.");
+                    }
                 }
                 catch (Exception threatEx)
                 {
@@ -343,8 +405,12 @@ namespace Content.Server.GameTicking
             }
 
             _stationJobs.AssignOverflowJobs(ref assignedJobs, playerNetIds, assignmentProfiles, spawnableStations);
-            _sawmill.Debug(
-                $"[RoundStart] Overflow assignment complete: assigned={assignedJobs.Count}, noJob={assignedJobs.Count(x => x.Value.Item1 == null)}, threatLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatLeader")}, threatMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThreatMember")}, thirdPartyLeaders={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyLeader")}, thirdPartyMembers={assignedJobs.Count(x => x.Value.Item1 == "AU14JobThirdPartyMember")}");
+            if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+            {
+                var overflowAssignmentCounts = CountAuAssignments(assignedJobs);
+                _sawmill.Debug(
+                    $"[RoundStart] Overflow assignment complete: assigned={assignedJobs.Count}, noJob={overflowAssignmentCounts.NoJob}, threatLeaders={overflowAssignmentCounts.ThreatLeaders}, threatMembers={overflowAssignmentCounts.ThreatMembers}, thirdPartyLeaders={overflowAssignmentCounts.ThirdPartyLeaders}, thirdPartyMembers={overflowAssignmentCounts.ThirdPartyMembers}");
+            }
 
             // Calculate extended access for stations.
             var stationJobCounts = spawnableStations.ToDictionary(e => e, _ => 0);
@@ -352,11 +418,13 @@ namespace Content.Server.GameTicking
             {
                 if (job == null)
                 {
-                    var playerSession = _playerManager.GetSessionById(netUser);
-                    var evNoJobs = new NoJobsAvailableSpawningEvent(playerSession); // Used by gamerules to wipe their antag slot, if they got one
-                    RaiseLocalEvent(evNoJobs);
+                    if (readySessions.TryGetValue(netUser, out var playerSession))
+                    {
+                        var evNoJobs = new NoJobsAvailableSpawningEvent(playerSession); // Used by gamerules to wipe their antag slot, if they got one
+                        RaiseLocalEvent(evNoJobs);
 
-                    _chatManager.DispatchServerMessage(playerSession, Loc.GetString("job-not-available-wait-in-lobby"));
+                        _chatManager.DispatchServerMessage(playerSession, Loc.GetString("job-not-available-wait-in-lobby"));
+                    }
                 }
                 else
                 {
@@ -385,6 +453,9 @@ namespace Content.Server.GameTicking
                 if (job == null)
                     continue;
 
+                if (!readySessions.TryGetValue(player, out var playerSession))
+                    continue;
+
                 // Allegiance check: resolve the correct character profile for this player's job/platoon
                 var selectedProfile = profiles[player];
                 var resolvedProfile = ResolveProfileForAllegiance(player, selectedProfile, job);
@@ -392,13 +463,12 @@ namespace Content.Server.GameTicking
                 if (resolvedProfile == null)
                 {
                     // No matching character for this platoon's allegiance — keep player in lobby
-                    var playerSession = _playerManager.GetSessionById(player);
                     _chatManager.DispatchServerMessage(playerSession,
                         Loc.GetString("allegiance-no-matching-character"));
                     continue;
                 }
 
-                SpawnPlayer(_playerManager.GetSessionById(player), resolvedProfile, station, job, false);
+                SpawnPlayer(playerSession, resolvedProfile, station, job, false);
             }
 
             RefreshLateJoinAllowed();
@@ -415,7 +485,7 @@ namespace Content.Server.GameTicking
                 }
                 catch (Exception threatVoteEx)
                 {
-                    Log.Error($"StartPreparedThreatVote threw â€” round will continue without a threat vote. {threatVoteEx}");
+                    Log.Error($"StartPreparedThreatVote threw - round will continue without a threat vote. {threatVoteEx}");
                     _auThreatVoteSystem.ClearRoundJoinBlocks();
                     var removed = AuThreatSystem.RemoveThreatJobAssignments(assignedJobs);
                     if (removed > 0)
@@ -427,8 +497,19 @@ namespace Content.Server.GameTicking
                 selectedThreat = _auRoundSystem.SelectedThreat;
                 if (selectedThreat != null)
                 {
-                    _sawmill.Debug(
-                        $"[RoundStart] Starting third-party spawning for threat '{selectedThreat.ID}'; selectedThirdParties={_auRoundSystem.SelectedThirdParties.Count}, roundstartThirdParties={_auRoundSystem.SelectedThirdParties.Count(x => x.RoundStart)}.");
+                    if (_sawmill.Level <= Robust.Shared.Log.LogLevel.Debug)
+                    {
+                        var roundstartThirdParties = 0;
+                        foreach (var party in _auRoundSystem.SelectedThirdParties)
+                        {
+                            if (party.RoundStart)
+                                roundstartThirdParties++;
+                        }
+
+                        _sawmill.Debug(
+                            $"[RoundStart] Starting third-party spawning for threat '{selectedThreat.ID}'; selectedThirdParties={_auRoundSystem.SelectedThirdParties.Count}, roundstartThirdParties={roundstartThirdParties}.");
+                    }
+
                     try
                     {
                         _auThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
@@ -436,20 +517,26 @@ namespace Content.Server.GameTicking
                     }
                     catch (Exception thirdPartyEx)
                     {
-                    Log.Error($"StartThirdPartySpawning threw — round will continue without third-party spawn. {thirdPartyEx}");
+                        Log.Error($"StartThirdPartySpawning threw — round will continue without third-party spawn. {thirdPartyEx}");
+                    }
                 }
-            }
                 else
                 {
-                Log.Debug("StartThirdPartySpawning debug — no threat selected, skipping third-party spawn.");
-            }
+                    Log.Debug("StartThirdPartySpawning debug — no threat selected, skipping third-party spawn.");
+                }
             }
 
             // Allow rules to add roles to players who have been spawned in. (For example, on-station traitors)
-            var jobsAssignedPlayers = assignedJobs
-                .Where(x => !(threatVotePrepared && AuThreatSystem.IsThreatJob(x.Value.Item1)))
-                .Select(x => _playerManager.GetSessionById(x.Key))
-                .ToArray();
+            var jobsAssignedList = new List<ICommonSession>(assignedJobs.Count);
+            foreach (var (netUserId, (job, _)) in assignedJobs)
+            {
+                if (threatVotePrepared && AuThreatSystem.IsThreatJob(job))
+                    continue;
+
+                if (readySessions.TryGetValue(netUserId, out var session))
+                    jobsAssignedList.Add(session);
+            }
+            var jobsAssignedPlayers = jobsAssignedList.ToArray();
             RaiseLocalEvent(new RulePlayerJobsAssignedEvent(
                 jobsAssignedPlayers,
                 profiles,

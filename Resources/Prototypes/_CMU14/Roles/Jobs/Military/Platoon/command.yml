@@ -468,7 +468,7 @@
   startingGear: AU14GearGOVFORSquadSergeant
   dummyStartingGear: AU14GearGOVFORSquadSergeantDummy
   playTimeTracker: AU14JobGOVFORSquadSergeant
-  overwatchRoleName: Squad Lead
+  overwatchRoleName: Squad Leader
   overwatchShowName: true
   overwatchSortPriority: -5
   canBeAntag: false
@@ -549,7 +549,7 @@
     shoes: CMBootsBrown
     head: AU14JungleBoonieHat
     jumpsuit: AU14JungleFatigues
-    earss: AU14HeadsetGovforCommand
+    ears: AU14HeadsetGovforCommand
 
 - type: entity
   parent: CMSpawnPointJobBase
