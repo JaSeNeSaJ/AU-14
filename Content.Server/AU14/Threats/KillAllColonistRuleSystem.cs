@@ -6,7 +6,6 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs;
 using Content.Shared.NPC.Components;
 using Content.Shared.SSDIndicator;
-using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Evacuation;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids.Construction.Nest;
@@ -47,18 +46,6 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
             CheckVictoryCondition();
     }
 
-    private bool HasCrashedDropship()
-    {
-        var dropships = EntityQueryEnumerator<DropshipComponent>();
-        while (dropships.MoveNext(out _, out var dropship))
-        {
-            if (dropship.Crashed)
-                return true;
-        }
-
-        return false;
-    }
-
     private void OnMobStateChanged(MobStateChangedEvent ev)
     {
         if (!IsActiveRuleAndColonist(ev.Target) || ev.NewMobState != MobState.Dead)
@@ -76,16 +63,6 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
             && faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "aucolonist");
     }
 
-    private bool IsExcludedFromKillCount(EntityUid uid, MobStateComponent mobState)
-    {
-        // Don't exclude the dead (ghosts), we tally them as eliminated instead
-        if (mobState.CurrentState == MobState.Dead)
-            return false;
-
-        return HasComp<XenoNestedComponent>(uid) || HasComp<SynthComponent>(uid)
-            || (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD);
-    }
-
     private void CheckVictoryCondition()
     {
         var queryRule = QueryActiveRules();
@@ -94,7 +71,7 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
         if (ruleComp == null) return;
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
-        var crashedDropship = HasCrashedDropship();
+        bool crashedDropship = HasCrashedDropship();
 
         // Count total and dead AUColonist mobs (excluding evacuated)
         var total = 0;
@@ -105,10 +82,7 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "aucolonist"))
             {
-                if (IsExcludedFromKillCount(uid, mobState))
-                    continue;
-
-                if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)))
+                if (IsExcludedFromVictory(uid, mobState))
                     continue;
 
                 // If the entity's grid was evacuated, count them as dead (do not skip)
@@ -118,6 +92,9 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
                     dead++;
                     continue;
                 }
+
+                if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && mobState.CurrentState != MobState.Dead)
+                    continue;
 
                 total++;
                 if (mobState.CurrentState == MobState.Dead)

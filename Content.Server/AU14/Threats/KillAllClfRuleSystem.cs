@@ -10,7 +10,6 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.NPC.Components;
 using Content.Shared.SSDIndicator;
 using Content.Shared._RMC14.Areas;
-using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Evacuation;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids.Construction.Nest;
@@ -54,18 +53,6 @@ public sealed partial class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRule
     {
         if (_gameTicker.IsGameRuleActive<KillAllClfRuleComponent>())
             CheckVictoryCondition();
-    }
-
-    private bool HasCrashedDropship()
-    {
-        var dropships = EntityQueryEnumerator<DropshipComponent>();
-        while (dropships.MoveNext(out _, out var dropship))
-        {
-            if (dropship.Crashed)
-                return true;
-        }
-
-        return false;
     }
 
     private void OnMobStateChanged(MobStateChangedEvent ev)
@@ -112,16 +99,6 @@ public sealed partial class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRule
             && faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf");
     }
 
-    private bool IsExcludedFromKillCount(EntityUid uid, MobStateComponent mobState)
-    {
-        // Don't exclude the dead (ghosts), we tally them as eliminated instead
-        if (mobState.CurrentState == MobState.Dead)
-            return false;
-
-        return HasComp<XenoNestedComponent>(uid)
-            || (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD);
-    }
-
     private void CheckVictoryCondition()
     {
         var queryRules = QueryActiveRules();
@@ -131,7 +108,7 @@ public sealed partial class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRule
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
-        var crashedDropship = HasCrashedDropship();
+        bool crashedDropship = HasCrashedDropship();
 
         // Count total and dead/arrested CLF mobs (excluding evacuated)
         var total = 0;
@@ -142,14 +119,14 @@ public sealed partial class KillAllClfRuleSystem : GameRuleSystem<KillAllClfRule
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "clf"))
             {
-                if (IsExcludedFromKillCount(uid, mobState))
-                    continue;
-
-                if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)))
+                if (IsExcludedFromVictory(uid, mobState))
                     continue;
 
                 // Skip evacuated entities entirely
                 if (IsEvacuated(uid))
+                    continue;
+
+                if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && mobState.CurrentState != MobState.Dead)
                     continue;
 
                 total++;

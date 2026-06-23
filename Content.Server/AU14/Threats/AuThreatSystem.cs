@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared._RMC14.Dropship;
 using Content.Server.AU14.Round;
 using Content.Server.AU14.Scenario;
 using Content.Server.GameTicking;
@@ -6,15 +7,24 @@ using Content.Server.Ghost.Roles;
 using Content.Server.Ghost.Roles.Components;
 using Content.Server.Mind.Commands;
 using Content.Shared._RMC14.Rules;
+using Content.Shared._AU14.Abominations;
+using Content.Shared._CMU14.Yautja;
+using Content.Shared._RMC14.Synth;
+using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Construction.Nest;
+using Content.Shared.AU14;
 using Content.Shared.AU14.Threats;
 using Content.Shared.AU14.util;
 using Content.Shared.Ghost;
 using Content.Shared.Mind;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Components;
 using Content.Shared.NPC.Components;
 using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Content.Shared.Players;
 using Content.Shared.Roles;
+using Content.Shared.SSDIndicator;
 using Robust.Server.Player;
 using Robust.Shared.Enums;
 using Robust.Shared.Map;
@@ -51,6 +61,7 @@ public sealed partial class AuThreatSystem : EntitySystem
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IRobustRandom _random = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    public readonly ProtoId<NpcFactionPrototype> threatNPCFaction = "THREAT";
 
     private readonly ISawmill _sawmill = Logger.GetSawmill("au14.threat");
 
@@ -978,6 +989,34 @@ public sealed partial class AuThreatSystem : EntitySystem
     private void AddThreatFaction(EntityUid entity)
     {
         EnsureComp<NpcFactionMemberComponent>(entity);
-        _npcFaction.AddFaction((entity, CompOrNull<NpcFactionMemberComponent>(entity)), ThreatNpcFaction);
+        _npcFaction.AddFaction((entity, CompOrNull<NpcFactionMemberComponent>(entity)), threatNPCFaction);
+    }
+
+    internal bool HasCrashedDropship()
+    {
+        var dropships = EntityQueryEnumerator<DropshipComponent>();
+        while (dropships.MoveNext(out _, out var dropship))
+            return dropship.Crashed;
+
+        return false;
+    }
+
+    internal bool IsExcludedFromVictory(EntityUid uid, MobStateComponent mobState)
+    {
+        // Exclude all threats, which use their own Victory Condition logic
+        if (HasComp<XenoComponent>(uid) || HasComp<YautjaComponent>(uid)
+            || HasComp<ApeComponent>(uid) || HasComp<TribalComponent>(uid)
+            || HasComp<AbominationComponent>(uid) || HasComp<AbominationMimicComponent>(uid))
+            return true;
+
+        if (HasComp<SynthComponent>(uid))
+            return true;
+
+        // Don't exclude the dead (ghosts), we tally them as eliminated instead
+        if (mobState.CurrentState == MobState.Dead)
+            return false;
+
+        // Alive and nested or SSD
+        return HasComp<XenoNestedComponent>(uid) || (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD);
     }
 }

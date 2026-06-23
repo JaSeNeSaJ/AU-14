@@ -9,7 +9,6 @@ using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
 using Content.Shared.SSDIndicator;
 using Content.Shared._RMC14.Areas;
-using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Evacuation;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids;
@@ -58,18 +57,6 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
             CheckVictoryCondition();
     }
 
-    private bool HasCrashedDropship()
-    {
-        var dropships = EntityQueryEnumerator<DropshipComponent>();
-        while (dropships.MoveNext(out _, out var dropship))
-        {
-            if (dropship.Crashed)
-                return true;
-        }
-
-        return false;
-    }
-
     private void OnMobStateChanged(MobStateChangedEvent ev)
     {
         if (!_gameTicker.IsGameRuleActive<KillAllHumanRuleComponent>())
@@ -114,17 +101,6 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
             && Prototype(suit!.Value)?.ID == "AU14CivilianPrisonJumpsuit";
     }
 
-    private bool IsExcludedFromKillCount(EntityUid uid, MobStateComponent mobState)
-    {
-        // Don't exclude the dead (ghosts), we tally them as eliminated instead
-        if (mobState.CurrentState == MobState.Dead)
-            return false;
-
-        return HasComp<XenoComponent>(uid)
-            || HasComp<XenoNestedComponent>(uid) || HasComp<SynthComponent>(uid)
-            || (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD);
-    }
-
     private void CheckVictoryCondition()
     {
         var queryRule = QueryActiveRules();
@@ -134,7 +110,7 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
 
         var requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
         var countArrests = ruleComp.Arrest;
-        var crashedDropship = HasCrashedDropship();
+        bool crashedDropship = HasCrashedDropship();
 
         // Count all humanoid mobs (excluding xenos and evacuated)
         var total = 0;
@@ -143,10 +119,7 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
         var query = EntityQueryEnumerator<MobStateComponent, HumanoidAppearanceComponent>();
         while (query.MoveNext(out var uid, out var mobState, out _))
         {
-            if (IsExcludedFromKillCount(uid, mobState))
-                continue;
-
-            if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)))
+            if (IsExcludedFromVictory(uid, mobState))
                 continue;
 
             // If the entity's grid has been evacuated, count them as dead (do not skip)
@@ -156,6 +129,9 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
                 eliminated++;
                 continue;
             }
+
+            if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && mobState.CurrentState != MobState.Dead)
+                continue;
 
             total++;
 

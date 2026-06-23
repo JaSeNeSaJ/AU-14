@@ -99,16 +99,6 @@ public sealed partial class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovf
             && faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "govfor");
     }
 
-    private bool IsExcludedFromKillCount(EntityUid uid, MobStateComponent mobState)
-    {
-        // Don't exclude the dead (ghosts), we tally them as eliminated instead
-        if (mobState.CurrentState == MobState.Dead)
-            return false;
-
-        return (HasComp<XenoNestedComponent>(uid) || HasComp<SynthComponent>(uid)
-            || (TryComp<SSDIndicatorComponent>(uid, out var ssd) && ssd.IsSSD));
-    }
-
     private void CheckVictoryCondition()
     {
         var queryRules = QueryActiveRules();
@@ -128,7 +118,7 @@ public sealed partial class KillAllGovforRuleSystem : GameRuleSystem<KillAllGovf
         {
             if (faction.Factions.Any(f => f.ToString().ToLowerInvariant() == "govfor"))
             {
-                if (IsExcludedFromKillCount(uid, mobState))
+                if (IsExcludedFromVictory(uid, mobState))
                     continue;
 
                 // If the grid was evacuated, count them as dead (do not skip)
