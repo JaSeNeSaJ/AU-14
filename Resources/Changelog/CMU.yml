@@ -4610,5 +4610,67 @@
   id: 327
   time: '2026-06-22T06:58:43.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1407
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: Withdrawal consoles have spontaneously appeared in
+      the Fort Beauregard Command Center and Hope''s Retreat Administrator''s Office!'
+    type: Add
+  - message: 'Hope''s Retreat: An inaccurate TO&E has been updated, allowing for the
+      construction of an expanded specialist equipment area.'
+    type: Tweak
+  - message: 'Hope''s Retreat: Following an arduous set of committees and municipal
+      re-zoning struggles, the second floor of the Hope''s Retreat dormitories has
+      finally been permitted to have power.'
+    type: Fix
+  - message: 'Hope''s Retreat: A contract has been arbitrated with the Power and Lights
+      Spirit, allowing for APC and lighting issues with the Octanis Complex''s second
+      floor to be fixed (pertains to both the Security Post and Hospital).'
+    type: Fix
+  - message: 'Hope''s Retreat: Weyland-Yutani Cross-Dimensional Specialists have correctly
+      identified and removed reality-deviating upstream defibrillators from the Fort
+      Beauregard medbay.'
+    type: Fix
+  - message: 'Hope''s Retreat: The NSPA have received a supply shipment from a delayed
+      transport, finally allowing them to refill their emergency armory.'
+    type: Fix
+  id: 328
+  time: '2026-06-22T21:52:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1410
+- author: HotdogMan52
+  changes:
+  - message: Added MP brassards for USCM MPs
+    type: Add
+  - message: Adjusted Sam Browne Duty Belt to fit two guns, allowing for pistol/tazer
+      | tazer/tazer | pistol/pistol
+    type: Tweak
+  - message: Fixed gas not affecting people when gas mask is toggled off/hidden
+    type: Fix
+  id: 329
+  time: '2026-06-22T21:52:56.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1406
+- author: KriegersMustDie
+  changes:
+  - message: Ambassador Briefcases with some flavor.
+    type: Add
+  id: 330
+  time: '2026-06-23T03:17:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1417
+- author: maertayn
+  changes:
+  - message: '''serverlogs'' & ''serversawmills'' commands for live log access in-game
+      (host-only restricted perms), with a --tail option that sends server-side logs
+      into admin-chat as they arrive & use --filter to cut out noise. Adjust the Sawmill
+      (log group) verbosity level in-game with ''loglevel'' <sawmill> and use ''serversawmills''
+      to search/list all ~3500! groups and their current overrides'
+    type: Add
+  - message: the rejuvenate verb/trick now fully repairs vehicles/blackfoot - resets
+      damage & hardpoint health + integrity, clears all failure states and refills
+      fuel/battery - also rearms all the vehicle's mounted weaponry
+    type: Admin
+  - message: removed duplicate "rename" command that caused toolshed warnings
+    type: Fix
+  id: 331
+  time: '2026-06-23T03:39:16.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1416
 Name: CMU
 Order: -1
