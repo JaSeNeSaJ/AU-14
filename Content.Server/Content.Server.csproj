@@ -1,4 +1,5 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <OutputPath>..\bin\Content.Server\</OutputPath>
@@ -53,26 +54,5 @@
     <Folder Include="_CMU14\Util\Chat\" />
     <Folder Include="_CMU14\Round\Antags" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="AU14\Actions\" />
-    <Folder Include="AU14\Commands\" />
-    <Folder Include="AU14\Extract\" />
-    <Folder Include="AU14\Round\Colony\" />
-    <Folder Include="AU14\Round\Utility\" />
-    <Folder Include="JobTitleChanger\" />
-    <Folder Include="_AU14\RandomBreaker\" />
-    <Folder Include="_CMU14\Threats\Mobs\" />
-    <Folder Include="_RMC14\Extract\" />
-    <Folder Include="_RMC14\Power\Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Compile Remove="AU14\SetFullPowerCommand.cs" />
-    <Compile Remove="AU14\Threats\KillAllHumansRuleComponent.cs" />
-    <Compile Remove="AU14\CLF\CLFRecruitRoleComponent.cs" />
-  </ItemGroup>
-
-
 
 </Project>

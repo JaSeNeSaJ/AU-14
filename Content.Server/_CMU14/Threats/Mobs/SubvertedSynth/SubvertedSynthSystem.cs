@@ -22,7 +22,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._CMU14.Threats.Mobs.SubvertedSynth;
 
-public sealed partial class SubvertedSynthRuleSystem : GameRuleSystem<SubvertedSynthRuleComponent>
+public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynthComponent>
 {
     public readonly ProtoId<NpcFactionPrototype> CLFNPCFaction = "CLF";
     [Dependency] private IAdminLogManager _adminLogManager = default!;
@@ -115,13 +115,13 @@ public sealed partial class SubvertedSynthRuleSystem : GameRuleSystem<SubvertedS
             !TryComp<DamageableComponent>(target, out DamageableComponent? damageable))
             return;
 
-        FixedPoint2 damageAfterZap = SubvertedSynthRuleSystem.GetProjectedDamageAfterHeal(damageable, heal);
+        FixedPoint2 damageAfterZap = SubvertedSynthSystem.GetProjectedDamageAfterHeal(damageable, heal);
 
         if (damageAfterZap < deadThreshold.Value)
             return;
 
         FixedPoint2 extraHeal = damageAfterZap - deadThreshold.Value + FixedPoint2.New(1);
-        SubvertedSynthRuleSystem.AddHealingToExistingDamage(damageable, heal, extraHeal);
+        SubvertedSynthSystem.AddHealingToExistingDamage(damageable, heal, extraHeal);
     }
 
     private static FixedPoint2 GetProjectedDamageAfterHeal(DamageableComponent damageable, DamageSpecifier heal)
