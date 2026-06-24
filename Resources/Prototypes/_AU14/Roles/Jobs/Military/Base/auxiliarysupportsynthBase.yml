@@ -90,8 +90,6 @@
       preset: AU14LanguagePresetSynth
     - type: LanguageLearning
       preset: AU14LanguageLearningPresetSynth
-    - type: LanguageLearning
-      preset: AU14LanguageLearningPresetHuman
 
 - type: playTimeTracker
   id: AU14JobGOVFORAuxSupportSynth
