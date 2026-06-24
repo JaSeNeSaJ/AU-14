@@ -52,7 +52,7 @@ public sealed partial class SpawnThirdPartyToolSystem : EntitySystem
             return false;
         }
 
-        if (!_prototype.TryIndex(component.Comp.Party, out AuThirdPartyPrototype? party))
+        if (!_prototype.TryIndex(component.Comp.Party, out ThirdPartyPrototype? party))
         {
             _popup.PopupEntity($"No third party prototype found with ID: {component.Comp.Party.Id}", component.Owner, user);
             return false;

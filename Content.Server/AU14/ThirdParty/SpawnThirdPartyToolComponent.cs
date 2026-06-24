@@ -9,7 +9,7 @@ namespace Content.Server.AU14.ThirdParty;
 public sealed partial class SpawnThirdPartyToolComponent : Component
 {
     [DataField("party", required: true)]
-    public ProtoId<AuThirdPartyPrototype> Party = default!;
+    public ProtoId<ThirdPartyPrototype> Party = default!;
 
     [DataField("dropship")]
     public bool Dropship = true;

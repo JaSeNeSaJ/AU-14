@@ -6,7 +6,7 @@ using Content.Shared.NPC.Prototypes;
 namespace Content.Shared._CMU14.CLFSubverter;
 
 [RegisterComponent, NetworkedComponent]
-public sealed partial class CLFSubvertedSynthComponent : Component
+public sealed partial class LFSubvertedSynthComponent : Component
 {
     [DataField]
     public SoundSpecifier CLFSubversionSound = new SoundPathSpecifier("/Audio/Ambience/Antag/headrev_start.ogg");

@@ -4,7 +4,7 @@ using Content.Shared._RMC14.Synth;
 
 namespace Content.Shared._CMU14.CLFSubverter;
 
-public sealed class CLFSubvertedSynthSystem : EntitySystem
+public sealed class SubvertedSynthSystem : EntitySystem
 {
     public override void Initialize()
     {

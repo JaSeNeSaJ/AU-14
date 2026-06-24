@@ -61,7 +61,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
 
     // --- State for round third party spawning ---
     private ThreatPrototype? _currentThreat;
-    private List<AuThirdPartyPrototype>? _thirdPartyList;
+    private List<ThirdPartyPrototype>? _thirdPartyList;
     private int _nextThirdPartyIndex = 0;
     private float _spawnTimer = 0f;
     private TimeSpan _spawnInterval = TimeSpan.FromMinutes(5);
@@ -99,10 +99,10 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     /// <summary>
     /// Returns the list of queued third parties that have not yet spawned.
     /// </summary>
-    public List<AuThirdPartyPrototype> GetQueuedThirdParties()
+    public List<ThirdPartyPrototype> GetQueuedThirdParties()
     {
         if (_thirdPartyList == null || _nextThirdPartyIndex >= _thirdPartyList.Count)
-            return new List<AuThirdPartyPrototype>();
+            return new List<ThirdPartyPrototype>();
 
         return _thirdPartyList.GetRange(_nextThirdPartyIndex, _thirdPartyList.Count - _nextThirdPartyIndex);
     }
@@ -175,7 +175,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
         _nextThirdPartyIndex++;
     }
 
-    public bool SpawnThirdParty(AuThirdPartyPrototype party, PartySpawnPrototype spawnProto, bool roundStart, Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null, bool? overrideDropship = null)
+    public bool SpawnThirdParty(ThirdPartyPrototype party, PartySpawnPrototype spawnProto, bool roundStart, Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null, bool? overrideDropship = null)
     {
         const float SpawnTogetherRadius = 8f;
         _sawmill.Debug($"[AuThirdPartySystem] Spawning third party: ({party.ID})");
@@ -899,7 +899,7 @@ public sealed partial class AuThirdPartySystem : EntitySystem
     }
 
     private bool TryResolveScenarioPlanSpawnMarkers(
-        AuThirdPartyPrototype party,
+        ThirdPartyPrototype party,
         MapId mapId,
         Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs,
         out ResolvedThirdPartySpawnMarkerSet? markers,

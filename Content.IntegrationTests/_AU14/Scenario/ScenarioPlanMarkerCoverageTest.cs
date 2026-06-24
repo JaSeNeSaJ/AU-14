@@ -39,11 +39,11 @@ public sealed class ScenarioPlanMarkerCoverageTest
     private static readonly ProtoId<ThreatPrototype> ColonyFallAbominationThreat = "abominationsThreat";
     private static readonly ProtoId<ThreatPrototype> CustomMarkerThreat = "cultistThreatOnMarker";
     private static readonly ProtoId<ThreatPrototype> WendigoThreat = "wendigoThreat";
-    private static readonly ProtoId<AuThirdPartyPrototype> GroundThirdParty = "USArmyAlt";
+    private static readonly ProtoId<ThirdPartyPrototype> GroundThirdParty = "USArmyAlt";
     private const string StandaloneGroundThirdParty = "ScenarioPlanStandaloneThirdParty";
     private const string StandaloneCooldownThirdParty = "ScenarioPlanStandaloneCooldownThirdParty";
     private const string ParachuteThirdParty = "ScenarioPlanParachuteThirdParty";
-    private static readonly ProtoId<AuThirdPartyPrototype> DropshipThirdParty = "WYPMCParty";
+    private static readonly ProtoId<ThirdPartyPrototype> DropshipThirdParty = "WYPMCParty";
     private static readonly EntProtoId ThreatEntityMarker = "threatentityspawnmarker";
     private static readonly EntProtoId ThreatLeaderMarker = "threatleaderspawnmarker";
     private static readonly EntProtoId ThreatMemberMarker = "threatmemberspawnmarker";
@@ -1392,7 +1392,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var entities = server.EntMan;
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(GroundThirdParty);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(GroundThirdParty);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, playerCount: 40);
             var request = new ScenarioPlanValidationRequest(
@@ -1471,7 +1471,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var RoundGroup = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = RoundGroup.Spawn;
@@ -1571,7 +1571,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var entities = server.EntMan;
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(GroundThirdParty);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(GroundThirdParty);
             var request = new ScenarioPlanValidationRequest(
                 "DistressSignal",
                 40,
@@ -1625,7 +1625,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
             var thirdPartySystem = server.System<AuThirdPartySystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(StandaloneCooldownThirdParty);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(StandaloneCooldownThirdParty);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var request = new ScenarioPlanValidationRequest(
                 "DistressSignal",
@@ -1700,7 +1700,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var entities = server.EntMan;
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(ParachuteThirdParty);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(ParachuteThirdParty);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, playerCount: 40);
             var request = new ScenarioPlanValidationRequest(
@@ -1757,7 +1757,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var generator = server.System<ScenarioPlanSystem>();
             var mapLoader = server.System<MapLoaderSystem>();
             var mapSystem = server.System<SharedMapSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(DropshipThirdParty);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(DropshipThirdParty);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var legacyBodyCount = ThreatVoteSelection.CalculateBodyCount(partySpawn, playerCount: 40);
 
@@ -4027,7 +4027,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;
@@ -4097,7 +4097,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;
@@ -4167,7 +4167,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;
@@ -4237,7 +4237,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;
@@ -4307,7 +4307,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;
@@ -4400,7 +4400,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var componentFactory = server.ResolveDependency<IComponentFactory>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdParty = prototypes.Index<AuThirdPartyPrototype>(thirdPartyId);
+            var thirdParty = prototypes.Index<ThirdPartyPrototype>(thirdPartyId);
             var partySpawn = prototypes.Index(thirdParty.PartySpawn);
             var force = prototypes.Index<RoundGroupPrototype>(RoundGroupId);
             var spawnPlan = force.Spawn;

@@ -25,7 +25,7 @@ public sealed class AmbassadorThirdPartyCallInsTest
                 {
                     checkedParties.Add(id);
                     Assert.That(
-                        prototypes.TryIndex<AuThirdPartyPrototype>(id, out var party),
+                        prototypes.TryIndex<ThirdPartyPrototype>(id, out var party),
                         Is.True,
                         $"{entity.ID} references missing ambassador third party '{id}'.");
 

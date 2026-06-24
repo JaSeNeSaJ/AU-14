@@ -208,14 +208,14 @@ public sealed partial class TechSystem : EntitySystem
     /// Shared helper: execute a TechPartySpawn by resolving the prototype and invoking the provided spawn action
     /// for each requested amount. Returns true when the prototype was found and spawnAction invoked.
     /// </summary>
-    public static bool ExecuteTechPartySpawn(IPrototypeManager proto, string thirdPartyId, Action<AuThirdPartyPrototype> spawnAction)
+    public static bool ExecuteTechPartySpawn(IPrototypeManager proto, string thirdPartyId, Action<ThirdPartyPrototype> spawnAction)
     {
         if (string.IsNullOrEmpty(thirdPartyId))
         {
             Logger.GetSawmill("content").Warning("[TechSystem] ExecuteTechPartySpawn called with null/empty thirdPartyId.");
             return false;
         }
-        if (!proto.TryIndex<AuThirdPartyPrototype>(thirdPartyId, out var partyProto))
+        if (!proto.TryIndex<ThirdPartyPrototype>(thirdPartyId, out var partyProto))
         {
             proto.TryIndex(thirdPartyId, out var _); // keep for debug if needed
             Logger.GetSawmill("content").Warning($"[TechSystem] Requested third party id '{thirdPartyId}' not found in prototypes.");

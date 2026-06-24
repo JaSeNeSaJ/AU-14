@@ -11,7 +11,7 @@ using Robust.Shared.Utility;
 
 namespace Content.Shared.AU14.Threats;
 [Prototype]
-public sealed partial class AuThirdPartyPrototype : IPrototype
+public sealed partial class ThirdPartyPrototype : IPrototype
 {
 
     [IdDataField]

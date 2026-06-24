@@ -41,13 +41,13 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
         base.Initialize();
 
         // TargetBeforeDefibrillatorZapsEvent doesn't work for some godawful reason
-        SubscribeLocalEvent<CLFSubverterComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRevive,
+        SubscribeLocalEvent<SynthSubverterComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRevive,
             after: [typeof(RMCDefibrillatorSystem)]);
         SubscribeLocalEvent<SynthRepairerComponent, RMCDefibrillatorDamageModifyEvent>(OnSynthRepair,
             after: [typeof(RMCDefibrillatorSystem)]);
     }
 
-    private void OnSynthRevive(EntityUid uid, CLFSubverterComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
+    private void OnSynthRevive(EntityUid uid, SynthSubverterComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
     {
         if (!HasComp<SynthComponent>(args.Target))
             return;
@@ -83,7 +83,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
         if (!HasComp<SynthComponent>(args.Target) && !HasComp<CLFSubvertedSynthComponent>(args.Target))
             return;
-        if (HasComp<CLFSubverterComponent>(
+        if (HasComp<SynthSubverterComponent>(
                 uid)) // idk how to remove a component from a prototype so this is an un-necessary workaround
             return;
 

@@ -5,7 +5,7 @@ using Content.Shared.NPC.Prototypes;
 namespace Content.Shared._CMU14.CLFSubverter;
 
 [RegisterComponent]
-public sealed partial class CLFSubverterComponent : Component
+public sealed partial class SynthSubverterComponent : Component
 {
     [DataField]
     public ProtoId<NpcFactionPrototype> Faction = "CLF";

@@ -34,7 +34,7 @@ public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
         var protoManager = IoCManager.Resolve<IPrototypeManager>();
         var thirdPartySystem = entitySystemManager.GetEntitySystem<AuThirdPartySystem>();
 
-        if (!protoManager.TryIndex<AuThirdPartyPrototype>(thirdPartyName, out var party))
+        if (!protoManager.TryIndex<ThirdPartyPrototype>(thirdPartyName, out var party))
         {
             shell.WriteError($"No third party prototype found with ID: {thirdPartyName}");
             return;
@@ -74,7 +74,7 @@ public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
 
     private IEnumerable<CompletionOption> GetThirdPartyCompletions()
     {
-        return _prototype.EnumeratePrototypes<AuThirdPartyPrototype>()
+        return _prototype.EnumeratePrototypes<ThirdPartyPrototype>()
             .OrderBy(prototype => prototype.ID)
             .Select(prototype => new CompletionOption(
                 prototype.ID,
