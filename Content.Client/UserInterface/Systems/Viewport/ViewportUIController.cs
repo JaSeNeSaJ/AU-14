@@ -18,10 +18,10 @@ public sealed partial class ViewportUIController : UIController
     [Dependency] private IPlayerManager _playerMan = default!;
     [Dependency] private IEntityManager _entMan = default!;
     [Dependency] private IConfigurationManager _configurationManager = default!;
-    [Dependency] private SharedTransformSystem _transform = default!;
     public static readonly Vector2i ViewportSize = (EyeManager.PixelsPerMeter * 21, EyeManager.PixelsPerMeter * 15);
     public const int ViewportHeight = 15;
     private MainViewport? Viewport => UIManager.ActiveScreen?.GetWidget<MainViewport>();
+    private SharedTransformSystem? _transform;
     private readonly GraphicsEye _fallbackEye = new();
     private bool _warnedNullspaceEye;
 
@@ -146,9 +146,11 @@ public sealed partial class ViewportUIController : UIController
 
     private bool TryGetEyePosition(Entity<EyeComponent> ent, out MapCoordinates position)
     {
+        var transform = _transform ??= _entMan.System<SharedTransformSystem>();
+
         if (_entMan.TryGetComponent(ent.Comp.Target, out TransformComponent? xform))
         {
-            position = _transform.GetMapCoordinates(xform);
+            position = transform.GetMapCoordinates(xform);
             if (position.MapId != MapId.Nullspace)
                 return true;
         }
@@ -159,7 +161,7 @@ public sealed partial class ViewportUIController : UIController
             return false;
         }
 
-        position = _transform.GetMapCoordinates(xform);
+        position = transform.GetMapCoordinates(xform);
         return position.MapId != MapId.Nullspace;
     }
 
