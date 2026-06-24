@@ -2,7 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using Content.Server.AU14.Threats;
+using Content.Server._CMU14.Threats;
 using Content.Server.Radio.Components;
 using Content.Shared.AU14;
 using Content.Shared.AU14.Threats;
@@ -14,7 +14,6 @@ using Content.Shared._AU14.Xeno;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Vendors;
 using Robust.Shared.GameObjects;
-using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 
@@ -52,7 +51,7 @@ public sealed class CultistThreatAssignmentTest
                 [player.UserId] = (ThreatMemberJob, EntityUid.Invalid),
             };
 
-            entMan.System<AuThreatSystem>().SpawnThreatFromVote(
+            entMan.System<ThreatSystem>().SpawnThreatFromVote(
                 threat,
                 map.MapId,
                 assignedJobs,

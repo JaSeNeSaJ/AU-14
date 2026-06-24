@@ -43,6 +43,7 @@
     <Folder Include="AU14\Round\Utility\" />
     <Folder Include="JobTitleChanger\" />
     <Folder Include="_AU14\RandomBreaker\" />
+    <Folder Include="_CMU14\Threats\Mobs\" />
     <Folder Include="_RMC14\Extract\" />
     <Folder Include="_RMC14\Power\Commands\" />
   </ItemGroup>
