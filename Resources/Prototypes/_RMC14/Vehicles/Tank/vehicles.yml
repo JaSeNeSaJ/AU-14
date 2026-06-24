@@ -223,6 +223,13 @@
 - type: entity
   parent: VehicleTankBase
   id: VehicleTank
+  components:
+  - type: MarineMapTracked
+  - type: TacticalMapTracked
+  - type: TacticalMapIcon
+    icon:
+      sprite: /Textures/_RMC14/Interface/map_blips_large.rsi
+      state: tank
 
 - type: entity
   parent: VehicleTankBase
