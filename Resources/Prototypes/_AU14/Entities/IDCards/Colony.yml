@@ -523,7 +523,7 @@
 
 - type: entity
   parent: AU14IDCardBaseCivilianNoIFF
-  id: AU14IDCardciviliannspaConstable
+  id: AU14IDCardCivilianNSPAConstable
   name: NSPA constable ID card
   components:
   - type: PresetIdCard
