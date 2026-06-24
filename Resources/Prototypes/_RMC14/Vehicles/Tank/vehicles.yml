@@ -69,6 +69,10 @@
     softness: 2
   - type: Physics
     bodyType: Dynamic
+  #CMU
+  - type: CMUZPhysics
+  - type: CMUVehicleZTraversal
+  - type: CMUZLevelViewer
   - type: Fixtures
     fixtures:
       world:
