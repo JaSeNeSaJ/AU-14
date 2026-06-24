@@ -2258,6 +2258,10 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
             return false;
         }
 
+        var targetCoordinates = _transform.GetMoverCoordinates(target).SnapToGrid(EntityManager, _mapManager).Offset(offset);
+        if (!CanStartFireMission(dropship, targetCoordinates, user))
+            return false;
+
         var shotsPerWeapon = new Dictionary<EntityUid, int>();
         foreach (var weaponOffset in missionData.WeaponOffsets)
         {
@@ -2305,6 +2309,36 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
         return true;
     }
 
+    private bool CanStartFireMission(Entity<DropshipComponent> dropship, EntityCoordinates targetCoordinates, EntityUid user)
+    {
+        if (CasDebug)
+            return true;
+
+        if (!TryComp(dropship, out FTLComponent? ftl) ||
+            (ftl.State != FTLState.Travelling && ftl.State != FTLState.Arriving))
+        {
+            var msg = Loc.GetString("rmc-dropship-weapons-fire-not-flying");
+            _popup.PopupCursor(msg, user, PopupType.SmallCaution);
+            return false;
+        }
+
+        return CanFireMissionAt(targetCoordinates, user);
+    }
+
+    private bool CanFireMissionAt(EntityCoordinates targetCoordinates, EntityUid? actor)
+    {
+        if (CasDebug || _area.CanCAS(targetCoordinates))
+            return true;
+
+        if (actor != null)
+        {
+            var msg = Loc.GetString("rmc-laser-designator-not-cas");
+            _popup.PopupCursor(msg, actor.Value);
+        }
+
+        return false;
+    }
+
     /// <summary>
     ///     Try to fire the dropship weapon at the targeted location.
     /// </summary>
@@ -2322,6 +2356,12 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
 
         if (!Resolve(weapon, ref weaponComp, false))
             return false;
+
+        if (strikeType == DropshipWeaponStrikeType.FireMission &&
+            !CanFireMissionAt(targetCoordinates, actor))
+        {
+            return false;
+        }
 
         if (!CanFire(weapon, strikeType, actor, weapon: weaponComp))
             return false;
