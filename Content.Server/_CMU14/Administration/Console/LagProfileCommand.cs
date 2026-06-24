@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using Content.Server.Administration;
 using Content.Shared.Administration;
@@ -9,10 +7,10 @@ using Robust.Shared.Console;
 using Robust.Shared.Profiling;
 using Robust.Shared.Timing;
 
-namespace Content.Server._CMU14.Profiling;
+namespace Content.Server._CMU14.Administration.Console;
 
 [AdminCommand(AdminFlags.Debug)]
-public sealed partial class CMULagProfileCommand : IConsoleCommand
+public sealed partial class LagProfileCommand : IConsoleCommand
 {
     private const string ProfTextStartFrame = "Start Frame";
 
@@ -36,26 +34,26 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
             case "start":
                 if (args.Length != 1)
                 {
-                    shell.WriteError(Help);
+                    shell.WriteError(this.Help);
                     return;
                 }
 
-                Start(shell);
+                this.Start(shell);
                 return;
             case "report":
-                if (!TryParseReportArgs(shell, args, defaultFrameLimit: 300, out var frames, out var top))
+                if (!this.TryParseReportArgs(shell, args, defaultFrameLimit: 300, out var frames, out var top))
                     return;
 
-                Report(shell, frames, top, includeAllSinceStart: false);
+                this.Report(shell, frames, top, includeAllSinceStart: false);
                 return;
             case "stop":
-                if (!TryParseReportArgs(shell, args, defaultFrameLimit: 0, out frames, out top))
+                if (!this.TryParseReportArgs(shell, args, defaultFrameLimit: 0, out frames, out top))
                     return;
 
-                Stop(shell, frames, top);
+                this.Stop(shell, frames, top);
                 return;
             default:
-                shell.WriteError(Help);
+                shell.WriteError(this.Help);
                 return;
         }
     }
@@ -93,47 +91,47 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
 
     private void Start(IConsoleShell shell)
     {
-        if (!_prof.IsEnabled)
+        if (!this._prof.IsEnabled)
         {
-            _config.SetCVar(CVars.ProfEnabled, true);
-            _enabledProfiler = true;
+            this._config.SetCVar(CVars.ProfEnabled, true);
+            this._enabledProfiler = true;
         }
         else
         {
-            _enabledProfiler = false;
+            this._enabledProfiler = false;
         }
 
-        _startIndexOffset = _prof.Buffer.IndexWriteOffset;
-        _startTime = _timing.CurTime;
+        this._startIndexOffset = this._prof.Buffer.IndexWriteOffset;
+        this._startTime        = this._timing.CurTime;
 
         shell.WriteLine("Lag profiler started. Run `lagprofile report` to inspect samples or `lagprofile stop` to report and stop.");
     }
 
     private void Stop(IConsoleShell shell, int frameLimit, int topCount)
     {
-        Report(shell, frameLimit, topCount, true);
+        this.Report(shell, frameLimit, topCount, true);
 
-        _startIndexOffset = null;
+        this._startIndexOffset = null;
 
-        if (!_enabledProfiler)
+        if (!this._enabledProfiler)
             return;
 
-        _config.SetCVar(CVars.ProfEnabled, false);
-        _enabledProfiler = false;
+        this._config.SetCVar(CVars.ProfEnabled, false);
+        this._enabledProfiler = false;
         shell.WriteLine("Profiling disabled because lagprofile enabled it.");
     }
 
     private void Report(IConsoleShell shell, int frameLimit, int topCount, bool includeAllSinceStart)
     {
-        if (!_prof.IsEnabled)
+        if (!this._prof.IsEnabled)
         {
             shell.WriteError("Profiling is disabled. Run `lagprofile start` or `cvar prof.enabled true` first.");
             return;
         }
 
-        var snapshot = _prof.Buffer.Snapshot();
-        var sinceStart = includeAllSinceStart ? _startIndexOffset : null;
-        var frameIndices = GetFrameIndices(snapshot, frameLimit, sinceStart);
+        var snapshot     = this._prof.Buffer.Snapshot();
+        var sinceStart   = includeAllSinceStart ? this._startIndexOffset : null;
+        var frameIndices = LagProfileCommand.GetFrameIndices(snapshot, frameLimit, sinceStart);
         if (frameIndices.Count == 0)
         {
             shell.WriteError("No valid profile frames were found. Let the server run for a few frames and try again.");
@@ -146,9 +144,9 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
 
         foreach (var indexOffset in frameIndices)
         {
-            ref var index = ref snapshot.Index(indexOffset);
-            var frame = TryGetFrameNumber(snapshot, index);
-            var frameTime = TryGetFrameTime(snapshot, index);
+            ref var index     = ref snapshot.Index(indexOffset);
+            var     frame     = this.TryGetFrameNumber(snapshot, index);
+            var     frameTime = LagProfileCommand.TryGetFrameTime(snapshot, index);
             frames.Add(new LagProfileFrame(frame, frameTime.Time, frameTime.Alloc));
 
             for (var logOffset = index.StartPos; logOffset < index.EndPos; logOffset++)
@@ -157,17 +155,17 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
                 switch (log.Type)
                 {
                     case ProfLogType.Value:
-                        AddValue(samples, counters, log.Value.StringId, log.Value.Value);
+                        this.AddValue(samples, counters, log.Value.StringId, log.Value.Value);
                         break;
                     case ProfLogType.GroupEnd:
-                        AddSample(samples, "group", log.GroupEnd.StringId, log.GroupEnd.Value);
+                        this.AddSample(samples, "group", log.GroupEnd.StringId, log.GroupEnd.Value);
                         break;
                 }
             }
         }
 
         var reportingSinceStart = sinceStart is not null;
-        var elapsed = reportingSinceStart ? _timing.CurTime - _startTime : TimeSpan.Zero;
+        var elapsed = reportingSinceStart ? this._timing.CurTime - this._startTime : TimeSpan.Zero;
         var source = reportingSinceStart
             ? $"since lagprofile start ({elapsed.TotalSeconds:N1}s)"
             : "recent profile buffer";
@@ -177,7 +175,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         foreach (var frame in frames.OrderByDescending(frame => frame.TimeSeconds).Take(Math.Min(topCount, 10)))
         {
             var frameName = frame.Frame is { } number ? number.ToString() : "?";
-            shell.WriteLine($"  frame {frameName,8}: {frame.TimeSeconds * 1000:N2} ms, {FormatBytes(frame.AllocatedBytes)} allocated");
+            shell.WriteLine($"  frame {frameName,8}: {frame.TimeSeconds * 1000:N2} ms, {LagProfileCommand.FormatBytes(frame.AllocatedBytes)} allocated");
         }
 
         shell.WriteLine("Top profile entries by total time:");
@@ -187,7 +185,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
                      .Take(topCount))
         {
             shell.WriteLine(
-                $"  {sample.Kind,-6} {sample.Name,-48} calls={sample.Count,5} total={sample.TotalSeconds * 1000,9:N2} ms avg={sample.AverageSeconds * 1000,7:N3} ms max={sample.MaxSeconds * 1000,7:N3} ms alloc={FormatBytes(sample.AllocatedBytes)}");
+                $"  {sample.Kind,-6} {sample.Name,-48} calls={sample.Count,5} total={sample.TotalSeconds * 1000,9:N2} ms avg={sample.AverageSeconds * 1000,7:N3} ms max={sample.MaxSeconds * 1000,7:N3} ms alloc={LagProfileCommand.FormatBytes(sample.AllocatedBytes)}");
         }
 
         if (counters.Count == 0)
@@ -216,7 +214,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
 
         if (args.Length > 3)
         {
-            shell.WriteError(Help);
+            shell.WriteError(this.Help);
             return false;
         }
 
@@ -243,27 +241,27 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         int stringId,
         ProfValue value)
     {
-        var name = _prof.GetString(stringId);
-        if (name == ProfTextStartFrame)
+        var name = this._prof.GetString(stringId);
+        if (name == LagProfileCommand.ProfTextStartFrame)
             return;
 
         switch (value.Type)
         {
             case ProfValueType.TimeAllocSample:
-                AddSample(samples, "sample", name, value);
+                LagProfileCommand.AddSample(samples, "sample", name, value);
                 break;
             case ProfValueType.Int32:
-                AddCounter(counters, name, value.Int32);
+                LagProfileCommand.AddCounter(counters, name, value.Int32);
                 break;
             case ProfValueType.Int64:
-                AddCounter(counters, name, value.Int64);
+                LagProfileCommand.AddCounter(counters, name, value.Int64);
                 break;
         }
     }
 
     private void AddSample(Dictionary<string, LagProfileSample> samples, string kind, int stringId, ProfValue value)
     {
-        AddSample(samples, kind, _prof.GetString(stringId), value);
+        LagProfileCommand.AddSample(samples, kind, this._prof.GetString(stringId), value);
     }
 
     private static void AddSample(Dictionary<string, LagProfileSample> samples, string kind, string name, ProfValue value)
@@ -327,7 +325,7 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         ref var start = ref snapshot.Log(index.StartPos);
         if (start.Type != ProfLogType.Value ||
             start.Value.Value.Type != ProfValueType.Int64 ||
-            _prof.GetString(start.Value.StringId) != ProfTextStartFrame)
+            this._prof.GetString(start.Value.StringId) != LagProfileCommand.ProfTextStartFrame)
         {
             return null;
         }
@@ -368,20 +366,20 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         public double MaxSeconds;
         public long AllocatedBytes;
 
-        public double AverageSeconds => Count == 0 ? 0 : TotalSeconds / Count;
+        public double AverageSeconds => this.Count == 0 ? 0 : this.TotalSeconds / this.Count;
 
         public LagProfileSample(string kind, string name)
         {
-            Kind = kind;
-            Name = name;
+            this.Kind = kind;
+            this.Name = name;
         }
 
         public void Add(TimeAndAllocSample sample)
         {
-            Count++;
-            TotalSeconds += sample.Time;
-            MaxSeconds = Math.Max(MaxSeconds, sample.Time);
-            AllocatedBytes += sample.Alloc;
+            this.Count++;
+            this.TotalSeconds   += sample.Time;
+            this.MaxSeconds     =  Math.Max(this.MaxSeconds, sample.Time);
+            this.AllocatedBytes += sample.Alloc;
         }
     }
 
@@ -393,19 +391,19 @@ public sealed partial class CMULagProfileCommand : IConsoleCommand
         public long Max;
         public long Last;
 
-        public double Average => Count == 0 ? 0 : Total / Count;
+        public double Average => this.Count == 0 ? 0 : this.Total / this.Count;
 
         public LagProfileCounter(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public void Add(long value)
         {
-            Count++;
-            Total += value;
-            Max = Math.Max(Max, value);
-            Last = value;
+            this.Count++;
+            this.Total += value;
+            this.Max   =  Math.Max(this.Max, value);
+            this.Last  =  value;
         }
     }
 

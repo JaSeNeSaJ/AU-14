@@ -1,6 +1,6 @@
 using Robust.Shared.Player;
 
-namespace Content.Server._CMU14.Profiling;
+namespace Content.Server._CMU14.Administration.Console;
 
 [RegisterComponent]
 public sealed partial class ServerLogsFollowerComponent : Component

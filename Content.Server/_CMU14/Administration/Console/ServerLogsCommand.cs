@@ -6,16 +6,15 @@ using Content.Shared.Administration;
 using Robust.Server.Player;
 using Robust.Shared.Console;
 using Robust.Shared.Utility;
-using Robust.Shared.Player;
 
-namespace Content.Server._CMU14.Profiling;
+namespace Content.Server._CMU14.Administration.Console;
 
 [AdminCommand(AdminFlags.Host)]
 public sealed partial class ServerLogsCommand : LocalizedCommands
 {
     public override string Command => "serverlogs";
     public override string Description => "Prints the server (or specified file) logs to the client's console, with --tail to chat.";
-    public override string Help => $"Usage: {Command} [filter] [lines] | {Command} --list | {Command} --file <path> [filter] | {Command} --follow [filter] | {Command} --stop";
+    public override string Help => $"Usage: {this.Command} [filter] [lines] | {this.Command} --list | {this.Command} --file <path> [filter] | {this.Command} --follow [filter] | {this.Command} --stop";
 
     [Dependency] private IPlayerManager _playerManager = default!;
     [Dependency] private IEntityManager _entityManager = default!;
@@ -32,12 +31,12 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
             if (shell.Player == null)
                 return;
 
-            if (!_playerManager.TryGetSessionById(shell.Player.UserId, out var session))
+            if (!this._playerManager.TryGetSessionById(shell.Player.UserId, out var session))
                 return;
 
-            if (session.AttachedEntity is { } uid && _entityManager.HasComponent<ServerLogsFollowerComponent>(uid))
+            if (session.AttachedEntity is { } uid && this._entityManager.HasComponent<ServerLogsFollowerComponent>(uid))
             {
-                _entityManager.RemoveComponent<ServerLogsFollowerComponent>(uid);
+                this._entityManager.RemoveComponent<ServerLogsFollowerComponent>(uid);
                 shell.WriteLine("Follow (tail) stopped for server logs.");
             }
             else
@@ -48,12 +47,12 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
         if (args.Length >= 1 && args[0] == "--list")
         {
-            ListLogFiles(shell);
+            this.ListLogFiles(shell);
             return;
         }
 
-        var (followMode, filter, lineCount, explicitFile) = ParseArgs(args);
-        FileInfo? logFile = ResolveLogFile(explicitFile);
+        var (followMode, filter, lineCount, explicitFile) = ServerLogsCommand.ParseArgs(args);
+        FileInfo? logFile = this.ResolveLogFile(explicitFile);
         if (logFile == null)
         {
             shell.WriteError(string.IsNullOrEmpty(explicitFile)
@@ -64,10 +63,10 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
         try
         {
-            var lines = ReadLastLines(logFile.FullName, lineCount).Where(l => !l.Contains("serverlogs")).ToList();
+            var lines = ServerLogsCommand.ReadLastLines(logFile.FullName, lineCount).Where(l => !l.Contains("serverlogs")).ToList();
             var output = new StringBuilder();
             var filterPrefix = !string.IsNullOrEmpty(filter) ? $"filtered '{filter}' on " : "";
-            output.AppendLine($"[color={primaryClr}]--- {logFile.Name} ({filterPrefix}last {lines.Count} lines) ---[/color]");
+            output.AppendLine($"[color={ServerLogsCommand.primaryClr}]--- {logFile.Name} ({filterPrefix}last {lines.Count} lines) ---[/color]");
 
             foreach (var line in lines)
             {
@@ -75,17 +74,17 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
                     continue;
 
                 // logs are saved with ANSI coloring
-                var markupLine = ConvertAnsiToMarkup(line);
+                var markupLine = ServerLogsCommand.ConvertAnsiToMarkup(line);
                 output.AppendLine($">{markupLine}");
             }
 
-            output.AppendLine($"[color={primaryClr}]--- end of {filterPrefix}{lines.Count} log lines ---[/color]");
+            output.AppendLine($"[color={ServerLogsCommand.primaryClr}]--- end of {filterPrefix}{lines.Count} log lines ---[/color]");
             shell.WriteMarkup(output.ToString());
 
             if (followMode)
             {
                 if (shell.Player == null) return;
-                if (!_playerManager.TryGetSessionById(shell.Player.UserId, out var session))
+                if (!this._playerManager.TryGetSessionById(shell.Player.UserId, out var session))
                 {
                     shell.WriteError("Unable to find your session...");
                     return;
@@ -97,16 +96,16 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
                     return;
                 }
 
-                var comp = _entityManager.EnsureComponent<ServerLogsFollowerComponent>(uid);
+                var comp = this._entityManager.EnsureComponent<ServerLogsFollowerComponent>(uid);
                 comp.FilePath = logFile.FullName;
                 comp.LastPosition = logFile.Length; // start from end
                 comp.Filter = filter;
                 comp.Session = session;
 
                 if (string.IsNullOrEmpty(filter))
-                    shell.WriteMarkup($"[color={secondaryClr}]No filter set, consider using a filter to reduce noise.[/color]");
+                    shell.WriteMarkup($"[color={ServerLogsCommand.secondaryClr}]No filter set, consider using a filter to reduce noise.[/color]");
 
-                shell.WriteMarkup($"[color={primaryClr}]Now following {logFile.Name} for '{filter}', use 'serverlogs --stop' to cancel.[/color]");
+                shell.WriteMarkup($"[color={ServerLogsCommand.primaryClr}]Now following {logFile.Name} for '{filter}', use 'serverlogs --stop' to cancel.[/color]");
                 return;
             }
         }
@@ -115,9 +114,9 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
     private void ListLogFiles(IConsoleShell shell)
     {
-        var fileInfos = Directory.GetFiles(logDir, "*.log").Concat(Directory.GetFiles(logDir, "*.txt")).Select(f => new FileInfo(f)).ToList();
+        var fileInfos = Directory.GetFiles(ServerLogsCommand.logDir, "*.log").Concat(Directory.GetFiles(ServerLogsCommand.logDir, "*.txt")).Select(f => new FileInfo(f)).ToList();
 
-        var logsSub = Path.Combine(logDir, "logs");
+        var logsSub = Path.Combine(ServerLogsCommand.logDir, "logs");
         if (Directory.Exists(logsSub))
         {
             fileInfos.AddRange(Directory.GetFiles(logsSub, "*.log").Select(f => new FileInfo(f)));
@@ -132,15 +131,15 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
             return;
         }
 
-        shell.WriteMarkup($"[color={primaryClr}]--- {fileInfos.Count} log file(s) in {logDir} ---[/color]");
+        shell.WriteMarkup($"[color={ServerLogsCommand.primaryClr}]--- {fileInfos.Count} log file(s) in {ServerLogsCommand.logDir} ---[/color]");
 
         foreach (var file in fileInfos)
         {
-            var color = file.Length == 0 ? secondaryClr : primaryClr;
+            var color   = file.Length == 0 ? ServerLogsCommand.secondaryClr : ServerLogsCommand.primaryClr;
             var sizeStr = file.Length > 0 ? $"{file.Length,8:N0} B" : "  empty  ";
 
             shell.WriteMarkup($"[color={color}]{file.Name,-40}[/color]" +
-                $" [color={secondaryClr}]{sizeStr}  {file.LastWriteTimeUtc:yyyy-MM-dd HH:mm:ss} UTC[/color]");
+                $" [color={ServerLogsCommand.secondaryClr}]{sizeStr}  {file.LastWriteTimeUtc:yyyy-MM-dd HH:mm:ss} UTC[/color]");
         }
     }
 
@@ -150,16 +149,16 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         {
             foreach (var sub in new[] { "", "logs/" })
             {
-                var fullPath = Path.GetFullPath(Path.Combine(logDir, sub, fileName));
-                if (fullPath.StartsWith(Path.GetFullPath(logDir)) && File.Exists(fullPath))
+                var fullPath = Path.GetFullPath(Path.Combine(ServerLogsCommand.logDir, sub, fileName));
+                if (fullPath.StartsWith(Path.GetFullPath(ServerLogsCommand.logDir)) && File.Exists(fullPath))
                     return new FileInfo(fullPath);
 
                 if (!Path.HasExtension(fileName))
                 {
                     foreach (var ext in new[] { ".txt", ".log" })
                     {
-                        var withExt = Path.GetFullPath(Path.Combine(logDir, sub, fileName + ext));
-                        if (withExt.StartsWith(Path.GetFullPath(logDir)) && File.Exists(withExt))
+                        var withExt = Path.GetFullPath(Path.Combine(ServerLogsCommand.logDir, sub, fileName + ext));
+                        if (withExt.StartsWith(Path.GetFullPath(ServerLogsCommand.logDir)) && File.Exists(withExt))
                             return new FileInfo(withExt);
                     }
                 }
@@ -170,9 +169,9 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         if (!string.IsNullOrEmpty(explicitFile))
             return TryFind(explicitFile);
 
-        return Directory.GetFiles(logDir, "server-log*.txt")
-            .Concat(Directory.Exists(Path.Combine(logDir, "logs"))
-                ? Directory.GetFiles(Path.Combine(logDir, "logs"), "server*.txt")
+        return Directory.GetFiles(ServerLogsCommand.logDir, "server-log*.txt")
+            .Concat(Directory.Exists(Path.Combine(ServerLogsCommand.logDir, "logs"))
+                ? Directory.GetFiles(Path.Combine(ServerLogsCommand.logDir, "logs"), "server*.txt")
                 : Array.Empty<string>())
             .Select(f => new FileInfo(f))
             .OrderByDescending(f => f.LastWriteTimeUtc)
@@ -238,7 +237,7 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
                     foreach (var codeStr in sequence.Split(';'))
                     {
-                        if (int.TryParse(codeStr, out int code) && TryGetColorMarkup(code, out string? color))
+                        if (int.TryParse(codeStr, out int code) && ServerLogsCommand.TryGetColorMarkup(code, out string? color))
                         {
                             sb.Append($"[color={color}]");
                             inColor = true;
@@ -322,7 +321,7 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
             else if (arg.Equals("--file") && i + 1 < args.Length)
                 explicitFile = args[++i];
             else if (int.TryParse(arg, out var n))
-                lineCount = Math.Clamp(n, 1, maxLines);
+                lineCount = Math.Clamp(n, 1, ServerLogsCommand.maxLines);
             else
                 filter = arg;
         }
@@ -411,12 +410,12 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         string lastArg = args[^1];
 
         if (lastArg == "--file")
-            return CompletionResult.FromHintOptions(GetLogFileCompletions(""), "log file");
+            return CompletionResult.FromHintOptions(this.GetLogFileCompletions(""), "log file");
 
         if (args.Length >= 2 && args[^2] == "--file")
         {
             string currentPath = lastArg;
-            return CompletionResult.FromHintOptions(GetLogFileCompletions(currentPath), "log file");
+            return CompletionResult.FromHintOptions(this.GetLogFileCompletions(currentPath), "log file");
         }
 
         if (string.IsNullOrEmpty(lastArg) && args.Length >= 2)
@@ -425,7 +424,7 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
             if (prevArg == "--filter")
                 return CompletionResult.FromHint("filter pattern");
             if (prevArg == "--file")
-                return CompletionResult.FromHintOptions(GetLogFileCompletions(""), "log file");
+                return CompletionResult.FromHintOptions(this.GetLogFileCompletions(""), "log file");
             return CompletionResult.FromHint("filter pattern or number of lines");
         }
 
@@ -444,7 +443,7 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         var options = new List<CompletionOption>
         {
             new("50", "number of lines (default)"),
-            new(maxLines.ToString(), "number of lines (max)"),
+            new(ServerLogsCommand.maxLines.ToString(), "number of lines (max)"),
         };
         return CompletionResult.FromHintOptions(options, "filter pattern or number of lines");
     }
@@ -454,10 +453,10 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
         var completions = new List<CompletionOption>();
         try
         {
-            var files = Directory.GetFiles(logDir, "*.log", SearchOption.TopDirectoryOnly)
-                .Concat(Directory.GetFiles(logDir, "*.txt", SearchOption.TopDirectoryOnly));
+            var files = Directory.GetFiles(ServerLogsCommand.logDir, "*.log", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.GetFiles(ServerLogsCommand.logDir, "*.txt", SearchOption.TopDirectoryOnly));
 
-            string logsSubDir = Path.Combine(logDir, "logs");
+            string logsSubDir = Path.Combine(ServerLogsCommand.logDir, "logs");
             if (Directory.Exists(logsSubDir))
                 files = files
                     .Concat(Directory.GetFiles(logsSubDir, "*.log", SearchOption.TopDirectoryOnly))
@@ -468,7 +467,7 @@ public sealed partial class ServerLogsCommand : LocalizedCommands
 
             foreach (var fullPath in files)
             {
-                string relPath = Path.GetRelativePath(logDir, fullPath);
+                string relPath = Path.GetRelativePath(ServerLogsCommand.logDir, fullPath);
                 if (relPath.StartsWith(filter, StringComparison.OrdinalIgnoreCase) || string.IsNullOrEmpty(filter))
                     completions.Add(new CompletionOption(relPath, "log file"));
             }

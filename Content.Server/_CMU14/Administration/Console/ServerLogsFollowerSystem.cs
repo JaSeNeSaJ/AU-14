@@ -1,11 +1,11 @@
 using System.IO;
 using System.Text;
-using Robust.Server.Player;
-using Robust.Shared.Player;
 using Content.Server.Chat.Managers;
 using Content.Shared.Chat;
+using Robust.Server.Player;
+using Robust.Shared.Player;
 
-namespace Content.Server._CMU14.Profiling;
+namespace Content.Server._CMU14.Administration.Console;
 
 public sealed partial class ServerLogsFollowerSystem : EntitySystem
 {
@@ -27,27 +27,27 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        _updateAccumulator += frameTime;
-        if (_updateAccumulator < UpdateRate)
+        this._updateAccumulator += frameTime;
+        if (this._updateAccumulator < ServerLogsFollowerSystem.UpdateRate)
             return;
-        _updateAccumulator = 0f;
+        this._updateAccumulator = 0f;
 
 
-        var query = EntityQueryEnumerator<ServerLogsFollowerComponent>();
+        var query = this.EntityQueryEnumerator<ServerLogsFollowerComponent>();
         while (query.MoveNext(out var uid, out var follower))
         {
-            if (follower.Session == null || !_playerManager.TryGetSessionById(follower.Session.UserId, out _))
+            if (follower.Session == null || !this._playerManager.TryGetSessionById(follower.Session.UserId, out _))
             {
-                RemComp<ServerLogsFollowerComponent>(uid);
+                this.RemComp<ServerLogsFollowerComponent>(uid);
                 continue;
             }
 
-            try { UpdateFollower(follower, uid); }
+            try { this.UpdateFollower(follower, uid); }
             catch (Exception ex)
             {
                 // send error to admin and stop following
-                SendLine(follower.Session, $"Follow error: {ex.Message}");
-                RemComp<ServerLogsFollowerComponent>(uid);
+                this.SendLine(follower.Session, $"Follow error: {ex.Message}");
+                this.RemComp<ServerLogsFollowerComponent>(uid);
             }
         }
     }
@@ -60,8 +60,8 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
         var fileInfo = new FileInfo(follower.FilePath);
         if (!fileInfo.Exists)
         {
-            SendLine(follower.Session, $"Log file '{follower.FilePath}' no longer exists.");
-            RemComp<ServerLogsFollowerComponent>(uid);
+            this.SendLine(follower.Session, $"Log file '{follower.FilePath}' no longer exists.");
+            this.RemComp<ServerLogsFollowerComponent>(uid);
             return;
         }
 
@@ -85,7 +85,7 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
 
         long consumed = follower.LastPosition;
         while ((line = reader.ReadLine()) != null
-            && linesSent < MaxLinesPerTick
+            && linesSent < ServerLogsFollowerSystem.MaxLinesPerTick
             && linesRead < MaxLinesReadPerTick)
         {
             linesRead++;
@@ -93,10 +93,10 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
 
             if (string.IsNullOrWhiteSpace(line)) continue;
             if (line.Contains("[TAIL]")) continue; // feedback loop
-            if (Array.Exists(_noiseFilters, f => line.Contains(f))) continue;
+            if (Array.Exists(ServerLogsFollowerSystem._noiseFilters, f => line.Contains(f))) continue;
             if (follower.Filter != null && !line.Contains(follower.Filter, StringComparison.OrdinalIgnoreCase)) continue;
 
-            SendLine(follower.Session, line);
+            this.SendLine(follower.Session, line);
             linesSent++;
         }
 
@@ -109,6 +109,6 @@ public sealed partial class ServerLogsFollowerSystem : EntitySystem
         if (string.IsNullOrWhiteSpace(markupLine)) return;
 
         var message = $"[color=yellow][TAIL][/color] {markupLine}";
-        _chatManager.ChatMessageToOne(ChatChannel.Admin, message, message, EntityUid.Invalid, false, session.Channel);
+        this._chatManager.ChatMessageToOne(ChatChannel.Admin, message, message, EntityUid.Invalid, false, session.Channel);
     }
 }
