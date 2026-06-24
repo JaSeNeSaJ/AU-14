@@ -3,7 +3,6 @@ using Content.Server._CMU14.ZLevels.Core;
 using Content.Server.Power.Components;
 using Content.Server.Power.EntitySystems;
 using Content.Server.PowerCell;
-using Content.Shared._CMU14.ZLevels.Core.Components;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Power;
 using Content.Shared.Examine;
@@ -54,13 +53,13 @@ public sealed partial class RMCPowerSystem : SharedRMCPowerSystem
 
         SubscribeLocalEvent<RMCPowerReceiverComponent, PowerChangedEvent>(OnReceiverPowerChanged);
         SubscribeLocalEvent<RMCPowerUsageDisplayComponent, ExaminedEvent>(OnUsageDisplayEvent);
-        SubscribeLocalEvent<CMUZLevelsNetworkComponent, CMUZLevelNetworkUpdatedEvent>(OnZLevelNetworkUpdated);
+        SubscribeLocalEvent<CMUZLevelNetworkUpdatedEvent>(OnZLevelNetworkUpdated);
 
         Subs.CVar(_config, RMCCVars.RMCPowerUpdateEverySeconds, v => _updateEvery = TimeSpan.FromSeconds(v), true);
         Subs.CVar(_config, RMCCVars.RMCPowerLoadMultiplier, v => _powerLoadMultiplier = v, true);
     }
 
-    private void OnZLevelNetworkUpdated(Entity<CMUZLevelsNetworkComponent> ent, ref CMUZLevelNetworkUpdatedEvent args)
+    private void OnZLevelNetworkUpdated(ref CMUZLevelNetworkUpdatedEvent args)
     {
         RecalculatePower();
     }
