@@ -34,7 +34,12 @@
     - type: JobPrefix
       prefix: au14-job-prefix-iasf
     - type: Language
-      preset: AU14LanguagePresetTWE
+      spokenLanguages:
+      - Indonesian
+      understoodLanguages:
+      - Indonesian
+      currentLanguage: Indonesian
+      defaultLanguage: Indonesian
   hidden: true
   
 - type: startingGear

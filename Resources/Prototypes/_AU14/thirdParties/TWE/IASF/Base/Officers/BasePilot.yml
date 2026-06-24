@@ -30,7 +30,16 @@
     - type: JobPrefix
       prefix: au14-job-prefix-tweiasf-pl
     - type: Language
-      preset: AU14LanguagePresetTWE
+      spokenLanguages:
+      - English
+      - Japanese
+      - Indonesian
+      understoodLanguages:
+      - English
+      - Japanese
+      - Indonesian
+      currentLanguage: Indonesian
+      defaultLanguage: Indonesian
   hidden: true
 
 - type: startingGear

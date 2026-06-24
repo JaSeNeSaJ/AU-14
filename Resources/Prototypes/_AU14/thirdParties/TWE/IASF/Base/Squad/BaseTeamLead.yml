@@ -40,7 +40,12 @@
     - type: RMCPointing
     - type: MarineOrders
     - type: Language
-      preset: AU14LanguagePresetTWE
+      spokenLanguages:
+      - Indonesian
+      understoodLanguages:
+      - Indonesian
+      currentLanguage: Indonesian
+      defaultLanguage: Indonesian
   hidden: true
 
 - type: startingGear
