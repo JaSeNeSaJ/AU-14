@@ -1,10 +1,9 @@
 using Robust.Client.GameObjects;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
-using Robust.Shared.IoC;
 using Robust.Shared.Prototypes;
 
-namespace Content.Client._AU14.Abominations;
+namespace Content.Client._CMU14.Threats.Mobs.Abominations;
 
 public sealed class AbominationConstructionWindow : DefaultWindow
 {

@@ -5,7 +5,7 @@
 using Content.Shared._RMC14.Xenonids.Hive;
 using Robust.Client.GameObjects;
 
-namespace Content.Client._AU14.Xeno;
+namespace Content.Client._CMU14.Threats.Mobs.Xeno;
 
 public sealed partial class XenoHiveColorVisualizerSystem : VisualizerSystem<HiveMemberComponent>
 {

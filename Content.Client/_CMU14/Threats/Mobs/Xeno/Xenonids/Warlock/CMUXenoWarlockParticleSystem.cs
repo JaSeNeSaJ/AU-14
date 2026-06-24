@@ -7,7 +7,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
-namespace Content.Client._CMU14.Xenonids.Warlock;
+namespace Content.Client._CMU14.Threats.Mobs.Xeno.Xenonids.Warlock;
 
 public sealed partial class CMUXenoWarlockParticleSystem : EntitySystem
 {
@@ -128,20 +128,20 @@ public sealed partial class CMUXenoWarlockParticleOverlay : Overlay
 
         for (var i = 0; i < profile.Count; i++)
         {
-            var phase = Hash01(seed, i, 0);
-            var age = PositiveModulo(elapsed + phase * lifespan, lifespan);
+            var phase = CMUXenoWarlockParticleOverlay.Hash01(seed, i, 0);
+            var age = CMUXenoWarlockParticleOverlay.PositiveModulo(elapsed + phase * lifespan, lifespan);
             var rawAge = age * 10f;
-            var alpha = GetAlpha(age, lifespan, fade);
+            var alpha = CMUXenoWarlockParticleOverlay.GetAlpha(age, lifespan, fade);
             if (alpha <= 0f)
                 continue;
 
-            var initial = RandomRing(seed, i, profile.PositionRadius);
-            var drift = Lerp(profile.DriftMin, profile.DriftMax, Hash01(seed, i, 4), Hash01(seed, i, 5));
+            var initial = CMUXenoWarlockParticleOverlay.RandomRing(seed, i, profile.PositionRadius);
+            var drift = CMUXenoWarlockParticleOverlay.Lerp(profile.DriftMin, profile.DriftMax, CMUXenoWarlockParticleOverlay.Hash01(seed, i, 4), CMUXenoWarlockParticleOverlay.Hash01(seed, i, 5));
             var motion = velocity * rawAge + drift * rawAge + gravity * (0.5f * rawAge * rawAge);
             if (particles.UseMotionOverride && motion.LengthSquared() > MaxDirectedTravelPixels * MaxDirectedTravelPixels)
                 motion = Vector2.Normalize(motion) * MaxDirectedTravelPixels;
 
-            var scale = Lerp(profile.ScaleMin, profile.ScaleMax, Hash01(seed, i, 6), Hash01(seed, i, 7)) +
+            var scale = CMUXenoWarlockParticleOverlay.Lerp(profile.ScaleMin, profile.ScaleMax, CMUXenoWarlockParticleOverlay.Hash01(seed, i, 6), CMUXenoWarlockParticleOverlay.Hash01(seed, i, 7)) +
                         new Vector2(profile.Grow * rawAge);
             scale = Vector2.Max(scale, new Vector2(0.04f));
 
@@ -154,8 +154,8 @@ public sealed partial class CMUXenoWarlockParticleOverlay : Overlay
 
     private static Vector2 RandomRing(int seed, int index, Vector2 radius)
     {
-        var angle = Hash01(seed, index, 1) * MathF.Tau;
-        var length = MathHelper.Lerp(radius.X, radius.Y, MathF.Sqrt(Hash01(seed, index, 2)));
+        var angle = CMUXenoWarlockParticleOverlay.Hash01(seed, index, 1) * MathF.Tau;
+        var length = MathHelper.Lerp(radius.X, radius.Y, MathF.Sqrt(CMUXenoWarlockParticleOverlay.Hash01(seed, index, 2)));
         return new Vector2(MathF.Cos(angle), MathF.Sin(angle)) * length;
     }
 

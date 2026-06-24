@@ -1,18 +1,20 @@
 using Content.Shared._AU14.WorkingJoe;
-using Content.Shared._CMU14.Wendigo;
 using Content.Shared.Chat.Prototypes;
+using Robust.Shared.ContentPack;
 using Robust.Shared.Prototypes;
 
-namespace Content.Client._CMU14.Wendigo;
+namespace Content.Client._CMU14.Threats.Mobs.WorkingJoe;
 
-public sealed partial class WendigoVoiceBui : BoundUserInterface
+public sealed partial class WorkingJoeVoiceBui : BoundUserInterface
 {
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private ILocalizationManager _loc = default!;
+    [Dependency] private IResourceManager _resource = default!;
 
-    private WendigoVoiceWindow? _window;
+    private WorkingJoeVoiceWindow? _window;
+    private WorkingJoeVoiceFavorites? _favorites;
 
-    public WendigoVoiceBui(EntityUid owner, Enum uiKey) : base(owner, uiKey)
+    public WorkingJoeVoiceBui(EntityUid owner, Enum uiKey) : base(owner, uiKey)
     {
         IoCManager.InjectDependencies(this);
     }
@@ -21,20 +23,21 @@ public sealed partial class WendigoVoiceBui : BoundUserInterface
     {
         base.Open();
 
-        _window = new _CMU14.Wendigo.WendigoVoiceWindow();
+        _favorites ??= new WorkingJoeVoiceFavorites(_resource);
+
+        _window = new WorkingJoeVoiceWindow(_favorites);
         _window.OnClose += Close;
         _window.OnLineSelected += OnLineSelected;
 
-        // Build list from all emote prototypes tagged for WorkingJoe
-        var lines = new List<WendigoVoiceLine>();
+        var lines = new List<WorkingJoeVoiceLine>();
         foreach (var emote in _proto.EnumeratePrototypes<EmotePrototype>())
         {
             if (emote.Whitelist?.Tags == null)
                 continue;
-            if (!emote.Whitelist.Tags.Contains("Wendigo"))
+            if (!emote.Whitelist.Tags.Contains("WorkingJoe"))
                 continue;
 
-            lines.Add(new WendigoVoiceLine
+            lines.Add(new WorkingJoeVoiceLine
             {
                 EmoteId = emote.ID,
                 DisplayName = _loc.GetString(emote.Name),
@@ -48,18 +51,13 @@ public sealed partial class WendigoVoiceBui : BoundUserInterface
 
     private void OnLineSelected(string emoteId)
     {
-        SendMessage(new WendigoPlayLineMessage(emoteId));
+        SendMessage(new WorkingJoePlayLineMessage(emoteId));
     }
 
     protected override void Dispose(bool disposing)
     {
         base.Dispose(disposing);
-        if (!disposing || _window == null)
-            return;
-
-        _window.OnClose -= Close;
-        _window.OnLineSelected -= OnLineSelected;
-        _window.Orphan();
-        _window = null;
+        if (disposing)
+            _window?.Close();
     }
 }

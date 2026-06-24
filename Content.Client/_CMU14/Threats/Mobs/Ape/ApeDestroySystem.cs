@@ -1,10 +1,10 @@
+using System.Numerics;
 using Content.Shared._CMU14.Ape;
 using Robust.Client.Animations;
 using Robust.Client.GameObjects;
 using Robust.Shared.Animations;
-using System.Numerics;
 
-namespace Content.Client._CMU14.Ape;
+namespace Content.Client._CMU14.Threats.Mobs.Ape;
 
 public sealed partial class ApeDestroySystem : SharedApeDestroySystem
 {

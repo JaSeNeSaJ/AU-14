@@ -5,7 +5,7 @@ using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Client.UserInterface.XAML;
 
-namespace Content.Client._AU14.WorkingJoe;
+namespace Content.Client._CMU14.Threats.Mobs.WorkingJoe;
 
 [GenerateTypedNameReferences]
 public sealed partial class WorkingJoeVoiceWindow : DefaultWindow
@@ -185,21 +185,21 @@ public sealed partial class WorkingJoeVoiceWindow : DefaultWindow
             filtered = _recentIds
                 .Select(id => _allLines.FirstOrDefault(l => l.EmoteId == id))
                 .Where(l => l != null)
-                .Where(l => string.IsNullOrEmpty(search) || l!.DisplayName.ToLowerInvariant().Contains(search))
+                .Where(l => string.IsNullOrEmpty(search) || l!.DisplayName.ToLowerInvariant().Contains((string)search))
                 .ToList()!;
         }
         else if (_showFavorites)
         {
             filtered = _allLines
                 .Where(l => _favorites.Contains(l.EmoteId))
-                .Where(l => string.IsNullOrEmpty(search) || l.DisplayName.ToLowerInvariant().Contains(search))
+                .Where(l => string.IsNullOrEmpty(search) || l.DisplayName.ToLowerInvariant().Contains((string)search))
                 .ToList();
         }
         else
         {
             filtered = _allLines
                 .Where(l => _selectedCategory == null || l.Category == _selectedCategory)
-                .Where(l => string.IsNullOrEmpty(search) || l.DisplayName.ToLowerInvariant().Contains(search))
+                .Where(l => string.IsNullOrEmpty(search) || l.DisplayName.ToLowerInvariant().Contains((string)search))
                 .ToList();
         }
 

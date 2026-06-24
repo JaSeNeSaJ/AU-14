@@ -2,7 +2,7 @@ using Content.Shared._AU14.Abominations;
 using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 
-namespace Content.Client._AU14.Abominations;
+namespace Content.Client._CMU14.Threats.Mobs.Abominations;
 
 [UsedImplicitly]
 public sealed class AbominationMimicBui : BoundUserInterface

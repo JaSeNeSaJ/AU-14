@@ -6,7 +6,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
-namespace Content.Client._CMU14.Xenonids.Warlock;
+namespace Content.Client._CMU14.Threats.Mobs.Xeno.Xenonids.Warlock;
 
 public sealed partial class CMUXenoPsychicCrushBlurOverlay : Overlay
 {

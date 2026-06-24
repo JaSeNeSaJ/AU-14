@@ -3,7 +3,7 @@ using JetBrains.Annotations;
 using Robust.Client.UserInterface;
 using Robust.Shared.Prototypes;
 
-namespace Content.Client._AU14.Abominations;
+namespace Content.Client._CMU14.Threats.Mobs.Abominations;
 
 [UsedImplicitly]
 public sealed class AbominationConstructionBui : BoundUserInterface
