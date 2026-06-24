@@ -265,14 +265,14 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         if (!TryComp<MarineComponent>(uid, out var marine))
             return;
 
-        var faction = (marine.Faction ?? string.Empty).ToUpperInvariant();
+        var faction = NormalizeHumanFaction(marine.Faction);
         bool wantMarines = false, wantOpfor = false, wantGovfor = false, wantClf = false;
 
-        if (faction.Contains("CLF"))
+        if (faction == ClfFaction)
             wantClf = true;
-        else if (faction.Contains("OPF"))
+        else if (faction == OpforFaction)
             wantOpfor = true;
-        else if (faction.Contains("GOV"))
+        else if (faction == GovforFaction)
             wantGovfor = true;
         else
             wantMarines = true;
@@ -344,21 +344,23 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         bool marines = false, opfor = false, govfor = false, clf = false;
         if (TryComp<MarineComponent>(ent, out var marine))
         {
-            string faction = (marine.Faction ?? string.Empty).ToUpperInvariant();
-            if (faction == "CLF")
-                clf = true;
-            else if (faction == "OPFOR")
-                opfor = true;
-            else if (faction == "GOVFOR")
-                govfor = true;
-            else if (faction == "MARINE" || faction == "")
-                marines = true; // default - unspecified
+            if (TryNormalizeHumanFaction(marine.Faction, out var faction))
+            {
+                if (faction == ClfFaction)
+                    clf = true;
+                else if (faction == OpforFaction)
+                    opfor = true;
+                else if (faction == GovforFaction)
+                    govfor = true;
+                else
+                    marines = true;
+            }
             else
             {
                 marines = true;
                 string protoId = MetaData(ent.Owner).EntityPrototype?.ID ?? "null";
                 Logger.GetSawmill("tacmap").Warning(
-                    $"[SyncUserFactionFlags] Couldn't determine TacticalMapUser faction '{faction}' for {ToPrettyString(ent.Owner)}, " +
+                    $"[SyncUserFactionFlags] Couldn't determine TacticalMapUser faction '{marine.Faction}' for {ToPrettyString(ent.Owner)}, " +
                     $"proto: {protoId}, defaulting to Marines!");
             }
         }
@@ -754,14 +756,14 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
     private (bool marines, bool xenos, bool opfor, bool govfor, bool clf) ResolveComputerWriteFaction(
         Entity<TacticalMapComputerComponent> computer, EntityUid user)
     {
-        var faction = computer.Comp.Faction?.ToUpperInvariant();
-        if (!string.IsNullOrEmpty(faction))
+        var faction = NormalizeMapFaction(computer.Comp.Faction);
+        if (faction != null)
         {
-            return (faction == "MARINES" || faction == "UNMC",
-                    faction == "XENONIDS" || faction == "XENONID",
-                    faction == "OPFOR",
-                    faction == "GOVFOR",
-                    faction == "CLF");
+            return (faction == MarinesFaction,
+                    faction == XenosFaction,
+                    faction == OpforFaction,
+                    faction == GovforFaction,
+                    faction == ClfFaction);
         }
 
         string? assign = null;
@@ -774,25 +776,25 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
         else if (TryComp<MarineComponent>(user, out var marine))
         {
-            var userFaction = (marine.Faction ?? string.Empty).ToUpperInvariant();
-            if (userFaction.Contains("CLF"))
+            var userFaction = NormalizeHumanFaction(marine.Faction);
+            if (userFaction == ClfFaction)
             {
-                assign = "CLF";
+                assign = ClfFaction;
                 result = (false, false, false, false, true);
             }
-            else if (userFaction.Contains("OPF"))
+            else if (userFaction == OpforFaction)
             {
-                assign = "OPFOR";
+                assign = OpforFaction;
                 result = (false, false, true, false, false);
             }
-            else if (userFaction.Contains("GOV"))
+            else if (userFaction == GovforFaction)
             {
-                assign = "GOVFOR";
+                assign = GovforFaction;
                 result = (false, false, false, true, false);
             }
             else
             {
-                assign = "MARINES";
+                assign = MarinesFaction;
                 result = (true, false, false, false, false);
             }
         }
@@ -1496,18 +1498,18 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         // Fallback: infer from MarineComponent.Faction
         if (!placed && TryComp(ent, out Content.Shared._RMC14.Marines.MarineComponent? marineComp) && !string.IsNullOrWhiteSpace(marineComp.Faction))
         {
-            var faction = marineComp.Faction.ToUpperInvariant();
-            if (faction == "OPFOR")
+            var faction = NormalizeHumanFaction(marineComp.Faction);
+            if (faction == OpforFaction)
             {
                 tacticalMap.OpforBlips[ent.Owner.Id] = blip;
                 placed = true;
             }
-            else if (faction == "GOVFOR")
+            else if (faction == GovforFaction)
             {
                 tacticalMap.GovforBlips[ent.Owner.Id] = blip;
                 placed = true;
             }
-            else if (faction == "CLF")
+            else if (faction == ClfFaction)
             {
                 tacticalMap.ClfBlips[ent.Owner.Id] = blip;
                 placed = true;
@@ -2042,8 +2044,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         return Filter.Empty().AddWhereAttachedEntity(e =>
         {
             if (TryComp<MarineComponent>(e, out var marine))
-                return !string.IsNullOrWhiteSpace(marine.Faction) &&
-                       string.Equals(marine.Faction, faction, StringComparison.OrdinalIgnoreCase);
+                return NormalizeHumanFaction(marine.Faction) == NormalizeHumanFaction(faction);
 
             return HasComp<GhostComponent>(e);
         });
@@ -2137,7 +2138,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         // we should show other human factions only as reduced blips (background only), but
         // we must keep infrastructure (comms/sensors/tunnels) fully visible.
         // Normalize the computer faction: empty => MARINES
-        var normalizedFaction = string.IsNullOrWhiteSpace(computer.Comp.Faction) ? "MARINES" : computer.Comp.Faction.ToUpperInvariant();
+        var normalizedFaction = NormalizeMapFaction(computer.Comp.Faction) ?? MarinesFaction;
 
         if (TeamHasActiveSensors(normalizedFaction))
         {
@@ -2359,10 +2360,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                     if (!_ui.IsUiOpen(computerId, TacticalMapComputerUi.Key))
                         continue;
 
-                    var compFaction = computer.Faction?.ToUpperInvariant();
-                    string normalized = string.IsNullOrWhiteSpace(compFaction) || compFaction == "" || compFaction == "MARINES" || compFaction == "UNMC"
-                        ? "MARINES"
-                        : compFaction == "XENONIDS" || compFaction == "XENONID" ? "XENONIDS" : compFaction;
+                    var normalized = NormalizeMapFaction(computer.Faction) ?? MarinesFaction;
 
                     if (normalized != faction)
                         continue;
@@ -2377,10 +2375,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                     if (!_ui.IsUiOpen(weaponsId, DropshipTerminalWeaponsUi.Key))
                         continue;
 
-                    var compFaction = weaponsComputer.Faction?.ToUpperInvariant();
-                    string normalized = string.IsNullOrWhiteSpace(compFaction) || compFaction == "" || compFaction == "MARINES" || compFaction == "UNMC"
-                        ? "MARINES"
-                        : compFaction == "XENONIDS" || compFaction == "XENONID" ? "XENONIDS" : compFaction;
+                    var normalized = NormalizeMapFaction(weaponsComputer.Faction) ?? MarinesFaction;
 
                     if (normalized != faction)
                         continue;
