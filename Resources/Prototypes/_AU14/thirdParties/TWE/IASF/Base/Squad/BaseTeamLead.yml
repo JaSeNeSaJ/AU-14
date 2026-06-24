@@ -5,7 +5,11 @@
   playTimeTracker: AU14IASFTeamLead
   description: au14-job-description-twepara
   ranks:
-    RMC_Sergeant: []
+    RMCRankCivilian: []
+  chevrons:
+    IASF_FirstSergeant:
+      entity: AU14ChevronIASFFirstSergeant
+      requirements: []
   spawnMenuRoleName: IASF Team Leader (Base)
   joinNotifyCrew: false
   supervisors: au14-job-name-tweiasf-co

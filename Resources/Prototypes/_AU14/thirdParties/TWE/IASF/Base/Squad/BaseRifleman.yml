@@ -6,7 +6,11 @@
   playTimeTracker: AU14IASFRifleman
   description: au14-job-description-twepara
   ranks:
-    RMC_Marine: []
+    RMCRankCivilian: []
+  chevrons:
+    IASF_PrivateFirstClass:
+      entity: AU14ChevronIASFPrivateFirstClass
+      requirements: []
   spawnMenuRoleName: IASF Rifleman (Base)
   joinNotifyCrew: false
   supervisors: au14-job-name-tweiasf-tl

@@ -14,8 +14,8 @@
     - German
     - Chinese
     - Spanish
-    currentLanguage: Russian
-    defaultLanguage: Russian
+    currentLanguage: German
+    defaultLanguage: German
 
 - type: entity
   id: AU14LanguagePresetUPPOfficer
@@ -35,5 +35,5 @@
     - German
     - Chinese
     - Spanish
-    currentLanguage: Russian
-    defaultLanguage: Russian
+    currentLanguage: German
+    defaultLanguage: German

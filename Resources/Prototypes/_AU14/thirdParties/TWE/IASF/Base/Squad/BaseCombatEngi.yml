@@ -5,7 +5,11 @@
   playTimeTracker: AU14IASFCombatEngineer
   description: au14-job-description-tweiasf
   ranks:
-    RMC_LanceCorporal: []
+    RMCRankCivilian: []
+  chevrons:
+    IASF_ChiefPrivate:
+      entity: AU14ChevronIASFChiefPrivate
+      requirements: []
   spawnMenuRoleName: IASF Engineer (Base)
   joinNotifyCrew: false
   icon: RMCJobIconParaAssaultEngineer

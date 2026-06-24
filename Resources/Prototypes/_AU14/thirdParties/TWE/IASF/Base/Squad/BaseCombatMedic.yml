@@ -5,7 +5,11 @@
   playTimeTracker: AU14IASFCombatMedicalTechnician
   description: au14-job-description-twepara
   ranks:
-    RMC_LanceCorporal: []
+    RMCRankCivilian: []
+  chevrons:
+    IASF_ChiefPrivate:
+      entity: AU14ChevronIASFChiefPrivate
+      requirements: []
   spawnMenuRoleName: IASF Medical Technician (Base)
   joinNotifyCrew: false
   icon: RMCJobIconParaMedicalTechnican

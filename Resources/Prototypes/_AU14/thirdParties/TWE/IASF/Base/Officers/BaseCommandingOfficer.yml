@@ -5,7 +5,11 @@
   playTimeTracker: AU14IASFCommander
   description: au14-job-description-twepara
   ranks:
-    RMC_Lieutenant: []
+    RMCRankCivilian: []
+  chevrons:
+    IASF_FirstLieutenant:
+      entity: AU14ChevronIASFFirstLieutenant
+      requirements: []
   icon: RMCJobIconParaCommander
   spawnMenuRoleName: IASF Commander (Base)
   joinNotifyCrew: false
