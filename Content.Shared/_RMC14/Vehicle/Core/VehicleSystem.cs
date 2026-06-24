@@ -504,6 +504,9 @@ public sealed partial class VehicleSystem : EntitySystem
 
         _rmcTeleporter.HandlePulling(user, exitMapCoords);
         UntrackOccupant(user, vehicleUid);
+
+        var ev = new VehicleExitedEvent(user, ent.Owner, exitMapCoords);
+        RaiseLocalEvent(vehicleUid, ref ev);
         return true;
     }
 
