@@ -32,6 +32,7 @@
     traits:
     - NonResuscitable
     - Epilepsy
+    - NoEnglish
   ranks:
     RMCRankCivilian: []
   chevrons:

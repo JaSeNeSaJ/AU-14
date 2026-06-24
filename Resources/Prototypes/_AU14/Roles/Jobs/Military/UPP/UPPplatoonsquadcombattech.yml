@@ -16,3 +16,5 @@
       role: AU14JobGOVFORSquadCombatTech
       time: 54000 # 15 hours
     UPP_Private: []
+    - type: Language
+      preset: AU14LanguagePresetUPPEnlisted

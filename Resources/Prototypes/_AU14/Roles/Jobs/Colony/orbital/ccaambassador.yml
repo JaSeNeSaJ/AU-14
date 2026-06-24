@@ -14,6 +14,11 @@
   whitelisted: true
   whitelistParent: AU14JobGeneralWhitelist
   supervisors: au14-job-supervisors-orbital
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NoEnglish
   accessGroups:
   - Colonist
   - auadmin
@@ -46,6 +51,8 @@
       - GOVFOR
     - type: Marine
       Faction: govfor
+    - type: Language
+      preset: AU14LanguagePresetCCA
 
 - type: startingGear
   id: AU14GearCivilianAmbassadorCCA

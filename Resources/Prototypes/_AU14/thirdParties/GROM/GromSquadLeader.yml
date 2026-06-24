@@ -61,6 +61,23 @@
     - type: RMCTrackable
     - type: SquadLeader
     - type: RMCPointing
+    - type: Language
+      spokenLanguages:
+      - Polish
+      - English
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      understoodLanguages:
+      - Polish
+      - English
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      currentLanguage: Polish
+      defaultLanguage: Polish
   hidden: false
 
 - type: entity

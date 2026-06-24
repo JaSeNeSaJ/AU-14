@@ -35,6 +35,8 @@
     - type: RMCTrackable
     - type: RMCPointing
     - type: MarineOrders
+    - type: Language
+      preset: AU14LanguagePresetTWE
   hidden: true
 
 - type: startingGear

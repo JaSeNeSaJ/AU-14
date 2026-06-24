@@ -11,3 +11,5 @@
     components:
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORSquadSergeantUPP
+    - type: Language
+      preset: AU14LanguagePresetUPPOfficer

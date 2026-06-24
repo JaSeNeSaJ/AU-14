@@ -33,6 +33,25 @@
         RMCSkillVehicles: 1
     - type: JobPrefix
       prefix: au-14-job-prefix-upptd-loader
+    - type: Language
+      spokenLanguages:
+      - Polish
+      - Czech
+      - Slovak
+      - Ukrainian
+      - Romanian
+      - Hungarian
+      - Lithuanian
+      understoodLanguages:
+      - Polish
+      - Czech
+      - Slovak
+      - Ukrainian
+      - Romanian
+      - Hungarian
+      - Lithuanian
+      currentLanguage: Ukrainian
+      defaultLanguage: Ukrainian
   hidden: false
 
 - type: entity

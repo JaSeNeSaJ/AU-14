@@ -14,14 +14,3 @@
       role: AU14JobGOVFORSquadAutomaticRifleman
       time: 108000 # 30 hours
     RMC_Marine: []
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: Skills
-      skills:
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillJtac: 3
-        RMCSkillPolice: 1

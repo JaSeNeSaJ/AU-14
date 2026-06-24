@@ -33,5 +33,8 @@ rmc-trait-russian-language-desc = You can speak and understand Russian.
 rmc-trait-german-language-name = German language
 rmc-trait-german-language-desc = You can speak and understand German.
 
+rmc-trait-swedish-language-name = Swedish language
+rmc-trait-swedish-language-desc = You can speak and understand Swedish.
+
 rmc-trait-group-languages = Languages
 rmc-trait-group-other-speech = Other speech traits

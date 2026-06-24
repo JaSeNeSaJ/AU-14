@@ -57,6 +57,21 @@
         RMCSkillVehicles: 0
     - type: JobPrefix
       prefix: rmc-job-prefix-forecon-support-tech
+    - type: Language
+      spokenLanguages:
+      - Polish
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      understoodLanguages:
+      - Polish
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      currentLanguage: Polish
+      defaultLanguage: Polish
   hidden: false
 
 - type: entity

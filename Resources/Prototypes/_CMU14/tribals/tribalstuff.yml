@@ -68,6 +68,13 @@
         RMCSkillEndurance: 1
     - type: JobPrefix
       prefix: au14-job-prefix-tribal-leader
+    - type: Language
+      spokenLanguages:
+      - Arcturian
+      understoodLanguages:
+      - Arcturian
+      currentLanguage: Arcturian
+      defaultLanguage: Arcturian
 
 - type: job
   parent: CMJobBase
@@ -92,6 +99,13 @@
         RMCSkillFireman: 1
     - type: JobPrefix
       prefix: au14-job-prefix-tribal-spear
+    - type: Language
+      spokenLanguages:
+      - Arcturian
+      understoodLanguages:
+      - Arcturian
+      currentLanguage: Arcturian
+      defaultLanguage: Arcturian
 
 - type: job
   parent: CMJobBase
@@ -115,6 +129,13 @@
         RMCSkillFirearms: 1
     - type: JobPrefix
       prefix: au14-job-prefix-tribal-bowman
+    - type: Language
+      spokenLanguages:
+      - Arcturian
+      understoodLanguages:
+      - Arcturian
+      currentLanguage: Arcturian
+      defaultLanguage: Arcturian
 
 - type: job
   parent: CMJobBase
@@ -140,6 +161,13 @@
         RMCSkillCqc: 1
     - type: JobPrefix
       prefix: au14-job-prefix-tribal-shaman
+    - type: Language
+      spokenLanguages:
+      - Arcturian
+      understoodLanguages:
+      - Arcturian
+      currentLanguage: Arcturian
+      defaultLanguage: Arcturian
 
 - type: playTimeTracker
   id: AU14JobTribal

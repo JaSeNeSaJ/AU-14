@@ -411,3 +411,5 @@
     hideLayersOnEquip:
     - UndergarmentTop
     - Hair
+  - type: LanguageLearning
+    preset: AU14LanguageLearningPresetHuman

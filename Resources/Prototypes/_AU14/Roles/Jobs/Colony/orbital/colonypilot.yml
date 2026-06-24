@@ -16,6 +16,7 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
+    - NoEnglish
   ranks:
     AU14RankFlightCaptain:
     - !type:RoleTimeRequirement

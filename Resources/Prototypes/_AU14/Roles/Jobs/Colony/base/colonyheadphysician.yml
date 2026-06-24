@@ -18,6 +18,7 @@
     inverted: true
     traits:
     - NonResuscitable
+    - NoEnglish
   ranks:
     RMCRankCivilianDoctor: []
   startingGear: AU14GearCivilianHeadPhysician

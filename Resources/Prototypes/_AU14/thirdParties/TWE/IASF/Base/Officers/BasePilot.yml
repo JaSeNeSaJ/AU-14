@@ -25,6 +25,8 @@
       preset: AU14SkillPresetPlatoonDP
     - type: JobPrefix
       prefix: au14-job-prefix-tweiasf-pl
+    - type: Language
+      preset: AU14LanguagePresetTWE
   hidden: true
 
 - type: startingGear

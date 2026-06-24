@@ -42,6 +42,17 @@
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: au14-job-prefix-forecon-spotter
+    - type: Language
+      spokenLanguages:
+      - English
+      - Brazilian
+      - Spanish
+      understoodLanguages:
+      - English
+      - Brazilian
+      - Spanish
+      currentLanguage: Brazilian
+      defaultLanguage: Brazilian
   hidden: true
 
 - type: entity

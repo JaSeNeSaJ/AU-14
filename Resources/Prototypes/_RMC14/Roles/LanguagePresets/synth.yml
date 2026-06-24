@@ -33,8 +33,12 @@
   - type: LanguageLearningPreset
     learnableLanguages:
     - Xeno
+    - Yautja
+    - Arcturian
     firstContactLanguages:
     - Xeno
+    - Yautja
+    - Arcturian
     languages:
       Xeno:
         initialBoostedWordCount: 18

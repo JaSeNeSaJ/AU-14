@@ -21,6 +21,8 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         SubscribeLocalEvent<LanguageComponent, MapInitEvent>(OnInitLanguageSpeaker);
         SubscribeLocalEvent<RoundStartingEvent>(OnRoundStarting);
         SubscribeNetworkEvent<LanguagesSetMessage>(OnClientSetLanguage);
+        SubscribeLocalEvent<RemoveLanguageComponent, DetermineEntityLanguagesEvent>(OnRemoveLanguages);
+        SubscribeLocalEvent<RemoveLanguageComponent, ComponentStartup>(OnRemoveLanguageStartup);
     }
 
     private void OnInitLanguageSpeaker(Entity<LanguageComponent> ent, ref MapInitEvent args)
@@ -56,6 +58,45 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
             return;
 
         SetLanguage(uid, message.CurrentLanguage);
+    }
+
+    private void OnRemoveLanguages(
+        Entity<RemoveLanguageComponent> ent,
+        ref DetermineEntityLanguagesEvent args)
+    {
+        foreach (var language in ent.Comp.Languages)
+        {
+            // Don't remove the last spoken language
+            if (ent.Comp.RemoveSpoken &&
+                args.SpokenLanguages.Count > 1)
+            {
+                args.SpokenLanguages.Remove(language);
+            }
+
+            // Don't remove the last understood language
+            if (ent.Comp.RemoveUnderstood &&
+                args.UnderstoodLanguages.Count > 1)
+            {
+                args.UnderstoodLanguages.Remove(language);
+            }
+        }
+    }
+
+    private void OnRemoveLanguageStartup(Entity<RemoveLanguageComponent> ent, ref ComponentStartup args)
+    {
+        if (!TryComp<LanguageComponent>(ent.Owner, out var language))
+            return;
+
+        foreach (var lang in ent.Comp.Languages)
+        {
+            if (ent.Comp.RemoveSpoken)
+                language.SpokenLanguages.Remove(lang);
+
+            if (ent.Comp.RemoveUnderstood)
+                language.UnderstoodLanguages.Remove(lang);
+        }
+
+        UpdateEntityLanguages(ent.Owner);
     }
 
     public void SetLanguage(Entity<LanguageComponent?> ent, ProtoId<LanguagePrototype> language)

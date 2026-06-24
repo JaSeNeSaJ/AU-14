@@ -16,18 +16,7 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillIntel: 1
-        RMCSkillJtac: 2
-        RMCSkillLeadership: 1
-        RMCSkillMedical: 2
-        RMCSkillOverwatch: 1
-        RMCSkillPilot: 2
-        RMCSkillPowerLoader: 2
-        RMCSkillSurgery: 1
-        RMCSkillPolice: 1
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORDCCUPP
+    - type: Language
+      preset: AU14LanguagePresetUPPEnlisted

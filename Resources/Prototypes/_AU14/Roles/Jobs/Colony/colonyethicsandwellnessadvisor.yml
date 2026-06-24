@@ -17,6 +17,11 @@
   - Colonist
   - aumed
   roleWeight: 0.25
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NoEnglish
   special:
   - !type:AddComponentSpecial
     components:

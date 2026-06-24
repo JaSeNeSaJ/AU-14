@@ -29,6 +29,8 @@
       preset: AU14SkillPresetPlatoonHospitalCorpsman
     - type: JobPrefix
       prefix: au14-job-prefix-iasf
+    - type: Language
+      preset: AU14LanguagePresetTWE
   hidden: true
 
 - type: startingGear

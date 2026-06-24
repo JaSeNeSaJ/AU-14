@@ -12,6 +12,7 @@
     inverted: true
     traits:
     - Epilepsy
+    - NoEnglish
   playTimeTracker: AU14JobCivilianPaPOfficer
   ranks:
     RMCRankCivilian: []
@@ -56,6 +57,8 @@
       icon:
         sprite: /Textures/_RMC14/Interface/cm_job_icons.rsi
         state: cmb_dep
+    - type: Language
+      preset: AU14LanguagePresetUPPOfficer
 
 - type: startingGear
   id: AU14GearCivilianPaPOfficer

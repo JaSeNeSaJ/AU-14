@@ -21,6 +21,11 @@
   - AUPrisonStaff
   access:
   - AU14AccessColonyMarshall
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NoEnglish
   roleWeight: 0.25
   special:
   - !type:AddComponentSpecial

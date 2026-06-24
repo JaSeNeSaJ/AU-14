@@ -16,6 +16,7 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
+    - NoEnglish
   ranks:
     RMCRankSyntheticColonist: []
   startingGear: AU14GearCivilianColonySynthetic
@@ -75,6 +76,10 @@
           Blunt: 35
     - type: Synth
       generation: "rmc-species-synth-generation-second"
+    - type: Language
+      preset: AU14LanguagePresetSynth
+    - type: LanguageLearning
+      preset: AU14LanguageLearningPresetSynth
 
 - type: startingGear
   id: AU14GearCivilianColonySynthetic

@@ -8,3 +8,5 @@
       role: AU14JobGOVFORadvisor
       time: 360000 # 100 hours
     UPP_SergeantMajor: []
+    - type: Language
+      preset: AU14LanguagePresetUPPOfficer

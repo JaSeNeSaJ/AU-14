@@ -12,14 +12,7 @@
   special:
   - !type:AddComponentSpecial
     components:
-    - type: Skills
-      skills:
-        RMCSkillFirearms: 2
-        RMCSkillFireman: 1
-        RMCSkillJtac: 1
-        RMCSkillSmartGun: 1
-        RMCSkillConstruction: 2
-        RMCSkillEngineer: 3
-        RMCSkillPolice: 1
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORSquadAutomaticRiflemanUPP
+    - type: Language
+      preset: AU14LanguagePresetUPPEnlisted

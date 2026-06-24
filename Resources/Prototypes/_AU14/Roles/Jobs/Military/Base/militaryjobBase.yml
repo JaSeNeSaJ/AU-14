@@ -6,6 +6,11 @@
   hidden: true          # abstract hides by default, but for children/factions to remain hidden
   setPreference: false  # all faction variants are hidden in the loadout menu
   inheritAddComponentSpecials: true
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NoEnglish
   special:
   - !type:AddComponentSpecial
     components:

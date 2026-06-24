@@ -15,3 +15,5 @@
     components:
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORPlatOpUPP
+    - type: Language
+      preset: AU14LanguagePresetUPPOfficer

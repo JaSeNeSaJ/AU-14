@@ -41,6 +41,7 @@
     - FrontalLisp
     - NonResuscitable
     - Epilepsy
+    - NoEnglish
   special:
   - !type:AddComponentSpecial
     components:

@@ -21,6 +21,11 @@
   access:
   - AU14AccessColonyAmbassador
   roleWeight: 0.25
+  requirements:
+  - !type:TraitsRequirement
+    inverted: true
+    traits:
+    - NoEnglish
   special:
   - !type:AddComponentSpecial
     components:
@@ -46,6 +51,8 @@
       - GOVFOR
     - type: Marine
       Faction: govfor
+    - type: Language
+      preset: AU14LanguagePresetUPPOfficer
 
 - type: startingGear
   id: AU14GearCivilianAmbassadorUPP

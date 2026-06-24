@@ -38,6 +38,8 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: Language
+      preset: AU14LanguagePresetTWE
   hidden: false
 
 - type: entity

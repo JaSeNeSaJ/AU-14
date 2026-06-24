@@ -45,6 +45,21 @@
       preset: AU14SkillPresetPlatoonRifleman
     - type: JobPrefix
       prefix: au14-job-prefix-govforsquadrifleman
+    - type: Language
+      spokenLanguages:
+      - Polish
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      understoodLanguages:
+      - Polish
+      - Russian
+      - Spanish
+      - Chinese
+      - German
+      currentLanguage: Polish
+      defaultLanguage: Polish
   hidden: false
 
 - type: entity
