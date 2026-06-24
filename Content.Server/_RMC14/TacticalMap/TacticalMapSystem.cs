@@ -128,15 +128,15 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
 
         SubscribeLocalEvent<TacticalMapComponent, MapInitEvent>(OnTacticalMapMapInit);
 
-        SubscribeLocalEvent<TacticalMapUserComponent, MapInitEvent>(OnUserMapInit);
+        SubscribeLocalEvent<TacticalMapUserComponent, ComponentStartup>(OnUserStartup);
         SubscribeLocalEvent<TacticalMapUserComponent, RoleAddedEvent>(OnUserFactionChanged);
         SubscribeLocalEvent<TacticalMapUserComponent, MindAddedMessage>(OnUserFactionChanged);
 
-        SubscribeLocalEvent<TacticalMapComputerComponent, MapInitEvent>(OnComputerMapInit);
+        SubscribeLocalEvent<TacticalMapComputerComponent, ComponentStartup>(OnComputerStartup);
         SubscribeLocalEvent<TacticalMapComputerComponent, BeforeActivatableUIOpenEvent>(OnComputerBeforeUIOpen);
         SubscribeLocalEvent<DropshipTerminalWeaponsComponent, AfterActivatableUIOpenEvent>(OnDropshipWeaponsTerminalUIOpened);
 
-        SubscribeLocalEvent<TacticalMapTrackedComponent, MapInitEvent>(OnTrackedMapInit);
+        SubscribeLocalEvent<TacticalMapTrackedComponent, ComponentStartup>(OnTrackedStartup);
         SubscribeLocalEvent<TacticalMapTrackedComponent, MobStateChangedEvent>(OnTrackedMobStateChanged);
         SubscribeLocalEvent<TacticalMapTrackedComponent, RoleAddedEvent>(OnTrackedChanged);
         SubscribeLocalEvent<TacticalMapTrackedComponent, MindAddedMessage>(OnTrackedChanged);
@@ -152,17 +152,17 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         SubscribeLocalEvent<ActiveTacticalMapTrackedComponent, MobStateChangedEvent>(OnActiveMobStateChanged);
         SubscribeLocalEvent<ActiveTacticalMapTrackedComponent, HiveLeaderStatusChangedEvent>(OnHiveLeaderStatusChanged);
 
-        SubscribeLocalEvent<MapBlipIconOverrideComponent, MapInitEvent>(OnMapBlipOverrideMapInit);
+        SubscribeLocalEvent<MapBlipIconOverrideComponent, ComponentStartup>(OnMapBlipOverrideStartup);
         SubscribeLocalEvent<SensorTowerComponent, SensorTowerStateChangedEvent>(OnSensorTowerStateChanged);
 
-        SubscribeLocalEvent<RottingComponent, MapInitEvent>(OnRottingMapInit);
+        SubscribeLocalEvent<RottingComponent, ComponentStartup>(OnRottingStartup);
         SubscribeLocalEvent<RottingComponent, ComponentRemove>(OnRottingRemove);
 
-        SubscribeLocalEvent<UnrevivableComponent, MapInitEvent>(OnUnrevivableMapInit);
+        SubscribeLocalEvent<UnrevivableComponent, ComponentStartup>(OnUnrevivableStartup);
         SubscribeLocalEvent<UnrevivableComponent, ComponentRemove>(OnUnrevivablRemove);
         SubscribeLocalEvent<RoundStartingEvent>(OnRoundStart);
 
-        SubscribeLocalEvent<TacticalMapLiveUpdateOnOviComponent, MapInitEvent>(OnLiveUpdateOnOviMapInit);
+        SubscribeLocalEvent<TacticalMapLiveUpdateOnOviComponent, ComponentStartup>(OnLiveUpdateOnOviStartup);
         SubscribeLocalEvent<TacticalMapLiveUpdateOnOviComponent, MobStateChangedEvent>(OnLiveUpdateOnOviStateChanged);
 
         Subs.BuiEvents<TacticalMapUserComponent>(TacticalMapUserUi.Key,
@@ -241,7 +241,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
     }
 
-    private void OnUserMapInit(Entity<TacticalMapUserComponent> ent, ref MapInitEvent args)
+    private void OnUserStartup(Entity<TacticalMapUserComponent> ent, ref ComponentStartup args)
     {
         _actions.AddAction(ent, ref ent.Comp.Action, ent.Comp.ActionId);
 
@@ -382,7 +382,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
     }
 
-    private void OnComputerMapInit(Entity<TacticalMapComputerComponent> ent, ref MapInitEvent args)
+    private void OnComputerStartup(Entity<TacticalMapComputerComponent> ent, ref ComponentStartup args)
     {
         if (TryGetTacticalMap(out var map))
             ent.Comp.Map = map;
@@ -415,7 +415,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         UpdateMapData((ent, ent));
     }
 
-    private void OnTrackedMapInit(Entity<TacticalMapTrackedComponent> ent, ref MapInitEvent args)
+    private void OnTrackedStartup(Entity<TacticalMapTrackedComponent> ent, ref ComponentStartup args)
     {
         _toInit.Add(ent);
         if (TryComp(ent, out ActiveTacticalMapTrackedComponent? active))
@@ -551,7 +551,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         UpdateTracked(ent);
     }
 
-    private void OnMapBlipOverrideMapInit(Entity<MapBlipIconOverrideComponent> ent, ref MapInitEvent args)
+    private void OnMapBlipOverrideStartup(Entity<MapBlipIconOverrideComponent> ent, ref ComponentStartup args)
     {
         if (_activeTacticalMapTrackedQuery.TryComp(ent, out var active))
         {
@@ -560,7 +560,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         }
     }
 
-    private void OnRottingMapInit(Entity<RottingComponent> ent, ref MapInitEvent args)
+    private void OnRottingStartup(Entity<RottingComponent> ent, ref ComponentStartup args)
     {
         if (_activeTacticalMapTrackedQuery.TryComp(ent, out var active))
             UpdateTracked((ent, active));
@@ -572,7 +572,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             UpdateTracked((ent, active));
     }
 
-    private void OnUnrevivableMapInit(Entity<UnrevivableComponent> ent, ref MapInitEvent args)
+    private void OnUnrevivableStartup(Entity<UnrevivableComponent> ent, ref ComponentStartup args)
     {
         if (_activeTacticalMapTrackedQuery.TryComp(ent, out var active))
             UpdateTracked((ent, active));
@@ -589,7 +589,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         _nextForceMapUpdate = TimeSpan.FromSeconds(30);
     }
 
-    private void OnLiveUpdateOnOviMapInit(Entity<TacticalMapLiveUpdateOnOviComponent> ent, ref MapInitEvent args)
+    private void OnLiveUpdateOnOviStartup(Entity<TacticalMapLiveUpdateOnOviComponent> ent, ref ComponentStartup args)
     {
         if (!ent.Comp.Enabled ||
             !TryComp(ent, out TacticalMapUserComponent? user))
