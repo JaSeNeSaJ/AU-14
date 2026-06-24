@@ -24,6 +24,7 @@ using Content.Shared._RMC14.Xenonids.Construction.Tunnel;
 using Content.Shared._RMC14.Xenonids.Egg;
 using Content.Shared._RMC14.Xenonids.Evolution;
 using Content.Shared._RMC14.Xenonids.Eye;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.HiveLeader;
 using Content.Shared._RMC14.Xenonids.Weeds;
 using Content.Shared.Actions;
@@ -69,6 +70,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private SharedXenoWeedsSystem _weeds = default!;
+    [Dependency] private SharedXenoHiveSystem _xenoHive = default!;
     [Dependency] private XenoAnnounceSystem _xenoAnnounce = default!;
     [Dependency] private RMCUnrevivableSystem _unrevivableSystem = default!;
 
@@ -207,7 +209,10 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             if (!onOvi.Enabled)
                 continue;
 
-            user.LiveUpdate = ev.Attached;
+            if (ev.Hive is { } hive && !_xenoHive.IsMember(uid, hive))
+                continue;
+
+            user.LiveUpdate = _evolution.HasOvipositorForXeno(uid);
             Dirty(uid, user);
         }
     }
@@ -592,7 +597,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             return;
         }
 
-        user.LiveUpdate = _evolution.HasOvipositor();
+        user.LiveUpdate = _evolution.HasOvipositorForXeno(ent.Owner);
         Dirty(ent, user);
     }
 
