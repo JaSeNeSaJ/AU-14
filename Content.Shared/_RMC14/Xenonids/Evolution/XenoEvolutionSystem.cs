@@ -122,6 +122,9 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
         if (args.Handled)
             return;
 
+        if (!HivebrokenCheckPopup(xeno))
+            return;
+
         if (!DamagedCheckPopup(xeno))
             return;
 
@@ -385,13 +388,13 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
         return false;
     }
 
-    private bool HivebrokenCheckPopup(EntityUid xeno, bool doPopup = true)
+    public bool HivebrokenCheckPopup(EntityUid xeno, bool doPopup = true, EntityUid? popupTarget = null)
     {
         if (!IsHivebrokenXeno(xeno))
             return true;
 
         if (doPopup)
-            _popup.PopupEntity(Loc.GetString("cmu-yautja-hivebroken-xeno-cant-evolve"), xeno, xeno, PopupType.MediumCaution);
+            _popup.PopupEntity(Loc.GetString("cmu-yautja-hivebroken-xeno-cant-evolve"), xeno, popupTarget ?? xeno, PopupType.MediumCaution);
 
         return false;
     }
@@ -746,6 +749,9 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
 
     private void TryDevolve(Entity<XenoDevolveComponent> xeno, EntProtoId to, bool damagedCheck = true)
     {
+        if (!HivebrokenCheckPopup(xeno))
+            return;
+
         if (damagedCheck && !DamagedCheckPopup(xeno))
             return;
 
@@ -756,6 +762,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
     public EntityUid? Devolve(Entity<XenoDevolveComponent> xeno, EntProtoId to)
     {
         if (_net.IsClient ||
+            IsHivebrokenXeno(xeno) ||
             !xeno.Comp.DevolvesTo.Contains(to))
         {
             return null;
