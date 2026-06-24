@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared._RMC14.Areas;
 using Content.Shared._RMC14.Atmos;
 using Content.Shared._RMC14.Camera;
@@ -106,6 +107,7 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
     [Dependency] private SquadSystem _squad = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private CMUSharedZLevelsSystem _zLevels = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private TagSystem _tagSystem = default!;
@@ -1685,6 +1687,17 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
         var activeFlares = EntityQueryEnumerator<ActiveFlareSignalComponent, TransformComponent>();
         while (activeFlares.MoveNext(out var uid, out var active, out var xform))
         {
+            if (!CanSettleActiveFlare(uid))
+            {
+                if (active.LastCoordinates.Count > 0)
+                {
+                    active.LastCoordinates.Clear();
+                    Dirty(uid, active);
+                }
+
+                continue;
+            }
+
             active.LastCoordinates.Enqueue(GetNetCoordinates(xform.Coordinates));
             Dirty(uid, active);
             if (active.LastCoordinates.Count < 10)
@@ -1909,6 +1922,12 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
             if (!_transform.InRange(xform.Coordinates, active.Origin, active.BreakRange))
                 RemCompDeferred<ActiveLaserDesignatorComponent>(uid);
         }
+    }
+
+    private bool CanSettleActiveFlare(EntityUid uid)
+    {
+        return !HasComp<ThrownItemComponent>(uid) &&
+               _zLevels.DistanceToGround(uid, out _) <= 0;
     }
 
     public static Angle GetImpactEffectRotation(Angle randomRotation, bool hasOccluder)
