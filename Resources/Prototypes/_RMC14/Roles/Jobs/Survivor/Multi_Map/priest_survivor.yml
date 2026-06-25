@@ -1,0 +1,78 @@
+# used in NV and LV-624
+- type: job
+  parent: CMSurvivor
+  id: CMSurvivorPriest
+  name: cm-job-name-surivor-priest
+  description: cm-job-description-survivor
+  playTimeTracker: CMJobSurvivor
+  startingGear: RMCGearSurvivorPriest
+  spawnMenuRoleName: Priest (Survivor)
+  special:
+  - !type:AddComponentSpecial
+    components:
+    - type: Skills
+      skills:
+        RMCSkillConstruction: 1
+        RMCSkillEndurance: 2
+        RMCSkillFireman: 2
+        RMCSkillFirearms: 2
+        RMCSkillLeadership: 1
+    - type: EquipEntityPreset
+      preset: RMCGearSurvivorPresetPriest
+    - type: MarineOrders
+      moveOrderSoundMale:
+        collection: AU14MaleMoveOrder
+      moveOrderSoundFemale:
+        collection: AU14FemaleMoveOrder
+      focusOrderSoundMale:
+        collection: AU14MaleFocusOrder
+      focusOrderSoundFemale:
+        collection: AU14FemaleFocusOrder
+      holdOrderSoundMale:
+        collection: AU14MaleHoldOrder
+      holdOrderSoundFemale:
+        collection: AU14FemaleHoldOrder
+    - type: RMCSurvivor
+    - type: MotionDetectorTracked
+    - type: NpcFactionMember
+      factions:
+      - Civilian
+    - type: IntelRescueSurvivorObjective
+    - type: RMCAllowSuitStorage
+  useLoadoutOfJob: CMSurvivor # for inheritance
+
+- type: startingGear
+  parent: RMCGearSurvivorEquipped
+  id: RMCGearSurvivorPriest
+  equipment:
+    jumpsuit: RMCJumpsuitChaplain
+    outerClothing: RMCClothingPriestRobes
+    back: CMSatchelFillSurvivorPriest
+    shoes: RMCShoesLaceup
+
+- type: entity
+  parent: CMSatchelFillSurvivor
+  id: CMSatchelFillSurvivorPriest
+  suffix: Survivor
+  components:
+  - type: StorageFill
+    contents:
+    - id: RMCBible
+
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: RMCSpawnPointSurvivorPriest
+  name: survivor priest spawn point
+  components:
+  - type: SpawnPoint
+    job_id: CMSurvivor
+  - type: Sprite
+    layers:
+    - sprite: _RMC14/Markers/landmarks.rsi
+      state: surv
+
+- type: entity
+  parent: [RMCSurvivorPresetCivilianRareItem, RMCSurvivorPresetCivilian]
+  id: RMCGearSurvivorPresetPriest
+  name: priest colonist preset
+  categories: [ HideSpawnMenu ]
