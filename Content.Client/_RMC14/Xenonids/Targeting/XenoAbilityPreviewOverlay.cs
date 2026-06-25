@@ -483,7 +483,6 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
         XenoDespoilerCausticEmbraceActionComponent embrace,
         EntityUid player)
     {
-        {
             if (!_mapManager.TryFindGridAt(originMap, out var gridUid, out var grid))
                 return;
 
@@ -562,7 +561,6 @@ public sealed class XenoAbilityPreviewOverlay : Overlay
                 (empowered ? Color.Red : Color.Yellow)
                 .WithAlpha(OutlineAlpha));
         }
-    }
 
     private void DrawBombard(
         in OverlayDrawArgs args,
