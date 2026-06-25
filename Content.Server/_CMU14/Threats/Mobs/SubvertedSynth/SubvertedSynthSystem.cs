@@ -19,6 +19,8 @@ using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
+using CLFMemberComponent = Content.Shared._CMU14.Threats.Mobs.CLF.CLFMemberComponent;
+using SynthSubverterComponent = Content.Shared._CMU14.Threats.Mobs.SubvertedSynth.SynthSubverterComponent;
 
 namespace Content.Server._CMU14.Threats.Mobs.SubvertedSynth;
 

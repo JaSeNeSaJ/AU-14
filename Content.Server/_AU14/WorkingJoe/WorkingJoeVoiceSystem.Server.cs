@@ -1,5 +1,6 @@
 using Content.Server.Chat.Systems;
 using Content.Shared._AU14.WorkingJoe;
+using Content.Shared._CMU14.Threats.Mobs.WorkingJoe;
 using Content.Shared.Actions;
 using Content.Shared.Chat.Prototypes;
 using Content.Shared.Mobs;
@@ -9,6 +10,8 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
+using WorkingJoeVoiceActionEvent = Content.Shared._CMU14.Threats.Mobs.WorkingJoe.WorkingJoeVoiceActionEvent;
+using WorkingJoeVoiceComponent = Content.Shared._CMU14.Threats.Mobs.WorkingJoe.WorkingJoeVoiceComponent;
 
 namespace Content.Server._AU14.WorkingJoe;
 

@@ -45,7 +45,7 @@ using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Timing;
 
-namespace Content.Shared._CMU14.Xenonids.Warlock;
+namespace Content.Shared._CMU14.Threats.Mobs.Xeno.Caste.Warlock;
 
 public enum CMUXenoPsychicBlastMode : byte
 {

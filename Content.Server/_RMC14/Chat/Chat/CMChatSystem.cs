@@ -27,6 +27,8 @@ using Content.Shared.Chat.Prototypes;
 using Robust.Shared.Replays;
 using Robust.Shared.Network;
 using Robust.Server.GameObjects;
+using CultistComponent = Content.Shared._CMU14.Threats.Mobs.Cultist.CultistComponent;
+using HasKnowledgeOfXenoLanguageComponent = Content.Shared._CMU14.Threats.Mobs.Xeno.HasKnowledgeOfXenoLanguageComponent;
 
 namespace Content.Server._RMC14.Chat.Chat;
 
@@ -139,26 +141,26 @@ public sealed partial class CMChatSystem : SharedCMChatSystem
         );
     }
 
-public override void Emote(
-    EntityUid source,
-    string message,
-    string? nameOverride = null,
-    bool checkRadioPrefix = true,
-    bool ignoreActionBlocker = false)
-{
-    _chatSystem.TrySendInGameICMessage(
-        source,
-        message,
-        InGameICChatType.Emote,
-        ChatTransmitRange.Normal,
-        false,
-        null,
-        null,
-        nameOverride,
-        checkRadioPrefix,
-        ignoreActionBlocker
-    );
-}
+    public override void Emote(
+        EntityUid source,
+        string message,
+        string? nameOverride = null,
+        bool checkRadioPrefix = true,
+        bool ignoreActionBlocker = false)
+    {
+        _chatSystem.TrySendInGameICMessage(
+            source,
+            message,
+            InGameICChatType.Emote,
+            ChatTransmitRange.Normal,
+            false,
+            null,
+            null,
+            nameOverride,
+            checkRadioPrefix,
+            ignoreActionBlocker
+        );
+    }
 
     private bool IsValidRadioPrefix(EntityUid headset, string prefixPart)
     {

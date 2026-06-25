@@ -2,10 +2,10 @@ using Content.Shared.FixedPoint;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
-namespace Content.Shared._CMU14.Xenonids.ZJump;
+namespace Content.Shared._CMU14.Threats.Mobs.Xeno.ZJump;
 
 [RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
-[Access(typeof(CMUXenoZJumpSystem))]
+[Access(typeof(Threats.Mobs.Xeno.ZJump.CMUXenoZJumpSystem))]
 public sealed partial class CMUXenoZJumpComponent : Component
 {
     [DataField, AutoNetworkedField]

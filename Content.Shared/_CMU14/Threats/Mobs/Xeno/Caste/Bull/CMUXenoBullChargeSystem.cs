@@ -12,7 +12,7 @@ using Content.Shared.Stunnable;
 using Robust.Shared.Audio;
 using Robust.Shared.Audio.Systems;
 
-namespace Content.Shared._CMU14.Xenonids.Bull;
+namespace Content.Shared._CMU14.Threats.Mobs.Xeno.Caste.Bull;
 
 public sealed partial class CMUXenoBullChargeSystem : EntitySystem
 {

@@ -19,6 +19,9 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using AbominationComponent = Content.Shared._CMU14.Threats.Mobs.Abomination.AbominationComponent;
+using AbominationMimicTransformedComponent = Content.Shared._CMU14.Threats.Mobs.Abomination.AbominationMimicTransformedComponent;
+using InsurgencyRuleComponent = Content.Shared._CMU14.Threats.InsurgencyRuleComponent;
 
 namespace Content.Shared._RMC14.Bioscan;
 

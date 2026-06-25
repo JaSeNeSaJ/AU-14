@@ -1,19 +1,19 @@
 using System.Numerics;
+using Content.Shared._CMU14.Xenonids.ZJump;
 using Content.Shared._CMU14.ZLevels.Core.Components;
 using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
+using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
-using Content.Shared._RMC14.Xenonids;
-using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared.Popups;
 using Content.Shared.Throwing;
 using Robust.Shared.Map;
-using Robust.Shared.Physics;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 
-namespace Content.Shared._CMU14.Xenonids.ZJump;
+namespace Content.Shared._CMU14.Threats.Mobs.Xeno.ZJump;
 
 public sealed partial class CMUXenoZJumpSystem : EntitySystem
 {
@@ -33,8 +33,8 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<CMUXenoZJumpComponent, MapInitEvent>(OnZJumpMapInit);
-        SubscribeLocalEvent<CMUXenoZJumpComponent, CMUXenoZJumpActionEvent>(OnZJumpAction);
-        SubscribeLocalEvent<CMUXenoZJumpComponent, CMUXenoZJumpDoAfterEvent>(OnZJumpDoAfter);
+        SubscribeLocalEvent<CMUXenoZJumpComponent, Threats.Mobs.Xeno.ZJump.CMUXenoZJumpActionEvent>(OnZJumpAction);
+        SubscribeLocalEvent<CMUXenoZJumpComponent, Threats.Mobs.Xeno.ZJump.CMUXenoZJumpDoAfterEvent>(OnZJumpDoAfter);
     }
 
     private void OnZJumpMapInit(Entity<CMUXenoZJumpComponent> xeno, ref MapInitEvent args)
@@ -50,7 +50,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         Dirty(xeno);
     }
 
-    private void OnZJumpAction(Entity<CMUXenoZJumpComponent> xeno, ref CMUXenoZJumpActionEvent args)
+    private void OnZJumpAction(Entity<CMUXenoZJumpComponent> xeno, ref Threats.Mobs.Xeno.ZJump.CMUXenoZJumpActionEvent args)
     {
         if (args.Handled)
             return;
@@ -67,7 +67,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         if (!_xenoPlasma.HasPlasmaPopup((xeno.Owner, null), xeno.Comp.PlasmaCost))
             return;
 
-        var ev = new CMUXenoZJumpDoAfterEvent(GetNetCoordinates(args.Target));
+        var ev = new Threats.Mobs.Xeno.ZJump.CMUXenoZJumpDoAfterEvent(GetNetCoordinates(args.Target));
         var doAfter = new DoAfterArgs(EntityManager, xeno, xeno.Comp.Windup, ev, xeno, args.Action)
         {
             BreakOnMove = true,
@@ -83,7 +83,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         args.Handled = true;
     }
 
-    private void OnZJumpDoAfter(Entity<CMUXenoZJumpComponent> xeno, ref CMUXenoZJumpDoAfterEvent args)
+    private void OnZJumpDoAfter(Entity<CMUXenoZJumpComponent> xeno, ref Threats.Mobs.Xeno.ZJump.CMUXenoZJumpDoAfterEvent args)
     {
         if (args.Handled)
             return;
@@ -114,7 +114,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
 
         var origin = _transform.GetMapCoordinates(xeno);
         var target = _transform.ToMapCoordinates(targetCoordinates);
-        var direction = ClampJumpVector(target.Position - origin.Position, xeno.Comp.Range);
+        var direction = CMUXenoZJumpSystem.ClampJumpVector(target.Position - origin.Position, xeno.Comp.Range);
         if (direction == Vector2.Zero)
             return false;
 
@@ -123,7 +123,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
 
         _physics.ResetDynamics(xeno, physics);
 
-        var takeoffDash = GetTakeoffDashVector(direction, xeno.Comp.TakeoffDashDistance);
+        var takeoffDash = CMUXenoZJumpSystem.GetTakeoffDashVector(direction, xeno.Comp.TakeoffDashDistance);
 
         _throwing.TryThrow(
             xeno,
@@ -133,10 +133,10 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
             animated: false,
             compensateFriction: true);
 
-        if (ShouldSetInAirForUpwardMomentum(xeno.Comp.ZVelocity))
+        if (CMUXenoZJumpSystem.ShouldSetInAirForUpwardMomentum(xeno.Comp.ZVelocity))
         {
             _physics.SetBodyStatus(xeno, physics, BodyStatus.InAir);
-            if (ShouldRaiseZJumpTakeoffLocalPosition(xeno.Comp.ZVelocity, zPhysics.LocalPosition))
+            if (CMUXenoZJumpSystem.ShouldRaiseZJumpTakeoffLocalPosition(xeno.Comp.ZVelocity, zPhysics.LocalPosition))
                 _zLevels.SetZLocalPosition((xeno.Owner, zPhysics), ZJumpTakeoffLocalPosition);
 
             _zLevels.SetZVelocity((xeno.Owner, zPhysics), xeno.Comp.ZVelocity);
@@ -169,9 +169,9 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
             hasMapAbove = _zLevels.TryMapUp((mapUid, zMap), out _);
         }
 
-        var canUseZJumpMap = CanUseZJumpMap(hasZMap, hasMapAbove);
+        var canUseZJumpMap = CMUXenoZJumpSystem.CanUseZJumpMap(hasZMap, hasMapAbove);
         if (!canUseZJumpMap ||
-            !CanStartZJumpTakeoff(canUseZJumpMap, _zLevels.HasTileAbove(xeno)))
+            !CMUXenoZJumpSystem.CanStartZJumpTakeoff(canUseZJumpMap, _zLevels.HasTileAbove(xeno)))
         {
             _popup.PopupClient(Loc.GetString(component.NoZPhysicsPopup), xeno, xeno, PopupType.MediumCaution);
             return false;
@@ -182,7 +182,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
         if (origin.MapId != target.MapId)
             return false;
 
-        var direction = ClampJumpVector(target.Position - origin.Position, component.Range);
+        var direction = CMUXenoZJumpSystem.ClampJumpVector(target.Position - origin.Position, component.Range);
         return direction != Vector2.Zero;
     }
 
@@ -221,7 +221,7 @@ public sealed partial class CMUXenoZJumpSystem : EntitySystem
 
     public static Vector2 GetTakeoffDashVector(Vector2 vector, float distance)
     {
-        return ClampJumpVector(vector, distance);
+        return CMUXenoZJumpSystem.ClampJumpVector(vector, distance);
     }
 
     public static bool IsLightTakeoffDash(float distance, float speed)

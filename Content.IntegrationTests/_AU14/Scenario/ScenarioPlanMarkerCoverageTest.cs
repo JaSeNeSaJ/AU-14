@@ -8,6 +8,7 @@ using Content.Server.AU14.Scenario.Commands;
 using Content.Server.AU14.ThirdParty;
 using Content.Server.GameTicking.Presets;
 using Content.Server.Spawners.Components;
+using Content.Shared._CMU14.Threats;
 using Content.Shared._RMC14.Rules;
 using Content.Shared.Administration;
 using Content.Shared.AU14;
@@ -17,6 +18,7 @@ using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
+using ParachuteMarkerComponent = Content.Shared._CMU14.Threats.ParachuteMarkerComponent;
 
 namespace Content.IntegrationTests._AU14.Scenario;
 

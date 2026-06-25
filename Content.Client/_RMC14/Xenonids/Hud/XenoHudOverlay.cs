@@ -34,6 +34,8 @@ using Content.Shared._RMC14.Slow;
 using Content.Shared._RMC14.Synth;
 using Content.Shared._RMC14.Xenonids.Hedgehog;
 using Content.Shared.FixedPoint;
+using AbominationComponent = Content.Shared._CMU14.Threats.Mobs.Abomination.AbominationComponent;
+using AbominationMimicTransformedComponent = Content.Shared._CMU14.Threats.Mobs.Abomination.AbominationMimicTransformedComponent;
 
 namespace Content.Client._RMC14.Xenonids.Hud;
 
