@@ -3,7 +3,7 @@ using Content.Server.Ghost.Roles.Components;
 using Content.Server.Humanoid.Components;
 using Content.Server.Spawners.Components;
 using Content.Shared._RMC14.Intel.Tech;
-using Content.Shared.AU14.Threats;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.AU14.Util;
 using Content.Shared.Humanoid.Prototypes;
 using Robust.Server.GameObjects;

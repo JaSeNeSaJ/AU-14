@@ -8,7 +8,7 @@ using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared._RMC14.Scaling;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared.Access.Systems;
-using Content.Shared.AU14.Threats;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.AU14.Util;
 using Content.Shared.GameTicking;
 using Content.Shared.UserInterface;

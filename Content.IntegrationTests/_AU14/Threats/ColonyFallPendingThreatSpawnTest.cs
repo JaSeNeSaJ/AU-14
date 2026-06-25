@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Content.Server._CMU14.Threats;
 using Content.Server.AU14.Scenario;
-using Content.Shared.AU14.Threats;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.AU14.util;
 using Content.Shared.Roles;
 using Robust.Shared.GameObjects;

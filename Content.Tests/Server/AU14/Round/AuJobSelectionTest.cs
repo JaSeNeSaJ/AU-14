@@ -5,7 +5,7 @@ using System.Reflection;
 using Content.Server._CMU14.Threats;
 using Content.Server.AU14.Round;
 using Content.Shared._RMC14.Rules;
-using Content.Shared.AU14.Threats;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.Preferences;
 using Content.Shared.Roles;
 using NUnit.Framework;
@@ -82,17 +82,17 @@ public sealed class AuJobSelectionTest
         Assert.Multiple(() =>
         {
             Assert.That(
-                AuThreatSystem.TryGetThreatPlayTimeRole(ThreatVoteSelection.ThreatLeaderJobId, out var leaderRole),
+                ThreatSystem.TryGetThreatPlayTimeRole(ThreatVoteSelection.ThreatLeaderJobId, out var leaderRole),
                 Is.True);
             Assert.That(leaderRole.Id, Is.EqualTo("MindRoleThreatLeaderPlayTime"));
 
             Assert.That(
-                AuThreatSystem.TryGetThreatPlayTimeRole(ThreatVoteSelection.ThreatMemberJobId, out var memberRole),
+                ThreatSystem.TryGetThreatPlayTimeRole(ThreatVoteSelection.ThreatMemberJobId, out var memberRole),
                 Is.True);
             Assert.That(memberRole.Id, Is.EqualTo("MindRoleThreatMemberPlayTime"));
 
             Assert.That(
-                AuThreatSystem.TryGetThreatPlayTimeRole(new ProtoId<JobPrototype>("CMXenoLarva"), out _),
+                ThreatSystem.TryGetThreatPlayTimeRole(new ProtoId<JobPrototype>("CMXenoLarva"), out _),
                 Is.False);
         });
     }
