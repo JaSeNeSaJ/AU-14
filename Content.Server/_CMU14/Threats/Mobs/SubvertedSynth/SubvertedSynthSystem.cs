@@ -4,11 +4,11 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.Mind;
 using Content.Server.Popups;
 using Content.Server.Roles;
-using Content.Shared._CMU14.CLFSubverter;
 using Content.Shared._CMU14.SynthRepairer;
+using Content.Shared._CMU14.Threats.Mobs.CLF;
+using Content.Shared._CMU14.Threats.Mobs.SubvertedSynth;
 using Content.Shared._RMC14.Medical.Defibrillator;
 using Content.Shared._RMC14.Synth;
-using Content.Shared.AU14.CLF;
 using Content.Shared.Damage;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
@@ -19,12 +19,10 @@ using Content.Shared.NPC.Prototypes;
 using Content.Shared.NPC.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
-using CLFMemberComponent = Content.Shared._CMU14.Threats.Mobs.CLF.CLFMemberComponent;
-using SynthSubverterComponent = Content.Shared._CMU14.Threats.Mobs.SubvertedSynth.SynthSubverterComponent;
 
 namespace Content.Server._CMU14.Threats.Mobs.SubvertedSynth;
 
-public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynthComponent>
+public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynthServerComponent>
 {
     public readonly ProtoId<NpcFactionPrototype> CLFNPCFaction = "CLF";
     [Dependency] private IAdminLogManager _adminLogManager = default!;
@@ -58,7 +56,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
             return;
 
         _npcFaction.AddFaction(args.Target, comp.Faction);
-        var subvertedComp = EnsureComp<CLFSubvertedSynthComponent>(args.Target);
+        var subvertedComp = EnsureComp<SubvertedSynthComponent>(args.Target);
         subvertedComp.Faction              = comp.Faction;
         subvertedComp.AdditionalComponents = comp.AdditionalComponents;
         EntityManager.AddComponents(args.Target, comp.AdditionalComponents);
@@ -77,13 +75,13 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
     private void OnSynthRepair(EntityUid uid, SynthRepairerComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
     {
-        if (TryComp<CLFSubvertedSynthComponent>(args.Target, out CLFSubvertedSynthComponent? subverted))
+        if (TryComp<SubvertedSynthComponent>(args.Target, out SubvertedSynthComponent? subverted))
         {
             EntityManager.RemoveComponents(args.Target, subverted.AdditionalComponents);
             _npcFaction.RemoveFaction(args.Target, subverted.Faction);
         }
 
-        if (!HasComp<SynthComponent>(args.Target) && !HasComp<CLFSubvertedSynthComponent>(args.Target))
+        if (!HasComp<SynthComponent>(args.Target) && !HasComp<SubvertedSynthComponent>(args.Target))
             return;
         if (HasComp<SynthSubverterComponent>(
                 uid)) // idk how to remove a component from a prototype so this is an un-necessary workaround
@@ -96,7 +94,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
         // _synth.SetGunRestriction(args.Target, false);
         // _synth.SetMeleeRestriction(args.Target, true);
-        RemCompDeferred<CLFSubvertedSynthComponent>(args.Target);
+        RemCompDeferred<SubvertedSynthComponent>(args.Target);
         RemCompDeferred<CLFMemberComponent>(args.Target);
         _adminLogManager.Add(LogType.Mind, LogImpact.Medium,
             $"{ToPrettyString(args.Target)} has been repaired from subversion.");
