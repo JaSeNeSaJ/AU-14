@@ -112,7 +112,7 @@
 
 ## CLF subverted synth
 - type: entity
-  id: CLFSubvertedSynth
+  id: SubvertedSynth
   parent: BaseGameRule
   components:
   - type: SubvertedSynthRule

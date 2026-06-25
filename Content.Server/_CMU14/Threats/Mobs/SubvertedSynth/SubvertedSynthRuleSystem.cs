@@ -22,16 +22,16 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._CMU14.Threats.Mobs.SubvertedSynth;
 
-public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynthServerComponent>
+public sealed partial class SubvertedSynthRuleSystem : GameRuleSystem<SubvertedSynthRuleComponent>
 {
-    [Dependency] private readonly IAdminLogManager _adminLogManager = default!;
-    [Dependency] private readonly AntagSelectionSystem _antag = default!;
-    [Dependency] private readonly MindSystem _mind = default!;
-    [Dependency] private readonly MobStateSystem _mobState = default!;
-    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
-    [Dependency] private readonly ISharedPlayerManager _player = default!;
-    [Dependency] private readonly RoleSystem _role = default!;
+    [Dependency] private IAdminLogManager _adminLogManager = default!;
+    [Dependency] private AntagSelectionSystem _antag = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
+    [Dependency] private MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private NpcFactionSystem _npcFaction = default!;
+    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private RoleSystem _role = default!;
     [Dependency] private PopupSystem _popup = default!;
     [Dependency] private SharedSynthSystem _synth = default!;
     public readonly ProtoId<NpcFactionPrototype> CLFNPCFaction = "CLF";
@@ -115,13 +115,13 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
             || !TryComp(target, out DamageableComponent? damageable))
             return;
 
-        FixedPoint2 damageAfterZap = SubvertedSynthSystem.GetProjectedDamageAfterHeal(damageable, heal);
+        FixedPoint2 damageAfterZap = SubvertedSynthRuleSystem.GetProjectedDamageAfterHeal(damageable, heal);
 
         if (damageAfterZap < deadThreshold.Value)
             return;
 
         FixedPoint2 extraHeal = damageAfterZap - deadThreshold.Value + FixedPoint2.New(1);
-        SubvertedSynthSystem.AddHealingToExistingDamage(damageable, heal, extraHeal);
+        SubvertedSynthRuleSystem.AddHealingToExistingDamage(damageable, heal, extraHeal);
     }
 
     private static FixedPoint2 GetProjectedDamageAfterHeal(DamageableComponent damageable, DamageSpecifier heal)
