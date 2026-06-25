@@ -14,12 +14,6 @@
     - ears             # or whichever slot makes sense
   - type: TranslatorDevice
     spokenLanguages:
-      - English
-      - Russian
-      - Spanish
-      - French
-      - Chinese
-      - SignLanguage
       - Yautja
       - Arcturian
       - TacticalSignLanguage
@@ -54,12 +48,6 @@
       - Slovak
       - Romanian
     understoodLanguages:
-      - English
-      - Russian
-      - Spanish
-      - French
-      - Chinese
-      - SignLanguage
       - Yautja
       - Arcturian
       - TacticalSignLanguage
