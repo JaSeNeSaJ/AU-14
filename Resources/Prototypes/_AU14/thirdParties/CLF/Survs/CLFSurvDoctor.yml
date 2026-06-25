@@ -32,6 +32,8 @@
         RMCSkillPolice: 1
     - type: EquipEntityPreset
       preset: AU14CLFSurvMedicPreset
+    - type: FactionLanguageMember
+      factionTag: CLF
   hidden: false
 
 - type: entity

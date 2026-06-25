@@ -28,6 +28,15 @@
     - type: SniperWhitelist
     - type: JobPrefix
       prefix: rmc-job-prefix-weapons-specialist-sniper
+    - type: LanguagePreset
+      spokenLanguages:
+      - English
+      - TacticalSignLanguage
+      understoodLanguages:
+      - English
+      - TacticalSignLanguage
+      currentLanguage: English
+      defaultLanguage: English
   hidden: true
 
 - type: entity

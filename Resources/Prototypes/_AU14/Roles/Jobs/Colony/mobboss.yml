@@ -31,6 +31,8 @@
       icon:
         sprite: /Textures/_AU14/Interface/au14colonyjobicons.rsi
         state: colonist
+    - type: FactionLanguageLeader
+      factionTag: Mob
 
 - type: startingGear
   id: AU14GearMobBoss

@@ -187,6 +187,9 @@
       enum.CMUMedicalFieldCraftingUI.Key:
         type: CMUMedicalFieldCraftingBui
         requireInputValidation: false
+      enum.FactionLanguageUiKey.Key:
+        type: FactionLanguageBoundUserInterface
+        requireInputValidation: false
   - type: Infectable
   - type: Tackleable
   - type: XenoNestable

@@ -61,6 +61,15 @@
         collection: AU14FemaleHoldOrder
     - type: RMCTrackable
     - type: RMCPointing
+    - type: LanguagePreset
+      spokenLanguages:
+      - English
+      - TacticalSignLanguage
+      understoodLanguages:
+      - English
+      - TacticalSignLanguage
+      currentLanguage: English
+      defaultLanguage: English
   hidden: false
 
 - type: entity

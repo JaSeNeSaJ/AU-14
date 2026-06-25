@@ -64,12 +64,14 @@
       - Spanish
       - Chinese
       - German
+      - TacticalSignLanguage
       understoodLanguages:
       - Polish
       - Russian
       - Spanish
       - Chinese
       - German
+      - TacticalSignLanguage
       currentLanguage: Polish
       defaultLanguage: Polish
   hidden: false

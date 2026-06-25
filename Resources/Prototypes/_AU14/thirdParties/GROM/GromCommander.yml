@@ -62,6 +62,7 @@
       - Spanish
       - Chinese
       - German
+      - TacticalSignLanguage
       understoodLanguages:
       - Polish
       - English
@@ -69,6 +70,7 @@
       - Spanish
       - Chinese
       - German
+      - TacticalSignLanguage
       currentLanguage: Polish
       defaultLanguage: Polish
   hidden: false

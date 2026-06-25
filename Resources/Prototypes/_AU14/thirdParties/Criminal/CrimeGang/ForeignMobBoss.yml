@@ -11,6 +11,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-mobboss
+  spawnMenuRoleName: Mob Boss (3rd party)
   accessGroups:
   - Colonist
   roleWeight: 0.25
@@ -31,6 +32,8 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: FactionLanguageLeader
+      factionTag: ForeignMob
   hidden: false
 
 - type: entity

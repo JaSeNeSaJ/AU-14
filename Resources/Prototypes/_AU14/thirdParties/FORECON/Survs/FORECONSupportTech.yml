@@ -72,6 +72,15 @@
     - type: SpotterWhitelist
     - type: JobPrefix
       prefix: rmc-job-prefix-forecon-support-tech
+    - type: LanguagePreset
+      spokenLanguages:
+      - English
+      - TacticalSignLanguage
+      understoodLanguages:
+      - English
+      - TacticalSignLanguage
+      currentLanguage: English
+      defaultLanguage: English
   hidden: true
 
 - type: entity

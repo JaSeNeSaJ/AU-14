@@ -1,7 +1,7 @@
 - type: job
   parent: AU14JobLEOBase
   id: AU14JobForeignMobGoonJob
-  name: au14-job-name-mobgoon
+  name: au14-job-name-mobgoon-fore
   description: You and your Boss have been evicted from your old territory and lost everything. But old habits die hard, move into rival territory and begin anew.
   setPreference: false
   playTimeTracker: AU14JobMobGoon
@@ -11,6 +11,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-mobgoon
+  spawnMenuRoleName: Mob Goon (3rd party)
   accessGroups:
   - Colonist
   roleWeight: 0.25
@@ -31,6 +32,8 @@
       icon:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: synth
+    - type: FactionLanguageMember
+      factionTag: ForeignMob
   hidden: false
 
 - type: entity
