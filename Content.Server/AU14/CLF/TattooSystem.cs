@@ -18,7 +18,7 @@ using Robust.Shared.Containers;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
-using Content.Server._AU14.Language;
+using Content.Server._CMU14.Language;
 
 namespace Content.Server.AU14.CLF;
 
