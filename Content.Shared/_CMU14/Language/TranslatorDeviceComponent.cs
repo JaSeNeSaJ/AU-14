@@ -2,7 +2,7 @@ using Content.Shared._RMC14.Language.Prototypes;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
 
-namespace Content.Shared._AU14.Language;
+namespace Content.Shared._CMU14.Language;
 
 [RegisterComponent]
 public sealed partial class TranslatorDeviceComponent : Component

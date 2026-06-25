@@ -1,8 +1,8 @@
 using Content.Server._RMC14.Language.Systems;
-using Content.Shared._AU14.Language;
+using Content.Shared._CMU14.Language;
 using Content.Shared.Inventory.Events;
 
-namespace Content.Server._AU14.Language;
+namespace Content.Server._CMU14.Language;
 
 public sealed class TranslatorDeviceSystem : EntitySystem
 {

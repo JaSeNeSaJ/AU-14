@@ -1,13 +1,13 @@
 using System.Linq;
 using Content.Server._RMC14.Language.Systems;
-using Content.Shared._AU14.Language;
+using Content.Shared._CMU14.Language;
 using Content.Shared._RMC14.Language.Prototypes;
 using Robust.Server.GameObjects;
 using Robust.Server.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Player;
 
-namespace Content.Server._AU14.Language;
+namespace Content.Server._CMU14.Language;
 
 public sealed class FactionLanguageSystem : EntitySystem
 {
