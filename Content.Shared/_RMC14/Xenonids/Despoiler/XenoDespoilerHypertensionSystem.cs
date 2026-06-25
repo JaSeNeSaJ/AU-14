@@ -71,6 +71,26 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
         return true;
     }
 
+    public void RemoveStacks(
+        EntityUid uid,
+        XenoDespoilerHypertensionComponent comp,
+        int amount)
+    {
+        if (amount <= 0)
+            return;
+
+        var oldStacks = comp.Stacks;
+
+        comp.Stacks = Math.Max(0, comp.Stacks - amount);
+
+        if (oldStacks == comp.Stacks)
+            return;
+
+        RefreshArmor(uid);
+
+        Dirty(uid, comp);
+    }
+
     public override void Update(float frameTime)
     {
         var now = _timing.CurTime;

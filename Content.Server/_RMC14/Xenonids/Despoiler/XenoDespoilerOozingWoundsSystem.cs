@@ -24,6 +24,7 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private XenoDespoilerCatalyzeFlagSystem _catalyze = default!;
     [Dependency] private CMArmorSystem _armor = default!;
+    [Dependency] private XenoDespoilerHypertensionSystem _hypertension = default!;
 
     private EntityQuery<XenoDespoilerAcidSprayComponent> _sprayQuery;
     private EntityQuery<XenoDespoilerLingeringAcidComponent> _lingeringQuery;
@@ -54,19 +55,13 @@ public sealed partial class XenoDespoilerOozingWoundsSystem : EntitySystem
 
             var stacksToRemove = severity switch
             {
-                0 => 3,
+                0 => hypertension.Stacks,
                 1 => 2,
                 2 => 1,
-                _ => 3
+                _ => hypertension.Stacks
             };
 
-            hypertension.Stacks =
-                Math.Max(0, hypertension.Stacks - stacksToRemove);
-
-            Dirty(uid, hypertension);
-
-            if (TryComp<CMArmorComponent>(uid, out var armor))
-                _armor.UpdateArmorValue((uid, armor));
+            _hypertension.RemoveStacks(uid, hypertension, stacksToRemove);
         }
 
         var empowered = _catalyze.TakeEmpowerment(uid, comp);
