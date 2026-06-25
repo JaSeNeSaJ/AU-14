@@ -24,17 +24,17 @@ namespace Content.Server._CMU14.Threats.Mobs.SubvertedSynth;
 
 public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynthServerComponent>
 {
-    public readonly ProtoId<NpcFactionPrototype> CLFNPCFaction = "CLF";
-    [Dependency] private IAdminLogManager _adminLogManager = default!;
-    [Dependency] private AntagSelectionSystem _antag = default!;
-    [Dependency] private MindSystem _mind = default!;
-    [Dependency] private MobStateSystem _mobState = default!;
-    [Dependency] private MobThresholdSystem _mobThreshold = default!;
-    [Dependency] private NpcFactionSystem _npcFaction = default!;
-    [Dependency] private ISharedPlayerManager _player = default!;
+    [Dependency] private readonly IAdminLogManager _adminLogManager = default!;
+    [Dependency] private readonly AntagSelectionSystem _antag = default!;
+    [Dependency] private readonly MindSystem _mind = default!;
+    [Dependency] private readonly MobStateSystem _mobState = default!;
+    [Dependency] private readonly MobThresholdSystem _mobThreshold = default!;
+    [Dependency] private readonly NpcFactionSystem _npcFaction = default!;
+    [Dependency] private readonly ISharedPlayerManager _player = default!;
+    [Dependency] private readonly RoleSystem _role = default!;
     [Dependency] private PopupSystem _popup = default!;
-    [Dependency] private RoleSystem _role = default!;
     [Dependency] private SharedSynthSystem _synth = default!;
+    public readonly ProtoId<NpcFactionPrototype> CLFNPCFaction = "CLF";
 
     public override void Initialize()
     {
@@ -57,7 +57,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
         _npcFaction.AddFaction(args.Target, comp.Faction);
         var subvertedComp = EnsureComp<SubvertedSynthComponent>(args.Target);
-        subvertedComp.Faction              = comp.Faction;
+        subvertedComp.Faction = comp.Faction;
         subvertedComp.AdditionalComponents = comp.AdditionalComponents;
         EntityManager.AddComponents(args.Target, comp.AdditionalComponents);
         EnsureComp<CLFMemberComponent>(args.Target);
@@ -69,13 +69,15 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
             _role.MindAddRole(mindId, comp.Role);
 
         if (mind is { UserId: not null } && _player.TryGetSessionById(mind.UserId, out ICommonSession? session))
+        {
             _antag.SendBriefing(session, Loc.GetString(comp.Briefing), Color.Red,
                 comp.Sound ?? subvertedComp.CLFSubversionSound);
+        }
     }
 
     private void OnSynthRepair(EntityUid uid, SynthRepairerComponent comp, ref RMCDefibrillatorDamageModifyEvent args)
     {
-        if (TryComp<SubvertedSynthComponent>(args.Target, out SubvertedSynthComponent? subverted))
+        if (TryComp(args.Target, out SubvertedSynthComponent? subverted))
         {
             EntityManager.RemoveComponents(args.Target, subverted.AdditionalComponents);
             _npcFaction.RemoveFaction(args.Target, subverted.Faction);
@@ -84,7 +86,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
         if (!HasComp<SynthComponent>(args.Target) && !HasComp<SubvertedSynthComponent>(args.Target))
             return;
         if (HasComp<SynthSubverterComponent>(
-                uid)) // idk how to remove a component from a prototype so this is an un-necessary workaround
+            uid)) // idk how to remove a component from a prototype so this is an un-necessary workaround
             return;
 
         AddSynthResetReviveHeal(args.Target, args.Heal);
@@ -106,13 +108,11 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
     private void AddSynthResetReviveHeal(EntityUid target, DamageSpecifier heal)
     {
-        if (!HasComp<SynthComponent>(target) ||
-            !_mobState.IsDead(target) ||
-            heal.DamageDict.Count == 0)
+        if (!HasComp<SynthComponent>(target) || !_mobState.IsDead(target) || heal.DamageDict.Count == 0)
             return;
 
-        if (!_mobThreshold.TryGetThresholdForState(target, MobState.Dead, out FixedPoint2? deadThreshold) ||
-            !TryComp<DamageableComponent>(target, out DamageableComponent? damageable))
+        if (!_mobThreshold.TryGetThresholdForState(target, MobState.Dead, out FixedPoint2? deadThreshold)
+            || !TryComp(target, out DamageableComponent? damageable))
             return;
 
         FixedPoint2 damageAfterZap = SubvertedSynthSystem.GetProjectedDamageAfterHeal(damageable, heal);
@@ -136,8 +136,7 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
 
         foreach ((string type, FixedPoint2 change) in heal.DamageDict)
         {
-            if (change > FixedPoint2.Zero &&
-                !damageable.Damage.DamageDict.ContainsKey(type))
+            if (change > FixedPoint2.Zero && !damageable.Damage.DamageDict.ContainsKey(type))
                 total += change;
         }
 
@@ -145,22 +144,22 @@ public sealed partial class SubvertedSynthSystem : GameRuleSystem<SubvertedSynth
     }
 
     private static void AddHealingToExistingDamage(DamageableComponent damageable, DamageSpecifier heal,
-        FixedPoint2                                                    amount)
+        FixedPoint2 amount)
     {
         foreach ((string type, FixedPoint2 current) in damageable.Damage.DamageDict)
         {
             if (amount <= FixedPoint2.Zero)
                 return;
 
-            FixedPoint2 existing  = heal.DamageDict.GetValueOrDefault(type);
+            FixedPoint2 existing = heal.DamageDict.GetValueOrDefault(type);
             FixedPoint2 projected = FixedPoint2.Max(FixedPoint2.Zero, current + existing);
 
             if (projected <= FixedPoint2.Zero)
                 continue;
 
             FixedPoint2 toHeal = FixedPoint2.Min(projected, amount);
-            heal.DamageDict[type] =  existing - toHeal;
-            amount                -= toHeal;
+            heal.DamageDict[type] = existing - toHeal;
+            amount -= toHeal;
         }
     }
 }
