@@ -1,20 +1,23 @@
 using System.Linq;
 using Content.Server.Administration;
-using Content.Shared._CMU14.Threats;
+using Content.Server._CMU14.Ops.ThirdParty;
 using Content.Shared._CMU14.Threats;
 using Content.Shared.Administration;
 using Robust.Shared.Console;
 using Robust.Shared.Prototypes;
+using ThirdPartySystem = Content.Server._CMU14.Ops.ThirdParty.ThirdPartySystem;
 
-namespace Content.Server.AU14.ThirdParty.Commands;
+namespace Content.Server._CMU14.Util.Admin.Console;
 
 [AdminCommand(AdminFlags.Admin)]
 public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
 {
-    [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private readonly IPrototypeManager _prototype = default!;
 
     public override string Command => "spawnthirdparty";
-    public override string Help => "spawnthirdparty [third party name] [dropship (true/false)]\nSpawns a third party. If dropship is true, they will enter by shuttle.";
+
+    public override string Help
+        => "spawnthirdparty [third party name] [dropship (true/false)]\nSpawns a third party. If dropship is true, they will enter by shuttle.";
 
     public override void Execute(IConsoleShell shell, string argStr, string[] args)
     {
@@ -24,8 +27,8 @@ public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
             return;
         }
 
-        var thirdPartyName = args[0];
-        if (!bool.TryParse(args[1], out var dropship))
+        string thirdPartyName = args[0];
+        if (!bool.TryParse(args[1], out bool dropship))
         {
             shell.WriteError("Second argument must be true or false for dropship.");
             return;
@@ -33,23 +36,23 @@ public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
 
         var entitySystemManager = IoCManager.Resolve<IEntitySystemManager>();
         var protoManager = IoCManager.Resolve<IPrototypeManager>();
-        var thirdPartySystem = entitySystemManager.GetEntitySystem<AuThirdPartySystem>();
+        var thirdPartySystem = entitySystemManager.GetEntitySystem<ThirdPartySystem>();
 
-        if (!protoManager.TryIndex<ThirdPartyPrototype>(thirdPartyName, out var party))
+        if (!protoManager.TryIndex(thirdPartyName, out ThirdPartyPrototype? party))
         {
             shell.WriteError($"No third party prototype found with ID: {thirdPartyName}");
             return;
         }
 
 
-        if (dropship && (string.IsNullOrEmpty(party.dropshippath.ToString())))
+        if (dropship && string.IsNullOrEmpty(party.dropshippath.ToString()))
         {
             shell.WriteError($"Third party '{thirdPartyName}' does not have a valid dropshippath for dropship spawn.");
             return;
         }
 
         // Fix: get the PartySpawn prototype and pass it to SpawnThirdParty
-        if (!protoManager.TryIndex<PartySpawnPrototype>(party.PartySpawn, out var partySpawnProto))
+        if (!protoManager.TryIndex(party.PartySpawn, out PartySpawnPrototype? partySpawnProto))
         {
             shell.WriteError($"No PartySpawn prototype found with ID: {party.PartySpawn}");
             return;
@@ -69,7 +72,7 @@ public sealed partial class SpawnThirdPartyCommand : LocalizedEntityCommands
         {
             1 => CompletionResult.FromHintOptions(GetThirdPartyCompletions(), "<thirdPartyId>"),
             2 => CompletionResult.FromHintOptions(CompletionHelper.Booleans, "<dropship>"),
-            _ => CompletionResult.Empty,
+            _ => CompletionResult.Empty
         };
     }
 

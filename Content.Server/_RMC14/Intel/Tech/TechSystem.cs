@@ -1,3 +1,4 @@
+using Content.Server._CMU14.Ops.ThirdParty;
 using Content.Server.GameTicking.Events;
 using Content.Server.Ghost.Roles.Components;
 using Content.Server.Humanoid.Components;
@@ -18,7 +19,7 @@ public sealed partial class ServerTechSystem : EntitySystem
     [Dependency] private IComponentFactory _componentFactory = default!;
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private IPrototypeManager _proto = default!;
-    [Dependency] private Content.Server.AU14.ThirdParty.AuThirdPartySystem _thirdParty = default!;
+    [Dependency] private ThirdPartySystem _thirdParty = default!;
     private static readonly EntProtoId CombatTechProto = "RMCRandomHumanoidFoxtrotCombatTech";
     private static readonly EntProtoId FireteamLeaderProto = "RMCRandomHumanoidFoxtrotFireteamLeader";
     private static readonly EntProtoId HospitalCorpsmanProto = "RMCRandomHumanoidFoxtrotHospitalCorpsman";

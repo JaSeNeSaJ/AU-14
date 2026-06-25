@@ -1,23 +1,17 @@
-using Content.Server.AU14.ThirdParty;
-using Content.Server.GameTicking;
 using Content.Server.Popups;
-using Content.Shared._CMU14.Threats;
 using Content.Shared._CMU14.Threats;
 using Content.Shared.Interaction;
 using Content.Shared.Timing;
-using Robust.Server.GameObjects;
-using Robust.Shared.GameObjects;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Timing;
 
-namespace Content.Server.AU14.ThirdParty;
+namespace Content.Server._CMU14.Ops.ThirdParty;
 
 public sealed partial class SpawnThirdPartyToolSystem : EntitySystem
 {
     [Dependency] private IPrototypeManager _prototype = default!;
     [Dependency] private UseDelaySystem _useDelay = default!;
     [Dependency] private PopupSystem _popup = default!;
-    [Dependency] private AuThirdPartySystem _thirdPartySystem = default!;
+    [Dependency] private ThirdPartySystem _thirdPartySystem = default!;
 
     public override void Initialize()
     {
@@ -47,25 +41,25 @@ public sealed partial class SpawnThirdPartyToolSystem : EntitySystem
 
     private bool TryUseTool(Entity<SpawnThirdPartyToolComponent> component, EntityUid user)
     {
-        if (TryComp<UseDelayComponent>(component.Owner, out var useDelay)
+        if (TryComp(component.Owner, out UseDelayComponent? useDelay)
             && _useDelay.IsDelayed((component.Owner, useDelay)))
-        {
             return false;
-        }
 
         if (!_prototype.TryIndex(component.Comp.Party, out ThirdPartyPrototype? party))
         {
-            _popup.PopupEntity($"No third party prototype found with ID: {component.Comp.Party.Id}", component.Owner, user);
+            _popup.PopupEntity($"No third party prototype found with ID: {component.Comp.Party.Id}", component.Owner,
+                user);
             return false;
         }
 
-        if (!_prototype.TryIndex<PartySpawnPrototype>(party.PartySpawn, out var partySpawnProto))
+        if (!_prototype.TryIndex(party.PartySpawn, out PartySpawnPrototype? partySpawnProto))
         {
-            _popup.PopupEntity($"No PartySpawn prototype found for third party {component.Comp.Party.Id}.", component.Owner, user);
+            _popup.PopupEntity($"No PartySpawn prototype found for third party {component.Comp.Party.Id}.",
+                component.Owner, user);
             return false;
         }
 
-        var spawned = _thirdPartySystem.SpawnThirdParty(party, partySpawnProto, false, null, component.Comp.Dropship);
+        bool spawned = _thirdPartySystem.SpawnThirdParty(party, partySpawnProto, false, null, component.Comp.Dropship);
 
         if (!spawned)
         {

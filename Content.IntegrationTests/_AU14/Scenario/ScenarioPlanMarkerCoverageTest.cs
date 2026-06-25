@@ -5,7 +5,7 @@ using Content.Server.Administration;
 using Content.Server.AU14.Round;
 using Content.Server.AU14.Scenario;
 using Content.Server.AU14.Scenario.Commands;
-using Content.Server.AU14.ThirdParty;
+using Content.Server._CMU14.Ops.ThirdParty;
 using Content.Server.GameTicking.Presets;
 using Content.Server.Spawners.Components;
 using Content.Shared._CMU14.Threats;
@@ -19,6 +19,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 using ParachuteMarkerComponent = Content.Shared._CMU14.Threats.ParachuteMarkerComponent;
+using ThirdPartySystem = Content.Server._CMU14.Ops.ThirdParty.ThirdPartySystem;
 
 namespace Content.IntegrationTests._AU14.Scenario;
 
@@ -228,7 +229,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
     MobHuman: 1
   spawnTogether: false
 
-- type: auThirdParty
+- type: thirdParty
   id: ScenarioPlanStandaloneThirdParty
   displayName: Scenario Plan Standalone Third Party
   partyspawn: ScenarioPlanStandaloneThirdPartySpawn
@@ -253,7 +254,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
     Leader: scenario-plan-cooldown
     Member: scenario-plan-cooldown
 
-- type: auThirdParty
+- type: thirdParty
   id: ScenarioPlanStandaloneCooldownThirdParty
   displayName: Scenario Plan Standalone Cooldown Third Party
   partyspawn: ScenarioPlanStandaloneCooldownThirdPartySpawn
@@ -275,7 +276,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
     MobHuman: 1
   spawnTogether: false
 
-- type: auThirdParty
+- type: thirdParty
   id: ScenarioPlanParachuteThirdParty
   displayName: Scenario Plan Parachute Third Party
   partyspawn: ScenarioPlanParachuteThirdPartySpawn
@@ -1626,7 +1627,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
             var entities = server.EntMan;
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var generator = server.System<ScenarioPlanSystem>();
-            var thirdPartySystem = server.System<AuThirdPartySystem>();
+            var thirdPartySystem = server.System<ThirdPartySystem>();
             var thirdParty = prototypes.Index<ThirdPartyPrototype>(StandaloneCooldownThirdParty);
             var partySpawn = prototypes.Index<PartySpawnPrototype>(thirdParty.PartySpawn);
             var request = new ScenarioPlanValidationRequest(

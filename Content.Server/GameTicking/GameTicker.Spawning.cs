@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using Content.Server._CMU14.Ops.ThirdParty;
 using Content.Server._CMU14.Threats;
 using Content.Server.Administration.Managers;
 using Content.Server.Administration.Systems;
@@ -47,7 +48,7 @@ namespace Content.Server.GameTicking
         [Dependency] private ScenarioPlanSystem _scenarioPlan = default!;
         [Dependency] private ThreatSystem _threatSystem = default!;
         [Dependency] private ThreatVoteSystem _threatVoteSystem = default!;
-        [Dependency] private Content.Server.AU14.ThirdParty.AuThirdPartySystem _auThirdParty = default!;
+        [Dependency] private ThirdPartySystem _ThirdParty = default!;
         [Dependency] private Content.Server.AU14.Allegiance.AllegianceSystem _allegianceSystem = default!;
         [Dependency] private Content.Server.AU14.Origin.OriginSystem _originSystem = default!;
 
@@ -510,7 +511,7 @@ namespace Content.Server.GameTicking
 
                     try
                     {
-                        _auThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
+                        _ThirdParty.StartThirdPartySpawning(selectedThreat, assignedJobs);
                         _sawmill.Debug($"[RoundStart] StartThirdPartySpawning returned for threat '{selectedThreat.ID}'.");
                     }
                     catch (Exception thirdPartyEx)
