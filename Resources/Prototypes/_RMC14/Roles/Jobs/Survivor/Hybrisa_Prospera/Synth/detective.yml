@@ -61,7 +61,6 @@
       preset: RMCSurvivorPresetHybrisaSynthDetective
     - type: Synth
       generation: rmc-species-synth-generation-second
-  useLoadoutOfJob: RMCSyntheticColony # for inheritance
 
 - type: startingGear
   parent: RMCGearSyntheticColonistHybrisaCivilian
