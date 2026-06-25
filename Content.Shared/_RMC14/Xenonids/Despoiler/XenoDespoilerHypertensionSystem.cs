@@ -49,6 +49,9 @@ public sealed partial class XenoDespoilerHypertensionSystem : EntitySystem
             comp.Stacks++;
         }
 
+        if (comp.Stacks >= comp.MaxStacks)
+            comp.Points = 0;
+
         if (oldStacks != comp.MaxStacks)
             RefreshArmor(uid);
 
