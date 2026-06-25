@@ -5,9 +5,9 @@
   description: rmc-ghost-role-information-spp-pve-description
   playTimeTracker: RMCJobSPPSynthetic
   ranks:
-    RMCRankSPPSynthetic: [ ]
+    RMCRankMasterSergeant: []
   startingGear: RMCGearSPPSynthetic
-  icon: "RMCJobIconSPPSynth"
+  icon: "RMCJobIconReconSynthetic"
   joinNotifyCrew: false
   accessGroups:
   - ShipMasterAccess
@@ -76,7 +76,7 @@
     - type: SniperWhitelist
     - type: PyroWhitelist
     - type: JobPrefix
-      prefix: rmc-job-prefix-spp-synth
+      prefix: rmc-job-prefix-synth
     - type: MeleeWeapon
       soundHit:
         path: /Audio/_RMC14/Weapons/synthpunch1.ogg
@@ -95,20 +95,16 @@
 - type: startingGear
   id: RMCGearSPPSynthetic
   equipment:
-    head: CMHeadCapSPPBeret
-    ears: RMCHeadsetSPPCommand
-    eyes: RMCGlassesMedicalHUDGlasses
-    mask: CMScrewdriver
-    back: RMCSatchelSPPSynth
-    belt: RMCBeltMedicBagSPPSynthFilled
-    gloves: RMCHandsVeteranSPP
-    suitstorage: RMCMotionDetector # TODO RMC14 SPP-aligned MD
-    jumpsuit: RMCJumpsuitSPPMedicSurgicalWebbing
-    outerClothing: RMCArmorSPPSupportSynthFilled
-    shoes: RMCBootsSPPBlackFilled
-    id: RMCIDSPP
-    pocket1: RMCPouchToolsSocFilledSPPSynthetic
-    pocket2: RMCPouchMedicalSPPSynth
+    id: RMCIDCardSynth
+    back: CMSatchelFillColonySynthetic # TODO RMC14 check loadouts for synth survivors to see if there's a backpack category
+    jumpsuit: CMJumpsuitMaintTech
+    shoes: CMBootsBlackFilled # TODO RMC14 replace with unique red shoes that hold a knife
+    ears: RMCHeadsetForecon
+    pocket1: RMCPouchToolsFill
+    pocket2: RMCPouchSurvivalSynthFill
+  inhand:
+    - RMCMotionDetector
+    - CMFirstAidKitFilled
 
 - type: playTimeTracker
   id: RMCJobSPPSynthetic
