@@ -1,0 +1,107 @@
+# -- REG 7x43mm Rifle Ammunition Box --
+- type: entity
+  parent: RMCBoxBulletsRifleL90
+  id: CMUBoxBulletsRifleSLR
+  name: rifle ammunition box (7x43mm)
+  description: A 7x43mm ammunition box. Used to refill SLR and SLR Drum magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleSLR
+
+- type: entity
+  parent: CMUBoxBulletsRifleSLR
+  id: CMUBoxBulletsRifleSLREmpty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleSLREmpty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleSLR
+    amount: 0
+# -- AP 7x43mm Rifle Ammunition Box --
+- type: entity
+  parent: RMCBoxBulletsRifleL90AP
+  id: CMUBoxBulletsRifleSLRAP
+  name: rifle ammunition box (7x43mm)
+  description: A 7x43mm ammunition box. Used to refill armor-piercing SLR and SLR Drum magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleSLRAP
+
+- type: entity
+  parent: CMUBoxBulletsRifleSLRAP
+  id: CMUBoxBulletsRifleSLRAPEmpty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleSLRAPEmpty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleSLRAP
+    amount: 0
+# -- REG 8.88x51mm Rifle Ammunition Box --
+- type: entity
+  parent: RMCBoxBulletsRifleL24
+  id: CMUBoxBulletsRifleL23
+  name: rifle ammunition box (8.88x51mm)
+  description: A 8.88x51mm ammunition box. Used to refill L23 magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleL23
+
+- type: entity
+  parent: CMUBoxBulletsRifleL23
+  id: CMUBoxBulletsRifleL23Empty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleL23Empty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleL23
+    amount: 0
+# -- AP 8.88x51mm Rifle Ammunition Box --
+- type: entity
+  parent: RMCBoxBulletsRifleL24AP
+  id: CMUBoxBulletsRifleL23AP
+  name: rifle ammunition box (8.88x51mm)
+  description: A 8.88x51mm ammunition box. Used to refill armor-piercing L23 magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleL23AP
+
+- type: entity
+  parent: CMUBoxBulletsRifleL23AP
+  id: CMUBoxBulletsRifleL23APEmpty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleL23APEmpty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsRifleL23AP
+    amount: 0
+# -- 9mm SH Pistol Ammunition Box Base --
+- type: entity
+  parent: RMCBoxBulletsPistol
+  id: CMUBoxBulletsPistol9MMSH
+  name: pistol ammunition box (9mm Squash-Head)
+  description: A 9mm Squash-Head ammunition box. Used to refill L165A1 magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsPistol9MMSH
+    max: 984
+    amount: 984
+
+- type: entity
+  parent: CMUBoxBulletsPistol9MMSH
+  id: CMUBoxBulletsPistol9MMSHEmpty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsPistol9MMSHEmpty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsPistol9MMSH
+    amount: 0
