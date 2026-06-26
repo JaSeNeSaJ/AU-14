@@ -810,9 +810,9 @@
       Classic: _RMC14/Objects/Clothing/OuterClothing/Armor/m35/classic.rsi
       Urban: _RMC14/Objects/Clothing/OuterClothing/Armor/m35/urban.rsi
   - type: TemperatureProtection
-  - type: RMCGrantLeapProtection
     heatingCoefficient: 0.001
     coolingCoefficient: 0.3
+  - type: RMCGrantLeapProtection
   - type: ClothingGrantComponents
     components:
     - type: RMCImmuneToIgnition
