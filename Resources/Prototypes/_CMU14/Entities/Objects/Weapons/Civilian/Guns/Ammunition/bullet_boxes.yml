@@ -22,6 +22,15 @@
     bulletType: CMUBoxBulletsRifle556x45MM
     amount: 0
  # -- AP 9mm Pistol Ammunition Box --
+# -- REG 7.62x39mm Rifle Ammunition Box--
+- type: entity
+  parent: RMCBoxBulletsRifleL24
+  id: CMUBoxBulletsMAR
+  name: rifle ammunition box (7.62x39mm)
+  description: A 7.62x39mm ammunition box. Used to refill MAR magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsMAR
 # -- REG 5.7x28mm SMG Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsRifleL24
