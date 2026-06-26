@@ -21,7 +21,6 @@
   - type: BulletBox
     bulletType: CMUBoxBulletsPistol9MM
     amount: 0
- # -- AP 9mm Pistol Ammunition Box --
 # -- AP 9mm Pistol Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsPistolAP
