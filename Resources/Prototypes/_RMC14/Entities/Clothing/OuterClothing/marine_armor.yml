@@ -797,6 +797,11 @@
     isCorrodible: false
   - type: CMArmor
     bio: 25
+  - type: RMCArmorSpeedTier
+    speedTier: light
+  - type: ClothingSpeedModifier
+    walkModifier: 0.725
+    sprintModifier: 0.725
   - type: ItemCamouflage
     camouflageVariations:
       Jungle: _RMC14/Objects/Clothing/OuterClothing/Armor/m35/jungle.rsi
@@ -805,6 +810,7 @@
       Classic: _RMC14/Objects/Clothing/OuterClothing/Armor/m35/classic.rsi
       Urban: _RMC14/Objects/Clothing/OuterClothing/Armor/m35/urban.rsi
   - type: TemperatureProtection
+  - type: RMCGrantLeapProtection
     heatingCoefficient: 0.001
     coolingCoefficient: 0.3
   - type: ClothingGrantComponents
