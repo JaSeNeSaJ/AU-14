@@ -13,6 +13,9 @@
   id: CMUBoxBulletsRifleType71Empty
   suffix: Empty
   components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleType71Empty
   - type: BulletBox
     bulletType: CMUBoxBulletsRifleType71
     amount: 0
@@ -31,6 +34,9 @@
   id: CMUBoxBulletsRifleType71APEmpty
   suffix: Empty
   components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleType71APEmpty
   - type: BulletBox
     bulletType: CMUBoxBulletsRifleType71AP
     amount: 0
@@ -50,6 +56,9 @@
   id: CMUBoxBulletsRifleAG80Empty
   suffix: Empty
   components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleAG80Empty
   - type: BulletBox
     bulletType: CMUBoxBulletsRifleAG80
     amount: 0
@@ -69,6 +78,9 @@
   id: CMUBoxBulletsRifleAG80APEmpty
   suffix: Empty
   components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsRifleAG80APEmpty
   - type: BulletBox
     bulletType: CMUBoxBulletsRifleAG80AP
     amount: 0

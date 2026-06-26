@@ -30,7 +30,7 @@
     bulletType: CMUBoxBulletsMAR
 - type: entity
   parent: CMUBoxBulletsMAR
-  id: CMUBoxBulletsMARmpty
+  id: CMUBoxBulletsMAREmpty
   suffix: Empty
   components:
   - type: Construction
