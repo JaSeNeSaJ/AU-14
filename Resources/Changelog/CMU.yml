@@ -4962,5 +4962,15 @@
   id: 347
   time: '2026-06-25T17:51:28.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1444
+- author: TheHellFireo
+  changes:
+  - message: Makes ladders collapse if they do not have support of some structure
+      next to them, if its a wall and it gets destroyed the ladder will collapse
+    type: Add
+  - message: Blackfoot can now fly again
+    type: Fix
+  id: 348
+  time: '2026-06-26T18:17:02.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1463
 Name: CMU
 Order: -1
