@@ -332,6 +332,9 @@
         points: 5
     - name: Special Equipment
       entries:
+      - id: CMUDeployableZLevelLadder
+        amount: 2
+        points: 10
       - id: CMUCLFSynthSubversionKey
         amount: 1
         points: 20
