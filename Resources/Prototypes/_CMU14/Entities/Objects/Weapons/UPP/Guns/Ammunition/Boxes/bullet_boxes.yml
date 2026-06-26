@@ -1,6 +1,6 @@
 # -- REG 5.45x39mm Rifle Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsRifle
+  parent: RMCBoxBulletsRifleL90
   id: CMUBoxBulletsRifleType71
   name: rifle ammunition box (5.45x39mm)
   description: A 5.45x39mm ammunition box. Used to refill regular Type 71 and extended Type 71 magazines. It comes with a leather strap allowing someone to wear it on their back.
@@ -18,7 +18,7 @@
     amount: 0
 # -- AP 5.45x39mm Rifle Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsRifleAP
+  parent: RMCBoxBulletsRifleL90AP
   id: CMUBoxBulletsRifleType71AP
   name: rifle ammunition box (5.45x39mm AP)
   description: A 5.45x39mm ammunition box. Used to refill armor-piercing Type 71 magazines. It comes with a leather strap allowing someone to wear it on their back.
@@ -37,7 +37,7 @@
 
 # -- REG 9.7x16mm Rifle Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsRifle
+  parent: RMCBoxBulletsRifleL24
   id: CMUBoxBulletsRifleAG80
   name: rifle ammunition box (9.7x16mm)
   description: A 9.7x16mm ammunition box. Used to refill AG80 magazines. It comes with a leather strap allowing someone to wear it on their back.
@@ -56,7 +56,7 @@
 
 # -- AP 9.7x16mm Rifle Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsRifleAP
+  parent: RMCBoxBulletsRifleL24AP
   id: CMUBoxBulletsRifleAG80AP
   name: rifle ammunition box (9.7x16mm AP)
   description: A 9.7x16mm ammunition box. Used to refill armor-piercing AG80 magazines. It comes with a leather strap allowing someone to wear it on their back.

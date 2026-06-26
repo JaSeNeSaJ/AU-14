@@ -24,15 +24,13 @@
  # -- AP 9mm Pistol Ammunition Box --
 # -- REG 5.7x28mm SMG Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsSMG
+  parent: RMCBoxBulletsRifleL24
   id: CMUBoxBulletsSMGP90
   name: SMG ammunition box (5.7x28mm)
   description: A 5.7x28mm ammunition box. Used to refill P90 magazines. It comes with a leather strap allowing to wear it on the back.
   components:
   - type: BulletBox
     bulletType: CMUBoxBulletsSMGP90
-    max: 984
-    amount: 984
 
 - type: entity
   parent: CMUBoxBulletsSMGP90
@@ -47,15 +45,13 @@
     amount: 0
 # -- AP 5.7x28mm SMG Ammunition Box --
 - type: entity
-  parent: RMCBoxBulletsSMGAP
+  parent: RMCBoxBulletsRifleL24AP
   id: CMUBoxBulletsSMGP90AP
   name: SMG ammunition box (5.7x28mm AP)
   description: A 5.7x28mm ammunition box. Used to refill armor-piercing P90 magazines. It comes with a leather strap allowing to wear it on the back.
   components:
   - type: BulletBox
     bulletType: CMUBoxBulletsSMGP90AP
-    max: 984
-    amount: 984
 
 - type: entity
   parent: CMUBoxBulletsSMGP90AP
@@ -77,8 +73,6 @@
   components:
   - type: BulletBox
     bulletType: CMUBoxBulletsSMG9MM
-    max: 984
-    amount: 984
 
 - type: entity
   parent: CMUBoxBulletsSMG9MM
