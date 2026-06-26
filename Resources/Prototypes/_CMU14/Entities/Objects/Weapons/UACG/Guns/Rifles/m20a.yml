@@ -106,7 +106,9 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifle
+    
 - type: entity
   parent: CMBaseCartridgeRifle
   id: AU14CartridgeRifleM20A
