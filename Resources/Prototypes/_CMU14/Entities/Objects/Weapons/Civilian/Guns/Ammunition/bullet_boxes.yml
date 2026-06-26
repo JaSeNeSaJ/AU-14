@@ -7,8 +7,6 @@
   components:
   - type: BulletBox
     bulletType: CMUBoxBulletsRifle556x45MM
-    max: 984
-    amount: 984
 
 - type: entity
   parent: CMUBoxBulletsRifle556x45MM
@@ -21,7 +19,6 @@
   - type: BulletBox
     bulletType: CMUBoxBulletsRifle556x45MM
     amount: 0
- # -- AP 9mm Pistol Ammunition Box --
 # -- REG 7.62x39mm Rifle Ammunition Box--
 - type: entity
   parent: RMCBoxBulletsRifleL24
@@ -31,6 +28,17 @@
   components:
   - type: BulletBox
     bulletType: CMUBoxBulletsMAR
+- type: entity
+  parent: CMUBoxBulletsMAR
+  id: CMUBoxBulletsMARmpty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsMAREmpty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsMAR
+    amount: 0
 # -- REG 5.7x28mm SMG Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsRifleL24

@@ -44,3 +44,26 @@
   - type: BulletBox
     bulletType: CMUBoxBulletsPistol9MMAP
     amount: 0
+# -- REG .50 Pistol Ammunition Box --
+- type: entity
+  parent: RMCBoxBulletsPistol
+  id: CMUBoxBulletsPistol50
+  name: pistol ammunition box (.50 JP)
+  description: A .50 JP ammunition box. Used to refill .50 JP magazines. It comes with a leather strap allowing to wear it on the back.
+  components:
+  - type: BulletBox
+    bulletType: CMUBoxBulletsPistol50
+    max: 984
+    amount: 984
+
+- type: entity
+  parent: CMUBoxBulletsPistol50
+  id: CMUBoxBulletsPistol50Empty
+  suffix: Empty
+  components:
+  - type: Construction
+    graph: RMCBoxMagazine
+    node: CMUBoxBulletsPistol50Empty
+  - type: BulletBox
+    bulletType: CMUBoxBulletsPistol50
+    amount: 0
