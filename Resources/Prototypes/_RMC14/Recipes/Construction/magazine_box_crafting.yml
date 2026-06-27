@@ -60,7 +60,126 @@
   description: A 10x24mm armor-piercing ammunition box. Used to refill M54C MK2, and M4SPR AP magazines. It comes with a leather strap allowing to wear it on the back.
   iconColor: "#7b8246"
   objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (7x43mm)
+  id: CMUBoxBulletsRifleSLR
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleSLREmpty
+  category: construction-category-cm-box-magazine
+  description: A 7x43mm ammunition box. Used to refill SLR and SLR Drum magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (7x43mm AP)
+  id: CMUBoxBulletsRifleSLRAP
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleSLRAPEmpty
+  category: construction-category-cm-box-magazine
+  description: A 7x43mm ammunition box. Used to refill armor-piercing SLR and SLR Drum magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (8.88x51mm)
+  id: CMUBoxBulletsRifleL23
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleL23Empty
+  category: construction-category-cm-box-magazine
+  description: A 8.88x51mm ammunition box. Used to refill L23 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (8.88x51mm AP)
+  id: CMUBoxBulletsRifleL23AP
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleL23APEmpty
+  category: construction-category-cm-box-magazine
+  description: A 8.88x51mm ammunition box. Used to refill armor-piercing L23 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
 
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (5.45x39mm)
+  id: CMUBoxBulletsRifleType71
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleType71Empty
+  category: construction-category-cm-box-magazine
+  description: A 5.45x39mm ammunition box. Used to refill Type 71 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (5.45x39mm AP)
+  id: CMUBoxBulletsRifleType71AP
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleType71APEmpty
+  category: construction-category-cm-box-magazine
+  description: A 5.45x39mm ammunition box. Used to refill armor-piercing Type 71 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (9.7x16mm)
+  id: CMUBoxBulletsRifleAG80
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleAG80Empty
+  category: construction-category-cm-box-magazine
+  description: A 9.7x16mm ammunition box. Used to refill AG80 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (9.7x16mm AP)
+  id: CMUBoxBulletsRifleAG80AP
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifleAG80APEmpty
+  category: construction-category-cm-box-magazine
+  description: A 9.7x16mm ammunition box. Used to refill armor-piercing AG80 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (5.56x45mm)
+  id: CMUBoxBulletsRifle556x45MM
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsRifle556x45MMEmpty
+  category: construction-category-cm-box-magazine
+  description: A 5.56x45mm ammunition box. Used to refill M16 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: rifle ammunition box (7.62x39mm)
+  id: CMUBoxBulletsMAR
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsMAREmpty
+  category: construction-category-cm-box-magazine
+  description: A 7.62x39mm ammunition box. Used to refill MAR magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#7b8246"
+  objectType: Item
 # M63
 - type: construction
   parent: RMC
@@ -122,6 +241,41 @@
   iconColor: "#727e90"
   objectType: Item
 
+- type: construction
+  parent: RMC
+  name: SMG ammunition box (5.7x28mm)
+  id: CMUBoxBulletsSMGP90Empty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsSMGP90Empty
+  category: construction-category-cm-box-magazine
+  description: A 5.7x28mm ammunition box. Used to refill P90 and FN9000 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
+
+- type: construction
+  parent: RMC
+  name: SMG ammunition box (5.7x28mm AP)
+  id: CMUBoxBulletsSMGP90APEmpty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsSMGP90APEmpty
+  category: construction-category-cm-box-magazine
+  description: A 5.7x28mm armor-piercing ammunition box. Used to refill P90 AP magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
+  
+- type: construction
+  parent: RMC
+  name: SMG ammunition box (9mm)
+  id: CMUBoxBulletsSMG9MMEmpty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsSMG9MMEmpty
+  category: construction-category-cm-box-magazine
+  description: A 9mm ammunition box. Used to refill MP5 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
 # M4SPR
 - type: construction
   parent: RMC
@@ -196,7 +350,29 @@
   description: A magazine box that can contain armor piercing M1984 mags.
   iconColor: "#b2976e"
   objectType: Item
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (9mm)
+  id: CMUBoxBulletsPistol9MMEmpty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistol9MMEmpty
+  category: construction-category-cm-box-magazine
+  description: A 9mm ammunition box. Used to refill M4A3 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
 
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (9mm AP)
+  id: CMUBoxBulletsPistol9MMAPEmpty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistol9MMAPEmpty
+  category: construction-category-cm-box-magazine
+  description: A 9mm ammunition box. Used to refill armor-piercing M4A3 and Mod 88 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
 # 88 mod 4 / 88m4
 - type: construction
   parent: RMC
@@ -222,7 +398,17 @@
   description: A magazine box that can contain regular MK80 mags.
   iconColor: "#4a4a4a"
   objectType: Item
-
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (9mm AP)
+  id: CMUBoxBulletsPistol9MMSHEmpty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistol9MMSHEmpty
+  category: construction-category-cm-box-magazine
+  description: A 9mm ammunition box. Used to refill Squash-Head 9mm magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
 # L165A1
 - type: construction
   parent: RMC
@@ -371,6 +557,39 @@
   iconColor: "#727e90"
   objectType: Item
 
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (7.62x25mm)
+  id: CMUBoxBulletsPistolType73Empty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistolType73Empty
+  category: construction-category-cm-box-magazine
+  description: A 7.62x25mm ammunition box. Used to refill Type 73 and Type-19 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (.45)
+  id: CMUBoxBulletsPistol45Empty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistol45Empty
+  category: construction-category-cm-box-magazine
+  description: A .45 ammunition box. Used to refill .45 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
+- type: construction
+  parent: RMC
+  name: pistol ammunition box (.50 JP)
+  id: CMUBoxBulletsPistol50Empty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsPistol50Empty
+  category: construction-category-cm-box-magazine
+  description: A .50 JP ammunition box. Used to refill .50 JP magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
 # M34 Incinerator
 
 - type: construction
