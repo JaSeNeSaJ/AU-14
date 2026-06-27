@@ -776,7 +776,7 @@
   - node: start
     edges:
 
-    # M54C
+   # M54C
     - to: RMCBoxMagazineRifleM54CEmpty
       steps:
       - material: RMCSheetCardboard
@@ -815,7 +815,8 @@
         amount: 1
         doAfter: 0.25
     
-    # L23
+    
+   # L23
     - to: CMUBoxBulletsRifleL23Empty
       steps:
       - material: RMCSheetCardboard
@@ -827,7 +828,7 @@
         amount: 1
         doAfter: 0.25
     
-    # Type 71
+   # Type 71
     - to: CMUBoxBulletsRifleType71Empty
       steps:
       - material: RMCSheetCardboard
@@ -839,7 +840,7 @@
         amount: 1
         doAfter: 0.25   
  
-    # AG80
+   # AG80
     - to: CMUBoxBulletsRifleAG80Empty
       steps:
       - material: RMCSheetCardboard
@@ -851,14 +852,14 @@
         amount: 1
         doAfter: 0.25   
         
-    # AK4047
+   # AK4047
     - to: RMCBoxMagazineRifleAK4047Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # SSG45
+   # SSG45
     - to: RMCBoxMagazineRifleSSG45Empty
       steps:
       - material: RMCSheetCardboard
@@ -871,7 +872,7 @@
         amount: 1
         doAfter: 0.25
 
-    # M63
+   # M63
     - to: RMCBoxMagazineSMGM63Empty
       steps:
       - material: RMCSheetCardboard
@@ -897,7 +898,7 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-    # P90
+   # P90
     - to: CMUBoxBulletsSMGP90Empty
       steps:
       - material: RMCSheetCardboard
@@ -908,13 +909,13 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-    # MP5
+   # MP5
     - to: CMUBoxBulletsSMG9MMEmpty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-    # M4SPR
+   # M4SPR
     - to: RMCBoxMagazineRifleM4SPREmpty
       steps:
       - material: RMCSheetCardboard
@@ -933,14 +934,14 @@
         amount: 1
         doAfter: 0.25
 
-    # SOCOM
+   # SOCOM
     - to: RMCBoxBullets458Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # M13 Auto Pistol
+   # M13 Auto Pistol
     - to: RMCBoxMagazinePistolM13Empty
       steps:
       - material: RMCSheetCardboard
@@ -989,7 +990,7 @@
         amount: 1
         doAfter: 0.25
 
-    # M16
+   # M16
     - to: RMCBoxMagazineRifleM16Empty
       steps:
       - material: RMCSheetCardboard
@@ -1002,14 +1003,14 @@
         amount: 1
         doAfter: 0.25
     
-    # MAR
+   # MAR
     - to: CMUBoxBulletsRifleMAREmpty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25   
     
-    # M1984
+   # M1984
     - to: RMCBoxMagazinePistolM1984Empty
       steps:
       - material: RMCSheetCardboard
@@ -1033,14 +1034,14 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-    # M77AP
+   # M77AP
     - to: RMCBoxMagazinePistolM77APEmpty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # MK80
+   # MK80
     - to: RMCBoxMagazinePistolMK80Empty
       steps:
       - material: RMCSheetCardboard
@@ -1052,28 +1053,39 @@
         amount: 1
         doAfter: 0.25
     
-    # L165A1
+   # L165A1
     - to: AU14BoxMagazinePistolL165A1Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
         
-    # Type 73
+   # Type 73
     - to: CMUBoxBulletsPistolType73Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-    
-    # SU-6
+   # .45
+    - to: CMUBoxBulletsPistol45Empty
+      steps:
+      - material: RMCSheetCardboard
+        amount: 1
+        doAfter: 0.25
+   # .50
+    - to: CMUBoxBulletsPistolType73Empty
+      steps:
+      - material: RMCSheetCardboard
+        amount: 1
+        doAfter: 0.25        
+   # SU-6
     - to: RMCBoxMagazinePistolSU6Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # M44
+   # M44
     - to: RMCBoxMagazineRevolverM44Empty
       steps:
       - material: RMCSheetCardboard
@@ -1085,28 +1097,28 @@
         amount: 1
         doAfter: 0.25
 
-    # M34 Incinerator
+   # M34 Incinerator
     - to: RMCBoxFlamerTankEmpty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # Nailgun
+   # Nailgun
     - to: RMCBoxMagazineSMGNailgunEmpty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # XM88
+   # XM88
     - to: RMCBoxBullets458Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
 
-    # Shotgun
+   # Shotgun
     - to: RMCBoxShellsBuckshotEmpty
       steps:
       - material: RMCSheetCardboard
@@ -1143,7 +1155,7 @@
         amount: 1
         doAfter: 0.25
 
-    # Misc
+   # Misc
     - to: RMCBoxMREEmpty
       steps:
       - material: RMCSheetCardboard
@@ -1173,7 +1185,7 @@
   # Why the fuck do you even need these nodes???
   # I second the above, what the fuck is this???
   
-  # M54C
+ # M54C
   - node: RMCBoxMagazineRifleM54CEmpty
     entity: RMCBoxMagazineRifleM54CEmpty
   - node: RMCBoxMagazineRifleM54CAPEmpty
@@ -1185,41 +1197,41 @@
   - node: RMCBoxBulletsRifleAPEmpty
     entity: RMCBoxBulletsRifleAPEmpty
   
-  # SLR
+ # SLR
   - node: CMUBoxBulletsRifleSLREmpty
     entity: CMUBoxBulletsRifleSLREmpty
   - node: CMUBoxBulletsRifleSLRAPEmpty
     entity: CMUBoxBulletsRifleSLRAPEmpty
    
-  # L23
+ # L23
   - node: CMUBoxBulletsRifleL23Empty
     entity: CMUBoxBulletsRifleL23Empty
   - node: CMUBoxBulletsRifleL23APEmpty
     entity: CMUBoxBulletsRifleL23APEmpty
  
-  # Type 71
+ # Type 71
   - node: CMUBoxBulletsRifleType71Empty
     entity: CMUBoxBulletsRifleType71Empty
   - node: CMUBoxBulletsRifleType71APEmpty
     entity: CMUBoxBulletsRifleType71APEmpty
  
-  # AG80
+ # AG80
   - node: CMUBoxBulletsRifleAG80Empty
     entity: CMUBoxBulletsRifleAG80Empty
   - node: CMUBoxBulletsRifleAG80APEmpty
     entity: CMUBoxBulletsRifleAG80APEmpty
     
-  # SSG45
+ # SSG45
   - node: RMCBoxMagazineRifleSSG45Empty
     entity: RMCBoxMagazineRifleSSG45Empty
   - node: RMCBoxMagazineRifleSSG45APEmpty
     entity: RMCBoxMagazineRifleSSG45APEmpty
 
-  #AK4047
+ #AK4047
   - node: RMCBoxMagazineRifleAK4047Empty
     entity: RMCBoxMagazineRifleAK4047Empty
 
-  # M63
+ # M63
   - node: RMCBoxMagazineSMGM63Empty
     entity: RMCBoxMagazineSMGM63Empty
   - node: RMCBoxMagazineSMGM63APEmpty
@@ -1231,17 +1243,17 @@
   - node: RMCBoxBulletsSMGAPEmpty
     entity: RMCBoxBulletsSMGAPEmpty
 
-  # P90
+ # P90
   - node: CMUBoxBulletsSMGP90Empty
     entity: CMUBoxBulletsSMGP90Empty
   - node: CMUBoxBulletsSMGP90APEmpty
     entity: CMUBoxBulletsSMGP90APEmpty
     
-  # MP5
+ # MP5
   - node: CMUBoxBulletsSMG9MMEmpty
     entity: CMUBoxBulletsSMG9MMEmpty
   
-  # M4SPR
+ # M4SPR
   - node: RMCBoxMagazineRifleM4SPREmpty
     entity: RMCBoxMagazineRifleM4SPREmpty
   - node: RMCBoxMagazineRifleM4SPRAPEmpty
@@ -1249,11 +1261,11 @@
   - node: RMCBoxMagazineRifleM4SPRExtEmpty
     entity: RMCBoxMagazineRifleM4SPRExtEmpty
 
-  # SOCOM
+ # SOCOM
   - node: RMCBoxBullets458Empty
     entity: RMCBoxBullets458Empty
 
-  # M13
+ # M13
   - node: RMCBoxMagazinePistolM13Empty
     entity: RMCBoxMagazinePistolM13Empty
   - node: RMCBoxMagazinePistolM13ExtEmpty
@@ -1270,25 +1282,25 @@
     entity: RMCBoxBulletsPistolEmpty
   - node: RMCBoxBulletsPistolAPEmpty
     entity: RMCBoxBulletsPistolAPEmpty
-  # Type 73
+ # Type 73
   - node: CMUBoxBulletsPistolType73Empty
     entity: CMUBoxBulletsPistolType73Empty
-  # .45
+ # .45
   - node: CMUBoxBulletsPistol45Empty
     entity: CMUBoxBulletsPistol45Empty
-  # .50
+ # .50
   - node: CMUBoxBulletsPistol50Empty
     entity: CMUBoxBulletsPistol50Empty
-  # M16
+ # M16
   - node: RMCBoxMagazineRifleM16Empty
     entity: RMCBoxMagazineRifleM16Empty
   - node: CMUBoxBulletsRifle556x45MMEmpty
     entity: CMUBoxBulletsRifle556x45MMEmpty
 
-  # MAR
+ # MAR
   - node: CMUBoxBulletsRifleMAREmpty
     entity: CMUBoxBulletsRifleMAREmpty
-  # M1984
+ # M1984
   - node: RMCBoxMagazinePistolM1984Empty
     entity: RMCBoxMagazinePistolM1984Empty
   - node: RMCBoxMagazinePistolM1984APEmpty
@@ -1298,43 +1310,43 @@
   - node: CMUBoxBulletsPistol9MMAPEmpty
     entity: CMUBoxBulletsPistol9MMAPEmpty
     
-  # M77AP
+ # M77AP
   - node: RMCBoxMagazinePistolM77APEmpty
     entity: RMCBoxMagazinePistolM77APEmpty
 
-  # MK80
+ # MK80
   - node: RMCBoxMagazinePistolMK80Empty
     entity: RMCBoxMagazinePistolMK80Empty
   - node: CMUBoxBulletsPistol9MMSHEmpty
     entity: CMUBoxBulletsPistol9MMSHEmpty
     
-  # L165A1
+ # L165A1
   - node: AU14BoxMagazinePistolL165A1Empty
     entity: AU14BoxMagazinePistolL165A1Empty
 
-  # SU-6
+ # SU-6
   - node: RMCBoxMagazinePistolSU6Empty
     entity: RMCBoxMagazinePistolSU6Empty
 
-  # M44
+ # M44
   - node: RMCBoxMagazineRevolverM44Empty
     entity: RMCBoxMagazineRevolverM44Empty
   - node: RMCBoxMagazineRevolverM44MarksmanEmpty
     entity: RMCBoxMagazineRevolverM44MarksmanEmpty
 
-  # Nailgun
+ # Nailgun
   - node: RMCBoxMagazineSMGNailgunEmpty
     entity: RMCBoxMagazineSMGNailgunEmpty
 
-  # XM88
+ # XM88
   - node: RMCBoxBullets458Empty
     entity: RMCBoxBullets458Empty
 
-  # M34 Incinerator
+ # M34 Incinerator
   - node: RMCBoxFlamerTankEmpty
     entity: RMCBoxFlamerTankEmpty
 
-  # Shotgun
+ # Shotgun
   - node: RMCBoxShellsBuckshotEmpty
     entity: RMCBoxShellsBuckshotEmpty
   - node: RMCBoxShellsSlugsEmpty
@@ -1350,7 +1362,7 @@
   - node: RMCBoxShellsBreachingEmpty
     entity: RMCBoxShellsBreachingEmpty
 
-  # Misc
+ # Misc
   - node: RMCBoxMREEmpty
     entity: RMCBoxMREEmpty
   - node: RMCBoxPackFlareEmpty
