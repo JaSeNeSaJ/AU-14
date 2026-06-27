@@ -174,10 +174,10 @@
 - type: construction
   parent: RMC
   name: rifle ammunition box (7.62x39mm)
-  id: CMUBoxBulletsMAR
+  id: CMUBoxBulletsRifleMAR
   graph: RMCBoxMagazine
   startNode: start
-  targetNode: CMUBoxBulletsMAREmpty
+  targetNode: CMUBoxBulletsRifleMAREmpty
   category: construction-category-cm-box-magazine
   description: A 7.62x39mm ammunition box. Used to refill MAR magazines. It comes with a leather strap allowing to wear it on the back.
   iconColor: "#7b8246"

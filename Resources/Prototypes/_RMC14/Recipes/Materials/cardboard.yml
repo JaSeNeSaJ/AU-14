@@ -97,7 +97,7 @@
   - CMUBoxBulletsRifleAG80EmptyBuild
   - CMUBoxBulletsRifleAG80APEmptyBuild
   - CMUBoxBulletsRifle556x45MMEmptyBuild
-  - CMUBoxBulletsMAREmptyBuild
+  - CMUBoxBulletsRifleMAREmptyBuild
   - RMCBoxBulletsSMGEmptyBuild
   - RMCBoxBulletsSMGAPEmptyBuild
   - CMUBoxBulletsSMGP90EmptyBuild
@@ -180,9 +180,9 @@
   
 - type: rmcConstruction
   parent: RMCCardboardBuildBase
-  id: CMUBoxBulletsMAREmptyBuild
+  id: CMUBoxBulletsRifleMAREmptyBuild
   name: rifle ammunition box (7.62x39mm)
-  prototype: CMUBoxBulletsMAREmpty
+  prototype: CMUBoxBulletsRifleMAREmpty
   
 - type: rmcConstruction
   parent: RMCCardboardBuildBase
