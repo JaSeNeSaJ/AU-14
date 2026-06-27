@@ -4972,5 +4972,42 @@
   id: 348
   time: '2026-06-26T18:17:02.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1463
+- author: jok989372-lgtm
+  changes:
+  - message: Added android suit for UPP platoon joe.
+    type: Add
+  id: 349
+  time: '2026-06-27T01:30:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1462
+- author: KeiKiyomi
+  changes:
+  - message: Changed M240T Custom Fuel tanks size to 450 from 250, and the bgel sized
+      from 250 to 500
+    type: Tweak
+  id: 350
+  time: '2026-06-27T01:50:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1445
+- author: maertayn
+  changes:
+  - message: Refactored languages a bit
+    type: Code
+  id: 351
+  time: '2026-06-27T02:17:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1465
+- author: stranthbackup
+  changes:
+  - message: Moved weapons prototypes into subcategories from _AU14/AU14 folders to
+      the modern _CMU14 directory
+    type: Code
+  id: 352
+  time: '2026-06-27T02:23:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1464
+- author: stranthbackup
+  changes:
+  - message: Fixed UPP APC eating your tools for use later.
+    type: Fix
+  id: 353
+  time: '2026-06-27T02:27:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1467
 Name: CMU
 Order: -1
