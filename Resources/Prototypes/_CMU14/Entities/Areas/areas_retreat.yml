@@ -385,6 +385,16 @@
 
 - type: entity
   parent: CMUAreaRetreatCaves
+  id: CMUAreaRetreatOCUnregisteredTunnel
+  name: Octanis Complex - Unregistered Tunnel
+  components:
+  - type: Sprite
+    state: smuggler_tunnel
+  - type: Area
+    minimapColor: '#714401CC'
+
+- type: entity
+  parent: CMUAreaRetreatCaves
   id: CMUAreaRetreatOCCavernNorth
   name: Octanis Complex - Northern Cavern
   components:
@@ -614,7 +624,6 @@
     state: oc_starport_warehouses
   - type: Area
     minimapColor: '#573e19'
-
 
 - type: entity
   parent: CMUAreaRetreatIndoors
