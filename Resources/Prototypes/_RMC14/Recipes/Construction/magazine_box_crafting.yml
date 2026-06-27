@@ -1232,6 +1232,7 @@
   # MP5
   - node: CMUBoxBulletsSMG9MMEmpty
     entity: CMUBoxBulletsSMG9MMEmpty
+  
   # M4SPR
   - node: RMCBoxMagazineRifleM4SPREmpty
     entity: RMCBoxMagazineRifleM4SPREmpty
@@ -1261,7 +1262,12 @@
     entity: RMCBoxBulletsPistolEmpty
   - node: RMCBoxBulletsPistolAPEmpty
     entity: RMCBoxBulletsPistolAPEmpty
-
+  # .45
+  - node: CMUBoxBulletsPistol45Empty
+    entity: CMUBoxBulletsPistol45Empty
+  # .50
+  - node: CMUBoxBulletsPistol50Empty
+    entity: CMUBoxBulletsPistol50Empty
   # M16
   - node: RMCBoxMagazineRifleM16Empty
     entity: RMCBoxMagazineRifleM16Empty
