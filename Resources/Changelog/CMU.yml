@@ -5009,5 +5009,54 @@
   id: 353
   time: '2026-06-27T02:27:29.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1467
+- author: Arcticular1
+  changes:
+  - message: Pyro armor is now immune to pounces, and is now light armor!
+    type: Tweak
+  id: 354
+  time: '2026-06-27T03:50:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1461
+- author: Arcticular1
+  changes:
+  - message: Clf now get 1 point per 15$
+    type: Tweak
+  id: 355
+  time: '2026-06-27T03:52:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1459
+- author: stranthbackup
+  changes:
+  - message: Ammo boxes of varying round sizes
+    type: Add
+  id: 356
+  time: '2026-06-27T07:04:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1466
+- author: ver0098
+  changes:
+  - message: Type-19 is now medium sized for CLF Hit and runs.
+    type: Add
+  - message: Added Type-19, Type-64, P-90, MAC-15 to CLF Rack.
+    type: Add
+  - message: Added Type-23 to CLF Rack
+    type: Add
+  - message: Added D18 to CLF Rack
+    type: Add
+  - message: Added more M16 Variants to CLF rack
+    type: Add
+  - message: Added Flak Vests to CLF Rack
+    type: Add
+  - message: CLF now has deployable ladders
+    type: Add
+  id: 357
+  time: '2026-06-27T08:14:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1460
+- author: OmerF-afk
+  changes:
+  - message: Added lots of new crafting recipes. Including additions to the lathe.
+    type: Add
+  - message: Removed black goo from roleplay drugs. They can be made now.
+    type: Add
+  id: 358
+  time: '2026-06-27T11:03:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1470
 Name: CMU
 Order: -1
