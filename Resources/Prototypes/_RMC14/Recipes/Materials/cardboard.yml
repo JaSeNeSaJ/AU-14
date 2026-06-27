@@ -102,6 +102,7 @@
   - RMCBoxBulletsSMGAPEmptyBuild
   - CMUBoxBulletsSMGP90EmptyBuild
   - CMUBoxBulletsSMGP90APEmptyBuild
+  - CMUBoxBulletsSMGType19EmptyBuild
   - CMUBoxBulletsSMG9MMEmptyBuild
   - RMCBoxBulletsPistolEmptyBuild
   - RMCBoxBulletsPistolAPEmptyBuild
@@ -207,7 +208,13 @@
   id: CMUBoxBulletsSMGP90APEmptyBuild
   name: SMG ammunition box (5.7×28mm AP)
   prototype: CMUBoxBulletsSMGP90APEmpty  
-
+  
+- type: rmcConstruction
+  parent: RMCCardboardBuildBase
+  id: CMUBoxBulletsSMGType19EmptyBuild
+  name: SMG ammunition box (7.62×25mm)
+  prototype: CMUBoxBulletsSMGType19Empty
+  
 - type: rmcConstruction
   parent: RMCCardboardBuildBase
   id: CMUBoxBulletsSMG9MMEmptyBuild
