@@ -86,7 +86,7 @@
   components:
   - type: SubmissionStorage
     rewards:
-      SteelOre: 5
+      SteelOre: 10
   - type: DisposalUnit
     whitelist:
       tags:
