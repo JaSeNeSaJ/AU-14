@@ -444,7 +444,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatCaves
+  parent: CMUAreaRetreatCavesDeep
   id: CMUAreaRetreatOCResearchSterileLab
   name: Octanis Complex Research - Sterile Lab
   components:
@@ -514,7 +514,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatCaves
+  parent: CMUAreaRetreatCavesDeep
   id: CMUAreaRetreatOCPowerplantOffice
   name: Octanis Complex Powerplant - Office
   components:
@@ -524,7 +524,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatCaves
+  parent: CMUAreaRetreatCavesDeep
   id: CMUAreaRetreatOCPowerplantTurbineRoom
   name: Octanis Complex Powerplant - Turbine Room
   components:
@@ -534,7 +534,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatCaves
+  parent: CMUAreaRetreatCavesDeep
   id: CMUAreaRetreatOCPowerplantStorageRoom
   name: Octanis Complex Powerplant - Storage Room
   components:
