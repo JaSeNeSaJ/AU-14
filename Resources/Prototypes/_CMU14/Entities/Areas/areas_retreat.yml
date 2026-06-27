@@ -60,11 +60,11 @@
   abstract: true
   components:
   - type: Area
-    CAS: false
+    CAS: true
     fulton: false
     mortarPlacement: false
-    mortarFire: false
-    lasing: false
+    mortarFire: true
+    lasing: true
     medevac: false
     paradropping: false
     OB: true
@@ -76,6 +76,24 @@
   parent: CMUAreaRetreat
   id: CMUAreaRetreatFullProtection
   name: JE-1758 Ascanius - Safe Zone
+  abstract: true
+  components:
+  - type: Area
+    CAS: false
+    fulton: false
+    mortarPlacement: false
+    mortarFire: false
+    lasing: false
+    medevac: false
+    paradropping: false
+    OB: false
+    supplyDrop: false
+    weatherEnabled: false
+
+- type: entity
+  parent: CMUAreaRetreat
+  id: CMUAreaRetreatFullProtectionMilitary
+  name: JE-1758 Ascanius - Military Base
   abstract: true
   components:
   - type: Area
@@ -106,7 +124,7 @@
 ## Fort Beauregard
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBRequisitions
   name: Fort Beauregard - Requisitions
   components:
@@ -116,7 +134,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBCommandIntelOffice
   name: Fort Beauregard - Intelligence Office
   components:
@@ -126,7 +144,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBCommandCommandCenter
   name: Fort Beauregard - Command Center
   components:
@@ -136,7 +154,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBarracks
   name: Fort Beauregard - Barracks
   components:
@@ -146,7 +164,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBarracksMessHall
   name: Fort Beauregard - Mess Hall
   components:
@@ -156,7 +174,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBEngineeringMaintenanceBay
   name: Fort Beauregard - Maintenace Bay
   components:
@@ -166,7 +184,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBrigProcessing
   name: Fort Beauregard - Brig Processing
   components:
@@ -176,7 +194,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBrig
   name: Fort Beauregard - Brig
   components:
@@ -186,7 +204,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBrigHoldingCells
   name: Fort Beauregard - Holding Cells
   components:
@@ -196,7 +214,7 @@
     minimapColor: '#573e19'
     
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBBrigLongTermConfinement
   name: Fort Beauregard - Long Term Confinement
   components:
@@ -206,7 +224,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalTriage
   name: Fort Beauregard - Hospital Triage
   components:
@@ -216,7 +234,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalTreatment
   name: Fort Beauregard - Hospital Treatment
   components:
@@ -226,7 +244,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalOperatingRooms
   name: Fort Beauregard - Operating Rooms
   components:
@@ -236,7 +254,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalChemistry
   name: Fort Beauregard - Chemistry
   components:
@@ -246,7 +264,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalMorgue
   name: Fort Beauregard - Morgue
   components:
@@ -256,7 +274,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBHospitalBreakroom
   name: Fort Beauregard - Hospital Breakroom
   components:
@@ -266,7 +284,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorNorth
   name: Fort Beauregard - North
   components:
@@ -276,7 +294,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorSouth
   name: Fort Beauregard - South
   components:
@@ -286,7 +304,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorEast
   name: Fort Beauregard - East
   components:
@@ -296,7 +314,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorWest
   name: Fort Beauregard - West
   components:
@@ -306,7 +324,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorLZAlpha
   name: Fort Beauregard - LZ Alpha (North Pad)
   components:
@@ -316,7 +334,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBExteriorLZBravo
   name: Fort Beauregard - LZ Bravo (South Pad)
   components:
@@ -326,7 +344,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBMiscBriefingArea
   name: Fort Beauregard - Briefing Area
   components:
@@ -336,7 +354,7 @@
     minimapColor: '#573e19'
 
 - type: entity
-  parent: CMUAreaRetreatFullProtection
+  parent: CMUAreaRetreatFullProtectionMilitary
   id: CMUAreaRetreatFBMiscVehiclePool
   name: Fort Beauregard - Vehicle Pool
   components:
