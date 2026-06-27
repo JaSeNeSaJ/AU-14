@@ -105,7 +105,7 @@
 
 - type: entity
   parent: [RMCMarineUniformBase, RMCAlternateFoldableUniformBase]
-  id: AU14UPPJoe
+  id: AU14JoeUPP
   name: android suit
   description: Uniform designed for UPP security synthetics.
   components:
