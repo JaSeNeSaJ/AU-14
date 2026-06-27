@@ -579,7 +579,7 @@
   startNode: start
   targetNode: CMUBoxBulletsPistolType73Empty
   category: construction-category-cm-box-magazine
-  description: A 7.62x25mm ammunition box. Used to refill Type 73 and Type-19 magazines. It comes with a leather strap allowing to wear it on the back.
+  description: A 7.62x25mm ammunition box. Used to refill Type 73 magazines. It comes with a leather strap allowing to wear it on the back.
   iconColor: "#727e90"
   objectType: Item
 # .45
