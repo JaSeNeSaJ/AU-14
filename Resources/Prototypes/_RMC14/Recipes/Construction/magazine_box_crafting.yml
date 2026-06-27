@@ -1051,12 +1051,14 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
+    
     # L165A1
     - to: AU14BoxMagazinePistolL165A1Empty
       steps:
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
+        
     # Type 73
     - to: CMUBoxBulletsPistolType73Empty
       steps:

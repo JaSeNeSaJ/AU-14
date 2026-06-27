@@ -139,7 +139,7 @@
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsMAR
+    bulletType: CMUBoxBulletsMARRifle
 - type: entity
   parent: RMCMagazineRifleMAR40
   id: RMCMagazineRifleMAR40Ext
@@ -170,7 +170,7 @@
     zeroVisible: false
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsMAR
+    bulletType: CMUBoxBulletsMARRifle
 - type: entity
   parent: CMMagazineRifleBase
   id: RMCMagazineMar50LMG
@@ -197,7 +197,7 @@
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsMAR
+    bulletType: CMUBoxBulletsMARRifle
 
 - type: entity
   parent: CMBaseCartridgeRifle
