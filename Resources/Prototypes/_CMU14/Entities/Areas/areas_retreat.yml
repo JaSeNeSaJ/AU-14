@@ -89,6 +89,7 @@
     OB: false
     supplyDrop: false
     weatherEnabled: false
+    noTunnel: true
     
 ### Entities
 
