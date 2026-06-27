@@ -28,15 +28,6 @@
   language: SignLanguage
 
 - type: trait
-  id: BinaryLanguage
-  name: au14-trait-binary-language-name
-  description: au14-trait-binary-language-desc
-  category: LanguageTraits
-  cost: 1
-  components: []
-  language: Binary
-
-- type: trait
   id: LatinLanguage
   name: au14-trait-latin-language-name
   description: au14-trait-latin-language-desc
@@ -44,15 +35,6 @@
   cost: 1
   components: []
   language: Latin
-
-- type: trait
-  id: PortugueseLanguage
-  name: au14-trait-portuguese-language-name
-  description: au14-trait-portuguese-language-desc
-  category: LanguageTraits
-  cost: 1
-  components: []
-  language: Portuguese
 
 - type: trait
   id: SpanishLanguage
@@ -118,22 +100,13 @@
   language: Mandarin
 
 - type: trait
-  id: LegaleseLanguage # High-Corporate
-  name: au14-trait-legalese-language-name
-  description: au14-trait-legalese-language-desc
+  id: TurkishLanguage
+  name: au14-trait-turkish-language-name
+  description: au14-trait-turkish-language-desc
   category: LanguageTraits
   cost: 1
   components: []
-  language: Legalese
-
-# - type: trait
-#   id: TurkishLanguage
-#   name: au14-trait-turkish-language-name
-#   description: au14-trait-turkish-language-desc
-#   category: LanguageTraits
-#   cost: 1
-#   components: []
-#   language: Turkish
+  language: Turkish
 
 # - type: trait
 #   id: KoreanLanguage
@@ -152,6 +125,15 @@
   cost: 1
   components: []
   language: Swahili
+
+- type: trait
+  id: PolishLanguage
+  name: au14-trait-polish-language-name
+  description: au14-trait-polish-language-desc
+  category: LanguageTraits
+  cost: 1
+  components: []
+  language: Polish
 
 # - type: trait
 #   id: AfrikaansLanguage
@@ -172,14 +154,32 @@
 #   components: []
 #   language: Ukrainian
 
-# - type: trait
-#   id: PolishLanguage
-#   name: au14-trait-polish-language-name
-#   description: au14-trait-polish-language-desc
+## - type: trait
+#   id: PortugueseLanguage
+#   name: au14-trait-portuguese-language-name
+#   description: au14-trait-portuguese-language-desc
 #   category: LanguageTraits
 #   cost: 1
 #   components: []
-#   language: Polish
+#   language: Portuguese
+
+# - type: trait
+#   id: LegaleseLanguage # High-Corporate
+#   name: au14-trait-legalese-language-name
+#   description: au14-trait-legalese-language-desc
+#   category: LanguageTraits
+#   cost: 1
+#   components: []
+#   language: Legalese
+
+# - type: trait
+#   id: BinaryLanguage
+#   name: au14-trait-binary-language-name
+#   description: au14-trait-binary-language-desc
+#   category: LanguageTraits
+#   cost: 1
+#   components: []
+#   language: Binary
 
 # - type: trait
 #   id: CzechLanguage

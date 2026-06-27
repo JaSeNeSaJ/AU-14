@@ -19,9 +19,6 @@ au14-trait-binary-language-desc = You can decipher Binary in real-time. Sarcasm 
 au14-trait-latin-language-name = Latin Language
 au14-trait-latin-language-desc = You can speak and understand Vulgar Latin. The Romans would be marginally impressed, that is if they were still around to hear you butcher formal Latin with slang and uneducated corruption.
 
-au14-trait-portuguese-language-name = Portuguese Language
-au14-trait-portuguese-language-desc = You can speak and understand Portuguese. It’s not Spanish, and you will correct anyone who implies otherwise, usually with an extended nasal sigh and a short history lesson.
-
 au14-trait-spanish-language-name = Spanish Language
 au14-trait-spanish-language-desc = You can speak and understand Spanish. You now know the exact difference between “ahorita” and “ahorita”, and your tongue rolls Rs like an SGO's prized possession.
 
@@ -43,10 +40,22 @@ au14-trait-japanese-language-desc = You can speak and understand Japanese. Polit
 au14-trait-mandarin-language-name = Mandarin Language
 au14-trait-mandarin-language-desc = You can speak and understand Mandarin. Tones no longer baffle you. A single "ma" can now mean mother, numb, horse, or curse, and you always know which one (mostly).
 
+au14-trait-turkish-language-name = Turkish Language
+au14-trait-turkish-language-desc = You can speak and understand Turkish. Agglutination no longer frightens you - it obeys you.
+
+au14-trait-polish-language-name = Polish Language
+au14-trait-polish-language-desc = You can speak and understand Polish. Your tongue now survives words with more consonants than vowels.
+
+au14-trait-korean-language-name = Korean Language
+au14-trait-korean-language-desc = You can speak and understand Korean. You instinctively know when to bow and when to use honorifics.
+
+# ├──[ Alternative tongues ]──────────────────────────────────────┤
+au14-trait-portuguese-language-name = Portuguese Language
+au14-trait-portuguese-language-desc = You can speak and understand Portuguese. It’s not Spanish, and you will correct anyone who implies otherwise, usually with an extended nasal sigh and a short history lesson.
+
 au14-trait-legalese-language-name = Legalese Language
 au14-trait-legalese-language-desc = You can speak and understand Legalese. Every sentence you utter now requires three sub clauses, a disclaimer, and a binding arbitration clause.
 
-# ├──[ Alternative tongues ]──────────────────────────────────────┤
 au14-trait-afrikaans-language-name = Afrikaans Language
 au14-trait-afrikaans-language-desc = You can speak and understand Afrikaans. Dutch got simplified and somehow became even more direct.
 
@@ -86,17 +95,11 @@ au14-trait-irish-language-desc = You can speak and understand Irish. The spellin
 au14-trait-italian-language-name = Italian Language
 au14-trait-italian-language-desc = You can speak and understand Italian. Hand gestures are now an optional but highly effective communication bonus.
 
-au14-trait-korean-language-name = Korean Language
-au14-trait-korean-language-desc = You can speak and understand Korean. You instinctively know when to bow and when to use honorifics.
-
 au14-trait-lithuanian-language-name = Lithuanian Language
 au14-trait-lithuanian-language-desc = You can speak and understand Lithuanian. Ancient Indo-European grammar nods approvingly.
 
 au14-trait-persian-language-name = Persian Language
 au14-trait-persian-language-desc = You can speak and understand Persian. Poetry references now appear everywhere.
-
-au14-trait-polish-language-name = Polish Language
-au14-trait-polish-language-desc = You can speak and understand Polish. Your tongue now survives words with more consonants than vowels.
 
 au14-trait-romanian-language-name = Romanian Language
 au14-trait-romanian-language-desc = You can speak and understand Romanian.
@@ -109,9 +112,6 @@ au14-trait-slovak-language-desc = You can speak and understand Slovak.
 
 au14-trait-swahili-language-name = Swahili Language
 au14-trait-swahili-language-desc = You can speak and understand Swahili. Hakuna matata is only the beginning of your vocabulary.
-
-au14-trait-turkish-language-name = Turkish Language
-au14-trait-turkish-language-desc = You can speak and understand Turkish. Agglutination no longer frightens you - it obeys you.
 
 au14-trait-ukrainian-language-name = Ukrainian Language
 au14-trait-ukrainian-language-desc = You can speak and understand Ukrainian. Perfect for discussing borscht recipes and arguing about the correct way to make varenyky.
