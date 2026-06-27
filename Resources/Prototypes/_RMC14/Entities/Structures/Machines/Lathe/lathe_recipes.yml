@@ -271,7 +271,7 @@
   result: RMCAshtrayGlass
   completetime: 2
   materials:
-    CMGlass: 10 # 30
+    CMGlass: 120 # 60
 
 - type: latheRecipe
   id: AU14SprayCleaner
