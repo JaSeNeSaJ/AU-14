@@ -588,7 +588,7 @@
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifleL90
+    bulletType: CMUBoxBulletsRifleSLR
 
 - type: entity
   parent: RMCMagazineRifleL90
@@ -616,7 +616,7 @@
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifleL90
+    bulletType: CMUBoxBulletsRifleSLR
 
 - type: entity
   parent: RMCMagazineRifleL90
@@ -645,7 +645,7 @@
       color: "#1F951F"
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifleL90AP
+    bulletType: CMUBoxBulletsRifleSLRAP
 
 - type: entity
   parent: RMCMagazineRifleL90AP
@@ -675,7 +675,7 @@
       color: "#1F951F"
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifleL90AP
+    bulletType: CMUBoxBulletsRifleSLRAP
 
 - type: entity
   parent: RMCMagazineRifleL90
