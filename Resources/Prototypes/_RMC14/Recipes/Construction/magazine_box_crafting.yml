@@ -1057,7 +1057,13 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
-
+    # Type 73
+    - to: CMUBoxBulletsPistolType73Empty
+      steps:
+      - material: RMCSheetCardboard
+        amount: 1
+        doAfter: 0.25
+    
     # SU-6
     - to: RMCBoxMagazinePistolSU6Empty
       steps:
@@ -1262,6 +1268,9 @@
     entity: RMCBoxBulletsPistolEmpty
   - node: RMCBoxBulletsPistolAPEmpty
     entity: RMCBoxBulletsPistolAPEmpty
+  # Type 73
+  - node: CMUBoxBulletsPistolType73Empty
+    entity: CMUBoxBulletsPistolType73Empty
   # .45
   - node: CMUBoxBulletsPistol45Empty
     entity: CMUBoxBulletsPistol45Empty
