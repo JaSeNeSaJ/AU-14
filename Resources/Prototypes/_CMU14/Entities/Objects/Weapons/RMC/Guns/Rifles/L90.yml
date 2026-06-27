@@ -668,6 +668,8 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifle
 
 - type: entity
   parent: AU14MagazineRifleL90M
@@ -696,7 +698,9 @@
     - state: ammo_band
       color: "#1F951F"
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifleAP
+    
 - type: entity
   parent: AU14MagazineRifleL90M
   id: AU14MagazineRifleL90Mextended
@@ -723,7 +727,8 @@
     - state: mag-1
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsRifle
 - type: entity
   parent: AU14MagazineRifleL90M
   id: AU14MagazineRifleL90MHEAP
@@ -1006,7 +1011,8 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsSMG
 - type: entity
   parent: AU14MagazineSMGL90A2
   id: AU14MagazineSMGL90A2AP
@@ -1034,7 +1040,8 @@
     - state: ammo_band
       color: "#1F951F"
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsSMGAP
 - type: entity
   parent: AU14MagazineSMGL90A2
   id: AU14MagazineSMGL90A2extended
@@ -1061,7 +1068,8 @@
     - state: mag-1
       map: [ "enum.GunVisualLayers.Mag" ]
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: RMCBoxBulletsSMG
 - type: entity
   parent: AU14MagazineSMGL90A2
   id: AU14MagazineSMGL90A2HEAP
