@@ -64,7 +64,7 @@
     fulton: false
     mortarPlacement: false
     mortarFire: true
-    lasing: true
+    lasing: false
     medevac: false
     paradropping: false
     OB: true
@@ -78,11 +78,11 @@
   abstract: true
   components:
   - type: Area
-    CAS: true
+    CAS: false
     fulton: false
     mortarPlacement: false
     mortarFire: false
-    lasing: true
+    lasing: false
     medevac: false
     paradropping: false
     OB: true
