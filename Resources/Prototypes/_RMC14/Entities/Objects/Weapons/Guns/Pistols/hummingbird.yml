@@ -80,7 +80,7 @@
     - state: mag-1
       map: ["enum.GunVisualLayers.Mag"]
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsPistol9mm
+    bulletType: CMUBoxBulletsPistol9MM
     
 - type: Tag
   id: RMCMagazinePistolD18

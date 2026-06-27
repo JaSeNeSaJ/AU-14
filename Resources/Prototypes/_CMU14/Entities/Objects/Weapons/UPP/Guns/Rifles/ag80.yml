@@ -172,7 +172,7 @@
       map: ["enum.GunVisualLayers.Mag"]
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifle # TODO: Box is 10x24mm
+    bulletType: CMUBoxBulletsRifleAG80 
 
 - type: entity
   parent: CMMagazineRifleM54C
@@ -200,7 +200,7 @@
     - state: ammo_band
       color: "#1F951F"
   - type: RefillableByBulletBox
-    bulletType: RMCBoxBulletsRifleAP
+    bulletType: CMUBoxBulletsRifleAG80AP
 
 - type: entity
   parent: CMMagazineRifleM54C
@@ -233,7 +233,9 @@
     steps: 2
     zeroVisible: false
   - type: Appearance
-
+  - type: RefillableByBulletBox
+    bulletType: CMUBoxBulletsRifleAG80
+    
 - type: entity
   parent: CMBaseCartridgeRifle
   id: AU14CartridgeRifle97x16mm
