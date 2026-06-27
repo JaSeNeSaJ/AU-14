@@ -1,5 +1,6 @@
 using Content.Shared._CMU14.Chemistry.Reagent;
 using Content.Shared.Chemistry.Reagent;
+using Content.Shared.DoAfter;
 using Content.Shared.FixedPoint;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
@@ -8,6 +9,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Content.Shared._AU14.Chemistry.Reagents;
+
+//WARNING: EVENTSLOP AHEAD
 
 [Serializable, NetSerializable]
 public sealed class GenerateReagentEvent(GeneratedReagentData reagent) : EntityEventArgs
@@ -31,7 +34,24 @@ public sealed class UpdateResearchConsoleEvent(List<GeneratedReagentData> reagen
     public TimeSpan NextUpdate = nextUpdate;
 }
 [Serializable, NetSerializable]
-public sealed class TerminalPickReagentEven(string reagent) : EntityEventArgs
+public sealed class UpdateDataTerminalClearanceEvent(int clearance, int credits)
+{
+    public int Clearance = clearance;
+    public int Credits = credits;
+}
+
+[Serializable, NetSerializable]
+public sealed class TerminalPickReagentEvent(string reagent) : EntityEventArgs
 {
     public string Reagent = reagent;
+}
+[Serializable, NetSerializable]
+public sealed class XRFScannedReagentEvent(string reagent) : EntityEventArgs
+{
+    public string Reagent = reagent;
+}
+
+[Serializable, NetSerializable]
+public sealed partial class XRFDoAfterEvent() : SimpleDoAfterEvent
+{
 }

@@ -28,3 +28,30 @@
     interfaces:
       enum.ResearchDataTerminalUI.Key:
         type: ResearchDataTerminalBui
+
+- type: entity
+  parent: CMBaseStructure
+  id: CMUXRFScanner
+  name: XRF scanner
+  description: A spectrometer that bombards a sample in high energy radiation to detect emitted fluorescent x-ray patterns. By using the emission spectrum of the sample it can identify its chemical composition.
+  components:
+  - type: Appearance
+  - type: Sprite
+    drawdepth: SmallObjects
+    sprite: _RMC14/Structures/Machines/Science/Analyzer.rsi
+    state: base
+  - type: Clickable
+  - type: Corrodible
+    isCorrodible: false
+  - type: InteractionOutline
+  - type: XRFScanner
+  - type: Transform
+    anchored: false
+  - type: Physics
+    bodyType: Static
+    canCollide: false
+  - type: ContainerContainer
+    containers:
+      sample: !type:ContainerSlot
+    
+  
