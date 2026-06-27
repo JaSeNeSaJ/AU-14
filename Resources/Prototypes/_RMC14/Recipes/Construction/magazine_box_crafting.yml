@@ -269,13 +269,25 @@
 # MP5  
 - type: construction
   parent: RMC
-  name: SMG ammunition box (9mm)
+  name: SMG ammunition box (9×19mm)
   id: CMUBoxBulletsSMG9MMEmpty
   graph: RMCBoxMagazine
   startNode: start
   targetNode: CMUBoxBulletsSMG9MMEmpty
   category: construction-category-cm-box-magazine
-  description: A 9mm ammunition box. Used to refill MP5 magazines. It comes with a leather strap allowing to wear it on the back.
+  description: A 9×19mm ammunition box. Used to refill MP5 magazines. It comes with a leather strap allowing to wear it on the back.
+  iconColor: "#727e90"
+  objectType: Item
+# Type 19
+- type: construction
+  parent: RMC
+  name: SMG ammunition box (7.62×25mm)
+  id: CMUBoxBulletsSMGType19Empty
+  graph: RMCBoxMagazine
+  startNode: start
+  targetNode: CMUBoxBulletsSMGType19Empty
+  category: construction-category-cm-box-magazine
+  description: A 7.62×25mm ammunition box. Used to refill Type 19 magazines. It comes with a leather strap allowing to wear it on the back.
   iconColor: "#727e90"
   objectType: Item
 # M4SPR
@@ -915,6 +927,12 @@
       - material: RMCSheetCardboard
         amount: 1
         doAfter: 0.25
+   # Type 19
+    - to: CMUBoxBulletsSMGType19Empty
+      steps:
+      - material: RMCSheetCardboard
+        amount: 1
+        doAfter: 0.25  
    # M4SPR
     - to: RMCBoxMagazineRifleM4SPREmpty
       steps:
@@ -1252,7 +1270,9 @@
  # MP5
   - node: CMUBoxBulletsSMG9MMEmpty
     entity: CMUBoxBulletsSMG9MMEmpty
-  
+ # Type 19
+  - node: CMUBoxBulletsSMGType19Empty
+    entity: CMUBoxBulletsSMGType19Empty
  # M4SPR
   - node: RMCBoxMagazineRifleM4SPREmpty
     entity: RMCBoxMagazineRifleM4SPREmpty
