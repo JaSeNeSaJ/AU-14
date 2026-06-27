@@ -126,7 +126,7 @@
     zeroOnlyOnEmpty: true
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsPistolType73
+    bulletType: CMUBoxBulletsSMGType19
     
 - type: entity
   parent: CMMagazineRifleBase
@@ -159,7 +159,7 @@
     zeroOnlyOnEmpty: true
   - type: Appearance
   - type: RefillableByBulletBox
-    bulletType: CMUBoxBulletsPistolType73
+    bulletType: CMUBoxBulletsSMGType19
     
 - type: entity
   parent: CMCartridge10x20mm
