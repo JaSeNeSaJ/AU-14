@@ -56,7 +56,7 @@
 - type: entity
   parent: CMUAreaRetreatIndoors
   id: CMUAreaRetreatCaves
-  name: JE-1758 Ascanius - Caves
+  name: JE-1758 Ascanius - Outer Caves
   abstract: true
   components:
   - type: Area
@@ -64,6 +64,24 @@
     fulton: false
     mortarPlacement: false
     mortarFire: true
+    lasing: true
+    medevac: false
+    paradropping: false
+    OB: true
+    supplyDrop: false
+    weatherEnabled: false
+
+- type: entity
+  parent: CMUAreaRetreatIndoors
+  id: CMUAreaRetreatCavesDeep
+  name: JE-1758 Ascanius - Inner Caves
+  abstract: true
+  components:
+  - type: Area
+    CAS: true
+    fulton: false
+    mortarPlacement: false
+    mortarFire: false
     lasing: true
     medevac: false
     paradropping: false
