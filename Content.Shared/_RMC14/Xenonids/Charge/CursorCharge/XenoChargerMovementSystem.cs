@@ -3,6 +3,7 @@ using Content.Shared._RMC14.Atmos;
 using Content.Shared._RMC14.Emote;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
+using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
@@ -21,6 +22,7 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
     [Dependency] private readonly SharedRMCEmoteSystem _rmcEmote = default!;
     [Dependency] private readonly XenoChargerCollisionSystem _collision = default!;
     [Dependency] private readonly SharedRMCFlammableSystem _flammable = default!;
+    [Dependency] private readonly SharedStunSystem _stun = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
@@ -50,11 +52,7 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
         stateComp.DistanceTraveled = 0f;
         stateComp.SoundDistanceAccumulator = 0f;
         stateComp.HitEntities.Clear();
-/*
-        // Zero velocity so old player movement doesn't fight the first charge tick
-        if (_physicsQuery.TryGetComponent(xeno, out var physics))
-            _physics.SetLinearVelocity(xeno, Vector2.Zero, body: physics);
-*/
+
         Dirty(xeno, stateComp);
     }
 
@@ -79,13 +77,18 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
         state.LungeDistanceRemaining = xeno.LungeDistance + state.Stage * xeno.LungeDistancePerStage;
         state.HitEntities.Clear();
 
+
+        _stun.TryParalyze(uid, xeno.LungeSelfStunDuration, false);
         Dirty(uid, state);
     }
 
-    public void ResetToIdle(EntityUid uid)
+    public void ResetToIdle(EntityUid uid, bool completed = false)
     {
         if (_physicsQuery.TryGetComponent(uid, out var physics))
             _physics.SetLinearVelocity(uid, Vector2.Zero, body: physics);
+
+        var ev = new XenoChargerResetEvent(completed);
+        RaiseLocalEvent(uid, ref ev);
 
         RemComp<XenoChargerStateComponent>(uid);
     }
@@ -121,6 +124,9 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
     {
         var stateComp = state.Comp;
         var xenoComp = xeno.Comp;
+
+        if (!stateComp.HeadingInitialized)
+            return;
 
         // Speed scales up with stage.
         var speed = xenoComp.BaseSpeed + stateComp.Stage * xenoComp.SpeedPerStage;
@@ -187,7 +193,7 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
         Dirty(xeno, stateComp);
 
         if (stateComp.LungeDistanceRemaining <= 0f)
-            ResetToIdle(xeno.Owner);
+            ResetToIdle(xeno.Owner, completed: true);
     }
 
     // -------------------------------------------------------------------------
@@ -211,6 +217,16 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
             return;
 
         comp.TargetHeading = diff.ToAngle();
+
+        if (!comp.HeadingInitialized)
+        {
+            comp.CurrentHeading = diff.ToAngle();
+            comp.HeadingInitialized = true;
+        }
+
+        // Snap current heading on the first tick before any movement has occurred
+        if (comp.Stage == 0 && comp.DistanceTraveled < 0.01f)
+            comp.CurrentHeading = comp.TargetHeading;
     }
 
     private void OnMoveInput(Entity<XenoChargerStateComponent> ent, ref MoveInputEvent args)

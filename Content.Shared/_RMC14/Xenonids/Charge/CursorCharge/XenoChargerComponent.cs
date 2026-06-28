@@ -22,14 +22,15 @@ public sealed partial class XenoChargerComponent : Component
     [DataField] public float HumanDamageMultiplier = 5f;
     [DataField] public float HumanDamageMultiplierMax = 10f;
     [DataField] public float HumanKnockdownDuration = 1f;
-    [DataField] public float BarricadeCollisionDamage = 20f;
-    [DataField] public float StructureDamageMultiplier = 15f;
+    [DataField] public float BarricadeCollisionDamage = 15f;
+    [DataField] public float StructureDamageMultiplier = 20f;
 
     // --- Lunge tuning ---
     [DataField] public float LungeDistance = 2f;
     [DataField] public float LungeSpeed = 10f;
     [DataField] public float LungeSpeedPerStage = 1f;
     [DataField] public float LungeDistancePerStage = 1f;
+    [DataField] public TimeSpan LungeSelfStunDuration = TimeSpan.FromSeconds(4);
 
     // --- Lunge standalone cc ---
     [DataField] public float StandaloneDamage = 30f;
@@ -38,7 +39,7 @@ public sealed partial class XenoChargerComponent : Component
 
     // --- Lunge charged cc ---
     [DataField] public float ChargedDamageBase = 30f;
-    [DataField] public float ChargedDamagePerStage = 15f;
+    [DataField] public float ChargedDamagePerStage = 10f;
     [DataField] public float ChargedKnockback = 2f;
     [DataField] public float ChargedKnockdownDuration = 1.5f;
 
@@ -47,9 +48,8 @@ public sealed partial class XenoChargerComponent : Component
     [DataField, AutoNetworkedField] public SoundSpecifier? ChargeSound = new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_footstep_charge1.ogg", AudioParams.Default.WithVolume(-4));
 
     // --- Cooldowns ---
-    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3); //only add this when we got the wall sliding to work
-    [DataField] public TimeSpan LungeCooldown = TimeSpan.FromSeconds(8); //probably not needed
-    [DataField] public TimeSpan LungeChargedCooldown = TimeSpan.FromSeconds(4); //probably not needed
+    [DataField] public TimeSpan EarlyEndCooldown = TimeSpan.FromSeconds(6);
+    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3);
     [DataField] public TimeSpan HitCooldown = TimeSpan.FromSeconds(2);
 
 }

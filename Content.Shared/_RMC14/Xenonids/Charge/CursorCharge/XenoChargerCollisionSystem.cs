@@ -4,6 +4,7 @@ using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Explosion;
 using Content.Shared._RMC14.Stun;
 using Content.Shared._RMC14.Vehicle;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Projectile;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
@@ -47,6 +48,7 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
     [Dependency] private readonly XenoProjectileSystem _projectile = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly VehicleSystem _vehicle = default!;
+    [Dependency] private readonly SharedXenoHiveSystem _hive = default!;
 
     private readonly ProtoId<DamageTypePrototype> _blunt = "Blunt";
     private const float HeadOnDotThreshold = 0.707f; // cos(45°)
@@ -126,6 +128,9 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
     {
         var stage = state.Stage;
         var atMax = stage == xeno.MaxStage;
+
+        if (_hive.FromSameHive(charger, target))
+            return;
 
         // --- Mobs ---
         if (TryComp(target, out MobStateComponent? mobState))
@@ -240,6 +245,9 @@ public sealed partial class XenoChargerCollisionSystem : EntitySystem
     {
         var stage = state.Stage;
         var isCharged = stage > 6;
+
+        if (_hive.FromSameHive(charger, target))
+            return;
 
         if (TryComp(target, out MobStateComponent? mobState))
         {

@@ -39,7 +39,7 @@ public sealed class XenoChargerJockeySystem : EntitySystem
     {
         var user = args.User;
         // Only VerySmallXeno size critters can mount (lessers)
-        if (!TryComp(user, out RMCSizeComponent? userSize) || userSize.Size != RMCSizes.VerySmallXeno || userSize.Size != RMCSizes.SmallXeno)
+        if (!TryComp(user, out RMCSizeComponent? userSize) || userSize.Size is not (RMCSizes.VerySmallXeno or RMCSizes.SmallXeno))
             return;
 
         // Can't mount if already riding something.

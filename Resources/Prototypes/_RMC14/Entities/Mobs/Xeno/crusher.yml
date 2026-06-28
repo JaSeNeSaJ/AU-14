@@ -182,9 +182,9 @@
     - ActionXenoRegurgitate
     - ActionXenoWatch
     - ActionXenoTailStab
-    - ActionXenoToggleCharging
+    - ActionXenoCursorCharging
     - ActionXenoStomp
-    - ActionXenoRam
+    - ActionXenoFling
     - ActionXenoDevolve
   - type: CMArmor
     xenoArmor: 20
@@ -207,22 +207,20 @@
     popup: rmc-xeno-charger-popup
   - type: CombatMode
     toggleMouseRotator: false
-  - type: XenoTumble
-    damage:
-      types:
-        Blunt: 15
   - type: XenoFling
-    paralyzeTime: 0
+    hasAltFling: true
+    paralyzeTime: 1
     slowTime: 8
-  - type: XenoStomp # TODO RMC14 screen shake?
+  - type: XenoStomp
+    directional: false
     plasmaCost: 25
     knocksBack: true
     knockbackPower: 2
     paralyzeTime: 1.5
-    range: 3.95
+    range: 3
     damage:
       types:
-        Blunt: 75
+        Blunt: 35
   - type: XenoChargerJockey
     maxRiders: 4
   - type: XenoCharger
@@ -230,12 +228,3 @@
   - type: RMCActionOrder
     id: RMCXenoCrusherCharger
 
-- type: entity
-  id: RMCChargerWallBreakEffect
-  components:
-  - type: CMExplosionEffect
-    minShrapnel: 4
-    maxShrapnel: 6
-    shrapnelSpeed: 8
-    shrapnelEffects:
-    - RMCShrapnel
