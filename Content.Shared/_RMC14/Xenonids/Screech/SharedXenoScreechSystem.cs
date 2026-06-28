@@ -133,7 +133,7 @@ public sealed partial class XenoScreechSystem : EntitySystem
         RemoveScatterFromTrackedGuns(ent.Comp);
     }
 
-    private void AddScatterToHeldGuns(EntityUid user, ScreechBlindComponent blind)
+    private void AddScatterToTrackedGuns(EntityUid user, ScreechBlindComponent blind)
     {
         if (!TryComp<HandsComponent>(user, out var hands))
             return;
