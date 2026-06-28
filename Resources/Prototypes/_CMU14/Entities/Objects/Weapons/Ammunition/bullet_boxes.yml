@@ -394,7 +394,7 @@
   parent: RMCBoxBulletsPistol
   id: CMUBoxBulletsPistolType73
   name: pistol ammunition box (7.62×25mm)
-  description: A 7.62×25mm ammunition box. Used to refill Type 73 and Type-19 magazines. It comes with a leather strap allowing to wear it on the back.
+  description: A 7.62×25mm ammunition box. Used to refill Type 73 magazines. It comes with a leather strap allowing to wear it on the back.
   components:
   - type: Sprite
     layers:
