@@ -6,6 +6,7 @@ using Content.Shared._RMC14.Language.Prototypes;
 using Content.Shared._RMC14.Language.Systems;
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
+using Content.Shared._RMC14.Xenonids.Hive;
 
 namespace Content.Server._RMC14.Language.Systems;
 
@@ -23,6 +24,10 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         SubscribeNetworkEvent<LanguagesSetMessage>(OnClientSetLanguage);
         SubscribeLocalEvent<RemoveLanguageComponent, DetermineEntityLanguagesEvent>(OnRemoveLanguages);
         SubscribeLocalEvent<RemoveLanguageComponent, ComponentStartup>(OnRemoveLanguageStartup);
+
+        // corrupted hive
+        SubscribeLocalEvent<LanguageComponent, DetermineEntityLanguagesEvent>(OnDetermineCorruptedHiveLanguages);
+        SubscribeLocalEvent<LanguageComponent, HiveChangedEvent>(OnHiveChanged);
     }
 
     private void OnInitLanguageSpeaker(Entity<LanguageComponent> ent, ref MapInitEvent args)
@@ -223,4 +228,34 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
 
         return ObfuscateMessage(speakerMessage, language);
     }
+    // corrupted hive 
+    private static readonly HashSet<string> CorruptedXenoExcludedSpoken = new()
+    {
+        "Primitive",
+        "Binary",
+    };
+
+    private void OnDetermineCorruptedHiveLanguages(Entity<LanguageComponent> ent, ref DetermineEntityLanguagesEvent args)
+    {
+        if (!TryComp<HiveMemberComponent>(ent.Owner, out var hiveMember) ||
+            !TryComp<HiveComponent>(hiveMember.Hive, out var hive) ||
+            !hive.Corrupted)
+            return;
+
+        foreach (var proto in _prototypeManager.EnumeratePrototypes<LanguagePrototype>())
+        {
+            var id = new ProtoId<LanguagePrototype>(proto.ID);
+
+            if (!CorruptedXenoExcludedSpoken.Contains(proto.ID))
+                args.SpokenLanguages.Add(id);
+
+            args.UnderstoodLanguages.Add(id);
+        }
+    }
+
+    private void OnHiveChanged(Entity<LanguageComponent> ent, ref HiveChangedEvent args)
+    {
+        UpdateEntityLanguages(ent.AsNullable());
+    }
+    // corrupted hive ends here
 }
