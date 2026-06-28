@@ -48,8 +48,8 @@ public sealed partial class XenoChargerComponent : Component
     [DataField, AutoNetworkedField] public SoundSpecifier? ChargeSound = new SoundPathSpecifier("/Audio/_RMC14/Xeno/alien_footstep_charge1.ogg", AudioParams.Default.WithVolume(-4));
 
     // --- Cooldowns ---
-    [DataField] public TimeSpan EarlyEndCooldown = TimeSpan.FromSeconds(6);
-    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(3);
+    [DataField] public TimeSpan EarlyEndCooldown = TimeSpan.FromSeconds(3);
+    [DataField] public TimeSpan ChargeCooldown = TimeSpan.FromSeconds(6);
     [DataField] public TimeSpan HitCooldown = TimeSpan.FromSeconds(2);
 
 }
