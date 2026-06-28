@@ -1,4 +1,4 @@
-﻿using Content.Shared.Inventory;
+using Content.Shared.Inventory;
 
 namespace Content.Shared._RMC14.Armor.Magnetic;
 
@@ -8,6 +8,7 @@ public record struct RMCMagnetizeItemEvent(
     EntityUid Item,
     SlotFlags MagnetizeToSlots,
     SlotFlags TargetSlots,
+    bool NeedsMagneticField,
     EntityUid? Magnetizer = null,
     EntityUid? ReceivingItem = null,
     string ReceivingContainer = ""
