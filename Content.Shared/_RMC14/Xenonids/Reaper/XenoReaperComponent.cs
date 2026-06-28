@@ -31,7 +31,7 @@ public sealed partial class XenoReaperComponent : Component
     public TimeSpan NextPassiveGainAt;
 
     [DataField, AutoNetworkedField]
-    public int PassiveGainMaxFleshResin = 400;
+    public int PassiveGainMaxFleshResin = 300;
 
     [DataField, AutoNetworkedField]
     public int FleshHarvestGain = 150;
