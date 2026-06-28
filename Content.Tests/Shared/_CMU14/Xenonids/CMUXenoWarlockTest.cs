@@ -19,14 +19,14 @@ public sealed class CMUXenoWarlockTest
     public void GetPsychicCrushDamageScalesWithCompletedPulses()
     {
         Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(1), Is.EqualTo(100));
-        Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(5), Is.EqualTo(80));
+        Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(5), Is.EqualTo(240));
     }
 
     [Test]
     public void GetPsychicCrushDamageClampsToValidPulseRange()
     {
         Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(-1), Is.EqualTo(65));
-        Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(8), Is.EqualTo(80));
+        Assert.That(CMUXenoWarlockSystem.GetPsychicCrushDamage(8), Is.EqualTo(240));
     }
 
     [Test]
