@@ -164,7 +164,7 @@ public sealed partial class XenoScreechSystem : EntitySystem
     {
         foreach (var gun in blind.ModifiedGuns)
         {
-            if (Deleted(gun))
+            if (TerminatingOrDeleted(gun))
                 continue;
 
             if (RemComp<ScreechScatterComponent>(gun))
