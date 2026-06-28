@@ -220,14 +220,117 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         if (CanUnderstand(listener, language))
             return speakerMessage;
 
+        var similarity = GetSisterLanguageSimilarity(listener, language);
+
         if (TryComp<LanguageLearningComponent>(listener, out var learningComp) &&
             learningComp.Languages.ContainsKey(language))
         {
-            return _learning.ProcessMessageForListener(listener, speakerMessage, language);
+            var learnedData = learningComp.Languages[language];
+
+            // if learning is better than sister language, use learning system fully
+            if (learnedData.Progress >= similarity)
+                return _learning.ProcessMessageForListener(listener, speakerMessage, language);
+
+            // otherwise combine — sister language baseline + individually learned words
+            if (similarity > 0f || learnedData.LearnedWords.Count > 0)
+                return ObfuscateMessageSisterLanguageWithLearning(speakerMessage, language, similarity, learnedData);
         }
+
+        if (similarity > 0f)
+            return ObfuscateMessageSisterLanguage(speakerMessage, language, similarity);
 
         return ObfuscateMessage(speakerMessage, language);
     }
+
+    private string ObfuscateMessageSisterLanguageWithLearning(
+        string message,
+        ProtoId<LanguagePrototype> language,
+        float similarity,
+        LanguageLearningData learnedData)
+    {
+        if (!_prototypeManager.TryIndex(language, out var proto))
+            return ObfuscateMessage(message, language);
+
+        var words = message.Split(' ');
+        var result = new System.Text.StringBuilder();
+
+        for (var i = 0; i < words.Length; i++)
+        {
+            var word = words[i];
+
+            if (i > 0)
+                result.Append(' ');
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                result.Append(word);
+                continue;
+            }
+
+            var wordLower = word.ToLowerInvariant();
+
+            // check if this specific word was individually learned above threshold
+            var wordComprehension = learnedData.LearnedWords.GetValueOrDefault(wordLower, 0f);
+            if (wordComprehension >= proto.ClearComprehensionThreshold)
+            {
+                result.Append(word);
+                continue;
+            }
+
+            // fall back to sister language probability
+            var roll = (float) PseudoRandomNumber(word.GetHashCode() + i, 0, 1000) / 1000f;
+            if (roll < similarity)
+            {
+                result.Append(word);
+            }
+            else
+            {
+                result.Append(ObfuscateMessageInternal(word, proto.ObfuscationMethod, proto.RandomizeObfuscation));
+            }
+        }
+
+        return result.ToString();
+    }
+
+    private string ObfuscateMessageSisterLanguage(string message, ProtoId<LanguagePrototype> language, float similarity)
+    {
+        if (!_prototypeManager.TryIndex(language, out var proto))
+            return ObfuscateMessage(message, language);
+
+        var words = message.Split(' ');
+        var result = new System.Text.StringBuilder();
+
+        for (var i = 0; i < words.Length; i++)
+        {
+            var word = words[i];
+
+            if (i > 0)
+                result.Append(' ');
+
+            if (string.IsNullOrWhiteSpace(word))
+            {
+                result.Append(word);
+                continue;
+            }
+
+            // use word index as seed so same word always shows/hides consistently per round
+            var roll = (float) PseudoRandomNumber(word.GetHashCode() + i, 0, 1000) / 1000f;
+
+            if (roll < similarity)
+            {
+                // show full word
+                result.Append(word);
+            }
+            else
+            {
+                // fully obfuscate this word
+                result.Append(ObfuscateMessageInternal(word, proto.ObfuscationMethod, proto.RandomizeObfuscation));
+            }
+        }
+
+        return result.ToString();
+    }
+
     // corrupted hive 
     private static readonly HashSet<string> CorruptedXenoExcludedSpoken = new()
     {
