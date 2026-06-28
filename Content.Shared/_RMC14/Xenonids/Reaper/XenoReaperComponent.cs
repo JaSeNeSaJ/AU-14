@@ -19,10 +19,10 @@ public sealed partial class XenoReaperComponent : Component
     public int MaxFleshResin = 1000;
 
     [DataField, AutoNetworkedField]
-    public int MeleeGain = 6;
+    public int MeleeGain = 5;
 
     [DataField, AutoNetworkedField]
-    public int PassiveGain = 3;
+    public int PassiveGain = 2;
 
     [DataField, AutoNetworkedField]
     public TimeSpan PassiveGainEvery = TimeSpan.FromSeconds(1);
@@ -67,7 +67,7 @@ public sealed partial class XenoReaperComponent : Component
     public int RedGasCost = 20;
 
     [DataField, AutoNetworkedField]
-    public int RedGasRange = 8;
+    public int RedGasRange = 7;
 
     [DataField, AutoNetworkedField]
     public EntProtoId RedGasPrototype = "XenoReaperRedGas";
