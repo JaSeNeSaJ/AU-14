@@ -5110,5 +5110,49 @@
   id: 361
   time: '2026-06-28T05:13:55.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1475
+- author: stranthbackup
+  changes:
+  - message: Sling clasps are now stronger and not dependent on your armour to hold
+      your gun in place.
+    type: Tweak
+  id: 362
+  time: '2026-06-28T13:10:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1476
+- author: deepdarkdepths
+  changes:
+  - message: Fixed a bug where guns affected by queen scream could permanently retain
+      their increased scatter if they were no longer being held when the effect expired.
+    type: Fix
+  id: 363
+  time: '2026-06-28T13:33:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1478
+- author: deepdarkdepths
+  changes:
+  - message: Reaper's values for its flesh resin gain, Rapture ability, Bloom ability,
+      Gas ability, and Mantle have been increased to better its viability.
+    type: Tweak
+  - message: Warlock's damage has been increased for all of its abilities, with a
+      slight buff to its shield bullet cap.
+    type: Tweak
+  id: 364
+  time: '2026-06-28T13:34:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1468
+- author: maertayn
+  changes:
+  - message: If you fail the threat roll you are sent back to the lobby so you can
+      Join-In-Progress (JIP)
+    type: Add
+  - message: Lowered the Threat Spawn time to 15-30 minutes (from 20-40)
+    type: Tweak
+  - message: Threat Leader playtime requirement is gone (again (again)) - go get 3
+      hours of Threat Member it will be back
+    type: Tweak
+  - message: Ape ghost role not working for the third-party spawns
+    type: Fix
+  - message: Firewalk grants slowdown immunity when walking on fire tiles
+    type: Add
+  id: 365
+  time: '2026-06-28T16:52:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1479
 Name: CMU
 Order: -1
