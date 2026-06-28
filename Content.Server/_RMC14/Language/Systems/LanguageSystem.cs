@@ -99,6 +99,12 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
 
             if (ent.Comp.RemoveUnderstood)
                 language.UnderstoodLanguages.Remove(lang);
+
+            if (ent.Comp.ClearCurrentLanguage &&
+                language.CurrentLanguage == lang)
+            {
+                language.CurrentLanguage = null;
+            }
         }
 
         UpdateEntityLanguages(ent.Owner);
@@ -156,13 +162,27 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         if (!Resolve(ent, ref ent.Comp, false))
             return false;
 
-        if (ent.Comp.CurrentLanguage == null ||
-            !ent.Comp.SpokenLanguages.Contains(ent.Comp.CurrentLanguage.Value))
+        // Has no languages, so don't assign null into CurrentLanguage
+        if (ent.Comp.SpokenLanguages.Count == 0)
         {
-            ent.Comp.CurrentLanguage = ent.Comp.DefaultLanguage ?? ent.Comp.SpokenLanguages.FirstOrDefault();
+            ent.Comp.CurrentLanguage = null;
+
             var update = new LanguagesUpdateEvent();
             RaiseLocalEvent(ent, ref update);
             Dirty(ent);
+
+            return true;
+        }
+
+        if (ent.Comp.CurrentLanguage == null ||
+            !ent.Comp.SpokenLanguages.Contains(ent.Comp.CurrentLanguage.Value))
+        {
+            ent.Comp.CurrentLanguage = ent.Comp.SpokenLanguages.First();
+
+            var update = new LanguagesUpdateEvent();
+            RaiseLocalEvent(ent, ref update);
+            Dirty(ent);
+
             return true;
         }
 
