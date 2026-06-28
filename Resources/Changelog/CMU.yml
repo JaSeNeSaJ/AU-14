@@ -5058,5 +5058,57 @@
   id: 358
   time: '2026-06-27T11:03:39.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1470
+- author: stranthbackup
+  changes:
+  - message: Type 19 ammo box is now craftable
+    type: Fix
+  id: 359
+  time: '2026-06-28T00:54:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1473
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: Unregistered Tunnel area to help differentiate the
+      chokes and flanks on the map.'
+    type: Add
+  - message: 'Hope''s Retreat: A large portion of the Octanis Complex should now have
+      T2/T3 roofs instead of the T4 that they were initially mapped with, allowing
+      Marines to push through the area much more easily.'
+    type: Tweak
+  - message: 'Hope''s Retreat: Extra floor reinforcement has been added to Fort Beauregard,
+      meaning Xenos should no longer be able to burrow into the base unless they push
+      them from the colony.'
+    type: Fix
+  - message: 'Hope''s Retreat: DCC and DP should be able to use their own prep room''s
+      door now.'
+    type: Fix
+  - message: 'Hope''s Retreat: Vehicle pool has been modified slightly to hopefully
+      allow vehicles to get off of the lift.'
+    type: Fix
+  - message: 'Hope''s Retreat: After a budget increase, the NSPA now have proper equipment
+      vendors and access to their own prep room.'
+    type: Fix
+  - message: 'Hope''s Retreat: After seven rounds of appropriations, three cost overruns
+      and $30 million, the Fort Beauregard prep rooms are now properly labelled.'
+    type: Fix
+  id: 360
+  time: '2026-06-28T00:54:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1472
+- author: maertayn
+  changes:
+  - message: L91 missing RSI
+    type: Fix
+  - message: Doubled autoclicker rate limits warning
+    type: Admin
+  - message: Server gets 10 more seconds on restart to show 'Reconnect' when updating
+      - prevents trying to connect when it's not ready
+    type: Fix
+  - message: Abominations (mimics) now share the languages they assimilate
+    type: Add
+  - message: Scout specialist webbing now has a 6.5% move speed multipler & CLF gets
+      1 instead of 2
+    type: Tweak
+  id: 361
+  time: '2026-06-28T05:13:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1475
 Name: CMU
 Order: -1
