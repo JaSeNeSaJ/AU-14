@@ -125,7 +125,7 @@ public sealed partial class XenoScreechSystem : EntitySystem
 
     private void OnScreechBlindStartup(Entity<ScreechBlindComponent> ent, ref ComponentStartup args)
     {
-        AddScatterToHeldGuns(ent.Owner, ent.Comp);
+        AddScatterToTrackedGuns(ent.Owner, ent.Comp);
     }
 
     private void OnScreechBlindShutdown(Entity<ScreechBlindComponent> ent, ref ComponentShutdown args)
