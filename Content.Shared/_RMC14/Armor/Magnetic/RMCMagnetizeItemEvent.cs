@@ -8,7 +8,6 @@ public record struct RMCMagnetizeItemEvent(
     EntityUid Item,
     SlotFlags MagnetizeToSlots,
     SlotFlags TargetSlots,
-    bool NeedsMagneticField,
     EntityUid? Magnetizer = null,
     EntityUid? ReceivingItem = null,
     string ReceivingContainer = ""

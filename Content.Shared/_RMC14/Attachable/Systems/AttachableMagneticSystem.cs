@@ -25,7 +25,6 @@ public sealed partial class AttachableMagneticSystem : EntitySystem
             case AttachableAlteredType.Attached:
                 var comp = EnsureComp<RMCMagneticItemComponent>(args.Holder);
                 _magneticSystem.SetMagnetizeToSlots((args.Holder, comp), attachable.Comp.MagnetizeToSlots);
-                _magneticSystem.SetMagneticField((args.Holder, comp), attachable.Comp.NeedsMagneticField);
                 break;
 
             case AttachableAlteredType.Detached:

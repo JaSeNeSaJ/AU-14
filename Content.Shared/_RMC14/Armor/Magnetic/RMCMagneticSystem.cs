@@ -112,15 +112,17 @@ public sealed partial class RMCMagneticSystem : EntitySystem
 
     private bool CanReturn(Entity<RMCMagneticItemComponent> ent, EntityUid user, out EntityUid magnetizer, out EntityUid? receivingItem, out string receivingContainer)
     {
-        var ev = new RMCMagnetizeItemEvent(user, ent.Owner, ent.Comp.MagnetizeToSlots, SlotFlags.OUTERCLOTHING | SlotFlags.POCKET, ent.Comp.NeedsMagneticField);
-        RaiseLocalEvent(user, ref ev);
-        if (!ev.NeedsMagneticField)
+        if (!ent.Comp.NeedsMagneticField)
         {
             magnetizer = user;
-            receivingItem = ev.ReceivingItem;
-            receivingContainer = ev.ReceivingContainer;
+            receivingItem = null;
+            receivingContainer = "";
             return true;
         }
+
+        var ev = new RMCMagnetizeItemEvent(user, ent.Owner, ent.Comp.MagnetizeToSlots, SlotFlags.OUTERCLOTHING | SlotFlags.POCKET);
+        RaiseLocalEvent(user, ref ev);
+
         magnetizer = ev.Magnetizer ?? default;
         receivingItem = ev.ReceivingItem;
         receivingContainer = ev.ReceivingContainer;
@@ -147,11 +149,7 @@ public sealed partial class RMCMagneticSystem : EntitySystem
         ent.Comp.MagnetizeToSlots = slots;
         Dirty(ent);
     }
-    public void SetMagneticField(Entity<RMCMagneticItemComponent> ent, bool field)
-    {
-        ent.Comp.NeedsMagneticField = field;
-        Dirty(ent);
-    }
+
     public void OnSlingDrop(Entity<RMCSlingPouchComponent> pouch, ref InventoryRelayedEvent<RMCMagnetizeItemEvent> args)
     {
         var item = args.Args.Item;

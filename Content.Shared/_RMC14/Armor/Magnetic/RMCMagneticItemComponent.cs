@@ -11,5 +11,5 @@ public sealed partial class RMCMagneticItemComponent : Component
     public SlotFlags MagnetizeToSlots = SlotFlags.SUITSTORAGE;
 
     [DataField, AutoNetworkedField]
-    public bool NeedsMagneticField = true;
+    public bool NeedsMagneticField;
 }
