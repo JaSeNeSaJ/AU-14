@@ -365,10 +365,10 @@ namespace Content.Server.GameTicking
                     try
                     {
                         _threatSystem.SpawnThreatAtRoundStart(selectedThreat, DefaultMap, assignedJobs);
+
                         if (_sawmill.Level <= LogLevel.Debug)
                         {
-                            AuAssignmentCounts afterThreatCounts = GameTicker.CountAuAssignments(assignedJobs);
-
+                            AuAssignmentCounts afterThreatCounts = CountAuAssignments(assignedJobs);
                             _sawmill.Debug(
                                 $"[RoundStart] Threat spawn returned for '{selectedThreat.ID}'; remainingThreatLeaders={
                                     afterThreatCounts.ThreatLeaders}, remainingThreatMembers={
@@ -376,6 +376,24 @@ namespace Content.Server.GameTicking
                                     }.");
                         }
 
+                        // Return unselected threat players to lobby so they can JIP
+                        var threatLosers = new List<(NetUserId UserId, ICommonSession Session)>();
+                        foreach ((NetUserId userId, (ProtoId<JobPrototype>? job, EntityUid _)) in assignedJobs)
+                        {
+                            if ((job != AuThreatLeaderJob && job != AuThreatMemberJob)
+                                || !readySessions.TryGetValue(userId, out ICommonSession? session))
+                                continue;
+
+                            threatLosers.Add((userId, session));
+                        }
+                        _sawmill.Debug($"[RoundStart] Returning {threatLosers.Count} unselected threat player(s) to lobby.");
+                        foreach ((NetUserId userId, ICommonSession session) in threatLosers)
+                        {
+                            assignedJobs.Remove(userId);
+                            PlayerJoinLobby(session);
+                            _chatManager.DispatchServerMessage(session,
+                                Loc.GetString("au14-threat-not-selected-return-to-lobby"));
+                        }
                     }
                     catch (Exception threatEx)
                     {
