@@ -256,7 +256,6 @@
   components:
   - type: Action
     itemIconStyle: NoItem
-    backgroundOn: null
     icon:
       sprite: _RMC14/Actions/xeno_actions.rsi
       state: apply_salve
@@ -275,7 +274,6 @@
   components:
   - type: Action
     itemIconStyle: NoItem
-    backgroundOn: null
     icon:
       sprite: _RMC14/Actions/xeno_actions.rsi
       state: screech
