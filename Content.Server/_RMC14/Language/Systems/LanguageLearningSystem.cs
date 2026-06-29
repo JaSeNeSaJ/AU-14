@@ -480,4 +480,40 @@ public sealed partial class LanguageLearningSystem : SharedLanguageLearningSyste
 
         return Math.Min(multiplier, 2.5f);
     }
+
+    public void TryLearnFromRecording(
+        EntityUid listener,
+        string message,
+        ProtoId<LanguagePrototype> language,
+        EntityUid recorder)
+    {
+        if (!TryComp<LanguageLearningComponent>(listener, out var learner))
+            return;
+
+        if (HasComp<NoLanguageLearningComponent>(listener))
+            return;
+
+        // don't learn if already fully fluent
+        if (TryComp<LanguageComponent>(listener, out var langComp))
+        {
+            var canSpeak = langComp.SpokenLanguages.Contains(language);
+            var canUnderstand = langComp.UnderstoodLanguages.Contains(language);
+            if (canSpeak && canUnderstand)
+                return;
+        }
+
+        if (!learner.Languages.ContainsKey(language))
+            return;
+
+        var words = ExtractWords(message);
+        if (words.Count == 0)
+            return;
+
+        TryLearnWords(
+            (listener, learner),
+            recorder,
+            message,
+            language,
+            1f);
+    }
 }
