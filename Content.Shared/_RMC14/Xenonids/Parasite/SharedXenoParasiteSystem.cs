@@ -635,6 +635,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
                 ? actor.PlayerSession.UserId
                 : null;
             parasite.Comp.InfectorWantsLarva = false;
+            parasite.Comp.InfectorLarvaClaimPending = false;
         }
 
         parasite.Comp.InfectedVictim = victim;
@@ -732,6 +733,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
                 var victimComp = EnsureComp<VictimInfectedComponent>(infectedVictim);
                 victimComp.InfectorUser = para.InfectorUser;
                 victimComp.InfectorWantsLarva = para.InfectorWantsLarva;
+                victimComp.InfectorLarvaClaimPending = para.InfectorLarvaClaimPending;
                 SetHive((infectedVictim, victimComp), _hive.GetHive(uid)?.Owner);
 
                 // TODO RMC14 also do damage to the parasite
@@ -1155,12 +1157,36 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
         }
 
         parasite.Comp.InfectorWantsLarva = wantsLarva;
+        parasite.Comp.InfectorLarvaClaimPending = false;
         Dirty(parasite);
 
         if (TryComp(victim, out VictimInfectedComponent? infected) &&
             infected.InfectorUser == userId)
         {
             infected.InfectorWantsLarva = wantsLarva;
+            infected.InfectorLarvaClaimPending = false;
+            Dirty(victim, infected);
+        }
+
+        return true;
+    }
+
+    protected bool TrySetLarvaClaimPending(Entity<XenoParasiteComponent> parasite, EntityUid victim, NetUserId userId)
+    {
+        if (parasite.Comp.InfectedVictim != victim ||
+            parasite.Comp.InfectorUser != userId)
+        {
+            return false;
+        }
+
+        parasite.Comp.InfectorLarvaClaimPending = true;
+        Dirty(parasite);
+
+        if (TryComp(victim, out VictimInfectedComponent? infected) &&
+            infected.InfectorUser == userId &&
+            !infected.InfectorWantsLarva)
+        {
+            infected.InfectorLarvaClaimPending = true;
             Dirty(victim, infected);
         }
 
@@ -1184,6 +1210,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
     {
         victim.Comp.InfectorUser = null;
         victim.Comp.InfectorWantsLarva = false;
+        victim.Comp.InfectorLarvaClaimPending = false;
         Dirty(victim);
     }
 
