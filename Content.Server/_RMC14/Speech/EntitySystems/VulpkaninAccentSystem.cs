@@ -7,6 +7,9 @@ namespace Content.Server._RMC14.Speech.EntitySystems;
 
 public sealed partial class VulpkaninAccentSystem : EntitySystem
 {
+    private static readonly string[] LowerRReplacements = ["rr", "rrr"];
+    private static readonly string[] UpperRReplacements = ["RR", "RRR"];
+
     [Dependency] private IRobustRandom _random = default!;
     
     public override void Initialize()
@@ -19,8 +22,8 @@ public sealed partial class VulpkaninAccentSystem : EntitySystem
     {
         var message = args.Message;
         
-        message = LowerRRegex().Replace(message, _random.Pick(new List<string> { "rr", "rrr" }));
-        message = UpperRRegex().Replace(message, _random.Pick(new List<string> { "RR", "RRR" }));
+        message = LowerRRegex().Replace(message, _random.Pick(LowerRReplacements));
+        message = UpperRRegex().Replace(message, _random.Pick(UpperRReplacements));
         
         args.Message = message;
     }

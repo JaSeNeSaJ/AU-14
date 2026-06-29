@@ -7,13 +7,11 @@ using Robust.Shared.Random;
 
 namespace Content.Shared._RMC14.Language.Systems;
 
-public abstract class SharedLanguageLearningSystem : EntitySystem
+public abstract partial class SharedLanguageLearningSystem : EntitySystem
 {
-    [Dependency] protected readonly SharedLanguageSystem _language = default!;
-    [Dependency] protected readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] protected readonly IRobustRandom _random = default!;
-
-    protected static readonly Regex WordRegex = new(@"\b[a-zA-Z']+\b", RegexOptions.Compiled);
+    [Dependency] protected SharedLanguageSystem _language = default!;
+    [Dependency] protected IPrototypeManager _prototypeManager = default!;
+    [Dependency] protected IRobustRandom _random = default!;
 
     public string ProcessMessageForListener(EntityUid listener, string message, ProtoId<LanguagePrototype> language)
     {
@@ -23,7 +21,7 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
         if (!TryComp<LanguageLearningComponent>(listener, out var comp))
             return _language.ObfuscateMessage(message, language);
 
-        if (!comp.Languages.ContainsKey(language))
+        if (!comp.Languages.TryGetValue(language, out _))
             return _language.ObfuscateMessage(message, language);
 
         return ProcessMessageWordByWord(message, language, comp);
@@ -37,7 +35,7 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
         if (!TryComp<LanguageLearningComponent>(speaker, out var comp))
             return _language.ObfuscateMessage(message, language);
 
-        if (!comp.Languages.ContainsKey(language))
+        if (!comp.Languages.TryGetValue(language, out _))
             return _language.ObfuscateMessage(message, language);
 
         return ProcessMessageWordByWord(message, language, comp);
@@ -58,7 +56,7 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
         var result = new StringBuilder(message.Length);
         var lastIndex = 0;
 
-        var matches = WordRegex.Matches(message);
+        var matches = WordRegex().Matches(message);
         foreach (Match match in matches)
         {
             result.Append(message, lastIndex, match.Index - lastIndex);
@@ -67,8 +65,8 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
             var wordLower = word.ToLowerInvariant();
 
             var wordComprehension = 0f;
-            if (learnedWords?.ContainsKey(wordLower) == true)
-                wordComprehension = learnedWords[wordLower];
+            if (learnedWords?.TryGetValue(wordLower, out var learnedComprehension) == true)
+                wordComprehension = learnedComprehension;
             else
             {
                 if (previewBoostedWordsRemaining > 0 && previewBoostedWordComprehension > 0f)
@@ -158,7 +156,7 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
 
     public List<string> ExtractWords(string message)
     {
-        var matches = WordRegex.Matches(message);
+        var matches = WordRegex().Matches(message);
         var words = new List<string>(matches.Count);
 
         foreach (Match match in matches)
@@ -214,6 +212,9 @@ public abstract class SharedLanguageLearningSystem : EntitySystem
 
         return totalWeight > 0 ? totalComprehension / totalWeight : 0f;
     }
+
+    [GeneratedRegex(@"\b[a-zA-Z']+\b")]
+    private static partial Regex WordRegex();
 
     public float GetComprehensionLevel(EntityUid entity, ProtoId<LanguagePrototype> language)
     {

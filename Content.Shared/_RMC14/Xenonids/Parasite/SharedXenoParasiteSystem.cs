@@ -62,6 +62,11 @@ namespace Content.Shared._RMC14.Xenonids.Parasite;
 
 public abstract partial class SharedXenoParasiteSystem : EntitySystem
 {
+    private static readonly string[] InsanePainSuffixes = ["one", "two", "three", "four", "five"];
+    private static readonly string[] MajorPainSuffixes = ["chest", "breathing", "heart"];
+    private static readonly string[] ThroatPainSuffixes = ["sore", "mucous"];
+    private static readonly string[] MinorPainSuffixes = ["stomach", "chest"];
+
     [Dependency] private SharedActionsSystem _action = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private SharedAppearanceSystem _appearance = default!;
@@ -808,7 +813,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
             {
                 if (_random.Prob(infected.InsanePainChance * frameTime))
                 {
-                    var random = _random.Pick(new List<string> { "one", "two", "three", "four", "five" });
+                    var random = _random.Pick(InsanePainSuffixes);
                     var message = Loc.GetString("rmc-xeno-infection-insanepain-" + random);
                     _popup.PopupEntity(message, uid, uid, PopupType.LargeCaution);
 
@@ -821,7 +826,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
             {
                 if (_random.Prob(infected.MajorPainChance * frameTime))
                 {
-                    var message = Loc.GetString("rmc-xeno-infection-majorpain-" + _random.Pick(new List<string> { "chest", "breathing", "heart" }));
+                    var message = Loc.GetString("rmc-xeno-infection-majorpain-" + _random.Pick(MajorPainSuffixes));
                     _popup.PopupEntity(message, uid, uid, PopupType.SmallCaution);
                     if (_random.Prob(0.5f))
                     {
@@ -837,7 +842,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
             {
                 if (_random.Prob(infected.ThroatPainChance * frameTime))
                 {
-                    var message = Loc.GetString("rmc-xeno-infection-throat-" + _random.Pick(new List<string> { "sore", "mucous" }));
+                    var message = Loc.GetString("rmc-xeno-infection-throat-" + _random.Pick(ThroatPainSuffixes));
                     _popup.PopupEntity(message, uid, uid, PopupType.SmallCaution);
                 }
                 // TODO 20% chance to take limb damage
@@ -849,7 +854,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
                 }
                 else if (_random.Prob(infected.SneezeCoughChance * frameTime))
                 {
-                    var emote = _random.Pick(new List<ProtoId<EmotePrototype>> { infected.SneezeId, infected.CoughId });
+                    var emote = _random.Prob(0.5f) ? infected.SneezeId : infected.CoughId;
                     var ev = new VictimInfectedEmoteEvent(emote);
                     RaiseLocalEvent(uid, ref ev);
                 }
@@ -861,7 +866,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
             {
                 if (_random.Prob(infected.MinorPainChance * frameTime))
                 {
-                    var message = Loc.GetString("rmc-xeno-infection-minorpain-" + _random.Pick(new List<string> { "stomach", "chest" }));
+                    var message = Loc.GetString("rmc-xeno-infection-minorpain-" + _random.Pick(MinorPainSuffixes));
                     _popup.PopupEntity(message, uid, uid, PopupType.SmallCaution);
                 }
 
