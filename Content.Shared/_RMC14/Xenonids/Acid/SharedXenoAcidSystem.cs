@@ -53,6 +53,7 @@ public abstract partial class SharedXenoAcidSystem : EntitySystem
     [Dependency] private XenoAcidHoleSystem _acidHole = default!;
     [Dependency] protected IPrototypeManager PrototypeManager = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private SharedInteractionSystem _interaction = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private XenoPlasmaSystem _xenoPlasma = default!;
     [Dependency] private XenoEnergySystem _xenoEnergy = default!;
@@ -172,7 +173,7 @@ public abstract partial class SharedXenoAcidSystem : EntitySystem
         if (TryComp(action, out TargetActionComponent? targetAction))
             range = targetAction.Range;
 
-        if (range <= 0 || _transform.InRange(xeno.Owner, target, range))
+        if (_interaction.InRangeUnobstructed(xeno.Owner, target, range))
             return true;
 
         _popup.PopupClient(Loc.GetString("shared-interaction-system-in-range-unobstructed-cannot-reach"), xeno, xeno, PopupType.SmallCaution);
