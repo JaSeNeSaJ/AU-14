@@ -5154,5 +5154,77 @@
   id: 365
   time: '2026-06-28T16:52:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1479
+- author: OverusedMeme
+  changes:
+  - message: Fixed the storage issue of Type 48-M General Utility Pouch not clipping
+      onto suit storage and not accepting medium sized items.
+    type: Fix
+  id: 366
+  time: '2026-06-29T04:13:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1486
+- author: JaSeNeSaJ
+  changes:
+  - message: 'Sheperds'': Vines (first pass)'
+    type: Add
+  - message: 'Sheperds'': Mob grow area'
+    type: Add
+  - message: 'Sheperds'': Tobacco & Cannabis growing supplies to Mob'
+    type: Add
+  - message: 'Sheperds'': More department consoles to colony admin office'
+    type: Add
+  - message: 'Sheperds'': Moved CLF/threat base from above LZ1'
+    type: Tweak
+  - message: 'Sheperds'':  TVs in Tavern/Casino basement now unanchorable & moveable'
+    type: Tweak
+  - message: 'Sheperds'': Experiment crate contents to Lab Freezer (non-abom)'
+    type: Add
+  - message: Nicotine chemical to tobacco leaves (non-dry)
+    type: Add
+  - message: 'Sheperds'': Beakers & Reagent Grinders to Mob & Hydro'
+    type: Add
+  id: 367
+  time: '2026-06-29T04:52:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1484
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: Additional 2nd Z-Level areas on Hope''s Retreat (specifically
+      the Octanis Complex), intended to allow more dynamic movement through the map.'
+    type: Add
+  - message: 'Hope''s Retreat: Following the arrival of a mysteriously stealth dropship,
+      a Rec-Vend has been deployed to the Fort Beauregard medical break room.'
+    type: Add
+  - message: 'Hope''s Retreat: More areas to allow further specificity on the second
+      floor of the Octanis Complex as well as the central tunnel.'
+    type: Add
+  - message: 'Hope''s Retreat: Salvage job loop!'
+    type: Add
+  - message: 'Hope''s Retreat: Restoration of certain civilian vendors (synth and
+      logi).'
+    type: Add
+  - message: 'Hope''s Retreat: The majority of Octanis Complex (including the Smuggler''s
+      Tunnel) areas that were T4 roofs should have their areas adjusted properly to
+      T2.'
+    type: Fix
+  - message: 'Hope''s Retreat: Fax machines should now properly be connected to one
+      another, allowing you to send a litany of passive-aggressive messages across
+      space.'
+    type: Fix
+  id: 368
+  time: '2026-06-29T06:07:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1482
+- author: OverusedMeme
+  changes:
+  - message: The M240-T Flame-thrower is now un-meltable again.
+    type: Add
+  id: 369
+  time: '2026-06-29T06:16:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1485
+- author: deepdarkdepths
+  changes:
+  - message: Warlock's health and armor has been increased to help with its survivability.
+    type: Tweak
+  id: 370
+  time: '2026-06-29T06:57:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1483
 Name: CMU
 Order: -1
