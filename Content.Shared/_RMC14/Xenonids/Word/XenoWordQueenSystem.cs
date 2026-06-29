@@ -88,7 +88,7 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
 
         _xenoPlasma.TryRemovePlasma(queen.Owner, queen.Comp.PlasmaCost);
 
-        text = NewLineRegex().Replace(text, "\n\n");
+        text = NewLineRegex.Replace(text, "\n\n");
         text = _cmChat.SanitizeMessageReplaceWords(queen, text);
         var headerText = Loc.GetString("rmc-xeno-words-of-the-queen-header");
         var wrapped = FormattedMessage.EscapeText(text);
@@ -120,6 +120,5 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
         return false;
     }
 
-    [GeneratedRegex("\n{3,}")]
-    private static partial Regex NewLineRegex();
+    private static readonly Regex NewLineRegex = new("\n{3,}");
 }

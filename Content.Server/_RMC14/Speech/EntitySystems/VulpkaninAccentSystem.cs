@@ -22,15 +22,13 @@ public sealed partial class VulpkaninAccentSystem : EntitySystem
     {
         var message = args.Message;
         
-        message = LowerRRegex().Replace(message, _random.Pick(LowerRReplacements));
-        message = UpperRRegex().Replace(message, _random.Pick(UpperRReplacements));
+        message = LowerRRegex.Replace(message, _random.Pick(LowerRReplacements));
+        message = UpperRRegex.Replace(message, _random.Pick(UpperRReplacements));
         
         args.Message = message;
     }
 
-    [GeneratedRegex("r+")]
-    private static partial Regex LowerRRegex();
+    private static readonly Regex LowerRRegex = new("r+");
 
-    [GeneratedRegex("R+")]
-    private static partial Regex UpperRRegex();
+    private static readonly Regex UpperRRegex = new("R+");
 }

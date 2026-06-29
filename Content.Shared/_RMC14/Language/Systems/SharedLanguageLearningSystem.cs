@@ -56,7 +56,7 @@ public abstract partial class SharedLanguageLearningSystem : EntitySystem
         var result = new StringBuilder(message.Length);
         var lastIndex = 0;
 
-        var matches = WordRegex().Matches(message);
+        var matches = WordRegex.Matches(message);
         foreach (Match match in matches)
         {
             result.Append(message, lastIndex, match.Index - lastIndex);
@@ -156,7 +156,7 @@ public abstract partial class SharedLanguageLearningSystem : EntitySystem
 
     public List<string> ExtractWords(string message)
     {
-        var matches = WordRegex().Matches(message);
+        var matches = WordRegex.Matches(message);
         var words = new List<string>(matches.Count);
 
         foreach (Match match in matches)
@@ -213,8 +213,7 @@ public abstract partial class SharedLanguageLearningSystem : EntitySystem
         return totalWeight > 0 ? totalComprehension / totalWeight : 0f;
     }
 
-    [GeneratedRegex(@"\b[a-zA-Z']+\b")]
-    private static partial Regex WordRegex();
+    private static readonly Regex WordRegex = new(@"\b[a-zA-Z']+\b");
 
     public float GetComprehensionLevel(EntityUid entity, ProtoId<LanguagePrototype> language)
     {

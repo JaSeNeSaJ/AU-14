@@ -296,7 +296,7 @@ public sealed partial class XenoPsychicCommunicationSystem : EntitySystem
         if (message.Length > queen.Comp.CharacterLimit)
             message = message[..queen.Comp.CharacterLimit].Trim();
 
-        message = NewLineRegex().Replace(message, "\n\n");
+        message = NewLineRegex.Replace(message, "\n\n");
         return _chat.SanitizeMessageReplaceWords(queen, message);
     }
 
@@ -395,6 +395,5 @@ public sealed partial class XenoPsychicCommunicationSystem : EntitySystem
         Order,
     }
 
-    [GeneratedRegex("\n{3,}")]
-    private static partial Regex NewLineRegex();
+    private static readonly Regex NewLineRegex = new("\n{3,}");
 }

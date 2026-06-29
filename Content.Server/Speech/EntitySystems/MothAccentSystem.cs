@@ -16,16 +16,14 @@ public sealed partial class MothAccentSystem : EntitySystem
         var message = args.Message;
 
         // buzzz
-        message = LowerBuzzRegex().Replace(message, "zzz");
+        message = LowerBuzzRegex.Replace(message, "zzz");
         // buZZZ
-        message = UpperBuzzRegex().Replace(message, "ZZZ");
+        message = UpperBuzzRegex.Replace(message, "ZZZ");
 
         args.Message = message;
     }
 
-    [GeneratedRegex("z{1,3}")]
-    private static partial Regex LowerBuzzRegex();
+    private static readonly Regex LowerBuzzRegex = new("z{1,3}");
 
-    [GeneratedRegex("Z{1,3}")]
-    private static partial Regex UpperBuzzRegex();
+    private static readonly Regex UpperBuzzRegex = new("Z{1,3}");
 }

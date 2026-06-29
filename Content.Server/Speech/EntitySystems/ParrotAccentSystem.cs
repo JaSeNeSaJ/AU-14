@@ -27,7 +27,7 @@ public sealed partial class ParrotAccentSystem : EntitySystem
         if (_random.Prob(entity.Comp.LongestWordRepeatChance))
         {
             // Don't count non-alphanumeric characters as parts of words
-            var cleaned = WordCleanupRegex().Replace(message, string.Empty);
+            var cleaned = WordCleanupRegex.Replace(message, string.Empty);
             // Split on whitespace and favor words towards the end of the message
             var words = cleaned.Split(null).Reverse();
             // Find longest word
@@ -81,6 +81,5 @@ public sealed partial class ParrotAccentSystem : EntitySystem
         return Loc.GetString(_random.Pick(entity.Comp.Squawks));
     }
 
-    [GeneratedRegex("[^A-Za-z0-9 -]")]
-    private static partial Regex WordCleanupRegex();
+    private static readonly Regex WordCleanupRegex = new("[^A-Za-z0-9 -]");
 }

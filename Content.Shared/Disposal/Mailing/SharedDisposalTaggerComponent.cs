@@ -5,7 +5,7 @@ namespace Content.Shared.Disposal.Components
 {
     public sealed partial class SharedDisposalTaggerComponent : Component
     {
-        public static readonly Regex TagRegex = TagValidationRegex();
+        public static readonly Regex TagRegex = new("^[a-zA-Z0-9 ]*$");
 
         [Serializable, NetSerializable]
         public sealed class DisposalTaggerUserInterfaceState : BoundUserInterfaceState
@@ -47,7 +47,5 @@ namespace Content.Shared.Disposal.Components
             Key
         }
 
-        [GeneratedRegex("^[a-zA-Z0-9 ]*$")]
-        private static partial Regex TagValidationRegex();
     }
 }

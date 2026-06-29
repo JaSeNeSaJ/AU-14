@@ -52,14 +52,14 @@ public sealed partial class RatvarianLanguageSystem : SharedRatvarianLanguageSys
         var finalMessage = new StringBuilder();
         var newWord = new StringBuilder();
 
-        ruleTranslation = ThPattern().Replace(ruleTranslation, "$&`");
-        ruleTranslation = TePattern().Replace(ruleTranslation, "$&-");
-        ruleTranslation = EtPattern().Replace(ruleTranslation, "-$&");
-        ruleTranslation = OfPattern().Replace(ruleTranslation, "-$2");
-        ruleTranslation = TiPattern().Replace(ruleTranslation, "$&`");
-        ruleTranslation = GuaPattern().Replace(ruleTranslation, "$1-$2");
-        ruleTranslation = AndPattern().Replace(ruleTranslation, "-$2-");
-        ruleTranslation = ToMyPattern().Replace(ruleTranslation, "$1-");
+        ruleTranslation = ThPattern.Replace(ruleTranslation, "$&`");
+        ruleTranslation = TePattern.Replace(ruleTranslation, "$&-");
+        ruleTranslation = EtPattern.Replace(ruleTranslation, "-$&");
+        ruleTranslation = OfPattern.Replace(ruleTranslation, "-$2");
+        ruleTranslation = TiPattern.Replace(ruleTranslation, "$&`");
+        ruleTranslation = GuaPattern.Replace(ruleTranslation, "$1-$2");
+        ruleTranslation = AndPattern.Replace(ruleTranslation, "-$2-");
+        ruleTranslation = ToMyPattern.Replace(ruleTranslation, "$1-");
 
         var temp = ruleTranslation.Split(' ');
 
@@ -67,7 +67,7 @@ public sealed partial class RatvarianLanguageSystem : SharedRatvarianLanguageSys
         {
             newWord.Clear();
 
-            if (ProperNouns().IsMatch(word))
+            if (ProperNouns.IsMatch(word))
                 newWord.Append(word);
 
             else
@@ -107,30 +107,21 @@ public sealed partial class RatvarianLanguageSystem : SharedRatvarianLanguageSys
         return finalMessage.ToString().Trim();
     }
 
-    [GeneratedRegex(@"th\w\B", RegexOptions.IgnoreCase)]
-    private static partial Regex ThPattern();
+    private static readonly Regex ThPattern = new(@"th\w\B", RegexOptions.IgnoreCase);
 
-    [GeneratedRegex(@"\Bet")]
-    private static partial Regex EtPattern();
+    private static readonly Regex EtPattern = new(@"\Bet");
 
-    [GeneratedRegex(@"te\B")]
-    private static partial Regex TePattern();
+    private static readonly Regex TePattern = new(@"te\B");
 
-    [GeneratedRegex(@"(\s)(of)")]
-    private static partial Regex OfPattern();
+    private static readonly Regex OfPattern = new(@"(\s)(of)");
 
-    [GeneratedRegex(@"ti\B", RegexOptions.IgnoreCase)]
-    private static partial Regex TiPattern();
+    private static readonly Regex TiPattern = new(@"ti\B", RegexOptions.IgnoreCase);
 
-    [GeneratedRegex(@"(gu)(a)", RegexOptions.IgnoreCase)]
-    private static partial Regex GuaPattern();
+    private static readonly Regex GuaPattern = new(@"(gu)(a)", RegexOptions.IgnoreCase);
 
-    [GeneratedRegex(@"\b(\s)(and)(\s)", RegexOptions.IgnoreCase)]
-    private static partial Regex AndPattern();
+    private static readonly Regex AndPattern = new(@"\b(\s)(and)(\s)", RegexOptions.IgnoreCase);
 
-    [GeneratedRegex(@"(to|my)\s", RegexOptions.IgnoreCase)]
-    private static partial Regex ToMyPattern();
+    private static readonly Regex ToMyPattern = new(@"(to|my)\s", RegexOptions.IgnoreCase);
 
-    [GeneratedRegex(@"(ratvar)|(nezbere)|(sevtuq)|(nzcrentr)|(inath-neq)", RegexOptions.IgnoreCase)]
-    private static partial Regex ProperNouns();
+    private static readonly Regex ProperNouns = new(@"(ratvar)|(nezbere)|(sevtuq)|(nzcrentr)|(inath-neq)", RegexOptions.IgnoreCase);
 }
