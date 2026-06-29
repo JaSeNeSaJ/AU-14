@@ -61,11 +61,16 @@ public partial record struct AttachableWeaponRangedModifierSet(
 );
 
 [DataRecord, Serializable, NetSerializable]
-public partial record struct AttachableWeaponFireModesModifierSet(
-    AttachableModifierConditions? Conditions,
-    SelectiveFire ExtraFireModes,
-    SelectiveFire SetFireMode
-);
+public partial record struct AttachableWeaponFireModesModifierSet
+{
+    public AttachableWeaponFireModesModifierSet()
+    {
+    }
+
+    public AttachableModifierConditions? Conditions { get; set; }
+    public SelectiveFire ExtraFireModes { get; set; }
+    public SelectiveFire SetFireMode { get; set; }
+}
 
 // SS13 has move delay instead of speed. Move delay isn't implemented here, and approximating it through maths like fire delay is scuffed because of how the events used to change speed work.
 // So instead we take the default speed values and use them to convert it to a multiplier beforehand.
