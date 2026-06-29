@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Shared.Actions.Components;
 using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Dropship.AttachmentPoint;
@@ -15,6 +16,7 @@ using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.DoAfter;
+using Content.Shared.Interaction;
 using Content.Shared.Item;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Popups;
@@ -116,6 +118,9 @@ public abstract partial class SharedXenoAcidSystem : EntitySystem
     private void OnXenoCorrosiveAcid(Entity<XenoAcidComponent> xeno, ref XenoCorrosiveAcidEvent args)
     {
         var target = args.Target;
+        if (!InCorrosiveAcidRange(xeno, target, args.Action.Owner))
+            return;
+
         string containerId = target switch
         {
             var e when TryComp<DropshipWeaponPointComponent>(e, out var weapon) => weapon.WeaponContainerSlotId,
@@ -159,6 +164,19 @@ public abstract partial class SharedXenoAcidSystem : EntitySystem
         };
 
         _doAfter.TryStartDoAfter(doAfter);
+    }
+
+    private bool InCorrosiveAcidRange(Entity<XenoAcidComponent> xeno, EntityUid target, EntityUid action)
+    {
+        var range = SharedInteractionSystem.InteractionRange;
+        if (TryComp(action, out TargetActionComponent? targetAction))
+            range = targetAction.Range;
+
+        if (range <= 0 || _transform.InRange(xeno.Owner, target, range))
+            return true;
+
+        _popup.PopupClient(Loc.GetString("shared-interaction-system-in-range-unobstructed-cannot-reach"), xeno, xeno, PopupType.SmallCaution);
+        return false;
     }
 
     private void OnXenoCorrosiveAcidDoAfterAttempt(Entity<XenoAcidComponent> ent, ref DoAfterAttemptEvent<XenoCorrosiveAcidDoAfterEvent> args)
