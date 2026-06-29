@@ -62,6 +62,14 @@
   - AU14AccessGovforPilot
 
 - type: accessGroup
+  id: AU14GovforVehicleCrew
+  tags:
+  - AU14AccessGovfor
+  - AU14AccessGovforSquad
+  - CMAccessCrewman
+  - RMCAccessVehicleCrew
+
+- type: accessGroup
   id: AU14GovforGunner
   tags:
   - AU14AccessGovfor

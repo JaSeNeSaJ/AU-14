@@ -55,6 +55,14 @@
   - AU14AccessOpforPilot
 
 - type: accessGroup
+  id: AU14OpforVehicleCrew
+  tags:
+  - AU14AccessOpfor
+  - AU14AccessOpforSquad
+  - CMAccessCrewman
+  - RMCAccessVehicleCrew
+
+- type: accessGroup
   id: AU14OpforGunner
   tags:
   - AU14AccessOpfor

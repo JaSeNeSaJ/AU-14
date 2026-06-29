@@ -147,6 +147,17 @@
 
 - type: entity
   parent: CMIDCardBase
+  id: AU14IDCardGOVFORVehicleCrewman
+  name: vehicle crewman ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobGOVFORVehicleCrewman
+  - type: ItemIFF
+    factions:
+    - GOVFOR
+
+- type: entity
+  parent: CMIDCardBase
   id: AU14IDCardGOVFORAuxSupportSynth
   name: support synthetic ID card
   components:
