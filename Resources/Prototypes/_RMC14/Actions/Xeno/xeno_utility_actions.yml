@@ -265,6 +265,7 @@
   - type: EntityTargetAction
     event: !type:XenoApplySalveActionEvent
   - type: RMCDazeableAction
+  - type: ActionBlockIfResting
 
 - type: entity
   parent: ActionXenoBase
