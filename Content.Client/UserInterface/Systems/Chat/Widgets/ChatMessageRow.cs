@@ -1,6 +1,9 @@
 using System;
+using Content.Client.Stylesheets;
 using Content.Client.Resources;
+using Content.Shared._CMU14.Ghost;
 using Content.Shared.Chat;
+using Robust.Client.Console;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.Controls;
@@ -11,6 +14,7 @@ namespace Content.Client.UserInterface.Systems.Chat.Widgets;
 
 public sealed partial class ChatMessageRow : PanelContainer
 {
+    [Dependency] private IClientConsoleHost _consoleHost = default!;
     [Dependency] private IResourceCache _resourceCache = default!;
 
     private readonly Label _repeatBadge;
@@ -62,6 +66,12 @@ public sealed partial class ChatMessageRow : PanelContainer
             });
         }
 
+        if (message.GhostFollowEntity.Valid)
+        {
+            var followButton = CreateFollowButton(message, metrics, sideFont);
+            row.AddChild(followButton);
+        }
+
         _messageLabel = new RichTextLabel
         {
             HorizontalExpand = true,
@@ -82,6 +92,25 @@ public sealed partial class ChatMessageRow : PanelContainer
             FontOverride = sideFont
         };
         row.AddChild(_repeatBadge);
+    }
+
+    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics, Font? sideFont)
+    {
+        var followButton = new Button
+        {
+            Text = Loc.GetString("cmu-chat-manager-follow-button"),
+            ToolTip = Loc.GetString("cmu-chat-manager-follow-button-tooltip"),
+            MinWidth = metrics.FollowButtonWidth,
+            MaxWidth = metrics.FollowButtonWidth,
+            VerticalAlignment = VAlignment.Top,
+            StyleClasses = { StyleNano.StyleClassChatGhostFollowButton }
+        };
+
+        followButton.Label.HorizontalExpand = true;
+        followButton.Label.Align = Label.AlignMode.Center;
+        followButton.Label.FontOverride = sideFont;
+        followButton.OnPressed += _ => _consoleHost.ExecuteCommand($"{CMUGhostFollowCommand.CommandName} {message.GhostFollowEntity}");
+        return followButton;
     }
 
     public void SetRepeatCount(int count)
@@ -110,14 +139,14 @@ public sealed partial class ChatMessageRow : PanelContainer
     private static RowMetrics GetMetrics(int? fontSize)
     {
         if (fontSize == null)
-            return new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28);
+            return new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28, 30);
 
         return fontSize.Value switch
         {
-            <= 9 => new RowMetrics(1, 4, 0, 1.0f, 42, 72, 20),
-            <= 11 => new RowMetrics(2, 5, 0, 1.03f, 50, 80, 23),
-            <= 13 => new RowMetrics(2, 5, 0, 1.06f, 54, 84, 25),
-            _ => new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28)
+            <= 9 => new RowMetrics(1, 4, 0, 1.0f, 42, 72, 20, 24),
+            <= 11 => new RowMetrics(2, 5, 0, 1.03f, 50, 80, 23, 26),
+            <= 13 => new RowMetrics(2, 5, 0, 1.06f, 54, 84, 25, 28),
+            _ => new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28, 30)
         };
     }
 
@@ -207,5 +236,6 @@ public sealed partial class ChatMessageRow : PanelContainer
         float LineHeightScale,
         int PrefixMinWidth,
         int PrefixMaxWidth,
-        int RepeatMinWidth);
+        int RepeatMinWidth,
+        int FollowButtonWidth);
 }

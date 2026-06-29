@@ -67,6 +67,7 @@ namespace Content.Client.Stylesheets
         public const string StyleClassChatLineEdit = "chatLineEdit";
         public const string StyleClassChatChannelSelectorButton = "chatSelectorOptionButton";
         public const string StyleClassChatFilterOptionButton = "chatFilterOptionButton";
+        public const string StyleClassChatGhostFollowButton = "chatGhostFollowButton";
         public const string StyleClassStorageButton = "storageButton";
         public const string StyleClassInset = "Inset";
 
@@ -1235,6 +1236,29 @@ namespace Content.Client.Stylesheets
             };
             chatSubBg.SetContentMarginOverride(StyleBox.Margin.All, 2);
 
+            var chatGhostFollowButton = new StyleBoxFlat
+            {
+                BackgroundColor = Color.FromHex("#101317"),
+                BorderColor = Color.FromHex("#3f4b55"),
+                BorderThickness = new Thickness(1),
+                ContentMarginLeftOverride = 3,
+                ContentMarginRightOverride = 3,
+                ContentMarginTopOverride = 1,
+                ContentMarginBottomOverride = 1
+            };
+
+            var chatGhostFollowButtonHover = new StyleBoxFlat(chatGhostFollowButton)
+            {
+                BackgroundColor = Color.FromHex("#18222a"),
+                BorderColor = Color.FromHex("#6f8290")
+            };
+
+            var chatGhostFollowButtonPressed = new StyleBoxFlat(chatGhostFollowButton)
+            {
+                BackgroundColor = Color.FromHex("#0d161b"),
+                BorderColor = Color.FromHex("#9fd0b3")
+            };
+
             var actionSearchBoxTex = resCache.GetTexture("/Textures/Interface/Nano/black_panel_dark_thin_border.png");
             var actionSearchBox = new StyleBoxTexture
             {
@@ -2359,6 +2383,24 @@ namespace Content.Client.Stylesheets
                 {
                     new StyleProperty(Button.StylePropertyStyleBox, chatChannelButton),
                 }),
+
+                new StyleRule(new SelectorElement(typeof(Button), new[] {StyleClassChatGhostFollowButton}, null, null), new[]
+                {
+                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButton),
+                }),
+                new StyleRule(new SelectorElement(typeof(Button), new[] {StyleClassChatGhostFollowButton}, null, new[] {ContainerButton.StylePseudoClassHover}), new[]
+                {
+                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButtonHover),
+                }),
+                new StyleRule(new SelectorElement(typeof(Button), new[] {StyleClassChatGhostFollowButton}, null, new[] {ContainerButton.StylePseudoClassPressed}), new[]
+                {
+                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButtonPressed),
+                }),
+                Child().Parent(Element<Button>().Class(StyleClassChatGhostFollowButton))
+                    .Child(Element<Label>())
+                    .Prop(Label.StylePropertyFont, notoSans8)
+                    .Prop(Label.StylePropertyFontColor, Color.FromHex("#D6DCE0"))
+                    .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
                 // chat filter button
                 new StyleRule(new SelectorElement(typeof(ContainerButton), new[] {StyleClassChatFilterOptionButton}, null, null), new[]
