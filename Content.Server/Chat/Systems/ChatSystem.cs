@@ -269,10 +269,16 @@ public sealed partial class ChatSystem : SharedChatSystem
         bool shouldCapitalizeTheWordI = (!CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Parent.Name == "en")
             || (CultureInfo.CurrentCulture.IsNeutralCulture && CultureInfo.CurrentCulture.Name == "en");
 
-        var startsWithRadioPrefix = checkRadioPrefix && message.Length > 1 && (message[0] == SharedChatSystem.RadioChannelPrefix || message[0] == SharedChatSystem.RadioChannelAltPrefix);
+        var isRadioMessage = checkRadioPrefix && TryProccessRadioMessage(source, message, out var radioText, out _) && !string.IsNullOrWhiteSpace(radioText);
 
-        message = SanitizeInGameICMessage(source, message, out var emoteStr, shouldCapitalize, shouldPunctuate, shouldCapitalizeTheWordI, skipEmoteShorthands: startsWithRadioPrefix);
-
+        message = SanitizeInGameICMessage(
+            source,
+            message,
+            out var emoteStr,
+            shouldCapitalize,
+            shouldPunctuate,
+            shouldCapitalizeTheWordI,
+            skipEmoteShorthands: isRadioMessage);
 
         // Was there an emote in the message? If so, send it.
         if (player != null && emoteStr != message && emoteStr != null)
