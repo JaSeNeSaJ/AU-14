@@ -9,6 +9,9 @@ using Robust.Client.Graphics;
 using Robust.Shared.IoC;
 using Robust.Shared.Prototypes;
 using Robust.Shared.ContentPack;
+using Robust.Client.UserInterface;
+using System.Numerics;
+using Robust.Shared.Input;
 
 namespace Content.Client._RMC14.UserInterface.Systems.Language;
 
@@ -27,20 +30,15 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
         BorderThickness = new Thickness(0)
     };
 
-    private const int MaxRecent = 8;
-
     private ProtoId<LanguagePrototype>? _currentLanguage;
     private IReadOnlySet<ProtoId<LanguagePrototype>> _knownLanguages = new HashSet<ProtoId<LanguagePrototype>>();
     private IReadOnlyDictionary<ProtoId<LanguagePrototype>, LanguageLearningViewData> _learningLanguages = EmptyLearningLanguages;
 
     private readonly Dictionary<ProtoId<LanguagePrototype>, bool> _expansionStates = [];
     private readonly Dictionary<ProtoId<LanguagePrototype>, bool> _descriptionExpansionStates = [];
-    private readonly List<ProtoId<LanguagePrototype>> _recentLanguages = [];
 
-    private LanguageFavorites _favorites = default!;
-
-    // filter state: null = All, "favorites", "recent"
-    private string? _activeFilter = null;
+    private LanguageTabs _tabs = default!;
+    private LanguageTab? _activeCustomTab = null;
 
     public event Action<ProtoId<LanguagePrototype>>? OnLanguageSelected;
 
@@ -49,12 +47,12 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
 
-        _favorites = new LanguageFavorites(_resource);
+        _tabs = new LanguageTabs(_resource);
 
         SetupTabs();
         SetupStyling();
-        SetupFilters();
         SetupSearch();
+        RebuildTabStrip();
     }
 
     private void SetupTabs()
@@ -72,40 +70,144 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
         TabContainer.PanelStyleBoxOverride = FlatTransparent;
     }
 
-    private void SetupFilters()
-    {
-        FilterAll.OnPressed += _ =>
-        {
-            _activeFilter = null;
-            UpdateFilterButtons();
-            RebuildKnownList();
-        };
-
-        FilterFavorites.OnPressed += _ =>
-        {
-            _activeFilter = "favorites";
-            UpdateFilterButtons();
-            RebuildKnownList();
-        };
-
-        FilterRecent.OnPressed += _ =>
-        {
-            _activeFilter = "recent";
-            UpdateFilterButtons();
-            RebuildKnownList();
-        };
-    }
-
     private void SetupSearch()
     {
         SearchBar.OnTextChanged += _ => RebuildKnownList();
     }
 
-    private void UpdateFilterButtons()
+    private void RebuildTabStrip()
     {
-        FilterAll.Pressed = _activeFilter == null;
-        FilterFavorites.Pressed = _activeFilter == "favorites";
-        FilterRecent.Pressed = _activeFilter == "recent";
+        TabStrip.RemoveAllChildren();
+
+        var allBtn = new Button
+        {
+            Text = "All",
+            ToggleMode = true,
+            Pressed = _activeCustomTab == null,
+            HorizontalExpand = true,
+        };
+        allBtn.OnPressed += _ =>
+        {
+            _activeCustomTab = null;
+            RebuildTabStrip();
+            RebuildKnownList();
+        };
+        TabStrip.AddChild(allBtn);
+
+        foreach (var tab in _tabs.Tabs)
+        {
+            var capturedTab = tab;
+            var btn = new Button
+            {
+                Text = tab.Name,
+                ToggleMode = true,
+                Pressed = _activeCustomTab == tab,
+                MinWidth = 60,
+            };
+            btn.OnPressed += _ =>
+            {
+                _activeCustomTab = capturedTab;
+                RebuildTabStrip();
+                RebuildKnownList();
+            };
+            btn.OnKeyBindDown += args =>
+            {
+                if (args.Function != EngineKeyFunctions.UIRightClick)
+                    return;
+                ShowTabContextMenu(capturedTab);
+            };
+            TabStrip.AddChild(btn);
+        }
+
+        var addBtn = new Button { Text = "+", MinWidth = 28, ToolTip = "New tab" };
+        addBtn.OnPressed += _ => ShowNewTabDialog();
+        TabStrip.AddChild(addBtn);
+    }
+
+    private void ShowTabContextMenu(LanguageTab tab)
+    {
+        var popup = new Popup();
+        var box = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical };
+
+        var renameBtn = new Button { Text = "Rename" };
+        renameBtn.OnPressed += _ =>
+        {
+            popup.Orphan();
+            ShowRenameTabDialog(tab);
+        };
+
+        var deleteBtn = new Button { Text = "Delete tab" };
+        deleteBtn.OnPressed += _ =>
+        {
+            popup.Orphan();
+            _tabs.RemoveTab(tab);
+            if (_activeCustomTab == tab)
+                _activeCustomTab = null;
+            RebuildTabStrip();
+            RebuildKnownList();
+        };
+
+        box.AddChild(renameBtn);
+        box.AddChild(deleteBtn);
+        popup.AddChild(box);
+        UserInterfaceManager.ModalRoot.AddChild(popup);
+        popup.Open(UIBox2.FromDimensions(UserInterfaceManager.MousePositionScaled.Position, new Vector2(120, 60)));
+    }
+
+    private void ShowNewTabDialog(string defaultName = "")
+    {
+        ShowNameDialog("New tab", defaultName, name =>
+        {
+            var tab = _tabs.AddTab(name);
+            _activeCustomTab = tab;
+            RebuildTabStrip();
+            RebuildKnownList();
+        });
+    }
+
+    private void ShowRenameTabDialog(LanguageTab tab)
+    {
+        ShowNameDialog("Rename tab", tab.Name, name =>
+        {
+            _tabs.RenameTab(tab, name);
+            RebuildTabStrip();
+        });
+    }
+
+    private void ShowNameDialog(string title, string defaultValue, Action<string> onConfirm)
+    {
+        var dialog = new DefaultWindow { Title = title, SetSize = new Vector2(280, 140) };
+        var box = new BoxContainer
+        {
+            Orientation = BoxContainer.LayoutOrientation.Vertical,
+            Margin = new Thickness(8),
+            SeparationOverride = 6,
+        };
+
+        var input = new LineEdit { Text = defaultValue, HorizontalExpand = true };
+        var confirmBtn = new Button { Text = "OK", HorizontalExpand = true, Margin = new Thickness(0, 4, 0, 0) };
+
+        confirmBtn.OnPressed += _ =>
+        {
+            var name = input.Text.Trim();
+            if (name.Length > 0)
+                onConfirm(name);
+            dialog.Close();
+        };
+
+        input.OnTextEntered += _ =>
+        {
+            var name = input.Text.Trim();
+            if (name.Length > 0)
+                onConfirm(name);
+            dialog.Close();
+        };
+
+        box.AddChild(input);
+        box.AddChild(confirmBtn);
+        dialog.Contents.AddChild(box);
+        dialog.OpenCentered();
+        input.GrabKeyboardFocus();
     }
 
     public void UpdateLanguages(
@@ -134,12 +236,9 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
 
         var search = SearchBar.Text.Trim().ToLowerInvariant();
 
-        IEnumerable<ProtoId<LanguagePrototype>> filtered = _activeFilter switch
-        {
-            "favorites" => _knownLanguages.Where(l => _favorites.Contains(l.Id)),
-            "recent"    => _recentLanguages.Where(l => _knownLanguages.Contains(l)),
-            _           => _knownLanguages,
-        };
+        IEnumerable<ProtoId<LanguagePrototype>> filtered = _activeCustomTab != null
+            ? _knownLanguages.Where(l => _activeCustomTab.Languages.Contains(l.Id))
+            : _knownLanguages;
 
         filtered = filtered
             .Where(lang => _prototypeManager.TryIndex<LanguagePrototype>(lang, out var p) && !p.IsInvisibleLanguage)
@@ -157,37 +256,30 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
             if (!_prototypeManager.TryIndex<LanguagePrototype>(languageId, out var proto))
                 continue;
 
-            // Row: [★] [LanguageButton]
             var row = new BoxContainer
             {
                 Orientation = BoxContainer.LayoutOrientation.Horizontal,
                 HorizontalExpand = true,
-                SeparationOverride = 4,
+                SeparationOverride = 2,
             };
 
-            var isFav = _favorites.Contains(languageId.Id);
-            var favBtn = new Button
-            {
-                Text = isFav ? "★" : "☆",
-                MinWidth = 30,
-                MaxWidth = 30,
-                ToolTip = isFav ? "Remove from favorites" : "Add to favorites",
-            };
             var capturedId = languageId;
-            favBtn.OnPressed += _ =>
+
+            // tab assign button
+            var tabsContaining = _tabs.GetTabsContaining(languageId.Id);
+            var tabBtn = new Button
             {
-                _favorites.Toggle(capturedId.Id);
-                RebuildKnownList();
+                Text = tabsContaining.Count > 0 ? "[*]" : "[+]",
+                MinWidth = 28,
+                MaxWidth = 28,
+                ToolTip = "Add/remove from tabs",
             };
-            row.AddChild(favBtn);
+            tabBtn.OnPressed += _ => ShowLanguageTabMenu(capturedId, tabBtn);
+            row.AddChild(tabBtn);
 
             var button = new LanguageButton(proto, languageId == _currentLanguage);
             button.HorizontalExpand = true;
-            button.OnPressed += _ =>
-            {
-                OnLanguageSelected?.Invoke(capturedId);
-                AddRecent(capturedId);
-            };
+            button.OnPressed += _ => OnLanguageSelected?.Invoke(capturedId);
 
             if (_descriptionExpansionStates.GetValueOrDefault(languageId, false))
                 button.SetDescriptionExpanded(true);
@@ -211,12 +303,52 @@ public sealed partial class LanguageMenuWindow : DefaultWindow
         }
     }
 
-    private void AddRecent(ProtoId<LanguagePrototype> languageId)
+    private void ShowLanguageTabMenu(ProtoId<LanguagePrototype> languageId, Control anchor)
     {
-        _recentLanguages.Remove(languageId);
-        _recentLanguages.Insert(0, languageId);
-        if (_recentLanguages.Count > MaxRecent)
-            _recentLanguages.RemoveAt(_recentLanguages.Count - 1);
+        if (_tabs.Tabs.Count == 0)
+        {
+            ShowNewTabDialog();
+            return;
+        }
+
+        var popup = new Popup();
+        var box = new BoxContainer { Orientation = BoxContainer.LayoutOrientation.Vertical };
+
+        foreach (var tab in _tabs.Tabs)
+        {
+            var capturedTab = tab;
+            var inTab = tab.Languages.Contains(languageId.Id);
+            var btn = new Button
+            {
+                Text = inTab ? $"In {tab.Name}" : $"   {tab.Name}",
+                HorizontalExpand = true,
+                TextAlign = Label.AlignMode.Left,
+            };
+            btn.OnPressed += _ =>
+            {
+                if (inTab)
+                    _tabs.RemoveLanguageFromTab(capturedTab, languageId.Id);
+                else
+                    _tabs.AddLanguageToTab(capturedTab, languageId.Id);
+                popup.Orphan();
+                RebuildKnownList();
+            };
+            box.AddChild(btn);
+        }
+
+        var newTabBtn = new Button { Text = "+ New tab", TextAlign = Label.AlignMode.Left };
+        newTabBtn.OnPressed += _ =>
+        {
+            popup.Orphan();
+            ShowNewTabDialog();
+        };
+        box.AddChild(newTabBtn);
+
+        popup.AddChild(box);
+        UserInterfaceManager.ModalRoot.AddChild(popup);
+        popup.Open(UIBox2.FromDimensions(
+            anchor.GlobalPosition + new Vector2(0, anchor.Height),
+            new Vector2(140, _tabs.Tabs.Count * 32 + 36)));
     }
 
     private void UpdateLearningTab(IReadOnlyList<ProtoId<LanguagePrototype>> sortedLearningLanguages)
