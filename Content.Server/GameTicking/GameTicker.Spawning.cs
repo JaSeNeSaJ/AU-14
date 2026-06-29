@@ -325,6 +325,10 @@ namespace Content.Server.GameTicking
                 catch (Exception scenarioEx)
                 {
                     Log.Error($"GenerateShadowPlan threw - round will continue without a shadow Scenario Plan. {scenarioEx}");
+                    _chatManager.DispatchServerAnnouncement(
+                        Loc.GetString("au14-scenario-plan-threw-announcement",
+                            ("preset", presetId ?? "<unknown>")),
+                        Color.Red);
                 }
             }
 

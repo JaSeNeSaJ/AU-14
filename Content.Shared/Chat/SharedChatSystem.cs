@@ -261,7 +261,8 @@ public abstract partial class SharedChatSystem : EntitySystem
 
     private bool IsHivebrokenXeno(EntityUid uid)
     {
-        return TryComp(uid, out YautjaThrallComponent? thrall) && thrall.Hivebroken;
+        return HasComp<YautjaHivebrokenXenoComponent>(uid) ||
+               TryComp(uid, out YautjaThrallComponent? thrall) && thrall.Hivebroken;
     }
 
     public string SanitizeMessageCapital(string message)

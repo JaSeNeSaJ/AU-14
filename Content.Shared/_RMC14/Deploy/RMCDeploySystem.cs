@@ -318,10 +318,11 @@ public sealed partial class RMCDeploySystem : EntitySystem
 
         var userWorldPos = _xform.GetWorldPosition(user);
         var tileIndices = _map.WorldToTile(gridUid.Value, grid, userWorldPos);
-        areaCenter = _map.ToCenterCoordinates(gridUid.Value, tileIndices, grid);
+        var tileCenter = _map.ToCenterCoordinates(gridUid.Value, tileIndices, grid);
 
-        var localTransform = new Robust.Shared.Physics.Transform(areaCenter.Position, 0);
+        var localTransform = new Robust.Shared.Physics.Transform(tileCenter.Position, 0);
         var localArea = deployArea.ComputeAABB(localTransform, 0);
+        areaCenter = new EntityCoordinates(gridUid.Value, localArea.Center);
         worldArea = _xform.GetWorldMatrix(gridUid.Value).TransformBox(localArea);
         return true;
     }
