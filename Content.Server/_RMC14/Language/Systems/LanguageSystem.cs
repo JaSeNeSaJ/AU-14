@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Language.Systems;
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Content.Shared._RMC14.Xenonids.Hive;
+using Content.Shared._RMC14.Mentor.ImaginaryFriend;
 
 namespace Content.Server._RMC14.Language.Systems;
 
@@ -238,6 +239,10 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
     public string ObfuscateMessageForListener(EntityUid listener, string speakerMessage, ProtoId<LanguagePrototype> language)
     {
         if (CanUnderstand(listener, language))
+            return speakerMessage;
+
+        // imaginary friends always speak in a way their owner understands
+        if (HasComp<ImaginaryFriendComponent>(listener))
             return speakerMessage;
 
         var similarity = GetSisterLanguageSimilarity(listener, language);
