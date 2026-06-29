@@ -161,24 +161,60 @@
           - RMCSentry
 
 - type: entity
-  parent: RMCBriefcase
+  parent: AU14KitPlatoonOfficer
   id: AU14InfiltratorApparelBundle
   name: infiltrator's civilian apparel bundle
-  description: "A polished brown briefcase, it is in excellent condition. Who knows what it holds?"
+  description: "A bundle of civilian clothing and accessories for infiltrators to blend in with the local population."
   components:
   - type: Storage
     maxItemSize: Normal
     grid:
-    - 0,0,20,1
-    whitelist:
-      tags:
-        - ClothMade
-        - WhitelistChameleon
+    - 0,0,21,3
   - type: StorageFill
     contents:
       - id: AU14IDCardColonyColonist
-      - id: AU14HeadBeanieclava
-      - id: AU14CivilianFlannelRed
+        amount: 1
+      - id: AU14IDCardColonyEngineer
+        amount: 1
+      - id: AU14IDCardColonyCorporateLiaison
+        amount: 1
+      - id: RMCHardhatWhite
+        amount: 1
+      - id: AU14CivilianSanitationClothes
+        amount: 1
+      - id: AU14CivilianHazardVestSanitation
+        amount: 1
+      - id: AU14CivilianFullSuitSanitation
+        amount: 1
+      - id: AU14CivilianWeYuEngineerClothes
+        amount: 1
+      - id: AU14CivilianFullSuitWeYuEngineer
+        amount: 1
+      - id: RMCJumpsuitLiaisonGreyWorkwear
+        amount: 1
+      - id: AU14CivilianJacketGreenParka
+        amount: 1
+      - id: CMJumpsuitLiaisonField
+        amount: 1
+      - id: AU14CivilianBrownTrenchCoat
+        amount: 1
+      - id: RMCJacketCorporateBrown
+        amount: 1
+      - id: CMJumpsuitColonist
+        amount: 1
+      - id: CMJumpsuitTShirtWhite
+        amount: 1
+      - id: RMCShoesLaceup
+        amount: 1
       - id: RMCShoesBlack
-      - id: RMCCLFArmband
-        prob: 0.02
+        amount: 1
+      - id: RMCGlassesAviators
+        amount: 1
+      - id: RMCHippieGlasses
+        amount: 1
+      - id: RMCSunglasses
+        amount: 1
+      - id: AU14SlingSatchelBlack
+        amount: 1
+      - id: CMSatchel
+        amount: 1

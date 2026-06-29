@@ -283,6 +283,18 @@
         giveIcon:
           sprite: _AU14/Interface/au14govforjobicons.rsi
           state: govfor_eo
+    - name: Chief Medical Officer
+      choices: { CMUJOLoadoutVendorKit: 1 }
+      sharedJOLimit: 1
+      entries:
+      - id: AU14KitJOMedicalOfficerKit
+        giveSquadRoleName: au14-job-name-juniorofficer-cmo
+        givePrefix: au14-job-prefix-juniorofficer-cmo
+        isAppendPrefix: false
+        isAppendSquadRoleName: false
+        giveIcon:
+          sprite: _AU14/Interface/au14govforjobicons.rsi
+          state: govfor_cmo
 
 - type: entity
   parent: ColMarTechBase

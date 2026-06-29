@@ -162,3 +162,49 @@
         amount: 2
       - id: CMFolderYellowEmpty
         amount: 2
+
+- type: entity
+  parent: AU14KitPlatoonOfficer
+  id: AU14KitJOMedicalOfficerKit
+  name: Medical Officer (CMO) Kit
+  description: >-
+    The Chief Medical Officer (CMO) directs all medical operations and laboratory safety protocols, stabilizing critical cases and managing department logistics under high-pressure.
+
+    As the clinical lead for both the medical and research, the CMO ensures all personnel remain healthy, safety standards are enforced, and laboratories remain fully operational.
+  components:
+  - type: Storage
+    maxItemSize: Ginormous
+    grid:
+    - 0,0,5,9
+  - type: StorageFill
+    contents:
+      - id: CMHeadCapSurgGreen
+        amount: 1
+      - id: CMHeadCapCMO
+        amount: 1
+      - id: RMCLabcoatCMO
+        amount: 1
+      - id: RMCPamphletAdminSurgery4
+        amount: 1
+      - id: RMCPamphletAdminMedical4
+        amount: 1
+      - id: CMWebbingSurgicalGreen
+        amount: 1
+      - id: CMScalpelManager
+        amount: 1
+      - id: CMScalpelPICT
+        amount: 1
+      - id: CMScalpelLaserAdvanced
+        amount: 1
+      - id: RMCGlassesMedicalHUDGlasses
+        amount: 1
+      - id: RMCPortableDialysis
+        amount: 1
+      - id: ClothingNeckStethoscope
+        amount: 1
+      - id: CMPenFountain
+        amount: 1
+      - id: CMFolderWhite
+        amount: 1
+      - id: CMStampCMO
+        amount: 1
