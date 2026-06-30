@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using Content.Client.Stylesheets;
 using Content.Client.Resources;
 using Content.Shared._CMU14.Ghost;
@@ -68,7 +69,7 @@ public sealed partial class ChatMessageRow : PanelContainer
 
         if (message.GhostFollowEntity.Valid)
         {
-            var followButton = CreateFollowButton(message, metrics, sideFont, accent);
+            var followButton = CreateFollowButton(message, metrics);
             row.AddChild(followButton);
         }
 
@@ -94,23 +95,22 @@ public sealed partial class ChatMessageRow : PanelContainer
         row.AddChild(_repeatBadge);
     }
 
-    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics, Font? sideFont, Color accent)
+    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics)
     {
+        var followButtonSize = new Vector2(metrics.FollowButtonSize, metrics.FollowButtonSize);
         var followButton = new Button
         {
             Text = Loc.GetString("cmu-chat-manager-follow-button"),
             ToolTip = Loc.GetString("cmu-chat-manager-follow-button-tooltip"),
-            MinWidth = metrics.FollowButtonWidth,
-            MaxWidth = metrics.FollowButtonWidth,
-            Margin = new Thickness(-1, 0, 0, 0),
+            MinSize = followButtonSize,
+            MaxSize = followButtonSize,
+            Margin = new Thickness(2, -1, 2, 0),
             VerticalAlignment = VAlignment.Top,
             StyleClasses = { StyleNano.StyleClassChatGhostFollowButton }
         };
 
         followButton.Label.HorizontalExpand = true;
         followButton.Label.Align = Label.AlignMode.Center;
-        followButton.Label.FontColorOverride = accent;
-        followButton.Label.FontOverride = sideFont;
         followButton.OnPressed += _ => _consoleHost.ExecuteCommand($"{CMUGhostFollowCommand.CommandName} {message.GhostFollowEntity}");
         return followButton;
     }
@@ -141,14 +141,14 @@ public sealed partial class ChatMessageRow : PanelContainer
     private static RowMetrics GetMetrics(int? fontSize)
     {
         if (fontSize == null)
-            return new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 22);
+            return new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 18);
 
         return fontSize.Value switch
         {
-            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 46, 20, 18),
-            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 52, 22, 20),
-            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 56, 24, 22),
-            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 22)
+            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 46, 20, 16),
+            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 52, 22, 17),
+            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 56, 24, 18),
+            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 20)
         };
     }
 
@@ -239,5 +239,5 @@ public sealed partial class ChatMessageRow : PanelContainer
         int PrefixMinWidth,
         int PrefixMaxWidth,
         int RepeatMinWidth,
-        int FollowButtonWidth);
+        int FollowButtonSize);
 }

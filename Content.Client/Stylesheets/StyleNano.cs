@@ -1236,7 +1236,28 @@ namespace Content.Client.Stylesheets
             };
             chatSubBg.SetContentMarginOverride(StyleBox.Margin.All, 2);
 
-            var chatGhostFollowButton = new StyleBoxEmpty();
+            var chatGhostFollowButton = new StyleBoxFlat
+            {
+                BackgroundColor = Color.FromHex("#11151c"),
+                BorderColor = Color.FromHex("#3a4354"),
+                BorderThickness = new Thickness(1),
+                ContentMarginLeftOverride = 1,
+                ContentMarginRightOverride = 1,
+                ContentMarginTopOverride = 0,
+                ContentMarginBottomOverride = 0
+            };
+
+            var chatGhostFollowButtonHover = new StyleBoxFlat(chatGhostFollowButton)
+            {
+                BackgroundColor = Color.FromHex("#182130"),
+                BorderColor = Color.FromHex("#65758c")
+            };
+
+            var chatGhostFollowButtonPressed = new StyleBoxFlat(chatGhostFollowButton)
+            {
+                BackgroundColor = Color.FromHex("#0b111a"),
+                BorderColor = Color.FromHex("#8aa1bf")
+            };
 
             var actionSearchBoxTex = resCache.GetTexture("/Textures/Interface/Nano/black_panel_dark_thin_border.png");
             var actionSearchBox = new StyleBoxTexture
@@ -2369,11 +2390,11 @@ namespace Content.Client.Stylesheets
                 }),
                 new StyleRule(new SelectorElement(typeof(Button), new[] {StyleClassChatGhostFollowButton}, null, new[] {ContainerButton.StylePseudoClassHover}), new[]
                 {
-                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButton),
+                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButtonHover),
                 }),
                 new StyleRule(new SelectorElement(typeof(Button), new[] {StyleClassChatGhostFollowButton}, null, new[] {ContainerButton.StylePseudoClassPressed}), new[]
                 {
-                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButton),
+                    new StyleProperty(Button.StylePropertyStyleBox, chatGhostFollowButtonPressed),
                 }),
                 Child().Parent(Element<Button>().Class(StyleClassChatGhostFollowButton))
                     .Child(Element<Label>())
