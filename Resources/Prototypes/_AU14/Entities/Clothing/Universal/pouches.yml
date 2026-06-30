@@ -53,7 +53,7 @@
     - id: CMUBurnGel
       amount: 2
     - id: CMUPlainTraumaDressing10
-      amount: 2
+      amount: 3
 
 - type: entity
   parent: RMCPouchFirstResponder
