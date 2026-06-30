@@ -15,6 +15,58 @@
     - id: CMSheetGlassReinforced30
 
 - type: entity
+  parent: RMCPouchElectronics
+  id: AU14PouchElectronicsFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMAPCElectronics
+      amount: 2
+    - id: RMCPowerCellHigh
+      amount: 2
+    - id: DoorElectronics
+      amount: 2
+
+- type: entity
+  parent: RMCPouchAutoinjector
+  id: AU14PouchAutoinjectorFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMEpinephrineAutoinjector
+      amount: 3
+    - id: CMDexalinPlusAutoinjector
+      amount: 3
+
+- type: entity
+  parent: RMCPouchMedical
+  id: AU14PouchMedicalFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMUCoagulantPowder
+      amount: 2
+    - id: CMUBurnGel
+      amount: 2
+    - id: CMUSplintItem
+      amount: 1
+
+- type: entity
+  parent: RMCPouchFirstResponder
+  id: AU14PouchFirstResponderFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMRollerBedSpawnFolded
+    - id: CMFireExtinguisherPortable
+    - id: AU14NaloxoneAutoInjector
+    - id: CMBodyBagFolded #intended since giving Stasis Body Bag to Colony wouldn't make sense since all Stasis bag's is slow down larva growth and since First Contact and all
+
+- type: entity
   parent: RMCPouchPistol
   id: AU14PouchPistolAlt
   suffix: AU14, Black
