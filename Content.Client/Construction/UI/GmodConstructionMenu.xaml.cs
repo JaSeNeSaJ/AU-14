@@ -209,9 +209,9 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
             if (!args.Pressed) { TabTiles.Pressed = true; return; }
             SelectPage(MenuPage.Tiles);
         };
-        Modernize(ModeToggleButton, toggle: true);
         Modernize(HeaderCloseButton);
         Modernize(AdvancedDuplicatorButton);
+        Modernize(PartnersButton);
         Modernize(ConstructionItemsEditorButton);
         Modernize(TilesEditorButton);
         Modernize(LatheEditorButton);
@@ -356,12 +356,29 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         // Admin/Player build-mode toggle. Admins default to instant/free placement, but can opt into the
         // player flow (vanilla construction ghosts + materials) - useful when admins are playing normally.
         // Non-admins can only ever build via ghosts, so the toggle is forced on and disabled for them.
-        _isAdmin = IoCManager.Resolve<Administration.Managers.IClientAdminManager>().IsAdmin();
-        var isAdmin = _isAdmin;
-        ModeToggleButton.Pressed = !isAdmin;
-        ModeToggleButton.Disabled = !isAdmin;
-        ApplyBuildMode();
-        ModeToggleButton.OnToggled += _ => ApplyBuildMode();
+        var adminMgr = IoCManager.Resolve<Administration.Managers.IClientAdminManager>();
+        _isAdmin = adminMgr.IsAdmin();
+
+        // Build-mode dropdown: Player is always available; Admin needs the Spawn flag; Mapper needs Mapping.
+        // You can never select a mode you aren't authorized for (and the server re-validates regardless).
+        ModeDropdown.AddItem(Loc.GetString("gmod-construction-menu-mode-player"), ModePlayerId);
+        if (adminMgr.HasFlag(Shared.Administration.AdminFlags.Spawn))
+            ModeDropdown.AddItem(Loc.GetString("gmod-construction-menu-mode-admin"), ModeAdminId);
+        if (adminMgr.HasFlag(Shared.Administration.AdminFlags.Mapping))
+            ModeDropdown.AddItem(Loc.GetString("gmod-construction-menu-mode-mapper"), ModeMapperId);
+        ModeDropdown.SelectId(ModePlayerId);
+        ModeDropdown.OnItemSelected += args =>
+        {
+            ModeDropdown.SelectId(args.Id);
+            ApplyBuildMode(args.Id);
+        };
+        ApplyBuildMode(ModePlayerId);
+
+        // Partners (Construction category): manage who may include your builds in their saves.
+        PartnersButton.OnPressed += _ =>
+            IoCManager.Resolve<IEntitySystemManager>()
+                .GetEntitySystem<_AU14.SavedBuilds.BuildPartnerClientSystem>()
+                .OpenWindow();
 
         // Construction → AdvancedAtkinsonatorv2: opens the build-save selection window (save your builds).
         AdvancedDuplicatorButton.OnPressed += _ =>
@@ -630,15 +647,24 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         return button;
     }
 
-    /// <summary>Pushes the current toggle state to the placement system and updates the button label.</summary>
-    private void ApplyBuildMode()
+    // Build-mode dropdown item ids.
+    private const int ModePlayerId = 0;
+    private const int ModeAdminId = 1;
+    private const int ModeMapperId = 2;
+
+    /// <summary>Pushes the chosen build mode to both the placement system and the selection (save) system.</summary>
+    private void ApplyBuildMode(int modeId)
     {
-        var playerMode = ModeToggleButton.Pressed;
-        IoCManager.Resolve<IEntitySystemManager>()
-            .GetEntitySystem<SavedBuildPlacementSystem>()
-            .ForcePlayerMode = playerMode;
-        ModeToggleButton.Text = Loc.GetString(
-            playerMode ? "gmod-construction-menu-mode-player" : "gmod-construction-menu-mode-admin");
+        var mode = modeId switch
+        {
+            ModeAdminId => BuildSaveMode.Admin,
+            ModeMapperId => BuildSaveMode.Mapper,
+            _ => BuildSaveMode.Player,
+        };
+
+        var sysMan = IoCManager.Resolve<IEntitySystemManager>();
+        sysMan.GetEntitySystem<SavedBuildPlacementSystem>().Mode = mode;
+        sysMan.GetEntitySystem<BuildSaveModeSystem>().Mode = mode;
     }
 
     private void DeactivateSavedBuilds()
