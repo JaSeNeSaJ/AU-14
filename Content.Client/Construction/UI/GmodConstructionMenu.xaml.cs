@@ -147,6 +147,9 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
     private string? _currentTargetEntityId;
     private string? _currentRecipeId;
 
+    // Two-click guard for the saved-build delete button (first click arms, second confirms).
+    private bool _saveBuildDeleteArmed;
+
     public GmodConstructionMenu()
     {
         SetSize = new Vector2(1100, 640);
@@ -224,6 +227,8 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         Modernize(RecipeRemoveButton);
         Modernize(SavedBuildDeleteButton);
         Modernize(SavedBuildFolderButton);
+        Modernize(SavedBuildRenameButton);
+        Modernize(SavedBuildRenameConfirm);
 
         // Admin recipe management (detail panel). Change Recipe opens the editor for the recipe's target
         // entity; Remove Item hides the recipe from the menu (works for vanilla recipes too).
@@ -253,15 +258,45 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         // the saved-builds directory in the host OS file explorer.
         SavedBuildDeleteButton.Text = Loc.GetString("gmod-construction-menu-delete-build");
         SavedBuildFolderButton.Text = Loc.GetString("gmod-construction-menu-open-build-folder");
+        SavedBuildRenameButton.Text = Loc.GetString("gmod-construction-menu-rename-build");
+
+        // Rename: reveal an inline edit prefilled with the current name; confirm sends the rename to the server.
+        SavedBuildRenameButton.OnPressed += _ =>
+        {
+            if (_currentSavedBuild is not { } saved)
+                return;
+            SavedBuildRenameEdit.Text = saved.Name;
+            SavedBuildRenameRow.Visible = true;
+            SavedBuildRenameButton.Visible = false;
+        };
+        SavedBuildRenameConfirm.OnPressed += _ =>
+        {
+            if (_currentSavedBuild is not { } saved)
+                return;
+            var newName = SavedBuildRenameEdit.Text.Trim();
+            if (!string.IsNullOrEmpty(newName))
+                _savedBuildList.Rename(saved.Id, newName);
+            _currentSavedBuild = null;
+            CloseDetailPanel();
+            // The server replies with a refreshed list (ListUpdated -> PopulateSavedBuilds).
+        };
+
+        // Delete: two-click confirm so a stray click can't nuke a saved build.
         SavedBuildDeleteButton.OnPressed += _ =>
         {
             if (_currentSavedBuild is not { } saved)
                 return;
 
+            if (!_saveBuildDeleteArmed)
+            {
+                _saveBuildDeleteArmed = true;
+                SavedBuildDeleteButton.Text = Loc.GetString("gmod-construction-menu-delete-build-confirm");
+                return;
+            }
+
             _savedBuildList.Delete(saved.Id);
             _currentSavedBuild = null;
             CloseDetailPanel();
-            // The server replies with a refreshed list (ListUpdated -> PopulateSavedBuilds).
         };
         SavedBuildFolderButton.OnPressed += _ => _savedBuildList.OpenFolder();
 
@@ -703,17 +738,37 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
                 Margin = new Thickness(2, 6, 0, 2),
             });
 
+            var spriteSys = IoCManager.Resolve<IEntityManager>().System<Robust.Client.GameObjects.SpriteSystem>();
+
             var grid = new GridContainer { Columns = 1, HorizontalExpand = true };
             foreach (var build in group)
             {
                 var info = build;
-                var card = new Button
+
+                // Card = a thumbnail of the build + its name/author/count, all inside one clickable button.
+                var card = new ContainerButton { HorizontalExpand = true, Margin = new Thickness(0, 0, 0, 2) };
+                var row = new BoxContainer
+                {
+                    Orientation = BoxContainer.LayoutOrientation.Horizontal,
+                    HorizontalExpand = true,
+                    Margin = new Thickness(4, 2, 4, 2),
+                };
+                if (info.Preview is { Count: > 0 })
+                {
+                    row.AddChild(new SavedBuildThumbnail(info.Preview, spriteSys, 40f)
+                    {
+                        Margin = new Thickness(0, 0, 6, 0),
+                        VerticalAlignment = Control.VAlignment.Center,
+                    });
+                }
+                row.AddChild(new Label
                 {
                     Text = Loc.GetString("saved-build-card",
                         ("name", info.Name), ("author", info.Author), ("count", info.EntityCount)),
+                    VerticalAlignment = Control.VAlignment.Center,
                     HorizontalExpand = true,
-                    Margin = new Thickness(0, 0, 0, 2),
-                };
+                });
+                card.AddChild(row);
                 Modernize(card);
                 card.OnPressed += _ => ShowSavedBuildDetail(info);
                 grid.AddChild(card);
@@ -757,7 +812,11 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         _currentRecipeId = null;
         RecipeChangeButton.Visible = false;
         RecipeRemoveButton.Visible = false;
+        SavedBuildRenameButton.Visible = true;
+        SavedBuildRenameRow.Visible = false;
         SavedBuildDeleteButton.Visible = true;
+        _saveBuildDeleteArmed = false;
+        SavedBuildDeleteButton.Text = Loc.GetString("gmod-construction-menu-delete-build");
         SavedBuildFolderButton.Visible = _isAdmin;
         GhostActionsRow.Visible = false;
 
@@ -944,6 +1003,8 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         RecipeRemoveButton.Visible = false;
         SavedBuildDeleteButton.Visible = false;
         SavedBuildFolderButton.Visible = false;
+        SavedBuildRenameButton.Visible = false;
+        SavedBuildRenameRow.Visible = false;
         GhostActionsRow.Visible = true;
 
         CloseDetailPanel();
@@ -977,6 +1038,8 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         RecipeRemoveButton.Visible = _isAdmin;
         SavedBuildDeleteButton.Visible = false;
         SavedBuildFolderButton.Visible = false;
+        SavedBuildRenameButton.Visible = false;
+        SavedBuildRenameRow.Visible = false;
         GhostActionsRow.Visible = true;
 
         OpenDetailPanel();
