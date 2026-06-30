@@ -36,7 +36,10 @@
   - type: StorageFill
     contents:
     - id: CMEpinephrineAutoInjector
+      amount: 3
     - id: CMDexalinPlusAutoInjector
+      amount: 3
+    - id: AU14NaloxoneAutoInjector
 
 - type: entity
   parent: RMCPouchMedical
@@ -62,6 +65,7 @@
     - id: CMRollerBedSpawnFolded
     - id: CMFireExtinguisherPortable
     - id: AU14NaloxoneAutoInjector
+      amount: 2
     - id: CMBodyBagFolded #intended since giving Stasis Body Bag to Colony wouldn't make sense since all Stasis bag's is slow down larva growth and since First Contact and all
 
 - type: entity
