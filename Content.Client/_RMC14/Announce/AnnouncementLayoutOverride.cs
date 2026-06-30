@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Numerics;
+using System.Text;
 using Robust.Shared.Maths;
 
 namespace Content.Client._RMC14.Announce;
@@ -203,32 +204,33 @@ public static class AnnouncementLayoutOverrides
     private static string SerializeLayout(AnnouncementLayoutOverride layout)
     {
         var clamped = layout.Clamp();
-        return string.Concat(
-            clamped.ScreenPosition.X.ToString("F4", Culture),
-            ",",
-            clamped.ScreenPosition.Y.ToString("F4", Culture),
-            ",",
-            clamped.Scale.ToString("F3", Culture),
-            ",",
-            SerializeOptionalBool(clamped.ShowTitle),
-            ",",
-            SerializeOptionalBool(clamped.ShowSprite),
-            ",",
-            clamped.TextColor ?? string.Empty,
-            ",",
-            clamped.TitleColor ?? string.Empty,
-            ",",
-            SerializeOptionalScale(clamped.BodyTextScale),
-            ",",
-            SerializeOptionalScale(clamped.TitleTextScale),
-            ",",
-            clamped.SpriteBoxColor ?? string.Empty,
-            ",",
-            clamped.SpriteBoxBorderColor ?? string.Empty,
-            ",",
-            clamped.CRTGlowColor ?? string.Empty,
-            ",",
-            clamped.BackgroundColor ?? string.Empty);
+        var serialized = new StringBuilder();
+        serialized.Append(clamped.ScreenPosition.X.ToString("F4", Culture));
+        serialized.Append(',');
+        serialized.Append(clamped.ScreenPosition.Y.ToString("F4", Culture));
+        serialized.Append(',');
+        serialized.Append(clamped.Scale.ToString("F3", Culture));
+        serialized.Append(',');
+        serialized.Append(SerializeOptionalBool(clamped.ShowTitle));
+        serialized.Append(',');
+        serialized.Append(SerializeOptionalBool(clamped.ShowSprite));
+        serialized.Append(',');
+        serialized.Append(clamped.TextColor);
+        serialized.Append(',');
+        serialized.Append(clamped.TitleColor);
+        serialized.Append(',');
+        serialized.Append(SerializeOptionalScale(clamped.BodyTextScale));
+        serialized.Append(',');
+        serialized.Append(SerializeOptionalScale(clamped.TitleTextScale));
+        serialized.Append(',');
+        serialized.Append(clamped.SpriteBoxColor);
+        serialized.Append(',');
+        serialized.Append(clamped.SpriteBoxBorderColor);
+        serialized.Append(',');
+        serialized.Append(clamped.CRTGlowColor);
+        serialized.Append(',');
+        serialized.Append(clamped.BackgroundColor);
+        return serialized.ToString();
     }
 
     private static bool? ParseOptionalBool(string value)
