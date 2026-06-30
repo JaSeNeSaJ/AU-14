@@ -33,7 +33,7 @@ public sealed partial class ChatMessageRow : PanelContainer
             BackgroundColor = GetBackground(message.Channel),
             BorderColor = accent,
             BorderThickness = new Thickness(2, 0, 0, 0),
-            ContentMarginLeftOverride = 5,
+            ContentMarginLeftOverride = 4,
             ContentMarginRightOverride = 4,
             ContentMarginTopOverride = metrics.VerticalPadding,
             ContentMarginBottomOverride = metrics.VerticalPadding
@@ -139,14 +139,14 @@ public sealed partial class ChatMessageRow : PanelContainer
     private static RowMetrics GetMetrics(int? fontSize)
     {
         if (fontSize == null)
-            return new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28, 30);
+            return new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 22);
 
         return fontSize.Value switch
         {
-            <= 9 => new RowMetrics(1, 4, 0, 1.0f, 42, 72, 20, 24),
-            <= 11 => new RowMetrics(2, 5, 0, 1.03f, 50, 80, 23, 26),
-            <= 13 => new RowMetrics(2, 5, 0, 1.06f, 54, 84, 25, 28),
-            _ => new RowMetrics(3, 6, 0, 1.12f, 58, 88, 28, 30)
+            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 46, 20, 18),
+            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 52, 22, 20),
+            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 56, 24, 22),
+            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 22)
         };
     }
 
@@ -200,7 +200,7 @@ public sealed partial class ChatMessageRow : PanelContainer
         {
             ChatChannel.Radio => Color.FromHex("#121f18"),
             ChatChannel.OOC or ChatChannel.LOOC => Color.FromHex("#12202a"),
-            ChatChannel.Dead => Color.FromHex("#181729"),
+            ChatChannel.Dead => Color.FromHex("#13141d"),
             ChatChannel.Server or ChatChannel.Notifications => Color.FromHex("#211c12"),
             ChatChannel.Whisper => Color.FromHex("#151515"),
             _ => Color.FromHex("#101214")
@@ -220,7 +220,7 @@ public sealed partial class ChatMessageRow : PanelContainer
             ChatChannel.Radio => Color.FromHex("#73d48f"),
             ChatChannel.LOOC => Color.FromHex("#61d7d6"),
             ChatChannel.OOC => Color.FromHex("#73bdf6"),
-            ChatChannel.Dead => Color.FromHex("#9b83df"),
+            ChatChannel.Dead => Color.FromHex("#8d7bd4"),
             ChatChannel.Admin or ChatChannel.AdminAlert => Color.FromHex("#ff5f5f"),
             ChatChannel.AdminChat => Color.FromHex("#ff72c7"),
             ChatChannel.MentorChat => Color.FromHex("#ffb55f"),

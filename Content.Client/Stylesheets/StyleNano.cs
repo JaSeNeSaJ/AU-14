@@ -1238,25 +1238,25 @@ namespace Content.Client.Stylesheets
 
             var chatGhostFollowButton = new StyleBoxFlat
             {
-                BackgroundColor = Color.FromHex("#101317"),
-                BorderColor = Color.FromHex("#3f4b55"),
+                BackgroundColor = Color.FromHex("#151820"),
+                BorderColor = Color.FromHex("#343a46"),
                 BorderThickness = new Thickness(1),
-                ContentMarginLeftOverride = 3,
-                ContentMarginRightOverride = 3,
-                ContentMarginTopOverride = 1,
-                ContentMarginBottomOverride = 1
+                ContentMarginLeftOverride = 2,
+                ContentMarginRightOverride = 2,
+                ContentMarginTopOverride = 0,
+                ContentMarginBottomOverride = 0
             };
 
             var chatGhostFollowButtonHover = new StyleBoxFlat(chatGhostFollowButton)
             {
-                BackgroundColor = Color.FromHex("#18222a"),
-                BorderColor = Color.FromHex("#6f8290")
+                BackgroundColor = Color.FromHex("#1c2530"),
+                BorderColor = Color.FromHex("#647383")
             };
 
             var chatGhostFollowButtonPressed = new StyleBoxFlat(chatGhostFollowButton)
             {
-                BackgroundColor = Color.FromHex("#0d161b"),
-                BorderColor = Color.FromHex("#9fd0b3")
+                BackgroundColor = Color.FromHex("#111923"),
+                BorderColor = Color.FromHex("#8ea7ba")
             };
 
             var actionSearchBoxTex = resCache.GetTexture("/Textures/Interface/Nano/black_panel_dark_thin_border.png");
