@@ -68,7 +68,7 @@ public sealed partial class ChatMessageRow : PanelContainer
 
         if (message.GhostFollowEntity.Valid)
         {
-            var followButton = CreateFollowButton(message, metrics, sideFont);
+            var followButton = CreateFollowButton(message, metrics, sideFont, accent);
             row.AddChild(followButton);
         }
 
@@ -94,7 +94,7 @@ public sealed partial class ChatMessageRow : PanelContainer
         row.AddChild(_repeatBadge);
     }
 
-    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics, Font? sideFont)
+    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics, Font? sideFont, Color accent)
     {
         var followButton = new Button
         {
@@ -102,12 +102,14 @@ public sealed partial class ChatMessageRow : PanelContainer
             ToolTip = Loc.GetString("cmu-chat-manager-follow-button-tooltip"),
             MinWidth = metrics.FollowButtonWidth,
             MaxWidth = metrics.FollowButtonWidth,
+            Margin = new Thickness(-1, 0, 0, 0),
             VerticalAlignment = VAlignment.Top,
             StyleClasses = { StyleNano.StyleClassChatGhostFollowButton }
         };
 
         followButton.Label.HorizontalExpand = true;
         followButton.Label.Align = Label.AlignMode.Center;
+        followButton.Label.FontColorOverride = accent;
         followButton.Label.FontOverride = sideFont;
         followButton.OnPressed += _ => _consoleHost.ExecuteCommand($"{CMUGhostFollowCommand.CommandName} {message.GhostFollowEntity}");
         return followButton;
