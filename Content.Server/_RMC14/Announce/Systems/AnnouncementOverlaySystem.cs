@@ -14,9 +14,9 @@ namespace Content.Server._RMC14.Announce;
 
 public sealed partial class AnnouncementOverlaySystem : EntitySystem
 {
-    [Dependency] private readonly IAdminLogManager _adminLogs = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly PvsOverrideSystem _pvsOverride = default!;
+    [Dependency] private IAdminLogManager _adminLogs = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private PvsOverrideSystem _pvsOverride = default!;
 
     private const float PvsFallbackTimeoutSeconds = 30f;
 

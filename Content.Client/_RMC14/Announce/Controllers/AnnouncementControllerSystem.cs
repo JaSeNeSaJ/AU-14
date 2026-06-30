@@ -10,13 +10,13 @@ using Robust.Shared.Serialization.Manager;
 
 namespace Content.Client._RMC14.Announce;
 
-public sealed class AnnouncementControllerSystem : EntitySystem
+public sealed partial class AnnouncementControllerSystem : EntitySystem
 {
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly ISerializationManager _serialization = default!;
-    [Dependency] private readonly IUserInterfaceManager _uiManager = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private ISerializationManager _serialization = default!;
+    [Dependency] private IUserInterfaceManager _uiManager = default!;
 
     private AnnouncementDisplayPreference _preference;
     private Dictionary<string, AnnouncementDisplayPreference> _overrides = new();

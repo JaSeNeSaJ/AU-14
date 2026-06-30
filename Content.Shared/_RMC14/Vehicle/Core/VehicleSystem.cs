@@ -985,7 +985,7 @@ public sealed partial class VehicleSystem : EntitySystem
             return;
 
         var interior = ent.Comp;
-        if (!interior.Grid.IsValid() || !EntityManager.EntityExists(interior.Grid))
+        if (!interior.Grid.IsValid() || !Exists(interior.Grid))
             return;
 
         if (!_area.TryGetArea(interior.Grid, out var area, out _))

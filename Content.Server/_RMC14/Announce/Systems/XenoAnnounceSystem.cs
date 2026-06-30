@@ -13,12 +13,12 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._RMC14.Announce;
 
-public sealed class XenoAnnounceSystem : SharedXenoAnnounceSystem
+public sealed partial class XenoAnnounceSystem : SharedXenoAnnounceSystem
 {
     private static readonly ProtoId<AnnouncementPresetPrototype> QueenAnnouncementPreset = "XenoQueen";
 
-    [Dependency] private readonly IAdminLogManager _adminLogs = default!;
-    [Dependency] private readonly AnnouncementRouterSystem _announcementRouter = default!;
+    [Dependency] private IAdminLogManager _adminLogs = default!;
+    [Dependency] private AnnouncementRouterSystem _announcementRouter = default!;
 
     public override void Announce(EntityUid source, Filter filter, string message, string wrapped, SoundSpecifier? sound = null, PopupType? popup = null, bool needsQueen = false)
     {

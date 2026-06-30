@@ -22,12 +22,12 @@ namespace Content.Client._RMC14.Announce;
 [GenerateTypedNameReferences]
 public sealed partial class AnnouncementLayoutEditorWindow : DefaultWindow
 {
-    [Dependency] private readonly IConfigurationManager _cfg = default!;
-    [Dependency] private readonly IPrototypeManager _prototypeManager = default!;
-    [Dependency] private readonly ISerializationManager _serialization = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
-    [Dependency] private readonly IUserInterfaceManager _uiManager = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
+    [Dependency] private IConfigurationManager _cfg = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private ISerializationManager _serialization = default!;
+    [Dependency] private IEntityManager _entityManager = default!;
+    [Dependency] private IUserInterfaceManager _uiManager = default!;
+    [Dependency] private IPlayerManager _player = default!;
 
     private readonly AnnouncementControllerSystem _announcementController;
     private readonly AnnouncementLayoutEditorUIController _layoutController;

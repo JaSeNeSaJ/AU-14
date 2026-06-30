@@ -13,11 +13,11 @@ namespace Content.Server._RMC14.Announce;
 
 public sealed partial class AnnouncementRouterSystem : EntitySystem
 {
-    [Dependency] private readonly AudioSystem _audio = default!;
-    [Dependency] private readonly IChatManager _chat = default!;
-    [Dependency] private readonly AnnouncementOverlaySystem _overlay = default!;
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly IPrototypeManager _prototypes = default!;
+    [Dependency] private AudioSystem _audio = default!;
+    [Dependency] private IChatManager _chat = default!;
+    [Dependency] private AnnouncementOverlaySystem _overlay = default!;
+    [Dependency] private SharedPopupSystem _popup = default!;
+    [Dependency] private IPrototypeManager _prototypes = default!;
 
     private AnnouncementValidator _validator = default!;
     private AnnouncementPresetResolver _presetResolver = default!;
