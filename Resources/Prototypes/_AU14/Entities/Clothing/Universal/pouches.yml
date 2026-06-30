@@ -36,9 +36,7 @@
   - type: StorageFill
     contents:
     - id: CMEpinephrineAutoinjector
-      amount: 3
     - id: CMDexalinPlusAutoinjector
-      amount: 3
 
 - type: entity
   parent: RMCPouchMedical
