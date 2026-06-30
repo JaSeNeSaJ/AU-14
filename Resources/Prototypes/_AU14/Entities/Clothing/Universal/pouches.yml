@@ -35,8 +35,8 @@
   components:
   - type: StorageFill
     contents:
-    - id: CMEpinephrineAutoinjector
-    - id: CMDexalinPlusAutoinjector
+    - id: CMEpinephrineAutoInjector
+    - id: CMDexalinPlusAutoInjector
 
 - type: entity
   parent: RMCPouchMedical
