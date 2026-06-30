@@ -5226,5 +5226,55 @@
   id: 370
   time: '2026-06-29T06:57:12.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1483
+- author: TheHellFireo
+  changes:
+  - message: Fixed threat member playtime compatibility for evolved xenos.
+    type: Fix
+  - message: Fixed parasite larva claims being stolen by the normal larva queue.
+    type: Fix
+  - message: Fixed xeno corrosive acid targeting while keeping range/obstruction checks.
+    type: Fix
+  - message: Fixed Bulwark reflect visual duration matching the actual reflect phase.
+    type: Fix
+  - message: Fixed treadnailers crushing abomination tendons and carried mobs incorrectly.
+    type: Fix
+  - message: Fixed Hope's Retreat vehicle lift railings not syncing with the lift.
+    type: Fix
+  - message: Fixed UPP APC hardpoints eating tool interactions.
+    type: Fix
+  - message: Fixed deployable placement previews being offset.
+    type: Fix
+  - message: Fixed UPP phone directory category text.
+    type: Fix
+  - message: Made Xippy speak Xeno.
+    type: Fix
+  - message: Restored English handling for hivebroken/corrupted xenos.
+    type: Fix
+  - message: Made scenario plan failures announce publicly.
+    type: Fix
+  id: 371
+  time: '2026-06-29T16:47:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1491
+- author: TheHellFireo
+  changes:
+  - message: Updated RobustToolbox to v278.0.0.
+    type: Tweak
+  - message: Reduced allocations in common stuff including IFF, xeno HUD overlays,
+      status effects, and prediction-adjacent systems.
+    type: Tweak
+  - message: Updated the CMU xeno port integration test for the v278 upgrade.
+    type: Fix
+  - message: Avoid generated regex IL that Robust sandbox verification rejects.
+    type: Fix
+  - message: Preserve RMC attachable modifier defaults across v278 prototype serialization.
+    type: Fix
+  - message: Prevent disposed entity context menu controls from crashing the client.
+    type: Fix
+  - message: Fixed game audio sometimes staying muted after deafness, unconsciousness,
+      death, or returning from being unfocused.
+    type: Fix
+  id: 372
+  time: '2026-06-29T23:01:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1496
 Name: CMU
 Order: -1
