@@ -41,3 +41,14 @@
     - state: icon
     - state: closed
       map: [ "holstered" ]
+
+- type: entity
+  parent: RMCPouchConstruction
+  id: AU14PouchConstructionFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMSheetMetal50
+    - id: CMSheetPlasteel50
+    - id: CMSheetGlassReinforced30
