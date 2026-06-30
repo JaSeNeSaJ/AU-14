@@ -4,6 +4,17 @@
   suffix: AU14
 
 - type: entity
+  parent: RMCPouchConstruction
+  id: AU14PouchConstructionFilled
+  suffix: AU14, Filled, Colonist
+  components:
+  - type: StorageFill
+    contents:
+    - id: CMSheetMetal50
+    - id: CMSheetPlasteel50
+    - id: CMSheetGlassReinforced30
+
+- type: entity
   parent: RMCPouchPistol
   id: AU14PouchPistolAlt
   suffix: AU14, Black
@@ -41,14 +52,3 @@
     - state: icon
     - state: closed
       map: [ "holstered" ]
-
-- type: entity
-  parent: RMCPouchConstruction
-  id: AU14PouchConstructionFilled
-  suffix: AU14, Filled, Colonist
-  components:
-  - type: StorageFill
-    contents:
-    - id: CMSheetMetal50
-    - id: CMSheetPlasteel50
-    - id: CMSheetGlassReinforced30
