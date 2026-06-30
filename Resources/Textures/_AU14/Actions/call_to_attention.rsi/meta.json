@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "license": null,
+  "copyright": null,
+  "size": {
+    "x": 28,
+    "y": 28
+  },
+  "states": [
+    {
+      "name": "attention"
+    }
+  ]
+}
