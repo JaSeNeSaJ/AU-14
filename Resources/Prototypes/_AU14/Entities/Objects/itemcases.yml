@@ -214,3 +214,6 @@
         amount: 1
       - id: RMCSunglasses
         amount: 1
+      - id: RMCCLFArmband
+        amount: 1
+        prob: 0.02

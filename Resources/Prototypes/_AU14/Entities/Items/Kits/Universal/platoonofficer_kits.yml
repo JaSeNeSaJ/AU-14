@@ -184,9 +184,9 @@
         amount: 1
       - id: RMCLabcoatCMO
         amount: 1
-      - id: RMCPamphletAdminSurgery4
+      - id: RMCReagentJug
         amount: 1
-      - id: RMCPamphletAdminMedical4
+      - id: CMSyringe
         amount: 1
       - id: CMWebbingSurgicalGreen
         amount: 1
