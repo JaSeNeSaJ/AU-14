@@ -5276,5 +5276,68 @@
   id: 372
   time: '2026-06-29T23:01:17.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1496
+- author: ErinBaking
+  changes:
+  - message: New Lobby Art
+    type: Add
+  id: 373
+  time: '2026-06-30T21:34:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1494
+- author: deepdarkdepths
+  changes:
+  - message: Updated Ravager sprites.
+    type: Tweak
+  id: 374
+  time: '2026-06-30T21:35:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1499
+- author: KeiKiyomi
+  changes:
+  - message: Added Blind Drops being allowed only for USCM, UPP, and RCM
+    type: Add
+  - message: Added AI Core and Synthetic Areas Guidelines
+    type: Add
+  - message: Added AI Area Trespass (AAT) to Major Crimes (15 minutes)
+    type: Add
+  - message: Clarified Rank Structure due to indents not working!
+    type: Tweak
+  - message: Clarified Who can and cant crew tanks and APCs in vehicle SOP
+    type: Tweak
+  - message: WICH Convention Articles 1, 4, 12, 16, 18, 21, 27, and 30 have been modified
+    type: Tweak
+  id: 375
+  time: '2026-06-30T21:38:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1400
+- author: TheHellFireo
+  changes:
+  - message: Added the Drone Operator combat role. Operators spawn with android parts,
+      assemble the android with tools, activate it with a synth key, then link/control
+      it through their tablet within range.
+    type: Add
+  - message: 'Added drone androids: fragile barebones synthetic bodies with cosmetic
+      wear, gun use, belt/backpack utility'
+    type: Add
+  - message: 'Added drone control flow: transfer effects, subtle blue/red lights and
+      particles, dormant visuals, follow/stop-follow actions, range warnings, and
+      hard leash session handling.'
+    type: Add
+  - message: Added installable Combat and Care android modules. Combat grants strong
+      CQB/shooting skills, while Care grants doctor-level medical skills.
+    type: Add
+  - message: Drone operators use the Combat Technician skill set.
+    type: Tweak
+  - message: Xenos and abominations see androids as normal humans rather than synths.
+    type: Tweak
+  - message: Backported vehicle fixes, vehicle key sprite updates, and GOVFOR/OPFOR
+      vehicle crewmen capped at two.
+    type: Add
+  - message: Ported the announcement router system and polished related announcement
+      UI/type handling.
+    type: Add
+  - message: Improved ghost follow chat controls and blocked healer salve use while
+      resting
+    type: Fix
+  id: 376
+  time: '2026-07-01T01:52:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1503
 Name: CMU
 Order: -1
