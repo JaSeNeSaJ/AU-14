@@ -64,6 +64,9 @@ namespace Content.Server.Database
         public DbSet<RMCPlayerActionOrder> RMCPlayerActionOrder { get; set; } = default!;
         public DbSet<RMCChatBans> RMCPlayerChatBans { get; set; } = default!;
 
+        // AU14 INSFOR faction featureset
+        public DbSet<AU14FactionDefinition> AU14FactionDefinitions { get; set; } = default!;
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Preference>()
