@@ -5398,5 +5398,12 @@
   id: 380
   time: '2026-07-01T09:35:40.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1506
+- author: maertayn
+  changes:
+  - message: Restructured the Prototypes folder
+    type: Code
+  id: 381
+  time: '2026-07-01T11:02:02.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1505
 Name: CMU
 Order: -1
