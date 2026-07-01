@@ -148,7 +148,7 @@
 - type: startingGear
   id: AU14GearopforRadioTelephoneOperator
   equipment:
-    id: AU14JobIDCardopforRadioTelephoneOperator
+    id: AU14JobIDCardOPFORRadioTelephoneOperator
     ears: AU14HeadsetOpforMarineFTL
 
 - type: entity
