@@ -158,6 +158,17 @@
 
 - type: entity
   parent: CMIDCardBase
+  id: AU14IDCardOPFORVehicleCrewman
+  name: vehicle crewman ID card
+  components:
+  - type: PresetIdCard
+    job: AU14JobOPFORVehicleCrewman
+  - type: ItemIFF
+    factions:
+    - OPFOR
+
+- type: entity
+  parent: CMIDCardBase
   id: AU14IDCardOPFORAdvisor
   name: advisor ID card
   components:

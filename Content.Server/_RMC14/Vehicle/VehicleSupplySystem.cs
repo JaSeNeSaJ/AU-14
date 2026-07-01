@@ -15,6 +15,7 @@ using Content.Shared.Mobs.Components;
 using Content.Shared.Physics;
 using Content.Shared.Tag;
 using Content.Shared.UserInterface;
+using Content.Shared.Vehicle.Components;
 using Robust.Server.Audio;
 using Robust.Server.GameObjects;
 using Robust.Shared.GameObjects;
@@ -601,6 +602,9 @@ public sealed partial class VehicleSupplySystem : EntitySystem
             if (comp.Mode == VehicleSupplyLiftMode.Lowered)
                 return;
 
+            if (comp.ActiveVehicle == null)
+                TryAdoptVehicleOnLift(lift);
+
             if (IsLoweringBlocked(lift))
                 return;
         }
@@ -608,6 +612,24 @@ public sealed partial class VehicleSupplySystem : EntitySystem
         comp.ToggledAt = _timing.CurTime;
         comp.Busy = true;
         SetMode(lift, VehicleSupplyLiftMode.Preparing, raise ? VehicleSupplyLiftMode.Raising : VehicleSupplyLiftMode.Lowering);
+    }
+
+    private void TryAdoptVehicleOnLift(Entity<VehicleSupplyLiftComponent> lift)
+    {
+        var comp = lift.Comp;
+        var coords = _transform.GetMapCoordinates(lift);
+        foreach (var candidate in _lookup.GetEntitiesInRange<VehicleComponent>(coords, comp.Radius))
+        {
+            if (Deleted(candidate.Owner) || candidate.Owner == comp.ActiveVehicle)
+                continue;
+
+            if (!TryComp(candidate.Owner, out MetaDataComponent? meta) || meta.EntityPrototype is not { } prototype)
+                continue;
+
+            comp.ActiveVehicle = candidate.Owner;
+            comp.ActiveVehicleId = prototype.ID;
+            return;
+        }
     }
 
     private bool IsLoweringBlocked(Entity<VehicleSupplyLiftComponent> lift)
@@ -657,11 +679,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
     private void UpdateRailings(Entity<VehicleSupplyLiftComponent> lift, RequisitionsRailingMode mode)
     {
         var coordinates = _transform.GetMapCoordinates(lift);
-        var railings = _lookup.GetEntitiesInRange<RequisitionsRailingComponent>(coordinates, lift.Comp.Radius + 5);
-        foreach (var railing in railings)
-        {
-            _requisitions.SetRailingMode(railing, mode);
-        }
+        _requisitions.UpdateRailingsInRange(coordinates, lift.Comp.RailingRange, mode);
     }
 
     private void TryPlayAudio(Entity<VehicleSupplyLiftComponent> lift)
