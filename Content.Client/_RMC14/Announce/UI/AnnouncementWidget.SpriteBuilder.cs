@@ -151,12 +151,9 @@ public sealed partial class AnnouncementWidget
                     FontColorOverride = style.TextConfig.SpeakerNameColor
                 };
 
-                if (_owner._prototypeManager.TryIndex<FontPrototype>(style.TextConfig.Font, out var fontPrototype))
-                {
-                    label.FontOverride = _owner._resCache.GetFont(
-                        fontPrototype.Path,
-                        Math.Max(1, (int)MathF.Round(style.TextConfig.SpeakerNameFontSize)));
-                }
+                label.FontOverride = _owner._resCache.GetFont(
+                    ResolveFontPath(style.TextConfig.Font),
+                    Math.Max(1, (int)MathF.Round(style.TextConfig.SpeakerNameFontSize)));
 
                 if (style.LayoutConfig.SpeakerNamePosition == AnnouncementSpeakerNamePosition.Above)
                 {

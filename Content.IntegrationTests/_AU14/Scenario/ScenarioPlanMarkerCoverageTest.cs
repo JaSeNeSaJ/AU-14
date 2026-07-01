@@ -2123,7 +2123,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        marker.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        marker.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ThreatMarker));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ForceHostile));
@@ -2131,7 +2131,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.MarkerId("xenocf")));
 
                     Assert.That(
-                        marker.TryGetComponent<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
+                        marker.TryComp<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
                         Is.True);
                     Assert.That(legacyMarker!.ThreatMarkerType, Is.EqualTo(markerType));
                     Assert.That(legacyMarker.ID, Is.EqualTo("xenocf"));
@@ -2167,7 +2167,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        marker.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        marker.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ThreatMarker));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ForceHostile));
@@ -2175,7 +2175,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.MarkerId(string.Empty)));
 
                     Assert.That(
-                        marker.TryGetComponent<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
+                        marker.TryComp<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
                         Is.True);
                     Assert.That(legacyMarker!.ThreatMarkerType, Is.EqualTo(markerType));
                     Assert.That(legacyMarker.ID, Is.Empty);
@@ -2210,7 +2210,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        marker.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        marker.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ThreatMarker));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ForceHostile));
@@ -2218,7 +2218,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.MarkerId("cultcfmarker")));
 
                     Assert.That(
-                        marker.TryGetComponent<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
+                        marker.TryComp<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
                         Is.True);
                     Assert.That(legacyMarker!.ThreatMarkerType, Is.EqualTo(markerType));
                     Assert.That(legacyMarker.ID, Is.EqualTo("cultcfmarker"));
@@ -2254,7 +2254,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        marker.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        marker.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ThirdPartyMarker));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ForceThirdParty));
@@ -2262,7 +2262,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.MarkerId(string.Empty)));
 
                     Assert.That(
-                        marker.TryGetComponent<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
+                        marker.TryComp<ThreatSpawnMarkerComponent>(out var legacyMarker, componentFactory),
                         Is.True);
                     Assert.That(legacyMarker!.ThreatMarkerType, Is.EqualTo(markerType));
                     Assert.That(legacyMarker.ID, Is.Empty);
@@ -2293,12 +2293,12 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        marker.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        marker.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ClfSafehouse));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ForceClfSafehouse));
                     Assert.That(
-                        marker.TryGetComponent<SafehouseMarkerComponent>(out _, componentFactory),
+                        marker.TryComp<SafehouseMarkerComponent>(out _, componentFactory),
                         Is.True);
                 });
             }
@@ -2309,12 +2309,12 @@ public sealed class ScenarioPlanMarkerCoverageTest
                 Assert.Multiple(() =>
                 {
                     Assert.That(
-                        civilianSpawn.TryGetComponent<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
+                        civilianSpawn.TryComp<ScenarioSpawnMarkerComponent>(out var scenarioMarker, componentFactory),
                         Is.True);
                     Assert.That(scenarioMarker!.Kind, Is.EqualTo(SpawnMarkerKind.ClfCivilianSpawn));
                     Assert.That(scenarioMarker.Tags, Does.Contain(ScenarioMarkerTags.ClfCivilianSpawn("AU14JobCivilianColonist")));
                     Assert.That(
-                        civilianSpawn.TryGetComponent<SpawnPointComponent>(out var spawnPoint, componentFactory),
+                        civilianSpawn.TryComp<SpawnPointComponent>(out var spawnPoint, componentFactory),
                         Is.True);
                     Assert.That(spawnPoint!.Job?.Id, Is.EqualTo("AU14JobCivilianColonist"));
                 });
@@ -2338,9 +2338,9 @@ public sealed class ScenarioPlanMarkerCoverageTest
 
             foreach (var prototype in prototypes.EnumeratePrototypes<EntityPrototype>())
             {
-                var legacyThreatMarker = prototype.TryGetComponent<ThreatSpawnMarkerComponent>(out _, componentFactory);
-                var safehouseMarker = prototype.TryGetComponent<SafehouseMarkerComponent>(out _, componentFactory);
-                var civilianFallback = prototype.TryGetComponent<SpawnPointComponent>(out var spawnPoint, componentFactory) &&
+                var legacyThreatMarker = prototype.TryComp<ThreatSpawnMarkerComponent>(out _, componentFactory);
+                var safehouseMarker = prototype.TryComp<SafehouseMarkerComponent>(out _, componentFactory);
+                var civilianFallback = prototype.TryComp<SpawnPointComponent>(out var spawnPoint, componentFactory) &&
                                        spawnPoint.Job?.Id == "AU14JobCivilianColonist";
 
                 if (!legacyThreatMarker &&
@@ -2350,7 +2350,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
                     continue;
                 }
 
-                if (!prototype.TryGetComponent<ScenarioSpawnMarkerComponent>(out _, componentFactory))
+                if (!prototype.TryComp<ScenarioSpawnMarkerComponent>(out _, componentFactory))
                     missing.Add(prototype.ID);
             }
 
@@ -4477,7 +4477,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
         foreach (var planetId in preset.SupportedPlanets)
         {
             if (!prototypes.TryIndex<EntityPrototype>(planetId, out var entity) ||
-                !entity.TryGetComponent<RMCPlanetMapPrototypeComponent>(out var planet, componentFactory))
+                !entity.TryComp<RMCPlanetMapPrototypeComponent>(out var planet, componentFactory))
             {
                 continue;
             }
@@ -4497,7 +4497,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
     {
         planet = default!;
         if (!prototypes.TryIndex<EntityPrototype>(planetId, out var entity) ||
-            !entity.TryGetComponent<RMCPlanetMapPrototypeComponent>(out var planetComp, componentFactory))
+            !entity.TryComp<RMCPlanetMapPrototypeComponent>(out var planetComp, componentFactory))
         {
             return false;
         }
@@ -4670,7 +4670,7 @@ public sealed class ScenarioPlanMarkerCoverageTest
     {
         var addClfRule = prototypes.Index(AddClfRule);
         Assert.That(
-            addClfRule.TryGetComponent<AddJobsRuleComponent>(out var addJobs, componentFactory),
+            addClfRule.TryComp<AddJobsRuleComponent>(out var addJobs, componentFactory),
             Is.True);
         Assert.That(addJobs.Jobs, Is.Not.Null);
 

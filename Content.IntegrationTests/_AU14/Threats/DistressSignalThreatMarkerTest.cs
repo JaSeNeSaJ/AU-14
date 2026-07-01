@@ -59,7 +59,7 @@ public sealed class DistressSignalThreatMarkerTest
             foreach (var planetId in preset.SupportedPlanets)
             {
                 var planetProto = prototypes.Index<EntityPrototype>(planetId);
-                if (!planetProto.TryGetComponent<RMCPlanetMapPrototypeComponent>(out var planet, factory))
+                if (!planetProto.TryComp<RMCPlanetMapPrototypeComponent>(out var planet, factory))
                     continue;
 
                 if (planet.AllowedThreats.Any(threat => threat.Id == TribalThreat) &&
@@ -96,7 +96,7 @@ public sealed class DistressSignalThreatMarkerTest
                 foreach (var ruleId in threat.WinConditions)
                 {
                     var rulePrototype = prototypes.Index<EntityPrototype>(ruleId);
-                    if (rulePrototype.TryGetComponent<KillAllColonistRuleComponent>(out _, factory))
+                    if (rulePrototype.TryComp<KillAllColonistRuleComponent>(out _, factory))
                         offenders.Add($"{threat.ID}:{ruleId}");
                 }
             }
@@ -125,7 +125,7 @@ public sealed class DistressSignalThreatMarkerTest
             foreach (var planetId in preset.SupportedPlanets)
             {
                 var planetProto = prototypes.Index<EntityPrototype>(planetId);
-                if (!planetProto.TryGetComponent<RMCPlanetMapPrototypeComponent>(out var planet, factory))
+                if (!planetProto.TryComp<RMCPlanetMapPrototypeComponent>(out var planet, factory))
                     continue;
 
                 var gameMap = prototypes.Index<GameMapPrototype>(planet.MapId);
@@ -186,7 +186,7 @@ public sealed class DistressSignalThreatMarkerTest
 
             foreach (var planetProto in prototypes.EnumeratePrototypes<EntityPrototype>())
             {
-                if (!planetProto.TryGetComponent<RMCPlanetMapPrototypeComponent>(out var planet, factory))
+                if (!planetProto.TryComp<RMCPlanetMapPrototypeComponent>(out var planet, factory))
                     continue;
 
                 if (planet.AllowedThreats.All(threat => threat.Id != XenoThreat))

@@ -170,7 +170,7 @@ public sealed partial class AnnouncementWidget
             }
             catch (Exception ex)
             {
-                Logger.Error($"[AnnouncementWidget] Failed to load decal {announcement.DecalRsi}:{announcement.DecalState}: {ex}");
+                Sawmill.Error($"[AnnouncementWidget] Failed to load decal {announcement.DecalRsi}:{announcement.DecalState}: {ex}");
                 return null;
             }
         }

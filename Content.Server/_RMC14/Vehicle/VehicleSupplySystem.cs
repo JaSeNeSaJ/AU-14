@@ -308,7 +308,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
             if (proto.Abstract)
                 continue;
 
-            if (!proto.TryGetComponent(out HardpointItemComponent? hardpointItem, _compFactory))
+            if (!proto.TryComp(out HardpointItemComponent? hardpointItem, _compFactory))
                 continue;
 
             _hardpointTypeByProto[Normalize(proto.ID)] = hardpointItem.HardpointType;
@@ -321,7 +321,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
             }
 
             var tags = new HashSet<ProtoId<TagPrototype>>();
-            if (proto.TryGetComponent(out TagComponent? tagComp, _compFactory))
+            if (proto.TryComp(out TagComponent? tagComp, _compFactory))
                 tags = new HashSet<ProtoId<TagPrototype>>(tagComp.Tags);
 
             list.Add(new HardpointItemInfo(proto.ID, tags));
@@ -452,7 +452,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
             if (proto.Abstract)
                 continue;
 
-            if (!proto.TryGetComponent(out BulletBoxComponent? box, _compFactory))
+            if (!proto.TryComp(out BulletBoxComponent? box, _compFactory))
                 continue;
 
             if (box.BulletType != bulletType)
@@ -2041,7 +2041,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
             return _hardpointsByVehicleCache[key];
         }
 
-        if (!vehicleProto.TryGetComponent(out HardpointSlotsComponent? slots, _compFactory))
+        if (!vehicleProto.TryComp(out HardpointSlotsComponent? slots, _compFactory))
         {
             _hardpointsByVehicleCache[key] = new List<string>();
             return _hardpointsByVehicleCache[key];

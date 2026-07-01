@@ -9,6 +9,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.IoC;
 using Robust.Shared.Maths;
 using Robust.Client.ResourceManagement;
+using Robust.Shared.Log;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
@@ -18,6 +19,7 @@ namespace Content.Client._RMC14.Announce;
 public sealed partial class AnnouncementWidget : UIWidget
 {
     private static readonly Vector2 FallbackScreenSize = new(1920f, 1080f);
+    private static readonly ISawmill Sawmill = Logger.GetSawmill("rmc.announcement");
 
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IEntityManager _entityManager = default!;
@@ -53,6 +55,18 @@ public sealed partial class AnnouncementWidget : UIWidget
         LayoutContainer.SetGrowHorizontal(this, LayoutContainer.GrowDirection.Constrain);
         LayoutContainer.SetGrowVertical(this, LayoutContainer.GrowDirection.Constrain);
         Visible = false;
+    }
+
+    private static string ResolveFontPath(string fontId)
+    {
+        return fontId switch
+        {
+            "Cozette" => "/Fonts/Cozette/CozetteVector.ttf",
+            "CozetteBold" => "/Fonts/Cozette/CozetteVectorBold.ttf",
+            "Default" => "/Fonts/NotoSans/NotoSans-Regular.ttf",
+            "DefaultBold" => "/Fonts/NotoSans/NotoSans-Bold.ttf",
+            _ => "/Fonts/NotoSans/NotoSans-Bold.ttf"
+        };
     }
 
     public void ShowAnnouncement(AnnouncementDisplayData announcement)

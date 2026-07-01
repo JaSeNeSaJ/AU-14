@@ -639,10 +639,7 @@ public sealed partial class AnnouncementWidget
                 VAlign = Label.VAlignMode.Center
             };
 
-            if (_owner._prototypeManager.TryIndex<FontPrototype>(style.TitleConfig.TitleFont, out var fontPrototype))
-            {
-                label.FontOverride = _owner._resCache.GetFont(fontPrototype.Path, Math.Max(1, (int)MathF.Round(titleFontSize)));
-            }
+            label.FontOverride = _owner._resCache.GetFont(ResolveFontPath(style.TitleConfig.TitleFont), Math.Max(1, (int)MathF.Round(titleFontSize)));
 
             return label;
         }
