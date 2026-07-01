@@ -344,7 +344,7 @@ public sealed partial class AnnouncementWidget
 
         if (!_prototypeManager.TryIndex<ShaderPrototype>(style.SpriteConfig.SpriteBoxShader, out var shaderPrototype))
         {
-            Logger.Warning($"[AnnouncementWidget] Sprite box shader '{style.SpriteConfig.SpriteBoxShader}' not found.");
+            Sawmill.Warning($"[AnnouncementWidget] Sprite box shader '{style.SpriteConfig.SpriteBoxShader}' not found.");
             return;
         }
 

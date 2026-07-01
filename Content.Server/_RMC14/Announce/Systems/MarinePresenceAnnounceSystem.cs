@@ -18,12 +18,12 @@ public sealed partial class MarinePresenceAnnounceSystem : EntitySystem
 {
     [Dependency] private ARESCoreSystem _aresCore = default!;
     [Dependency] private MarineAnnounceSystem _marineAnnounce = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private SharedRankSystem _rank = default!;
     [Dependency] private SquadSystem _squad = default!;
     [Dependency] private StationRecordsSystem _stationRecords = default!;
 
-    [ValidatePrototypeId<RadioChannelPrototype>]
     private static readonly ProtoId<RadioChannelPrototype> CommonChannel = "MarineCommon";
 
     public void AnnounceLateJoin(bool lateJoin, bool silent, EntityUid mob, string jobId, string jobName, JobPrototype jobPrototype)
@@ -31,7 +31,7 @@ public sealed partial class MarinePresenceAnnounceSystem : EntitySystem
         if (!lateJoin || silent)
             return;
 
-        var ares = _aresCore.EnsureMarineARES();
+        var ares = EnsureMarineAresForAnnouncement();
         var titleJobName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(jobName);
 
         if (jobPrototype.JoinNotifyCrew)
@@ -56,7 +56,7 @@ public sealed partial class MarinePresenceAnnounceSystem : EntitySystem
 
     public void AnnounceEarlyLeave(Entity<CryostorageContainedComponent> ent, uint? recordId, EntityUid? station, string jobName)
     {
-        var ares = _aresCore.EnsureMarineARES();
+        var ares = EnsureMarineAresForAnnouncement();
         var rankName = _rank.GetSpeakerRankName(ent.Owner) ?? Name(ent.Owner);
         var titleJobName = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(jobName);
         var message = Loc.GetString("rmc-earlyleave-cryo-announcement",
@@ -112,5 +112,15 @@ public sealed partial class MarinePresenceAnnounceSystem : EntitySystem
         // Heads always also receive the common channel announcement
         if (!departmentChannelFound || isHead)
             _marineAnnounce.AnnounceRadio(ares, message, CommonChannel);
+    }
+
+    private EntityUid EnsureMarineAresForAnnouncement()
+    {
+        if (_aresCore.TryGetMarineARES(out var ares) && ares != null)
+            return ares.Value.Owner;
+
+        var uid = Spawn();
+        _metaData.SetEntityName(uid, "APOLLO MK.II");
+        return uid;
     }
 }
