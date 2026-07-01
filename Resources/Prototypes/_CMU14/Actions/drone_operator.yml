@@ -1,0 +1,44 @@
+- type: entity
+  parent: BaseAction
+  id: CMUActionDroneEndControl
+  name: cmu-drone-end-control-action-name
+  description: cmu-drone-end-control-action-description
+  components:
+  - type: InstantAction
+    event: !type:Content.Shared._CMU14.DroneOperator.CMUDroneEndControlActionEvent
+  - type: Action
+    checkCanInteract: false
+    icon:
+      sprite: _RMC14/Objects/Devices/command_tablet.rsi
+      state: cotablet
+    itemIconStyle: BigItem
+
+- type: entity
+  parent: BaseAction
+  id: CMUActionDroneFollow
+  name: cmu-drone-follow-action-name
+  description: cmu-drone-follow-action-description
+  components:
+  - type: InstantAction
+    event: !type:Content.Shared._CMU14.DroneOperator.CMUDroneFollowActionEvent
+  - type: Action
+    checkCanInteract: false
+    icon:
+      sprite: _RMC14/Objects/Devices/command_tablet.rsi
+      state: cotablet
+    itemIconStyle: BigItem
+
+- type: entity
+  parent: BaseAction
+  id: CMUActionDroneStopFollow
+  name: cmu-drone-stop-follow-action-name
+  description: cmu-drone-stop-follow-action-description
+  components:
+  - type: InstantAction
+    event: !type:Content.Shared._CMU14.DroneOperator.CMUDroneStopFollowActionEvent
+  - type: Action
+    checkCanInteract: false
+    icon:
+      sprite: _RMC14/Objects/Devices/command_tablet.rsi
+      state: cotablet
+    itemIconStyle: BigItem
