@@ -147,7 +147,7 @@
 - type: startingGear
   id: AU14GearOpforSquadSergeant
   equipment:
-    id: AU14IDCardopforSquadSergeant
+    id: AU14IDCardOPFORSquadSergeant
     ears: AU14HeadsetOpforCommand
 
 - type: startingGear

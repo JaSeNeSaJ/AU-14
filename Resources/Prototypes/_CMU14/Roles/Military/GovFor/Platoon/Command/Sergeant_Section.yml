@@ -190,7 +190,7 @@
 - type: startingGear
   id: AU14GearopforSectionSergeant
   equipment:
-    id: AU14IDCardopforSecSergeant
+    id: AU14IDCardOPFORSecSergeant
     ears: AU14HeadsetOpforCommand
 
 - type: entity
