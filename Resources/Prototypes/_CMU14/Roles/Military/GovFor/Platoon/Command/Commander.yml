@@ -56,7 +56,6 @@
     CMBCIU:
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORPlatCoCMBCIU
-
   requirements:
   - !type:OverallPlaytimeRequirement
     time: 18000 # 5 hours
@@ -74,20 +73,42 @@
   ranks:
     RMCRankCivilian: []
   chevrons:
-    RMCRankMajor:
-      entity: AU14ChevronMajor
+    RMCRankLieutenantColonel:
+      entity: AU14ChevronLieutenantColonel
       requirements:
       - !type:RoleTimeRequirement
         role: AU14JobGOVFORPlatCo
-        time: 180000 # 50 hours
-    RMCRankCaptain:
-      entity: AU14ChevronCaptain
+        time: 86400 # 24 hours
+    RMCRankMajor:
+      entity: AU14ChevronMajor
       requirements: []
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatCo
   isHumanoid: true
 
+# ├──[ Job Prototypes ]──────────────────────────────────────────────┤
+- type: job
+  parent: AU14JobPlatCoBase
+  id: AU14JobGOVFORPlatCo
+  hidden: false
+  setPreference: true
+  basePlaytimeTracker: true
+
+- type: job
+  parent: AU14JobPlatCoBase
+  id: AU14JobOPFORPlatCo
+  roundSide: Opfor
+  roundForce: OPFOR
+  icon: "AU14JobIconOPFORPlatCo"
+  spawnMenuRoleName: Platoon Commander (OPFOR)
+  supervisors: au14-job-supervisors-opforplatco
+  startingGear: AU14GearOPFORPlatCo
+  dummyStartingGear: AU14GearOPFORPlatCoDummy
+  accessGroups:
+  - AU14OpforCommand
+
+# ├──[ Starting Gear ]───────────────────────────────────────────────┤
 - type: startingGear
   id: AU14GearGOVFORPlatCo
   equipment:
@@ -98,34 +119,12 @@
     -  AU14TabletGovfor
 
 - type: startingGear
-  id: AU14GearGOVFORPlatCoDummy
+  id: AU14GearOPFORPlatCo
   equipment:
-    shoes: CMBootsBlack
-    head: CMHeadCapPeakedFormal
-    jumpsuit: CMJumpsuitXOFormal
-    ears: AU14HeadsetGovforCommand
-
-- type: entity
-  parent: CMSpawnPointJobBase
-  id: AU14SpawnPointGOVFORPlatCo
-  name: Spawn Point GOVFOR Platoon Commander
-  components:
-  - type: SpawnPoint
-    job_id: AU14JobGOVFORPlatCo
-  - type: Sprite
-    state: syn_spawn
-
-- type: job
-  parent: AU14JobPlatCoBase
-  id: AU14JobGOVFORPlatCo
-  hidden: false
-  setPreference: true
-  basePlaytimeTracker: true
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: RMCSpeechBubbleSpecificStyle
-      speechStyleClass: commanderSpeech
+    id: AU14IDCardOPFORPlatCo
+    ears: AU14HeadsetOpforCommand
+  inhand:
+   -  AU14TabletOpfor
 
 - type: roleLoadout
   id: JobAU14JobGOVFORPlatCo
@@ -142,26 +141,13 @@
   - SmokablesRMC
   - GOVFORPlatCOSidearmBeltAU14
 
-- type: job
-  parent: AU14JobPlatCoBase
-  id: AU14JobOPFORPlatCo
-  roundSide: Opfor
-  roundForce: OPFOR
-  icon: "AU14JobIconOPFORPlatCo"
-  spawnMenuRoleName: Platoon Commander (OPFOR)
-  supervisors: au14-job-supervisors-opforplatco
-  startingGear: AU14GearOPFORPlatCo
-  dummyStartingGear: AU14GearOPFORPlatCoDummy
-  accessGroups:
-  - AU14OpforCommand
-
 - type: startingGear
-  id: AU14GearOPFORPlatCo
+  id: AU14GearGOVFORPlatCoDummy
   equipment:
-    id: AU14IDCardopforPlatCo
-    ears: AU14HeadsetOpforCommand
-  inhand:
-   -  AU14TabletOpfor
+    shoes: CMBootsBlack
+    head: CMHeadCapPeakedFormal
+    jumpsuit: CMJumpsuitXOFormal
+    ears: AU14HeadsetGovforCommand
 
 - type: startingGear
   id: AU14GearOPFORPlatCoDummy
@@ -170,6 +156,17 @@
     head: CMHeadCapPeakedFormal
     jumpsuit: CMJumpsuitXOFormal
     ears: AU14HeadsetOpforCommand
+
+# ├──[ Spawnpoints ]─────────────────────────────────────────────────┤
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointGOVFORPlatCo
+  name: Spawn Point GOVFOR Platoon Commander
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobGOVFORPlatCo
+  - type: Sprite
+    state: syn_spawn
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -181,6 +178,7 @@
   - type: Sprite
     state: syn_spawn
 
+# ├──[ Factions ]────────────────────────────────────────────────────┤
 - type: job
   parent: AU14JobPlatCoBase
   id: AU14JobGOVFORPlatCoCMBCIU

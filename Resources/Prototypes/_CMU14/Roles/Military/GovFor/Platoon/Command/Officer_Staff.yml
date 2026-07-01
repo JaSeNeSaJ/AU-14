@@ -48,19 +48,6 @@
     WYPMC:
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORPlatOpWYPMC
-
-  ranks:
-    RMCRankCivilian: []
-  chevrons:
-    RMCRankFirstLT:
-      entity: AU14ChevronFirstLT
-      requirements:
-      - !type:RoleTimeRequirement
-        role: AU14JobGOVFORPlatOp
-        time: 86400 # 24 hours
-    SecondLT:
-      entity: AU14ChevronSecondLT
-      requirements: []
   requirements:
   - !type:AgeRequirement
     requiredAge: 25
@@ -72,46 +59,52 @@
     - NonResuscitable
     - Epilepsy
     - NoEnglish
+  ranks:
+    RMCRankCivilian: []
+  chevrons:
+    RMCRankFirstLT:
+      entity: AU14ChevronFirstLT
+      requirements: []
 
 - type: playTimeTracker
   id: AU14JobGOVFORPlatOp
   isHumanoid: true
 
-- type: startingGear
-  id: AU14GearGOVFORPlatOp
-  equipment:
-    id: AU14IDCardGOVFORPlatOp
-    ears: AU14HeadsetGovforCommand
-
-- type: startingGear
-  id: AU14GearGOVFORPlatOpDummy
-  equipment:
-    shoes: CMBootsBlack
-    head: AU14JunglePatrolCap
-    jumpsuit: CMJumpsuitXOFormal
-    ears: AU14HeadsetGovforCommand
-
-- type: entity
-  parent: CMSpawnPointJobBase
-  id: AU14SpawnPointGOVFORPlatOp
-  name: Spawn Point GOVFOR Platoon Operations Officer
-  components:
-  - type: SpawnPoint
-    job_id: AU14JobGOVFORPlatOp
-  - type: Sprite
-    state: syn_spawn
-
+# ├──[ Job Prototypes ]──────────────────────────────────────────────┤
 - type: job
   parent: AU14JobPlatOpBase
   id: AU14JobGOVFORPlatOp
   hidden: false
   setPreference: true
   basePlaytimeTracker: true
-  special:
-  - !type:AddComponentSpecial
-    components:
-    - type: RMCSpeechBubbleSpecificStyle
-      speechStyleClass: commanderSpeech
+
+- type: job
+  parent: AU14JobPlatOpBase
+  id: AU14JobOPFORPlatOp
+  roundSide: Opfor
+  roundForce: OPFOR
+  icon: "AU14JobIconOPFOROpsOfc"
+  spawnMenuRoleName: Junior Officer (OPFOR)
+  supervisors: au14-job-supervisors-opfor
+  startingGear: AU14GearOpforPlatOp
+  dummyStartingGear: AU14GearOpforPlatOpDummy
+  accessGroups:
+  - AU14OpforCommand
+
+# ├──[ Starting Gear ]───────────────────────────────────────────────┤
+- type: startingGear
+  id: AU14GearGOVFORPlatOp
+  equipment:
+    id: AU14IDCardGOVFORPlatOp
+    ears: AU14HeadsetGovforCommand
+    pocket1: AU14StampSO
+
+- type: startingGear
+  id: AU14GearOpforPlatOp
+  equipment:
+    id: AU14IDCardOPFORPlatOp
+    ears: AU14HeadsetOpforCommand
+    pocket1: AU14StampSO
 
 - type: roleLoadout
   id: JobAU14JobGOVFORPlatOp
@@ -128,24 +121,13 @@
   - SmokablesRMC
   - WeaponsRMC
 
-- type: job
-  parent: AU14JobPlatOpBase
-  id: AU14JobOPFORPlatOp
-  roundSide: Opfor
-  roundForce: OPFOR
-  icon: "AU14JobIconOPFOROpsOfc"
-  spawnMenuRoleName: Junior Officer (OPFOR)
-  supervisors: au14-job-supervisors-opfor
-  startingGear: AU14GearOpforPlatOp
-  dummyStartingGear: AU14GearOpforPlatOpDummy
-  accessGroups:
-  - AU14OpforCommand
-
 - type: startingGear
-  id: AU14GearOpforPlatOp
+  id: AU14GearGOVFORPlatOpDummy
   equipment:
-    id: AU14IDCardopforPlatOp
-    ears: AU14HeadsetOpforCommand
+    shoes: CMBootsBlack
+    head: AU14JunglePatrolCap
+    jumpsuit: CMJumpsuitXOFormal
+    ears: AU14HeadsetGovforCommand
 
 - type: startingGear
   id: AU14GearOpforPlatOpDummy
@@ -154,6 +136,17 @@
     head: AU14JunglePatrolCap
     jumpsuit: CMJumpsuitXOFormal
     ears: AU14HeadsetOpforCommand
+
+# ├──[ Spawnpoints ]─────────────────────────────────────────────────┤
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointGOVFORPlatOp
+  name: Spawn Point GOVFOR Platoon Operations Officer
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobGOVFORPlatOp
+  - type: Sprite
+    state: syn_spawn
 
 - type: entity
   parent: CMSpawnPointJobBase
@@ -165,6 +158,7 @@
   - type: Sprite
     state: syn_spawn
 
+# ├──[ Factions ]────────────────────────────────────────────────────┤
 - type: job
   parent: AU14JobPlatOpBase
   id: AU14JobGOVFORPlatOpRMC
