@@ -5339,5 +5339,64 @@
   id: 376
   time: '2026-07-01T01:52:12.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1503
+- author: OverusedMeme
+  changes:
+  - message: Various Supplies to all Medical/Engineering pouches in loadouts. (Check
+      PR Media For Contents).
+    type: Add
+  - message: The Life Saver bag one can choose in loadouts now has starting medical
+      supplies.
+    type: Add
+  - message: Colony engineering's toolbelts in loadouts now have an E-tool and Modified
+      Blowtorch
+    type: Add
+  - message: The M276 medical storage rig is no longer a choice to choose for Colony
+      Medical Staff in Loadouts.
+    type: Remove
+  - message: The electronics Pouch can now fit door electronics.
+    type: Tweak
+  id: 377
+  time: '2026-07-01T07:01:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1502
+- author: OmerF-afk
+  changes:
+  - message: Added CMO as a kit for the future.
+    type: Add
+  - message: Added more clothing and ID options to the IO kit. While fixing the issues
+      it had.
+    type: Add
+  - message: New Loadout options to synthetics. Mostly glasses.
+    type: Add
+  - message: Adds Surgical 4 Pamphlet. That's used in the CMO's kit.
+    type: Add
+  - message: new sprites for IO clothes stuff and cases now have a open sprite!
+    type: Add
+  id: 378
+  time: '2026-07-01T07:41:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1495
+- author: JaSeNeSaJ
+  changes:
+  - message: Hydroponics crop price differences
+    type: Add
+  - message: Tags for various crops
+    type: Add
+  - message: Sugarcane provides RMCSugar
+    type: Fix
+  id: 379
+  time: '2026-07-01T09:01:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1504
+- author: TheHellFireo
+  changes:
+  - message: Added CMU round outcome tracking for Distress Signal, Insurgency, and
+      Colony Fall.
+    type: Add
+  - message: Added a public round stats panel with win rates, recent form, streaks,
+      durations, major/minor splits, and threat/planet/platoon/player-count breakdowns.
+    type: Add
+  - message: Added the command to check the stats panel "cmuroundstats"
+    type: Add
+  id: 380
+  time: '2026-07-01T09:35:40.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1506
 Name: CMU
 Order: -1
