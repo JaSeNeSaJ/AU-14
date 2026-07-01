@@ -149,13 +149,71 @@
   components:
   - type: SubmissionStorage
     rewards:
-      Fruit: 2
-      Vegetable: 2
+      Wheat: 5
+      #MeatWheat: TODO
+      Oat: 5
+      Sugarcane: 2.5
+      #Papercane: TODO
+      Banana: 7.5
+      Carrot: 14
+      Cabbage: 11
+      Garlic: 12
+      Lemon: 6
+      Lime: 5
+      Orange: 5
+      Pineapple: 5
+      Potato: 14
+      Tomato: 8.5
+      Eggplant: 8.5
+      Apple: 5
+      Cocoa: 1.25
+      Corn: 17
+      Onion: 17
+      Chili: 7.5
+      Flower: 14
+      Rice: 5
+      Soybeans: 5
+      Watermelon: 36
+      Grape: 10
+      Berries: 3.75
+      Pea: 6
+      Pumpkin: 19
+      #CottonBoll: TODO
+      Cherry: 3
   - type: DisposalUnit
     whitelist:
       tags:
-      - Fruit
-      - Vegetable
+      - Wheat
+      #- MeatWheat
+      - Oat
+      - Sugarcane
+      #- Papercane
+      - Banana
+      - Carrot
+      - Cabbage
+      - Garlic
+      - Lemon
+      - Lime
+      - Orange
+      - Pineapple
+      - Potato
+      - Tomato
+      - Eggplant
+      - Apple
+      - Cocoa
+      - Corn
+      - Onion
+      - Chili
+      - Flower
+      - Rice
+      - Soybeans
+      - Watermelon
+      - Grape
+      - Berries
+      - Pea
+      - Pumpkin
+      #- CottonBoll
+      - Cherry
 
 - type: entity
   parent: RMCCommunicationsConsoleBase
