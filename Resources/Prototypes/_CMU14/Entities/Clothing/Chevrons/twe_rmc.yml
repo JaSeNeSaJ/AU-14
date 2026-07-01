@@ -153,7 +153,7 @@
       sprite: _AU14/Clothing/Accessory/Chevrons/universal.rsi
       state: equipped-ranks_officer
   - type: RankChanger
-    rank: RMC_OfficerCader
+    rank: RMC_OfficerCadet
     override: true
 
 - type: entity
