@@ -1,30 +1,10 @@
 - type: entity
-  parent: CMBeltMedicBag
-  id: AU14BeltMedicBagSupportSynth
-  suffix: Filled, Support Synth
-  components:
-  - type: StorageFill
-    contents:
-    - id: AU14Tourniquet
-    - id: AU14Tourniquet
-    - id: AU14PillCanisterMeralyne
-    - id: AU14PillCanisterDermaline
-    - id: RMCPillCanisterIron
-    # - id: CMPillCanisterTramadol
-    - id: CMPillCanisterDylovene
-    # - id: CMPillCanisterPeridaxon
-    - id: AU14PillCanisterAlbuterol
-    # - id: CMPillCanisterAlkysine
-    - id: RMCPillCanisterImidazoline
-    - id: CMTraumaKit10
-      amount: 3
-    - id: CMBurnKit10
-      amount: 3
-    # - id: RMCSplint
-    - id: AU14NaloxoneAutoInjector
-    - id: CMEpinephrineAutoInjector
-    - id: CMHealthAnalyzer
-    - id: CMHandsLatex
+  parent: CMBeltMedical
+  id: AU14BeltMedical
+
+- type: entity
+  parent: CMBeltMedicalFilled
+  id: AU14BeltMedicalFilled # TODO: Make this purpose unique against AU14BeltMedicBagFilled (like hold more small items, or accepting mags etc.)
 
 - type: entity
   parent: CMBeltMedicBag
@@ -54,6 +34,34 @@
     - id: CMPortableSurgicalBedSpawnFolded
     - id: CMBloodPackFull
       amount: 2
+
+- type: entity
+  parent: CMBeltMedicBag
+  id: AU14BeltMedicBagSupportSynth
+  suffix: Filled, Support Synth
+  components:
+  - type: StorageFill
+    contents:
+    - id: AU14Tourniquet
+    - id: AU14Tourniquet
+    - id: AU14PillCanisterMeralyne
+    - id: AU14PillCanisterDermaline
+    - id: RMCPillCanisterIron
+    # - id: CMPillCanisterTramadol
+    - id: CMPillCanisterDylovene
+    # - id: CMPillCanisterPeridaxon
+    - id: AU14PillCanisterAlbuterol
+    # - id: CMPillCanisterAlkysine
+    - id: RMCPillCanisterImidazoline
+    - id: CMTraumaKit10
+      amount: 3
+    - id: CMBurnKit10
+      amount: 3
+    # - id: RMCSplint
+    - id: AU14NaloxoneAutoInjector
+    - id: CMEpinephrineAutoInjector
+    - id: CMHealthAnalyzer
+    - id: CMHandsLatex
 
 - type: entity
   parent: AU14BeltMedicBagSupportSynth
