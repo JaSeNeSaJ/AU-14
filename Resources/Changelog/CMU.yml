@@ -5226,5 +5226,184 @@
   id: 370
   time: '2026-06-29T06:57:12.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1483
+- author: TheHellFireo
+  changes:
+  - message: Fixed threat member playtime compatibility for evolved xenos.
+    type: Fix
+  - message: Fixed parasite larva claims being stolen by the normal larva queue.
+    type: Fix
+  - message: Fixed xeno corrosive acid targeting while keeping range/obstruction checks.
+    type: Fix
+  - message: Fixed Bulwark reflect visual duration matching the actual reflect phase.
+    type: Fix
+  - message: Fixed treadnailers crushing abomination tendons and carried mobs incorrectly.
+    type: Fix
+  - message: Fixed Hope's Retreat vehicle lift railings not syncing with the lift.
+    type: Fix
+  - message: Fixed UPP APC hardpoints eating tool interactions.
+    type: Fix
+  - message: Fixed deployable placement previews being offset.
+    type: Fix
+  - message: Fixed UPP phone directory category text.
+    type: Fix
+  - message: Made Xippy speak Xeno.
+    type: Fix
+  - message: Restored English handling for hivebroken/corrupted xenos.
+    type: Fix
+  - message: Made scenario plan failures announce publicly.
+    type: Fix
+  id: 371
+  time: '2026-06-29T16:47:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1491
+- author: TheHellFireo
+  changes:
+  - message: Updated RobustToolbox to v278.0.0.
+    type: Tweak
+  - message: Reduced allocations in common stuff including IFF, xeno HUD overlays,
+      status effects, and prediction-adjacent systems.
+    type: Tweak
+  - message: Updated the CMU xeno port integration test for the v278 upgrade.
+    type: Fix
+  - message: Avoid generated regex IL that Robust sandbox verification rejects.
+    type: Fix
+  - message: Preserve RMC attachable modifier defaults across v278 prototype serialization.
+    type: Fix
+  - message: Prevent disposed entity context menu controls from crashing the client.
+    type: Fix
+  - message: Fixed game audio sometimes staying muted after deafness, unconsciousness,
+      death, or returning from being unfocused.
+    type: Fix
+  id: 372
+  time: '2026-06-29T23:01:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1496
+- author: ErinBaking
+  changes:
+  - message: New Lobby Art
+    type: Add
+  id: 373
+  time: '2026-06-30T21:34:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1494
+- author: deepdarkdepths
+  changes:
+  - message: Updated Ravager sprites.
+    type: Tweak
+  id: 374
+  time: '2026-06-30T21:35:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1499
+- author: KeiKiyomi
+  changes:
+  - message: Added Blind Drops being allowed only for USCM, UPP, and RCM
+    type: Add
+  - message: Added AI Core and Synthetic Areas Guidelines
+    type: Add
+  - message: Added AI Area Trespass (AAT) to Major Crimes (15 minutes)
+    type: Add
+  - message: Clarified Rank Structure due to indents not working!
+    type: Tweak
+  - message: Clarified Who can and cant crew tanks and APCs in vehicle SOP
+    type: Tweak
+  - message: WICH Convention Articles 1, 4, 12, 16, 18, 21, 27, and 30 have been modified
+    type: Tweak
+  id: 375
+  time: '2026-06-30T21:38:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1400
+- author: TheHellFireo
+  changes:
+  - message: Added the Drone Operator combat role. Operators spawn with android parts,
+      assemble the android with tools, activate it with a synth key, then link/control
+      it through their tablet within range.
+    type: Add
+  - message: 'Added drone androids: fragile barebones synthetic bodies with cosmetic
+      wear, gun use, belt/backpack utility'
+    type: Add
+  - message: 'Added drone control flow: transfer effects, subtle blue/red lights and
+      particles, dormant visuals, follow/stop-follow actions, range warnings, and
+      hard leash session handling.'
+    type: Add
+  - message: Added installable Combat and Care android modules. Combat grants strong
+      CQB/shooting skills, while Care grants doctor-level medical skills.
+    type: Add
+  - message: Drone operators use the Combat Technician skill set.
+    type: Tweak
+  - message: Xenos and abominations see androids as normal humans rather than synths.
+    type: Tweak
+  - message: Backported vehicle fixes, vehicle key sprite updates, and GOVFOR/OPFOR
+      vehicle crewmen capped at two.
+    type: Add
+  - message: Ported the announcement router system and polished related announcement
+      UI/type handling.
+    type: Add
+  - message: Improved ghost follow chat controls and blocked healer salve use while
+      resting
+    type: Fix
+  id: 376
+  time: '2026-07-01T01:52:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1503
+- author: OverusedMeme
+  changes:
+  - message: Various Supplies to all Medical/Engineering pouches in loadouts. (Check
+      PR Media For Contents).
+    type: Add
+  - message: The Life Saver bag one can choose in loadouts now has starting medical
+      supplies.
+    type: Add
+  - message: Colony engineering's toolbelts in loadouts now have an E-tool and Modified
+      Blowtorch
+    type: Add
+  - message: The M276 medical storage rig is no longer a choice to choose for Colony
+      Medical Staff in Loadouts.
+    type: Remove
+  - message: The electronics Pouch can now fit door electronics.
+    type: Tweak
+  id: 377
+  time: '2026-07-01T07:01:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1502
+- author: OmerF-afk
+  changes:
+  - message: Added CMO as a kit for the future.
+    type: Add
+  - message: Added more clothing and ID options to the IO kit. While fixing the issues
+      it had.
+    type: Add
+  - message: New Loadout options to synthetics. Mostly glasses.
+    type: Add
+  - message: Adds Surgical 4 Pamphlet. That's used in the CMO's kit.
+    type: Add
+  - message: new sprites for IO clothes stuff and cases now have a open sprite!
+    type: Add
+  id: 378
+  time: '2026-07-01T07:41:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1495
+- author: JaSeNeSaJ
+  changes:
+  - message: Hydroponics crop price differences
+    type: Add
+  - message: Tags for various crops
+    type: Add
+  - message: Sugarcane provides RMCSugar
+    type: Fix
+  id: 379
+  time: '2026-07-01T09:01:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1504
+- author: TheHellFireo
+  changes:
+  - message: Added CMU round outcome tracking for Distress Signal, Insurgency, and
+      Colony Fall.
+    type: Add
+  - message: Added a public round stats panel with win rates, recent form, streaks,
+      durations, major/minor splits, and threat/planet/platoon/player-count breakdowns.
+    type: Add
+  - message: Added the command to check the stats panel "cmuroundstats"
+    type: Add
+  id: 380
+  time: '2026-07-01T09:35:40.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1506
+- author: maertayn
+  changes:
+  - message: Restructured the Prototypes folder
+    type: Code
+  id: 381
+  time: '2026-07-01T11:02:02.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1505
 Name: CMU
 Order: -1
