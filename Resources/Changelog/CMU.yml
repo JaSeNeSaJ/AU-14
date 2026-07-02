@@ -5405,5 +5405,70 @@
   id: 381
   time: '2026-07-01T11:02:02.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1505
+- author: TheHellFireo
+  changes:
+  - message: Fixed command roles and appointed squad leaders not receiving issue order
+      actions.
+    type: Fix
+  - message: Cleaned build warnings
+    type: Code
+  id: 382
+  time: '2026-07-01T12:57:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1507
+- author: OverusedMeme
+  changes:
+  - message: EROs now start with a HealthMate Hud
+    type: Add
+  - message: Filled Variant for Colony First Responder Pouches now have a Stasis bag
+      in them
+    type: Tweak
+  - message: the second Naloxone injector is gone for said First Responder Pouche.
+    type: Remove
+  id: 383
+  time: '2026-07-02T07:00:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1511
+- author: OverusedMeme
+  changes:
+  - message: Additional starting gear to LEO officers/Leaders (Security Satchel/IFAK/Large
+      Pouch With Binos, Radio, Cuffs/Faction Dependent Service Pistol/Faction Dependent
+      Jacket/Pistol Holster)
+    type: Add
+  - message: LEO's will now find a clipboard and a universal recorder in their security
+      belts.
+    type: Tweak
+  - message: Colony Security now have their missing headset.
+    type: Fix
+  id: 384
+  time: '2026-07-02T07:01:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1510
+- author: Vencallium
+  changes:
+  - message: 5 larvas -> 3 larvas round start
+    type: Tweak
+  - message: Acid mine ability cooldown going from 5.5 seconds -> 8 seconds
+    type: Tweak
+  - message: Acid mine ability range going from 13 tiles -> 9 tiles
+    type: Tweak
+  id: 385
+  time: '2026-07-02T09:34:07.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1498
+- author: MarshesAndMeadows
+  changes:
+  - message: Added new charge for charger, controlled by cursor position and culminating
+      in a devastating lunge.
+    type: Add
+  - message: Added Jockeying system for charger, it can have up to 4 passengers at
+      a time.
+    type: Add
+  - message: Added functionality to Fling, it can now also fling the target towards
+      you if used on help intent.
+    type: Add
+  - message: Removed Tumble from charger.
+    type: Remove
+  - message: Removed the old Charge from charger
+    type: Remove
+  id: 386
+  time: '2026-07-02T09:34:18.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1203
 Name: CMU
 Order: -1
