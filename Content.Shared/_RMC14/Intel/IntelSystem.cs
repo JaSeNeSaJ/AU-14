@@ -69,7 +69,6 @@ public sealed partial class IntelSystem : EntitySystem
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
     [Dependency] private IPrototypeManager _prototypes = default!;
-    [Dependency] private SharedMapSystem _mapSystem = default!;
 
     // Runtime overrides set by server systems when an active platoon declares a TechTree.
     // Key is normalized team string (lowercase), value is prototype id string.
@@ -1296,25 +1295,14 @@ public sealed partial class IntelSystem : EntitySystem
         if (planetQuery.MoveNext(out var mapUid, out _))
             planetMapId = Transform(mapUid).MapID;
 
+        if (planetMapId == null)
+            return fallback;
+
         var query = EntityQueryEnumerator<ObjectiveMasterComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var comp, out var xform))
         {
-            if (!comp.IsActive)
-                continue;
-            if (planetMapId != null && xform.MapID != planetMapId)
-                continue;
-            if (comp.Factions.TryGetValue(factionKey, out var data))
-                return FixedPoint2.New(data.CurrentWinPoints);
-        }
-
-        if (planetMapId != null)
-        {
-            var fallbackQuery = EntityQueryEnumerator<ObjectiveMasterComponent, TransformComponent>();
-            while (fallbackQuery.MoveNext(out var uid, out var comp, out var _))
-            {
-                if (comp.IsActive && comp.Factions.TryGetValue(factionKey, out var data))
-                    return FixedPoint2.New(data.CurrentWinPoints);
-            }
+            if (comp.IsActive && xform.MapID == planetMapId)
+                return FixedPoint2.New(comp.GetOrCreateFactionData(factionKey).CurrentWinPoints);
         }
 
         return fallback;
