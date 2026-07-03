@@ -5540,5 +5540,21 @@
   id: 391
   time: '2026-07-03T15:47:56.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1518
+- author: TheHellFireo
+  changes:
+  - message: Added CM13-style runechat speech bubbles with matching font, outline,
+      shadow, emote icons, squad/role colors, yell styling, pain/scream interruption
+      effects, and configurable sizing.
+    type: Add
+  - message: Added a dedicated CMU options tab for CMU-specific visual/chat settings.
+    type: Add
+  - message: Ghost follow chat buttons now match chat color and follow speakers instead
+      of only warping to them.
+    type: Tweak
+  - message: Improved runechat wrapping, centering, cutoff handling, and emote presentation.
+    type: Fix
+  id: 392
+  time: '2026-07-03T16:43:16.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1519
 Name: CMU
 Order: -1
