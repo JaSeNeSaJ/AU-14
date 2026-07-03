@@ -5470,5 +5470,26 @@
   id: 386
   time: '2026-07-02T09:34:18.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1203
+- author: TheHellFireo
+  changes:
+  - message: Blood puddles now use random blood decals instead of puddle sprites.
+    type: Add
+  - message: Footprints return when walking or dragging through blood
+    type: Add
+  - message: Mops can clean blood and footprint decals from the clicked tile.
+    type: Fix
+  id: 387
+  time: '2026-07-03T05:05:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1515
+- author: TheHellFireo
+  changes:
+  - message: Added visible CMU bandage, splint, and cast overlays by body part.
+    type: Add
+  - message: Localized blood and burn damage overlays to the injured body part instead
+      of the whole body.
+    type: Fix
+  id: 388
+  time: '2026-07-03T05:06:04.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1514
 Name: CMU
 Order: -1
