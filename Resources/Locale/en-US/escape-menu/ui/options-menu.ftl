@@ -8,6 +8,7 @@ ui-options-tab-controls = Controls
 ui-options-tab-audio = Audio
 ui-options-tab-network = Network
 ui-options-tab-misc = General
+ui-options-tab-cmu = CMU
 
 ui-options-apply = Save & apply
 ui-options-reset-all = Reset changed
@@ -24,6 +25,10 @@ ui-options-general-cursor = Cursor
 ui-options-general-speech = Speech
 ui-options-general-storage = Storage
 ui-options-general-accessibility = Accessibility
+ui-options-cmu-crt = CRT UI
+ui-options-cmu-runechat = Runechat
+ui-options-cmu-chat = Chat
+ui-options-cmu-zlevels = Z-Levels
 
 ## Audio menu
 

@@ -56,7 +56,7 @@ public sealed partial class CCVars
 
     public static readonly CVarDef<bool> ChatEnableRunechatBubbles =
         CVarDef.Create("chat.enable_runechat_bubbles",
-            false,
+            true,
             CVar.CLIENTONLY | CVar.ARCHIVE,
             "Toggles displaying CMSS-style runechat speech bubbles.");
 
