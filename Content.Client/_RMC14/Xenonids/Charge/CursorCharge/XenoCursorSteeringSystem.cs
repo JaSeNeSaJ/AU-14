@@ -6,19 +6,17 @@ using Robust.Client.Graphics;
 using Robust.Client.Input;
 using Robust.Client.Player;
 using Robust.Shared.Map;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
 
 namespace Content.Client._RMC14.Xenonids.Charge.CursorCharge;
 
-public sealed class XenoCursorSteeringSystem : EntitySystem
+public sealed partial class XenoCursorSteeringSystem : EntitySystem
 {
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly IEyeManager _eye = default!;
-    [Dependency] private readonly IInputManager _input = default!;
-    [Dependency] private readonly IPlayerManager _player = default!;
-    [Dependency] private readonly IOverlayManager _overlayManager = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private IEyeManager _eye = default!;
+    [Dependency] private IInputManager _input = default!;
+    [Dependency] private IPlayerManager _player = default!;
+    [Dependency] private IOverlayManager _overlayManager = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
 
     private Angle _lastSentAngle;
     private XenoCursorSteeringOverlay? _overlay;
