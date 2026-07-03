@@ -24,6 +24,9 @@ public sealed class XenoCursorSteeringSystem : EntitySystem
     private XenoCursorSteeringOverlay? _overlay;
     public Vector2 CursorWorldPosition { get; private set; }
 
+    private const float MinCursorDistanceSq = 0.01f; // ~0.1 units from player
+    private const float MinAngleDeltaRadians = 0.02f;
+
     public override void Initialize()
     {
         SubscribeLocalEvent<XenoChargerComponent, LocalPlayerAttachedEvent>(OnAttached);
@@ -66,11 +69,11 @@ public sealed class XenoCursorSteeringSystem : EntitySystem
 
         var xenoPos = _transform.GetMapCoordinates(controlled).Position;
         var diff = mapCoords.Position - xenoPos;
-        if (diff.LengthSquared() < 0.01f)
+        if (diff.LengthSquared() < MinCursorDistanceSq)
             return;
 
         var newAngle = diff.ToAngle();
-        if (Math.Abs((newAngle - _lastSentAngle).Reduced().Theta) < 0.01f)
+        if (Math.Abs((newAngle - _lastSentAngle).Reduced().Theta) < MinAngleDeltaRadians)
             return;
 
         _lastSentAngle = newAngle;
