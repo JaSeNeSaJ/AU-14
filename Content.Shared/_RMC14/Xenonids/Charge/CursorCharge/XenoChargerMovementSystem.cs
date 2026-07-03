@@ -8,21 +8,19 @@ using Robust.Shared.Audio.Systems;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
-using Robust.Shared.Timing;
 
 namespace Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 
 public sealed partial class XenoChargerMovementSystem : EntitySystem
 {
-    [Dependency] private readonly IGameTiming _timing = default!;
-    [Dependency] private readonly INetManager _net = default!;
-    [Dependency] private readonly SharedTransformSystem _transform = default!;
-    [Dependency] private readonly SharedPhysicsSystem _physics = default!;
-    [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly SharedRMCEmoteSystem _rmcEmote = default!;
-    [Dependency] private readonly XenoChargerCollisionSystem _collision = default!;
-    [Dependency] private readonly SharedRMCFlammableSystem _flammable = default!;
-    [Dependency] private readonly SharedStunSystem _stun = default!;
+    [Dependency] private INetManager _net = default!;
+    [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private SharedPhysicsSystem _physics = default!;
+    [Dependency] private SharedAudioSystem _audio = default!;
+    [Dependency] private SharedRMCEmoteSystem _rmcEmote = default!;
+    [Dependency] private XenoChargerCollisionSystem _collision = default!;
+    [Dependency] private SharedRMCFlammableSystem _flammable = default!;
+    [Dependency] private SharedStunSystem _stun = default!;
 
     private EntityQuery<PhysicsComponent> _physicsQuery;
 
