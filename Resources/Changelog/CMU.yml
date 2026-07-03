@@ -5491,5 +5491,19 @@
   id: 388
   time: '2026-07-03T05:06:04.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1514
+- author: TheHellFireo
+  changes:
+  - message: Added robotic prosthetic limbs with repair, examine, damage, and limb
+      printer support.
+    type: Add
+  - message: Added prosthetic arm and leg disability traits for each limb. You can
+      now spawn in with them
+    type: Add
+  - message: Prosthetic limbs require a welder to fix brute and cable coils to fix
+      burns.
+    type: Tweak
+  id: 389
+  time: '2026-07-03T06:09:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1516
 Name: CMU
 Order: -1
