@@ -125,6 +125,9 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
         if (HasComp<SynthComponent>(args.Body))
             return;
 
+        if (HasComp<CMURoboticLimbComponent>(ent.Owner))
+            return;
+
         var brute = GroupSum(args.Delta, BruteGroup);
         var burn = GroupSum(args.Delta, BurnGroup);
         var bruteOrBurn = brute + burn;
@@ -1015,6 +1018,8 @@ public abstract partial class SharedCMUWoundsSystem : EntitySystem
 
     private bool IsSynthOwned(EntityUid part)
     {
+        if (HasComp<CMURoboticLimbComponent>(part))
+            return true;
         if (HasComp<SynthComponent>(part))
             return true;
         return TryGetBodyOwner(part) is { } body && HasComp<SynthComponent>(body);
