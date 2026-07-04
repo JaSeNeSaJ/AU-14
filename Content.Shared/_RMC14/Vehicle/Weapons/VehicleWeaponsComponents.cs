@@ -7,7 +7,7 @@ using Robust.Shared.Maths;
 
 namespace Content.Shared._RMC14.Vehicle;
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(true)]
 [Access(typeof(VehicleWeaponsSystem), typeof(HardpointSystem))]
 public sealed partial class VehicleWeaponsComponent : Component
 {
