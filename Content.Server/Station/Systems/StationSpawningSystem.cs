@@ -78,14 +78,14 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         "DropshipPilot",
         "MilitaryDoctor",
         "MilitaryPolice",
-        "PlatoonCommander",
-        "VehicleCrewman",
+        "PlatoonCommander"
     };
 
     private static readonly HashSet<string> AuxiliarySquadRoundRoles = new(StringComparer.OrdinalIgnoreCase)
     {
         "AuxSupportSynth",
         "JuniorOfficer",
+        "VehicleCrewman"
     };
 
     // Legacy fallback for jobs that have not been migrated to roundRole yet.
