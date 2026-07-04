@@ -70,7 +70,7 @@
   result: RMCStandardAidKitPVE
   completetime: 2
   materials:
-    RMCPlastic: 500
+    RMCPlastic: 2500
 
 - type: latheRecipe
   id: CMBonesetter
