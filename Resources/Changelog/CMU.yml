@@ -5640,5 +5640,42 @@
   id: 395
   time: '2026-07-04T12:44:44.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1524
+- author: maertayn
+  changes:
+  - message: Vehicle Crewman added to Auxiliary for OW to spectate & VC missing comms
+      frequency*
+    type: Fix
+  id: 396
+  time: '2026-07-04T19:31:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1529
+- author: OverusedMeme
+  changes:
+  - message: Fixed the Freight System Specialist spawning with more pouches than they
+      should have.
+    type: Fix
+  - message: Fixed the right ERO medical pouch not being the correctly filled medical
+      pouch
+    type: Fix
+  - message: The filled M276 medical belt as an option for ERO's (The Filled Life
+      Saver Bag Exists)
+    type: Remove
+  id: 397
+  time: '2026-07-04T20:50:56.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1523
+- author: HolySSSS
+  changes:
+  - message: Walls and doors are now impossible to break with small bludgeoning items
+      and fists.
+    type: Tweak
+  id: 398
+  time: '2026-07-04T20:55:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1526
+- author: maertayn
+  changes:
+  - message: Fixed objectives & intel
+    type: Fix
+  id: 399
+  time: '2026-07-04T20:56:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1513
 Name: CMU
 Order: -1
