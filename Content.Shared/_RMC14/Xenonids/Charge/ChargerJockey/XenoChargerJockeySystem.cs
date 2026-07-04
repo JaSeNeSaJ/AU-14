@@ -1,4 +1,5 @@
 ﻿using Content.Shared._RMC14.Stun;
+using System.Numerics;
 using Content.Shared.DoAfter;
 using Content.Shared._RMC14.Sprite;
 using Content.Shared._RMC14.Xenonids.Evolution;
@@ -105,7 +106,7 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
         if (HasComp<XenoChargerRidingComponent>(rider))
             return false;
 
-        if (charger.Comp.Riders.Count >= charger.Comp.MaxRiders)
+        if (GetActiveRiderCount(charger.Owner, charger.Comp) >= GetMaxRiders(charger.Comp))
             return false;
 
         if (_mobState.IsDead(charger) || _mobState.IsDead(rider))
@@ -134,9 +135,13 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
         if (!_net.IsServer)
             return;
 
+        var riderSlot = GetOpenRiderSlot(charger, comp);
+        var riderLocalPosition = GetRiderLocalPosition(comp, riderSlot);
+
         var riding = EnsureComp<XenoChargerRidingComponent>(rider);
         riding.Charger = charger;
-        riding.LocalPosition = comp.RiderLocalPosition;
+        riding.LocalPosition = riderLocalPosition;
+        riding.RiderSlot = riderSlot;
         riding.DrawDepth = comp.RiderDrawDepth;
         Dirty(rider, riding);
 
@@ -145,7 +150,7 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
 
         // Parent the rider to the charger so they move together.
         _transform.SetParent(rider, charger);
-        _transform.SetLocalPosition(rider, comp.RiderLocalPosition);
+        _transform.SetLocalPosition(rider, riderLocalPosition);
         _transform.SetLocalRotation(rider, Angle.Zero);
         _rmcSprite.SetRenderOrder(rider, comp.RiderRenderOrder);
 
@@ -155,6 +160,73 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
             var riderName = Identity.Entity(rider, EntityManager);
             _popup.PopupEntity(Loc.GetString("rmc-xeno-jockey-mount", ("rider", riderName), ("charger", chargerName)), rider, PopupType.Small);
         }
+    }
+
+    private int GetActiveRiderCount(EntityUid charger, XenoChargerJockeyComponent comp)
+    {
+        var count = 0;
+        foreach (var rider in comp.Riders)
+        {
+            if (TerminatingOrDeleted(rider) ||
+                !TryComp(rider, out XenoChargerRidingComponent? riding) ||
+                riding.Charger != charger)
+            {
+                continue;
+            }
+
+            count++;
+        }
+
+        return count;
+    }
+
+    private static int GetMaxRiders(XenoChargerJockeyComponent comp)
+    {
+        if (comp.RiderLocalPositions.Count == 0)
+            return comp.MaxRiders;
+
+        return Math.Min(comp.MaxRiders, comp.RiderLocalPositions.Count);
+    }
+
+    private int GetOpenRiderSlot(EntityUid charger, XenoChargerJockeyComponent comp)
+    {
+        if (comp.RiderLocalPositions.Count == 0)
+            return -1;
+
+        var maxRiders = GetMaxRiders(comp);
+        for (var slot = 0; slot < maxRiders; slot++)
+        {
+            if (!IsRiderSlotOccupied(charger, comp, slot))
+                return slot;
+        }
+
+        return 0;
+    }
+
+    private bool IsRiderSlotOccupied(EntityUid charger, XenoChargerJockeyComponent comp, int slot)
+    {
+        foreach (var rider in comp.Riders)
+        {
+            if (TerminatingOrDeleted(rider) ||
+                !TryComp(rider, out XenoChargerRidingComponent? riding) ||
+                riding.Charger != charger)
+            {
+                continue;
+            }
+
+            if (riding.RiderSlot == slot)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static Vector2 GetRiderLocalPosition(XenoChargerJockeyComponent comp, int slot)
+    {
+        if (slot >= 0 && slot < comp.RiderLocalPositions.Count)
+            return comp.RiderLocalPositions[slot];
+
+        return comp.RiderLocalPosition;
     }
 
     private void Dismount(EntityUid rider, EntityUid charger)
@@ -268,6 +340,9 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
 
     public override void Update(float frameTime)
     {
+        if (!_net.IsServer)
+            return;
+
         var query = EntityQueryEnumerator<XenoChargerRidingComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var riding, out var xform))
         {

@@ -7,6 +7,7 @@ using Content.Shared._RMC14.Gibbing;
 using Content.Shared._RMC14.Hands;
 using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Medical.Unrevivable;
+using Content.Shared._RMC14.Pulling;
 using Content.Shared._RMC14.Sprite;
 using Content.Shared._RMC14.Stealth;
 using Content.Shared._RMC14.Stun;
@@ -261,6 +262,7 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
     {
         if (HasComp<ParasiteAIComponent>(ent) &&
             !HasComp<InfectableComponent>(args.PullerUid) &&
+            !HasComp<InfectOnPullAttemptImmuneComponent>(args.PullerUid) &&
             !HasComp<SynthComponent>(args.PullerUid))
         {
             _popup.PopupClient(Loc.GetString("rmc-xeno-parasite-nonplayer-pull", ("parasite", ent)), ent, args.PullerUid, PopupType.SmallCaution);
@@ -270,13 +272,6 @@ public abstract partial class SharedXenoParasiteSystem : EntitySystem
 
     private void OnParasiteTryPickup(Entity<XenoParasiteComponent> ent, ref GettingPickedUpAttemptEvent args)
     {
-        if (!HasComp<ParasiteAIComponent>(ent))
-        {
-            _popup.PopupClient(Loc.GetString("rmc-xeno-parasite-player-pickup", ("parasite", ent)), ent, args.User, PopupType.SmallCaution);
-            args.Cancel();
-            return;
-        }
-
         if (HasComp<OnFireComponent>(args.User))
         {
             _popup.PopupClient("Touching the parasite while you're on fire would burn it!", ent, args.User, PopupType.MediumCaution);

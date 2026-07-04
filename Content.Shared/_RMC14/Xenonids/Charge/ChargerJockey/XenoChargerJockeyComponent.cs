@@ -13,9 +13,14 @@ public sealed partial class XenoChargerJockeyComponent : Component
     [DataField, AutoNetworkedField] public int MaxRiders = 4;
 
     /// <summary>
-    /// Local position riders are snapped to when mounting.
+    /// Fallback local position riders are snapped to when mounting.
     /// </summary>
     [DataField, AutoNetworkedField] public Vector2 RiderLocalPosition = Vector2.Zero;
+
+    /// <summary>
+    /// Local rider slots. If empty, every rider uses <see cref="RiderLocalPosition"/>.
+    /// </summary>
+    [DataField] public List<Vector2> RiderLocalPositions = new();
 
     /// <summary>
     /// Draw depth used for riders so they render on top of the crusher.
@@ -25,7 +30,7 @@ public sealed partial class XenoChargerJockeyComponent : Component
     /// <summary>
     /// Render order used for riders so they sort above their crusher parent.
     /// </summary>
-    [DataField, AutoNetworkedField] public int RiderRenderOrder = 1;
+    [DataField, AutoNetworkedField] public int RiderRenderOrder = 100;
 
     /// <summary>
     /// Tracks current riders.
@@ -41,6 +46,8 @@ public sealed partial class XenoChargerRidingComponent : Component
     [DataField, AutoNetworkedField] public EntityUid Charger;
 
     [DataField, AutoNetworkedField] public Vector2 LocalPosition;
+
+    [DataField, AutoNetworkedField] public int RiderSlot = -1;
 
     [DataField, AutoNetworkedField] public int DrawDepth = (int) RmcDrawDepth.OverMobs + 2;
 }
