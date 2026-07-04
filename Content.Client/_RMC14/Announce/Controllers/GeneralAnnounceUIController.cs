@@ -1,13 +1,17 @@
 using Content.Client.Gameplay;
 using Content.Shared._RMC14.Announce;
+using Robust.Client.Audio;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controllers;
-using Robust.Shared.GameObjects;
+using Robust.Shared.Audio;
+using Robust.Shared.Player;
 
 namespace Content.Client._RMC14.Announce;
 
-public sealed class AnnouncementOverlayUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
+public sealed partial class GeneralAnnounceUIController : UIController, IOnStateEntered<GameplayState>, IOnStateExited<GameplayState>
 {
+    [UISystemDependency] private AudioSystem _audio = default!;
+
     private const int MaxQueuedAnnouncements = 32;
     private readonly List<QueuedAnnouncement> _queuedAnnouncements = new();
     private long _nextOrder;
@@ -33,7 +37,7 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
         }
     }
 
-    public void ShowAnnouncement(AnnouncementDisplayData announcement)
+    public void ShowAnnouncement(AnnouncementNetData announcement)
     {
         var screen = UIManager.ActiveScreen;
         if (screen == null)
@@ -54,14 +58,12 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
             return;
         }
 
+        PlayAnnouncementSound(announcement);
         widget.ShowAnnouncement(announcement);
     }
 
-    public event Action<NetEntity?>? AnnouncementDone;
-
-    private void OnAnnouncementFinished(NetEntity? speaker)
+    private void OnAnnouncementFinished()
     {
-        AnnouncementDone?.Invoke(speaker);
         TryShowNextQueuedAnnouncement();
     }
 
@@ -72,7 +74,7 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
         ShowAnnouncement(next);
     }
 
-    private void EnqueueAnnouncement(AnnouncementDisplayData announcement)
+    private void EnqueueAnnouncement(AnnouncementNetData announcement)
     {
         var queued = new QueuedAnnouncement(announcement, _nextOrder++);
 
@@ -88,7 +90,7 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
         _queuedAnnouncements.Add(queued);
     }
 
-    private bool TryDequeueNext(out AnnouncementDisplayData announcement)
+    private bool TryDequeueNext(out AnnouncementNetData announcement)
     {
         announcement = default!;
         if (_queuedAnnouncements.Count == 0)
@@ -154,7 +156,7 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
         return incoming.Order < current.Order;
     }
 
-    private static bool CanInterrupt(AnnouncementDisplayData current, AnnouncementDisplayData incoming)
+    private static bool CanInterrupt(AnnouncementNetData current, AnnouncementNetData incoming)
     {
         if (!incoming.CanInterrupt)
             return false;
@@ -165,5 +167,17 @@ public sealed class AnnouncementOverlayUIController : UIController, IOnStateEnte
         return incoming.Priority > current.Priority;
     }
 
-    private readonly record struct QueuedAnnouncement(AnnouncementDisplayData Data, long Order);
+    private void PlayAnnouncementSound(AnnouncementNetData announcement)
+    {
+        if (announcement.Sound == null)
+            return;
+
+        _audio.PlayGlobal(
+            announcement.Sound,
+            Filter.Local(),
+            false,
+            AudioParams.Default.WithVolume(announcement.SoundVolume));
+    }
+
+    private readonly record struct QueuedAnnouncement(AnnouncementNetData Data, long Order);
 }
