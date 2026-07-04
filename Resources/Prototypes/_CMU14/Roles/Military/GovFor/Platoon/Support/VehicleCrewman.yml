@@ -79,13 +79,33 @@
   id: AU14GearGOVFORVehicleCrewman
   equipment:
     id: AU14IDCardGOVFORVehicleCrewman
-    ears: AU14HeadsetGovforAuxiliary
+    ears: AU14HeadsetGovforCommand
 
 - type: startingGear
   id: AU14GearOPFORVehicleCrewman
   equipment:
-    id: AU14IDCardOPFORVehicleCrewman
-    ears: AU14HeadsetOpforAuxiliary
+    outerClothing: AU14ArmorM3JungleThree
+    shoes: AU14BootsJungle
+    head: AU14JungleM10Helmet
+    jumpsuit: AU14JungleFatigues
+    ears: AU14HeadsetGovforCommand
+
+- type: entity
+  parent: CMSpawnPointJobBase
+  id: AU14SpawnPointGOVFORVehicleCrewman
+  name: Spawn Point GOVFOR Vehicle Crewman
+  components:
+  - type: SpawnPoint
+    job_id: AU14JobGOVFORVehicleCrewman
+  - type: Sprite
+    state: syn_spawn
+
+- type: job
+  parent: AU14JobVehicleCrewmanBase
+  id: AU14JobGOVFORVehicleCrewman
+  hidden: false
+  setPreference: true
+  basePlaytimeTracker: true
 
 - type: roleLoadout
   id: JobAU14JobGOVFORVehicleCrewman
@@ -104,11 +124,8 @@
 - type: startingGear
   id: AU14GearGOVFORVehicleCrewmanDummy
   equipment:
-    outerClothing: AU14ArmorM3JungleThree
-    shoes: AU14BootsJungle
-    head: AU14JungleM10Helmet
-    jumpsuit: AU14JungleFatigues
-    ears: AU14HeadsetGovforAuxiliary
+    id: AU14IDCardOPFORVehicleCrewman
+    ears: AU14HeadsetOpforCommand
 
 - type: startingGear
   id: AU14GearOPFORVehicleCrewmanDummy
@@ -117,18 +134,7 @@
     shoes: AU14BootsJungle
     head: AU14JungleM10Helmet
     jumpsuit: AU14JungleFatigues
-    ears: AU14HeadsetOpforAuxiliary
-
-# ├──[ Spawnpoints ]─────────────────────────────────────────────────┤
-- type: entity
-  parent: CMSpawnPointJobBase
-  id: AU14SpawnPointGOVFORVehicleCrewman
-  name: Spawn Point GOVFOR Vehicle Crewman
-  components:
-  - type: SpawnPoint
-    job_id: AU14JobGOVFORVehicleCrewman
-  - type: Sprite
-    state: syn_spawn
+    ears: AU14HeadsetOpforCommand
 
 - type: entity
   parent: CMSpawnPointJobBase
