@@ -13,6 +13,9 @@ using Content.Shared.Popups;
 using Content.Shared.Stunnable;
 using Content.Shared.Verbs;
 using Robust.Shared.Network;
+using Content.Shared._RMC14.Pulling;
+using Content.Shared.Movement.Pulling.Events;
+using Content.Shared.Pulling.Events;
 
 namespace Content.Shared._RMC14.Xenonids.Charge.ChargerJockey;
 
@@ -24,6 +27,7 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private SharedRMCSpriteSystem _rmcSprite = default!;
+    [Dependency] private RMCPullingSystem _rmcPulling = default!;
 
     public override void Initialize()
     {
@@ -36,6 +40,8 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
         SubscribeLocalEvent<XenoChargerJockeyComponent, XenoJockeyDoAfterEvent>(OnDoAfter);
 
         SubscribeLocalEvent<XenoChargerRidingComponent, MoveInputEvent>(OnRiderMoveInput);
+        SubscribeLocalEvent<XenoChargerRidingComponent, StartPullAttemptEvent>(OnRiderStartPullAttempt);
+        SubscribeLocalEvent<XenoChargerRidingComponent, PullAttemptEvent>(OnRiderPullAttempt);
         SubscribeLocalEvent<XenoChargerRidingComponent, ComponentShutdown>(OnRiderShutdown);
         SubscribeLocalEvent<XenoChargerRidingComponent, ChangeDirectionAttemptEvent>(OnRiderChangeDirectionAttempt);
 
@@ -137,6 +143,8 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
 
         var riderSlot = GetOpenRiderSlot(charger, comp);
         var riderLocalPosition = GetRiderLocalPosition(comp, riderSlot);
+
+        _rmcPulling.TryStopAllPullsFromAndOn(rider);
 
         var riding = EnsureComp<XenoChargerRidingComponent>(rider);
         riding.Charger = charger;
@@ -274,6 +282,22 @@ public sealed partial class XenoChargerJockeySystem : EntitySystem
             return;
 
         Dismount(rider.Owner, rider.Comp.Charger);
+    }
+
+    private void OnRiderStartPullAttempt(Entity<XenoChargerRidingComponent> rider, ref StartPullAttemptEvent args)
+    {
+        if (args.Puller != rider.Owner)
+            return;
+
+        args.Cancel();
+    }
+
+    private void OnRiderPullAttempt(Entity<XenoChargerRidingComponent> rider, ref PullAttemptEvent args)
+    {
+        if (args.PullerUid != rider.Owner)
+            return;
+
+        args.Cancelled = true;
     }
 
     private void OnRiderChangeDirectionAttempt(Entity<XenoChargerRidingComponent> rider, ref ChangeDirectionAttemptEvent args)
