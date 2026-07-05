@@ -66,6 +66,10 @@ namespace Content.Server.Database
 
         // AU14 INSFOR faction featureset
         public DbSet<AU14FactionDefinition> AU14FactionDefinitions { get; set; } = default!;
+        // AU14 building overhaul: admin-generated construction-menu entries (see AU14ConstructionModel.cs)
+        public DbSet<AU14CustomConstructionEntry> AU14CustomConstructionEntries { get; set; } = default!;
+        // CMU14
+        public DbSet<CMURoundOutcome> CMURoundOutcomes { get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -173,6 +177,12 @@ namespace Content.Server.Database
 
             modelBuilder.Entity<Round>()
                 .HasIndex(round => round.StartDate);
+
+            modelBuilder.Entity<CMURoundOutcome>()
+                .HasOne(outcome => outcome.Round)
+                .WithOne()
+                .HasForeignKey<CMURoundOutcome>(outcome => outcome.RoundId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<AdminLogPlayer>()
                 .HasKey(logPlayer => new {logPlayer.RoundId, logPlayer.LogId, logPlayer.PlayerUserId});

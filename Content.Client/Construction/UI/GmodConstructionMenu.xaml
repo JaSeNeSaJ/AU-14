@@ -118,8 +118,10 @@ SPDX-License-Identifier: AGPL-3.0-only
                                         Text="{Loc 'gmod-construction-menu-lathe-editor'}"
                                         HorizontalExpand="True" Margin="0 0 0 2"/>
 
-                                <!-- INSFOR category: the faction editors. Both run server console
-                                     commands, so servers without the INSFOR feature just no-op. -->
+                                <!-- INSFOR category: insfor-update intentionally layers this button onto
+                                     the improved construction menu from building-improvement PR #1497.
+                                     The editor runs a server console command, so servers without the
+                                     INSFOR feature just no-op. -->
                                 <Label Text="{Loc 'gmod-construction-menu-insfor'}"
                                        StyleClasses="LabelKeyText" Margin="0 6 0 2"/>
                                 <Button Name="InsforEditorButton"

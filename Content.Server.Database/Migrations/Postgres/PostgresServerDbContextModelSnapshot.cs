@@ -71,6 +71,50 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.ToTable("au14_faction_definitions", (string)null);
                 });
 
+            modelBuilder.Entity("Content.Server.Database.AU14CustomConstructionEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("au14_custom_construction_entries_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("EntryKey")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("entry_key");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("kind");
+
+                    b.Property<DateTime>("LastEditedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_edited_at");
+
+                    b.Property<string>("Yaml")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("yaml");
+
+                    b.HasKey("Id")
+                        .HasName("PK_au14_custom_construction_entries");
+
+                    b.HasIndex("Kind", "EntryKey")
+                        .IsUnique()
+                        .HasDatabaseName("IX_au14_custom_construction_entries_kind_entry_key");
+
+                    b.ToTable("au14_custom_construction_entries", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.Admin", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -1093,6 +1137,83 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.HasIndex("ProfileId");
 
                     b.ToTable("profile_role_loadout", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.CMURoundOutcome", b =>
+                {
+                    b.Property<int>("RoundId")
+                        .HasColumnType("integer")
+                        .HasColumnName("round_id");
+
+                    b.Property<int>("DurationSeconds")
+                        .HasColumnType("integer")
+                        .HasColumnName("duration_seconds");
+
+                    b.Property<string>("GovforPlatoonId")
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("govfor_platoon_id");
+
+                    b.Property<string>("OpforPlatoonId")
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("opfor_platoon_id");
+
+                    b.Property<string>("Outcome")
+                        .IsRequired()
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("outcome");
+
+                    b.Property<string>("PlanetId")
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("planet_id");
+
+                    b.Property<int>("PlayerCount")
+                        .HasColumnType("integer")
+                        .HasColumnName("player_count");
+
+                    b.Property<string>("PresetId")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("preset_id");
+
+                    b.Property<DateTime>("RecordedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("recorded_at");
+
+                    b.Property<string>("SelectedThreatId")
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("selected_threat_id");
+
+                    b.Property<string>("Source")
+                        .IsRequired()
+                        .HasMaxLength(96)
+                        .HasColumnType("character varying(96)")
+                        .HasColumnName("source");
+
+                    b.Property<string>("Winner")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("winner");
+
+                    b.HasKey("RoundId")
+                        .HasName("PK_cmu_round_outcomes");
+
+                    b.HasIndex("PresetId")
+                        .HasDatabaseName("IX_cmu_round_outcomes_preset_id");
+
+                    b.HasIndex("RecordedAt")
+                        .HasDatabaseName("IX_cmu_round_outcomes_recorded_at");
+
+                    b.HasIndex("SelectedThreatId")
+                        .HasDatabaseName("IX_cmu_round_outcomes_selected_threat_id");
+
+                    b.ToTable("cmu_round_outcomes", (string)null);
                 });
 
             modelBuilder.Entity("Content.Server.Database.RMCChatBans", b =>
@@ -2363,6 +2484,18 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasConstraintName("FK_profile_role_loadout_profile_profile_id");
 
                     b.Navigation("Profile");
+                });
+
+            modelBuilder.Entity("Content.Server.Database.CMURoundOutcome", b =>
+                {
+                    b.HasOne("Content.Server.Database.Round", "Round")
+                        .WithOne()
+                        .HasForeignKey("Content.Server.Database.CMURoundOutcome", "RoundId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("FK_cmu_round_outcomes_round_round_id");
+
+                    b.Navigation("Round");
                 });
 
             modelBuilder.Entity("Content.Server.Database.RMCChatBans", b =>
