@@ -27,6 +27,7 @@
   - type: InputMover
   - type: InteractionOutline
   - type: MovementSpeedModifier
+    weightlessModifier: 0
     baseWalkSpeed: 1
     baseSprintSpeed: 1
   - type: Tag
@@ -35,6 +36,8 @@
     - FootstepSound
   - type: Physics
     bodyType: KinematicController
+  # CMU
+  - type: CMUZPhysics
   - type: Clickable
   - type: Fixtures
     fixtures:

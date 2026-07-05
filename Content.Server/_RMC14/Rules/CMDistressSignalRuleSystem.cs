@@ -984,11 +984,12 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
             {
                 // Reset Hivecore Cooldown
                 var hiveComp = EnsureComp<HiveComponent>(rule.Hive);
-                //Add all the stranded xenos up
-                _hive.ChangeBurrowedLarva(larva); // TODO RMC14 should prob make sure it's only main hive
+                // Add all the stranded xenos up.
+                _hive.ChangeBurrowedLarva((rule.Hive, hiveComp), larva);
                 _hive.ResetHiveCoreCooldown((rule.Hive, hiveComp));
                 var surge = EnsureComp<HijackBurrowedSurgeComponent>(rule.Hive);
                 surge.PooledLarva = surgeAmount;
+                Dirty(rule.Hive, surge);
             }
         }
         else
