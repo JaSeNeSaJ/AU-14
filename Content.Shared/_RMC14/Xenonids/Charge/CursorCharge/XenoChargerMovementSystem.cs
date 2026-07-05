@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 using Content.Shared._RMC14.Atmos;
 using Content.Shared._RMC14.Emote;
+using Content.Shared.Mobs;
 using Content.Shared.Movement.Events;
 using Content.Shared.Movement.Systems;
 using Content.Shared.Stunnable;
@@ -30,6 +31,7 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
 
         SubscribeNetworkEvent<XenoCursorSteeringMessage>(OnCursorSteeringMessage);
         SubscribeLocalEvent<XenoChargerStateComponent, MoveInputEvent>(OnMoveInput);
+        SubscribeLocalEvent<XenoChargerStateComponent, MobStateChangedEvent>(OnMobStateChanged);
 
     }
 
@@ -232,6 +234,14 @@ public sealed partial class XenoChargerMovementSystem : EntitySystem
     private void OnMoveInput(Entity<XenoChargerStateComponent> ent, ref MoveInputEvent args)
     {
         args.Entity.Comp.HeldMoveButtons &= ~MoveButtons.AnyDirection;
+    }
+
+    private void OnMobStateChanged(Entity<XenoChargerStateComponent> ent, ref MobStateChangedEvent args)
+    {
+        if (_net.IsClient || args.NewMobState == MobState.Alive)
+            return;
+
+        ResetToIdle(ent.Owner);
     }
 
     private static Angle GetWorldRotation(Angle heading)
