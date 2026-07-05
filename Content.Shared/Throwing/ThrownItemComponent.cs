@@ -46,12 +46,6 @@ namespace Content.Shared.Throwing
         public bool PlayLandSound;
 
         /// <summary>
-        /// The physics collision state before the temporary throw fixture was added.
-        /// </summary>
-        [DataField, ViewVariables(VVAccess.ReadWrite), AutoNetworkedField]
-        public bool? PreviousCanCollide;
-
-        /// <summary>
         ///     Used to restore state after the throwing scale animation is finished.
         /// </summary>
         [DataField]

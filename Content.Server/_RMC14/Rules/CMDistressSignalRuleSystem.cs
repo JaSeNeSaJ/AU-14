@@ -1913,6 +1913,21 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
     }
 
     /// <summary>
+    /// Attempts to end the active distress signal rule through the normal distress result path.
+    /// </summary>
+    public bool TryEndActiveDistressRound(DistressSignalRuleResult result, LocId? customMessage = null)
+    {
+        var rules = QueryActiveRules();
+        while (rules.MoveNext(out _, out var distress, out _))
+        {
+            EndRound(distress, result, customMessage);
+            return distress.Result == result;
+        }
+
+        return false;
+    }
+
+    /// <summary>
     /// Sets the hive of all loaded xeno friendly entities (e.g. weeds).
     /// Only makes sense for distress signal with 1 hive, with multiple hives you would need to determine which weeds belong to which hive
     /// </summary>

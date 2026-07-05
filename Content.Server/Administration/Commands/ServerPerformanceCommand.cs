@@ -27,6 +27,8 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
     private static readonly string[] Modes =
     [
         "snapshot",
+        "deep",
+        "baseline",
         "components",
         "entities",
         "prototypes",
@@ -44,6 +46,8 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
     public string Help =>
         "Usage:\n" +
         "  serverperf snapshot [top=20] [dirtyTicks=5]\n" +
+        "  serverperf deep [top=20] [dirtyTicks=30] [filter]\n" +
+        "  serverperf baseline [dirtyTicks=30]\n" +
         "  serverperf components [top=20] [dirtyTicks=5] [filter]\n" +
         "  serverperf entities [top=20] [dirtyTicks=5] [filter]\n" +
         "  serverperf prototypes [top=20] [filter]\n" +
@@ -52,7 +56,10 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         "  serverperf profile on|off|top|systems|engine [frames=10] [top=20] [filter]\n" +
         "  serverperf metrics on|off|status\n" +
         "\n" +
+        "For before/after lag hunts: serverperf baseline, trigger the action, then serverperf deep 40 120.\n" +
         "Use 'serverperf profile on' during lag, wait a few seconds, then run 'serverperf profile systems'.";
+
+    private static SnapshotState? LastSnapshot;
 
     public void Execute(IConsoleShell shell, string argStr, string[] args)
     {
@@ -62,6 +69,12 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         {
             case "snapshot":
                 RunSnapshot(shell, args);
+                break;
+            case "deep":
+                RunDeep(shell, args);
+                break;
+            case "baseline":
+                RunBaseline(shell, args);
                 break;
             case "components":
                 RunComponents(shell, args);
@@ -112,19 +125,63 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var index = 1;
         var top = ReadInt(args, ref index, DefaultTop, 1, MaxTop);
         var dirtyTicks = ReadInt(args, ref index, DefaultDirtyTicks, 1, MaxDirtyTicks);
+        var snapshot = CollectSnapshot(dirtyTicks, null);
 
         shell.WriteLine("== Server Performance Snapshot ==");
         WriteSummary(shell);
         shell.WriteLine("");
         WriteProfileTop(shell, ProfileMode.Systems, DefaultFrames, Math.Min(top, 15), null, includeDisabledHint: false);
         shell.WriteLine("");
-        WriteComponentReport(shell, top, dirtyTicks, null);
+        WriteSnapshotDeltaReport(shell, snapshot, top, null);
         shell.WriteLine("");
-        WriteEntityReport(shell, top, dirtyTicks, null);
+        WriteComponentReport(shell, snapshot, top, null);
         shell.WriteLine("");
-        WritePrototypeReport(shell, top, null);
+        WriteEntityReport(shell, snapshot, top, null);
         shell.WriteLine("");
-        WriteMapReport(shell, top);
+        WritePrototypeReport(shell, snapshot, top, null);
+        shell.WriteLine("");
+        WriteMapReport(shell, snapshot, top);
+        LastSnapshot = snapshot;
+    }
+
+    private static void RunDeep(IConsoleShell shell, string[] args)
+    {
+        var index = 1;
+        var top = ReadInt(args, ref index, DefaultTop, 1, MaxTop);
+        var dirtyTicks = ReadInt(args, ref index, 30, 1, MaxDirtyTicks);
+        var filter = ReadFilter(args, index);
+        var snapshot = CollectSnapshot(dirtyTicks, filter);
+
+        shell.WriteLine("== Deep Server Performance Snapshot ==");
+        WriteSummary(shell);
+        shell.WriteLine("");
+        WriteProfileTop(shell, ProfileMode.Systems, Math.Max(DefaultFrames, 30), Math.Min(top, 30), filter, includeDisabledHint: true);
+        shell.WriteLine("");
+        WriteSnapshotDeltaReport(shell, snapshot, top, filter);
+        shell.WriteLine("");
+        WriteRecentCreationReport(shell, snapshot, top, filter);
+        shell.WriteLine("");
+        WriteComponentReport(shell, snapshot, top, filter);
+        shell.WriteLine("");
+        WriteEntityReport(shell, snapshot, top, filter);
+        shell.WriteLine("");
+        WriteEntityDetailReport(shell, snapshot, Math.Min(top, 30), filter);
+        shell.WriteLine("");
+        WritePrototypeReport(shell, snapshot, top, filter);
+        shell.WriteLine("");
+        WriteMapReport(shell, snapshot, top);
+        LastSnapshot = snapshot;
+    }
+
+    private static void RunBaseline(IConsoleShell shell, string[] args)
+    {
+        var index = 1;
+        var dirtyTicks = ReadInt(args, ref index, 30, 1, MaxDirtyTicks);
+        LastSnapshot = CollectSnapshot(dirtyTicks, null);
+
+        shell.WriteLine($"Baseline captured at tick {LastSnapshot.Tick.Value:N0}.");
+        shell.WriteLine($"Entities={LastSnapshot.EntityCount:N0} components={LastSnapshot.TotalComponents:N0} prototypes={LastSnapshot.Prototypes.Count:N0} maps={LastSnapshot.Maps.Count:N0}");
+        shell.WriteLine("Trigger the action, then run: serverperf deep 40 120");
     }
 
     private static void RunComponents(IConsoleShell shell, string[] args)
@@ -134,7 +191,7 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var dirtyTicks = ReadInt(args, ref index, DefaultDirtyTicks, 1, MaxDirtyTicks);
         var filter = ReadFilter(args, index);
 
-        WriteComponentReport(shell, top, dirtyTicks, filter);
+        WriteComponentReport(shell, CollectComponentStats(dirtyTicks, filter), dirtyTicks, top, filter);
     }
 
     private static void RunEntities(IConsoleShell shell, string[] args)
@@ -144,7 +201,7 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var dirtyTicks = ReadInt(args, ref index, DefaultDirtyTicks, 1, MaxDirtyTicks);
         var filter = ReadFilter(args, index);
 
-        WriteEntityReport(shell, top, dirtyTicks, filter);
+        WriteEntityReport(shell, CollectEntityStats(dirtyTicks, filter), dirtyTicks, top, filter);
     }
 
     private static void RunPrototypes(IConsoleShell shell, string[] args)
@@ -153,7 +210,7 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var top = ReadInt(args, ref index, DefaultTop, 1, MaxTop);
         var filter = ReadFilter(args, index);
 
-        WritePrototypeReport(shell, top, filter);
+        WritePrototypeReport(shell, CollectPrototypeStats(DefaultDirtyTicks, filter), top, filter);
     }
 
     private static void RunMaps(IConsoleShell shell, string[] args)
@@ -161,7 +218,7 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var index = 1;
         var top = ReadInt(args, ref index, DefaultTop, 1, MaxTop);
 
-        WriteMapReport(shell, top);
+        WriteMapReport(shell, CollectMapStats(DefaultDirtyTicks), top);
     }
 
     private static void RunSystems(IConsoleShell shell, string[] args)
@@ -302,10 +359,61 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         shell.WriteLine($"Endpoint: http://{cfg.GetCVar(CVars.MetricsHost)}:{cfg.GetCVar(CVars.MetricsPort)}/metrics");
     }
 
-    private static void WriteComponentReport(IConsoleShell shell, int top, int dirtyTicks, string? filter)
+    private static void WriteSnapshotDeltaReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
     {
-        var stats = CollectComponentStats(dirtyTicks, filter);
+        shell.WriteLine("== Delta Since Previous Snapshot ==");
+        if (filter != null)
+            shell.WriteLine($"Filter: {filter}");
 
+        if (LastSnapshot == null)
+        {
+            shell.WriteLine("No previous snapshot in memory. This snapshot is now the comparison baseline.");
+            return;
+        }
+
+        var previous = LastSnapshot;
+        var elapsedTicks = snapshot.Tick.Value >= previous.Tick.Value
+            ? snapshot.Tick.Value - previous.Tick.Value
+            : 0;
+
+        shell.WriteLine($"Previous tick={previous.Tick.Value:N0} current tick={snapshot.Tick.Value:N0} elapsedTicks={elapsedTicks:N0}");
+        shell.WriteLine($"Entities {previous.EntityCount:N0} -> {snapshot.EntityCount:N0} ({FormatSigned(snapshot.EntityCount - previous.EntityCount)}) | " +
+                        $"Components {previous.TotalComponents:N0} -> {snapshot.TotalComponents:N0} ({FormatSigned(snapshot.TotalComponents - previous.TotalComponents)})");
+
+        WriteCounterDeltaRows(shell, "Prototype count deltas", previous.PrototypeCounts, snapshot.PrototypeCounts, top);
+        WriteCounterDeltaRows(shell, "Component count deltas", previous.ComponentCounts, snapshot.ComponentCounts, top);
+        WriteMapDeltaRows(shell, previous, snapshot, top);
+        WriteEntityChurnRows(shell, "New entities since previous snapshot", GetNewEntities(previous, snapshot), top);
+        WriteEntityChurnRows(shell, "Removed entities since previous snapshot", GetRemovedEntities(previous, snapshot), top);
+        WriteEntityChurnRows(shell, "Modified entities since previous snapshot", snapshot.Entities.Where(e => e.LastModifiedTick.Value > previous.Tick.Value), top);
+    }
+
+    private static void WriteRecentCreationReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
+    {
+        shell.WriteLine($"== Recent Creations (dirty window {snapshot.DirtyTicks:N0} ticks) ==");
+        if (filter != null)
+            shell.WriteLine($"Filter: {filter}");
+
+        WriteEntityChurnRows(shell, "Created entities by prototype/map", snapshot.Entities.Where(e => IsRecent(e.CreationTick, snapshot.MinRecentTick)), top);
+
+        shell.WriteLine("Created components by type:");
+        var components = snapshot.Components
+            .Where(s => s.Created > 0)
+            .OrderByDescending(s => s.Created)
+            .ThenByDescending(s => s.Count)
+            .Take(top)
+            .ToArray();
+
+        WriteComponentRows(shell, components);
+    }
+
+    private static void WriteComponentReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
+    {
+        WriteComponentReport(shell, snapshot.Components, snapshot.DirtyTicks, top, filter);
+    }
+
+    private static void WriteComponentReport(IConsoleShell shell, List<ComponentStats> stats, int dirtyTicks, int top, string? filter)
+    {
         shell.WriteLine($"== Components (top {top:N0}, dirty window {dirtyTicks:N0} ticks) ==");
         if (filter != null)
             shell.WriteLine($"Filter: {filter}");
@@ -346,9 +454,14 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         }
     }
 
-    private static void WriteEntityReport(IConsoleShell shell, int top, int dirtyTicks, string? filter)
+    private static void WriteEntityReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
     {
-        var rows = CollectEntityStats(dirtyTicks, filter)
+        WriteEntityReport(shell, snapshot.Entities, snapshot.DirtyTicks, top, filter);
+    }
+
+    private static void WriteEntityReport(IConsoleShell shell, List<EntityStats> stats, int dirtyTicks, int top, string? filter)
+    {
+        var rows = stats
             .OrderByDescending(s => s.DirtyComponents)
             .ThenByDescending(s => s.ComponentCount)
             .ThenByDescending(s => s.LastModifiedTick.Value)
@@ -368,13 +481,50 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         for (var i = 0; i < rows.Length; i++)
         {
             var row = rows[i];
-            shell.WriteLine($"{i + 1,3}. {row.Uid,-10} comps={row.ComponentCount,3:N0} dirty={row.DirtyComponents,3:N0} net={row.NetworkedComponents,3:N0} tick={row.LastModifiedTick.Value,10:N0} map={row.MapId} proto={row.Prototype} name=\"{Truncate(row.Name, 48)}\"");
+            shell.WriteLine($"{i + 1,3}. {row.Uid,-10} comps={row.ComponentCount,3:N0} dirty={row.DirtyComponents,3:N0} net={row.NetworkedComponents,3:N0} tick={row.LastModifiedTick.Value,10:N0} created={row.CreationTick.Value,10:N0} map={row.MapId} grid={row.GridUid} proto={row.Prototype} name=\"{Truncate(row.Name, 48)}\"");
         }
     }
 
-    private static void WritePrototypeReport(IConsoleShell shell, int top, string? filter)
+    private static void WriteEntityDetailReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
     {
-        var rows = CollectPrototypeStats(filter)
+        var rows = snapshot.Entities
+            .Where(s => s.DirtyComponents > 0 || s.CreatedComponentNames.Length > 0 || IsRecent(s.CreationTick, snapshot.MinRecentTick))
+            .OrderByDescending(s => s.DirtyComponents)
+            .ThenByDescending(s => s.CreatedComponentNames.Length)
+            .ThenByDescending(s => s.ComponentCount)
+            .ThenByDescending(s => s.LastModifiedTick.Value)
+            .Take(top)
+            .ToArray();
+
+        shell.WriteLine($"== Dirty Entity Details (top {top:N0}) ==");
+        if (filter != null)
+            shell.WriteLine($"Filter: {filter}");
+
+        if (rows.Length == 0)
+        {
+            shell.WriteLine("No recently dirty or created entities.");
+            return;
+        }
+
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var row = rows[i];
+            var entityCreated = IsRecent(row.CreationTick, snapshot.MinRecentTick);
+            shell.WriteLine($"{i + 1,3}. {row.Uid,-10} proto={row.Prototype} map={row.MapId} grid={row.GridUid} createdEntity={YesNo(entityCreated)} name=\"{Truncate(row.Name, 40)}\"");
+            shell.WriteLine($"     dirty=[{JoinNames(row.DirtyComponentNames, 12)}]");
+            shell.WriteLine($"     created=[{JoinNames(row.CreatedComponentNames, 12)}]");
+            shell.WriteLine($"     comps=[{JoinNames(row.ComponentNames, 18)}]");
+        }
+    }
+
+    private static void WritePrototypeReport(IConsoleShell shell, SnapshotState snapshot, int top, string? filter)
+    {
+        WritePrototypeReport(shell, snapshot.Prototypes, top, filter);
+    }
+
+    private static void WritePrototypeReport(IConsoleShell shell, List<PrototypeStats> stats, int top, string? filter)
+    {
+        var rows = stats
             .OrderByDescending(s => s.Count)
             .ThenByDescending(s => s.DirtyEntities)
             .ThenBy(s => s.Prototype)
@@ -394,13 +544,18 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         for (var i = 0; i < rows.Length; i++)
         {
             var row = rows[i];
-            shell.WriteLine($"{i + 1,3}. {row.Prototype,-56} count={row.Count,7:N0} dirtyEntities={row.DirtyEntities,6:N0}");
+            shell.WriteLine($"{i + 1,3}. {row.Prototype,-56} count={row.Count,7:N0} dirtyEntities={row.DirtyEntities,6:N0} createdEntities={row.CreatedEntities,6:N0}");
         }
     }
 
-    private static void WriteMapReport(IConsoleShell shell, int top)
+    private static void WriteMapReport(IConsoleShell shell, SnapshotState snapshot, int top)
     {
-        var rows = CollectMapStats()
+        WriteMapReport(shell, snapshot.Maps, top);
+    }
+
+    private static void WriteMapReport(IConsoleShell shell, List<MapStats> stats, int top)
+    {
+        var rows = stats
             .OrderByDescending(s => s.Entities)
             .ThenByDescending(s => s.Grids)
             .Take(top)
@@ -416,7 +571,7 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         for (var i = 0; i < rows.Length; i++)
         {
             var row = rows[i];
-            shell.WriteLine($"{i + 1,3}. map={row.MapId,-8} entities={row.Entities,7:N0} dirty={row.DirtyEntities,6:N0} grids={row.Grids,5:N0} inNullspace={row.NullspaceEntities,6:N0}");
+            shell.WriteLine($"{i + 1,3}. map={row.MapId,-8} entities={row.Entities,7:N0} dirty={row.DirtyEntities,6:N0} created={row.CreatedEntities,6:N0} grids={row.Grids,5:N0} inNullspace={row.NullspaceEntities,6:N0}");
         }
     }
 
@@ -460,6 +615,168 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         {
             var row = rows[i];
             shell.WriteLine($"{i + 1,3}. {row.Name,-52} total={row.TotalMs,9:N3}ms avg={row.AverageMs,8:N3}ms max={row.MaxMs,8:N3}ms calls={row.Count,5:N0} alloc={FormatBytes(row.TotalAlloc),9}");
+        }
+    }
+
+    private static SnapshotState CollectSnapshot(int dirtyTicks, string? filter)
+    {
+        var entityManager = IoCManager.Resolve<IEntityManager>();
+        var timing = IoCManager.Resolve<IGameTiming>();
+        var components = CollectComponentStats(dirtyTicks, filter);
+        var entities = CollectEntityStats(dirtyTicks, filter);
+        var prototypes = CollectPrototypeStats(dirtyTicks, filter);
+        var maps = CollectMapStats(dirtyTicks);
+
+        return new SnapshotState(
+            timing.CurTick,
+            dirtyTicks,
+            MinRecentTick(timing, dirtyTicks),
+            entityManager.EntityCount,
+            components,
+            entities,
+            prototypes,
+            maps);
+    }
+
+    private static void WriteCounterDeltaRows(
+        IConsoleShell shell,
+        string title,
+        IReadOnlyDictionary<string, int> previous,
+        IReadOnlyDictionary<string, int> current,
+        int top)
+    {
+        shell.WriteLine($"{title}:");
+
+        var rows = previous.Keys
+            .Concat(current.Keys)
+            .Distinct(StringComparer.Ordinal)
+            .Select(key =>
+            {
+                previous.TryGetValue(key, out var oldValue);
+                current.TryGetValue(key, out var newValue);
+                return new CounterDeltaRow(key, oldValue, newValue, newValue - oldValue);
+            })
+            .Where(row => row.Delta != 0)
+            .OrderByDescending(row => Math.Abs(row.Delta))
+            .ThenBy(row => row.Name)
+            .Take(top)
+            .ToArray();
+
+        if (rows.Length == 0)
+        {
+            shell.WriteLine("  no count changes");
+            return;
+        }
+
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var row = rows[i];
+            shell.WriteLine($"{i + 1,3}. {row.Name,-56} {row.Previous,7:N0} -> {row.Current,7:N0} ({FormatSigned(row.Delta)})");
+        }
+    }
+
+    private static void WriteMapDeltaRows(IConsoleShell shell, SnapshotState previous, SnapshotState current, int top)
+    {
+        shell.WriteLine("Map deltas:");
+
+        var rows = previous.MapsById.Keys
+            .Concat(current.MapsById.Keys)
+            .Distinct(StringComparer.Ordinal)
+            .Select(mapId =>
+            {
+                previous.MapsById.TryGetValue(mapId, out var oldMap);
+                current.MapsById.TryGetValue(mapId, out var newMap);
+                var oldEntities = oldMap?.Entities ?? 0;
+                var newEntities = newMap?.Entities ?? 0;
+                var oldGrids = oldMap?.Grids ?? 0;
+                var newGrids = newMap?.Grids ?? 0;
+                var oldNullspace = oldMap?.NullspaceEntities ?? 0;
+                var newNullspace = newMap?.NullspaceEntities ?? 0;
+
+                return new MapDeltaRow(
+                    mapId,
+                    oldEntities,
+                    newEntities,
+                    newEntities - oldEntities,
+                    oldGrids,
+                    newGrids,
+                    newGrids - oldGrids,
+                    oldNullspace,
+                    newNullspace,
+                    newNullspace - oldNullspace);
+            })
+            .Where(row => row.EntityDelta != 0 || row.GridDelta != 0 || row.NullspaceDelta != 0)
+            .OrderByDescending(row => Math.Abs(row.EntityDelta) + Math.Abs(row.GridDelta * 25) + Math.Abs(row.NullspaceDelta))
+            .ThenBy(row => row.MapId)
+            .Take(top)
+            .ToArray();
+
+        if (rows.Length == 0)
+        {
+            shell.WriteLine("  no map count changes");
+            return;
+        }
+
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var row = rows[i];
+            shell.WriteLine($"{i + 1,3}. map={row.MapId,-8} entities {row.PreviousEntities,7:N0}->{row.CurrentEntities,7:N0} ({FormatSigned(row.EntityDelta)}) grids {row.PreviousGrids,4:N0}->{row.CurrentGrids,4:N0} ({FormatSigned(row.GridDelta)}) nullspace {row.PreviousNullspace,6:N0}->{row.CurrentNullspace,6:N0} ({FormatSigned(row.NullspaceDelta)})");
+        }
+    }
+
+    private static void WriteEntityChurnRows(IConsoleShell shell, string title, IEnumerable<EntityStats> entities, int top)
+    {
+        shell.WriteLine($"{title}:");
+
+        var rows = entities
+            .GroupBy(entity => new EntityChurnKey(entity.Prototype, entity.MapId))
+            .Select(group =>
+            {
+                var sample = group
+                    .OrderByDescending(entity => entity.LastModifiedTick.Value)
+                    .First();
+
+                return new EntityChurnRow(
+                    group.Key.Prototype,
+                    group.Key.MapId,
+                    group.Count(),
+                    sample.Uid,
+                    sample.Name,
+                    sample.GridUid);
+            })
+            .OrderByDescending(row => row.Count)
+            .ThenBy(row => row.Prototype)
+            .Take(top)
+            .ToArray();
+
+        if (rows.Length == 0)
+        {
+            shell.WriteLine("  none");
+            return;
+        }
+
+        for (var i = 0; i < rows.Length; i++)
+        {
+            var row = rows[i];
+            shell.WriteLine($"{i + 1,3}. {row.Prototype,-48} count={row.Count,6:N0} map={row.MapId,-8} sample={row.SampleUid} grid={row.SampleGrid} name=\"{Truncate(row.SampleName, 40)}\"");
+        }
+    }
+
+    private static IEnumerable<EntityStats> GetNewEntities(SnapshotState previous, SnapshotState current)
+    {
+        foreach (var (uid, entity) in current.EntitiesByUid)
+        {
+            if (!previous.EntitiesByUid.ContainsKey(uid))
+                yield return entity;
+        }
+    }
+
+    private static IEnumerable<EntityStats> GetRemovedEntities(SnapshotState previous, SnapshotState current)
+    {
+        foreach (var (uid, entity) in previous.EntitiesByUid)
+        {
+            if (!current.EntitiesByUid.ContainsKey(uid))
+                yield return entity;
         }
     }
 
@@ -532,14 +849,26 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
 
             var dirty = 0;
             var networked = 0;
+            var componentNames = new List<string>(components.Length);
+            var dirtyComponents = new List<string>();
+            var createdComponents = new List<string>();
 
             foreach (var component in components)
             {
+                var componentName = ComponentName(component);
+                componentNames.Add(componentName);
+
                 if (component.NetSyncEnabled)
                     networked++;
 
                 if (IsRecent(component.LastModifiedTick, minTick))
+                {
                     dirty++;
+                    dirtyComponents.Add(componentName);
+                }
+
+                if (IsRecent(component.CreationTick, minTick))
+                    createdComponents.Add(componentName);
             }
 
             entityManager.TryGetComponent(uid, out TransformComponent? xform);
@@ -552,17 +881,22 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
                 dirty,
                 networked,
                 meta.EntityLastModifiedTick,
-                xform?.MapID.ToString() ?? "<none>"));
+                meta.CreationTick,
+                xform?.MapID.ToString() ?? "<none>",
+                xform?.GridUid?.ToString() ?? "<none>",
+                componentNames.OrderBy(n => n).ToArray(),
+                dirtyComponents.OrderBy(n => n).ToArray(),
+                createdComponents.OrderBy(n => n).ToArray()));
         }
 
         return results;
     }
 
-    private static List<PrototypeStats> CollectPrototypeStats(string? filter)
+    private static List<PrototypeStats> CollectPrototypeStats(int dirtyTicks, string? filter)
     {
         var entityManager = IoCManager.Resolve<IEntityManager>();
         var timing = IoCManager.Resolve<IGameTiming>();
-        var minTick = MinRecentTick(timing, DefaultDirtyTicks);
+        var minTick = MinRecentTick(timing, dirtyTicks);
         var results = new Dictionary<string, PrototypeStats>();
 
         foreach (var uid in entityManager.GetEntities())
@@ -584,16 +918,19 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
 
             if (IsRecent(meta.EntityLastModifiedTick, minTick))
                 stats.DirtyEntities++;
+
+            if (IsRecent(meta.CreationTick, minTick))
+                stats.CreatedEntities++;
         }
 
         return results.Values.ToList();
     }
 
-    private static List<MapStats> CollectMapStats()
+    private static List<MapStats> CollectMapStats(int dirtyTicks)
     {
         var entityManager = IoCManager.Resolve<IEntityManager>();
         var timing = IoCManager.Resolve<IGameTiming>();
-        var minTick = MinRecentTick(timing, DefaultDirtyTicks);
+        var minTick = MinRecentTick(timing, dirtyTicks);
         var results = new Dictionary<string, MapStats>();
         var gridsByMap = new Dictionary<string, HashSet<EntityUid>>();
 
@@ -630,6 +967,9 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
             {
                 stats.DirtyEntities++;
             }
+
+            if (meta != null && IsRecent(meta.CreationTick, minTick))
+                stats.CreatedEntities++;
         }
 
         foreach (var (map, grids) in gridsByMap)
@@ -798,6 +1138,35 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         return false;
     }
 
+    private static string ComponentName(IComponent component)
+    {
+        const string suffix = "Component";
+        var name = component.GetType().Name;
+        return name.EndsWith(suffix, StringComparison.Ordinal)
+            ? name[..^suffix.Length]
+            : name;
+    }
+
+    private static string JoinNames(IReadOnlyList<string> values, int max)
+    {
+        if (values.Count == 0)
+            return string.Empty;
+
+        var visible = values.Take(max).ToArray();
+        var joined = string.Join(", ", visible);
+        var remaining = values.Count - visible.Length;
+        return remaining <= 0
+            ? joined
+            : $"{joined}, +{remaining:N0} more";
+    }
+
+    private static string FormatSigned(int value)
+    {
+        return value >= 0
+            ? $"+{value:N0}"
+            : value.ToString("N0", CultureInfo.InvariantCulture);
+    }
+
     private static string YesNo(bool value)
     {
         return value ? "yes" : "no";
@@ -836,11 +1205,17 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         int DirtyComponents,
         int NetworkedComponents,
         GameTick LastModifiedTick,
-        string MapId);
+        GameTick CreationTick,
+        string MapId,
+        string GridUid,
+        string[] ComponentNames,
+        string[] DirtyComponentNames,
+        string[] CreatedComponentNames);
 
     private sealed class PrototypeStats(string prototype)
     {
         public readonly string Prototype = prototype;
+        public int CreatedEntities;
         public int Count;
         public int DirtyEntities;
     }
@@ -848,11 +1223,80 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
     private sealed class MapStats(string mapId)
     {
         public readonly string MapId = mapId;
+        public int CreatedEntities;
         public int DirtyEntities;
         public int Entities;
         public int Grids;
         public int NullspaceEntities;
     }
+
+    private sealed class SnapshotState
+    {
+        public SnapshotState(
+            GameTick tick,
+            int dirtyTicks,
+            uint minRecentTick,
+            int entityCount,
+            List<ComponentStats> components,
+            List<EntityStats> entities,
+            List<PrototypeStats> prototypes,
+            List<MapStats> maps)
+        {
+            Tick = tick;
+            DirtyTicks = dirtyTicks;
+            MinRecentTick = minRecentTick;
+            EntityCount = entityCount;
+            Components = components;
+            Entities = entities;
+            Prototypes = prototypes;
+            Maps = maps;
+            ComponentCounts = components.ToDictionary(row => row.Name, row => row.Count, StringComparer.Ordinal);
+            EntityCountsByMap = maps.ToDictionary(row => row.MapId, row => row.Entities, StringComparer.Ordinal);
+            EntitiesByUid = entities.ToDictionary(row => row.Uid);
+            MapsById = maps.ToDictionary(row => row.MapId, StringComparer.Ordinal);
+            PrototypeCounts = prototypes.ToDictionary(row => row.Prototype, row => row.Count, StringComparer.Ordinal);
+            TotalComponents = components.Sum(row => row.Count);
+        }
+
+        public readonly List<ComponentStats> Components;
+        public readonly Dictionary<string, int> ComponentCounts;
+        public readonly int DirtyTicks;
+        public readonly int EntityCount;
+        public readonly Dictionary<string, int> EntityCountsByMap;
+        public readonly Dictionary<EntityUid, EntityStats> EntitiesByUid;
+        public readonly List<EntityStats> Entities;
+        public readonly List<MapStats> Maps;
+        public readonly Dictionary<string, MapStats> MapsById;
+        public readonly uint MinRecentTick;
+        public readonly Dictionary<string, int> PrototypeCounts;
+        public readonly List<PrototypeStats> Prototypes;
+        public readonly GameTick Tick;
+        public readonly int TotalComponents;
+    }
+
+    private readonly record struct CounterDeltaRow(string Name, int Previous, int Current, int Delta);
+
+    private readonly record struct EntityChurnKey(string Prototype, string MapId);
+
+    private readonly record struct EntityChurnRow(
+        string Prototype,
+        string MapId,
+        int Count,
+        EntityUid SampleUid,
+        string SampleName,
+        string SampleGrid);
+
+    private readonly record struct MapDeltaRow(
+        string MapId,
+        int PreviousEntities,
+        int CurrentEntities,
+        int EntityDelta,
+        int PreviousGrids,
+        int CurrentGrids,
+        int GridDelta,
+        int PreviousNullspace,
+        int CurrentNullspace,
+        int NullspaceDelta);
 
     private sealed class ProfileStats(string name)
     {
