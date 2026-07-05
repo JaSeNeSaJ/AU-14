@@ -135,6 +135,9 @@ namespace Content.Shared.Throwing
             var fixture = fixturesComponent.Fixtures.Values.First();
             var shape = fixture.Shape;
             _fixtures.TryCreateFixture(uid, shape, ThrowingFixture, hard: false, collisionMask: (int) CollisionGroup.ThrownItem, manager: fixturesComponent, body: body);
+            component.PreviousCanCollide ??= body.CanCollide;
+            Dirty(uid, component);
+            _physics.WakeBody(uid, manager: fixturesComponent, body: body);
         }
 
         private void HandleCollision(EntityUid uid, ThrownItemComponent component, ref StartCollideEvent args)
@@ -164,7 +167,11 @@ namespace Content.Shared.Throwing
 
         public void StopThrow(EntityUid uid, ThrownItemComponent thrownItemComponent)
         {
-            if (TryComp<PhysicsComponent>(uid, out var physics))
+            var previousCanCollide = thrownItemComponent.PreviousCanCollide;
+            PhysicsComponent? physics = null;
+            FixturesComponent? manager = null;
+
+            if (TryComp<PhysicsComponent>(uid, out physics))
             {
                 _physics.SetBodyStatus(uid, physics, BodyStatus.OnGround);
 
@@ -172,7 +179,7 @@ namespace Content.Shared.Throwing
                     _broadphase.RegenerateContacts((uid, physics));
             }
 
-            if (TryComp(uid, out FixturesComponent? manager))
+            if (TryComp(uid, out manager))
             {
                 var fixture = _fixtures.GetFixtureOrNull(uid, ThrowingFixture, manager: manager);
 
@@ -185,6 +192,13 @@ namespace Content.Shared.Throwing
             var ev = new StopThrowEvent(thrownItemComponent.Thrower);
             RaiseLocalEvent(uid, ref ev);
             RemComp<ThrownItemComponent>(uid);
+
+            if (previousCanCollide is { } canCollide &&
+                physics != null &&
+                physics.CanCollide != canCollide)
+            {
+                _physics.SetCanCollide(uid, canCollide, manager: manager, body: physics);
+            }
         }
 
         public void LandComponent(EntityUid uid, ThrownItemComponent thrownItem, PhysicsComponent physics, bool playSound)
