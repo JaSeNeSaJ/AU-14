@@ -5,18 +5,20 @@ using Content.Shared._RMC14.Language.Components;
 using Content.Shared._RMC14.Language.Prototypes;
 using Content.Shared._RMC14.Language.Systems;
 using Content.Shared.Examine;
+using Content.Shared.Mobs.Systems;
 using Robust.Server.GameObjects;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
 namespace Content.Server._RMC14.Language.Systems;
 
-public sealed class LanguageLearningSystem : SharedLanguageLearningSystem
+public sealed partial class LanguageLearningSystem : SharedLanguageLearningSystem
 {
     [Dependency] private IComponentFactory _compFactory = default!;
     [Dependency] private ExamineSystemShared _examine = default!;
     [Dependency] private LanguageSystem _languages = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
+    [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private IGameTiming _timing = default!;
 
     private const float MaxHearingRange = 10.0f;
@@ -98,6 +100,9 @@ public sealed class LanguageLearningSystem : SharedLanguageLearningSystem
         foreach (var potentialLearner in _potentialLearners)
         {
             if (potentialLearner == args.Source)
+                continue;
+
+            if (_mobState.IsDead(potentialLearner))
                 continue;
 
             if (!TryComp<LanguageLearningComponent>(potentialLearner, out var learnerComp))

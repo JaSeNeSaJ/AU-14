@@ -441,7 +441,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
         }
 
         // TODO RMC14 revive jelly when added should not bring back dead queens
-        if (prototype.TryGetComponent(out XenoEvolutionCappedComponent? capped, _compFactory) &&
+        if (prototype.TryComp(out XenoEvolutionCappedComponent? capped, _compFactory) &&
             HasLiving<XenoEvolutionCappedComponent>(capped.Max, e => e.Comp.Id == capped.Id, hive))
         {
             if (doPopup)
@@ -489,7 +489,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
             }
         }
 
-        prototype.TryGetComponent(out XenoComponent? newXenoComp, _compFactory);
+        prototype.TryComp(out XenoComponent? newXenoComp, _compFactory);
         if (newXenoComp != null &&
             newXenoComp.UnlockAt > _gameTicker.RoundDuration())
         {
@@ -530,13 +530,15 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
                 if (existingComp.Tier < newXenoComp.Tier)
                     continue;
 
-                if (slotCount.ContainsKey(existingComp.Role.Id) && slotCount[existingComp.Role.Id] > 0)
-                    slotCount[existingComp.Role.Id] -= 1;
+                if (slotCount.TryGetValue(existingComp.Role.Id, out var freeSlots) && freeSlots > 0)
+                    slotCount[existingComp.Role.Id] = freeSlots - 1;
                 else
                     existing++;
             }
 
-            if (total != 0 && existing / (float) total >= limit && (!slotCount.ContainsKey(newXeno) || slotCount[newXeno] <= 0))
+            if (total != 0 &&
+                existing / (float) total >= limit &&
+                (!slotCount.TryGetValue(newXeno, out var newXenoSlots) || newXenoSlots <= 0))
             {
                 if (doPopup)
                 {

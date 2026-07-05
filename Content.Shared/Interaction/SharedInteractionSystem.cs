@@ -58,7 +58,6 @@ namespace Content.Shared.Interaction
     public abstract partial class SharedInteractionSystem : EntitySystem
     {
         [Dependency] private IGameTiming _gameTiming = default!;
-        [Dependency] private IMapManager _mapManager = default!;
         [Dependency] private ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private ISharedChatManager _chat = default!;
         [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
@@ -89,6 +88,7 @@ namespace Content.Shared.Interaction
         private EntityQuery<WallMountComponent> _wallMountQuery;
         private EntityQuery<UseDelayComponent> _delayQuery;
         private EntityQuery<ActivatableUIComponent> _uiQuery;
+        private readonly HashSet<EntityUid> _predicateLookupResults = new();
 
         private const CollisionGroup InRangeUnobstructedMask = CollisionGroup.Impassable | CollisionGroup.InteractImpassable;
 
@@ -216,7 +216,22 @@ namespace Content.Shared.Interaction
             if (target.Comp.ParentUid == user.Owner)
                 return true;
 
-            return InRangeAndAccessible(user, target, range) || _ignoreUiRangeQuery.HasComp(user);
+            if (TryUiRangeOverride(user.Owner, target.Owner, out var inRange))
+                return inRange;
+
+            if (InRangeAndAccessible(user, target, range) || _ignoreUiRangeQuery.HasComp(user))
+                return true;
+
+            return IsAccessible(user, target) && _transform.InRange(user.Owner, target.Owner, range);
+        }
+
+        private bool TryUiRangeOverride(EntityUid user, EntityUid target, out bool inRange)
+        {
+            var ev = new InRangeOverrideEvent(user, target);
+            RaiseLocalEvent(user, ref ev);
+
+            inRange = ev.InRange;
+            return ev.Handled;
         }
 
         /// <summary>
@@ -908,7 +923,9 @@ namespace Content.Shared.Interaction
                 // inside of walls, users can still pick them up.
                 // TODO: Bandaid, alloc spam
                 // We use 0.01 range just in case it's perfectly in between 2 walls and 1 gets missed.
-                foreach (var otherEnt in _lookup.GetEntitiesInRange(target, 0.01f, flags: LookupFlags.Static))
+                _predicateLookupResults.Clear();
+                _lookup.GetEntitiesInRange(target, 0.01f, _predicateLookupResults, LookupFlags.Static);
+                foreach (var otherEnt in _predicateLookupResults)
                 {
                     if (target == otherEnt ||
                         !_physicsQuery.TryComp(otherEnt, out var otherBody) ||
@@ -935,10 +952,12 @@ namespace Content.Shared.Interaction
                     ignoreAnchored = angleDelta < wallMount.Arc / 2 || Math.Tau - angleDelta < wallMount.Arc / 2;
                 }
 
-                if (ignoreAnchored && _mapManager.TryFindGridAt(targetCoords, out var gridUid, out var grid))
+                if (ignoreAnchored && _map.TryFindGridAt(targetCoords, out var gridUid, out var grid))
                 {
                     ignored.UnionWith(_map.GetAnchoredEntities((gridUid, grid), targetCoords));
-                    foreach (var ent in _lookup.GetEntitiesInRange(targetCoords, 0.2f))
+                    _predicateLookupResults.Clear();
+                    _lookup.GetEntitiesInRange(targetCoords.MapId, targetCoords.Position, 0.2f, _predicateLookupResults);
+                    foreach (var ent in _predicateLookupResults)
                     {
                         if (!TryComp(ent, out TransformComponent? xform) ||
                             !xform.Anchored)
@@ -1325,7 +1344,7 @@ namespace Content.Shared.Interaction
                 rotation = mover.TargetRelativeRotation;
             }
 
-            Transform(item).LocalRotation = rotation;
+            _transform.SetLocalRotation(item, rotation);
         }
         #endregion
 
@@ -1484,7 +1503,7 @@ namespace Content.Shared.Interaction
 
         private void HandleUserInterfaceRangeCheck(ref BoundUserInterfaceCheckRangeEvent ev)
         {
-            if (ev.Result == BoundUserInterfaceRangeResult.Fail)
+            if (ev.Result != BoundUserInterfaceRangeResult.Default)
                 return;
 
             ev.Result = UiRangeCheck(ev.Actor!, ev.Target, ev.Data.InteractionRange)

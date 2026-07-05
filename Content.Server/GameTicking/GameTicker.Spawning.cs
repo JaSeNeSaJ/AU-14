@@ -499,8 +499,19 @@ namespace Content.Server.GameTicking
                     _sawmill.Debug("[RoundStart] Starting prepared post-roundstart threat vote.");
                     try
                     {
-                        _threatVoteSystem.StartPreparedThreatVote(assignedJobs);
-                        _sawmill.Debug("[RoundStart] Prepared threat vote started; threat and third-party spawn will continue from vote completion.");
+                        if (_threatVoteSystem.StartPreparedThreatVote(assignedJobs))
+                        {
+                            _sawmill.Debug("[RoundStart] Prepared threat vote handled; threat and third-party spawn will continue from vote completion or single-candidate auto-selection.");
+                        }
+                        else
+                        {
+                            Log.Warning("Prepared threat vote could not start.");
+
+                            _threatVoteSystem.ClearRoundJoinBlocks();
+                            int removed = ThreatSystem.RemoveThreatJobAssignments(assignedJobs);
+                            if (removed > 0)
+                                Log.Warning($"Removed {removed} held threat assignment(s) after threat vote start failed.");
+                        }
                     }
                     catch (Exception threatVoteEx)
                     {
@@ -926,7 +937,7 @@ namespace Content.Server.GameTicking
                 EntityCoordinates spawn = _robustRandom.Pick(_possiblePositions);
                 var toMap = _transform.ToMapCoordinates(spawn);
 
-                if (!_mapManager.TryFindGridAt(toMap, out EntityUid gridUid, out _))
+                if (!_map.TryFindGridAt(toMap, out EntityUid gridUid, out _))
                     return spawn;
 
                 TransformComponent gridXform = Transform(gridUid);
