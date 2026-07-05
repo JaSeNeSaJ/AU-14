@@ -5677,5 +5677,55 @@
   id: 399
   time: '2026-07-04T20:56:21.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1513
+- author: murdocstarsim
+  changes:
+  - message: Added/Updated Large changes to the military SOP's
+    type: Add
+  - message: Added/Updated More crimes to the military UCMJ and removed some minor
+      ones.
+    type: Add
+  - message: General Rules, Roleplay Rules and High Roleplay Rules have been updated
+    type: Admin
+  id: 400
+  time: '2026-07-05T01:55:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1532
+- author: maertayn
+  changes:
+  - message: New Command Officers (EO/LO/CMP/MO/IO/AO) - custom vendors & loadouts
+      to follow
+    type: Add
+  - message: Reorganised skills, ranks, chevrons, Id Cards
+    type: Code
+  id: 401
+  time: '2026-07-05T01:55:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1508
+- author: TheHellFireo
+  changes:
+  - message: Fixed Blackfoot/scout VTOLs being too wide for 3-tile doors.
+    type: Fix
+  - message: Chargers now stop charging when they die.
+    type: Fix
+  - message: Fixed third-party ghost roles spawning on inactive shuttle landing areas.
+    type: Fix
+  - message: Fixed ghost warp showing stale previous-round details.
+    type: Fix
+  - message: Xeno acid spray is no longer blocked by floor coverings like conveyors
+      and grass.
+    type: Fix
+  - message: Bulwark tail sweep no longer hits through walls.
+    type: Fix
+  - message: Drone android pilots now hear their operator radio channels instead of
+      AI.
+    type: Fix
+  - message: Hivemind chat is blocked while no living queen exists.
+    type: Fix
+  - message: Type 48-M utility pouches now fit armor with external webbing.
+    type: Fix
+  - message: Synths no longer receive organic oxygen damage in crit and can self-reattach
+      limbs through synth surgery.
+    type: Fix
+  id: 402
+  time: '2026-07-05T07:16:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1535
 Name: CMU
 Order: -1

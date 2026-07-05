@@ -344,7 +344,6 @@ public sealed partial class XenoChargeSystem : EntitySystem
         var ev = new XenoChargeDoAfterEvent(GetNetCoordinates(args.Target));
         var doAfter = new DoAfterArgs(EntityManager, xeno, xeno.Comp.ChargeDelay, ev, xeno)
         {
-            BreakOnMove = true,
             Hidden = true,
         };
 
