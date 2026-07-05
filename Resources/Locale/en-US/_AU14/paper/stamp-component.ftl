@@ -15,6 +15,7 @@ stamp-component-stamped-name-au14-so = Staff Officer
 stamp-component-stamped-name-au14-io = Intelligence Officer
 stamp-component-stamped-name-au14-mp = Military Police Officer
 stamp-component-stamped-name-au14-mo = Medical Officer
+stamp-component-stamped-name-au14-lo = Logistics Officer
 stamp-component-stamped-name-au14-aux = Auxiliary Technician
 stamp-component-stamped-name-au14-eo = Engineering Officer
 stamp-component-stamped-name-au14-sea = Senior Enlisted Advisor
