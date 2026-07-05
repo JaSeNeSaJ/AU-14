@@ -5727,5 +5727,74 @@
   id: 402
   time: '2026-07-05T07:16:12.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1535
+- author: TheHellFireo
+  changes:
+  - message: Fixed Orbital Arbiter spawn eligibility.
+    type: Fix
+  - message: Fixed CMO med prep access and missing starting storage.
+    type: Fix
+  - message: Fixed drone operator spawning on a random character.
+    type: Fix
+  - message: Fixed drone operator loadout cosmetics being lost when satchel storage
+      is replaced.
+    type: Fix
+  - message: Fixed colony synth command-door access gaps.
+    type: Fix
+  - message: Fixed RMC L96 flare projectiles appearing red when fired.
+    type: Fix
+  - message: Fixed uppercase radio channel prefixes being treated as emotes.
+    type: Fix
+  - message: Fixed radio language learning not applying across heard radio/Z-level
+      speech.
+    type: Fix
+  - message: Fixed headsets translating all radio speech into English.
+    type: Fix
+  - message: Fixed Weyland overwatch consoles granting unintended squad access.
+    type: Fix
+  - message: Fixed powerloaders ignoring gravity/Z-physics.
+    type: Fix
+  - message: Fixed CMB paddywagon occupant placement.
+    type: Fix
+  - message: Fixed reflective resin being upgradeable into strong resin.
+    type: Fix
+  - message: Fixed z-physics movement prediction getting stuck after certain xeno
+      landings.
+    type: Fix
+  - message: Fixed medical console department announcements.
+    type: Fix
+  - message: Fixed Lexington tactical landing warning size.
+    type: Fix
+  - message: Fixed tier-zero xenos and insurgency paths spawning burrowed larva.
+    type: Fix
+  - message: Fixed queen claws failing to break fragile rock.
+    type: Fix
+  - message: Fixed seated mouth-slot cigar/cigarette smoke visuals.
+    type: Fix
+  - message: Fixed xenos bypassing closed shutters by climbing tables.
+    type: Fix
+  - message: Fixed post-hijack burrowed larva surge.
+    type: Fix
+  - message: Fixed alien crash-down damaging allies and dead bodies incorrectly.
+    type: Fix
+  - message: Fixed failed oppressor hook/tether visuals sticking to targets.
+    type: Fix
+  - message: Fixed hive/system announcement messages appearing as runechat bubbles.
+    type: Fix
+  - message: Fixed CMU round stats showing manual/unknown endings without useful reason
+      context.
+    type: Fix
+  - message: Fixed thrown weapons/items staying airborne without proper friction/gravity.
+    type: Fix
+  - message: Fixed lesser drone shield visuals missing the expected sprite layer.
+    type: Fix
+  - message: Slowed language learning to take about three times longer.
+    type: Tweak
+  - message: Made radio and whisper runechat bubbles to be smaller and non-italic.
+    type: Tweak
+  - message: Changed tacmap vehicle occupancy text away from white for readability.
+    type: Tweak
+  id: 403
+  time: '2026-07-05T16:53:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1539
 Name: CMU
 Order: -1
