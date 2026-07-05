@@ -36,6 +36,8 @@
     - FootstepSound
   - type: Physics
     bodyType: KinematicController
+  # CMU
+  - type: CMUZPhysics
   - type: Clickable
   - type: Fixtures
     fixtures:
