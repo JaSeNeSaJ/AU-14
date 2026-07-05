@@ -22,6 +22,7 @@ public sealed partial class LanguageLearningSystem : SharedLanguageLearningSyste
     [Dependency] private IGameTiming _timing = default!;
 
     private const float MaxHearingRange = 10.0f;
+    private const float LearningDurationMultiplier = 3.0f;
     private readonly HashSet<EntityUid> _potentialLearners = [];
 
     public override void Initialize()
@@ -291,6 +292,7 @@ public sealed partial class LanguageLearningSystem : SharedLanguageLearningSyste
             var learningRate = baseRate + frequencyBonus;
             var actualLearning = learningRate * diminishingFactor * distancePenalty;
             actualLearning *= languageProto.LearningRateMultiplier;
+            actualLearning /= LearningDurationMultiplier;
             actualLearning *= _random.NextFloat(0.9f, 1.1f);
 
             var newComprehension = Math.Min(comp.MaxWordComprehension, currentComprehension + actualLearning);
