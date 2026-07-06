@@ -255,9 +255,9 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
 
     private void EquipStartingGear(EntityUid friend)
     {
-        _prototypeManager.TryIndex(ImaginaryFriendGear, out var startingGear);
+        bool usedAdvisorGear = _prototypeManager.TryIndex(ImaginaryFriendGear, out var startingGear);
 
-        if (startingGear == null
+        if (!usedAdvisorGear
             && _prototypeManager.TryIndex(ImaginaryFriendJobPrototype, out var jobProto)
             && jobProto.StartingGear is { } jobGearId)
             _prototypeManager.TryIndex(jobGearId, out startingGear);
@@ -265,13 +265,16 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
         if (startingGear != null)
             _stationSpawning.EquipStartingGear(friend, startingGear, raiseEvent: false);
 
-        // Remove the satchel & stamp + add the drill instructor hat
-        if (_inventory.TryGetSlotEntity(friend, "back", out var backItem))
-            Del(backItem.Value);
-        if (_inventory.TryGetSlotEntity(friend, "pocket1", out var pocket1Item))
-            Del(pocket1Item.Value);
-        var hat = Spawn("CMHeadCapDrill", Transform(friend).Coordinates);
-        _inventory.TryEquip(friend, hat, "head");
+        if (!usedAdvisorGear)
+        {
+            // Remove the satchel & stamp + add the drill instructor hat
+            if (_inventory.TryGetSlotEntity(friend, "back", out var backItem))
+                Del(backItem.Value);
+            if (_inventory.TryGetSlotEntity(friend, "pocket1", out var pocket1Item))
+                Del(pocket1Item.Value);
+            var hat = Spawn("CMHeadCapDrill", Transform(friend).Coordinates);
+            _inventory.TryEquip(friend, hat, "head");
+        }
 
         var ev = new StartingGearEquippedEvent(friend);
         RaiseLocalEvent(friend, ref ev);
