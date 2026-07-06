@@ -5796,5 +5796,56 @@
   id: 403
   time: '2026-07-05T16:53:22.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1539
+- author: TheHellFireo
+  changes:
+  - message: Improved runechat readability with a black outline/halo.
+    type: Fix
+  - message: Fixed distress withdrawal ending, spawn-as-job invalid placement, and
+      reverted the broken throw/Z-physics changes.
+    type: Fix
+  - message: Added deeper serverperf baseline/deep diagnostics for lag hunts.
+    type: Add
+  - message: AG80 gets falloff and its burst mode is fixed
+    type: Fix
+  id: 404
+  time: '2026-07-05T18:21:01.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1540
+- author: murdocstarsim
+  changes:
+  - message: SOP Rewrite finalisation
+    type: Add
+  id: 405
+  time: '2026-07-05T21:45:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1538
+- author: maertayn
+  changes:
+  - message: Imaginary Friend loadout for Marine Advisor
+    type: Fix
+  - message: mghost - Mentor Ghost command when alive & in-round for Mentors (with
+      Return to Body)
+    type: Add
+  - message: Fixed CMO vendor access, removed duplicate stamp & added pouches
+    type: Fix
+  - message: CMP icon for Govfor
+    type: Add
+  - message: Latin trait gone (added to Cultists) & Portuguese trait added
+    type: Tweak
+  - message: GameMap Prototypes now have an Allegiance field (check allegiances.yml)
+      & added USASF Recruiters to UA aligned maps
+    type: Map
+  - message: Silence & Call-To-Attention for CMP/XO
+    type: Fix
+  - message: Scout Webbing from CLF purchase
+    type: Remove
+  - message: M48A5 Belt (no super) added to Advisor gear
+    type: Add
+  - message: Synths can choose their Reset Key in loadout menu
+    type: Add
+  - message: CMP can request ammunition for their revolver, from reqs. under Specialist
+      Ammo
+    type: Add
+  id: 406
+  time: '2026-07-06T00:29:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1543
 Name: CMU
 Order: -1
