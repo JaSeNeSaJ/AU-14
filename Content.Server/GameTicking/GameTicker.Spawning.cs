@@ -55,6 +55,7 @@ namespace Content.Server.GameTicking
         [Dependency] private OriginSystem _originSystem = default!;
 
         public static readonly EntProtoId ObserverPrototypeName = "MobObserver";
+        public static readonly EntProtoId MentorObserverPrototypeName = "MentorObserver";
         public static readonly EntProtoId AdminObserverPrototypeName = "RMCAdminObserver";
 
         private const string AuThreatLeaderJob = "AU14JobThreatLeader";
