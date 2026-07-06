@@ -5514,27 +5514,6 @@
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1517
 - author: TheHellFireo
   changes:
-  - message: Added xeno armor sunder. Marine ballistic fire now gradually wears down
-      xeno armor, reducing its effective armor until it recovers.
-    type: Add
-  - message: Standard ballistic ammo, including regular rifle, SMG, pistol, smartgun,
-      tracer, and incendiary rounds, applies 0.05% sunder per hit.
-    type: Tweak
-  - message: rifle AP and WP ammo applies 0.25% sunder per hit, while pulse rifle
-      HEAP ammo applies 0.4% per hit.
-    type: Tweak
-  - message: Shotgun buckshot applies 0.05% sunder per pellet, slugs and incendiary
-      slugs apply 0.75%, flechettes apply 0.1% per pellet, and beanbags apply no sunder.
-    type: Tweak
-  - message: At 10% sunder, a 35 armor Defender is reduced to 31.5 effective armor,
-      while a 25 armor Ravager is reduced to 22.5 effective armor.
-    type: Tweak
-  - message: Sunder recovery takes about 67 seconds per 10% sunder while standing
-      on weeds, or 33 seconds while resting on weeds, before recovery pheromones.
-    type: Tweak
-  - message: A xeno at 50% sunder takes about 5.5 minutes to fully recover while standing
-      on friendly weeds, or 2.8 minutes while resting before recovery pheromones.
-    type: Tweak
   - message: Puts round start larva back to 5
     type: Tweak
   id: 391
