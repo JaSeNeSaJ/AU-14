@@ -239,20 +239,35 @@ namespace Content.Shared.Interaction
             if (range <= 0f)
                 return true;
 
-            if (_transform.InRange(user.Owner, target.Owner, range))
+            if (!Resolve(user, ref user.Comp) ||
+                !Resolve(target, ref target.Comp))
+            {
+                return false;
+            }
+
+            var userCoordinates = user.Comp!.Coordinates;
+            var userAngle = user.Comp.LocalRotation;
+            if (_net.IsServer && TryComp(user, out ActorComponent? actor))
+            {
+                // Remote clients can open a BUI before the server has caught up to their predicted position.
+                range += _rmcLagCompensation.MarginTiles;
+                (userCoordinates, userAngle) = _rmcLagCompensation.GetCoordinatesAngle(user, actor.PlayerSession, user.Comp);
+            }
+
+            if (_transform.InRange(userCoordinates, target.Comp.Coordinates, range))
                 return true;
 
             if (!_fixtureQuery.TryComp(user, out var userFixtures) ||
                 userFixtures.FixtureCount == 0 ||
                 !_fixtureQuery.TryComp(target, out var targetFixtures) ||
                 targetFixtures.FixtureCount == 0 ||
-                !Resolve(user, ref user.Comp) ||
-                !Resolve(target, ref target.Comp))
+                !userCoordinates.IsValid(EntityManager))
             {
                 return false;
             }
 
-            var (userPosition, userRotation) = _transform.GetWorldPositionRotation(user.Comp);
+            var userPosition = _transform.ToMapCoordinates(userCoordinates).Position;
+            var userRotation = _transform.GetWorldRotation(userCoordinates.EntityId) + userAngle;
             var (targetPosition, targetRotation) = _transform.GetWorldPositionRotation(target.Comp);
             var userTransform = new Transform(userPosition, userRotation);
             var targetTransform = new Transform(targetPosition, targetRotation);
