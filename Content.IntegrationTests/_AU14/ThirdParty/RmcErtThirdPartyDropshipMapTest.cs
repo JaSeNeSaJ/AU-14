@@ -5,6 +5,7 @@ using Content.Shared._RMC14.Dropship;
 using Content.Shared.AU14.Round;
 using Content.Shared.AU14.Scenario;
 using Content.Shared._CMU14.Threats;
+using Content.Shared.Shuttles.Components;
 using Robust.Shared.EntitySerialization;
 using Robust.Shared.EntitySerialization.Systems;
 using Robust.Shared.GameObjects;
@@ -153,7 +154,7 @@ public sealed class RmcErtThirdPartyDropshipMapTest
     }
 
     [Test]
-    public async Task ThirdPartyShuttleSpawnUsesAvailableThirdPartyLandingDestination()
+    public async Task ThirdPartyShuttleSpawnWaitsForManualLaunch()
     {
         await using var pair = await PoolManager.GetServerClient();
         var server = pair.Server;
@@ -186,6 +187,26 @@ public sealed class RmcErtThirdPartyDropshipMapTest
         await server.WaitAssertion(() =>
         {
             var entities = server.EntMan;
+            EntityUid? spawnedDropship = null;
+            EntityUid? spawnedReturnDestination = null;
+            var dropshipQuery = entities.EntityQueryEnumerator<DropshipComponent>();
+            while (dropshipQuery.MoveNext(out var uid, out var dropship))
+            {
+                if (dropship.Destination is not { } destination ||
+                    !entities.TryGetComponent(destination,
+                        out ThirdPartyDropshipReturnDestinationComponent returnDestination) ||
+                    returnDestination.Shuttle != uid)
+                {
+                    continue;
+                }
+
+                spawnedDropship = uid;
+                spawnedReturnDestination = destination;
+                break;
+            }
+
+            Assert.That(spawnedDropship, Is.Not.Null);
+            Assert.That(spawnedReturnDestination, Is.Not.Null);
             Assert.Multiple(() =>
             {
                 Assert.That(
@@ -198,8 +219,16 @@ public sealed class RmcErtThirdPartyDropshipMapTest
                     "Returned third-party holding vectors must not be reused as active landing destinations.");
                 Assert.That(
                     entities.GetComponent<DropshipDestinationComponent>(thirdPartyDestination).Ship,
-                    Is.Not.Null,
-                    "The spawned third-party shuttle should be routed to the active third-party landing destination.");
+                    Is.Null,
+                    "The spawned third-party shuttle must not auto-launch to the active third-party landing destination.");
+                Assert.That(
+                    entities.GetComponent<DropshipDestinationComponent>(spawnedReturnDestination.Value).Ship,
+                    Is.EqualTo(spawnedDropship.Value),
+                    "The spawned third-party shuttle should stay parked at its generated deep-space return destination.");
+                Assert.That(
+                    entities.HasComponent<FTLComponent>(spawnedDropship.Value),
+                    Is.False,
+                    "The spawned third-party shuttle should wait for a manual launch instead of entering FTL.");
             });
         });
 
