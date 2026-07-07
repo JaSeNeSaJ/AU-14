@@ -11,7 +11,7 @@ namespace Content.IntegrationTests._CMU14.Maps;
 [TestFixture]
 public sealed class RotationMapAtmosphereTest
 {
-    private static readonly ProtoId<GameMapPoolPrototype> RMCDefaultMapPool = "RMCDefaultMapPool";
+    private const string RMCDefaultMapPool = "RMCDefaultMapPool";
 
     [Test]
     public async Task InRotationMapsHaveMapAtmosphere()
@@ -27,7 +27,7 @@ public sealed class RotationMapAtmosphereTest
             var errors = new List<string>();
             var checkedPaths = new HashSet<ResPath>();
 
-            if (prototypes.TryIndex(RMCDefaultMapPool, out var pool))
+            if (prototypes.TryIndex<GameMapPoolPrototype>(RMCDefaultMapPool, out var pool))
             {
                 foreach (var mapId in pool.Maps)
                 {
