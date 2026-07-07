@@ -1026,36 +1026,61 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
             for (var logIndex = index.StartPos; logIndex < index.EndPos; logIndex++)
             {
                 var log = buffer.Log(logIndex);
-                if (log.Type != ProfLogType.GroupEnd ||
-                    log.GroupEnd.Value.Type != ProfValueType.TimeAllocSample)
+                switch (log.Type)
                 {
-                    continue;
+                    case ProfLogType.GroupEnd:
+                        AddProfileSample(
+                            stats,
+                            mode,
+                            filter,
+                            systemNames,
+                            prof.GetString(log.GroupEnd.StringId),
+                            log.GroupEnd.Value);
+                        break;
+                    case ProfLogType.Value:
+                        AddProfileSample(
+                            stats,
+                            mode,
+                            filter,
+                            systemNames,
+                            prof.GetString(log.Value.StringId),
+                            log.Value.Value);
+                        break;
                 }
-
-                var name = prof.GetString(log.GroupEnd.StringId);
-                if (!MatchesProfileMode(mode, name, systemNames) ||
-                    !Matches(filter, name))
-                {
-                    continue;
-                }
-
-                if (!stats.TryGetValue(name, out var row))
-                {
-                    row = new ProfileStats(name);
-                    stats[name] = row;
-                }
-
-                var sample = log.GroupEnd.Value.TimeAllocSample;
-                var ms = sample.Time * 1000.0;
-                row.Count++;
-                row.TotalMs += ms;
-                row.MaxMs = Math.Max(row.MaxMs, ms);
-                row.TotalAlloc += sample.Alloc;
-                row.MaxAlloc = Math.Max(row.MaxAlloc, sample.Alloc);
             }
         }
 
         return frameCount > 0;
+    }
+
+    private static void AddProfileSample(
+        Dictionary<string, ProfileStats> stats,
+        ProfileMode mode,
+        string? filter,
+        HashSet<string> systemNames,
+        string name,
+        ProfValue value)
+    {
+        if (value.Type != ProfValueType.TimeAllocSample ||
+            !MatchesProfileMode(mode, name, systemNames) ||
+            !Matches(filter, name))
+        {
+            return;
+        }
+
+        if (!stats.TryGetValue(name, out var row))
+        {
+            row = new ProfileStats(name);
+            stats[name] = row;
+        }
+
+        var sample = value.TimeAllocSample;
+        var ms = sample.Time * 1000.0;
+        row.Count++;
+        row.TotalMs += ms;
+        row.MaxMs = Math.Max(row.MaxMs, ms);
+        row.TotalAlloc += sample.Alloc;
+        row.MaxAlloc = Math.Max(row.MaxAlloc, sample.Alloc);
     }
 
     private static List<Type> GetUpdateSystemOrder(IEntitySystemManager systems)
