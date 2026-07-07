@@ -21,21 +21,18 @@ permissions:
 env:
   DOTNET_VERSION: 10.0.x
   CONFIGURATION: Release
-  TEST_MERGE_BRANCH: test-merge/${{ github.run_id }}-${{ github.run_attempt }}
 
 jobs:
   prepare:
     name: Resolve PR merges
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
       pull-requests: read
     outputs:
       base_sha: ${{ steps.pr.outputs.base_sha }}
       base_ref: ${{ steps.pr.outputs.base_ref }}
       prs_json: ${{ steps.pr.outputs.prs_json }}
-      merge_branch: ${{ steps.merge.outputs.branch }}
-      merge_ref: ${{ steps.merge.outputs.ref }}
       merge_sha: ${{ steps.merge.outputs.sha }}
     steps:
       - name: Validate PRs
@@ -90,11 +87,17 @@ jobs:
               return;
             }
 
-            const baseSha = pulls[0].base_sha;
+            const { data: baseBranch } = await github.rest.git.getRef({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: `heads/${baseRef}`,
+            });
+            const baseSha = baseBranch.object.sha;
+
             core.setOutput('base_ref', baseRef);
             core.setOutput('base_sha', baseSha);
             core.setOutput('prs_json', JSON.stringify(pulls));
-            core.notice(`Publishing test merge for ${pulls.map(pull => `#${pull.number}`).join(', ')} onto ${baseRef}.`);
+            core.notice(`Publishing test merge for ${pulls.map(pull => `#${pull.number}`).join(', ')} onto ${baseRef} @ ${baseSha}.`);
 
       - uses: actions/checkout@v6.0.2
         with:
@@ -113,7 +116,7 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$TEST_MERGE_BRANCH" "${{ steps.pr.outputs.base_sha }}"
+          git checkout -B test-merge-source "${{ steps.pr.outputs.base_sha }}"
 
           echo "$PRS_JSON" | jq -r '.[].number' | while read -r pr_number; do
             echo "Merging PR #$pr_number"
@@ -121,10 +124,31 @@ jobs:
             git merge --no-ff --no-edit "refs/remotes/origin/test-merge-pr-${pr_number}"
           done
 
-          git push --force origin "HEAD:refs/heads/$TEST_MERGE_BRANCH"
-          echo "branch=$TEST_MERGE_BRANCH" >> "$GITHUB_OUTPUT"
-          echo "ref=refs/heads/$TEST_MERGE_BRANCH" >> "$GITHUB_OUTPUT"
+          if ! git diff --quiet "${{ steps.pr.outputs.base_sha }}" -- .github/workflows; then
+            echo "::notice::Test merge includes workflow file changes; restoring .github/workflows to base before creating the test merge patch."
+            git checkout "${{ steps.pr.outputs.base_sha }}" -- .github/workflows
+          fi
+
+          pull_list="$(echo "$PRS_JSON" | jq -r 'map("#" + (.number | tostring)) | join(", ")')"
+          git diff --binary --output=test-merge.patch "${{ steps.pr.outputs.base_sha }}"
+          git reset --soft "${{ steps.pr.outputs.base_sha }}"
+
+          if git diff --cached --quiet; then
+            echo "::warning::Test merge produced no content changes after sanitizing workflow files; using base ref."
+            echo "sha=${{ steps.pr.outputs.base_sha }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "Test merge ${pull_list}"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload merge patch
+        uses: actions/upload-artifact@v7.0.1
+        with:
+          name: test-merge-patch
+          path: test-merge.patch
+          if-no-files-found: error
+          retention-days: 1
 
   package:
     name: Package ${{ matrix.name }}
@@ -147,9 +171,25 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ needs.prepare.outputs.merge_ref }}
+          ref: ${{ needs.prepare.outputs.base_sha }}
           persist-credentials: true
           submodules: false
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: test-merge-patch
+          path: .test-merge
+
+      - name: Apply test merge patch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -s .test-merge/test-merge.patch ]; then
+            git apply --index --binary .test-merge/test-merge.patch
+          else
+            echo "No content changes to apply."
+          fi
 
       - name: Checkout submodules
         run: |
@@ -193,9 +233,25 @@ jobs:
     steps:
       - uses: actions/checkout@v6.0.2
         with:
-          ref: ${{ needs.prepare.outputs.merge_ref }}
+          ref: ${{ needs.prepare.outputs.base_sha }}
           persist-credentials: true
           submodules: false
+
+      - uses: actions/download-artifact@v8.0.1
+        with:
+          name: test-merge-patch
+          path: .test-merge
+
+      - name: Apply test merge patch
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -s .test-merge/test-merge.patch ]; then
+            git apply --index --binary .test-merge/test-merge.patch
+          else
+            echo "No content changes to apply."
+          fi
 
       - name: Checkout RobustToolbox
         run: |
@@ -278,23 +334,3 @@ jobs:
                 throw error;
               }
             }
-
-  cleanup:
-    name: Delete test merge branch
-    runs-on: ubuntu-latest
-    if: always() && needs.prepare.outputs.merge_branch != ''
-    needs:
-      - prepare
-      - package
-      - publish
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v6.0.2
-        with:
-          persist-credentials: true
-          submodules: false
-
-      - name: Delete test merge branch
-        shell: bash
-        run: git push origin --delete "${{ needs.prepare.outputs.merge_branch }}" || true
