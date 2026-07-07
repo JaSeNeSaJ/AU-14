@@ -30,11 +30,14 @@ public sealed partial class UserDbDataManager : IPostInjectInit
 
     private ISawmill _sawmill = default!;
     private TimeSpan _loadTimingWarnThreshold = TimeSpan.FromSeconds(5);
+    private bool _loadTimingCVarSubscribed;
 
     // TODO: Ideally connected/disconnected would be subscribed to IPlayerManager directly,
     // but this runs into ordering issues with game ticker.
     public void ClientConnected(ICommonSession session)
     {
+        EnsureLoadTimingCVarSubscribed();
+
         _sawmill.Verbose($"Initiating load for user {session}");
 
         DebugTools.Assert(!_users.ContainsKey(session.UserId), "We should not have any cached data on client connect.");
@@ -203,8 +206,17 @@ public sealed partial class UserDbDataManager : IPostInjectInit
     void IPostInjectInit.PostInject()
     {
         _sawmill = _logManager.GetSawmill("userdb");
+        EnsureLoadTimingCVarSubscribed();
+    }
+
+    private void EnsureLoadTimingCVarSubscribed()
+    {
+        if (_loadTimingCVarSubscribed || !_cfg.IsCVarRegistered(CCVars.GameJoinTimingWarnSeconds.Name))
+            return;
+
         _cfg.OnValueChanged(CCVars.GameJoinTimingWarnSeconds,
             seconds => _loadTimingWarnThreshold = TimeSpan.FromSeconds(Math.Max(0f, seconds)), true);
+        _loadTimingCVarSubscribed = true;
     }
 
     private sealed record UserData(CancellationTokenSource Cancel, Task Task);

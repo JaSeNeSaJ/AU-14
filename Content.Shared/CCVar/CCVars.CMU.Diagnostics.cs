@@ -8,7 +8,7 @@ public sealed partial class CCVars
     ///     Enables client-side CMU rubberband diagnostics for the local attached entity.
     /// </summary>
     public static readonly CVarDef<bool> CMURubberbandDiagnosticsEnabled =
-        CVarDef.Create("cmu.rubberband_diagnostics.enabled", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+        CVarDef.Create("cmu.rubberband_diagnostics.enabled", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
     ///     Minimum same-map local player movement, in tiles/metres, that is logged as a suspected snap.
