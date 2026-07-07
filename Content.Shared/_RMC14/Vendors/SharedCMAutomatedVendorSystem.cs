@@ -613,7 +613,6 @@ public abstract partial class SharedCMAutomatedVendorSystem : EntitySystem
         {
             if (vendor.Comp.UseObjectivePoints)
             {
-                Log.Info($"[VENDOR DEBUG] Objective purchase: actor={ToPrettyString(actor)}, entry={entry.Id}, cost={entry.Points}");
                 // Read the cached faction win points directly from the vendor component
                 var available = vendor.Comp.CachedFactionWinPoints;
 
@@ -636,8 +635,6 @@ public abstract partial class SharedCMAutomatedVendorSystem : EntitySystem
                 // Update the vendor cache immediately so the UI reflects the new balance
                 var newBalance = available - entry.Points.Value;
                 UpdateVendorFactionPointsCache(faction, newBalance);
-
-                Log.Info($"[VENDOR DEBUG] Points deducted successfully, new balance: {newBalance}");
             }
             else
             {
@@ -729,7 +726,6 @@ public abstract partial class SharedCMAutomatedVendorSystem : EntitySystem
 
         var min = comp.MinOffset;
         var max = comp.MaxOffset;
-        Log.Info($"[VENDOR DEBUG] Spawning {entry.Spawn} copies of {entry.Id}");
         for (var i = 0; i < entry.Spawn; i++)
         {
             var offset = _random.NextVector2Box(min.X, min.Y, max.X, max.Y);
