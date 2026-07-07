@@ -121,7 +121,24 @@ jobs:
             git merge --no-ff --no-edit "refs/remotes/origin/test-merge-pr-${pr_number}"
           done
 
-          git push --force origin "HEAD:refs/heads/$TEST_MERGE_BRANCH"
+          if ! git diff --quiet "${{ steps.pr.outputs.base_sha }}" -- .github/workflows; then
+            echo "::notice::Test merge includes workflow file changes; restoring .github/workflows to base so GITHUB_TOKEN can publish the test branch without workflows scope."
+            git checkout "${{ steps.pr.outputs.base_sha }}" -- .github/workflows
+          fi
+
+          pull_list="$(echo "$PRS_JSON" | jq -r 'map("#" + (.number | tostring)) | join(", ")')"
+          git reset --soft "${{ steps.pr.outputs.base_sha }}"
+
+          if git diff --cached --quiet; then
+            echo "::warning::Test merge produced no content changes after sanitizing workflow files; using base ref."
+            echo "branch=" >> "$GITHUB_OUTPUT"
+            echo "ref=${{ steps.pr.outputs.base_sha }}" >> "$GITHUB_OUTPUT"
+            echo "sha=${{ steps.pr.outputs.base_sha }}" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          git commit -m "Test merge ${pull_list}"
+          git push origin "HEAD:refs/heads/$TEST_MERGE_BRANCH"
           echo "branch=$TEST_MERGE_BRANCH" >> "$GITHUB_OUTPUT"
           echo "ref=refs/heads/$TEST_MERGE_BRANCH" >> "$GITHUB_OUTPUT"
           echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
