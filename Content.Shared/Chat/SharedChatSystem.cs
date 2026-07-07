@@ -135,7 +135,7 @@ public abstract partial class SharedChatSystem : EntitySystem
         if (!_validPrefixes.Contains(input[0]))
             return;
 
-        var lookupKey = input[..2];
+        var lookupKey = $"{input[0]}{char.ToLowerInvariant(input[1])}";
         if (!_channelLookup.ContainsKey(lookupKey))
             return;
         // RMC14
@@ -209,7 +209,7 @@ public abstract partial class SharedChatSystem : EntitySystem
         // RMC14
         var prefix = input[0];
         var channelKey = input[1];
-        var lookupKey = $"{prefix}{char.ToLower(channelKey)}";
+        var lookupKey = $"{prefix}{char.ToLowerInvariant(channelKey)}";
 
         var foundChannel = _channelLookup.TryGetValue(lookupKey, out channel);
 
