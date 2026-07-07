@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
 using Content.Shared.GameTicking;
@@ -11,18 +12,23 @@ using Robust.Shared.Enums;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
+using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Content.Server.GameTicking
 {
     [UsedImplicitly]
     public sealed partial class GameTicker
     {
-        private static readonly TimeSpan JoinTimingWarnThreshold = TimeSpan.FromSeconds(1);
+        [ViewVariables]
+        private TimeSpan _joinTimingWarnThreshold = TimeSpan.FromSeconds(5);
 
         [Dependency] private IPlayerManager _playerManager = default!;
 
         private void InitializePlayer()
         {
+            Subs.CVar(_cfg, CCVars.GameJoinTimingWarnSeconds,
+                seconds => _joinTimingWarnThreshold = TimeSpan.FromSeconds(Math.Max(0f, seconds)), true);
+
             _playerManager.PlayerStatusChanged += PlayerStatusChanged;
         }
 
@@ -86,7 +92,9 @@ namespace Content.Server.GameTicking
                 {
                     LogSlowJoinTransition(session, "GameTicker received InGame");
 
+                    var loadStartStopwatch = Stopwatch.StartNew();
                     _userDb.ClientConnected(session);
+                    LogSlowJoinPhase(session, "GameTicker starting user data load", loadStartStopwatch.Elapsed);
 
                     if (mind == null)
                     {
@@ -146,7 +154,7 @@ namespace Content.Server.GameTicking
             {
                 try
                 {
-                    await _userDb.WaitLoadComplete(session);
+                    await WaitUserDataLoad(session, "GameTicker waiting to spawn player");
                 }
                 catch (OperationCanceledException)
                 {
@@ -162,7 +170,7 @@ namespace Content.Server.GameTicking
             {
                 try
                 {
-                    await _userDb.WaitLoadComplete(session);
+                    await WaitUserDataLoad(session, "GameTicker waiting to spawn observer");
                 }
                 catch (OperationCanceledException)
                 {
@@ -183,14 +191,47 @@ namespace Content.Server.GameTicking
             }
         }
 
+        private async Task WaitUserDataLoad(ICommonSession session, string step)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            await _userDb.WaitLoadComplete(session);
+            LogSlowJoinPhase(session, step, stopwatch.Elapsed);
+        }
+
         private void LogSlowJoinTransition(ICommonSession session, string step)
         {
             var elapsed = DateTime.UtcNow - session.ConnectedTime;
-            if (elapsed < JoinTimingWarnThreshold)
+            if (elapsed < _joinTimingWarnThreshold)
+            {
+                Log.Debug(
+                    "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after Connected status was set",
+                    step,
+                    session,
+                    elapsed.TotalMilliseconds);
                 return;
+            }
 
             Log.Warning(
                 "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after Connected status was set",
+                step,
+                session,
+                elapsed.TotalMilliseconds);
+        }
+
+        private void LogSlowJoinPhase(ICommonSession session, string step, TimeSpan elapsed)
+        {
+            if (elapsed < _joinTimingWarnThreshold)
+            {
+                Log.Debug(
+                    "[JOIN-TIMING] {Step} for {Player} took {Elapsed:N0} ms",
+                    step,
+                    session,
+                    elapsed.TotalMilliseconds);
+                return;
+            }
+
+            Log.Warning(
+                "[JOIN-TIMING] {Step} for {Player} took {Elapsed:N0} ms",
                 step,
                 session,
                 elapsed.TotalMilliseconds);
