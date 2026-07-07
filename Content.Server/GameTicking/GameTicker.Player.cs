@@ -90,21 +90,26 @@ namespace Content.Server.GameTicking
 
                 case SessionStatus.InGame:
                 {
+                    var inGameAt = DateTime.UtcNow;
                     LogSlowJoinTransition(session, "GameTicker received InGame");
-
-                    var loadStartStopwatch = Stopwatch.StartNew();
-                    _userDb.ClientConnected(session);
-                    LogSlowJoinPhase(session, "GameTicker starting user data load", loadStartStopwatch.Elapsed);
 
                     if (mind == null)
                     {
                         if (LobbyEnabled)
-                            PlayerJoinLobby(session);
+                        {
+                            PlayerJoinLobby(session, inGameAt);
+                            StartUserDataLoad(session);
+                        }
                         else
+                        {
+                            StartUserDataLoad(session);
                             SpawnWaitDb();
+                        }
 
                         break;
                     }
+
+                    StartUserDataLoad(session);
 
                     if (mind.CurrentEntity == null || Deleted(mind.CurrentEntity))
                     {
@@ -191,6 +196,13 @@ namespace Content.Server.GameTicking
             }
         }
 
+        private void StartUserDataLoad(ICommonSession session)
+        {
+            var stopwatch = Stopwatch.StartNew();
+            _userDb.ClientConnected(session);
+            LogSlowJoinPhase(session, "GameTicker starting user data load", stopwatch.Elapsed);
+        }
+
         private async Task WaitUserDataLoad(ICommonSession session, string step)
         {
             var stopwatch = Stopwatch.StartNew();
@@ -198,24 +210,30 @@ namespace Content.Server.GameTicking
             LogSlowJoinPhase(session, step, stopwatch.Elapsed);
         }
 
-        private void LogSlowJoinTransition(ICommonSession session, string step)
+        private void LogSlowJoinTransition(
+            ICommonSession session,
+            string step,
+            DateTime? start = null,
+            string baseline = "Connected status was set")
         {
-            var elapsed = DateTime.UtcNow - session.ConnectedTime;
+            var elapsed = DateTime.UtcNow - (start ?? session.ConnectedTime);
             if (elapsed < _joinTimingWarnThreshold)
             {
                 Log.Debug(
-                    "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after Connected status was set",
+                    "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after {Baseline}",
                     step,
                     session,
-                    elapsed.TotalMilliseconds);
+                    elapsed.TotalMilliseconds,
+                    baseline);
                 return;
             }
 
             Log.Warning(
-                "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after Connected status was set",
+                "[JOIN-TIMING] {Step} for {Player} {Elapsed:N0} ms after {Baseline}",
                 step,
                 session,
-                elapsed.TotalMilliseconds);
+                elapsed.TotalMilliseconds,
+                baseline);
         }
 
         private void LogSlowJoinPhase(ICommonSession session, string step, TimeSpan elapsed)
@@ -265,12 +283,19 @@ namespace Content.Server.GameTicking
             RaiseNetworkEvent(GetRoundStatusMsg(), session.Channel);
         }
 
-        private void PlayerJoinLobby(ICommonSession session)
+        private void PlayerJoinLobby(ICommonSession session, DateTime? initialInGameAt = null)
         {
-            LogSlowJoinTransition(session, "GameTicker sending lobby join");
+            if (initialInGameAt != null)
+            {
+                LogSlowJoinTransition(session, "GameTicker sending initial lobby join");
+                LogSlowJoinTransition(
+                    session,
+                    "GameTicker post-InGame lobby handoff",
+                    initialInGameAt,
+                    "InGame status was set");
+            }
 
             _playerGameStatuses[session.UserId] = LobbyEnabled ? PlayerGameStatus.NotReadyToPlay : PlayerGameStatus.ReadyToPlay;
-            _db.AddRoundPlayers(RoundId, session.UserId);
 
             var client = session.Channel;
             RaiseNetworkEvent(new TickerJoinLobbyEvent(), client);
@@ -278,6 +303,7 @@ namespace Content.Server.GameTicking
             RaiseNetworkEvent(GetInfoMsg(), client);
             RaiseNetworkEvent(GetRoundStatusMsg(), client);
             RaiseLocalEvent(new PlayerJoinedLobbyEvent(session));
+            _db.AddRoundPlayers(RoundId, session.UserId);
         }
 
         private void ReqWindowAttentionAll()
