@@ -1,6 +1,9 @@
 using System.Numerics;
 using Content.Shared._RMC14.Xenonids.Charge;
+using Content.Shared._RMC14.Xenonids.Charge.CursorCharge;
 using Content.Shared.Actions.Components;
+using Content.Shared.Movement.Pulling.Components;
+using Content.Shared.Movement.Pulling.Systems;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 
@@ -61,6 +64,71 @@ public sealed class XenoChargeTest
 
                 if (entMan.EntityExists(crusher))
                     entMan.DeleteEntity(crusher);
+            });
+
+            await pair.CleanReturnAsync();
+        }
+    }
+
+    [Test]
+    public async Task ChargerChargeStopsAndBlocksPulling()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        EntityUid charger = default;
+        EntityUid target = default;
+        EntityUid action = default;
+
+        try
+        {
+            await server.WaitAssertion(() =>
+            {
+                var entMan = server.EntMan;
+                var pulling = entMan.System<PullingSystem>();
+
+                charger = entMan.SpawnEntity("MobHuman", map.GridCoords.Offset(new Vector2(0.5f, 0.5f)));
+                entMan.EnsureComponent<XenoChargerComponent>(charger);
+                target = entMan.SpawnEntity("MobHuman", map.GridCoords.Offset(new Vector2(1.5f, 0.5f)));
+
+                Assert.That(pulling.TryStartPull(charger, target), Is.True);
+                Assert.That(entMan.GetComponent<PullerComponent>(charger).Pulling, Is.EqualTo(target));
+                Assert.That(entMan.GetComponent<PullableComponent>(target).Puller, Is.EqualTo(charger));
+
+                var actionEnt = SpawnAction(entMan);
+                action = actionEnt.Owner;
+
+                var charge = new XenoCursorChargingActionEvent
+                {
+                    Performer = charger,
+                    Action = actionEnt,
+                };
+                entMan.EventBus.RaiseLocalEvent(charger, charge);
+
+                Assert.That(charge.Handled, Is.True);
+                Assert.That(entMan.HasComponent<XenoChargerStateComponent>(charger), Is.True);
+                Assert.That(entMan.GetComponent<PullerComponent>(charger).Pulling, Is.Null);
+                Assert.That(entMan.GetComponent<PullableComponent>(target).Puller, Is.Null);
+
+                Assert.That(pulling.TryStartPull(charger, target), Is.False);
+                Assert.That(entMan.GetComponent<PullerComponent>(charger).Pulling, Is.Null);
+                Assert.That(entMan.GetComponent<PullableComponent>(target).Puller, Is.Null);
+            });
+        }
+        finally
+        {
+            await server.WaitPost(() =>
+            {
+                var entMan = server.EntMan;
+                if (entMan.EntityExists(action))
+                    entMan.DeleteEntity(action);
+
+                if (entMan.EntityExists(target))
+                    entMan.DeleteEntity(target);
+
+                if (entMan.EntityExists(charger))
+                    entMan.DeleteEntity(charger);
             });
 
             await pair.CleanReturnAsync();

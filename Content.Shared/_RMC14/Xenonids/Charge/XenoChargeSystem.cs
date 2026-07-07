@@ -366,6 +366,7 @@ public sealed partial class XenoChargeSystem : EntitySystem
             _xenoAnimations.PlayLungeAnimationEvent(xeno, charge);
         }
 
+        _nearbyMobs.Clear();
         _lookup.GetEntitiesInRange(_transform.GetMapCoordinates(xeno), xeno.Comp.SlowRange, _nearbyMobs);
         foreach (var slower in _nearbyMobs)
         {
@@ -553,6 +554,7 @@ public sealed partial class XenoChargeSystem : EntitySystem
         // Find the closest valid mob target near the click position.
         xeno.Comp.PrimaryTarget = null;
         var closestDist = float.MaxValue;
+        _nearbyMobs.Clear();
         _lookup.GetEntitiesInRange(targetMap, 2f, _nearbyMobs);
         foreach (var mob in _nearbyMobs)
         {
