@@ -5847,5 +5847,43 @@
   id: 409
   time: '2026-07-07T10:17:46.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1547
+- author: TheHellFireo
+  changes:
+  - message: Reduced server log spam from stale networked entity references.
+    type: Fix
+  - message: Fixed Z-level probe eyes causing grid traversal errors.
+    type: Fix
+  - message: Fixed SSD sleep timer overflow during cleanup.
+    type: Fix
+  - message: Fixed status effects mutating during update.
+    type: Fix
+  - message: Fixed xeno rank updates failing while preferences load.
+    type: Fix
+  - message: Removed vendor debug spam.
+    type: Tweak
+  id: 410
+  time: '2026-07-07T13:42:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1553
+- author: TheHellFireo
+  changes:
+  - message: Threat voters now get spawned in even if extra bodies are needed. Preventing
+      people that won threat not spawning
+    type: Fix
+  - message: DS third-party ghost roles now scale with player/threat body counts.
+    type: Fix
+  - message: Xenos can now identify runaway synths as synths.
+    type: Fix
+  - message: Third-party dropships no longer auto-launch on spawn.
+    type: Fix
+  - message: UPP tank HJ35T launcher selection now installs the launcher instead of
+      keeping the rotary cannon setup.
+    type: Fix
+  - message: maps get atmos so people don't overheat randomly
+    type: Fix
+  - message: greenos can now speak english and hive.
+    type: Fix
+  id: 411
+  time: '2026-07-07T13:48:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1552
 Name: CMU
 Order: -1
