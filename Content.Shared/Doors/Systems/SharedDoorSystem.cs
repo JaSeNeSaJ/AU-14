@@ -65,6 +65,7 @@ public abstract partial class SharedDoorSystem : EntitySystem
 
         SubscribeLocalEvent<DoorComponent, ComponentInit>(OnComponentInit);
         SubscribeLocalEvent<DoorComponent, ComponentRemove>(OnRemove);
+        SubscribeLocalEvent<EntityTerminatingEvent>(OnEntityTerminating);
 
         SubscribeLocalEvent<DoorComponent, AfterAutoHandleStateEvent>(OnHandleState);
 
@@ -114,6 +115,23 @@ public abstract partial class SharedDoorSystem : EntitySystem
     private void OnRemove(Entity<DoorComponent> door, ref ComponentRemove args)
     {
         _activeDoors.Remove(door);
+    }
+
+    private void OnEntityTerminating(ref EntityTerminatingEvent args)
+    {
+        var terminating = args.Entity.Owner;
+
+        foreach (var ent in _activeDoors)
+        {
+            var door = ent.Comp;
+            if (door.Deleted || door.CurrentlyCrushing.Count == 0)
+                continue;
+
+            if (!door.CurrentlyCrushing.Remove(terminating))
+                continue;
+
+            Dirty(ent.Owner, door);
+        }
     }
 
     private void OnEmagged(EntityUid uid, DoorComponent door, ref GotEmaggedEvent args)
