@@ -5833,5 +5833,19 @@
   id: 407
   time: '2026-07-06T11:05:59.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1546
+- author: Tyzemol
+  changes:
+  - message: Xenos can now say "admin" again.
+    type: Fix
+  id: 408
+  time: '2026-07-07T10:17:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1549
+- author: murdocstarsim
+  changes:
+  - message: "SOP rewrite for real this time. \U0001F91E"
+    type: Add
+  id: 409
+  time: '2026-07-07T10:17:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1547
 Name: CMU
 Order: -1
