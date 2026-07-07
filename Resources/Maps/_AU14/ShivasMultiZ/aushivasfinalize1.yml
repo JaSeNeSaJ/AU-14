@@ -1,10 +1,10 @@
 meta:
   format: 7
   category: Map
-  engineVersion: 264.0.2
+  engineVersion: v277.0.0
   forkId: ""
   forkVersion: ""
-  time: 05/18/2026 18:00:00
+  time: 07/07/2026 10:38:15
   entityCount: 1
 maps:
 - 1
@@ -15,14 +15,13 @@ nullspace: []
 tilemap:
   1: Space
   2: CMFloorPlating
-  0: Plating
 entities:
 - proto: ""
   entities:
   - uid: 1
     components:
     - type: MetaData
-      name: Shivas Snowball [1]
+      name: Mapping Shivas Snowball [1]
     - type: Transform
     - type: Map
       mapPaused: True
@@ -618,7 +617,6 @@ entities:
       - time: 0.42
         colorHex: '#FFF4E3'
       - time: 0.5
-        colorHex: '#FFFFFF'
       - time: 0.58
         colorHex: '#F7F7F7'
       - time: 0.67
