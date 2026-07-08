@@ -5885,5 +5885,27 @@
   id: 411
   time: '2026-07-07T13:48:10.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1552
+- author: jok989372-lgtm
+  changes:
+  - message: Three new surgical webbings were added for the GOVFOR synthetic.
+    type: Add
+  id: 412
+  time: '2026-07-08T03:16:01.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1551
+- author: maertayn
+  changes:
+  - message: Mentor Ghost not returning to their original body after using Imaginary
+      Friend
+    type: Fix
+  - message: Call To Attention only includes Govfor/Opfor, range no longer set to
+      max. raycast for across the map salutations & immunity to the whole system (not
+      solely whisper) for certain jobs (CO/XO/WJ/CMP/SOs)
+    type: Fix
+  - message: Tanks can no longer be damaged by xenos with insufficient claw length,
+      requires sharp+ (prae/warrior/lurker/bull/wendigo & stronger tiers)
+    type: Tweak
+  id: 413
+  time: '2026-07-08T04:57:47.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1560
 Name: CMU
 Order: -1
