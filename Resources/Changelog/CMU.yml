@@ -5907,5 +5907,16 @@
   id: 413
   time: '2026-07-08T04:57:47.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1560
+- author: Vencallium
+  changes:
+  - message: Neroid, Sorokyne & Chances from colony fall
+    type: Remove
+  - message: Neroid, Sorokyne, Chances, CORSAT & Kutjevo from distress signal
+    type: Remove
+  - message: Sorokyne & Chances from insurgency
+    type: Remove
+  id: 414
+  time: '2026-07-08T13:21:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1550
 Name: CMU
 Order: -1
