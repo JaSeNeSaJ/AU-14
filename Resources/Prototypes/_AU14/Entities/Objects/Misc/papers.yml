@@ -67,14 +67,27 @@
     sprite: _RMC14/Objects/Misc/paper.rsi
     layers:
     - state: paper_wy
-    - state: paper_wy_words
+    - state: paper_wy_grant
       map: ["enum.PaperVisualLayers.Writing"]
       visible: false
     - state: paper_stamped
       map: ["enum.PaperVisualLayers.Stamp"]
       visible: false
 
-
+- type: entity
+  parent: CMUWYPaper
+  id: CMUResearchContract
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Misc/paper.rsi
+    layers:
+    - state: paper_wy
+    - state: paper_wy_contract
+      map: ["enum.PaperVisualLayers.Writing"]
+      visible: false
+    - state: paper_stamped
+      map: ["enum.PaperVisualLayers.Stamp"]
+      visible: false
 
 
 

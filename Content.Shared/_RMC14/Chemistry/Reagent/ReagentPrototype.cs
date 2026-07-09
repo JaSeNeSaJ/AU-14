@@ -47,6 +47,12 @@ public partial class ReagentPrototype
     public ReagentFlags Flags = 0;
 
     [DataField]
+    public int GenTier = 0;
+
+    [DataField]
+    public bool Generated = false;
+
+    [DataField]
     public int Reward = 2;
 
     [DataField]
