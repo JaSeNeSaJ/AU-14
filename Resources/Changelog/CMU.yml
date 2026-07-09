@@ -5918,5 +5918,21 @@
   id: 414
   time: '2026-07-08T13:21:59.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1550
+- author: Vencallium
+  changes:
+  - message: Added the Cursed zombie summoner, who can spend points to summon civilian
+      and military cursed zombies.
+    type: Add
+  - message: Added staged insanity curse progression from cursed zombie attacks.
+    type: Add
+  - message: "Added halt, attack, follow, and cheese \u2019em commands for summoned\
+      \ cursed."
+    type: Add
+  - message: Cursed zombies now use melee weapons, scream on death, and have randomized
+      civilian or faction-matched military clothing.
+    type: Tweak
+  id: 415
+  time: '2026-07-09T00:53:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1537
 Name: CMU
 Order: -1
