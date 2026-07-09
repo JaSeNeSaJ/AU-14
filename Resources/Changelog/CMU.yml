@@ -5934,5 +5934,13 @@
   id: 415
   time: '2026-07-09T00:53:58.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1537
+- author: Vencallium
+  changes:
+  - message: Fixed the zombie summoner prototype registration crash that prevented
+      the server from starting
+    type: Fix
+  id: 416
+  time: '2026-07-09T01:31:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1563
 Name: CMU
 Order: -1
