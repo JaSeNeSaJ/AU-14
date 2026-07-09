@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reflection;
-using System.Threading;
 using Content.Shared.Administration;
 using Robust.Shared;
 using Robust.Shared.Configuration;
@@ -341,16 +339,10 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
         var systems = IoCManager.Resolve<IEntitySystemManager>();
         var timing = IoCManager.Resolve<IGameTiming>();
 
-        using var process = Process.GetCurrentProcess();
-        ThreadPool.GetAvailableThreads(out var workerAvailable, out var ioAvailable);
-        ThreadPool.GetMaxThreads(out var workerMax, out var ioMax);
-
         shell.WriteLine($"Tick: {timing.CurTick.Value:N0} | TickRate: {timing.TickRate:N0}/s | Target: {timing.TickPeriod.TotalMilliseconds:N3} ms");
         shell.WriteLine($"Frame: real={timing.RealFrameTime.TotalMilliseconds:N3} ms avg={timing.RealFrameTimeAvg.TotalMilliseconds:N3} ms sd={timing.RealFrameTimeStdDev.TotalMilliseconds:N3} ms fpsAvg={timing.FramesPerSecondAvg:N2}");
         shell.WriteLine($"Entities: {entityManager.EntityCount:N0} | Systems: {systems.GetEntitySystemTypes().Count():N0} | Paused: {timing.Paused} | Profiler: {prof.IsEnabled} | Metrics: {cfg.GetCVar(CVars.MetricsEnabled)}");
-        shell.WriteLine($"Memory: managed={FormatBytes(GC.GetTotalMemory(false))} working={FormatBytes(process.WorkingSet64)} private={FormatBytes(process.PrivateMemorySize64)}");
-        shell.WriteLine($"GC collections: gen0={GC.CollectionCount(0):N0} gen1={GC.CollectionCount(1):N0} gen2={GC.CollectionCount(2):N0}");
-        shell.WriteLine($"ThreadPool: worker busy={workerMax - workerAvailable:N0}/{workerMax:N0} io busy={ioMax - ioAvailable:N0}/{ioMax:N0}");
+        shell.WriteLine("Runtime memory, GC, process, and ThreadPool counters are omitted by the content sandbox.");
     }
 
     private static void WriteMetricsStatus(IConsoleShell shell, IConfigurationManager cfg, IEntitySystemManager systems)
@@ -1026,36 +1018,61 @@ public sealed class ServerPerformanceCommand : IConsoleCommand
             for (var logIndex = index.StartPos; logIndex < index.EndPos; logIndex++)
             {
                 var log = buffer.Log(logIndex);
-                if (log.Type != ProfLogType.GroupEnd ||
-                    log.GroupEnd.Value.Type != ProfValueType.TimeAllocSample)
+                switch (log.Type)
                 {
-                    continue;
+                    case ProfLogType.GroupEnd:
+                        AddProfileSample(
+                            stats,
+                            mode,
+                            filter,
+                            systemNames,
+                            prof.GetString(log.GroupEnd.StringId),
+                            log.GroupEnd.Value);
+                        break;
+                    case ProfLogType.Value:
+                        AddProfileSample(
+                            stats,
+                            mode,
+                            filter,
+                            systemNames,
+                            prof.GetString(log.Value.StringId),
+                            log.Value.Value);
+                        break;
                 }
-
-                var name = prof.GetString(log.GroupEnd.StringId);
-                if (!MatchesProfileMode(mode, name, systemNames) ||
-                    !Matches(filter, name))
-                {
-                    continue;
-                }
-
-                if (!stats.TryGetValue(name, out var row))
-                {
-                    row = new ProfileStats(name);
-                    stats[name] = row;
-                }
-
-                var sample = log.GroupEnd.Value.TimeAllocSample;
-                var ms = sample.Time * 1000.0;
-                row.Count++;
-                row.TotalMs += ms;
-                row.MaxMs = Math.Max(row.MaxMs, ms);
-                row.TotalAlloc += sample.Alloc;
-                row.MaxAlloc = Math.Max(row.MaxAlloc, sample.Alloc);
             }
         }
 
         return frameCount > 0;
+    }
+
+    private static void AddProfileSample(
+        Dictionary<string, ProfileStats> stats,
+        ProfileMode mode,
+        string? filter,
+        HashSet<string> systemNames,
+        string name,
+        ProfValue value)
+    {
+        if (value.Type != ProfValueType.TimeAllocSample ||
+            !MatchesProfileMode(mode, name, systemNames) ||
+            !Matches(filter, name))
+        {
+            return;
+        }
+
+        if (!stats.TryGetValue(name, out var row))
+        {
+            row = new ProfileStats(name);
+            stats[name] = row;
+        }
+
+        var sample = value.TimeAllocSample;
+        var ms = sample.Time * 1000.0;
+        row.Count++;
+        row.TotalMs += ms;
+        row.MaxMs = Math.Max(row.MaxMs, ms);
+        row.TotalAlloc += sample.Alloc;
+        row.MaxAlloc = Math.Max(row.MaxAlloc, sample.Alloc);
     }
 
     private static List<Type> GetUpdateSystemOrder(IEntitySystemManager systems)

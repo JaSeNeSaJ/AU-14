@@ -244,10 +244,14 @@ public sealed partial class CMDoorSystem : EntitySystem
     {
         if (args.Cancelled)
         {
-            _audio.Stop(ent.Comp.SoundEntity);
+            ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
+            return;
         }
+
         if (HasComp<XenoComponent>(args.User) && _net.IsServer && !args.Cancelled)
         {
+            ent.Comp.SoundEntity = _audio.Stop(ent.Comp.SoundEntity);
+
             if (HasComp<RMCPodDoorComponent>(ent.Owner))
             {
                 ent.Comp.SoundEntity = _audio.PlayPredicted(ent.Comp.XenoPodDoorPrySound, ent.Owner, ent.Owner)?.Entity;

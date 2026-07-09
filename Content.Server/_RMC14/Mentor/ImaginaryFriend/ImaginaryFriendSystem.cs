@@ -250,6 +250,11 @@ public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
         if (TerminatingOrDeleted(friend))
             return;
 
+        if (_mind.TryGetMind(friend, out var mindId, out var mind)
+                && mind.OriginalOwnedEntity is { } originalEntNet
+                && TryGetEntity(originalEntNet, out var originalEntity))
+            _mind.TransferTo(mindId, originalEntity.Value, mind: mind);
+
         QueueDel(friend);
     }
 
