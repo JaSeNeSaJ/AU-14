@@ -12,7 +12,7 @@
     - state: surgical_tray_empty
       map: [ "empty" ]
   - type: Item
-    size: Medium
+    size: Large
   - type: Tag # to not inherit case tags
     tags: []
   - type: CMStorageVisualizer
