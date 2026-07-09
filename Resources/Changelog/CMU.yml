@@ -5833,5 +5833,138 @@
   id: 407
   time: '2026-07-06T11:05:59.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1546
+- author: Tyzemol
+  changes:
+  - message: Xenos can now say "admin" again.
+    type: Fix
+  id: 408
+  time: '2026-07-07T10:17:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1549
+- author: murdocstarsim
+  changes:
+  - message: "SOP rewrite for real this time. \U0001F91E"
+    type: Add
+  id: 409
+  time: '2026-07-07T10:17:46.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1547
+- author: TheHellFireo
+  changes:
+  - message: Reduced server log spam from stale networked entity references.
+    type: Fix
+  - message: Fixed Z-level probe eyes causing grid traversal errors.
+    type: Fix
+  - message: Fixed SSD sleep timer overflow during cleanup.
+    type: Fix
+  - message: Fixed status effects mutating during update.
+    type: Fix
+  - message: Fixed xeno rank updates failing while preferences load.
+    type: Fix
+  - message: Removed vendor debug spam.
+    type: Tweak
+  id: 410
+  time: '2026-07-07T13:42:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1553
+- author: TheHellFireo
+  changes:
+  - message: Threat voters now get spawned in even if extra bodies are needed. Preventing
+      people that won threat not spawning
+    type: Fix
+  - message: DS third-party ghost roles now scale with player/threat body counts.
+    type: Fix
+  - message: Xenos can now identify runaway synths as synths.
+    type: Fix
+  - message: Third-party dropships no longer auto-launch on spawn.
+    type: Fix
+  - message: UPP tank HJ35T launcher selection now installs the launcher instead of
+      keeping the rotary cannon setup.
+    type: Fix
+  - message: maps get atmos so people don't overheat randomly
+    type: Fix
+  - message: greenos can now speak english and hive.
+    type: Fix
+  id: 411
+  time: '2026-07-07T13:48:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1552
+- author: jok989372-lgtm
+  changes:
+  - message: Three new surgical webbings were added for the GOVFOR synthetic.
+    type: Add
+  id: 412
+  time: '2026-07-08T03:16:01.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1551
+- author: maertayn
+  changes:
+  - message: Mentor Ghost not returning to their original body after using Imaginary
+      Friend
+    type: Fix
+  - message: Call To Attention only includes Govfor/Opfor, range no longer set to
+      max. raycast for across the map salutations & immunity to the whole system (not
+      solely whisper) for certain jobs (CO/XO/WJ/CMP/SOs)
+    type: Fix
+  - message: Tanks can no longer be damaged by xenos with insufficient claw length,
+      requires sharp+ (prae/warrior/lurker/bull/wendigo & stronger tiers)
+    type: Tweak
+  id: 413
+  time: '2026-07-08T04:57:47.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1560
+- author: Vencallium
+  changes:
+  - message: Neroid, Sorokyne & Chances from colony fall
+    type: Remove
+  - message: Neroid, Sorokyne, Chances, CORSAT & Kutjevo from distress signal
+    type: Remove
+  - message: Sorokyne & Chances from insurgency
+    type: Remove
+  id: 414
+  time: '2026-07-08T13:21:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1550
+- author: Vencallium
+  changes:
+  - message: Added the Cursed zombie summoner, who can spend points to summon civilian
+      and military cursed zombies.
+    type: Add
+  - message: Added staged insanity curse progression from cursed zombie attacks.
+    type: Add
+  - message: "Added halt, attack, follow, and cheese \u2019em commands for summoned\
+      \ cursed."
+    type: Add
+  - message: Cursed zombies now use melee weapons, scream on death, and have randomized
+      civilian or faction-matched military clothing.
+    type: Tweak
+  id: 415
+  time: '2026-07-09T00:53:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1537
+- author: Vencallium
+  changes:
+  - message: Fixed the zombie summoner prototype registration crash that prevented
+      the server from starting
+    type: Fix
+  id: 416
+  time: '2026-07-09T01:31:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1563
+- author: Vencallium
+  changes:
+  - message: Zombie summoners are now limited to 20 controlled cursed and regenerate
+      points more slowly.
+    type: Tweak
+  - message: Summoned cursed now disappear with their weapons on death and have a
+      reduced delimb chance.
+    type: Tweak
+  - message: "Cheese \u2019em now orders cursed to pathfind to and attack the pointed\
+      \ target regardless of line of sight."
+    type: Tweak
+  - message: Spawned cursed are no longer available as ghost roles.
+    type: Fix
+  id: 417
+  time: '2026-07-09T05:28:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1565
+- author: Crime481
+  changes:
+  - message: Added job icons for the Logistics Officer, Chief Medical Officer, and
+      the Chief of Military Police.
+    type: Add
+  id: 418
+  time: '2026-07-09T06:00:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1564
 Name: CMU
 Order: -1
