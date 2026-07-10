@@ -5942,5 +5942,29 @@
   id: 416
   time: '2026-07-09T01:31:10.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1563
+- author: Vencallium
+  changes:
+  - message: Zombie summoners are now limited to 20 controlled cursed and regenerate
+      points more slowly.
+    type: Tweak
+  - message: Summoned cursed now disappear with their weapons on death and have a
+      reduced delimb chance.
+    type: Tweak
+  - message: "Cheese \u2019em now orders cursed to pathfind to and attack the pointed\
+      \ target regardless of line of sight."
+    type: Tweak
+  - message: Spawned cursed are no longer available as ghost roles.
+    type: Fix
+  id: 417
+  time: '2026-07-09T05:28:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1565
+- author: Crime481
+  changes:
+  - message: Added job icons for the Logistics Officer, Chief Medical Officer, and
+      the Chief of Military Police.
+    type: Add
+  id: 418
+  time: '2026-07-09T06:00:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1564
 Name: CMU
 Order: -1
