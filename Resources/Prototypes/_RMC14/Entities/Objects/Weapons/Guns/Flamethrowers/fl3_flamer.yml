@@ -204,5 +204,6 @@
     - id: RMCTankFlamerFL3B
       amount: 2
     - id: RMCTankFlamerFL3X
+      amount: 1
 
 
