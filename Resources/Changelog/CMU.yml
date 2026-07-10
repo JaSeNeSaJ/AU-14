@@ -5987,5 +5987,22 @@
   id: 419
   time: '2026-07-10T05:48:42.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1567
+- author: ver0098
+  changes:
+  - message: a viable Pyrospec for UPP has been added, HAZOPS pyrospec now gets X-Gel
+      and B-Gel, with a reduced fire rate. We-Yu pyrospec now gets the flammenwerfer-3
+    type: Add
+  - message: 'Reverted PR #1427'
+    type: Remove
+  - message: you can now buy pyrospec ammunition at ASRS
+    type: Add
+  - message: M240A2 fuel tank size increased from 150 to 300 (since it says its a
+      copy of the Flammenwerfer-3)
+    type: Tweak
+  - message: M240A2 and Flammenwerfer-3 has intergrated mag harness now.
+    type: Tweak
+  id: 420
+  time: '2026-07-10T17:19:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1556
 Name: CMU
 Order: -1
