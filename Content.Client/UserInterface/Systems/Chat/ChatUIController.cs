@@ -482,11 +482,16 @@ public sealed partial class ChatUIController : UIController
         EnqueueSpeechBubble(ent, msg, speechType);
     }
 
-    private bool ShouldHideRunechatSelfRadioBubble(EntityUid sender, ChatMessage msg, SpeechBubble.SpeechType speechType)
+      private bool ShouldHideRunechatSelfRadioBubble(EntityUid sender, ChatMessage msg, SpeechBubble.SpeechType speechType)
     {
+        // Suppress only the true radio-channel broadcast bubble for your own
+        // speech. The whisper-relay bubble (which nearby listeners see too)
+        // is left alone - that's the one that should show over your head.
+        // No longer gated behind ChatEnableRunechatBubbles: that gate was the
+        // bug, since with runechat bubbles off this always returned false and
+        // the radio bubble was never suppressed at all.
         return speechType == SpeechBubble.SpeechType.Radio &&
                msg.Channel == ChatChannel.Radio &&
-               _config.GetCVar(CCVars.ChatEnableRunechatBubbles) &&
                _player.LocalSession?.AttachedEntity == sender;
     }
 

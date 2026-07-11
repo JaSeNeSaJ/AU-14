@@ -160,9 +160,9 @@ public sealed partial class RadioSystem : EntitySystem
         else
             speech = _chat.GetSpeechVerb(messageSource, message);
 
-        var content = escapeMarkup
-            ? FormattedMessage.EscapeText(message)
-            : message;
+       var content = escapeMarkup
+    ? _chat.ResolveBoldSentinels(FormattedMessage.EscapeText(message))
+    :  message;
 
         // RMC14
         var radioFontSize = speech.FontSize;
@@ -248,7 +248,7 @@ public sealed partial class RadioSystem : EntitySystem
                     ("verb", verb),
                     ("channel", $"\\[{channel.LocalizedName}\\]"),
                     ("name", FormattedMessage.EscapeText(actualName)),
-                    ("message", escapeMarkup ? FormattedMessage.EscapeText(actualMessage) : actualMessage));
+                   ("message", escapeMarkup ? _chat.StripBoldSentinels(FormattedMessage.EscapeText(actualMessage)) : actualMessage));
             }
 
             var chat = new ChatMessage(

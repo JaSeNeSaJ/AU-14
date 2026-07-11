@@ -46,85 +46,87 @@ public sealed partial class ChatSystem
         return transformedName;
     }
 
-    private void SendEntitySpeakWithLanguage(
-        EntityUid source,
-        string originalMessage,
-        ChatTransmitRange range,
-        string? nameOverride,
-        bool hideLog,
-        bool ignoreActionBlocker,
-        ProtoId<LanguagePrototype> language)
+   private void SendEntitySpeakWithLanguage(
+    EntityUid source,
+    string originalMessage,
+    ChatTransmitRange range,
+    string? nameOverride,
+    bool hideLog,
+    bool ignoreActionBlocker,
+    ProtoId<LanguagePrototype> language)
+{
+    // Apply bold/italic formatting BEFORE anything else
+    var markedMessage = MarkInlineFormatting(originalMessage);
+
+    LanguagePrototype? languagePrototype = null;
+    if (!_prototypeManager.TryIndex(language, out languagePrototype))
     {
-        LanguagePrototype? languagePrototype = null;
-        if (!_prototypeManager.TryIndex(language, out languagePrototype))
-        {
-            language = SharedLanguageSystem.CommonLanguage;
-            _prototypeManager.TryIndex(language, out languagePrototype);
-        }
+        language = SharedLanguageSystem.CommonLanguage;
+        _prototypeManager.TryIndex(language, out languagePrototype);
+    }
 
-        var needsLos = languagePrototype?.NeedsLOS ?? false;
-        var needsSpeech = languagePrototype?.NeedsSpeech ?? true;
+    var needsLos = languagePrototype?.NeedsLOS ?? false;
+    var needsSpeech = languagePrototype?.NeedsSpeech ?? true;
 
-        if (needsSpeech && !_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
-            return;
+    if (needsSpeech && !_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+        return;
 
-        var message = TransformSpeech(source, originalMessage);
-        if (message.Length == 0)
-            return;
+    var message = TransformSpeech(source, markedMessage);
+    if (message.Length == 0)
+        return;
 
-        var speakerProcessedMessage = _language.ObfuscateMessageForSpeaker(source, message, language);
-        var speech = GetSpeechVerb(source, speakerProcessedMessage);
+    var speakerProcessedMessage = _language.ObfuscateMessageForSpeaker(source, message, language);
+    var speech = GetSpeechVerb(source, speakerProcessedMessage);
 
-        string name;
-        if (nameOverride != null)
-        {
-            name = nameOverride;
-        }
-        else
-        {
-            var nameEv = new TransformSpeakerNameEvent(source, Name(source));
-            RaiseLocalEvent(source, nameEv);
-            name = nameEv.VoiceName;
-            if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex(nameEv.SpeechVerb, out var proto))
-                speech = proto;
-        }
+    string name;
+    if (nameOverride != null)
+    {
+        name = nameOverride;
+    }
+    else
+    {
+        var nameEv = new TransformSpeakerNameEvent(source, Name(source));
+        RaiseLocalEvent(source, nameEv);
+        name = nameEv.VoiceName;
+        if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex(nameEv.SpeechVerb, out var proto))
+            speech = proto;
+    }
 
-        var transformedName = name;
-        name = FormattedMessage.EscapeText(name);
+      var transformedName = name;
+    name = FormattedMessage.EscapeText(name);
 
-        var languageTypeface = languagePrototype?.TypefaceId;
-        var languageSize = languagePrototype?.TextSize;
-        var hideLanguageName = languagePrototype?.HideLanguageName ?? false;
-        var languageIcon = languagePrototype?.DisplayedLanguageIcon;
+    var languageTypeface = languagePrototype?.TypefaceId;
+    var languageSize = languagePrototype?.TextSize;
+    var hideLanguageName = languagePrototype?.HideLanguageName ?? false;
+    var languageIcon = languagePrototype?.DisplayedLanguageIcon;
 
-        var typefaceToUse = languageTypeface ?? speech.FontId;
-        var sizeToUse = languageSize ?? speech.FontSize;
+    var typefaceToUse = languageTypeface ?? speech.FontId;
+    var sizeToUse = languageSize ?? speech.FontSize;
 
-        var languageIndicator = string.Empty;
-        if (!hideLanguageName && languagePrototype != null && string.IsNullOrEmpty(languageIcon))
-            languageIndicator = $" ({languagePrototype.LocalizedName})";
+    var languageIndicator = string.Empty;
+    if (!hideLanguageName && languagePrototype != null && string.IsNullOrEmpty(languageIcon))
+        languageIndicator = $" ({languagePrototype.LocalizedName})";
 
-        var wrappedMessageTemplate = Loc.GetString(
-            speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-            ("entityName", "{1}" + languageIndicator),
-            ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
-            ("fontType", typefaceToUse),
-            ("fontSize", sizeToUse),
-            ("message", "{0}"));
+    var wrappedMessageTemplate = Loc.GetString(
+        speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
+        ("entityName", "{1}" + languageIndicator),
+        ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
+        ("fontType", typefaceToUse),
+        ("fontSize", sizeToUse),
+        ("message", "{0}"));
 
-        SendInVoiceRangeWithLanguage(
-            ChatChannel.Local,
-            speakerProcessedMessage,
-            wrappedMessageTemplate,
-            source,
-            range,
-            language,
-            languageIcon,
-            speakerName: name,
-            visibleLanguage: !(languagePrototype?.NeedsSpeech ?? true),
-            transformedName: transformedName,
-            needsLos: needsLos);
-
+    SendInVoiceRangeWithLanguage(
+        ChatChannel.Local,
+        speakerProcessedMessage,
+        wrappedMessageTemplate,
+        source,
+        range,
+        language,
+        languageIcon,
+        speakerName: name,
+        visibleLanguage: !(languagePrototype?.NeedsSpeech ?? true),
+        transformedName: transformedName,
+        needsLos: needsLos);
         var ev = new EntitySpokeEvent(source, speakerProcessedMessage, null, null, language);
         RaiseLocalEvent(source, ev, true);
 
@@ -149,6 +151,9 @@ public sealed partial class ChatSystem
         ProtoId<LanguagePrototype> language,
         bool ignoreXenos = false)
     {
+        // NEW: same marker pass as normal speech, applied before whisper processing.
+        var markedMessage = MarkInlineFormatting(originalMessage);
+
         LanguagePrototype? languagePrototype = null;
         if (!_prototypeManager.TryIndex(language, out languagePrototype))
         {
@@ -162,7 +167,7 @@ public sealed partial class ChatSystem
         if (needsSpeech && !_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
             return;
 
-        var message = TransformSpeech(source, FormattedMessage.RemoveMarkupOrThrow(originalMessage));
+        var message = TransformSpeech(source, FormattedMessage.RemoveMarkupOrThrow(markedMessage));
         if (message.Length == 0)
             return;
 
@@ -216,11 +221,11 @@ public sealed partial class ChatSystem
                         "chat-manager-entity-me-wrap-message",
                         ("entityName", listenerName),
                         ("entity", source),
-                        ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                        ("message", StripBoldSentinels(FormattedMessage.RemoveMarkupOrThrow(listenerMessage))))
                     : Loc.GetString(
                         "chat-manager-entity-whisper-wrap-message",
                         ("entityName", listenerName),
-                        ("message", FormattedMessage.EscapeText(listenerMessage)));
+                        ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(listenerMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     listenerMessage,
@@ -242,11 +247,11 @@ public sealed partial class ChatSystem
                         "chat-manager-entity-me-wrap-message",
                         ("entityName", listenerIdentityName),
                         ("entity", source),
-                        ("message", FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage)))
+                        ("message", StripBoldSentinels(FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage))))
                     : Loc.GetString(
                         "chat-manager-entity-whisper-wrap-message",
                         ("entityName", listenerIdentityName),
-                        ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                        ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(obfuscatedMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     obfuscatedMessage,
@@ -263,7 +268,7 @@ public sealed partial class ChatSystem
                 var obfuscatedMessage = ObfuscateMessageReadability(listenerMessage, 0.2f);
                 actualWrappedMessage = Loc.GetString(
                     "chat-manager-entity-whisper-unknown-wrap-message",
-                    ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                    ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(obfuscatedMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     obfuscatedMessage,
@@ -278,7 +283,7 @@ public sealed partial class ChatSystem
         var replayWrappedMessage = Loc.GetString(
             "chat-manager-entity-whisper-wrap-message",
             ("entityName", name),
-            ("message", FormattedMessage.EscapeText(speakerMessage)));
+            ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(speakerMessage))));
         _replay.RecordServerMessage(
             new ChatMessage(
                 ChatChannel.Whisper,
@@ -313,6 +318,11 @@ public sealed partial class ChatSystem
         bool ignoreXenos = false,
         EntityUid? originalSpeaker = null)
     {
+        // NOTE: no MarkInlineFormatting call here. This method relays a message
+        // that has already been through SendEntityWhisperWithLanguage (or another
+        // upstream speak path) — the sentinel characters are already embedded in
+        // "message" if the speaker used any markers. This is purely the final
+        // resolve-and-broadcast step for radio.
         LanguagePrototype? languagePrototype = null;
         if (!_prototypeManager.TryIndex(language, out languagePrototype))
         {
@@ -353,11 +363,11 @@ public sealed partial class ChatSystem
                         "chat-manager-entity-me-wrap-message",
                         ("entityName", listenerName),
                         ("entity", source),
-                        ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                        ("message", StripBoldSentinels(FormattedMessage.RemoveMarkupOrThrow(listenerMessage))))
                     : Loc.GetString(
                         "chat-manager-entity-whisper-wrap-message",
                         ("entityName", listenerName),
-                        ("message", FormattedMessage.EscapeText(listenerMessage)));
+                        ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(listenerMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     listenerMessage,
@@ -379,11 +389,11 @@ public sealed partial class ChatSystem
                         "chat-manager-entity-me-wrap-message",
                         ("entityName", listenerName),
                         ("entity", source),
-                        ("message", FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage)))
+                        ("message", StripBoldSentinels(FormattedMessage.RemoveMarkupOrThrow(obfuscatedMessage))))
                     : Loc.GetString(
                         "chat-manager-entity-whisper-wrap-message",
                         ("entityName", listenerName),
-                        ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                        ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(obfuscatedMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     obfuscatedMessage,
@@ -400,7 +410,7 @@ public sealed partial class ChatSystem
                 var obfuscatedMessage = ObfuscateMessageReadability(listenerMessage, 0.2f);
                 actualWrappedMessage = Loc.GetString(
                     "chat-manager-entity-whisper-unknown-wrap-message",
-                    ("message", FormattedMessage.EscapeText(obfuscatedMessage)));
+                    ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(obfuscatedMessage))));
                 _chatManager.ChatMessageToOne(
                     ChatChannel.Whisper,
                     obfuscatedMessage,
@@ -415,7 +425,7 @@ public sealed partial class ChatSystem
         var replayWrappedMessage = Loc.GetString(
             "chat-manager-entity-whisper-wrap-message",
             ("entityName", FormattedMessage.EscapeText(transformedName)),
-            ("message", FormattedMessage.EscapeText(message)));
+            ("message", ResolveBoldSentinels(FormattedMessage.EscapeText(message))));
         _replay.RecordServerMessage(
             new ChatMessage(
                 ChatChannel.Whisper,
@@ -487,10 +497,10 @@ public sealed partial class ChatSystem
                     "chat-manager-entity-me-wrap-message",
                     ("entityName", listenerName),
                     ("entity", source),
-                    ("message", FormattedMessage.RemoveMarkupOrThrow(listenerMessage)))
+                    ("message", StripBoldSentinels(FormattedMessage.RemoveMarkupOrThrow(listenerMessage))))
                 : string.Format(
                     wrappedMessageTemplate,
-                    FormattedMessage.EscapeText(listenerMessage),
+                    ResolveBoldSentinels(FormattedMessage.EscapeText(listenerMessage)),
                     listenerName);
 
             var ev = new ChatMessageOverrideInVoiceRangeEvent(
@@ -521,7 +531,7 @@ public sealed partial class ChatSystem
 
         var replayWrappedMessage = string.Format(
             wrappedMessageTemplate,
-            FormattedMessage.EscapeText(speakerMessage),
+            ResolveBoldSentinels(FormattedMessage.EscapeText(speakerMessage)),
             speakerName ?? FormattedMessage.EscapeText(Name(source)));
         _replay.RecordServerMessage(
             new ChatMessage(
