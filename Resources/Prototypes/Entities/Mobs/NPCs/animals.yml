@@ -922,6 +922,7 @@
     guides:
     - Chef
     - FoodRecipes
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: crab
@@ -1093,6 +1094,7 @@
   - type: HTN
     rootTask:
       task: RuminantHostileCompound
+  - type: Infectable # XenoEgg
 
 # Note that we gotta make this bitch vomit someday when you feed it anthrax or sumthin. Needs to be a small item thief too and aggressive if attacked.
 - type: entity
@@ -1219,6 +1221,7 @@
       250: Dead
   - type: StaminaResistance
     damageCoefficient: 0.40
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: kangaroo
@@ -1303,6 +1306,7 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: boxing kangaroo
@@ -2315,6 +2319,7 @@
     heatDamage:
       types:
         Heat : 0.2 #per second, scales with temperature & other constants
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: grenade penguin
@@ -3580,6 +3585,7 @@
   - type: HTN
     rootTask:
       task: RuminantCompound
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: diona nymph
