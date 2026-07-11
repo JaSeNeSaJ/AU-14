@@ -613,13 +613,15 @@ namespace Content.Server.Decals
 
         #endregion
 
-        public int RemoveDecals(EntityUid gridId, IReadOnlySet<string>? ids = null, DecalGridComponent? comp = null)
+        private readonly List<Vector2i> _emptyChunks = new();
+        private readonly List<uint> _toRemove = new();
+        public (int Removed, int Skipped) RemoveDecals(EntityUid gridId, IReadOnlySet<string>? ids = null, bool cleanableOnly = true, DecalGridComponent? comp = null)
         {
-            if (!Resolve(gridId, ref comp)) return 0;
+            if (!Resolve(gridId, ref comp)) return (0, 0);
+            _emptyChunks.Clear();
             var chunkCollection = comp.ChunkCollection.ChunkCollection;
-            var removed = 0;
-
-            if (ids == null)
+            int removed = 0, skipped = 0;
+            if (ids == null && !cleanableOnly)
             {
                 foreach (var (chunkOrigin, chunk) in chunkCollection)
                 {
@@ -631,38 +633,41 @@ namespace Content.Server.Decals
 
                 comp.DecalIndex.Clear();
                 chunkCollection.Clear();
-                return removed;
+                return (removed, 0);
             }
 
-            var emptyChunks = new List<Vector2i>();
-            var toRemove = new List<uint>();
             foreach (var (chunkOrigin, chunk) in chunkCollection)
             {
-                toRemove.Clear();
+                _toRemove.Clear();
                 foreach (var (decalId, decal) in chunk.Decals)
                 {
-                    if (ids.Contains(decal.Id))
-                        toRemove.Add(decalId);
+                    if (ids != null && !ids.Contains(decal.Id)) continue;
+                    if (cleanableOnly && !decal.Cleanable)
+                    {
+                        skipped++;
+                        continue;
+                    }
+
+                    _toRemove.Add(decalId);
                 }
 
-                if (toRemove.Count == 0) continue;
-                foreach (var decalId in toRemove)
+                if (_toRemove.Count == 0) continue;
+                foreach (var decalId in _toRemove)
                 {
                     chunk.Decals.Remove(decalId);
                     comp.DecalIndex.Remove(decalId);
                 }
 
-                removed += toRemove.Count;
+                removed += _toRemove.Count;
                 DirtyChunk(gridId, chunkOrigin, chunk);
-
                 if (chunk.Decals.Count == 0)
-                    emptyChunks.Add(chunkOrigin);
+                    _emptyChunks.Add(chunkOrigin);
             }
 
-            foreach (var chunkOrigin in emptyChunks)
+            foreach (var chunkOrigin in _emptyChunks)
                 chunkCollection.Remove(chunkOrigin);
 
-            return removed;
+            return (removed, skipped);
         }
     }
 }
