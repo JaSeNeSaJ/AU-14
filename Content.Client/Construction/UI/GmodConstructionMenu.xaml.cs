@@ -224,6 +224,7 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         Modernize(ConstructionItemsEditorButton);
         Modernize(TilesEditorButton);
         Modernize(LatheEditorButton);
+        Modernize(ZLevelTogglesButton);
         Modernize(BuildButton, toggle: true);
         Modernize(FavoriteButton);
         Modernize(EraseButton, toggle: true);
@@ -449,6 +450,12 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
             IoCManager.Resolve<IEntitySystemManager>()
                 .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
                 .OpenLatheEditor();
+
+        // Admin Tools -> Z-Level Toggles (allow/deny z-level building per map, persisted across rounds).
+        ZLevelTogglesButton.OnPressed += _ =>
+            IoCManager.Resolve<IEntitySystemManager>()
+                .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
+                .OpenZLevelToggles();
 
         // The spawnlist buttons (and initial selection) are built once the presenter calls SetSpawnlists.
     }
