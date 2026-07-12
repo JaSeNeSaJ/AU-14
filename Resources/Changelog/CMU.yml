@@ -6309,5 +6309,23 @@
   id: 430
   time: '2026-07-12T06:51:25.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1582
+- author: troytroy400
+  changes:
+  - message: Removed scream button from hotbar. Scream is now only available through
+      the emote wheel.
+    type: Remove
+  - message: Your ghost sprite will now use the sprite you died / ghosted as
+    type: Add
+  - message: Adds the marine all-weather coat, a new outerwear item. Available in
+      the USCMC command vendor.
+    type: Add
+  - message: Added Space Grunts, a TTRPG, to the rec-vend.
+    type: Add
+  - message: Different color options for the nightvision visor (can be set in the
+      accessibility options menu)
+    type: Add
+  id: 431
+  time: '2026-07-12T09:24:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1584
 Name: CMU
 Order: -1
