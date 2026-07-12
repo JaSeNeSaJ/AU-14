@@ -6309,5 +6309,53 @@
   id: 430
   time: '2026-07-12T06:51:25.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1582
+- author: troytroy400
+  changes:
+  - message: Removed scream button from hotbar. Scream is now only available through
+      the emote wheel.
+    type: Remove
+  - message: Your ghost sprite will now use the sprite you died / ghosted as
+    type: Add
+  - message: Adds the marine all-weather coat, a new outerwear item. Available in
+      the USCMC command vendor.
+    type: Add
+  - message: Added Space Grunts, a TTRPG, to the rec-vend.
+    type: Add
+  - message: Different color options for the nightvision visor (can be set in the
+      accessibility options menu)
+    type: Add
+  id: 431
+  time: '2026-07-12T09:24:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1584
+- author: troytroy400
+  changes:
+  - message: USCM gear is now camo conforming!
+    type: Add
+  - message: Added a "Pin scream to hotbar" option under Settings > CMU to let players
+      opt back into having the scream emote pinned to their hotbar. 1984 has been
+      removed (for now).
+    type: Add
+  - message: Wired HelmetAccessory, OuterClothingAccessory and UniformAccessory rendering
+      into ItemCamouflageVisualizerSystem so helmet garb, armor components and ponchos
+      properly re-texture on camo change.
+    type: Code
+  id: 432
+  time: '2026-07-12T12:37:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1585
+- author: TheHellFireo
+  changes:
+  - message: Distress Signal now announces one minute before round start whether any
+      round-start survivors are scheduled to spawn and how many.
+    type: Add
+  id: 433
+  time: '2026-07-12T13:00:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1586
+- author: TheHellFireo
+  changes:
+  - message: Added W buttons to xeno chat messages that let xenonids watch the sender.
+    type: Add
+  id: 434
+  time: '2026-07-12T13:23:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1587
 Name: CMU
 Order: -1
