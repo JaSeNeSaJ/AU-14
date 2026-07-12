@@ -111,6 +111,9 @@ SPDX-License-Identifier: AGPL-3.0-only
                                 <Button Name="ConstructionItemsEditorButton"
                                         Text="{Loc 'gmod-construction-menu-items-editor'}"
                                         HorizontalExpand="True" Margin="0 0 0 2"/>
+                                <Button Name="MassEntityEditorButton"
+                                        Text="{Loc 'gmod-construction-menu-mass-editor'}"
+                                        HorizontalExpand="True" Margin="0 0 0 2"/>
                                 <Button Name="TilesEditorButton"
                                         Text="{Loc 'gmod-construction-menu-tiles-editor'}"
                                         HorizontalExpand="True" Margin="0 0 0 2"/>

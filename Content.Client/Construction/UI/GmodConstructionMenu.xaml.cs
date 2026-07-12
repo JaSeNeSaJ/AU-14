@@ -222,6 +222,7 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         Modernize(AdvancedDuplicatorButton);
         Modernize(PartnersButton);
         Modernize(ConstructionItemsEditorButton);
+        Modernize(MassEntityEditorButton); // AU14: batch add-to-menu tool
         Modernize(TilesEditorButton);
         Modernize(LatheEditorButton);
         Modernize(ZLevelTogglesButton);
@@ -442,6 +443,12 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
                 .OpenItemsEditor();
 
         // Admin Tools → Tiles Editor (add a tile to the menu) and Lathe Editor (add a lathe print recipe).
+        // AU14: Admin Tools -> Mass Entity Editor (multi-select entities, one recipe fanned out to all).
+        MassEntityEditorButton.OnPressed += _ =>
+            IoCManager.Resolve<IEntitySystemManager>()
+                .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
+                .OpenMassEditor();
+
         TilesEditorButton.OnPressed += _ =>
             IoCManager.Resolve<IEntitySystemManager>()
                 .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
