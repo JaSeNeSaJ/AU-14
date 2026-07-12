@@ -6293,5 +6293,21 @@
   id: 429
   time: '2026-07-12T00:35:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1574
+- author: troytroy400
+  changes:
+  - message: All faction weapons now have their own magazine/ammo boxes.
+    type: Add
+  - message: Removed a duplicate 9x19mm ammo box.
+    type: Remove
+  - message: Large magazine pouches have been moved to requisitions.
+    type: Tweak
+  - message: Advisor characters now must be 25 instead of 21.
+    type: Fix
+  - message: IO characters now only have to be 25 in-line with all other junior officers,
+      not 30.
+    type: Fix
+  id: 430
+  time: '2026-07-12T06:51:25.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1582
 Name: CMU
 Order: -1
