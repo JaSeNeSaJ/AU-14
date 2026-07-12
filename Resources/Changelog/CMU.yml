@@ -6255,5 +6255,43 @@
   id: 427
   time: '2026-07-11T21:49:19.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1578
+- author: maertayn
+  changes:
+  - message: All animals in the WeYu experimental crate can 'nurture' a chestburster
+    type: Tweak
+  - message: Imaginary Friend custom advisor appearance & name
+    type: Fix
+  - message: Imaginary Friend has hands to interact with the world (do consider you're
+      still a ghost and use it only to help a mentee)
+    type: Add
+  - message: Ghosts being unable to enter vehicles because there's too many occupants
+    type: Fix
+  - message: Insurgency's Govfor objectives no longer state CLF there's activity (first-contact)
+    type: Tweak
+  - message: '''nukedecals'' performance command for admins to use, explicit decals
+      or just delete all of them server-wide (if this stabilizes lag we''ll know where
+      the memory leak is)'
+    type: Add
+  - message: Vehicle Crewman rank progression E2-E4 - 5h/24h
+    type: Tweak
+  - message: Military Synths get access to the HM & MD vendors
+    type: Tweak
+  id: 428
+  time: '2026-07-11T23:32:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1579
+- author: NileDeveloper
+  changes:
+  - message: individual boldening of words and sentences
+    type: Add
+  - message: double chat bubbles using normal speech instead of rune and making it
+      similar to rune with one single speech bubble whisper with radio chatter
+    type: Remove
+  - message: individual italic of words and sentences
+    type: Add
+  - message: individual italic  AND boldening of words and sentences
+    type: Add
+  id: 429
+  time: '2026-07-12T00:35:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1574
 Name: CMU
 Order: -1
