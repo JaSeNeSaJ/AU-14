@@ -396,7 +396,7 @@ public abstract partial class SharedChatSystem : EntitySystem
         return rawmsg.Substring(tagStart, tagEnd - tagStart);
     }
 
-    // RMC14 Per-word and per-phrase bold/italic markup system
+    // CMU: Per-word and per-phrase bold/italic markup system
     //
     // Phrase-level: "**phrase**" bolds, "//phrase//" italicizes, "***phrase***"
     // does both. Word-level: "word*" bolds, "word/" italicizes, "word***" does
@@ -414,9 +414,9 @@ public abstract partial class SharedChatSystem : EntitySystem
     private static readonly Regex InlineItalicRegex = new(@"(\w+[!?.,;:]*)/(?=\s|$)", RegexOptions.Compiled);
 
     private const char BoldSentinelStart = '\uE000';
-    private const char BoldSentinelEnd   = '\uE001';
+    private const char BoldSentinelEnd = '\uE001';
     private const char ItalicSentinelStart = '\uE002';
-    private const char ItalicSentinelEnd   = '\uE003';
+    private const char ItalicSentinelEnd = '\uE003';
 
     /// <summary>
     /// Applies phrase-level markup first (***, then **, then //), then falls
@@ -454,7 +454,7 @@ public abstract partial class SharedChatSystem : EntitySystem
 
     public string ResolveBoldSentinels(string escapedMessage)
     {
-        // RMC14: RobustToolbox's rich text tags each push their own font onto
+        // CMU: RobustToolbox's rich text tags each push their own font onto
         // a stack independently (see BoldTag.cs / ItalicTag.cs / BoldItalicTag.cs
         // in the engine) - nesting [bold][italic]...[/italic][/bold] does NOT
         // combine into a bold-italic font, the inner tag's font just overwrites

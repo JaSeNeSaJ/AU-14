@@ -46,87 +46,87 @@ public sealed partial class ChatSystem
         return transformedName;
     }
 
-   private void SendEntitySpeakWithLanguage(
-    EntityUid source,
-    string originalMessage,
-    ChatTransmitRange range,
-    string? nameOverride,
-    bool hideLog,
-    bool ignoreActionBlocker,
-    ProtoId<LanguagePrototype> language)
-{
-    // Apply bold/italic formatting BEFORE anything else
-    var markedMessage = MarkInlineFormatting(originalMessage);
-
-    LanguagePrototype? languagePrototype = null;
-    if (!_prototypeManager.TryIndex(language, out languagePrototype))
+    private void SendEntitySpeakWithLanguage(
+        EntityUid source,
+        string originalMessage,
+        ChatTransmitRange range,
+        string? nameOverride,
+        bool hideLog,
+        bool ignoreActionBlocker,
+        ProtoId<LanguagePrototype> language)
     {
-        language = SharedLanguageSystem.CommonLanguage;
-        _prototypeManager.TryIndex(language, out languagePrototype);
-    }
+        // Apply bold/italic formatting BEFORE anything else
+        var markedMessage = MarkInlineFormatting(originalMessage);
 
-    var needsLos = languagePrototype?.NeedsLOS ?? false;
-    var needsSpeech = languagePrototype?.NeedsSpeech ?? true;
+        LanguagePrototype? languagePrototype = null;
+        if (!_prototypeManager.TryIndex(language, out languagePrototype))
+        {
+            language = SharedLanguageSystem.CommonLanguage;
+            _prototypeManager.TryIndex(language, out languagePrototype);
+        }
 
-    if (needsSpeech && !_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
-        return;
+        var needsLos = languagePrototype?.NeedsLOS ?? false;
+        var needsSpeech = languagePrototype?.NeedsSpeech ?? true;
 
-    var message = TransformSpeech(source, markedMessage);
-    if (message.Length == 0)
-        return;
+        if (needsSpeech && !_actionBlocker.CanSpeak(source) && !ignoreActionBlocker)
+            return;
 
-    var speakerProcessedMessage = _language.ObfuscateMessageForSpeaker(source, message, language);
-    var speech = GetSpeechVerb(source, speakerProcessedMessage);
+        var message = TransformSpeech(source, markedMessage);
+        if (message.Length == 0)
+            return;
 
-    string name;
-    if (nameOverride != null)
-    {
-        name = nameOverride;
-    }
-    else
-    {
-        var nameEv = new TransformSpeakerNameEvent(source, Name(source));
-        RaiseLocalEvent(source, nameEv);
-        name = nameEv.VoiceName;
-        if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex(nameEv.SpeechVerb, out var proto))
-            speech = proto;
-    }
+        var speakerProcessedMessage = _language.ObfuscateMessageForSpeaker(source, message, language);
+        var speech = GetSpeechVerb(source, speakerProcessedMessage);
 
-      var transformedName = name;
-    name = FormattedMessage.EscapeText(name);
+        string name;
+        if (nameOverride != null)
+        {
+            name = nameOverride;
+        }
+        else
+        {
+            var nameEv = new TransformSpeakerNameEvent(source, Name(source));
+            RaiseLocalEvent(source, nameEv);
+            name = nameEv.VoiceName;
+            if (nameEv.SpeechVerb != null && _prototypeManager.TryIndex(nameEv.SpeechVerb, out var proto))
+                speech = proto;
+        }
 
-    var languageTypeface = languagePrototype?.TypefaceId;
-    var languageSize = languagePrototype?.TextSize;
-    var hideLanguageName = languagePrototype?.HideLanguageName ?? false;
-    var languageIcon = languagePrototype?.DisplayedLanguageIcon;
+        var transformedName = name;
+        name = FormattedMessage.EscapeText(name);
 
-    var typefaceToUse = languageTypeface ?? speech.FontId;
-    var sizeToUse = languageSize ?? speech.FontSize;
+        var languageTypeface = languagePrototype?.TypefaceId;
+        var languageSize = languagePrototype?.TextSize;
+        var hideLanguageName = languagePrototype?.HideLanguageName ?? false;
+        var languageIcon = languagePrototype?.DisplayedLanguageIcon;
 
-    var languageIndicator = string.Empty;
-    if (!hideLanguageName && languagePrototype != null && string.IsNullOrEmpty(languageIcon))
-        languageIndicator = $" ({languagePrototype.LocalizedName})";
+        var typefaceToUse = languageTypeface ?? speech.FontId;
+        var sizeToUse = languageSize ?? speech.FontSize;
 
-    var wrappedMessageTemplate = Loc.GetString(
-        speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
-        ("entityName", "{1}" + languageIndicator),
-        ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
-        ("fontType", typefaceToUse),
-        ("fontSize", sizeToUse),
-        ("message", "{0}"));
+        var languageIndicator = string.Empty;
+        if (!hideLanguageName && languagePrototype != null && string.IsNullOrEmpty(languageIcon))
+            languageIndicator = $" ({languagePrototype.LocalizedName})";
 
-    SendInVoiceRangeWithLanguage(
-        ChatChannel.Local,
-        speakerProcessedMessage,
-        wrappedMessageTemplate,
-        source,
-        range,
-        language,
-        languageIcon,
-        speakerName: name,
-        visibleLanguage: !(languagePrototype?.NeedsSpeech ?? true),
-        transformedName: transformedName,
-        needsLos: needsLos);
+        var wrappedMessageTemplate = Loc.GetString(
+            speech.Bold ? "chat-manager-entity-say-bold-wrap-message" : "chat-manager-entity-say-wrap-message",
+            ("entityName", "{1}" + languageIndicator),
+            ("verb", Loc.GetString(speech.SpeechVerbStrings[_random.Next(speech.SpeechVerbStrings.Count)])),
+            ("fontType", typefaceToUse),
+            ("fontSize", sizeToUse),
+            ("message", "{0}"));
+
+        SendInVoiceRangeWithLanguage(
+            ChatChannel.Local,
+            speakerProcessedMessage,
+            wrappedMessageTemplate,
+            source,
+            range,
+            language,
+            languageIcon,
+            speakerName: name,
+            visibleLanguage: !(languagePrototype?.NeedsSpeech ?? true),
+            transformedName: transformedName,
+            needsLos: needsLos);
         var ev = new EntitySpokeEvent(source, speakerProcessedMessage, null, null, language);
         RaiseLocalEvent(source, ev, true);
 
@@ -151,7 +151,7 @@ public sealed partial class ChatSystem
         ProtoId<LanguagePrototype> language,
         bool ignoreXenos = false)
     {
-        // NEW: same marker pass as normal speech, applied before whisper processing.
+        // same marker pass as normal speech, applied before whisper processing.
         var markedMessage = MarkInlineFormatting(originalMessage);
 
         LanguagePrototype? languagePrototype = null;

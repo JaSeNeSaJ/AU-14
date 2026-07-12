@@ -482,17 +482,12 @@ public sealed partial class ChatUIController : UIController
         EnqueueSpeechBubble(ent, msg, speechType);
     }
 
-      private bool ShouldHideRunechatSelfRadioBubble(EntityUid sender, ChatMessage msg, SpeechBubble.SpeechType speechType)
+    private bool ShouldHideRunechatSelfRadioBubble(EntityUid sender, ChatMessage msg, SpeechBubble.SpeechType speechType)
     {
-        // Suppress only the true radio-channel broadcast bubble for your own
-        // speech. The whisper-relay bubble (which nearby listeners see too)
-        // is left alone - that's the one that should show over your head.
-        // No longer gated behind ChatEnableRunechatBubbles: that gate was the
-        // bug, since with runechat bubbles off this always returned false and
-        // the radio bubble was never suppressed at all.
-        return speechType == SpeechBubble.SpeechType.Radio &&
-               msg.Channel == ChatChannel.Radio &&
-               _player.LocalSession?.AttachedEntity == sender;
+        return speechType == SpeechBubble.SpeechType.Radio
+            && msg.Channel == ChatChannel.Radio
+            // && _config.GetCVar(CCVars.ChatEnableRunechatBubbles)
+            && _player.LocalSession?.AttachedEntity == sender;
     }
 
     private void CreateSpeechBubble(EntityUid entity, SpeechBubbleData speechData)
@@ -635,7 +630,7 @@ public sealed partial class ChatUIController : UIController
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
             // TODO: this logic is iffy (checking if controlling something that's NOT a ghost), is there a better way to check this?
-            if (_ghost is not {IsGhost: true})
+            if (_ghost is not { IsGhost: true })
             {
                 CanSendChannels |= ChatSelectChannel.Local;
                 CanSendChannels |= ChatSelectChannel.Whisper;
@@ -645,7 +640,7 @@ public sealed partial class ChatUIController : UIController
         }
 
         // Only ghosts and admins can send / see deadchat.
-        if (_admin.HasFlag(AdminFlags.Admin) || _ghost is {IsGhost: true})
+        if (_admin.HasFlag(AdminFlags.Admin) || _ghost is { IsGhost: true })
         {
             FilterableChannels |= ChatChannel.Dead;
             CanSendChannels |= ChatSelectChannel.Dead;
@@ -829,7 +824,7 @@ public sealed partial class ChatUIController : UIController
 
     public ChatSelectChannel MapLocalIfGhost(ChatSelectChannel channel)
     {
-        if (channel == ChatSelectChannel.Local && _ghost is {IsGhost: true})
+        if (channel == ChatSelectChannel.Local && _ghost is { IsGhost: true })
             return ChatSelectChannel.Dead;
 
         return channel;
@@ -1060,7 +1055,7 @@ public sealed partial class ChatUIController : UIController
                 break;
 
             case ChatChannel.Dead:
-                if (_ghost is not {IsGhost: true})
+                if (_ghost is not { IsGhost: true })
                     break;
 
                 AddSpeechBubble(msg, SpeechBubble.SpeechType.Say);
