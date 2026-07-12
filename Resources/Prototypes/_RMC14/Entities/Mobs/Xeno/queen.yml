@@ -183,6 +183,23 @@
       path: /Audio/_RMC14/Xeno/alien_queen_died.ogg
       params:
         volume: -6
+  - type: DrawableSolution
+    solution: blood
+  - type: SolutionContainerManager
+    solutions:
+      blood:
+        maxVol: 600
+        reagents:
+        - ReagentId: CMUXenoRoyalBlood
+          Quantity: 120
+        - ReagentId: CMUXenoPlasmaRoyal
+          Quantity: 120
+        - ReagentId: CMUXenoPlasmaChitin
+          Quantity: 120
+        - ReagentId: CMUXenoPlasmaPhero
+          Quantity: 120
+        - ReagentId: CMUXenoPlasmaNeuro
+          Quantity: 120
   - type: WhitelistPickup
     whitelist:
       components:

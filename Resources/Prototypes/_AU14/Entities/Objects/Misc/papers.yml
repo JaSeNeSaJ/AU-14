@@ -89,7 +89,12 @@
       map: ["enum.PaperVisualLayers.Stamp"]
       visible: false
 
-
+- type: entity
+  parent: CMUWYPaper
+  id: CMUCipherHintPaper
+  name: Research Ciphering Breakthrough
+  components:
+  - type: CipherHintPaper
 
 
 

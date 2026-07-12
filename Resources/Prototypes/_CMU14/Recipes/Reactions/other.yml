@@ -12,3 +12,14 @@
       amount: 16
   products:
     CMUBlackSludge: 64
+
+
+- type: reaction
+  id: CMUXenoPlasmaRoyal
+  reactants:
+    CMUXenoRoyalBlood:
+      amount: 1
+    CMUXenoPlasmaEgg:
+      amount: 1
+  products:
+    CMUXenoPlasmaRoyal: 2
