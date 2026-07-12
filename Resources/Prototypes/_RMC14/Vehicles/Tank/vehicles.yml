@@ -69,6 +69,10 @@
     softness: 2
   - type: Physics
     bodyType: Dynamic
+  #CMU
+  - type: CMUZPhysics
+  - type: CMUVehicleZTraversal
+  - type: CMUZLevelViewer
   - type: Fixtures
     fixtures:
       world:
@@ -97,6 +101,8 @@
   - type: Damageable
     damageContainer: StructuralMarine
     damageModifierSet: VehicleFrameTank
+  - type: ReceiverXenoClaws
+    minimumClawStrength: Sharp
   - type: InteractionOutline
   - type: Sprite
     drawdepth: Mobs
@@ -206,7 +212,6 @@
     slotCount: 1
   - type: HardpointIntegrity
     maxIntegrity: 1000
-    repairFuelCost: 20
     bypassEntryOnZero: true
   - type: Appearance
   - type: VehicleEnter
@@ -223,6 +228,13 @@
 - type: entity
   parent: VehicleTankBase
   id: VehicleTank
+  components:
+  - type: MarineMapTracked
+  - type: TacticalMapTracked
+  - type: TacticalMapIcon
+    icon:
+      sprite: /Textures/_RMC14/Interface/map_blips_large.rsi
+      state: tank
 
 - type: entity
   parent: VehicleTankBase

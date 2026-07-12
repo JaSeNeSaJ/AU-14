@@ -1,0 +1,287 @@
+using System.Linq;
+using Content.Server.Chat.Managers;
+using Content.Server.EUI;
+using Content.Server.Humanoid;
+using Content.Server.Mind;
+using Content.Server.Preferences.Managers;
+using Content.Server.Radio;
+using Content.Server.Station.Systems;
+using Content.Shared._RMC14.Mentor.ImaginaryFriend;
+using Content.Shared._RMC14.Xenonids;
+using Content.Shared.Clothing;
+using Content.Shared.Eye;
+using Content.Shared.Humanoid;
+using Content.Shared.Inventory;
+using Content.Shared.Preferences;
+using Content.Shared.Preferences.Loadouts;
+using Content.Shared.Roles;
+using Robust.Server.GameObjects;
+using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
+
+namespace Content.Server._RMC14.Mentor.ImaginaryFriend;
+
+public sealed partial class ImaginaryFriendSystem : SharedImaginaryFriendSystem
+{
+    [Dependency] private AppearanceSystem _appearance = default!;
+    [Dependency] private IChatManager _chat = default!;
+    [Dependency] private EuiManager _euiManager = default!;
+    [Dependency] private EyeSystem _eye = default!;
+    [Dependency] private HumanoidAppearanceSystem _humanoid = default!;
+    [Dependency] private MetaDataSystem _metaData = default!;
+    [Dependency] private MindSystem _mind = default!;
+    [Dependency] private IServerPreferencesManager _preferencesManager = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
+    [Dependency] private StationSpawningSystem _stationSpawning = default!;
+    [Dependency] private TransformSystem _transform = default!;
+    [Dependency] private VisibilitySystem _visibility = default!;
+    [Dependency] private InventorySystem _inventory = default!;
+
+    private EntityQuery<ImaginaryFriendComponent> _imaginaryFriendQuery;
+
+    private static readonly EntProtoId ImaginaryFriendPrototype = "RMCImaginaryFriendHumanoid";
+    private static readonly EntProtoId XenoImaginaryFriendPrototype = "RMCImaginaryFriendXeno";
+
+    private static readonly ProtoId<JobPrototype> ImaginaryFriendJobPrototype = "AU14JobGOVFORadvisor";
+    private static readonly ProtoId<StartingGearPrototype> ImaginaryFriendGear = "AU14GearImaginaryAdvisor";
+    private static readonly ProtoId<StartingGearPrototype> XenoImaginaryFriendGear = "RMCMobXippyGear";
+
+    public override void Initialize()
+    {
+        base.Initialize();
+
+        _imaginaryFriendQuery = GetEntityQuery<ImaginaryFriendComponent>();
+
+        SubscribeLocalEvent<HasImaginaryFriendComponent, ComponentShutdown>(OnHasImaginaryFriendShutdown);
+        SubscribeLocalEvent<HasImaginaryFriendComponent, GetVisMaskEvent>(OnHasImaginaryFriendVisMask);
+
+        SubscribeLocalEvent<ImaginaryFriendComponent, ImaginaryFriendToggleVisibilityActionEvent>(OnFriendToggleVisibility);
+        SubscribeLocalEvent<ImaginaryFriendComponent, ImaginaryFriendStopBeingFriendsActionEvent>(OnStopBeingFriends);
+        SubscribeLocalEvent<ImaginaryFriendComponent, ComponentShutdown>(OnFriendShutdown);
+        SubscribeLocalEvent<RadioSendAttemptEvent>(OnRadioSendAttempt);
+        SubscribeLocalEvent<RadioReceiveAttemptEvent>(OnRadioReceiveAttempt);
+    }
+
+    private void OnHasImaginaryFriendShutdown(Entity<HasImaginaryFriendComponent> ent, ref ComponentShutdown args)
+    {
+        RemoveImaginaryFriend(ent.Comp);
+        _eye.RefreshVisibilityMask(ent.Owner);
+    }
+
+    private void OnHasImaginaryFriendVisMask(Entity<HasImaginaryFriendComponent> ent, ref GetVisMaskEvent args)
+    {
+        var canSeeFriends = false;
+        foreach (var friend in ent.Comp.Friends)
+        {
+            if (TerminatingOrDeleted(friend))
+                continue;
+
+            canSeeFriends = true;
+        }
+
+        if (!canSeeFriends)
+            return;
+
+        args.VisibilityMask |= (int)VisibilityFlags.ImaginaryFriend;
+    }
+
+    private void OnFriendToggleVisibility(Entity<ImaginaryFriendComponent> ent, ref ImaginaryFriendToggleVisibilityActionEvent args)
+    {
+        args.Handled = true;
+
+        ent.Comp.Visible = !ent.Comp.Visible;
+        Dirty(ent);
+
+        Actions.SetToggled(ent.Comp.ToggleVisibilityActionEntity, ent.Comp.Visible);
+        _appearance.SetData(ent, ImaginaryFriendVisuals.Sprite, ent.Comp.Visible);
+    }
+
+    private void OnStopBeingFriends(Entity<ImaginaryFriendComponent> ent, ref ImaginaryFriendStopBeingFriendsActionEvent args)
+    {
+        args.Handled = true;
+
+        RemoveImaginaryFriend(ent, ent.Comp);
+    }
+
+    private void OnFriendShutdown(Entity<ImaginaryFriendComponent> ent, ref ComponentShutdown args)
+    {
+        RemoveImaginaryFriend(ent, ent.Comp);
+    }
+
+    private void OnRadioSendAttempt(ref RadioSendAttemptEvent args)
+    {
+        if (_imaginaryFriendQuery.HasComp(Transform(args.RadioSource).ParentUid))
+            args.Cancelled = true;
+    }
+
+    private void OnRadioReceiveAttempt(ref RadioReceiveAttemptEvent args)
+    {
+        if (_imaginaryFriendQuery.HasComp(Transform(args.RadioReceiver).ParentUid))
+            args.Cancelled = true;
+    }
+
+    public void OpenImaginaryFriendConfirmWindow(ICommonSession session, EntityUid target)
+    {
+        _euiManager.OpenEui(new BecomeImaginaryFriendEui(this, target, session), session);
+    }
+
+    public override void BecomeImaginaryFriend(EntityUid imaginer, EntityUid newFriend, bool defaultCharacter = true)
+    {
+        if (TerminatingOrDeleted(imaginer))
+            return;
+
+        if (!_mind.TryGetMind(newFriend, out var mindId, out _))
+            return;
+
+        EnsureComp<HasImaginaryFriendComponent>(imaginer, out var hasFriend);
+
+        var targetIsXeno = HasComp<XenoComponent>(imaginer);
+        var coordinates = _transform.GetMoverCoordinates(newFriend);
+        var prototype = targetIsXeno ? XenoImaginaryFriendPrototype : ImaginaryFriendPrototype;
+
+        var friend = Spawn(prototype, coordinates);
+        _transform.AttachToGridOrMap(friend, Transform(friend));
+
+        TryComp(newFriend, out ActorComponent? friendActor);
+        var friendSession = friendActor?.PlayerSession;
+
+        if (!targetIsXeno && friendSession != null)
+        {
+            if (!defaultCharacter)
+            {
+                var characters = _preferencesManager.GetPreferences(friendSession.UserId).Characters;
+                foreach (var (_, profile) in characters)
+                {
+                    if (profile is not HumanoidCharacterProfile humanoid)
+                        continue;
+
+                    var jobs = humanoid.JobPriorities;
+                    var highJob = jobs.FirstOrDefault(x => x.Value == JobPriority.High).Key;
+
+                    if (highJob != ImaginaryFriendJobPrototype)
+                        continue;
+
+                    if (TryComp(friend, out HumanoidAppearanceComponent? humanoidAppearance))
+                    {
+                        humanoidAppearance.Species = humanoid.Species;
+                        humanoidAppearance.Sex = humanoid.Sex;
+                        humanoidAppearance.Age = humanoid.Age;
+                        humanoidAppearance.Gender = humanoid.Gender;
+                        Dirty(friend, humanoidAppearance);
+                    }
+
+                    _humanoid.LoadProfile(friend, humanoid);
+                    _metaData.SetEntityName(friend, humanoid.Name);
+
+                    if (_prototypeManager.TryIndex(highJob, out var jobProto))
+                    {
+                        var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(jobProto.ID, _prototypeManager);
+                        if (proto != null)
+                        {
+                            humanoid.Loadouts.TryGetValue(key, out var loadout);
+                            if (loadout == null)
+                            {
+                                loadout = new RoleLoadout(proto.ID);
+                                loadout.SetDefault(humanoid, null, _prototypeManager);
+                            }
+
+                            _stationSpawning.EquipRoleLoadout(friend, loadout, proto);
+                        }
+                    }
+                    break;
+                }
+            }
+
+            EquipStartingGear(friend);
+        }
+        else
+        {
+            _prototypeManager.TryIndex(XenoImaginaryFriendGear, out var startingGear);
+            if (startingGear != null)
+                _stationSpawning.EquipStartingGear(friend, startingGear, raiseEvent: false);
+        }
+
+        _mind.UnVisit(mindId);
+        _mind.TransferTo(mindId, friend, createGhost: false);
+
+        hasFriend.Friends.Add(friend);
+        Dirty(imaginer, hasFriend);
+
+        var imaginaryFriend = EnsureComp<ImaginaryFriendComponent>(friend);
+        imaginaryFriend.Imaginer = imaginer;
+        Dirty(friend, imaginaryFriend);
+
+        _visibility.AddLayer(friend, (int)VisibilityFlags.ImaginaryFriend, false);
+        _visibility.RemoveLayer(friend, (int)VisibilityFlags.Ghost, false);
+        _visibility.RefreshVisibility(friend);
+
+        _eye.RefreshVisibilityMask(imaginer);
+
+        if (friendSession != null)
+            _chat.DispatchServerMessage(friendSession, Loc.GetString("rmc-mentor-imaginary-friend-became", ("target", imaginer)));
+    }
+
+    private void RemoveImaginaryFriend(HasImaginaryFriendComponent hasImaginaryFriend)
+    {
+        foreach (var friend in hasImaginaryFriend.Friends)
+        {
+            if (TerminatingOrDeleted(friend))
+                continue;
+
+            QueueDel(friend);
+        }
+    }
+
+    private void RemoveImaginaryFriend(EntityUid friend, ImaginaryFriendComponent imaginaryFriend)
+    {
+        if (imaginaryFriend.Imaginer is not { } imaginer)
+            return;
+
+        if (!TryComp(imaginer, out HasImaginaryFriendComponent? hasFriend))
+            return;
+
+        hasFriend.Friends.Remove(friend);
+
+        if (hasFriend.Friends.Count == 0)
+            RemComp<HasImaginaryFriendComponent>(imaginer);
+        else
+            Dirty(imaginer, hasFriend);
+
+        if (TerminatingOrDeleted(friend))
+            return;
+
+        if (_mind.TryGetMind(friend, out var mindId, out var mind)
+                && mind.OriginalOwnedEntity is { } originalEntNet
+                && TryGetEntity(originalEntNet, out var originalEntity))
+            _mind.TransferTo(mindId, originalEntity.Value, mind: mind);
+
+        QueueDel(friend);
+    }
+
+    private void EquipStartingGear(EntityUid friend)
+    {
+        bool usedAdvisorGear = _prototypeManager.TryIndex(ImaginaryFriendGear, out var startingGear);
+
+        if (!usedAdvisorGear
+            && _prototypeManager.TryIndex(ImaginaryFriendJobPrototype, out var jobProto)
+            && jobProto.StartingGear is { } jobGearId)
+            _prototypeManager.TryIndex(jobGearId, out startingGear);
+
+        if (startingGear != null)
+            _stationSpawning.EquipStartingGear(friend, startingGear, raiseEvent: false);
+
+        if (!usedAdvisorGear)
+        {
+            // Remove the satchel & stamp + add the drill instructor hat
+            if (_inventory.TryGetSlotEntity(friend, "back", out var backItem))
+                Del(backItem.Value);
+            if (_inventory.TryGetSlotEntity(friend, "pocket1", out var pocket1Item))
+                Del(pocket1Item.Value);
+            var hat = Spawn("CMHeadCapDrill", Transform(friend).Coordinates);
+            _inventory.TryEquip(friend, hat, "head");
+        }
+
+        var ev = new StartingGearEquippedEvent(friend);
+        RaiseLocalEvent(friend, ref ev);
+    }
+}

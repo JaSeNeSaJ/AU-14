@@ -23,6 +23,11 @@
     - Alive
     - Critical
     - Dead
+  - type: FiremanCarriable
+    canThrow: true
+    carrierWhitelist:
+      components:
+      - Synth
   - type: Tag
     tags:
     - DoorBumpOpener
@@ -73,6 +78,9 @@
     canEvolveWithoutGranter: true
     max: 200
     evolvesTo:
+    # CMU14
+    - CMXenoBull
+    # CMU14
     - CMXenoLurker
     evolvesToWithoutPoints:
     - CMXenoQueen
@@ -125,6 +133,7 @@
     name: cm-job-name-xeno-runner
   - type: RMCSurgeryXenoHeart
     item: RMCOrganXenoHeartT1
+  - type: CMUXenoZJump
 
 - type: entity
   parent: CMXenoRunnerBase

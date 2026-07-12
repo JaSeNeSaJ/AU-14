@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 using Content.Server.Administration.Logs;
@@ -15,11 +16,14 @@ using Content.Shared.Labels.Components;
 using Content.Shared.Lock;
 using Content.Shared.Paper;
 using Content.Server.Store.Components;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._AU14.CCVar;
 using Content.Shared.AU14.ColonyEconomy;
 using Content.Shared.AU14.util;
 using Content.Shared.Cargo.Components;
@@ -52,6 +56,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     [Dependency] private ChasmSystem _chasm = default!;
     [Dependency] private ChatSystem _chatSystem = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private EntityStorageSystem _entityStorage = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private INetManager _net = default!;
@@ -71,8 +76,11 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     private EntityQuery<ChasmFallingComponent> _chasmFallingQuery;
     private int _gain;
     private int _freeCratesXenoDivider;
+    private bool _sellCargoRewards;
 
     private readonly HashSet<Entity<MobStateComponent>> _toPit = new();
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabRequisitionsLogs";
 
     public override void Initialize()
     {
@@ -94,12 +102,13 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         Subs.CVar(_config, RMCCVars.RMCRequisitionsBalanceGain, v => _gain = v, true);
         Subs.CVar(_config, RMCCVars.RMCRequisitionsFreeCratesXenoDivider, v => _freeCratesXenoDivider = v, true);
-
+        Subs.CVar(_config, AU14CCVars.SellCargoRewards, v => _sellCargoRewards = v, true);
     }
 
     private void OnComputerStartup(EntityUid uid, RequisitionsComputerComponent comp, ComponentStartup args)
     {
         ApplyPlatoonCatalogToComputer(uid, comp);
+        ResetStock((uid, comp));
     }
 
     private void OnComputerMapInit(EntityUid uid, RequisitionsComputerComponent comp, MapInitEvent args)
@@ -109,6 +118,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         // Also apply platoon catalog in case the console needs a custom catalog based on current round
         ApplyPlatoonCatalogToComputer(uid, comp);
+        ResetStock((uid, comp));
         Dirty(uid, comp);
     }
 
@@ -202,10 +212,20 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         if (IsFull(elevator))
             return;
 
+        if (!TryTakeStock(computer, args.Category, args.Order, order))
+            return;
+
         account.Balance -= order.Cost;
         elevator.Comp.Orders.Add(order);
         SendUIStateAll();
         _adminLogs.Add(LogType.RMCRequisitionsBuy, $"{ToPrettyString(args.Actor):actor} bought requisitions crate {order.Name} with crate {order.Crate} for {order.Cost}");
+
+        if (!_prototypeManager.TryIndex<EntityPrototype>(order.Crate, out var prototype))
+            return;
+
+        _core.CreateARESLog(computer.Owner,
+            LogCat,
+            (string)$"{Name(actor)} bought {prototype.Name} for {order.Cost}$");
     }
 
     private void OnPlatform(Entity<RequisitionsComputerComponent> computer, ref RequisitionsPlatformMsg args)
@@ -238,7 +258,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         if (nextMode == Lowering)
         {
-            var mask = (int) (CollisionGroup.MobLayer | CollisionGroup.MobMask);
+            var mask = (int)(CollisionGroup.MobLayer | CollisionGroup.MobMask);
             foreach (var entity in _physics.GetEntitiesIntersectingBody(elevator, mask, false))
             {
                 if (HasComp<MobStateComponent>(entity))
@@ -250,12 +270,17 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         comp.Busy = true;
         SetMode(elevator, Preparing, nextMode);
         Dirty(elevator);
+
+        if (nextMode == Raising)
+            _core.CreateARESLog(computer.Owner, LogCat, (string)$"{Name(args.Actor)} raised the requisitions elevator");
+        if (nextMode == Lowering)
+            _core.CreateARESLog(computer.Owner, LogCat, (string)$"{Name(args.Actor)} lowered the requisitions elevator");
     }
 
     // Returns the first existing account matching faction, or creates a new one.
     // The original (no faction param) used a single global account, we replicate this.
     private Entity<RequisitionsAccountComponent> GetAccount(string? faction = null)
-     {
+    {
         var factionKey = string.IsNullOrEmpty(faction) || faction == "none"
             ? "unassigned" // use the shared global account so we're not stealing from a faction
             : faction;
@@ -267,7 +292,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         }
 
         return CreateAccount(factionKey);
-     }
+    }
 
     private Entity<RequisitionsAccountComponent> CreateAccount(string faction)
     {
@@ -485,55 +510,88 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
     private bool Sell(Entity<RequisitionsElevatorComponent> elevator)
     {
-         var entities = _lookup.GetEntitiesIntersecting(elevator);
-         var soldAny = false;
-         foreach (var entity in entities)
-         {
-             if (entity == elevator.Comp.Audio)
-                 continue;
+        var account = GetAccount(elevator.Comp.Faction);
+        var entities = _lookup.GetEntitiesIntersecting(elevator);
+        var soldAny = false;
+        var rewards = 0;
 
-             if (HasComp<CargoSellBlacklistComponent>(entity))
-                 continue;
+        foreach (var entity in entities)
+        {
+            if (entity == elevator.Comp.Audio)
+                continue;
 
-             soldAny = true;
-             QueueDel(entity);
-         }
+            // Instead of blacklist, we use a whitelist to selectively control generated funds from selling
+            // if (HasComp<CargoSellBlacklistComponent>(entity))
+            //     continue;
+            if (!HasComp<CargoSellWhitelistComponent>(entity))
+            {
+                QueueDel(entity);
+                continue;
+            }
 
-         return soldAny;
-     }
+            if (_sellCargoRewards)
+            {
+                var entRewards = SubmitInvoices(entity);
+                if (TryComp(entity, out RequisitionsCrateComponent? crate))
+                    entRewards += crate.Reward;
+                else
+                    entRewards += (int)Math.Round(_pricing.GetPrice(entity));
 
-     private void GetCrateWeight(Entity<RequisitionsAccountComponent> account, Dictionary<EntProtoId, float> crates, out Entity<RequisitionsComputerComponent> computer)
-     {
-         // TODO RMC14 price scaling
-         computer = default;
-         var computers = EntityQueryEnumerator<RequisitionsComputerComponent>();
-         while (computers.MoveNext(out var uid, out var comp))
-         {
-             // Prefer computers whose account matches this account entity reference
-             if (comp.Account != account)
-                 continue;
+                if (entRewards > 0)
+                    soldAny = true;
 
-             computer = (uid, comp);
-             foreach (var category in comp.Categories)
-             {
-                 foreach (var entry in category.Entries)
-                 {
-                     if (crates.ContainsKey(entry.Crate))
-                         crates[entry.Crate] = 10000f / entry.Cost;
-                 }
-             }
-         }
-     }
+                rewards += entRewards;
+            }
+            else
+                soldAny = true; // cvar is off, sell is allowed without rewards
 
-     public override void Update(float frameTime)
-     {
-         base.Update(frameTime);
+            QueueDel(entity);
+        }
 
-         var time = _timing.CurTime;
-         var updateUI = false;
-         var accounts = EntityQueryEnumerator<RequisitionsAccountComponent>();
-         while (accounts.MoveNext(out var uid, out var account))
-         {
+        if (rewards > 0)
+        {
+            ChangeBudget(rewards, elevator.Comp.Faction);
+            if (elevator.Comp.Faction != "colony")
+            {
+                SendUIFeedback(Loc.GetString("requisition-paperwork-reward-message", ("amount", rewards)));
+            }
+        }
+
+        return soldAny;
+    }
+
+    private void GetCrateWeight(Entity<RequisitionsAccountComponent> account, Dictionary<EntProtoId, float> crates, out Entity<RequisitionsComputerComponent> computer)
+    {
+        // TODO RMC14 price scaling
+        computer = default;
+        var computers = EntityQueryEnumerator<RequisitionsComputerComponent>();
+        while (computers.MoveNext(out var uid, out var comp))
+        {
+            // Prefer computers whose account matches this account entity reference
+            if (comp.Account != account)
+                continue;
+
+            computer = (uid, comp);
+            foreach (var category in comp.Categories)
+            {
+                foreach (var entry in category.Entries)
+                {
+                    if (crates.ContainsKey(entry.Crate))
+                        crates[entry.Crate] = 10000f / entry.Cost;
+                }
+            }
+        }
+    }
+
+    public override void Update(float frameTime)
+    {
+        base.Update(frameTime);
+
+        var time = _timing.CurTime;
+        var updateUI = false;
+        var accounts = EntityQueryEnumerator<RequisitionsAccountComponent>();
+        while (accounts.MoveNext(out var uid, out var account))
+        {
             // Disabled periodic budget gain
             // if (time > account.NextGain)
             // {
@@ -553,18 +611,18 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                 if (pool.Next >= time)
                     continue;
 
-                var crates = Math.Max(0, Math.Sqrt((float) xenos / _freeCratesXenoDivider));
+                var crates = Math.Max(0, Math.Sqrt((float)xenos / _freeCratesXenoDivider));
 
                 if (crates < pool.Minimum && pool.Given < pool.MinimumFor)
                     crates = pool.Minimum;
 
                 pool.Next = time + pool.Every;
                 pool.Given++;
-                pool.Fraction = crates - (int) crates;
+                pool.Fraction = crates - (int)crates;
 
                 if (pool.Fraction >= 1)
                 {
-                    var add = (int) pool.Fraction;
+                    var add = (int)pool.Fraction;
                     pool.Fraction = pool.Fraction - add;
                     crates += add;
                 }
@@ -594,7 +652,14 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
                     elevator.Comp.Orders.Add(new RequisitionsEntry { Crate = crate });
                 }
             }
-         }
+        }
+
+        var computers = EntityQueryEnumerator<RequisitionsComputerComponent>();
+        while (computers.MoveNext(out var uid, out var computer))
+        {
+            if (ProcessStock((uid, computer), time))
+                updateUI = true;
+        }
 
         var elevators = EntityQueryEnumerator<RequisitionsElevatorComponent>();
         while (elevators.MoveNext(out var uid, out var elevator))
@@ -631,6 +696,210 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         if (updateUI)
             SendUIStateAll();
+    }
+
+    private void ResetStock(Entity<RequisitionsComputerComponent> computer)
+    {
+        computer.Comp.Stock.Clear();
+        EnsureStockEntries(computer, _timing.CurTime);
+    }
+
+    private static bool IsLimitedStock(RequisitionsEntry entry)
+    {
+        return entry.MaxStock > 0;
+    }
+
+    private void EnsureStockEntries(Entity<RequisitionsComputerComponent> computer, TimeSpan time)
+    {
+        var validKeys = new HashSet<(int Category, int Order)>();
+
+        for (var categoryIndex = 0; categoryIndex < computer.Comp.Categories.Count; categoryIndex++)
+        {
+            var category = computer.Comp.Categories[categoryIndex];
+            for (var orderIndex = 0; orderIndex < category.Entries.Count; orderIndex++)
+            {
+                var entry = category.Entries[orderIndex];
+                if (!IsLimitedStock(entry))
+                    continue;
+
+                var key = (categoryIndex, orderIndex);
+                validKeys.Add(key);
+                if (computer.Comp.Stock.ContainsKey(key))
+                    continue;
+
+                var maxStock = Math.Max(0, entry.MaxStock);
+                var startingStock = entry.StartingStock < 0
+                    ? maxStock
+                    : Math.Clamp(entry.StartingStock, 0, maxStock);
+
+                computer.Comp.Stock[key] = new RequisitionsStockStatus
+                {
+                    Current = startingStock,
+                    NextReplenish = startingStock < maxStock ? GetNextStockReplenish(time, entry) : TimeSpan.Zero,
+                };
+            }
+        }
+
+        foreach (var key in computer.Comp.Stock.Keys.ToArray())
+        {
+            if (!validKeys.Contains(key))
+                computer.Comp.Stock.Remove(key);
+        }
+    }
+
+    private TimeSpan GetNextStockReplenish(TimeSpan time, RequisitionsEntry entry)
+    {
+        return time + (entry.StockReplenishDelay > TimeSpan.Zero
+            ? entry.StockReplenishDelay
+            : TimeSpan.Zero);
+    }
+
+    private bool TryTakeStock(
+        Entity<RequisitionsComputerComponent> computer,
+        int category,
+        int order,
+        RequisitionsEntry entry)
+    {
+        if (!IsLimitedStock(entry))
+            return true;
+
+        EnsureStockEntries(computer, _timing.CurTime);
+        var key = (category, order);
+        if (!computer.Comp.Stock.TryGetValue(key, out var stock) ||
+            stock.Current <= 0)
+        {
+            return false;
+        }
+
+        stock.Current--;
+        if (stock.Current < entry.MaxStock && stock.NextReplenish == TimeSpan.Zero)
+            stock.NextReplenish = GetNextStockReplenish(_timing.CurTime, entry);
+
+        return true;
+    }
+
+    public bool TryReserveStock(Entity<RequisitionsComputerComponent> computer, int category, int order)
+    {
+        if (category < 0 ||
+            category >= computer.Comp.Categories.Count)
+        {
+            return false;
+        }
+
+        var requisitionsCategory = computer.Comp.Categories[category];
+        if (order < 0 ||
+            order >= requisitionsCategory.Entries.Count)
+        {
+            return false;
+        }
+
+        var entry = requisitionsCategory.Entries[order];
+        if (!IsLimitedStock(entry))
+            return true;
+
+        if (!TryTakeStock(computer, category, order, entry))
+            return false;
+
+        SendUIStateAll();
+        return true;
+    }
+
+    private bool ProcessStock(Entity<RequisitionsComputerComponent> computer, TimeSpan time)
+    {
+        EnsureStockEntries(computer, time);
+
+        var updateUi = false;
+        var waitingForStock = false;
+        for (var categoryIndex = 0; categoryIndex < computer.Comp.Categories.Count; categoryIndex++)
+        {
+            var category = computer.Comp.Categories[categoryIndex];
+            for (var orderIndex = 0; orderIndex < category.Entries.Count; orderIndex++)
+            {
+                var entry = category.Entries[orderIndex];
+                if (!IsLimitedStock(entry))
+                    continue;
+
+                var key = (categoryIndex, orderIndex);
+                if (!computer.Comp.Stock.TryGetValue(key, out var stock))
+                    continue;
+
+                if (stock.Current >= entry.MaxStock)
+                {
+                    stock.NextReplenish = TimeSpan.Zero;
+                    continue;
+                }
+
+                waitingForStock = true;
+                if (stock.NextReplenish == TimeSpan.Zero)
+                    stock.NextReplenish = GetNextStockReplenish(time, entry);
+
+                if (entry.StockReplenishDelay <= TimeSpan.Zero)
+                {
+                    stock.Current = entry.MaxStock;
+                    stock.NextReplenish = TimeSpan.Zero;
+                    updateUi = true;
+                    continue;
+                }
+
+                while (stock.Current < entry.MaxStock &&
+                       time >= stock.NextReplenish)
+                {
+                    stock.Current = Math.Min(entry.MaxStock, stock.Current + Math.Max(1, entry.StockReplenishAmount));
+                    updateUi = true;
+
+                    if (stock.Current >= entry.MaxStock)
+                    {
+                        stock.NextReplenish = TimeSpan.Zero;
+                        break;
+                    }
+
+                    stock.NextReplenish += entry.StockReplenishDelay;
+                }
+            }
+        }
+
+        if (waitingForStock && time >= computer.Comp.NextStockUiUpdate)
+        {
+            computer.Comp.NextStockUiUpdate = time + TimeSpan.FromSeconds(1);
+            updateUi = true;
+        }
+
+        return updateUi;
+    }
+
+    protected override List<RequisitionsStockInfo> GetStockInfo(Entity<RequisitionsComputerComponent> computer)
+    {
+        var time = _timing.CurTime;
+        EnsureStockEntries(computer, time);
+
+        var stockInfo = new List<RequisitionsStockInfo>();
+        for (var categoryIndex = 0; categoryIndex < computer.Comp.Categories.Count; categoryIndex++)
+        {
+            var category = computer.Comp.Categories[categoryIndex];
+            for (var orderIndex = 0; orderIndex < category.Entries.Count; orderIndex++)
+            {
+                var entry = category.Entries[orderIndex];
+                if (!IsLimitedStock(entry))
+                    continue;
+
+                var key = (categoryIndex, orderIndex);
+                if (!computer.Comp.Stock.TryGetValue(key, out var stock))
+                    continue;
+
+                var secondsUntilReplenish = 0;
+                if (stock.Current < entry.MaxStock && stock.NextReplenish > time)
+                    secondsUntilReplenish = (int) Math.Ceiling((stock.NextReplenish - time).TotalSeconds);
+
+                stockInfo.Add(new RequisitionsStockInfo(
+                    categoryIndex,
+                    orderIndex,
+                    stock.Current,
+                    entry.MaxStock,
+                    secondsUntilReplenish));
+            }
+        }
+
+        return stockInfo;
     }
 
     private bool ProcessElevator(Entity<RequisitionsElevatorComponent> ent)
@@ -788,6 +1057,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         while (computers.MoveNext(out var uid, out var comp))
         {
             ApplyPlatoonCatalogToComputer(uid, comp);
+            ResetStock((uid, comp));
             Dirty(uid, comp);
         }
     }

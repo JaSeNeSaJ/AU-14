@@ -56,6 +56,13 @@
     - Alive
     - Critical
     - Dead
+  - type: Language
+    spokenLanguages:
+    - Xeno
+    understoodLanguages:
+    - Xeno
+    currentLanguage: Xeno
+    defaultLanguage: Xeno
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -80,6 +87,7 @@
       params:
         volume: -4
   - type: RMCHealthExaminable
+    speciesType: Xeno
   - type: AcidBloodSplash
     closeSplashRadius: 0.5
     standardSplashRadius: 1.5
@@ -149,6 +157,9 @@
   - type: Physics
     bodyType: KinematicController
   - type: CMUZPhysics
+  # CMU14
+  #- type: CMUXenoZJump
+  # CMU14
   - type: Fixtures
     fixtures:
       fix1:
@@ -233,6 +244,7 @@
   - type: ParalyzeOnPullAttemptImmune
   - type: InfectOnPullAttemptImmune
   - type: GhostTakeoverAvailable
+  - type: LarvaQueueable
   - type: GhostRole
     makeSentient: true
     allowSpeech: true
@@ -487,6 +499,9 @@
     stacks: -5
   - type: RMCHandEmotes
   - type: XenoToggleChargingKnockback
+  # CMU14
+  - type: CMUXenoBullChargeTarget
+  # CMU14
   - type: XenoCanAddPlasmaToConstruct
 
 - type: entity

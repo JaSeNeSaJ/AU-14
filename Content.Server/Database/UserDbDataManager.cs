@@ -1,6 +1,9 @@
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Content.Server.Preferences.Managers;
+using Content.Shared.CCVar;
+using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Utility;
@@ -17,6 +20,7 @@ namespace Content.Server.Database;
 /// </remarks>
 public sealed partial class UserDbDataManager : IPostInjectInit
 {
+    [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private ILogManager _logManager = default!;
 
     private readonly Dictionary<NetUserId, UserData> _users = new();
@@ -25,11 +29,15 @@ public sealed partial class UserDbDataManager : IPostInjectInit
     private readonly List<OnPlayerDisconnect> _onPlayerDisconnect = [];
 
     private ISawmill _sawmill = default!;
+    private TimeSpan _loadTimingWarnThreshold = TimeSpan.FromSeconds(5);
+    private bool _loadTimingCVarSubscribed;
 
     // TODO: Ideally connected/disconnected would be subscribed to IPlayerManager directly,
     // but this runs into ordering issues with game ticker.
     public void ClientConnected(ICommonSession session)
     {
+        EnsureLoadTimingCVarSubscribed();
+
         _sawmill.Verbose($"Initiating load for user {session}");
 
         DebugTools.Assert(!_users.ContainsKey(session.UserId), "We should not have any cached data on client connect.");
@@ -61,12 +69,14 @@ public sealed partial class UserDbDataManager : IPostInjectInit
         // The task returned by this function is only ever observed by callers of WaitLoadComplete,
         // which doesn't even happen currently if the lobby is enabled.
         // As such, this task must NOT throw a non-cancellation error!
+        var totalStopwatch = Stopwatch.StartNew();
+
         try
         {
             var tasks = new List<Task>();
             foreach (var action in _onLoadPlayer)
             {
-                tasks.Add(action(session, cancel));
+                tasks.Add(RunLoadAction(action, session, cancel));
             }
 
             await Task.WhenAll(tasks);
@@ -75,10 +85,12 @@ public sealed partial class UserDbDataManager : IPostInjectInit
 
             foreach (var action in _onFinishLoad)
             {
+                var stopwatch = Stopwatch.StartNew();
                 action(session);
+                LogSlowAction("finish", action, session, stopwatch.Elapsed);
             }
 
-            _sawmill.Verbose($"Load complete for user {session}");
+            LogLoadComplete(session, totalStopwatch.Elapsed);
         }
         catch (OperationCanceledException)
         {
@@ -99,6 +111,55 @@ public sealed partial class UserDbDataManager : IPostInjectInit
             // We throw a OperationCanceledException so users of WaitLoadComplete() always see cancellation here.
             throw new OperationCanceledException("Load of user data cancelled due to unknown error");
         }
+    }
+
+    private async Task RunLoadAction(OnLoadPlayer action, ICommonSession session, CancellationToken cancel)
+    {
+        var stopwatch = Stopwatch.StartNew();
+
+        try
+        {
+            await action(session, cancel);
+        }
+        finally
+        {
+            LogSlowAction("load", action, session, stopwatch.Elapsed);
+        }
+    }
+
+    private void LogLoadComplete(ICommonSession session, TimeSpan elapsed)
+    {
+        if (elapsed < _loadTimingWarnThreshold)
+        {
+            _sawmill.Verbose($"Load complete for user {session} in {elapsed.TotalMilliseconds:N0} ms");
+            return;
+        }
+
+        _sawmill.Warning(
+            "[JOIN-TIMING] User data load for {Session} took {Elapsed:N0} ms ({LoaderCount} loaders, {FinisherCount} finishers)",
+            session,
+            elapsed.TotalMilliseconds,
+            _onLoadPlayer.Count,
+            _onFinishLoad.Count);
+    }
+
+    private void LogSlowAction(string phase, Delegate action, ICommonSession session, TimeSpan elapsed)
+    {
+        if (elapsed < _loadTimingWarnThreshold)
+            return;
+
+        _sawmill.Warning(
+            "[JOIN-TIMING] User data {Phase} step {Step} for {Session} took {Elapsed:N0} ms",
+            phase,
+            FormatActionName(action),
+            session,
+            elapsed.TotalMilliseconds);
+    }
+
+    private static string FormatActionName(Delegate action)
+    {
+        var method = action.Method;
+        return $"{method.DeclaringType?.FullName ?? "<unknown>"}.{method.Name}";
     }
 
     /// <summary>
@@ -145,6 +206,17 @@ public sealed partial class UserDbDataManager : IPostInjectInit
     void IPostInjectInit.PostInject()
     {
         _sawmill = _logManager.GetSawmill("userdb");
+        EnsureLoadTimingCVarSubscribed();
+    }
+
+    private void EnsureLoadTimingCVarSubscribed()
+    {
+        if (_loadTimingCVarSubscribed || !_cfg.IsCVarRegistered(CCVars.GameJoinTimingWarnSeconds.Name))
+            return;
+
+        _cfg.OnValueChanged(CCVars.GameJoinTimingWarnSeconds,
+            seconds => _loadTimingWarnThreshold = TimeSpan.FromSeconds(Math.Max(0f, seconds)), true);
+        _loadTimingCVarSubscribed = true;
     }
 
     private sealed record UserData(CancellationTokenSource Cancel, Task Task);

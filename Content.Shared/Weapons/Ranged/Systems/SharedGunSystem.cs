@@ -1,6 +1,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
+using Content.Shared._ES.Camera;
 using Content.Shared._RMC14.Attachable.Systems;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Emplacements;
@@ -14,7 +15,7 @@ using Content.Shared.ActionBlocker;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Audio;
-using Content.Shared.Camera;
+using Content.Shared.CCVar;
 using Content.Shared.CombatMode;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Damage;
@@ -91,7 +92,8 @@ public abstract partial class SharedGunSystem : EntitySystem
     [Dependency] private   SharedStunSystem _stun = default!;
     [Dependency] private   SharedColorFlashEffectSystem _color = default!;
     [Dependency] private   CMUZLevelShootingSystem _zLevelShooting = default!;
-    [Dependency] private   SharedCameraRecoilSystem _recoil = default!;
+    [Dependency] private   CMUSharedZLevelsSystem _zLevels = default!;
+    [Dependency] private   ESScreenshakeSystem _shake = default!;
     [Dependency] private   IConfigurationManager _config = default!;
     [Dependency] private   INetConfigurationManager _netConfig = default!;
 
@@ -265,6 +267,15 @@ public abstract partial class SharedGunSystem : EntitySystem
         DirtyField(uid, gun, nameof(GunComponent.ShotCounter));
     }
 
+    public void ResetShotCounter(EntityUid uid, GunComponent gun)
+    {
+        if (gun.ShotCounter == 0)
+            return;
+
+        gun.ShotCounter = 0;
+        DirtyField(uid, gun, nameof(GunComponent.ShotCounter));
+    }
+
     // RMC14 Needed to check if the attempted shot actually shot any projectiles.
     /// <summary>
     ///     Attempts to shoot at the target coordinates. Resets the shot counter after every shot.
@@ -302,7 +313,12 @@ public abstract partial class SharedGunSystem : EntitySystem
         gun.ShotCounter = 0;
     }
 
-    public List<EntityUid>? AttemptShoot(EntityUid user, EntityUid gunUid, GunComponent gun, List<int>? predictedProjectiles = null, ICommonSession? userSession = null)
+    public List<EntityUid>? AttemptShoot(
+        EntityUid user,
+        EntityUid gunUid,
+        GunComponent gun,
+        List<int>? predictedProjectiles = null,
+        ICommonSession? userSession = null)
     {
         if (gun.FireRateModified <= 0f ||
             !_actionBlockerSystem.CanAttack(user))
@@ -560,7 +576,7 @@ public abstract partial class SharedGunSystem : EntitySystem
         var angle = GetRecoilAngle(gunUid, Timing.CurTime, gun, mapDirection.ToAngle());
 
         // If applicable, this ensures the projectile is parented to grid on spawn, instead of the map.
-        var fromEnt = MapManager.TryFindGridAt(fromMap, out var gridUid, out var grid)
+        var fromEnt = MapSystem.TryFindGridAt(fromMap, out var gridUid, out var grid)
             ? TransformSystem.WithEntityId(fromCoordinates, gridUid)
             : new EntityCoordinates(MapSystem.GetMap(fromMap.MapId), fromMap.Position);
 
@@ -637,7 +653,7 @@ public abstract partial class SharedGunSystem : EntitySystem
                         else
                         {
                             MuzzleFlash(gunUid, cartridge, mapDirection.ToAngle(), user);
-                            Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
+                            PlayGunshotSound(gun.SoundGunshotModified, gunUid, user);
                         }
                     }
                     else
@@ -666,7 +682,7 @@ public abstract partial class SharedGunSystem : EntitySystem
                     else
                     {
                         MuzzleFlash(gunUid, newAmmo, mapDirection.ToAngle(), user);
-                        Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
+                        PlayGunshotSound(gun.SoundGunshotModified, gunUid, user);
                     }
 
                     Recoil(user, mapDirection, gun.CameraRecoilScalarModified);
@@ -776,7 +792,7 @@ public abstract partial class SharedGunSystem : EntitySystem
                         FireEffects(fromEffect, hitscan.MaxLength, dir.ToAngle(), hitscan);
                     }
 
-                    Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
+                    PlayGunshotSound(gun.SoundGunshotModified, gunUid, user);
                     Recoil(user, mapDirection, gun.CameraRecoilScalarModified);
                     break;
                 case RMCFlamerAmmoProviderComponent flamer:
@@ -827,11 +843,17 @@ public abstract partial class SharedGunSystem : EntitySystem
             }
 
             MuzzleFlash(gunUid, ammoComp, mapDirection.ToAngle(), user);
-            Audio.PlayPredicted(gun.SoundGunshotModified, gunUid, user);
+            PlayGunshotSound(gun.SoundGunshotModified, gunUid, user);
         }
 
         Logs.Add(LogType.RMCGunShot, LogImpact.Low, $"{ToPrettyString(user)} shot {ToPrettyString(gunUid)} with {shotProjectiles.Count} projectiles aiming at {TransformSystem.ToMapCoordinates(toCoordinates)}.");
         return shotProjectiles;
+    }
+
+    private void PlayGunshotSound(SoundSpecifier? sound, EntityUid gunUid, EntityUid? user)
+    {
+        if (!_zLevels.PlayPredictedDirectlyAcrossZ(sound, gunUid, user))
+            Audio.PlayPredicted(sound, gunUid, user);
     }
 
     private Angle GetRecoilAngle(EntityUid gunUid, TimeSpan curTime, GunComponent component, Angle direction)
@@ -1004,7 +1026,11 @@ public abstract partial class SharedGunSystem : EntitySystem
         if (!Timing.IsFirstTimePredicted || user == null || recoil == Vector2.Zero || recoilScalar == 0)
             return;
 
-        _recoil.KickCamera(user.Value, recoil.Normalized() * 0.5f * recoilScalar);
+        if (!_config.GetCVar(CCVars.FirearmScreenShakeEnabled))
+            return;
+
+        var rotation = new ESScreenshakeParameters { Trauma = 0.085f * recoilScalar, DecayRate = 1.2f, Frequency = 0.008f };
+        _shake.Screenshake(user.Value, null, rotation);
     }
 
     public virtual void ShootProjectile(EntityUid uid, Vector2 direction, Vector2 gunVelocity, EntityUid? gunUid, EntityUid? user = null, float speed = 20f)

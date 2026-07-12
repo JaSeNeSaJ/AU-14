@@ -172,6 +172,13 @@ namespace Content.Client.Options.UI.Tabs
             AddHeader("ui-options-header-cmu-medical");
             AddButton(CMUKeyFunctions.CMUCycleBodyZoneTarget);
             AddButton(CMUKeyFunctions.CMUCycleBodyZoneTargetReverse);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneHead);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneTorso);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneLeftArm);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneRightArm);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneLeftLeg);
+            AddButton(CMUKeyFunctions.CMUTargetBodyZoneRightLeg);
+            AddButton(CMUKeyFunctions.CMUOpenMedicalCraftingMenu);
 
             AddHeader("ui-options-header-cmu-zlevels");
             AddButton(CMUKeyFunctions.CMUToggleShootDownZLevel);
@@ -218,6 +225,14 @@ namespace Content.Client.Options.UI.Tabs
             AddHeader("ui-options-header-interaction-adv");
             AddButton(ContentKeyFunctions.SmartEquipBackpack);
             AddButton(ContentKeyFunctions.SmartEquipBelt);
+            AddButton(ContentKeyFunctions.SmartEquipPocket1);
+            AddButton(ContentKeyFunctions.SmartEquipPocket2);
+            AddButton(ContentKeyFunctions.SmartEquipSuitStorage);
+            // RMC14
+            AddButton(ContentKeyFunctions.SmartEquipUniform);
+            AddButton(ContentKeyFunctions.SmartEquipArmor);
+            AddButton(ContentKeyFunctions.SmartEquipHelmet);
+            // RMC14
             AddButton(ContentKeyFunctions.OpenBackpack);
             AddButton(ContentKeyFunctions.OpenBelt);
             AddButton(ContentKeyFunctions.ThrowItemInHand);

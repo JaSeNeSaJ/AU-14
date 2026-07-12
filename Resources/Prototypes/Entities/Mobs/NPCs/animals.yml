@@ -1219,6 +1219,7 @@
       250: Dead
   - type: StaminaResistance
     damageCoefficient: 0.40
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: kangaroo
@@ -1272,7 +1273,7 @@
     - DoorBumpOpener
     - FootstepSound
   - type: GhostRole
-    prob: 0.25
+    prob: 0
     name: ghost-role-information-kangaroo-name
     description: ghost-role-information-kangaroo-description
     rules: ghost-role-information-nonantagonist-rules
@@ -1303,6 +1304,7 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: boxing kangaroo
@@ -2315,6 +2317,7 @@
     heatDamage:
       types:
         Heat : 0.2 #per second, scales with temperature & other constants
+  - type: Infectable # XenoEgg
 
 - type: entity
   name: grenade penguin
@@ -3141,7 +3144,7 @@
     factions:
     - Syndicate
   - type: Access
-    tags: 
+    tags:
     - NuclearOperative
     - SyndicateAgent
   - type: MeleeWeapon

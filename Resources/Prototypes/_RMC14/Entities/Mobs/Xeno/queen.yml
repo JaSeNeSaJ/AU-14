@@ -58,8 +58,9 @@
     - ActionXenoAcidNormal
     - ActionXenoPheromones
     - ActionXenoWordQueen
-#    - ActionXenoPsychicWhisper
-#    - ActionXenoPsychicRadiance
+    - ActionXenoPsychicWhisper
+    - ActionXenoPsychicRadiance
+    - ActionXenoGiveOrder
     - ActionXenoGut
     - ActionXenoPlantWeeds
     - ActionXenoChooseStructure
@@ -78,10 +79,12 @@
     buildDelay: 2
     canBuild:
     - WallXenoResin
+    - WallXenoResinReflective # TODO should only be available while in ovipositor mode
     - WallXenoMembrane
     - DoorXenoResin
     - XenoStickyResin
     - XenoFastResin
+    - XenoResinSpikes
     - HiveAcidPillarXeno
     canOrderConstruction:
     - HiveCoreXenoConstructionNode
@@ -99,9 +102,10 @@
     plasmaRegenOnWeeds: 4
     plasmaTransferDelay: 0
   - type: CMArmor
-    xenoArmor: 25
+    xenoArmor: 35
     explosionArmor: 100
   - type: XenoWordQueen
+  - type: XenoPsychicCommunication
   - type: VehicleDamageMultiplier
     multiplier: 4
   - type: InnateCommandSpeech
@@ -218,8 +222,8 @@
     message: cm-xeno-death-queen
     color: "#921992"
   - type: XenoMaturing
-    critThreshold: 1000
-    deadThreshold: 1100
+    critThreshold: 1200
+    deadThreshold: 1300
     addComponents:
     - type: XenoScreech
     - type: XenoQueenSpit

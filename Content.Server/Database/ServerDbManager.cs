@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using Content.Server._RMC14.LinkAccount;
 using Content.Server.Administration.Logs;
+using Content.Shared._CMU14.BalanceRating;
 using Content.Shared.Administration.Logs;
+using Content.Shared._CMU14.RoundStatistics;
 using Content.Shared.CCVar;
 using Content.Shared.Construction.Prototypes;
 using Content.Shared.Database;
@@ -236,11 +238,35 @@ namespace Content.Server.Database
         Task UpdateAdminRankAsync(AdminRank rank, CancellationToken cancel = default);
         #endregion
 
+        #region CMU Balance Rating
+
+        Task<long> CreateCMUBalanceRatingPoll(
+            int roundId,
+            CMUBalanceRatingTarget target,
+            string targetId,
+            CMUBalanceRatingMetric metric,
+            Guid? createdBy,
+            DateTime openedAt);
+
+        Task AddCMUBalanceRatingResponse(long pollId, Guid playerId, byte rating, DateTime recordedAt);
+
+        Task CloseCMUBalanceRatingPoll(long pollId, DateTime closedAt);
+
+        Task DeleteCMUBalanceRatingPoll(long pollId);
+
+        Task<CMUBalanceRatingDashboard> GetCMUBalanceRatingDashboard(CancellationToken cancel = default);
+
+        #endregion
+
         #region Rounds
 
         Task<int> AddNewRound(Server server, params Guid[] playerIds);
         Task<Round> GetRound(int id);
         Task AddRoundPlayers(int id, params Guid[] playerIds);
+        Task UpsertCMURoundOutcome(CMURoundOutcomeRecord record);
+        Task<CMURoundStatisticsDashboard> GetCMURoundStatisticsDashboard(
+            int recentRounds,
+            CancellationToken cancel = default);
 
         #endregion
 
@@ -824,6 +850,62 @@ namespace Content.Server.Database
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.AddRoundPlayers(id, playerIds));
+        }
+
+        public Task<long> CreateCMUBalanceRatingPoll(
+            int roundId,
+            CMUBalanceRatingTarget target,
+            string targetId,
+            CMUBalanceRatingMetric metric,
+            Guid? createdBy,
+            DateTime openedAt)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.CreateCMUBalanceRatingPoll(
+                roundId,
+                target,
+                targetId,
+                metric,
+                createdBy,
+                openedAt));
+        }
+
+        public Task AddCMUBalanceRatingResponse(long pollId, Guid playerId, byte rating, DateTime recordedAt)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.AddCMUBalanceRatingResponse(pollId, playerId, rating, recordedAt));
+        }
+
+        public Task CloseCMUBalanceRatingPoll(long pollId, DateTime closedAt)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.CloseCMUBalanceRatingPoll(pollId, closedAt));
+        }
+
+        public Task DeleteCMUBalanceRatingPoll(long pollId)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.DeleteCMUBalanceRatingPoll(pollId));
+        }
+
+        public Task<CMUBalanceRatingDashboard> GetCMUBalanceRatingDashboard(CancellationToken cancel = default)
+        {
+            DbReadOpsMetric.Inc();
+            return RunDbCommand(() => _db.GetCMUBalanceRatingDashboard(cancel));
+        }
+
+        public Task UpsertCMURoundOutcome(CMURoundOutcomeRecord record)
+        {
+            DbWriteOpsMetric.Inc();
+            return RunDbCommand(() => _db.UpsertCMURoundOutcome(record));
+        }
+
+        public Task<CMURoundStatisticsDashboard> GetCMURoundStatisticsDashboard(
+            int recentRounds,
+            CancellationToken cancel = default)
+        {
+            DbReadOpsMetric.Inc();
+            return RunDbCommand(() => _db.GetCMURoundStatisticsDashboard(recentRounds, cancel));
         }
 
         public Task UpdateAdminRankAsync(AdminRank rank, CancellationToken cancel = default)

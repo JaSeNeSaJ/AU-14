@@ -17,7 +17,7 @@ using Content.Shared._RMC14.NamedItems;
 using Content.Shared._RMC14.Prototypes;
 using Content.Shared.AU14.Allegiance;
 using Content.Shared.AU14.Origin;
-using Content.Shared.AU14.Threats;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.CCVar;
 using Content.Shared.Clothing;
 using Content.Shared.GameTicking;
@@ -131,6 +131,9 @@ namespace Content.Client.Lobby.UI
         private bool _isDirty;
 
         private static readonly ProtoId<GuideEntryPrototype> DefaultSpeciesGuidebook = "Species";
+        // RMC14
+        private static readonly ProtoId<TraitCategoryPrototype> SpeechTraitsCategory = "SpeechTraits";
+        // RMC14
 
         public event Action<List<ProtoId<GuideEntryPrototype>>>? OnOpenGuidebook;
 
@@ -449,7 +452,7 @@ namespace Content.Client.Lobby.UI
             for (var i = 0; i < squad.SquadPrototypes.Length; i++)
             {
                 var squadProto = squad.SquadPrototypes[i];
-                if (!squadProto.TryGetComponent(out SquadTeamComponent? team, _componentFactory) ||
+                if (!squadProto.TryComp(out SquadTeamComponent? team, _componentFactory) ||
                     !team.RoundStart)
                 {
                     continue;
@@ -718,7 +721,9 @@ namespace Content.Client.Lobby.UI
                     });
                 }
 
-                List<TraitPreferenceSelector?> selectors = new();
+                // RMC14
+                var selectors = new List<(TraitPreferenceSelector Selector, bool IsLanguageTrait)>();
+                // RMC14
                 var selectionCount = 0;
 
                 foreach (var traitProto in categoryTraits)
@@ -744,7 +749,9 @@ namespace Content.Client.Lobby.UI
                         SetDirty();
                         RefreshTraits(); // If too many traits are selected, they will be reset to the real value.
                     };
-                    selectors.Add(selector);
+                    // RMC14
+                    selectors.Add((selector, trait.Language != null));
+                    // RMC14
                 }
 
                 // Selection counter
@@ -757,13 +764,52 @@ namespace Content.Client.Lobby.UI
                     });
                 }
 
-                foreach (var selector in selectors)
+                // RMC14
+                if (categoryId == SpeechTraitsCategory)
                 {
-                    if (selector == null)
-                        continue;
+                    var languageSelectors = selectors
+                        .Where(selector => selector.IsLanguageTrait)
+                        .Select(selector => selector.Selector)
+                        .ToList();
+                    var otherSelectors = selectors
+                        .Where(selector => !selector.IsLanguageTrait)
+                        .Select(selector => selector.Selector)
+                        .ToList();
 
-                    if (category is { MaxTraitPoints: >= 0 } &&
-                        selector.Cost + selectionCount > category.MaxTraitPoints)
+                    AddTraitSelectors(languageSelectors, selectionCount, category, "rmc-trait-group-languages");
+                    AddTraitSelectors(otherSelectors, selectionCount, category, "rmc-trait-group-other-speech");
+                }
+                else
+                {
+                    AddTraitSelectors(selectors.Select(selector => selector.Selector).ToList(), selectionCount, category);
+                }
+                // RMC14
+            }
+
+            // RMC14
+            void AddTraitSelectors(
+                List<TraitPreferenceSelector> selectorsToAdd,
+                int currentSelectionCount,
+                TraitCategoryPrototype? currentCategory,
+                string? groupLabel = null)
+            {
+                if (selectorsToAdd.Count == 0)
+                    return;
+
+                if (groupLabel != null)
+                {
+                    TraitsList.AddChild(new Label
+                    {
+                        Text = Loc.GetString(groupLabel),
+                        Margin = new Thickness(8, 6, 0, 0),
+                        FontColorOverride = Color.LightGray
+                    });
+                }
+
+                foreach (var selector in selectorsToAdd)
+                {
+                    if (currentCategory is { MaxTraitPoints: >= 0 } &&
+                        selector.Cost + currentSelectionCount > currentCategory.MaxTraitPoints)
                     {
                         selector.Checkbox.Label.FontColorOverride = Color.Red;
                     }
@@ -771,6 +817,7 @@ namespace Content.Client.Lobby.UI
                     TraitsList.AddChild(selector);
                 }
             }
+            // RMC14
         }
 
         /// <summary>
@@ -1353,29 +1400,27 @@ namespace Content.Client.Lobby.UI
             var protoManager = collection.Resolve<IPrototypeManager>();
 
             // If no loadout found then disabled button
-            if (!protoManager.TryIndex<RoleLoadoutPrototype>(LoadoutSystem.GetJobPrototype(job.ID), out var roleLoadoutProto))
+            var (key, proto) = LoadoutSystem.GetJobLoadoutInfo(job.ID, protoManager);
+            if (proto == null)
             {
                 loadoutWindowBtn.Disabled = true;
             }
-            // else
             else
             {
                 loadoutWindowBtn.OnPressed += args =>
-                {
-                    RoleLoadout? loadout = null;
+               {
+                   RoleLoadout? loadout = null;
+                   // Clone so we don't modify the underlying loadout.
+                   if (Profile?.Loadouts.TryGetValue(key, out var existing) == true)
+                       loadout = existing.Clone();
 
-                    // Clone so we don't modify the underlying loadout.
-                    Profile?.Loadouts.TryGetValue(LoadoutSystem.GetJobPrototype(job.ID), out loadout);
-                    loadout = loadout?.Clone();
-
-                    if (loadout == null)
-                    {
-                        loadout = new RoleLoadout(roleLoadoutProto.ID);
-                        loadout.SetDefault(Profile, _playerManager.LocalSession, _prototypeManager);
-                    }
-
-                    OpenLoadout(job, loadout, roleLoadoutProto);
-                };
+                   if (loadout == null)
+                   {
+                       loadout = new RoleLoadout(proto.ID);
+                       loadout.SetDefault(Profile, _playerManager.LocalSession, _prototypeManager);
+                   }
+                   OpenLoadout(job, loadout, proto);
+               };
             }
 
             _jobPriorities.Add((gamemode, job.ID, selector));
@@ -1560,17 +1605,21 @@ namespace Content.Client.Lobby.UI
             var id = job.ID;
             var name = job.LocalizedName;
 
-            if (job.MarineAuthorityLevel > 0 ||
-                ContainsAny(id, name, "PlatCo", "PlatOp", "Commander", "Command", "Officer", "Leader", "Sergeant", "Advisor"))
-            {
+            if (job.MarineAuthorityLevel > 0
+                    || ContainsAny(id, name, "PlatCo", "Adjutant", "PlatOp", "Commander", "Command", "Advisor"))
                 return ("command", Loc.GetString("humanoid-profile-editor-segment-command"));
-            }
 
             if (ContainsAny(id, name, "Pilot", "Dropship", "Crew Chief", "DCC"))
                 return ("flight", Loc.GetString("humanoid-profile-editor-segment-flight"));
 
-            if (ContainsAny(id, name, "Doctor", "Corpsman", "Medic", "Technician", "Tech", "Police", "Synth", "Working Joe", "Auxiliary"))
+            if (ContainsAny(id, name, "Officer", "Chief")) // after Crew Chief
+                return ("officer", Loc.GetString("humanoid-profile-editor-segment-officer"));
+
+            if (ContainsAny(id, name, "Doctor", "AuxTech", "Police", "VehicleCrewman", "Synth", "Working Joe", "Auxiliary"))
                 return ("support", Loc.GetString("humanoid-profile-editor-segment-support"));
+
+            if (ContainsAny(id, name, "Leader", "Sergeant", "RadioTelephone"))
+                return ("leader", Loc.GetString("humanoid-profile-editor-segment-leader"));
 
             return ("line", Loc.GetString("humanoid-profile-editor-segment-line"));
         }
@@ -1583,9 +1632,11 @@ namespace Content.Client.Lobby.UI
             return GetMilitaryJobSegment(job).Key switch
             {
                 "command" => 0,
-                "flight" => 1,
-                "support" => 2,
-                _ => 3,
+                "officer" => 1,
+                "flight" => 2,
+                "support" => 3,
+                "leader" => 4,
+                _ => 5,
             };
         }
 
@@ -1614,7 +1665,7 @@ namespace Content.Client.Lobby.UI
             _loadoutWindow = null;
             var collection = IoCManager.Instance;
 
-            if (collection == null || _playerManager.LocalSession == null || Profile == null)
+            if (collection == null || _playerManager.LocalSession == null || Profile == null || jobProto == null)
                 return;
 
             JobOverride = jobProto;
@@ -1622,17 +1673,18 @@ namespace Content.Client.Lobby.UI
 
             _loadoutWindow = new LoadoutWindow(Profile, roleLoadout, roleLoadoutProto, _playerManager.LocalSession, collection)
             {
-                Title = jobProto?.ID + "-loadout",
+                Title = jobProto.ID + "-loadout",
             };
 
             // Refresh the buttons etc.
             _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
             _loadoutWindow.OpenCenteredLeft();
 
+            var concreteKey = LoadoutSystem.GetJobPrototype(jobProto.ID);
             _loadoutWindow.OnNameChanged += name =>
             {
                 roleLoadout.EntityName = name;
-                Profile = Profile.WithLoadout(roleLoadout);
+                Profile = Profile.WithLoadout(concreteKey, roleLoadout);
                 SetDirty();
             };
 
@@ -1640,7 +1692,7 @@ namespace Content.Client.Lobby.UI
             {
                 roleLoadout.AddLoadout(loadoutGroup, loadoutProto, _prototypeManager);
                 _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
-                Profile = Profile?.WithLoadout(roleLoadout);
+                Profile = Profile?.WithLoadout(concreteKey, roleLoadout);
                 ReloadPreview();
             };
 
@@ -1648,7 +1700,7 @@ namespace Content.Client.Lobby.UI
             {
                 roleLoadout.RemoveLoadout(loadoutGroup, loadoutProto, _prototypeManager);
                 _loadoutWindow.RefreshLoadouts(roleLoadout, session, collection);
-                Profile = Profile?.WithLoadout(roleLoadout);
+                Profile = Profile?.WithLoadout(concreteKey, roleLoadout);
                 ReloadPreview();
             };
 

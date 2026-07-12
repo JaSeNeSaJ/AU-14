@@ -9,6 +9,8 @@ using Content.Server.Popups;
 using Content.Server.Power.EntitySystems;
 using Content.Server.Radio.EntitySystems;
 using Content.Server.Stack;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared.Atmos;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.EntitySystems;
@@ -58,6 +60,9 @@ namespace Content.Server.Lathe
 
         // RMC14
         [Dependency] private IComponentFactory _compFactory = default!;
+        [Dependency] private ARESCoreSystem _core = default!;
+
+        private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabManufacturingLogs";
 
         /// <summary>
         /// Per-tick cache
@@ -203,7 +208,7 @@ namespace Content.Server.Lathe
             // RMC14
             var recipeTime = recipe.CompleteTime;
             if (_proto.TryIndex(recipe.Result, out var result) &&
-                result.TryGetComponent(out ItemComponent? item, _compFactory) &&
+                result.TryComp(out ItemComponent? item, _compFactory) &&
                 _proto.TryIndex(item.Size, out var size))
             {
                 recipeTime = size.LatheTime;
@@ -454,6 +459,7 @@ namespace Content.Server.Lathe
                     _adminLogger.Add(LogType.Action,
                         LogImpact.Low,
                         $"{ToPrettyString(args.Actor):player} queued {count} {GetRecipeName(recipe)} at {ToPrettyString(uid):lathe}");
+                    _core.CreateARESLog(uid, LogCat, (string) $"{Name(args.Actor)} queued {count} {GetRecipeName(recipe)} at a lathe.");
                 }
             }
             TryStartProducing(uid, component);

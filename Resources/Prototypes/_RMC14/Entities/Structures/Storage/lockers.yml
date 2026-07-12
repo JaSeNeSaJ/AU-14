@@ -34,6 +34,7 @@
   - type: Lock
   - type: XenoCrusherChargable
     instantDestroy: true
+    passOnDestroy: true
   - type: Fixtures
     fixtures:
       fix1:
@@ -77,6 +78,20 @@
   components:
   - type: Sprite
     sprite: _RMC14/Structures/Storage/Lockers/safe.rsi
+
+- type: entity
+  parent: CMLockerBase
+  id: RMCLockerIntelSafe
+  name: secure safe
+  description: May contain valuable information
+  suffix: Intel
+  components:
+  - type: UserInterface
+    interfaces:
+      enum.DialogUiKey.Key:
+        type: DialogBui
+  - type: AccessReader
+    access: [ [ "CMAccessColonyCommand" ] ]
 
 - type: entity
   parent: RMCLockerSecureSafe

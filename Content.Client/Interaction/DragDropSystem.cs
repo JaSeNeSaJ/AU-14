@@ -102,6 +102,7 @@ public sealed partial class DragDropSystem : SharedDragDropSystem
     private ShaderInstance? _dropTargetOutOfRangeShader;
 
     private readonly List<SpriteComponent> _highlightedSprites = new();
+    private readonly HashSet<EntityUid> _dropTargetCandidates = new();
 
     public override void Initialize()
     {
@@ -203,10 +204,13 @@ public sealed partial class DragDropSystem : SharedDragDropSystem
         }
 
         var ev = new CanDragEvent();
-
         RaiseLocalEvent(entity, ref ev);
-
         if (ev.Handled != true)
+            return false;
+
+        var startEv = new CanStartDragEvent(dragger, entity);
+        RaiseLocalEvent(dragger, ref startEv);
+        if (startEv.Cancelled)
             return false;
 
         _draggedEntity = entity;
@@ -431,11 +435,12 @@ public sealed partial class DragDropSystem : SharedDragDropSystem
         var expansion = new Vector2(1.5f, 1.5f);
 
         var bounds = new Box2(mousePos.Position - expansion, mousePos.Position + expansion);
-        var pvsEntities = _lookup.GetEntitiesIntersecting(mousePos.MapId, bounds);
+        _dropTargetCandidates.Clear();
+        _lookup.GetEntitiesIntersecting(mousePos.MapId, bounds, _dropTargetCandidates);
 
         var spriteQuery = GetEntityQuery<SpriteComponent>();
 
-        foreach (var entity in pvsEntities)
+        foreach (var entity in _dropTargetCandidates)
         {
             if (!spriteQuery.TryGetComponent(entity, out var inRangeSprite) ||
                 !inRangeSprite.Visible ||

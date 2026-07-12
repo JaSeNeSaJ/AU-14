@@ -73,6 +73,11 @@ namespace Content.Shared.Chat
 
         public NetEntity SenderEntity;
 
+        // CMU14
+        public NetEntity GhostFollowEntity;
+        public NetEntity XenoWatchEntity;
+        // CMU14
+
         /// <summary>
         ///     Identifier sent when <see cref="SenderEntity"/> is <see cref="NetEntity.Invalid"/>
         ///     if this was sent by a player to assign a key to the sender of this message.
@@ -88,28 +93,76 @@ namespace Content.Shared.Chat
 
         // RMC14
         public bool HidePopup;
+        public bool UseEmoteSpeechBubble;
         public string? SpeechStyleClass;
         public bool RepeatCheckSender;
+        public string? LanguageIcon;
+        // RMC14
 
         [NonSerialized]
         public bool Read;
 
-        public ChatMessage(ChatChannel channel, string message, string wrappedMessage, NetEntity source, int? senderKey, bool hideChat = false, Color? colorOverride = null, string? audioPath = null, float audioVolume = 0, bool hidePopup = false, string? speechStyleClass = null, bool repeatCheckSender = true, ChatDisplayMetadata? display = null)
+        public ChatMessage(
+            ChatChannel channel,
+            string message,
+            string wrappedMessage,
+            NetEntity source,
+            int? senderKey,
+            bool hideChat = false,
+            Color? colorOverride = null,
+            string? audioPath = null,
+            float audioVolume = 0,
+            bool hidePopup = false,
+            bool useEmoteSpeechBubble = false,
+            string? speechStyleClass = null,
+            bool repeatCheckSender = true,
+            ChatDisplayMetadata? display = null,
+            string? languageIcon = null, // RMC14
+            NetEntity ghostFollowEntity = default,
+            NetEntity xenoWatchEntity = default) // CMU14
         {
             Channel = channel;
             Message = message;
             WrappedMessage = wrappedMessage;
             SenderEntity = source;
+            GhostFollowEntity = ghostFollowEntity;
+            XenoWatchEntity = xenoWatchEntity;
             SenderKey = senderKey;
             HideChat = hideChat;
             MessageColorOverride = colorOverride;
             AudioPath = audioPath;
             AudioVolume = audioVolume;
             HidePopup = hidePopup;
+            UseEmoteSpeechBubble = useEmoteSpeechBubble;
             SpeechStyleClass = speechStyleClass;
             RepeatCheckSender = repeatCheckSender;
             Display = display ?? CreateDefaultDisplay(channel);
+            LanguageIcon = languageIcon;
         }
+
+        // CMU14
+        public ChatMessage(ChatMessage copyFrom)
+        {
+            Channel = copyFrom.Channel;
+            Message = copyFrom.Message;
+            WrappedMessage = copyFrom.WrappedMessage;
+            SenderEntity = copyFrom.SenderEntity;
+            GhostFollowEntity = copyFrom.GhostFollowEntity;
+            XenoWatchEntity = copyFrom.XenoWatchEntity;
+            SenderKey = copyFrom.SenderKey;
+            HideChat = copyFrom.HideChat;
+            MessageColorOverride = copyFrom.MessageColorOverride;
+            AudioPath = copyFrom.AudioPath;
+            AudioVolume = copyFrom.AudioVolume;
+            Display = copyFrom.Display;
+            HidePopup = copyFrom.HidePopup;
+            UseEmoteSpeechBubble = copyFrom.UseEmoteSpeechBubble;
+            SpeechStyleClass = copyFrom.SpeechStyleClass;
+            RepeatCheckSender = copyFrom.RepeatCheckSender;
+            LanguageIcon = copyFrom.LanguageIcon;
+            Read = copyFrom.Read;
+        }
+        // CMU14
 
         private static ChatDisplayMetadata CreateDefaultDisplay(ChatChannel channel)
         {
@@ -133,7 +186,7 @@ namespace Content.Shared.Chat
                 ChatChannel.Whisper => "WHSP",
                 ChatChannel.Emotes => "ME",
                 ChatChannel.Radio => "RAD",
-                ChatChannel.LOOC => "LOOC",
+                ChatChannel.LOOC => "HELP",
                 ChatChannel.OOC => "OOC",
                 ChatChannel.Dead => "DEAD",
                 ChatChannel.Admin => "ADMIN",
@@ -147,6 +200,7 @@ namespace Content.Shared.Chat
                 _ => "CHAT"
             });
         }
+        // RMC14
     }
 
     /// <summary>

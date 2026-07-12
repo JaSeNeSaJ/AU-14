@@ -4,6 +4,7 @@ using Content.Shared._RMC14.Input;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Xenonids.Devour;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Blocking;
 using Content.Shared.Clothing.Components;
 using Content.Shared.Containers.ItemSlots;
 using Content.Shared.Database;
@@ -81,6 +82,7 @@ public abstract partial class SharedCMInventorySystem : EntitySystem
 
         SubscribeLocalEvent<GunComponent, IsUnholsterableEvent>(AllowUnholster);
         SubscribeLocalEvent<MeleeWeaponComponent, IsUnholsterableEvent>(AllowUnholster);
+        SubscribeLocalEvent<BlockingComponent, IsUnholsterableEvent>(AllowUnholster);
 
         SubscribeLocalEvent<CMItemSlotsComponent, MapInitEvent>(OnSlotsFillMapInit);
         SubscribeLocalEvent<CMItemSlotsComponent, AfterAutoHandleStateEvent>(OnSlotsComponentHandleState);
@@ -361,6 +363,10 @@ public abstract partial class SharedCMInventorySystem : EntitySystem
         if (!_pickupDroppedItemsQuery.TryComp(user, out var pickupDroppedItems) || HasComp<DevouredComponent>(user))
             return;
 
+        var removed = pickupDroppedItems.DroppedItems.RemoveAll(uid => TerminatingOrDeleted(uid));
+        if (removed > 0)
+            Dirty(user, pickupDroppedItems);
+
         // Sort items by importance
         var sortedItems = pickupDroppedItems.DroppedItems
             .OrderByDescending(item => HasComp<GunComponent>(item))
@@ -369,6 +375,9 @@ public abstract partial class SharedCMInventorySystem : EntitySystem
 
         foreach (var item in sortedItems.Distinct())
         {
+            if (TerminatingOrDeleted(item))
+                continue;
+
             if (!_container.IsEntityInContainer(item) && _interaction.InRangeUnobstructed(user, item))
             {
                 if (_hands.TryPickupAnyHand(user, item))

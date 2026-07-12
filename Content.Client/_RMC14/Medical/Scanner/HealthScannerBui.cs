@@ -1,9 +1,9 @@
 using System.Globalization;
 using System.Numerics;
-using Content.Client._CMU14.Medical.UI;
+using Content.Client._CMU14.Medical.Presentation.Windows;
 using Content.Client._RMC14.Medical.HUD;
 using Content.Client.Message;
-using Content.Shared._CMU14.Medical.Wounds;
+using Content.Shared._CMU14.Medical.Injuries.Wounds;
 using Content.Shared._RMC14.Chemistry.Reagent;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Medical.HUD;
@@ -34,6 +34,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
 
     [ViewVariables]
     private HealthScannerWindow? _window;
+    private HealthScannerBuiState? _latestState;
     private NetEntity _lastTarget;
     private bool _hasLastTarget;
 
@@ -63,8 +64,20 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         if (!window.IsOpen)
             window.OpenCentered();
 
-        if (State is HealthScannerBuiState state)
+        if (_latestState is { } latestState)
+            UpdateState(latestState);
+        else if (State is HealthScannerBuiState state)
             UpdateState(state);
+    }
+
+    protected override void ReceiveMessage(BoundUserInterfaceMessage message)
+    {
+        base.ReceiveMessage(message);
+        if (message is not HealthScannerStateMessage update)
+            return;
+
+        _latestState = update.State;
+        UpdateState(update.State);
     }
 
     protected override void UpdateState(BoundUserInterfaceState state)
@@ -75,6 +88,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
 
     private void UpdateState(HealthScannerBuiState uiState)
     {
+        _latestState = uiState;
         _window = EnsureWindow();
 
         if (_entities.GetEntity(uiState.Target) is not { Valid: true } target)
@@ -381,18 +395,22 @@ public sealed partial class HealthScannerBui : BoundUserInterface
 
     private void BuildBodyChart(HealthScannerBuiState uiState)
     {
-        var present = new HashSet<(BodyPartType, BodyPartSymmetry)>();
+        var attached = new HashSet<(BodyPartType, BodyPartSymmetry)>();
         foreach (var (type, sym) in CmuPartLayout)
         {
             var part = TryFindPart(uiState, type, sym);
             if (part is null)
                 continue;
-            present.Add((type, sym));
+
+            attached.Add((type, sym));
+            if (!BodyPartHasScannerDamage(uiState, part.Value))
+                continue;
+
             _window!.CMUBodyChartContainer.AddChild(BuildBodyRow(uiState, part.Value));
         }
         foreach (var (type, sym) in CmuPartLayout)
         {
-            if (present.Contains((type, sym)))
+            if (attached.Contains((type, sym)))
                 continue;
             _window!.CMUBodyChartContainer.AddChild(BuildSeveredRow(type, sym));
         }
@@ -421,6 +439,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
     private Control BuildBodyRow(HealthScannerBuiState uiState, CMUBodyPartReadout part)
     {
         var pct = part.Current.Float() / Math.Max(1f, part.Max.Float());
+        var recoverablePct = LineGraftRecoverableFraction(part);
         var sev = SeverityFromHpFraction(pct);
         var card = new PanelContainer
         {
@@ -472,7 +491,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
             FontColorOverride = SeverityTextColor(sev),
         });
 
-        row.AddChild(BuildHpBar(pct, sev));
+        row.AddChild(BuildHpBar(pct, sev, recoverablePct));
 
         row.AddChild(new Label
         {
@@ -491,6 +510,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         AppendFractureChip(chipStrip, uiState, part);
         AppendBleedChip(chipStrip, uiState, part);
         AppendWoundChip(chipStrip, part);
+        AppendShrapnelChip(chipStrip, part);
         if (part.Eschar)
             chipStrip.AddChild(BuildChip(Loc.GetString("cmu-medical-scanner-eschar"), Color.FromHex("#7A5540")));
         if (part.Splinted)
@@ -572,7 +592,7 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         return card;
     }
 
-    private static Control BuildHpBar(float pct, PartSeverity sev)
+    private static Control BuildHpBar(float pct, PartSeverity sev, float? recoverablePct = null)
     {
         const int trackWidth = 140;
         const int barHeight = 10;
@@ -587,21 +607,126 @@ public sealed partial class HealthScannerBui : BoundUserInterface
                 BorderThickness = new Thickness(1),
             },
         };
+        var currentPct = Math.Clamp(pct, 0f, 1f);
+        var recoverPct = recoverablePct is { } target
+            ? Math.Clamp(target, currentPct, 1f)
+            : currentPct;
+
         // For severed parts force the bar to render as a solid dark-red
         // strip so the medic sees the "limb gone" cue at a glance, even
         // though pct is 0.
-        var fillWidth = sev == PartSeverity.Severed ? trackWidth : (int)Math.Round(trackWidth * Math.Clamp(pct, 0f, 1f));
-        if (fillWidth > 0)
+        var currentWidth = sev == PartSeverity.Severed
+            ? trackWidth
+            : (int)Math.Round(trackWidth * currentPct);
+        var recoverableWidth = sev == PartSeverity.Severed
+            ? 0
+            : (int)Math.Round(trackWidth * recoverPct) - currentWidth;
+
+        if (currentWidth > 0 || recoverableWidth > 0)
         {
             var fillRow = new BoxContainer { Orientation = LayoutOrientation.Horizontal };
-            fillRow.AddChild(new PanelContainer
+            if (currentWidth > 0)
             {
-                MinSize = new Vector2(fillWidth, barHeight),
-                PanelOverride = new StyleBoxFlat { BackgroundColor = SeverityFillColor(sev) },
-            });
+                fillRow.AddChild(new PanelContainer
+                {
+                    MinSize = new Vector2(currentWidth, barHeight),
+                    PanelOverride = new StyleBoxFlat
+                    {
+                        BackgroundColor = sev == PartSeverity.Severed
+                            ? SeverityFillColor(sev)
+                            : Color.FromHex("#3FB44A"),
+                    },
+                });
+            }
+            if (recoverableWidth > 0)
+            {
+                fillRow.AddChild(new PanelContainer
+                {
+                    MinSize = new Vector2(recoverableWidth, barHeight),
+                    PanelOverride = new StyleBoxFlat { BackgroundColor = Color.FromHex("#D9B43A") },
+                });
+            }
             track.AddChild(fillRow);
         }
         return track;
+    }
+
+    private static bool BodyPartHasScannerDamage(HealthScannerBuiState uiState, CMUBodyPartReadout part)
+    {
+        if (part.Current < part.Max)
+            return true;
+        if (part.WoundDescriptor != null || part.ShrapnelFragments > 0 || part.Eschar)
+            return true;
+        if (PartHasFractureReadout(uiState, part.Type, part.Symmetry))
+            return true;
+        if (PartHasInternalBleedReadout(uiState, part.Type, part.Symmetry))
+            return true;
+
+        return false;
+    }
+
+    private static bool PartHasFractureReadout(
+        HealthScannerBuiState uiState,
+        BodyPartType type,
+        BodyPartSymmetry symmetry)
+    {
+        if (uiState.CMUFractures is not { Count: > 0 } fractures)
+            return false;
+
+        foreach (var fracture in fractures)
+        {
+            if (fracture.Part == type && fracture.Symmetry == symmetry)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static bool PartHasInternalBleedReadout(
+        HealthScannerBuiState uiState,
+        BodyPartType type,
+        BodyPartSymmetry symmetry)
+    {
+        if (uiState.CMUInternalBleeds is not { Count: > 0 } bleeds)
+            return false;
+
+        foreach (var bleed in bleeds)
+        {
+            if (bleed.ExactLocationKnown)
+            {
+                if (bleed.Part == type && bleed.Symmetry == symmetry)
+                    return true;
+
+                continue;
+            }
+
+            if (type == BodyPartType.Torso)
+                return true;
+        }
+
+        return false;
+    }
+
+    private static float? LineGraftRecoverableFraction(CMUBodyPartReadout part)
+    {
+        var max = Math.Max(1f, part.Max.Float());
+        var current = Math.Clamp(part.Current.Float(), 0f, max);
+        if (current >= max)
+            return null;
+
+        var cap = current + (max - current) * 0.5f;
+        if (part.WoundDescriptor is { } wound)
+            cap = Math.Min(cap, max * LargestWoundTreatmentCap(wound, part.WoundDamage.Float()));
+
+        cap = Math.Clamp(cap, current, max);
+        return cap > current
+            ? cap / max
+            : null;
+    }
+
+    private static float LargestWoundTreatmentCap(WoundSize size, float damage)
+    {
+        return Math.Clamp(1f - WoundSizeProfile.FieldTreatmentPenalty(size, damage), 0.35f, 1f);
     }
 
     private void AppendFractureChip(BoxContainer strip, HealthScannerBuiState uiState, CMUBodyPartReadout part)
@@ -648,25 +773,34 @@ public sealed partial class HealthScannerBui : BoundUserInterface
             return;
 
         strip.AddChild(BuildChip(
-            Loc.GetString(WoundDescriptorLocaleKey(descriptor)),
-            WoundDescriptorColor(descriptor)));
+            WoundChipText(descriptor, part.WoundDamage.Float()),
+            WoundDescriptorColor(descriptor, part.WoundDamage.Float())));
     }
 
-    private static string WoundDescriptorLocaleKey(WoundSize descriptor) => descriptor switch
+    private static void AppendShrapnelChip(BoxContainer strip, CMUBodyPartReadout part)
     {
-        WoundSize.Small => "cmu-medical-scanner-wound-small",
-        WoundSize.Deep => "cmu-medical-scanner-wound-deep",
-        WoundSize.Gaping => "cmu-medical-scanner-wound-gaping",
-        WoundSize.Massive => "cmu-medical-scanner-wound-massive",
-        _ => "cmu-medical-scanner-wound-deep",
-    };
+        if (part.ShrapnelFragments <= 0)
+            return;
 
-    private static Color WoundDescriptorColor(WoundSize descriptor) => descriptor switch
+        var color = part.ShrapnelSeverity >= 30f
+            ? Color.FromHex("#9A6A22")
+            : Color.FromHex("#756C5A");
+        strip.AddChild(BuildChip(
+            Loc.GetString("cmu-medical-scanner-chip-shrapnel", ("count", part.ShrapnelFragments)),
+            color));
+    }
+
+    private static string WoundChipText(WoundSize size, float damage)
     {
-        WoundSize.Small => Color.FromHex("#7A4040"),
-        WoundSize.Deep => Color.FromHex("#8A3030"),
-        WoundSize.Gaping => Color.FromHex("#A02020"),
-        WoundSize.Massive => Color.FromHex("#B01818"),
+        return WoundSizeProfile.StageName(size, damage);
+    }
+
+    private static Color WoundDescriptorColor(WoundSize descriptor, float damage) => WoundSizeProfile.SeverityRank(descriptor, damage) switch
+    {
+        0 => Color.FromHex("#7A4040"),
+        1 => Color.FromHex("#8A3030"),
+        2 => Color.FromHex("#A02020"),
+        3 => Color.FromHex("#B01818"),
         _ => Color.FromHex("#8A3030"),
     };
 
@@ -780,6 +914,9 @@ public sealed partial class HealthScannerBui : BoundUserInterface
 
         foreach (var organ in organs)
         {
+            if (!OrganHasScannerDamage(organ))
+                continue;
+
             var sev = organ.Removed ? PartSeverity.Severed : SeverityFromOrganStage(organ.Stage);
             var card = new PanelContainer
             {
@@ -839,10 +976,24 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         (BodyPartType.Head,  BodyPartSymmetry.None),
         (BodyPartType.Torso, BodyPartSymmetry.None),
         (BodyPartType.Arm,   BodyPartSymmetry.Left),
+        (BodyPartType.Hand,  BodyPartSymmetry.Left),
         (BodyPartType.Arm,   BodyPartSymmetry.Right),
+        (BodyPartType.Hand,  BodyPartSymmetry.Right),
         (BodyPartType.Leg,   BodyPartSymmetry.Left),
+        (BodyPartType.Foot,  BodyPartSymmetry.Left),
         (BodyPartType.Leg,   BodyPartSymmetry.Right),
+        (BodyPartType.Foot,  BodyPartSymmetry.Right),
     };
+
+    private static bool OrganHasScannerDamage(CMUOrganReadout organ)
+    {
+        if (organ.Removed)
+            return true;
+        if (organ.Stage != Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Healthy)
+            return true;
+
+        return organ.Current < organ.Max;
+    }
 
     private static CMUBodyPartReadout? TryFindPart(
         HealthScannerBuiState uiState, BodyPartType type, BodyPartSymmetry symmetry)
@@ -871,24 +1022,24 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         return PartSeverity.Healthy;
     }
 
-    private static PartSeverity SeverityFromFracture(Content.Shared._CMU14.Medical.Bones.FractureSeverity severity)
+    private static PartSeverity SeverityFromFracture(Content.Shared._CMU14.Medical.Anatomy.Bones.FractureSeverity severity)
         => severity switch
         {
-            Content.Shared._CMU14.Medical.Bones.FractureSeverity.Hairline => PartSeverity.Bruised,
-            Content.Shared._CMU14.Medical.Bones.FractureSeverity.Simple => PartSeverity.Damaged,
-            Content.Shared._CMU14.Medical.Bones.FractureSeverity.Compound => PartSeverity.Critical,
-            Content.Shared._CMU14.Medical.Bones.FractureSeverity.Comminuted => PartSeverity.Critical,
+            Content.Shared._CMU14.Medical.Anatomy.Bones.FractureSeverity.Hairline => PartSeverity.Bruised,
+            Content.Shared._CMU14.Medical.Anatomy.Bones.FractureSeverity.Simple => PartSeverity.Damaged,
+            Content.Shared._CMU14.Medical.Anatomy.Bones.FractureSeverity.Compound => PartSeverity.Critical,
+            Content.Shared._CMU14.Medical.Anatomy.Bones.FractureSeverity.Shattered => PartSeverity.Critical,
             _ => PartSeverity.Bruised,
         };
 
-    private static PartSeverity SeverityFromOrganStage(Content.Shared._CMU14.Medical.Organs.OrganDamageStage stage)
+    private static PartSeverity SeverityFromOrganStage(Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage stage)
         => stage switch
         {
-            Content.Shared._CMU14.Medical.Organs.OrganDamageStage.Healthy => PartSeverity.Healthy,
-            Content.Shared._CMU14.Medical.Organs.OrganDamageStage.Bruised => PartSeverity.Bruised,
-            Content.Shared._CMU14.Medical.Organs.OrganDamageStage.Damaged => PartSeverity.Damaged,
-            Content.Shared._CMU14.Medical.Organs.OrganDamageStage.Failing => PartSeverity.Critical,
-            Content.Shared._CMU14.Medical.Organs.OrganDamageStage.Dead => PartSeverity.Severed,
+            Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Healthy => PartSeverity.Healthy,
+            Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Bruised => PartSeverity.Bruised,
+            Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Damaged => PartSeverity.Damaged,
+            Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Failing => PartSeverity.Critical,
+            Content.Shared._CMU14.Medical.Anatomy.Organs.OrganDamageStage.Dead => PartSeverity.Severed,
             _ => PartSeverity.Healthy,
         };
 
@@ -946,7 +1097,6 @@ public sealed partial class HealthScannerBui : BoundUserInterface
         "CMUOrganHumanKidneys" or "kidneys" => Loc.GetString("cmu-medical-scanner-organ-kidneys"),
         "CMUOrganHumanStomach" or "stomach" => Loc.GetString("cmu-medical-scanner-organ-stomach"),
         "CMUOrganHumanEyes" or "eyes" => Loc.GetString("cmu-medical-scanner-organ-eyes"),
-        "CMUOrganHumanEars" or "ears" => Loc.GetString("cmu-medical-scanner-organ-ears"),
         _ => idOrSlot.StartsWith("CMUOrganHuman") ? idOrSlot.Substring("CMUOrganHuman".Length) : idOrSlot,
     };
 

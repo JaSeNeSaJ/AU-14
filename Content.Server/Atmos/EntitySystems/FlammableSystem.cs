@@ -4,6 +4,7 @@ using Content.Server.Damage.Components;
 using Content.Server.Stunnable;
 using Content.Server.Temperature.Systems;
 using Content.Shared._RMC14.Atmos;
+using Content.Shared._RMC14.Water;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Projectile.Spit;
 using Content.Shared.ActionBlocker;
@@ -54,6 +55,7 @@ namespace Content.Server.Atmos.EntitySystems
         [Dependency] private AudioSystem _audio = default!;
         [Dependency] private IRobustRandom _random = default!;
         [Dependency] private SharedRMCFlammableSystem _rmcFlammable = default!;
+        [Dependency] private RMCWaterSystem _rmcWater = default!;
         [Dependency] private XenoSpitSystem _xenoSpit = default!;
 
         private EntityQuery<InventoryComponent> _inventoryQuery;
@@ -278,11 +280,35 @@ namespace Content.Server.Atmos.EntitySystems
             if (args.Handled)
                 return;
 
+            // RMC14 use the normal stop-drop-roll resist before active water extinguishes.
             _rmcFlammable.DoStopDropRollAnimation(ent.Owner);
             Resist(ent, ent);
+            if (ent.Comp.Resisting)
+                TryExtinguishWithWater(ent.Owner, ent.Comp);
+            // RMC14 end
+
             _xenoSpit.Resist(ent.Owner);
             args.Handled = true;
         }
+
+        // RMC14 water extinguishing helper. Active water reuses RMCWaterSystem.CanCollide so catwalk-covered
+        // water does not count.
+        private bool TryExtinguishWithWater(EntityUid uid, FlammableComponent flammable)
+        {
+            if (!CanWaterExtinguish(uid, flammable) || !_rmcWater.IsInWater(uid))
+                return false;
+
+            Extinguish(uid, flammable);
+            return true;
+        }
+
+        private bool CanWaterExtinguish(EntityUid uid, FlammableComponent flammable)
+        {
+            return !TerminatingOrDeleted(uid) &&
+                   flammable.OnFire &&
+                   flammable.CanExtinguish;
+        }
+        // RMC14 end
 
         public void UpdateAppearance(EntityUid uid, FlammableComponent? flammable = null, AppearanceComponent? appearance = null)
         {
@@ -472,8 +498,8 @@ namespace Content.Server.Atmos.EntitySystems
             _timer -= UpdateTime;
 
             // TODO: This needs cleanup to take off the crust from TemperatureComponent and shit.
-            var query = EntityQueryEnumerator<FlammableComponent, TransformComponent>();
-            while (query.MoveNext(out var uid, out var flammable, out _))
+            var query = EntityQueryEnumerator<FlammableComponent>();
+            while (query.MoveNext(out var uid, out var flammable))
             {
                 // Slowly dry ourselves off if wet.
                 if (flammable.FireStacks < 0)
@@ -482,13 +508,20 @@ namespace Content.Server.Atmos.EntitySystems
                     Dirty(uid, flammable);
                 }
 
-                if (!flammable.OnFire)
+                var last = flammable.LastOnFire;
+                flammable.LastOnFire = flammable.OnFire;
+                if (flammable.LastOnFire != last)
                 {
-                    _rmcFlammable.UpdateFireAlert(uid);
-                    continue;
+                    Dirty(uid, flammable);
+
+                    if (flammable.OnFire)
+                        _alertsSystem.ShowAlert(uid, flammable.FireAlert);
+                    else
+                        _alertsSystem.ClearAlert(uid, flammable.FireAlert);
                 }
 
-                _rmcFlammable.UpdateFireAlert(uid);
+                if (!flammable.OnFire)
+                    continue;
 
                 if (flammable.FireStacks > 0)
                 {

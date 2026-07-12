@@ -1,6 +1,8 @@
 using Content.Shared._RMC14.IdentityManagement;
 using Content.Shared._RMC14.Medical.HUD.Components;
+using Content.Shared._RMC14.Medical.Stasis;
 using Content.Shared._RMC14.Medical.Unrevivable;
+using Content.Shared._RMC14.Medical.Wounds;
 using Content.Shared._RMC14.Repairable;
 using Content.Shared._RMC14.StatusEffect;
 using Content.Shared.Actions;
@@ -56,6 +58,9 @@ public abstract partial class SharedSynthSystem : EntitySystem
         SubscribeLocalEvent<SynthComponent, AttackAttemptEvent>(OnMeleeAttempted);
         SubscribeLocalEvent<SynthComponent, ShotAttemptedEvent>(OnShotAttempted);
         SubscribeLocalEvent<SynthComponent, TryingToSleepEvent>(OnSleepAttempt);
+        SubscribeLocalEvent<SynthComponent, CMMetabolizeAttemptEvent>(OnMetabolizeAttempt);
+        SubscribeLocalEvent<SynthComponent, CMBleedAttemptEvent>(OnBleedAttempt);
+        SubscribeLocalEvent<SynthComponent, CMBleedEvent>(OnBleed);
         SubscribeLocalEvent<SynthComponent, InteractUsingEvent>(OnSynthInteractUsing);
         SubscribeLocalEvent<SynthComponent, RMCSynthRepairEvent>(OnSynthRepairDoAfter);
 
@@ -120,9 +125,23 @@ public abstract partial class SharedSynthSystem : EntitySystem
         if (TryComp<RMCHealthIconsComponent>(ent.Owner, out var healthIcons))
         {
             if (ent.Comp.UseHumanHealthIcons)
-                healthIcons.Icons = new();
+            {
+                healthIcons.Icons = new()
+                {
+                    [RMCHealthIconTypes.Healthy] = "CMHealthIconHealthy",
+                    [RMCHealthIconTypes.DeadDefib] = "CMHealthIconDeadDefib",
+                    [RMCHealthIconTypes.DeadClose] = "CMHealthIconDeadClose",
+                    [RMCHealthIconTypes.DeadAlmost] = "CMHealthIconDeadAlmost",
+                    [RMCHealthIconTypes.DeadDNR] = "CMHealthIconDeadDNR",
+                    [RMCHealthIconTypes.Dead] = "CMHealthIconDead",
+                    [RMCHealthIconTypes.HCDead] = "CMHealthIconHCDead",
+                };
+            }
             else
+            {
                 healthIcons.Icons = ent.Comp.HealthIconOverrides;
+            }
+
             Dirty(ent.Owner, healthIcons);
         }
 
@@ -195,6 +214,21 @@ public abstract partial class SharedSynthSystem : EntitySystem
     private void OnSleepAttempt(Entity<SynthComponent> ent, ref TryingToSleepEvent args)
     {
         args.Cancelled = true; // Synths dont sleep
+    }
+
+    private void OnMetabolizeAttempt(Entity<SynthComponent> ent, ref CMMetabolizeAttemptEvent args)
+    {
+        args.Cancel();
+    }
+
+    private void OnBleedAttempt(Entity<SynthComponent> ent, ref CMBleedAttemptEvent args)
+    {
+        args.Cancelled = true;
+    }
+
+    private void OnBleed(Entity<SynthComponent> ent, ref CMBleedEvent args)
+    {
+        args.Handled = true;
     }
 
     private void OnSynthInteractUsing(Entity<SynthComponent> synth, ref InteractUsingEvent args)

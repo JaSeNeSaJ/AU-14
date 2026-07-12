@@ -295,13 +295,13 @@ namespace Content.Client.Construction
             var comp = Comp<ConstructionGhostComponent>(ghost.Value);
             comp.Prototype = prototype;
             comp.GhostId = ghost.GetHashCode();
-            Comp<TransformComponent>(ghost.Value).LocalRotation = dir.ToAngle();
+            _transformSystem.SetLocalRotation(ghost.Value, dir.ToAngle());
             _ghosts.Add(comp.GhostId, ghost.Value);
 
             var sprite = Comp<SpriteComponent>(ghost.Value);
             _sprite.SetColor((ghost.Value, sprite), new Color(48, 255, 48, 128));
 
-            if (targetProto.TryGetComponent(out IconComponent? icon, EntityManager.ComponentFactory))
+            if (targetProto.TryComp(out IconComponent? icon, EntityManager.ComponentFactory))
             {
                 _sprite.AddBlankLayer((ghost.Value, sprite), 0);
                 _sprite.LayerSetSprite((ghost.Value, sprite), 0, icon.Icon);
@@ -324,10 +324,11 @@ namespace Content.Client.Construction
                         state.StateId.Name is null)
                         continue;
 
-                    _sprite.AddBlankLayer((ghost.Value, sprite), i);
-                    _sprite.LayerSetSprite((ghost.Value, sprite), i, new SpriteSpecifier.Rsi(rsi.Path, state.StateId.Name));
-                    sprite.LayerSetShader(i, "unshaded");
-                    _sprite.LayerSetVisible((ghost.Value, sprite), i, true);
+                    var ghostLayerIndex = sprite.AllLayers.Count();
+                    _sprite.AddBlankLayer((ghost.Value, sprite));
+                    _sprite.LayerSetSprite((ghost.Value, sprite), ghostLayerIndex, new SpriteSpecifier.Rsi(rsi.Path, state.StateId.Name));
+                    sprite.LayerSetShader(ghostLayerIndex, "unshaded");
+                    _sprite.LayerSetVisible((ghost.Value, sprite), ghostLayerIndex, true);
                 }
 
                 Del(dummy);

@@ -18,6 +18,17 @@
     - type: NpcFactionMember
       factions:
       - Bureau
+    - type: Language
+      spokenLanguages:
+      - English
+      - Spanish
+      - Japanese
+      understoodLanguages:
+      - English
+      - Spanish
+      - Japanese
+      currentLanguage: English
+      defaultLanguage: English
     - type: Skills
       skills:
         RMCSkillVehicles: 1
@@ -67,8 +78,8 @@
   equipment:
     eyes: RMCSunglasses
     head: RMCHardhatWhite
-    ears: RMCHeadsetDistressICBLiaison
-    back: RMCSatchelICBLiaisonFill # TODO RMC14 secure leather satchel
+    ears: RMCHeadsetDistressICBLiaison # TODO RMC14 tape recorder
+    back: RMCSatchelICBLiaisonSecureFill
     jumpsuit: CMJumpsuitLiaisonBlack
     outerClothing: RMCHazardVestYellow
     gloves: CMHandsInsulated

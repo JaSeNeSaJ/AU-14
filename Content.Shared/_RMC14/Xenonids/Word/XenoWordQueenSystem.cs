@@ -4,11 +4,13 @@ using Content.Shared._RMC14.Xenonids.Announce;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared.Actions;
+using Content.Shared.Actions.Components;
 using Content.Shared.CCVar;
 using Content.Shared.Popups;
 using Robust.Shared.Configuration;
 using Robust.Shared.Network;
 using Robust.Shared.Player;
+using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
 namespace Content.Shared._RMC14.Xenonids.Word;
@@ -18,6 +20,7 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private SharedCMChatSystem _cmChat = default!;
     [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private IGameTiming _timing = default!;
     [Dependency] private INetManager _net = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
@@ -25,7 +28,6 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private XenoPlasmaSystem _xenoPlasma = default!;
 
-    private readonly Regex _newLineRegex = new("\n{3,}", RegexOptions.Compiled);
     private int _characterLimit = 1000;
 
     public override void Initialize()
@@ -45,7 +47,6 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
         if (args.Handled)
             return;
 
-        args.Handled = true;
         _ui.TryOpenUi(queen.Owner, XenoWordQueenUI.Key, queen);
     }
 
@@ -55,6 +56,9 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
 
         var text = args.Text.Trim();
         if (string.IsNullOrWhiteSpace(text))
+            return;
+
+        if (!CanSend(queen))
             return;
 
         if (!_xenoPlasma.HasPlasmaPopup(queen.Owner, queen.Comp.PlasmaCost))
@@ -84,7 +88,7 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
 
         _xenoPlasma.TryRemovePlasma(queen.Owner, queen.Comp.PlasmaCost);
 
-        text = _newLineRegex.Replace(text, "\n\n");
+        text = NewLineRegex.Replace(text, "\n\n");
         text = _cmChat.SanitizeMessageReplaceWords(queen, text);
         var headerText = Loc.GetString("rmc-xeno-words-of-the-queen-header");
         var wrapped = FormattedMessage.EscapeText(text);
@@ -99,4 +103,22 @@ public sealed partial class XenoWordQueenSystem : EntitySystem
                 _actions.StartUseDelay(actionId);
         }
     }
+
+    private bool CanSend(EntityUid queen)
+    {
+        foreach (var (actionId, action) in _actions.GetActions(queen))
+        {
+            if (!HasComp<XenoWordQueenActionComponent>(actionId))
+                continue;
+
+            if (!action.Enabled || _actions.IsCooldownActive(action, _timing.CurTime))
+                return false;
+
+            return true;
+        }
+
+        return false;
+    }
+
+    private static readonly Regex NewLineRegex = new("\n{3,}");
 }

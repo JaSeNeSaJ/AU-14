@@ -1,3 +1,4 @@
+# -- Ammunition Box Base  --
 - type: entity
   abstract: true
   parent: BaseItem
@@ -56,6 +57,7 @@
     tags:
     - RMCAmmoBox
 
+# -- REG Rifle Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifle
@@ -90,6 +92,7 @@
     bulletType: RMCBoxBulletsRifle
     amount: 0
 
+# -- AP Rifle Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifleAP
@@ -126,6 +129,29 @@
 
 - type: entity
   parent: RMCBoxBulletsBase
+  id: RMCBoxBulletsRifleIncendiary
+  name: rifle ammunition box (10x24mm Incendiary)
+  description: A 10x24mm incendiary ammunition box. Used to refill M54C MK2, and M4SPR incendiary magazines. It comes with a leather strap allowing someone to wear it on their back.
+  components:
+  - type: Sprite
+    layers:
+    - state: rifle_box
+      color: "#7b8246"
+    - state: rifle_box_marking
+      color: "#318b11"
+    - state: rifle_box_generic
+      color: "#ffcb26"
+    - state: rifle_ammo_full_rounds_base
+      map: [ "enum.BulletBoxLayers.Fill" ]
+    - state: rifle_ammo_full_rounds_color
+      map: [ "enum.BulletBoxLayers2.Fill" ]
+      color: "#318b11"
+  - type: BulletBox
+    bulletType: RMCBoxBulletsRifleIncendiary
+
+# -- REG SMG Ammunition Box Base --
+- type: entity
+  parent: RMCBoxBulletsBase
   id: RMCBoxBulletsSMG
   name: SMG ammunition box (10x20mm)
   description: A 10x20mm ammunition box. Used to refill M63 HV and extended magazines. It comes with a leather strap allowing someone to wear it on their back.
@@ -158,6 +184,7 @@
     bulletType: RMCBoxBulletsSMG
     amount: 0
 
+# -- AP SMG Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsSMGAP
@@ -192,6 +219,7 @@
     bulletType: RMCBoxBulletsSMGAP
     amount: 0
 
+# -- SG Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsSmartGun
@@ -223,6 +251,7 @@
     bulletType: RMCBoxBulletsSmartGun
     amount: 0
 
+# -- REG Pistol Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsPistol
@@ -259,6 +288,7 @@
     bulletType: RMCBoxBulletsPistol
     amount: 0
 
+# -- AP Pistol Ammunition Box Base --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsPistolAP
@@ -295,8 +325,9 @@
     bulletType: RMCBoxBulletsPistolAP
     amount: 0
 
-# 8.88x51mm
 
+# TWE Ammunition Boxes
+# -- REG 7x43mm Rifle Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifleL90
@@ -328,6 +359,7 @@
     bulletType: RMCBoxBulletsRifleL90
     amount: 0
 
+# -- AP 7x43mm Rifle Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifleL90AP
@@ -359,6 +391,7 @@
     bulletType: RMCBoxBulletsRifleL90AP
     amount: 0
 
+# -- REG 8.88x51mm Rifle Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifleL24
@@ -390,6 +423,7 @@
     bulletType: RMCBoxBulletsRifleL24
     amount: 0
 
+# -- AP 8.88x51mm Rifle Ammunition Box --
 - type: entity
   parent: RMCBoxBulletsBase
   id: RMCBoxBulletsRifleL24AP
@@ -419,3 +453,4 @@
   components:
   - type: BulletBox
     bulletType: RMCBoxBulletsRifleL24AP
+

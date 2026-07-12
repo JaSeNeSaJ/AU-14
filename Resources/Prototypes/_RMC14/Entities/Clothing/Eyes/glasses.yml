@@ -42,8 +42,6 @@
       map: [ "icon" ]
   - type: Clothing
     sprite: _RMC14/Objects/Clothing/Eyes/Glasses/m42_scoutsight.rsi
-  - type: NightVisionItem
-    mesons: true
   - type: Appearance
 
 - type: entity
@@ -77,7 +75,9 @@
   - type: Appearance
 
 - type: entity
-  parent: ClothingEyesBase
+  parent: 
+  - ClothingEyesBase
+  - ShowMedicalIcons
   id: RMCGlassesSmartGunSight
   name: M56B head mounted sight # TODO RMC14 meson tile vision see description below
   description: A headset and goggles system for the M56B Smart Gun. # TODO RMC14 Has a low-res short-range imager, allowing for view of terrain.
@@ -271,6 +271,12 @@
     slots:
     - MASK
     - EYES
+  - type: Tag
+    tags:
+    - RMCPrescriptionGlasses
+
+- type: Tag
+  id: RMCPrescriptionGlasses
 
 - type: entity
   parent: RMCGlassesMarineRpg
@@ -853,6 +859,10 @@
     toggledRsi:
       sprite: _RMC14/Objects/Clothing/Eyes/Glasses/welding_goggles.rsi
       state: helmet-down
+  - type: InteractedBlacklist
+    blacklist:
+      components:
+      - Xeno
 
 - type: Tag
   id: RMCWeldingGoggle

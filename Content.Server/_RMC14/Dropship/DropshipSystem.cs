@@ -4,13 +4,15 @@ using Content.Server._CMU14.Dropship.TacticalLand;
 using Content.Server._RMC14.GameStates;
 using Content.Server._RMC14.Marines;
 using Content.Server.AU14.Round;
-using Content.Server.AU14.ThirdParty;
+using Content.Server._CMU14.Ops.ThirdParty;
 using Content.Server._RMC14.Shuttles;
 using Content.Server.Doors.Systems;
 using Content.Server.GameTicking;
 using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Shuttles.Systems;
+using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
+using Content.Shared._CMU14.Dropship.TacticalLand;
 using Content.Shared._RMC14.AlertLevel;
 using Content.Shared._RMC14.Areas;
 using Content.Shared._RMC14.Atmos;
@@ -49,9 +51,15 @@ using Robust.Server.Containers;
 using Robust.Server.GameObjects;
 using Robust.Shared.Configuration;
 using Robust.Shared.Containers;
+using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
 using Robust.Shared.Timing;
+using ThirdPartyDropshipAutoReturnComponent = Content.Server._CMU14.Ops.ThirdParty.ThirdPartyDropshipAutoReturnComponent ;
+using ThirdPartyDropshipDeactivatedConsoleComponent = Content.Server._CMU14.Ops.ThirdParty.ThirdPartyDropshipDeactivatedConsoleComponent ;
+using ThirdPartyDropshipReturnDestinationComponent = Content.Server._CMU14.Ops.ThirdParty.ThirdPartyDropshipReturnDestinationComponent ;
+using ThirdPartyDropshipReturnedComponent = Content.Server._CMU14.Ops.ThirdParty.ThirdPartyDropshipReturnedComponent ;
 
 namespace Content.Server._RMC14.Dropship;
 
@@ -66,6 +74,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
     [Dependency] private EntityLookupSystem _entityLookup = default!;
     [Dependency] private GameTicker _gameTicker = default!;
     [Dependency] private MarineAnnounceSystem _marineAnnounce = default!;
+    [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private PhysicsSystem _physics = default!;
     [Dependency] private PointLightSystem _pointLight = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -82,6 +91,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
     [Dependency] private AreaSystem _area = default!;
     [Dependency] private IntelSystem _intel = default!;
     [Dependency] private WithdrawConsoleSystem _withdrawConsole = default!;
+    [Dependency] private CMUSharedZLevelsSystem _zLevels = default!;
 
     private EntityQuery<DockingComponent> _dockingQuery;
     private EntityQuery<DoorComponent> _doorQuery;
@@ -508,6 +518,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         if (TryComp(computer.Owner, out WhitelistedShuttleComponent? whitelistComp) &&
             IsStrictThirdPartyFaction(whitelistComp.Faction) &&
             TryComp(destination, out DropshipDestinationComponent? destinationComp) &&
+            !HasComp<EphemeralDropshipDestinationComponent>(destination) &&
             !IsThirdPartyDestination(destinationComp))
         {
             if (user != null)
@@ -538,6 +549,15 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         if (!TryComp(dropshipId, out ShuttleComponent? shuttleComp))
         {
             Log.Warning($"Tried to launch {ToPrettyString(computer)} outside of a shuttle.");
+            return false;
+        }
+
+        if (TryComp(dropshipId.Value, out DropshipTacticalHoverComponent? tacticalHover) &&
+            tacticalHover.ReturnDestination != destination)
+        {
+            if (user != null)
+                _popup.PopupEntity("Tactical hover must return before routing elsewhere.", computer.Owner, user.Value, PopupType.MediumCaution);
+
             return false;
         }
 
@@ -775,10 +795,14 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         if (!_ui.IsUiOpen(computer.Owner, DropshipNavigationUiKey.Key))
             return;
 
+        if (_tacticalLand.TryRefreshActiveSessionUi(computer))
+            return;
+
         if (Transform(computer).GridUid is not { } grid)
             return;
 
         var doorLockStatus = GetDoorLockStatus(grid);
+        var canCancelTacticalHover = HasComp<DropshipTacticalHoverComponent>(grid);
 
         if (!TryComp(grid, out FTLComponent? ftl) ||
             !ftl.Running ||
@@ -849,7 +873,8 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
                 destinations.Add(destination);
             }
 
-            var canTacticalLand = computer.Comp.CanTacticalLand || IsStrictThirdPartyFaction(whitelistedFaction);
+            var canTacticalLand = !canCancelTacticalHover &&
+                                  (computer.Comp.CanTacticalLand || IsStrictThirdPartyFaction(whitelistedFaction));
 
             var canWithdrawReturn = false;
             if (whitelistedFaction != null && _withdrawConsole.IsWithdrawReturnUnlocked(whitelistedFaction))
@@ -859,7 +884,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
                                     (HasComp<RMCPlanetComponent>(gridXform.MapUid.Value) || HasComp<RMCPlanetComponent>(grid));
             }
 
-            var state = new DropshipNavigationDestinationsBuiState(flyBy, destinations, doorLockStatus, computer.Comp.RemoteControl, canTacticalLand, computer.Comp.LaunchAlarmStatus, canWithdrawReturn);
+            var state = new DropshipNavigationDestinationsBuiState(flyBy, destinations, doorLockStatus, computer.Comp.RemoteControl, canTacticalLand, computer.Comp.LaunchAlarmStatus, canWithdrawReturn, canCancelTacticalHover);
             _ui.SetUiState(computer.Owner, DropshipNavigationUiKey.Key, state);
             return;
         }
@@ -877,7 +902,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
                 departureName = Name(departureUid);
         }
 
-        var travelState = new DropshipNavigationTravellingBuiState(ftl.State, ftl.StateTime, destinationName, departureName, doorLockStatus, computer.Comp.RemoteControl, computer.Comp.LaunchAlarmStatus);
+        var travelState = new DropshipNavigationTravellingBuiState(ftl.State, ftl.StateTime, destinationName, departureName, doorLockStatus, computer.Comp.RemoteControl, computer.Comp.LaunchAlarmStatus, canCancelTacticalHover);
         _ui.SetUiState(computer.Owner, DropshipNavigationUiKey.Key, travelState);
     }
 
@@ -1379,7 +1404,13 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
                 Dirty(uid, dropship);
 
                 Audio.PlayGlobal(dropship.CrashSound, destinationFilter, true);
-                _rmcFlammable.SpawnFireDiamond(dropship.FireId, destinationEntityCoords, dropship.FireRange, 11);
+                _rmcFlammable.SpawnFireDiamond(
+                    dropship.FireId,
+                    destinationEntityCoords,
+                    dropship.FireRange,
+                    11,
+                    zProjectionMaxFloors: 0,
+                    canSpawn: coords => IsOutsideDropshipCrashFootprint(uid, coords));
                 _rmcExplosion.QueueExplosion(destinationCoords, "RMCOB", 50000, 1500, 90, uid);
 
                 continue;
@@ -1387,6 +1418,19 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         }
 
 
+    }
+
+    private bool IsOutsideDropshipCrashFootprint(EntityUid dropship, EntityCoordinates coordinates)
+    {
+        if (!TryComp(dropship, out MapGridComponent? dropshipGrid))
+            return true;
+
+        var mapCoordinates = _transform.ToMapCoordinates(coordinates);
+        if (_transform.GetMapId(dropship) != mapCoordinates.MapId)
+            return true;
+
+        var tile = _map.WorldToTile(dropship, dropshipGrid, mapCoordinates.Position);
+        return !_map.TryGetTile(dropshipGrid, tile, out var dropshipTile) || dropshipTile.IsEmpty;
     }
 
     /// <summary>
@@ -1399,14 +1443,14 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         var almayerQuery = EntityQueryEnumerator<AlmayerComponent, TransformComponent>();
         while (almayerQuery.MoveNext(out _, out _, out var xform))
         {
-            if (xform.MapUid == mapUid)
+            if (IsSameMapOrConnectedZLevel(mapUid, xform.MapUid))
                 return true;
         }
 
         var shipQuery = EntityQueryEnumerator<ShipFactionComponent, TransformComponent>();
         while (shipQuery.MoveNext(out _, out _, out var xform2))
         {
-            if (xform2.MapUid == mapUid)
+            if (IsSameMapOrConnectedZLevel(mapUid, xform2.MapUid))
                 return true;
         }
 
@@ -1462,18 +1506,31 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         var shipFactions = EntityQueryEnumerator<ShipFactionComponent, TransformComponent>();
         while (shipFactions.MoveNext(out _, out var shipFaction, out var sfXform))
         {
-            if (sfXform.MapUid == map && !string.IsNullOrEmpty(shipFaction.Faction))
+            if (IsSameMapOrConnectedZLevel(map, sfXform.MapUid) && !string.IsNullOrEmpty(shipFaction.Faction))
                 return shipFaction.Faction;
         }
 
         var controlComputers = EntityQueryEnumerator<MarineControlComputerComponent, TransformComponent>();
         while (controlComputers.MoveNext(out _, out var cc, out var ccXform))
         {
-            if (ccXform.MapUid == map && !string.IsNullOrEmpty(cc.Faction))
+            if (IsSameMapOrConnectedZLevel(map, ccXform.MapUid) && !string.IsNullOrEmpty(cc.Faction))
                 return cc.Faction;
         }
 
         return null;
+    }
+
+    private bool IsSameMapOrConnectedZLevel(EntityUid mapUid, EntityUid? otherMapUid)
+    {
+        if (otherMapUid is not { } otherMap)
+            return false;
+
+        if (otherMap == mapUid)
+            return true;
+
+        return _zLevels.TryGetZNetwork(mapUid, out var network) &&
+               _zLevels.TryGetZNetwork(otherMap, out var otherNetwork) &&
+               otherNetwork.Value.Owner == network.Value.Owner;
     }
 
     private void OnWithdrawHijackLock(ref WithdrawFactionHijackLockEvent ev)

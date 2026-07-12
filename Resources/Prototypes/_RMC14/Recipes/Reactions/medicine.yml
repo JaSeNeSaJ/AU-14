@@ -183,6 +183,34 @@
     CMUOxycodone: 3
 
 - type: reaction
+  id: CMUSleen
+  reactants:
+    CMUOxycodone:
+      amount: 1
+    CMUTramadol:
+      amount: 1
+    RMCEthanol:
+      amount: 1
+    CMInaprovaline:
+      amount: 1
+  products:
+    CMUSleen: 4
+
+- type: reaction
+  id: CMUSoporific
+  reactants:
+    RMCChloralhydrate:
+      amount: 1
+    RMCChlorine:
+      amount: 1
+    RMCEthanol:
+      amount: 1
+    RMCSugar:
+      amount: 1
+  products:
+    CMUSoporific: 4
+
+- type: reaction
   id: CMUHepatocytin
   reactants:
     CMDylovene:
@@ -301,8 +329,6 @@
 - type: reaction
   id: RMCMethylphenidate
   reactants:
-    RMCBlackGoo: # TODO RMC14 remove this later
-      amount: 0.5
     RMCMindbreakerToxin:
       amount: 1
     RMCHydrogen:
@@ -313,8 +339,6 @@
 - type: reaction
   id: RMCCitalopram
   reactants:
-    RMCBlackGoo: # TODO RMC14 remove this later
-      amount: 0.5
     RMCMindbreakerToxin:
       amount: 1
     RMCCarbon:
@@ -325,8 +349,6 @@
 - type: reaction
   id: RMCParoxetine
   reactants:
-    RMCBlackGoo: # TODO RMC14 remove this later
-      amount: 0.5
     RMCMindbreakerToxin:
       amount: 1
     RMCOxygen:

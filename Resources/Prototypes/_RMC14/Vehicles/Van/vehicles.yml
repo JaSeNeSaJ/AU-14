@@ -60,6 +60,10 @@
     softness: 2
   - type: Physics
     bodyType: Dynamic
+  #CMU
+  - type: CMUZPhysics
+  - type: CMUVehicleZTraversal
+  - type: CMUZLevelViewer
   - type: Fixtures
     fixtures:
       world:
@@ -153,7 +157,6 @@
   - type: HardpointIntegrity
     maxIntegrity: 1000
     integrity: 1000
-    repairFuelCost: 10
     bypassEntryOnZero: true
   - type: HardpointState
   - type: Appearance
@@ -277,6 +280,9 @@
     softness: 2
   - type: Physics
     bodyType: Dynamic
+  #CMU
+  - type: CMUZPhysics
+  - type: CMUVehicleZTraversal
   - type: Fixtures
     fixtures:
       world:
@@ -371,7 +377,6 @@
   - type: HardpointIntegrity
     maxIntegrity: 1000
     integrity: 1000
-    repairFuelCost: 10
     bypassEntryOnZero: true
   - type: HardpointState
   - type: Appearance
@@ -658,7 +663,8 @@
     - map: [ rmc-wheels ]
       state: wheels_1
   - type: VehicleEnter
-    interiorPath: /Maps/_CMU14/Vehicleinteriors/paddywagon.yml
+    # interiorPath: /Maps/_CMU14/Vehicleinteriors/paddywagon.yml
+    interiorPath: /Maps/_RMC14/Vehicles/box_van_interior.yml # TODO: fix the broken interior PR-895
     enterDoAfter: 1.0
     exitDoAfter: 1.0
     maxPassengers: 8
@@ -666,10 +672,10 @@
     entryPoints:
     - offset: 1,-0.25
       radius: 0.6
-      interiorCoords: 0.4,1.65
+      interiorCoords: -0.42,1.6
     - offset: -1,-0.25
       radius: 0.6
-      interiorCoords: 0.55,0.43
+      interiorCoords: -0.53,0.84
     - offset: 0,2
       radius: 0.75
-      interiorCoords: -0.75,1.2
+      interiorCoords: -1.74,1.22

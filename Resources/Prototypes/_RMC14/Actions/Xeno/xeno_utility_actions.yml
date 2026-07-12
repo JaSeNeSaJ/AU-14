@@ -256,7 +256,6 @@
   components:
   - type: Action
     itemIconStyle: NoItem
-    backgroundOn: null
     icon:
       sprite: _RMC14/Actions/xeno_actions.rsi
       state: apply_salve
@@ -266,6 +265,7 @@
   - type: EntityTargetAction
     event: !type:XenoApplySalveActionEvent
   - type: RMCDazeableAction
+  - type: ActionBlockIfResting
 
 - type: entity
   parent: ActionXenoBase
@@ -275,7 +275,6 @@
   components:
   - type: Action
     itemIconStyle: NoItem
-    backgroundOn: null
     icon:
       sprite: _RMC14/Actions/xeno_actions.rsi
       state: screech
@@ -434,7 +433,7 @@
   id: ActionXenoVomitBile
   parent: ActionXenoBase
   name: Vomit Bile (40)
-  description: Extinguishes a nearby hivemate or coats an enemy in volatile bile.
+  description: Extinguishes a nearby hivemate or sprays volatile bile over enemies in the three tiles in front of you.
   components:
   - type: Action
     itemIconStyle: NoItem
@@ -443,7 +442,7 @@
       state: xeno_spit
     useDelay: 8
   - type: TargetAction
-    range: 1.5
+    range: 1.8
     checkCanAccess: false
   - type: EntityTargetAction
     targetCheckCanInteract: false

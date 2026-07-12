@@ -30,6 +30,12 @@ public sealed partial class CCVars
         GameDisallowLateJoins = CVarDef.Create("game.disallowlatejoins", false, CVar.ARCHIVE | CVar.SERVERONLY);
 
     /// <summary>
+    ///     Join timing steps at or above this many seconds are logged as warnings.
+    /// </summary>
+    public static readonly CVarDef<float>
+        GameJoinTimingWarnSeconds = CVarDef.Create("game.join_timing_warn_seconds", 5f, CVar.ARCHIVE | CVar.SERVERONLY);
+
+    /// <summary>
     ///     Controls the default game preset.
     /// </summary>
     public static readonly CVarDef<string>
@@ -348,7 +354,7 @@ public sealed partial class CCVars
     ///     Defaults to 2 minutes.
     /// </summary>
     public static readonly CVarDef<float> RoundRestartTime =
-        CVarDef.Create("game.round_restart_time", 120f, CVar.SERVERONLY);
+        CVarDef.Create("game.round_restart_time", 300f, CVar.SERVERONLY);
 
     /// <summary>
     ///     The prototype to use for secret weights.

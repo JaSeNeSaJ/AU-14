@@ -11,6 +11,9 @@
   - type: Tag
     tags:
     - ClothMade
+  - type: CMUItemStain
+    wornStates:
+      head: beret_blood
 
 - type: entity
   parent: CMHeadBeret
@@ -217,6 +220,10 @@
       components:
       - HelmetAccessory
   - type: HelmetAccessoryHolder
+  - type: InteractedBlacklist
+    blacklist:
+      components:
+      - Xeno
 
 - type: entity
   parent: CMHeadCapMP
@@ -360,6 +367,15 @@
     sprite: _RMC14/Objects/Clothing/Head/Hats/drill_hat.rsi
 
 - type: entity
+  parent: CMHeadCapDrill
+  id: RMCHeadCapDrillXippy
+  components:
+  - type: Sprite
+    sprite: _RMC14/Objects/Clothing/Head/Hats/xippy_hat.rsi
+  - type: Clothing
+    sprite: _RMC14/Objects/Clothing/Head/Hats/xippy_hat.rsi
+
+- type: entity
   parent: RMCHeadCapFlippable
   id: CMHeadCapOfficer
   name: USCM officer cap
@@ -456,7 +472,7 @@
   parent: CMHeadCapMP
   id: CMHeadFlapCap
   name: USCM expedition cap
-  description: It's a cap, with flaps. A patch stitched across the front reads "UNS ALMAYER".
+  description: It's a cap, with flaps. A patch stitched across the front reads "USS BARACK OBAMA".
   components:
   - type: Sprite
     sprite: _RMC14/Objects/Clothing/Head/Hats/flapcap/jungle.rsi
@@ -531,6 +547,9 @@
     sprite: _RMC14/Objects/Clothing/Head/Hats/SurgicalCap/blue.rsi
   - type: Clothing
     sprite: _RMC14/Objects/Clothing/Head/Hats/SurgicalCap/blue.rsi
+  - type: CMUItemStain
+    wornStates:
+      head: surgcap_blood
 
 - type: entity
   parent: CMHeadCapSurgBlue

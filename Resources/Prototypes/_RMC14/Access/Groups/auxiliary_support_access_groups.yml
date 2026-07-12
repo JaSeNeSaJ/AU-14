@@ -21,11 +21,13 @@
   - CMAccessDelta
   - CMAccessPilot
   - CMAccessDropship
+  - RMCAccessVehicleCrew
   - CMAccessKitchen
   - CMAccessPress
   - CMAccessCrewman
   - RMCAccessDatabase
   - RMCAccessSeniorCommand
+  - RMCAccessLogs
 
 - type: accessGroup
   id: Pilot

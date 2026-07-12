@@ -16,7 +16,7 @@
     - name: Standard Equipment
       takeAll: CMStandard
       entries:
-      - id: CMSatchel
+      - id: CMSatchelSecureStandard
       - id: CMBootsBlackFilled
       - id: CMMRE
       - id: RMCStampSEA
@@ -61,6 +61,7 @@
       choices: { CMCoat: 1 }
       entries:
       - id: RMCCoatService
+      - id: RMCCoatAllWeather
     - name: Eyewear
       choices: { CMEyewear: 1 }
       entries:

@@ -1,6 +1,9 @@
 using System;
 using System.Numerics;
 using System.Collections.Generic;
+using Content.Shared._CMU14.ZLevels.Core.Components;
+using Content.Shared._CMU14.ZLevels.Core.EntitySystems;
+using Content.Shared._CMU14.ZLevels.Vehicles;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Destructible;
@@ -52,6 +55,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     [Dependency] private HardpointSystem _hardpoints = default!;
     [Dependency] private Content.Shared.Tag.TagSystem _tag = default!;
     [Dependency] private Content.Shared.Popups.SharedPopupSystem _popup = default!;
+    [Dependency] private CMUSharedZLevelsSystem _zLevels = default!;
 
     private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> SmashIgnoreTag = "VehicleSmashIgnore";
     private static readonly Robust.Shared.Prototypes.ProtoId<Content.Shared.Tag.TagPrototype> PlowTag = "VehiclePlow";
@@ -98,7 +102,13 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     public static bool CollisionDebugEnabled { get; set; }
     public static bool MovementDebugEnabled { get; set; }
 
+    private readonly HashSet<EntityUid> _intersecting = new();
+    private readonly HashSet<EntityUid> _pushBlockedIntersecting = new();
+    private readonly HashSet<EntityUid> _pushTileIntersecting = new();
+    private readonly List<EntityUid>[] _hitsBuffers = { new(), new(), new() };
+    private int _hitsDepth;
     private readonly Dictionary<EntityUid, TimeSpan> _lastMobCollision = new();
+    private readonly DamageSpecifier _mobCollisionDamage = new() { DamageDict = { [CollisionDamageType] = MobCollisionDamage } };
     private readonly Dictionary<EntityUid, TimeSpan> _nextImmobilePopupAt = new();
     private readonly HashSet<EntityUid> _immobileAnnounced = new();
     private static readonly TimeSpan ImmobilePopupCooldown = TimeSpan.FromSeconds(4);
@@ -108,6 +118,9 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
     private readonly Dictionary<EntityUid, EntityUid> _activeXenoPushers = new();
     private readonly HashSet<EntityUid> _directMoveBlockers = new();
     private readonly HashSet<EntityUid> _pushIgnoredEntities = new();
+    private readonly HashSet<EntityUid> _vehiclePushIgnored = new();
+    private readonly HashSet<EntityUid> _bypassInitialBlockers = new();
+    private readonly HashSet<EntityUid> _bypassSampleBlockers = new();
 
     private enum VehicleCollisionClass : byte
     {
@@ -231,6 +244,7 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
 
         var coords = transform.WithEntityId(xform.Coordinates, grid);
         var tile = map.TileIndicesFor(grid, gridComp, coords);
+        var preserveFallingMotion = ShouldPreserveVehicleZFallMotion(uid);
 
         ent.Comp.SyncedGrid = grid;
         ent.Comp.CurrentTile = tile;
@@ -239,19 +253,32 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
             ? new Vector2(tile.X + 0.5f, tile.Y + 0.5f)
             : coords.Position;
         ent.Comp.TargetPosition = ent.Comp.Position;
-        ent.Comp.CurrentSpeed = 0f;
+        if (!preserveFallingMotion)
+            ent.Comp.CurrentSpeed = 0f;
+
         ent.Comp.PushDirection = Vector2i.Zero;
-        ent.Comp.NextPushTime = TimeSpan.Zero;
-        ent.Comp.NextTurnTime = TimeSpan.Zero;
-        ent.Comp.InPlaceTurnBlockUntil = TimeSpan.Zero;
+        if (!preserveFallingMotion)
+        {
+            ent.Comp.NextPushTime = TimeSpan.Zero;
+            ent.Comp.NextTurnTime = TimeSpan.Zero;
+            ent.Comp.InPlaceTurnBlockUntil = TimeSpan.Zero;
+        }
+
         ent.Comp.IsCommittedToMove = false;
         ent.Comp.IsPushMove = false;
-        ent.Comp.IsMoving = false;
+        ent.Comp.IsMoving = preserveFallingMotion && MathF.Abs(ent.Comp.CurrentSpeed) > MinVehicleSpeed;
         _hardState[uid] = true;
-        _movementAccumulator[uid] = 0f;
+        if (!preserveFallingMotion)
+            _movementAccumulator[uid] = 0f;
 
         Dirty(uid, ent.Comp);
         return true;
+    }
+
+    private bool ShouldPreserveVehicleZFallMotion(EntityUid uid)
+    {
+        return HasComp<CMUVehicleZTraversalComponent>(uid) &&
+               HasComp<CMUZFallingComponent>(uid);
     }
 
     private void OnMoverCanRun(Entity<GridVehicleMoverComponent> ent, ref VehicleCanRunEvent args)
@@ -362,7 +389,16 @@ public sealed partial class GridVehicleMoverSystem : EntitySystem
                 if (currentXform.GridUid is not { } currentGrid || !gridQ.TryComp(currentGrid, out var currentGridComp))
                     break;
 
-                UpdateMovement(uid, mover, vehicle, currentGrid, currentGridComp, inputDir, pushing, MovementFixedStep);
+                if (TryComp(uid, out CMUVehicleZTraversalComponent? zTraversal) &&
+                    HasComp<CMUZFallingComponent>(uid))
+                {
+                    UpdateFallingMovement(uid, mover, currentGrid, currentGridComp, zTraversal, MovementFixedStep);
+                }
+                else
+                {
+                    UpdateMovement(uid, mover, vehicle, currentGrid, currentGridComp, inputDir, pushing, MovementFixedStep);
+                }
+
                 accumulator -= MovementFixedStep;
                 steps++;
             }

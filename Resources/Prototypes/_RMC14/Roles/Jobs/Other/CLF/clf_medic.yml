@@ -15,7 +15,7 @@
     components:
     - type: Skills
       skills:
-        RMCSkillFirearms: 2
+        RMCSkillFirearms: 1
         RMCSkillFireman: 1
         RMCSkillMedical: 2
         RMCSkillSurgery: 2
@@ -25,7 +25,15 @@
     - type: NpcFactionMember
       factions:
       - CLF
-    - type: CLFMember
+    - type: Language
+      spokenLanguages:
+      - Japanese
+      - English
+      understoodLanguages:
+      - Japanese
+      - English
+      currentLanguage: Japanese
+      defaultLanguage: Japanese
     - type: JobPrefix
       prefix: rmc-job-prefix-clf-medic
   hidden: true

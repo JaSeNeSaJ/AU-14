@@ -15,6 +15,7 @@ using Content.Shared.Effects;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Throwing;
 using Content.Shared.Humanoid;
+using Content.Shared.Whitelist;
 using Content.Shared.Wires;
 using Robust.Shared.Physics.Components;
 using Robust.Shared.Player;
@@ -33,6 +34,7 @@ namespace Content.Server.Damage.Systems
         [Dependency] private RMCReagentSystem _reagent = default!;
         [Dependency] private SharedCameraRecoilSystem _sharedCameraRecoil = default!;
         [Dependency] private SharedColorFlashEffectSystem _color = default!;
+        [Dependency] private EntityWhitelistSystem _whitelist = default!;
 
         public override void Initialize()
         {
@@ -46,8 +48,23 @@ namespace Content.Server.Damage.Systems
             if (TerminatingOrDeleted(args.Target))
                 return;
 
+            if (TryComp<DamageOtherBlacklistComponent>(uid, out var blacklist)
+                && _whitelist.IsValid(blacklist.Blacklist, args.Target))
+                return;
+
             var damage = GetThrownHitDamage(uid, args.Target, component.Damage);
-            var dmg = _damageable.TryChangeDamage(args.Target, damage * _damageable.UniversalThrownDamageModifier, component.IgnoreResistances, origin: args.Component.Thrower, tool: uid);
+            var modified = damage * _damageable.UniversalThrownDamageModifier;
+            var impact = DamageImpact.ForThrown(modified);
+            if (TryComp<DamageImpactProfileComponent>(uid, out var profile))
+                impact = profile.GetThrownImpact(impact);
+
+            var dmg = _damageable.TryChangeDamage(
+                args.Target,
+                modified,
+                component.IgnoreResistances,
+                origin: args.Component.Thrower,
+                tool: uid,
+                impact: impact);
 
             // Log damage only for mobs. Useful for when people throw spears at each other, but also avoids log-spam when explosions send glass shards flying.
             if (dmg != null && HasComp<MobStateComponent>(args.Target))

@@ -465,10 +465,11 @@ public abstract partial class SharedWeaponMountSystem : EntitySystem
 
     private void OnInteractHand(Entity<WeaponMountComponent> ent, ref InteractHandEvent args)
     {
-        if (!_combatMode.IsInCombatMode(args.User))
-            return;
+        if (_combatMode.IsInCombatMode(args.User) && TryComp(ent, out FoldableComponent? foldable) && !foldable.IsFolded)
+            args.Handled = true;
 
-        args.Handled = true;
+        if (HasComp<XenoComponent>(args.User))
+            args.Handled = true;
     }
 
     private void OnStrapAttempt(Entity<WeaponMountComponent> ent, ref StrapAttemptEvent args)
@@ -655,7 +656,7 @@ public abstract partial class SharedWeaponMountSystem : EntitySystem
 
         hasNearbyMounts = false;
 
-        if (checking.TryGetComponent(out WeaponMountComponent? mountComp, _componentFactory))
+        if (checking.TryComp(out WeaponMountComponent? mountComp, _componentFactory))
         {
             foreach (var mount in mounts)
             {

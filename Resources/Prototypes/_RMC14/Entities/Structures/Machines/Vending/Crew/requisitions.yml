@@ -242,6 +242,20 @@
         amount: 1
       - id: RMCPouchShotgunLarge
         amount: 1
+    - name: Medical Supplies
+      entries:
+      - id: CMUPlainTraumaDressing10
+        amount: 16
+      - id: CMUCoagulantPowder
+        amount: 12
+      - id: CMUBurnGel
+        amount: 12
+      - id: CMBloodPackFull
+        name: blood bag (O-)
+        amount: 16
+      - id: CMBloodPack
+        name: empty blood pack
+        amount: 8
     - name: Essential Devices
       entries:
       - id: RMCMotionDetector
@@ -258,8 +272,8 @@
         amount: 1
       - id: RMCSentryLaptop
         amount: 4
-      #- id: Spare PDT/L Battle Buddy Kit
-      #  amount: 4
+      - id: CMSparePDTLBattleBuddyKit
+        amount: 4
     - name: Flare and Light
       entries:
       - id: RMCFlashlight # Combat Flashlight
@@ -276,8 +290,8 @@
         amount: 10
       - id: RMCScabbardMacheteFilled
         amount: 6
-      #- id: MB-6 Folding Barricades (x3)
-      #   amount: 3
+      - id: CMFoldingBarricadesMB6x3
+        amount: 3
       - id: RMCWeldingGoggles
         amount: 3
       - id: CMFireExtinguisherPortable

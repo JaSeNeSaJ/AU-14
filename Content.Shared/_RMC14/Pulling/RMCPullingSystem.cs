@@ -2,6 +2,7 @@ using System.Numerics;
 using Content.Shared._RMC14.Fireman;
 using Content.Shared._RMC14.Weapons.Melee;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Parasite;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Buckle.Components;
@@ -40,6 +41,7 @@ public sealed partial class RMCPullingSystem : EntitySystem
     [Dependency] private SharedMeleeWeaponSystem _melee = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
+    [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private SharedXenoParasiteSystem _parasite = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private PullingSystem _pulling = default!;
@@ -63,6 +65,7 @@ public sealed partial class RMCPullingSystem : EntitySystem
     private const string PullEffect = "CMEffectGrab";
 
     private EntityQuery<FiremanCarriableComponent> _firemanQuery;
+    private readonly List<(EntityUid Pulled, EntityUid Puller)> _facePullerBuffer = new();
 
     public override void Initialize()
     {
@@ -226,6 +229,9 @@ public sealed partial class RMCPullingSystem : EntitySystem
         }
 
         if (!TryComp<XenoParasiteComponent>(target, out var paraComp))
+            return;
+
+        if (!HasComp<InfectableComponent>(user))
             return;
 
         Entity<XenoParasiteComponent> comp = (target, paraComp);
@@ -517,12 +523,21 @@ public sealed partial class RMCPullingSystem : EntitySystem
         if (HasComp<IgnoreBlockPullingDeadComponent>(pulled))
             return true;
 
+        if (CanPullDeadAlly(puller, pulled))
+            return true;
+
         if (TryComp<VictimInfectedComponent>(pulled, out var infect) &&
             TryComp<AllowPullWhileDeadAndInfectedComponent>(pulled, out var deadPull) &&
             infect.CurrentStage > deadPull.InfectionStageThreshold)
             return true;
 
         return false;
+    }
+
+    private bool CanPullDeadAlly(EntityUid puller, EntityUid pulled)
+    {
+        return _hive.GetHive(puller) is { } pullerHive &&
+               _hive.IsAllyOfHive(pulled, pullerHive.Owner);
     }
 
     public EntityUid? TryRetargetPull(EntityUid user, EntityUid target)
@@ -591,6 +606,7 @@ public sealed partial class RMCPullingSystem : EntitySystem
             RemCompDeferred<SynthStunCancelOnMoveComponent>(uid);
         }
 
+        _facePullerBuffer.Clear();
         var pullableQuery = EntityQueryEnumerator<BeingPulledComponent, PullableComponent>();
         while (pullableQuery.MoveNext(out var uid, out _, out var pullable))
         {
@@ -600,6 +616,19 @@ public sealed partial class RMCPullingSystem : EntitySystem
             var puller = pullable.Puller.Value;
             if (!Exists(puller))
                 continue;
+
+            _facePullerBuffer.Add((uid, puller));
+        }
+
+        foreach (var (uid, puller) in _facePullerBuffer)
+        {
+            if (!HasComp<BeingPulledComponent>(uid) ||
+                !TryComp<PullableComponent>(uid, out var pullable) ||
+                pullable.Puller != puller ||
+                !Exists(puller))
+            {
+                continue;
+            }
 
             if (_firemanQuery.TryComp(uid, out var fireman) && fireman.BeingCarried)
                 continue;
@@ -616,5 +645,7 @@ public sealed partial class RMCPullingSystem : EntitySystem
             var angle = (pulledCoords - pullerCoords).ToWorldAngle().GetCardinalDir().ToAngle();
             _rotateTo.TryFaceAngle(puller, angle);
         }
+
+        _facePullerBuffer.Clear();
     }
 }

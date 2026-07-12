@@ -1,10 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Numerics;
+using Content.Shared._RMC14.Barricade;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Chemistry.Reagent;
 using Content.Shared._RMC14.Tackle;
 using Content.Shared._RMC14.Weapons.Melee;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared.ActionBlocker;
 using Content.Shared.Actions.Events;
 using Content.Shared.Administration.Components;
@@ -15,6 +17,7 @@ using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.CombatMode;
 using Content.Shared.Damage;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.FixedPoint;
@@ -32,6 +35,7 @@ using Content.Shared.Mobs.Systems;
 using Content.Shared.Physics;
 using Content.Shared.Popups;
 using Content.Shared.StatusEffect;
+using Content.Shared.Storage.EntitySystems;
 using Content.Shared.Weapons.Melee.Components;
 using Content.Shared.Weapons.Melee.Events;
 using Content.Shared.Weapons.Ranged.Components;
@@ -43,11 +47,13 @@ using Robust.Shared.Configuration;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Physics;
+using Robust.Shared.Physics.Components;
 using Robust.Shared.Physics.Systems;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
+using Robust.Shared.Utility;
 using ItemToggleMeleeWeaponComponent = Content.Shared.Item.ItemToggle.Components.ItemToggleMeleeWeaponComponent;
 
 namespace Content.Shared.Weapons.Melee;
@@ -77,7 +83,9 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
 
     // RMC14
     [Dependency] private IConfigurationManager _configuration = default!;
+    [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private SharedRMCMeleeWeaponSystem _rmcMelee = default!;
+    [Dependency] private SharedEntityStorageSystem _storage = default!;
     [Dependency] private RMCReagentSystem _reagent = default!;
 
     private static readonly ProtoId<ReagentPrototype> YautjaBloodReagent = "CMUYautjaBlood";
@@ -97,6 +105,11 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
     /// </summary>
     public const float GracePeriod = 0.05f;
 
+    // RMC14
+    private EntityQuery<MobStateComponent> _mobStateQuery;
+    private EntityQuery<PhysicsComponent> _physicsQuery;
+    private EntityQuery<DirectionalAttackBlockerComponent> _directionalAttackBlockerQuery;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -104,6 +117,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         _configuration.OnValueChanged(RMCCVars.CMMaxHeavyAttackTargets, v => MaxTargets = v, true);
 
         SubscribeLocalEvent<MeleeWeaponComponent, HandSelectedEvent>(OnMeleeSelected);
+        SubscribeLocalEvent<MeleeWeaponComponent, HandDeselectedEvent>(OnMeleeDeselected); // RMC14
         SubscribeLocalEvent<MeleeWeaponComponent, ShotAttemptedEvent>(OnMeleeShotAttempted);
         SubscribeLocalEvent<MeleeWeaponComponent, GunShotEvent>(OnMeleeShot);
         SubscribeLocalEvent<BonusMeleeDamageComponent, GetMeleeDamageEvent>(OnGetBonusMeleeDamage);
@@ -116,6 +130,10 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         SubscribeAllEvent<LightAttackEvent>(OnLightAttack);
         SubscribeAllEvent<DisarmAttackEvent>(OnDisarmAttack);
         SubscribeAllEvent<StopAttackEvent>(OnStopAttack);
+
+        _mobStateQuery = GetEntityQuery<MobStateComponent>();
+        _physicsQuery = GetEntityQuery<PhysicsComponent>();
+        _directionalAttackBlockerQuery = GetEntityQuery<DirectionalAttackBlockerComponent>();
 
 #if DEBUG
         SubscribeLocalEvent<MeleeWeaponComponent,
@@ -177,11 +195,37 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                 minimum = weapon.NextAttack;
         }
 
+        // RMC14, Prevent holstering a melee weapon and swapping to unarmed attacks from resetting melee delay.
+        if (uid != args.User &&
+            TryComp(args.User, out MeleeWeaponComponent? userMelee) &&
+            minimum < userMelee.NextAttack)
+        {
+            minimum = userMelee.NextAttack;
+        }
+
+        // RMC14
+        if (TryComp(args.User, out RMCMeleeUserCooldownComponent? userCooldown) &&
+            minimum < userCooldown.NextAttack)
+        {
+            minimum = userCooldown.NextAttack;
+        }
+
         if (minimum < component.NextAttack)
             return;
 
         component.NextAttack = minimum;
         DirtyField(uid, component, nameof(MeleeWeaponComponent.NextAttack));
+    }
+
+    // RMC14
+    private void OnMeleeDeselected(Entity<MeleeWeaponComponent> weapon, ref HandDeselectedEvent args)
+    {
+        var userCooldown = EnsureComp<RMCMeleeUserCooldownComponent>(args.User);
+        if (userCooldown.NextAttack < weapon.Comp.NextAttack)
+        {
+            userCooldown.NextAttack = weapon.Comp.NextAttack;
+            DirtyField(args.User, userCooldown, nameof(RMCMeleeUserCooldownComponent.NextAttack));
+        }
     }
 
     private void OnGetBonusMeleeDamage(EntityUid uid, BonusMeleeDamageComponent component, ref GetMeleeDamageEvent args)
@@ -399,6 +443,13 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
     {
         var curTime = Timing.CurTime;
 
+        // RMC14
+        if (TryComp(user, out RMCMeleeUserCooldownComponent? globalCooldown) &&
+            globalCooldown.NextAttack > curTime)
+        {
+            return false;
+        }
+
         if (weapon.NextAttack > curTime)
             return false;
 
@@ -463,6 +514,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         }
 
         DirtyField(weaponUid, weapon, nameof(MeleeWeaponComponent.NextAttack));
+        SyncUserMeleeCooldown(user, weaponUid, weapon.NextAttack);
 
         // Do this AFTER attack so it doesn't spam every tick
         var ev = new AttemptMeleeEvent(user);
@@ -517,6 +569,26 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         weapon.Attacking = true;
         DirtyField(weaponUid, weapon, nameof(MeleeWeaponComponent.Attacking));
         return true;
+    }
+
+    private void SyncUserMeleeCooldown(EntityUid user, EntityUid weaponUid, TimeSpan nextAttack)
+    {
+        var userCooldown = EnsureComp<RMCMeleeUserCooldownComponent>(user);
+        if (userCooldown.NextAttack < nextAttack)
+        {
+            userCooldown.NextAttack = nextAttack;
+            DirtyField(user, userCooldown, nameof(RMCMeleeUserCooldownComponent.NextAttack));
+        }
+
+        if (weaponUid == user ||
+            !TryComp(user, out MeleeWeaponComponent? userMelee) ||
+            userMelee.NextAttack >= nextAttack)
+        {
+            return;
+        }
+
+        userMelee.NextAttack = nextAttack;
+        DirtyField(user, userMelee, nameof(MeleeWeaponComponent.NextAttack));
     }
 
     protected abstract bool InRange(EntityUid user, EntityUid target, float range, ICommonSession? session);
@@ -585,7 +657,13 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         RaiseLocalEvent(target.Value, attackedEvent);
 
         var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
-        var damageResult = Damageable.TryChangeDamage(target, modifiedDamage, origin:user, ignoreResistances:resistanceBypass, tool: meleeUid);
+        var damageResult = Damageable.TryChangeDamage(
+            target,
+            modifiedDamage,
+            origin: user,
+            ignoreResistances: resistanceBypass,
+            tool: meleeUid,
+            impact: GetMeleeImpact(meleeUid, hitEvent, modifiedDamage, heavy: false));
 
         if (damageResult is {Empty: false})
         {
@@ -649,6 +727,19 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
 
     protected abstract void DoDamageEffect(List<EntityUid> targets, EntityUid? user,  TransformComponent targetXform);
 
+    private DamageImpact GetMeleeImpact(EntityUid weapon, MeleeHitEvent hitEvent, DamageSpecifier damage, bool heavy)
+    {
+        var impact = DamageImpact.ForMelee(damage, heavy);
+
+        if (TryComp<DamageImpactProfileComponent>(weapon, out var profile))
+            impact = profile.GetMeleeImpact(impact, heavy);
+
+        if (hitEvent.Impact.IsSpecified)
+            impact = hitEvent.Impact.FillUnspecifiedFrom(impact);
+
+        return impact;
+    }
+
     protected Color GetDamageEffectColor(EntityUid target)
     {
         if (TryComp(target, out BloodstreamComponent? bloodstream) &&
@@ -667,7 +758,10 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         if (!TryComp(user, out TransformComponent? userXform))
             return false;
 
-        var targetMap = TransformSystem.ToMapCoordinates(GetCoordinates(ev.Coordinates));
+        if (!TryGetAttackCoordinates(ev.Coordinates, out var targetCoordinates))
+            return false;
+
+        var targetMap = TransformSystem.ToMapCoordinates(targetCoordinates);
 
         if (targetMap.MapId != userXform.MapID)
             return false;
@@ -677,7 +771,7 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         var distance = Math.Min(component.Range, direction.Length());
 
         var damage = GetDamage(meleeUid, user, component);
-        var entities = GetEntityList(ev.Entities);
+        var entities = GetValidAttackEntities(ev.Entities);
 
         if (entities.Count == 0)
         {
@@ -778,11 +872,16 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
                 continue;
             }
 
-            var attackedEvent = new AttackedEvent(meleeUid, user, GetCoordinates(ev.Coordinates));
+            var attackedEvent = new AttackedEvent(meleeUid, user, targetCoordinates);
             RaiseLocalEvent(entity, attackedEvent);
             var modifiedDamage = DamageSpecifier.ApplyModifierSets(damage + hitEvent.BonusDamage + attackedEvent.BonusDamage, hitEvent.ModifiersList);
 
-            var damageResult = Damageable.TryChangeDamage(entity, modifiedDamage, origin:user, tool: meleeUid);
+            var damageResult = Damageable.TryChangeDamage(
+                entity,
+                modifiedDamage,
+                origin: user,
+                tool: meleeUid,
+                impact: GetMeleeImpact(meleeUid, hitEvent, modifiedDamage, heavy: true));
 
             if (damageResult != null && damageResult.GetTotal() > FixedPoint2.Zero)
             {
@@ -823,6 +922,43 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
         return true;
     }
 
+    private bool TryGetAttackCoordinates(NetCoordinates netCoordinates, out EntityCoordinates coordinates)
+    {
+        coordinates = default;
+
+        if (!float.IsFinite(netCoordinates.Position.X) ||
+            !float.IsFinite(netCoordinates.Position.Y) ||
+            !TryGetEntity(netCoordinates.NetEntity, out var entity) ||
+            entity == null ||
+            TerminatingOrDeleted(entity.Value) ||
+            !HasComp<TransformComponent>(entity.Value))
+        {
+            return false;
+        }
+
+        coordinates = new EntityCoordinates(entity.Value, netCoordinates.Position);
+        return true;
+    }
+
+    private List<EntityUid> GetValidAttackEntities(List<NetEntity> netEntities)
+    {
+        var entities = new List<EntityUid>(netEntities.Count);
+
+        foreach (var netEntity in netEntities)
+        {
+            if (!TryGetEntity(netEntity, out var entity) ||
+                entity == null ||
+                TerminatingOrDeleted(entity.Value))
+            {
+                continue;
+            }
+
+            entities.Add(entity.Value);
+        }
+
+        return entities;
+    }
+
     public HashSet<EntityUid> ArcRayCast(Vector2 position, Angle angle, Angle arcWidth, float range, MapId mapId, EntityUid ignore)
     {
         // TODO: This is pretty sucky.
@@ -847,8 +983,37 @@ public abstract partial class SharedMeleeWeaponSystem : EntitySystem
 
             if (res.Count != 0)
             {
+                // RMC14 start
+                // Ignore dead mobs, mobs from the same hive, and open entity containers (lockers, crates, etc).
+                var filteredResults = res.Where(x => !MobState.IsDead(x.HitEntity))
+                    .Where(x => !(_mobStateQuery.HasComp(x.HitEntity) && _hive.FromSameHive(ignore, x.HitEntity)))
+                    .Where(x => !_storage.IsOpen(x.HitEntity))
+                    .ToList();
+
+                if (filteredResults.Count <= 0)
+                    continue;
+
+                // We prioritize non-dead mobs, but we also have to make sure we don't hit past barricades or entities
+                // that block interactions over them, such as walls, windows, windoors, closed airlocks, etc.
+                // In short, we should hit the closest entity, UNLESS we can hit a mob, in which case we hit the mob.
+                // To accomplish this, we find the first object that either is a mob or would block our attack.
+                var firstPriorityResult = filteredResults.FirstOrNull(x =>
+                    _mobStateQuery.HasComp(x.HitEntity) || // mobs
+                    ((_physicsQuery.CompOrNull(x.HitEntity)?.CollisionLayer ?? 0) &
+                        (int) CollisionGroup.InteractImpassable) != 0 || // walls, windows, etc
+                    _directionalAttackBlockerQuery.HasComp(x.HitEntity)); // barricades
+
+                // If the found object is a mob, we target it. Otherwise we target the first object we found.
+                var target = filteredResults.First();
+                if (firstPriorityResult is { } result &&
+                    _mobStateQuery.HasComp(result.HitEntity))
+                {
+                    target = result;
+                }
+                // RMC14 end
+
                 // If there's exact distance overlap, we simply have to deal with all overlapping objects to avoid selecting randomly.
-                var resChecked = res.Where(x => x.Distance.Equals(res[0].Distance));
+                var resChecked = filteredResults.Where(x => x.Distance.Equals(target.Distance));
                 foreach (var r in resChecked)
                 {
                     if (Interaction.InRangeUnobstructed(ignore, r.HitEntity, range + 0.1f, overlapCheck: false))

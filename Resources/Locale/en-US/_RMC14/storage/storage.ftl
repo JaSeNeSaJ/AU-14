@@ -1,6 +1,7 @@
 cm-storage-unskilled = It must have some kind of ID lock...
 rmc-storage-limit-cant-fit = That doesn't fit in there!
 rmc-storage-limit-one-gun = That is already holding a gun!
+rmc-storage-limit-two-guns = That is already holding two guns!
 rmc-storage-limit-two-mags = That is already holding two mags!
 rmc-storage-limit-max-mags = You can't fit more magazines in the belt!
 rmc-storage-limit-max-loaders = You can't fit more speedloaders in the belt!
@@ -12,6 +13,8 @@ rmc-storage-limit-one-command-tablet = That already holds a tablet!
 rmc-storage-limit-accessories = You can't fit any more accessories in the helmet!
 rmc-storage-limit-grenades = You can't fit any more grenades!
 rmc-storage-limit-not-ziptie-box = That slot is reserved for a ziptie box!
+rmc-storage-limit-one-gasmask = That is already holding a gas mask!
+rmc-storage-limit-max-gasmask-filters = You can't fit more filters in there!
 rmc-storage-nothing-left = {CAPITALIZE(THE($storage))} is empty. Nothing to grab.
 rmc-storage-limit-generic = The storage cannot hold more of that item!
 

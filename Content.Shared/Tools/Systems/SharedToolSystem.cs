@@ -19,7 +19,6 @@ namespace Content.Shared.Tools.Systems;
 
 public abstract partial class SharedToolSystem : EntitySystem
 {
-    [Dependency] private   IMapManager _mapManager = default!;
     [Dependency] private   IPrototypeManager _protoMan = default!;
     [Dependency] protected ISharedAdminLogManager AdminLogger = default!;
     [Dependency] private   ITileDefinitionManager _tileDefManager = default!;
@@ -55,7 +54,11 @@ public abstract partial class SharedToolSystem : EntitySystem
         ev.DoAfter = args.DoAfter;
 
         if (args.OriginalTarget != null)
-            RaiseLocalEvent(GetEntity(args.OriginalTarget.Value), (object) ev);
+        {
+            var target = GetEntity(args.OriginalTarget.Value);
+            RaiseLocalEvent(target, new RMCToolDoAfterEvent(args.User, uid, target, args.DoAfter.Id, ev, args.Cancelled));
+            RaiseLocalEvent(target, (object) ev);
+        }
         else
             RaiseLocalEvent((object) ev);
     }
@@ -174,10 +177,10 @@ public abstract partial class SharedToolSystem : EntitySystem
             return false;
 
         // RMC14
-        var ev = new RMCToolUseEvent(user, delay);
+        var ev = new RMCToolUseEvent(user, target, delay);
 
         RaiseLocalEvent(tool, ref ev);
-        if(ev.Handled)
+        if (ev.Handled)
             delay = ev.Delay;
 
         var toolEvent = new ToolDoAfterEvent(fuel, doAfterEv, GetNetEntity(target)) { Predicted = predicted };

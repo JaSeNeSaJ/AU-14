@@ -1,9 +1,8 @@
-using System.Collections.Immutable;
-using Content.Shared._CMU14.Medical;
-using Content.Shared._CMU14.Medical.Bones;
-using Content.Shared._CMU14.Medical.Wounds;
+using Content.Shared._CMU14.Medical.Core;
+using Content.Shared._CMU14.Medical.Anatomy.Bones;
+using Content.Shared._CMU14.Medical.Diagnostics.Examine;
+using Content.Shared._CMU14.Medical.Injuries.Wounds;
 using Content.Shared._RMC14.Medical.Wounds;
-using Content.Shared.Body.Systems;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Prototypes;
 using Content.Shared.Examine;
@@ -17,12 +16,21 @@ namespace Content.Shared._RMC14.HealthExaminable;
 public sealed partial class RMCHealthExaminableSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _cfg = default!;
-    [Dependency] private SharedBodySystem _body = default!;
+    [Dependency] private CMUMedicalBodyIndexSystem _medicalIndex = default!;
+    [Dependency] private CMUMedicalExamineProjectionSystem _woundProjection = default!;
 
     private static readonly ProtoId<DamageGroupPrototype> BruteGroup = "Brute";
     private static readonly ProtoId<DamageGroupPrototype> BurnGroup = "Burn";
 
-    private readonly ImmutableArray<FixedPoint2> _thresholds = ImmutableArray.Create<FixedPoint2>(25, 50, 75);
+    private static readonly FixedPoint2[] Thresholds = new FixedPoint2[]
+    {
+        FixedPoint2.New(25),
+        FixedPoint2.New(50),
+        FixedPoint2.New(75),
+        FixedPoint2.New(100),
+        FixedPoint2.New(200),
+        FixedPoint2.New(300),
+    };
 
     public override void Initialize()
     {
@@ -31,6 +39,9 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
 
     private void OnExamined(Entity<RMCHealthExaminableComponent> ent, ref ExaminedEvent args)
     {
+        if (ent.Comp.SpeciesType == null)
+            return;
+
         if (!TryComp(ent, out DamageableComponent? damageable))
             return;
 
@@ -48,13 +59,13 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
                 if (!damageable.DamagePerGroup.TryGetValue(group, out var groupDamage))
                     continue;
 
-                for (var i = _thresholds.Length - 1; i >= 0; i--)
+                for (var i = Thresholds.Length - 1; i >= 0; i--)
                 {
-                    var threshold = _thresholds[i];
+                    var threshold = Thresholds[i];
                     if (groupDamage < threshold)
                         continue;
 
-                    var id = $"rmc-health-examinable-{group}-{threshold.Int()}";
+                    var id = $"rmc-health-examinable-{ent.Comp.SpeciesType}-{group}-{threshold.Int()}";
                     if (!Loc.TryGetString(id, out var msg, ("target", Identity.Entity(ent, EntityManager, args.Examiner))))
                         continue;
 
@@ -74,27 +85,19 @@ public sealed partial class RMCHealthExaminableSystem : EntitySystem
         var showWounds = _cfg.GetCVar(CMUMedicalCCVars.WoundsEnabled);
         var brute = false;
         var burn = false;
+        if (showWounds && TryComp<CMUMedicalExamineProjectionComponent>(body, out var projection))
+        {
+            brute = _woundProjection.GetRemainingDamage(projection, WoundType.Brute) > FixedPoint2.Zero;
+            burn = _woundProjection.GetRemainingDamage(projection, WoundType.Burn) > FixedPoint2.Zero;
+        }
 
-        foreach (var (partUid, _) in _body.GetBodyChildren(body))
+        foreach (var (partUid, _) in _medicalIndex.GetBodyParts(body))
         {
             if (showBones
                 && TryComp<FractureComponent>(partUid, out var fracture)
                 && fracture.Severity != FractureSeverity.None)
             {
                 brute = true;
-            }
-
-            if (showWounds
-                && TryComp<BodyPartWoundComponent>(partUid, out var wounds)
-                && wounds.Wounds.Count > 0)
-            {
-                foreach (var wound in wounds.Wounds)
-                {
-                    if (wound.Type == WoundType.Burn)
-                        burn = true;
-                    else
-                        brute = true;
-                }
             }
 
             if (showWounds && HasComp<CMUEscharComponent>(partUid))

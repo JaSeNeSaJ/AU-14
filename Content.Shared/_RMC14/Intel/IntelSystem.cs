@@ -1,7 +1,9 @@
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using Content.Shared.AU14.Objectives;
 using Content.Shared._RMC14.Areas;
 using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Chat;
 using Content.Shared._RMC14.Dropship;
@@ -10,7 +12,9 @@ using Content.Shared._RMC14.Marines.Announce;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Power;
+using Content.Shared._RMC14.Weapons.Ranged.IFF;
 using Content.Shared._RMC14.Xenonids;
+using Content.Shared.Access.Systems;
 using Content.Shared.Actions;
 using Content.Shared.DoAfter;
 using Content.Shared.Examine;
@@ -36,6 +40,8 @@ using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using static Content.Shared._RMC14.Intel.IntelSpawnerType;
+using Robust.Shared.Map;
+using Content.Shared._RMC14.Rules;
 
 namespace Content.Shared._RMC14.Intel;
 
@@ -43,12 +49,13 @@ public sealed partial class IntelSystem : EntitySystem
 {
     [Dependency] private SharedActionsSystem _actions = default!;
     [Dependency] private AreaSystem _area = default!;
-    [Dependency] private ARESSystem _ares = default!;
+    [Dependency] private ARESCoreSystem _aresCore = default!;
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private SharedDoAfterSystem _doAfter = default!;
     [Dependency] private EntityLookupSystem _entityLookup = default!;
     [Dependency] private SharedEntityStorageSystem _entityStorage = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
     [Dependency] private SharedMarineAnnounceSystem _marineAnnounce = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private NameModifierSystem _nameModifier = default!;
@@ -89,42 +96,66 @@ public sealed partial class IntelSystem : EntitySystem
 
     private readonly Dictionary<IntelSpawnerType, float> _paperScrapChances = new()
     {
-        [Close] = 20, [Medium] = 5, [Far] = 2, [Science] = 10,
+        [Close] = 20,
+        [Medium] = 5,
+        [Far] = 2,
+        [Science] = 10,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _progressReportChances = new()
     {
-        [Close] = 10, [Medium] = 55, [Far] = 3, [Science] = 10,
+        [Close] = 10,
+        [Medium] = 55,
+        [Far] = 3,
+        [Science] = 10,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _folderChances = new()
     {
-        [Close] = 20, [Medium] = 5, [Far] = 2, [Science] = 10,
+        [Close] = 20,
+        [Medium] = 5,
+        [Far] = 2,
+        [Science] = 10,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _technicalManualChances = new()
     {
-        [Close] = 20, [Medium] = 40, [Far] = 20, [Science] = 20,
+        [Close] = 20,
+        [Medium] = 40,
+        [Far] = 20,
+        [Science] = 20,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _diskChances = new()
     {
-        [Close] = 20, [Medium] = 40, [Far] = 20, [Science] = 20,
+        [Close] = 20,
+        [Medium] = 40,
+        [Far] = 20,
+        [Science] = 20,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _experimentalDeviceChances = new()
     {
-        [Close] = 10, [Medium] = 20, [Far] = 40, [Science] = 30,
+        [Close] = 10,
+        [Medium] = 20,
+        [Far] = 40,
+        [Science] = 30,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _researchPaperChances = new()
     {
-        [Close] = 25, [Medium] = 20, [Far] = 5, [Science] = 50,
+        [Close] = 25,
+        [Medium] = 20,
+        [Far] = 5,
+        [Science] = 50,
     };
 
     private readonly Dictionary<IntelSpawnerType, float> _vialBoxChances = new()
     {
-        [Close] = 15, [Medium] = 30, [Far] = 5, [Science] = 50,
+        [Close] = 15,
+        [Medium] = 30,
+        [Far] = 5,
+        [Science] = 50,
     };
 
     private int _paperScraps;
@@ -147,6 +178,8 @@ public sealed partial class IntelSystem : EntitySystem
     private readonly HashSet<Entity<IntelContainerComponent>> _nearby = new();
 
     private EntityQuery<IntelReadObjectiveComponent> _readObjectiveQuery;
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabIntelLogs";
 
     public override void Initialize()
     {
@@ -503,6 +536,10 @@ public sealed partial class IntelSystem : EntitySystem
 
     private void OnConsoleInteractHand(Entity<IntelConsoleComponent> ent, ref InteractHandEvent args)
     {
+        // CMU14 - claimable enemy intel consoles handle this interaction first.
+        if (args.Handled)
+            return;
+
         var msg = "You start typing in intel into the computer...";
         if (!TryComp(args.User, out IntelKnowledgeComponent? knowledge) ||
             !knowledge.Read.TryFirstOrNull(out var read))
@@ -547,7 +584,17 @@ public sealed partial class IntelSystem : EntitySystem
             if (args.Amount == 0)
                 _popup.PopupEntity("...and you have nothing new to add...", ent, args.User, PopupType.Medium);
             else
+            {
                 _popup.PopupEntity($"...and done! You uploaded {args.Amount} entries!", ent, args.User, PopupType.Medium);
+            }
+
+            if (_idCard.TryFindIdCard(args.User, out var idCard) && TryComp(idCard, out ItemIFFComponent? idCardIFF))
+            {
+                foreach (var faction in idCardIFF.Factions)
+                {
+                    _aresCore.CreateARESLog(faction, LogCat, (string)$"{Name(args.User)} processed {args.Amount} intel entries");
+                }
+            }
         }
 
         if (!TryComp(args.User, out IntelKnowledgeComponent? knowledge))
@@ -699,7 +746,7 @@ public sealed partial class IntelSystem : EntitySystem
                 _ => (EntProtoId<IntelTechTreeComponent>)($"{(string)TechTreeProto}_{teamKey}")
             };
 
-            var candidateIdStr = (string) candidateProto;
+            var candidateIdStr = (string)candidateProto;
             if (_prototypes.HasIndex(candidateIdStr))
             {
                 protoId = candidateProto;
@@ -1022,7 +1069,10 @@ public sealed partial class IntelSystem : EntitySystem
             tree.Value.Comp.LastAnnounceAt = time + _announceEvery;
             Dirty(tree.Value);
 
-            var ares = _ares.EnsureARES();
+            EntityUid? ares = null;
+            if (_aresCore.TryGetMarineARES(out var aresEnt) && aresEnt != null)
+                ares = aresEnt.Value.Owner;
+
             // Announcements reflect the intel tree's internal FixedPoint2 points only.
             var points = tree.Value.Comp.Tree.Points;
 
@@ -1037,7 +1087,8 @@ public sealed partial class IntelSystem : EntitySystem
                     ? Loc.GetString("rmc-intel-announcement-gain", ("points", points), ("change", change))
                     : Loc.GetString("rmc-intel-announcement", ("points", points));
 
-                _marineAnnounce.AnnounceRadio(ares, announcement, channel);
+                if (ares != null)
+                    _marineAnnounce.AnnounceRadio(ares.Value, announcement, channel);
             }
         }
 
@@ -1241,28 +1292,25 @@ public sealed partial class IntelSystem : EntitySystem
         if (_net.IsClient)
             return fallback;
 
-        var query = EntityQueryEnumerator<Content.Shared.AU14.Objectives.ObjectiveMasterComponent>();
-        while (query.MoveNext(out var uid, out var comp))
+        var factionKey = team.ToLowerInvariant();
+
+        MapId? planetMapId = null;
+        var planetQuery = AllEntityQuery<RMCPlanetComponent>();
+        if (planetQuery.MoveNext(out var mapUid, out _))
+            planetMapId = Transform(mapUid).MapID;
+
+        if (planetMapId == null)
+            return fallback;
+
+        var query = EntityQueryEnumerator<ObjectiveMasterComponent, TransformComponent>();
+        while (query.MoveNext(out var uid, out var comp, out var xform))
         {
-            switch (team.ToLowerInvariant())
-            {
-                case Team.GovFor:
-                    return FixedPoint2.New(comp.CurrentWinPointsGovfor);
-                case Team.OpFor:
-                    return FixedPoint2.New(comp.CurrentWinPointsOpfor);
-                case Team.CLF:
-                    return FixedPoint2.New(comp.CurrentWinPointsClf);
-                default:
-                    // support scientist or other factions
-                    if (team.ToLowerInvariant() == "scientist")
-                        return FixedPoint2.New(comp.CurrentWinPointsScientist);
-                    return fallback;
-            }
+            if (comp.IsActive && xform.MapID == planetMapId)
+                return FixedPoint2.New(comp.GetOrCreateFactionData(factionKey).CurrentWinPoints);
         }
 
         return fallback;
     }
-
 
     public void SetTeamTechTreeOverride(string team, string? protoId)
     {

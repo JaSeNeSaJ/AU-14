@@ -93,7 +93,8 @@ public partial class ChatBox : UIWidget
     private readonly Queue<RepeatedMessage> _primaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _secondaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _legacyRepeatQueue = new();
-    private readonly HashSet<string> _whitelist = ["mono", "scramble", "bolditalic", "bold", "bullet", "color", "font", "head", "italic"];
+    private readonly HashSet<string> _whitelist = ["mono", "scramble", "bolditalic", "bold", "bullet", "cmdlink", "color", "font", "head", "italic", "langicon"];
+    // RMC14
 
     public ChatBox()
     {
@@ -1116,18 +1117,20 @@ public partial class ChatBox : UIWidget
     {
         var style = ChatUserSettings.ResolveStyle(_styles, msg);
         var styleColor = ChatUserSettings.ResolveColor(style);
-        var fontSize = ChatUserSettings.ResolveFontSize(style) ?? ChatUserSettings.DefaultFontSize;
+        var fontSize = ChatUserSettings.ResolveFontSize(style) ??
+                       ChatUserSettings.ResolveMarkupFontSize(msg.WrappedMessage) ??
+                       ChatUserSettings.DefaultFontSize;
         var accentColor = styleColor ?? msg.Display?.AccentColor;
         var messageColor = styleColor ?? msg.MessageColorOverride ?? msg.Display?.AccentColor ?? msg.Channel.TextColor();
         var bodyColor = _colorWholeMessage ? messageColor : StructuredMessageTextColor;
         var formatted = CreateFormattedMessage(msg, messageColor, style);
 
         var cmChat = _entManager.SystemOrNull<CMChatSystem>();
-        if (cmChat?.TryRepetition(repeatQueue, msg.SenderEntity, msg.Message, msg.Channel, msg.RepeatCheckSender) ?? false)
+        if (cmChat?.TryRepetition(repeatQueue, msg.SenderEntity, msg.Message, msg.Channel, msg.RepeatCheckSender, msg.LanguageIcon) ?? false)
             return;
 
         var row = contents.AddMessage(msg, formatted, bodyColor, accentColor, fontSize);
-        cmChat?.TrackRepetition(repeatQueue, row, formatted, msg.SenderEntity, msg.Message, msg.Channel);
+        cmChat?.TrackRepetition(repeatQueue, row, formatted, msg.SenderEntity, msg.Message, msg.Channel, msg.LanguageIcon);
     }
 
     private void AddLegacyLine(ChatMessage msg)
@@ -1136,10 +1139,10 @@ public partial class ChatBox : UIWidget
         var formatted = CreateLegacyFormattedMessage(msg, color);
 
         var cmChat = _entManager.SystemOrNull<CMChatSystem>();
-        if (cmChat?.TryLegacyRepetition(_legacyRepeatQueue, LegacyContents, formatted, msg.SenderEntity, msg.Message, msg.Channel, msg.RepeatCheckSender) ?? false)
+        if (cmChat?.TryLegacyRepetition(_legacyRepeatQueue, LegacyContents, formatted, msg.SenderEntity, msg.Message, msg.Channel, msg.RepeatCheckSender, msg.LanguageIcon) ?? false)
             return;
 
-        cmChat?.TrackLegacyRepetition(_legacyRepeatQueue, LegacyContents, formatted, msg.SenderEntity, msg.Message, msg.Channel);
+        cmChat?.TrackLegacyRepetition(_legacyRepeatQueue, LegacyContents, formatted, msg.SenderEntity, msg.Message, msg.Channel, msg.LanguageIcon);
         LegacyContents.AddMessage(formatted);
     }
 
@@ -1160,7 +1163,8 @@ public partial class ChatBox : UIWidget
 
     private FormattedMessage CreateFormattedMessage(ChatMessage message, Color color, ChatStyleSettings? style = null)
     {
-        var markup = StripDuplicateChannelPrefix(message.WrappedMessage, message);
+        var markup = StripChatActionCommandLink(message.WrappedMessage, message);
+        markup = StripDuplicateChannelPrefix(markup, message);
         markup = _colorWholeMessage
             ? ChatUserSettings.ApplyStyleMarkup(markup, style, ChatUserSettings.DefaultFontSize)
             : ChatUserSettings.ApplyFontMarkup(RemoveOuterColorMarkup(markup), style, ChatUserSettings.DefaultFontSize);
@@ -1174,7 +1178,26 @@ public partial class ChatBox : UIWidget
         if (_colorWholeMessage)
             formatted.Pop();
 
-        return FilterProblematicTags(formatted);
+        return FilterProblematicTags(formatted, allowCommandLinks: false);
+    }
+
+    private static string StripChatActionCommandLink(string markup, ChatMessage message)
+    {
+        if ((!message.GhostFollowEntity.Valid && !message.XenoWatchEntity.Valid) ||
+            !markup.StartsWith("[cmdlink=", StringComparison.OrdinalIgnoreCase))
+        {
+            return markup;
+        }
+
+        var tagEnd = markup.IndexOf("/]", StringComparison.Ordinal);
+        if (tagEnd < 0)
+            return markup;
+
+        var afterTag = tagEnd + 2;
+        if (afterTag < markup.Length && markup[afterTag] == ' ')
+            afterTag++;
+
+        return markup[afterTag..];
     }
 
     private static string RemoveOuterColorMarkup(string markup)
@@ -1196,10 +1219,16 @@ public partial class ChatBox : UIWidget
     {
         var formatted = new FormattedMessage(3);
         formatted.PushColor(color);
+
+        // RMC14
+        if (!string.IsNullOrWhiteSpace(message.LanguageIcon))
+            formatted.AddMarkupOrThrow($"[langicon language=\"{FormattedMessage.EscapeText(message.LanguageIcon)}\"][/langicon]");
+        // RMC14
         formatted.AddMarkupOrThrow(message.WrappedMessage);
+
         formatted.Pop();
 
-        return FilterProblematicTags(formatted);
+        return FilterProblematicTags(formatted, allowCommandLinks: true);
     }
 
     private static string StripDuplicateChannelPrefix(string markup, ChatMessage message)
@@ -1268,16 +1297,20 @@ public partial class ChatBox : UIWidget
     }
 
     // RMC14
-    private FormattedMessage FilterProblematicTags(FormattedMessage message)
+    private FormattedMessage FilterProblematicTags(FormattedMessage message, bool allowCommandLinks)
     {
         var output = new FormattedMessage(message.Count);
         foreach (var tag in message)
         {
+            if (tag.Name == "cmdlink" && !allowCommandLinks)
+                continue;
+
             if (tag.Name is not { } name || _whitelist.Contains(name))
                 output.PushTag(tag);
         }
         return output;
     }
+    // RMC14
 
     public void Focus(ChatSelectChannel? channel = null)
     {

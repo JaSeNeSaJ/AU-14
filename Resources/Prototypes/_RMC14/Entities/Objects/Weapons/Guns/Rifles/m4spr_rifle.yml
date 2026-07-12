@@ -79,6 +79,7 @@
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS84xTelescopicScope
       rmc-aslot-underbarrel:
+        startingAttachable: RMCAttachmentUnderbarrelFlareGun
         whitelist:
           tags:
           - RMCAttachmentAngledGrip
@@ -87,6 +88,7 @@
           - RMCAttachmentLaserSight
           - RMCAttachmentVerticalGrip
           - RMCAttachmentExtinguisher
+          - RMCAttachmentUnderbarrelFlareGun
   - type: AttachableHolderVisuals
     offsets:
       rmc-aslot-barrel: 1.12, 0.0
@@ -217,6 +219,9 @@
           - RMCMagazineRifleM4SPRHEAP
           - RMCMagazineRifleM5SPRHVP
           - RMCMagazineRifleM5SPRHVHIP
+          - RMCMagazineRifleM4SPRA19
+          - RMCMagazineRifleM4SPRA19Incendiary
+          - RMCMagazineRifleM4SPRA19Impact
   - type: ItemCamouflage
     camouflageVariations: {}
     layers:

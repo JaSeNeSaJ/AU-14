@@ -58,7 +58,6 @@ namespace Content.Shared.Interaction
     public abstract partial class SharedInteractionSystem : EntitySystem
     {
         [Dependency] private IGameTiming _gameTiming = default!;
-        [Dependency] private IMapManager _mapManager = default!;
         [Dependency] private ISharedAdminLogManager _adminLogger = default!;
         [Dependency] private ISharedChatManager _chat = default!;
         [Dependency] private ActionBlockerSystem _actionBlockerSystem = default!;
@@ -216,7 +215,73 @@ namespace Content.Shared.Interaction
             if (target.Comp.ParentUid == user.Owner)
                 return true;
 
-            return InRangeAndAccessible(user, target, range) || _ignoreUiRangeQuery.HasComp(user);
+            if (TryUiRangeOverride(user.Owner, target.Owner, out var inRange))
+                return inRange;
+
+            if (InRangeAndAccessible(user, target, range) || _ignoreUiRangeQuery.HasComp(user))
+                return true;
+
+            // Keep-open checks should honor nearest fixtures, not only entity origins.
+            return IsAccessible(user, target) && InUiKeepOpenRange(user, target, range);
+        }
+
+        private bool TryUiRangeOverride(EntityUid user, EntityUid target, out bool inRange)
+        {
+            var ev = new InRangeOverrideEvent(user, target);
+            RaiseLocalEvent(user, ref ev);
+
+            inRange = ev.InRange;
+            return ev.Handled;
+        }
+
+        private bool InUiKeepOpenRange(Entity<TransformComponent?> user, Entity<TransformComponent?> target, float range)
+        {
+            if (range <= 0f)
+                return true;
+
+            if (!Resolve(user, ref user.Comp) ||
+                !Resolve(target, ref target.Comp))
+            {
+                return false;
+            }
+
+            var userCoordinates = user.Comp!.Coordinates;
+            var userAngle = user.Comp.LocalRotation;
+            if (_net.IsServer && TryComp(user, out ActorComponent? actor))
+            {
+                // Remote clients can open a BUI before the server has caught up to their predicted position.
+                range += _rmcLagCompensation.MarginTiles;
+                (userCoordinates, userAngle) = _rmcLagCompensation.GetCoordinatesAngle(user, actor.PlayerSession, user.Comp);
+            }
+
+            if (_transform.InRange(userCoordinates, target.Comp.Coordinates, range))
+                return true;
+
+            if (!_fixtureQuery.TryComp(user, out var userFixtures) ||
+                userFixtures.FixtureCount == 0 ||
+                !_fixtureQuery.TryComp(target, out var targetFixtures) ||
+                targetFixtures.FixtureCount == 0 ||
+                !userCoordinates.IsValid(EntityManager))
+            {
+                return false;
+            }
+
+            var userPosition = _transform.ToMapCoordinates(userCoordinates).Position;
+            var userRotation = _transform.GetWorldRotation(userCoordinates.EntityId) + userAngle;
+            var (targetPosition, targetRotation) = _transform.GetWorldPositionRotation(target.Comp);
+            var userTransform = new Transform(userPosition, userRotation);
+            var targetTransform = new Transform(targetPosition, targetRotation);
+
+            return _broadphase.TryGetNearest(
+                user,
+                target,
+                out _,
+                out _,
+                out var distance,
+                userTransform,
+                targetTransform,
+                userFixtures,
+                targetFixtures) && distance <= range;
         }
 
         /// <summary>
@@ -775,8 +840,12 @@ namespace Content.Shared.Interaction
             bool popup = false,
             bool overlapCheck = true)
         {
-            if (_net.IsServer)
+            if (_net.IsServer &&
+                Resolve(other, ref other.Comp, false) &&
+                !_transform.InRange(otherCoordinates, other.Comp.Coordinates, 0.01f))
+            {
                 range += _rmcLagCompensation.MarginTiles;
+            }
 
             if (origin.Owner == other.Owner && Resolve(other, ref other.Comp, false))
             {
@@ -888,6 +957,9 @@ namespace Content.Shared.Interaction
         /// <example>
         /// if the target entity is a wallmount we ignore all other entities on the tile.
         /// </example>
+        /// <remarks>
+        /// This can run from parallel BUI range checks, so scratch collections must stay local.
+        /// </remarks>
         private Ignored GetPredicate(
             MapCoordinates originCoords,
             EntityUid target,
@@ -904,7 +976,9 @@ namespace Content.Shared.Interaction
                 // inside of walls, users can still pick them up.
                 // TODO: Bandaid, alloc spam
                 // We use 0.01 range just in case it's perfectly in between 2 walls and 1 gets missed.
-                foreach (var otherEnt in _lookup.GetEntitiesInRange(target, 0.01f, flags: LookupFlags.Static))
+                var lookupResults = new HashSet<EntityUid>();
+                _lookup.GetEntitiesInRange(target, 0.01f, lookupResults, LookupFlags.Static);
+                foreach (var otherEnt in lookupResults)
                 {
                     if (target == otherEnt ||
                         !_physicsQuery.TryComp(otherEnt, out var otherBody) ||
@@ -931,10 +1005,12 @@ namespace Content.Shared.Interaction
                     ignoreAnchored = angleDelta < wallMount.Arc / 2 || Math.Tau - angleDelta < wallMount.Arc / 2;
                 }
 
-                if (ignoreAnchored && _mapManager.TryFindGridAt(targetCoords, out var gridUid, out var grid))
+                if (ignoreAnchored && _map.TryFindGridAt(targetCoords, out var gridUid, out var grid))
                 {
                     ignored.UnionWith(_map.GetAnchoredEntities((gridUid, grid), targetCoords));
-                    foreach (var ent in _lookup.GetEntitiesInRange(targetCoords, 0.2f))
+                    var lookupResults = new HashSet<EntityUid>();
+                    _lookup.GetEntitiesInRange(targetCoords.MapId, targetCoords.Position, 0.2f, lookupResults);
+                    foreach (var ent in lookupResults)
                     {
                         if (!TryComp(ent, out TransformComponent? xform) ||
                             !xform.Anchored)
@@ -1321,7 +1397,7 @@ namespace Content.Shared.Interaction
                 rotation = mover.TargetRelativeRotation;
             }
 
-            Transform(item).LocalRotation = rotation;
+            _transform.SetLocalRotation(item, rotation);
         }
         #endregion
 
@@ -1480,7 +1556,7 @@ namespace Content.Shared.Interaction
 
         private void HandleUserInterfaceRangeCheck(ref BoundUserInterfaceCheckRangeEvent ev)
         {
-            if (ev.Result == BoundUserInterfaceRangeResult.Fail)
+            if (ev.Result != BoundUserInterfaceRangeResult.Default)
                 return;
 
             ev.Result = UiRangeCheck(ev.Actor!, ev.Target, ev.Data.InteractionRange)

@@ -83,6 +83,8 @@ public sealed partial class XenoLeapSystem : EntitySystem
     private EntityQuery<PhysicsComponent> _physicsQuery;
     private EntityQuery<FixturesComponent> _fixturesQuery;
 
+    private bool _logPrediction = false;
+
     public override void Initialize()
     {
         _physicsQuery = GetEntityQuery<PhysicsComponent>();
@@ -126,7 +128,7 @@ public sealed partial class XenoLeapSystem : EntitySystem
                 return;
 
             _rmcLagCompensation.SetLastRealTick(args.SenderSession.UserId, msg.LastRealTick);
-            if (!_rmcLagCompensation.Collides(target, ent, args.SenderSession))
+            if (!_rmcLagCompensation.Collides(target, ent, args.SenderSession, msg.Substep))
                 return;
         }
 
@@ -178,8 +180,16 @@ public sealed partial class XenoLeapSystem : EntitySystem
         if (!_physicsQuery.TryGetComponent(xeno, out var physics))
             return;
 
-        if (EnsureComp<XenoLeapingComponent>(xeno, out var leaping))
+        if (HasComp<XenoLeapingComponent>(xeno))
             return;
+
+        if (xeno.Comp.PlasmaCost > FixedPoint2.Zero &&
+            !_xenoPlasma.TryRemovePlasmaPopup(xeno.Owner, xeno.Comp.PlasmaCost))
+        {
+            return;
+        }
+
+        var leaping = EnsureComp<XenoLeapingComponent>(xeno);
 
         args.Handled = true;
 
@@ -192,12 +202,6 @@ public sealed partial class XenoLeapSystem : EntitySystem
         leaping.TargetCameraShakeStrength = xeno.Comp.TargetCameraShakeStrength;
         leaping.IgnoredCollisionGroupLarge = xeno.Comp.IgnoredCollisionGroupLarge;
         leaping.IgnoredCollisionGroupSmall = xeno.Comp.IgnoredCollisionGroupSmall;
-
-        if (xeno.Comp.PlasmaCost > FixedPoint2.Zero &&
-            !_xenoPlasma.TryRemovePlasmaPopup(xeno.Owner, xeno.Comp.PlasmaCost))
-        {
-            return;
-        }
 
         _rmcPulling.TryStopAllPullsFromAndOn(xeno);
 
@@ -219,6 +223,11 @@ public sealed partial class XenoLeapSystem : EntitySystem
         leaping.LeapEndTime = _timing.CurTime + TimeSpan.FromSeconds(direction.Length() / xeno.Comp.Strength);
 
         _obstacleSlamming.MakeImmune(xeno, 0.5f);
+
+        // Prevent leap from having longer/shorter range or skewed direction
+        // based on the xeno's movement when using it.
+        _physics.ResetDynamics(xeno, physics);
+
         _physics.ApplyLinearImpulse(xeno, impulse, body: physics);
         _physics.SetBodyStatus(xeno, physics, BodyStatus.InAir);
 
@@ -599,7 +608,28 @@ public sealed partial class XenoLeapSystem : EntitySystem
 
         if (_net.IsClient)
         {
-            var predictedEv = new XenoLeapPredictedHitEvent(GetNetEntity(target), _rmcLagCompensation.GetLastRealTick(null));
+            if (_logPrediction)
+            {
+                TryComp(xeno, out TransformComponent? leaperTransform);
+                TryComp(target, out TransformComponent? targetTransform);
+                Log.Debug($"""
+                    SENDING PREDICTED LEAP HIT!!
+                      CurTick:        {_timing.CurTick}
+                      LastRealTick:   {_rmcLagCompensation.GetLastRealTick(null)}
+                      Phys Substep:   {_rmcLagCompensation.GetCurrentSubstep()}
+                      In simulation?  {_timing.InSimulation}
+                      ApplyingState?  {_timing.ApplyingState}
+                      FirstTimePred?  {_timing.IsFirstTimePredicted}
+                      Substep:        {_rmcLagCompensation.GetClientSubstep()}
+                      Leaper Coords:  {leaperTransform?.Coordinates}
+                      Target Coords:  {targetTransform?.Coordinates}
+                    """);
+            }
+
+            var predictedEv = new XenoLeapPredictedHitEvent(
+                GetNetEntity(target),
+                _rmcLagCompensation.GetLastRealTick(null),
+                _rmcLagCompensation.GetClientSubstep());
             RaiseNetworkEvent(predictedEv);
             if (_timing.InPrediction && _timing.IsFirstTimePredicted)
             {

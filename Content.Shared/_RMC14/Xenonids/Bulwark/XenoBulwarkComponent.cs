@@ -37,6 +37,9 @@ public sealed partial class XenoBulwarkComponent : Component
     public float ReflectCooldownPerSecond = 2f;
 
     [DataField, AutoNetworkedField]
+    public EntProtoId ReflectEffectId = "RMCEffectShieldBlue";
+
+    [DataField, AutoNetworkedField]
     public TimeSpan TailSwingMissCooldown = TimeSpan.FromSeconds(0.3);
 
     [DataField, AutoNetworkedField]
@@ -44,6 +47,9 @@ public sealed partial class XenoBulwarkComponent : Component
 
     [DataField, AutoNetworkedField]
     public TimeSpan TailSwingParalyzeTime = TimeSpan.FromSeconds(1.2);
+
+    [DataField, AutoNetworkedField]
+    public float TailSwingRange = 1.75f;
 
     [DataField, AutoNetworkedField]
     public ProtoId<TagPrototype> TailSwingFlingable = "Grenade";

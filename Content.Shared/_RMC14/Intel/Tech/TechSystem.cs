@@ -1,10 +1,14 @@
 using System.Numerics;
+using Content.Shared._RMC14.ARES;
+using Content.Shared._RMC14.ARES.Logs;
 using Content.Shared._RMC14.Dropship.Fabricator;
 using Content.Shared._RMC14.Marines.Announce;
 using Content.Shared._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared._RMC14.Scaling;
-using Content.Shared.AU14.Threats;
+using Content.Shared._RMC14.Weapons.Ranged.IFF;
+using Content.Shared.Access.Systems;
+using Content.Shared._CMU14.Threats;
 using Content.Shared.AU14.Util;
 using Content.Shared.GameTicking;
 using Content.Shared.UserInterface;
@@ -18,7 +22,9 @@ namespace Content.Shared._RMC14.Intel.Tech;
 
 public sealed partial class TechSystem : EntitySystem
 {
+    [Dependency] private ARESCoreSystem _core = default!;
     [Dependency] private DropshipFabricatorSystem _dropshipFabricator = default!;
+    [Dependency] private SharedIdCardSystem _idCard = default!;
     [Dependency] private SharedGameTicker _ticker = default!;
     [Dependency] private IntelSystem _intel = default!;
     [Dependency] private SharedMapSystem _map = default!;
@@ -29,6 +35,9 @@ public sealed partial class TechSystem : EntitySystem
     // NOTE: Do not depend on platform-specific AuThirdPartySystem here (shared) — use ExecuteTechPartySpawn helper
     // to let server code call the server-side spawn implementation.
     [Dependency] private IPrototypeManager _proto = default!;
+
+    private static readonly EntProtoId<ARESLogTypeComponent> LogCat = "ARESTabIntelLogs";
+
     public override void Initialize()
     {
         SubscribeLocalEvent<TechAnnounceEvent>(OnTechAnnounce);
@@ -181,20 +190,32 @@ public sealed partial class TechSystem : EntitySystem
         }
 
         _intel.UpdateTree(tree);
+
+        if (_idCard.TryFindIdCard(args.Actor, out var idCard) && TryComp(idCard, out ItemIFFComponent? idCardIFF))
+        {
+            foreach (var faction in idCardIFF.Factions)
+            {
+                _core.CreateARESLog(faction, LogCat, (string) $"{Name(args.Actor)} purchased intel node: {option.Name}");
+            }
+        }
+        else
+        {
+            _core.CreateARESLog(ent, LogCat, (string) $"{Name(args.Actor)} purchased intel node: {option.Name}");
+        }
     }
 
     /// <summary>
     /// Shared helper: execute a TechPartySpawn by resolving the prototype and invoking the provided spawn action
     /// for each requested amount. Returns true when the prototype was found and spawnAction invoked.
     /// </summary>
-    public static bool ExecuteTechPartySpawn(IPrototypeManager proto, string thirdPartyId, Action<AuThirdPartyPrototype> spawnAction)
+    public static bool ExecuteTechPartySpawn(IPrototypeManager proto, string thirdPartyId, Action<ThirdPartyPrototype> spawnAction)
     {
         if (string.IsNullOrEmpty(thirdPartyId))
         {
             Logger.GetSawmill("content").Warning("[TechSystem] ExecuteTechPartySpawn called with null/empty thirdPartyId.");
             return false;
         }
-        if (!proto.TryIndex<AuThirdPartyPrototype>(thirdPartyId, out var partyProto))
+        if (!proto.TryIndex<ThirdPartyPrototype>(thirdPartyId, out var partyProto))
         {
             proto.TryIndex(thirdPartyId, out var _); // keep for debug if needed
             Logger.GetSawmill("content").Warning($"[TechSystem] Requested third party id '{thirdPartyId}' not found in prototypes.");

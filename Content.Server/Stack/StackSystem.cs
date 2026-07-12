@@ -42,6 +42,10 @@ namespace Content.Server.Stack
         /// </summary>
         public EntityUid? Split(EntityUid uid, int amount, EntityCoordinates spawnPosition, StackComponent? stack = null)
         {
+            // #RMC Prevent splitting stacksin acid
+            if (IsAcidicStack(uid))
+                return null;
+
             if (!Resolve(uid, ref stack))
                 return null;
 
@@ -152,7 +156,7 @@ namespace Content.Server.Stack
         private List<int> CalculateSpawns(string entityPrototype, int amount)
         {
             var proto = _prototypeManager.Index<EntityPrototype>(entityPrototype);
-            proto.TryGetComponent<StackComponent>(out var stack, EntityManager.ComponentFactory);
+            proto.TryComp<StackComponent>(out var stack, EntityManager.ComponentFactory);
             var maxCountPerStack = GetMaxCount(stack);
             var amounts = new List<int>();
             while (amount > 0)
@@ -168,6 +172,10 @@ namespace Content.Server.Stack
         private void OnStackAlternativeInteract(EntityUid uid, StackComponent stack, GetVerbsEvent<AlternativeVerb> args)
         {
             if (!args.CanAccess || !args.CanInteract || args.Hands == null || stack.Count == 1)
+                return;
+
+            // #RMC Hide split verbs for acided stacks
+            if (IsAcidicStack(uid))
                 return;
 
             AlternativeVerb halve = new()

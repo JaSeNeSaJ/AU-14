@@ -116,12 +116,14 @@ namespace Content.Server.GameTicking
                 RestartRound();
 
             _postInitialized = true;
+            TrySendInitialRoundStatusDiscordMessage();
         }
 
         public override void Shutdown()
         {
             base.Shutdown();
 
+            SendServerShutdownDiscordMessage();
             ShutdownGameRules();
         }
 
@@ -149,7 +151,7 @@ namespace Content.Server.GameTicking
                 return;
             }
 
-            if (_auobjectivesystem.iswinactive)
+            if (_auobjectivesystem.IsWinActive)
             {
 
                 _chatManager.DispatchServerMessage(args.SenderSession, "Respawn is disabled in this gamemode");

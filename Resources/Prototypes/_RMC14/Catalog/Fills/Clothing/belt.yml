@@ -341,6 +341,9 @@
     - id: CMFlash
     - id: CMStunbaton
     - id: RMCHandcuffs
+    - id: RMCHandcuffs
+    - id: RMCHandcuffs
+    - id: ForensicScanner
 #    - id: Pepperspray # TODO RMC14
 #    - id: ForensicScanner # TODO RMC14 cm clue scanner
 
@@ -373,7 +376,8 @@
     - id: RMCHandcuffs
       amount: 2
     - id: RMCGrenadeFlashBang
-
+    - id: CMClipboard # CMU change
+    - id: RMCUniversalRecorder #CMU Change
 - type: entity
   parent: RMCBeltHolsterNailgun
   id: RMCBeltHolsterNailgunFill

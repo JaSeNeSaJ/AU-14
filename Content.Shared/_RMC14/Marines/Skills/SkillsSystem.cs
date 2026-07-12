@@ -57,7 +57,7 @@ public sealed partial class SkillsSystem : EntitySystem
         SubscribeLocalEvent<PrototypesReloadedEventArgs>(OnPrototypesReloaded);
         SubscribeLocalEvent<GetMeleeDamageEvent>(OnGetMeleeDamage);
 
-        SubscribeLocalEvent<SkillsComponent, MapInitEvent>(OnSkillsMapInit);
+        SubscribeLocalEvent<SkillsComponent, ComponentStartup>(OnSkillsStartup);
         SubscribeLocalEvent<SkillsComponent, GetVerbsEvent<ExamineVerb>>(OnSkillsVerbExamine);
 
         SubscribeLocalEvent<MedicallyUnskilledDoAfterComponent, AttemptHyposprayUseEvent>(OnAttemptHyposprayUse);
@@ -98,7 +98,7 @@ public sealed partial class SkillsSystem : EntitySystem
         args.Damage = ApplyMeleeSkillModifier(args.User, args.Damage);
     }
 
-    private void OnSkillsMapInit(Entity<SkillsComponent> ent, ref MapInitEvent args)
+    private void OnSkillsStartup(Entity<SkillsComponent> ent, ref ComponentStartup args)
     {
         if (ent.Comp.Preset is not { } presetPrototype)
             return;
@@ -106,8 +106,27 @@ public sealed partial class SkillsSystem : EntitySystem
         if (!presetPrototype.TryGet(out var skillPreset, _prototypes, _compFactory))
             return;
 
+        var oldSkills = ent.Comp.Skills;
         ent.Comp.Skills = new(skillPreset.Skills);
         Dirty(ent);
+
+        foreach (var (skill, level) in ent.Comp.Skills)
+        {
+            if (oldSkills.GetValueOrDefault(skill) == level)
+                continue;
+
+            var ev = new SkillChangedEvent(ent.Owner, skill, level);
+            RaiseLocalEvent(ent.Owner, ref ev);
+        }
+
+        foreach (var (skill, _) in oldSkills)
+        {
+            if (ent.Comp.Skills.ContainsKey(skill))
+                continue;
+
+            var ev = new SkillChangedEvent(ent.Owner, skill, 0);
+            RaiseLocalEvent(ent.Owner, ref ev);
+        }
     }
 
     private void OnSkillsVerbExamine(Entity<SkillsComponent> ent, ref GetVerbsEvent<ExamineVerb> args)
@@ -566,8 +585,16 @@ public sealed partial class SkillsSystem : EntitySystem
                      entProto.HasComponent<SkillDefinitionComponent>());
 
         ent.Comp ??= EnsureComp<SkillsComponent>(ent);
+
+        var old = ent.Comp.Skills.GetValueOrDefault(skill);
         ent.Comp.Skills[skill] = to;
         Dirty(ent);
+
+        if (old != to)
+        {
+            var ev = new SkillChangedEvent(ent.Owner, skill, to);
+            RaiseLocalEvent(ent.Owner, ref ev);
+        }
     }
 
     public void SetSkills(Entity<SkillsComponent?> ent, Dictionary<EntProtoId<SkillDefinitionComponent>, int> to)
@@ -576,7 +603,13 @@ public sealed partial class SkillsSystem : EntitySystem
 
         foreach (var (skill, level) in to)
         {
+            var old = ent.Comp.Skills.GetValueOrDefault(skill);
             ent.Comp.Skills[skill] = level;
+            if (old != level)
+            {
+                var ev = new SkillChangedEvent(ent.Owner, skill, level);
+                RaiseLocalEvent(ent.Owner, ref ev);
+            }
         }
 
         Dirty(ent);
@@ -589,7 +622,13 @@ public sealed partial class SkillsSystem : EntitySystem
         var span = CollectionsMarshal.AsSpan(to);
         foreach (ref var skill in span)
         {
+            var old = ent.Comp.Skills.GetValueOrDefault(skill.Type);
             ent.Comp.Skills[skill.Type] = skill.Level;
+            if (old != skill.Level)
+            {
+                var ev = new SkillChangedEvent(ent.Owner, skill.Type, skill.Level);
+                RaiseLocalEvent(ent.Owner, ref ev);
+            }
         }
 
         Dirty(ent);
@@ -601,7 +640,13 @@ public sealed partial class SkillsSystem : EntitySystem
 
         foreach (var skill in to)
         {
+            var old = ent.Comp.Skills.GetValueOrDefault(skill.Type);
             ent.Comp.Skills[skill.Type] = skill.Level;
+            if (old != skill.Level)
+            {
+                var ev = new SkillChangedEvent(ent.Owner, skill.Type, skill.Level);
+                RaiseLocalEvent(ent.Owner, ref ev);
+            }
         }
 
         Dirty(ent);

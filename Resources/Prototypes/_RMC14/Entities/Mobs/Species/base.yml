@@ -111,10 +111,12 @@
   - type: Body
     prototype: CMUHumanBody
     requiredLegs: 2
+  - type: Internals
   - type: BodyZoneTargeting
   - type: CMUHumanMedical
   - type: HitLocation
   - type: PainShock
+  - type: CMUPainFeedback
   - type: Damageable
     damageContainer: Biological
     damageModifierSet: null
@@ -180,6 +182,12 @@
         type: BodyPartPickerBui
       enum.CMUSurgeryUIKey.Key:
         type: CMUSurgeryBui
+      enum.CMUMedicalFieldCraftingUI.Key:
+        type: CMUMedicalFieldCraftingBui
+        requireInputValidation: false
+      enum.FactionLanguageUiKey.Key:
+        type: FactionLanguageBoundUserInterface
+        requireInputValidation: false
   - type: Infectable
   - type: Tackleable
   - type: XenoNestable
@@ -246,6 +254,13 @@
       whitelist:
         components:
         - RequisitionsCrate #Lockers/Crates
+  - type: Language
+    spokenLanguages:
+      - English
+    understoodLanguages:
+      - English
+    currentLanguage: English
+    defaultLanguage: English
   - type: MobThresholds
     thresholds:
       0: Alive
@@ -367,6 +382,9 @@
       8: 8
   - type: XenoToggleChargingKnockback
   - type: XenoToggleChargingParalyze
+  # CMU14
+  - type: CMUXenoBullChargeTarget
+  # CMU14
   - type: RMCMobStateDrawDepth
     drawDepths:
       Dead: BelowMobs
@@ -394,3 +412,5 @@
     hideLayersOnEquip:
     - UndergarmentTop
     - Hair
+  - type: LanguageLearning
+    preset: AU14LanguageLearningPresetHuman

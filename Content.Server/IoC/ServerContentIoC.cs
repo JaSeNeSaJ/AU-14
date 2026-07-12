@@ -1,3 +1,5 @@
+using Content.Server._CMU14.Administration.Console;
+using Content.Server._CMU14.Diagnostics.Performance;
 using Content.Server._RMC14.Actions;
 using Content.Server._RMC14.Admin;
 using Content.Server._RMC14.Commendations;
@@ -30,6 +32,7 @@ using Content.Server.ServerInfo;
 using Content.Server.ServerUpdates;
 using Content.Server.Voting.Managers;
 using Content.Server.Worldgen.Tools;
+using Content.Shared._RMC14.PlayTimeTracking;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Administration.Managers;
 using Content.Shared.Chat;
@@ -87,9 +90,14 @@ namespace Content.Server.IoC
             IoCManager.Register<DiscordLink>();
             IoCManager.Register<DiscordChatLink>();
 
+            // CMU14
+            IoCManager.Register<ServerLogsDownloadManager>();
+            IoCManager.Register<ICMUServerPerformanceDiagnostics, CMUServerPerformanceDiagnosticsManager>();
+
             // RMC14
             IoCManager.Register<LinkAccountManager>();
             IoCManager.Register<RMCPlayTimeManager>();
+            IoCManager.Register<SharedRMCPlayTimeManager, RMCPlayTimeManager>();
             IoCManager.Register<RMCDiscordManager>();
             IoCManager.Register<MentorManager>();
             IoCManager.Register<CommendationManager>();

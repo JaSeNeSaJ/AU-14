@@ -94,10 +94,14 @@
     - CMXenoCarrier
     - CMXenoBurrower
     - CMXenoHivelord
+    earlyEvolvesTo:
+    - CMXenoLurker
+    - CMXenoSpitter
+    - CMXenoWarrior
     evolvesToWithoutPoints:
     - CMXenoQueen
   - type: Evasion
-    evasion: 20
+    evasion: 15
   - type: XenoInhands
     prefix: drone
   - type: IntelRecoverCorpseObjectiveOnDeath
@@ -106,6 +110,7 @@
     name: cm-job-name-xeno-drone
   - type: RMCSurgeryXenoHeart
     item: RMCOrganXenoHeartT1
+  - type: CMUXenoZJump
 
 - type: entity
   parent: CMXenoDroneBase
@@ -146,6 +151,7 @@
     - DoorXenoResin
     - XenoStickyResin
     - XenoFastResin
+    - XenoResinSpikes
   - type: VentCrawler
     ventCrawlIcon: drone
   - type: RMCActionOrder

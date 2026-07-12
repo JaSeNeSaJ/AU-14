@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -12,6 +13,9 @@ public sealed partial class VehicleSupplyLiftComponent : Component
 {
     [DataField]
     public float Radius = 2f;
+
+    [DataField]
+    public float RailingRange = 7f;
 
     [DataField, AutoNetworkedField]
     public VehicleSupplyLiftMode Mode;
@@ -71,6 +75,15 @@ public sealed partial class VehicleSupplyLiftComponent : Component
     public EntityUid? PendingVehicleEntity;
 
     [NonSerialized]
+    public string PendingVehicleGroup = string.Empty;
+
+    [NonSerialized]
+    public readonly List<VehicleSupplyLoadoutOption> PendingLoadouts = new();
+
+    [NonSerialized]
+    public readonly List<EntProtoId> PendingBundle = new();
+
+    [NonSerialized]
     public EntityUid? ActiveVehicle;
 
     [NonSerialized]
@@ -78,6 +91,12 @@ public sealed partial class VehicleSupplyLiftComponent : Component
 
     [NonSerialized]
     public readonly HashSet<string> Deployed = new();
+
+    [NonSerialized]
+    public readonly HashSet<string> Ordered = new();
+
+    [NonSerialized]
+    public readonly Dictionary<string, string> OrderedGroups = new();
 
     [NonSerialized]
     public readonly Dictionary<string, int> Stored = new();

@@ -6,7 +6,7 @@ using Content.Shared._RMC14.Pulling;
 using Content.Shared._RMC14.Slow;
 using Content.Shared._RMC14.Stun;
 using Content.Shared._RMC14.Xenonids.Plasma;
-using Content.Shared._CMU14.Medical.BodyPart;
+using Content.Shared._CMU14.Medical.Anatomy.BodyParts;
 using Content.Shared.Actions;
 using Content.Shared.Coordinates;
 using Content.Shared.Damage;
@@ -56,6 +56,7 @@ public sealed partial class XenoStompSystem : EntitySystem
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private TurfSystem _turf = default!;
+
 
     public override void Initialize()
     {
@@ -171,10 +172,15 @@ public sealed partial class XenoStompSystem : EntitySystem
         _receivers.Clear();
         _entityLookup.GetEntitiesInRange(xform.Coordinates, xeno.Comp.Range, _receivers);
 
+        var origin = _transform.GetMapCoordinates(xeno);
+
         using var targetingSuppression = _hitLocation.SuppressBodyZoneTargeting(xeno.Owner);
         foreach (var receiver in _receivers)
         {
             if (!_xeno.CanAbilityAttackTarget(xeno, receiver))
+                continue;
+
+            if (IsBlockedByObstacle(origin, _transform.GetMapCoordinates(receiver), xeno.Owner))
                 continue;
 
             if (xeno.Comp.SlowBigInsteadOfStun && _size.TryGetSize(receiver, out var size) && size >= RMCSizes.Big)
@@ -186,6 +192,11 @@ public sealed partial class XenoStompSystem : EntitySystem
 
             if (xeno.Comp.Slows)
                 _slow.TrySuperSlowdown(receiver, xeno.Comp.SlowTime, true);
+
+            if (xeno.Comp.KnocksBack)
+            {
+                _size.KnockBack(receiver, origin, xeno.Comp.KnockbackPower, xeno.Comp.KnockbackPower + 1f);
+            }
 
             if (xform.Coordinates.TryDistance(EntityManager, receiver.Owner.ToCoordinates(), out var distance) && distance <= xeno.Comp.ShortRange)
             {
@@ -238,7 +249,7 @@ public sealed partial class XenoStompSystem : EntitySystem
                         continue;
 
                     // Raycast to check for barricades blocking the tile.
-                    if (IsBlockedByBarricade(origin, new MapCoordinates(worldPos, origin.MapId), xeno.Owner))
+                    if (IsBlockedByObstacle(origin, new MapCoordinates(worldPos, origin.MapId), xeno.Owner))
                         continue;
 
                     var tileCenter = _map.GridTileToLocal(gridId, grid, tilePos);
@@ -267,7 +278,7 @@ public sealed partial class XenoStompSystem : EntitySystem
                 continue;
 
             // Barricade line-of-sight check.
-            if (IsBlockedByBarricade(origin, entMap, xeno.Owner))
+            if (IsBlockedByObstacle(origin, entMap, xeno.Owner))
                 continue;
 
             var stompDamage = xeno.Comp.Damage;
@@ -308,7 +319,7 @@ public sealed partial class XenoStompSystem : EntitySystem
         }
     }
 
-    private bool IsBlockedByBarricade(MapCoordinates origin, MapCoordinates target, EntityUid ignore)
+    private bool IsBlockedByObstacle(MapCoordinates origin, MapCoordinates target, EntityUid ignore)
     {
         if (origin.MapId != target.MapId)
             return true;
@@ -318,7 +329,8 @@ public sealed partial class XenoStompSystem : EntitySystem
         if (distance < 0.1f)
             return false;
 
-        var ray = new CollisionRay(origin.Position, diff.Normalized(), (int) CollisionGroup.BarricadeImpassable);
+        var mask = (int) (CollisionGroup.Impassable | CollisionGroup.InteractImpassable | CollisionGroup.BarricadeImpassable);
+        var ray = new CollisionRay(origin.Position, diff.Normalized(), mask);
         foreach (var _ in _physics.IntersectRay(origin.MapId, ray, distance, ignore, returnOnFirstHit: true))
         {
             return true;

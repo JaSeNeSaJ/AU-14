@@ -1,4 +1,4 @@
-﻿[accessibility]
+[accessibility]
 screen_shake_intensity = 1
 
 [admin]
@@ -76,6 +76,9 @@ wiki = "https://cm-ss13.com/wiki/Main_Page"
 tickrate = 25
 bindto = "::,0.0.0.0"
 log_late_msg = false
+max_connections = 1024
+sendbuffersize = 1048576
+receivebuffersize = 1048576
 
 [physics]
 grid_splitting = false
@@ -94,9 +97,6 @@ max_compressed_size = 4194304
 max_uncompressed_size = 8388608
 auto_record_temp_dir = "recording"
 auto_record_name = "done/{year}_{month}_{day}-{hour}_{minute}-round_{round}.zip"
-
-[rmc]
-discord_account_linking_message_link = "https://discord.com/channels/1168210010233376858/1256765329002991679/1256767294839980132"
 
 [server]
 rules_file = "RMCOverview"

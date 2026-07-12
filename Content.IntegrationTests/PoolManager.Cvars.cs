@@ -1,4 +1,5 @@
 #nullable enable
+using Content.Shared._CMU14.BalanceRating;
 using Content.Shared.CCVar;
 using Robust.Shared;
 using Robust.Shared.Configuration;
@@ -40,6 +41,7 @@ public static partial class PoolManager
         (CCVars.InteractionRateLimitCount.Name, "9999999"),
         (CCVars.InteractionRateLimitPeriod.Name, "0.1"),
         (CCVars.MovementMobPushing.Name, "false"),
+        (CMUBalanceRatingCVars.AutomaticEnabled.Name, "false"),
     };
 
     public static async Task SetupCVars(RobustIntegrationTest.IntegrationInstance instance, PoolSettings settings)
@@ -53,16 +55,14 @@ public static partial class PoolManager
             if (cfg.IsCVarRegistered(CCVars.GameLobbyEnabled.Name))
                 cfg.SetCVar(CCVars.GameLobbyEnabled, settings.InLobby);
 
-            if (cfg.IsCVarRegistered(CVars.NetInterp.Name))
-                cfg.SetCVar(CVars.NetInterp, settings.DisableInterpolate);
-
             if (cfg.IsCVarRegistered(CCVars.GameMap.Name))
                 cfg.SetCVar(CCVars.GameMap, settings.Map);
 
             if (cfg.IsCVarRegistered(CCVars.AdminLogsEnabled.Name))
                 cfg.SetCVar(CCVars.AdminLogsEnabled, settings.AdminLogsEnabled);
 
-            if (cfg.IsCVarRegistered(CVars.NetInterp.Name))
+            if (instance is RobustIntegrationTest.ClientIntegrationInstance &&
+                cfg.IsCVarRegistered(CVars.NetInterp.Name))
                 cfg.SetCVar(CVars.NetInterp, !settings.DisableInterpolate);
         });
     }

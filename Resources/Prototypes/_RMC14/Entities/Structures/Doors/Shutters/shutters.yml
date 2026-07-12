@@ -53,6 +53,7 @@
     performCollisionCheck: false
     canCrush: false
     canPry: false
+  - type: RMCShutterBlockClimbing
   - type: Appearance
   - type: UserInterface
     interfaces:
@@ -74,6 +75,9 @@
     channel: Environment
   - type: RMCOpenOnAlertLevel
   - type: RMCMesonsNonviewable
+  - type: Tag
+    tags:
+      - ForceNoFixRotations
 
 - type: entity
   parent: RMCShutterBaseIndestructible
@@ -90,7 +94,9 @@
     destroy: true
     minimumStage: 4
   - type: XenoCrusherChargable
-    instantDestroy: true
+    setDamage:
+      types:
+        Structural: 750
 
 - type: entity
   parent: RMCShutterBase

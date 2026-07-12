@@ -1,3 +1,4 @@
+using Content.Client._CMU14.Administration.Console;
 using Content.Client._RMC14.Commendations;
 using Content.Client._RMC14.LinkAccount;
 using Content.Client._RMC14.PlayTimeTracking;
@@ -24,6 +25,7 @@ using Content.Client.Screenshot;
 using Content.Client.Stylesheets;
 using Content.Client.Viewport;
 using Content.Client.Voting;
+using Content.Shared._RMC14.PlayTimeTracking;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Administration.Managers;
 using Content.Shared.Chat;
@@ -67,9 +69,13 @@ namespace Content.Client.IoC
             collection.Register<TitleWindowManager>();
             collection.Register<ClientsidePlaytimeTrackingManager>();
 
+            // CMU14
+            collection.Register<ServerLogsDownloadManager>();
+
             // RMC14
             collection.Register<LinkAccountManager>();
             collection.Register<RMCPlayTimeManager>();
+            collection.Register<SharedRMCPlayTimeManager, RMCPlayTimeManager>();
             collection.Register<CommendationsManager>();
             collection.Register<TacticalMapSettingsManager>();
         }

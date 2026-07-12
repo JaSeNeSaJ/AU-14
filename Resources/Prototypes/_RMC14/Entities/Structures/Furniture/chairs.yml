@@ -43,6 +43,10 @@
             max: 1
       - !type:DoActsBehavior
         acts: ["Destruction"]
+  - type: InteractedBlacklist
+    blacklist:
+      components:
+      - Xeno
 
 - type: entity
   parent: [ CMSeatBase, ChairFolding ]
@@ -56,6 +60,7 @@
     bodyType: Static
   - type: Foldable
     anchorOnUnfold: true
+  - type: RMCStrapNoDrawDepthChange
   - type: Sprite
     sprite: _RMC14/Structures/Furniture/folding_chair.rsi
     layers:
@@ -101,6 +106,7 @@
   components:
   - type: Transform
     anchored: false
+  - type: RMCStrapNoDrawDepthChange
   - type: Sprite
     sprite: _RMC14/Structures/Furniture/chairs.rsi
     state: chair
@@ -141,6 +147,7 @@
   components:
   - type: Sprite
     state: comfychair
+  - type: RMCStrapNoDrawDepthChange
   - type: Transform
     anchored: true
   - type: Physics
@@ -260,6 +267,40 @@
   - type: Sprite
     state: comfychair_alien
 
+# Sofa
+- type: entity
+  parent: CMSeatBase
+  id: RMCSofa
+  name: sofa
+  description: A very comfortable looking sofa for one. Watch out, lest you fall asleep in it's soft upholstery.
+  placement:
+    mode: SnapgridCenter
+  components:
+  - type: Sprite
+    sprite: _RMC14/Structures/Furniture/Couches/sofa.rsi
+    state: sofa
+  - type: RMCStrapNoDrawDepthChange
+  - type: Transform
+    anchored: true
+  - type: Physics
+    bodyType: Static
+
+- type: entity
+  parent: RMCSofa
+  id: RMCSofaRed
+  name: red sofa
+  components:
+  - type: Sprite
+    state: sofa_red
+
+- type: entity
+  parent: RMCSofa
+  id: RMCSofaBlack
+  name: black sofa
+  components:
+  - type: Sprite
+    state: sofa_black
+
 # Office chair
 - type: entity
   parent: CMSeatBase
@@ -268,6 +309,7 @@
   components: # RMC14 Non-parity: Not rotatable
   - type: Sprite
     state: officechair_dark
+  - type: RMCStrapNoDrawDepthChange
   - type: Construction
     graph: CMSeat
     node: chairOfficeDark
@@ -296,6 +338,7 @@
   components:
   - type: Sprite
     state: wooden_chair
+  - type: RMCStrapNoDrawDepthChange
   - type: Damageable
     damageModifierSet: Wood
   - type: Tag

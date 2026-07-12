@@ -1,8 +1,9 @@
-using System.Linq;
 using System.Numerics;
 using Content.Server.Atmos.Components;
 using Content.Server.FootPrint;
 using Content.Server.Spreader;
+using Content.Shared._RMC14.Barricade;
+using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Communications;
 using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Xenonids.Construction.Nest;
@@ -16,8 +17,8 @@ using Content.Shared.Maps;
 using Content.Shared.Physics;
 using Content.Shared.Tag;
 using Robust.Server.GameObjects;
+using Robust.Shared.Configuration;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
 
@@ -25,6 +26,7 @@ namespace Content.Server._RMC14.Xenonids.Weeds;
 
 public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
 {
+    [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private MapSystem _map = default!;
     [Dependency] private RMCMapSystem _rmcMap = default!;
@@ -33,8 +35,8 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
     [Dependency] private TransformSystem _transform = default!;
     [Dependency] private AppearanceSystem _appearance = default!;
     [Dependency] private DamageableSystem _damageable = default!;
+    [Dependency] private SharedDirectionalAttackBlockSystem _directionBlocker = default!;
     [Dependency] private TurfSystem _turf = default!;
-    [Dependency] private PhysicsSystem _physics = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
 
     private static readonly ProtoId<TagPrototype> IgnoredTag = "SpreaderIgnore";
@@ -50,6 +52,8 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
     private EntityQuery<XenoWeedableComponent> _xenoWeedableQuery;
     private EntityQuery<XenoWeedsComponent> _xenoWeedsQuery;
 
+    private TimeSpan _maxProcessTime;
+
     public override void Initialize()
     {
         base.Initialize();
@@ -60,27 +64,28 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
         _xenoNestSurfaceQuery = GetEntityQuery<XenoNestSurfaceComponent>();
         _xenoWeedableQuery = GetEntityQuery<XenoWeedableComponent>();
         _xenoWeedsQuery = GetEntityQuery<XenoWeedsComponent>();
+
+        Subs.CVar(
+            _config,
+            RMCCVars.RMCWeedSpreadMaxProcessTimeMilliseconds,
+            v => _maxProcessTime = TimeSpan.FromMilliseconds(v),
+            true
+        );
     }
 
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
 
-        _spread.Clear();
-
         var time = _timing.CurTime;
-        var spreadingQuery = EntityQueryEnumerator<XenoWeedsSpreadingComponent, XenoWeedsComponent>();
-        while (spreadingQuery.MoveNext(out var uid, out var spreading, out var weeds))
+        for (var i = _spread.Count - 1; i >= 0; i--)
         {
-            if (time < spreading.SpreadAt)
-                continue;
+            if (_timing.CurTime - time > _maxProcessTime)
+                return;
 
-            RemCompDeferred<XenoWeedsSpreadingComponent>(uid);
-            _spread.Add((uid, weeds));
-        }
+            var (uid, weeds) = _spread[i];
+            _spread.RemoveAt(i);
 
-        foreach (var (uid, weeds) in _spread)
-        {
             if (_transform.GetGrid(uid) is not { } gridId ||
                 !_mapGridQuery.TryComp(gridId, out var gridComp))
             {
@@ -123,13 +128,9 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
                     }
                 }
 
-                // Do a raycast to see if any entities with offset fixtures are blocking the spread
-                var weedPosition = _transform.GetMoverCoordinates(uid).Position;
-                var ray = new CollisionRay(weedPosition, cardinal.CardinalToIntVec(), (int)CollisionGroup.BarricadeImpassable);
-                var intersect = _physics.IntersectRayWithPredicate(Transform(uid).MapID, ray, 0.6f, e => !Transform(e).Anchored);
-                var results = intersect.Select(r => r.HitEntity).ToHashSet();
-
-                if (results.Count > 0)
+                if (_directionBlocker.IsDirectionBlocked(uid,
+                        cardinal,
+                        collisionGroup: CollisionGroup.BarricadeImpassable))
                     blocked = true;
 
                 if (blocked)
@@ -162,7 +163,7 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
                     break;
                 }
 
-                if (!CanSpreadWeedsPopup(grid, neighbor, null, weeds.SpreadsOnSemiWeedable))
+                if (!CanSpreadWeedsPopup(grid, neighbor, null, null, weeds.SpreadsOnSemiWeedable))
                     continue;
 
                 if (weedsToReplace != null)
@@ -178,9 +179,9 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
 
                 EnsureComp<ActiveEdgeSpreaderComponent>(neighborWeeds);
 
-                for (var i = 0; i < 4; i++)
+                for (var j = 0; j < 4; j++)
                 {
-                    var dir = (AtmosDirection)(1 << i);
+                    var dir = (AtmosDirection)(1 << j);
                     var pos = neighbor.Offset(dir);
                     if (!_map.TryGetTileRef(grid, grid, pos, out var adjacent))
                         continue;
@@ -227,6 +228,19 @@ public sealed partial class XenoWeedsSystem : SharedXenoWeedsSystem
                     }
                 }
             }
+        }
+
+        if (_spread.Count > 0)
+            return;
+
+        var spreadingQuery = EntityQueryEnumerator<XenoWeedsSpreadingComponent, XenoWeedsComponent>();
+        while (spreadingQuery.MoveNext(out var uid, out var spreading, out var weeds))
+        {
+            if (time < spreading.SpreadAt)
+                continue;
+
+            RemCompDeferred<XenoWeedsSpreadingComponent>(uid);
+            _spread.Add((uid, weeds));
         }
     }
 

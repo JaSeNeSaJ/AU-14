@@ -1,9 +1,10 @@
 using System.Numerics;
 using Content.Shared._RMC14.Xenonids.Eye;
 using Robust.Client.Graphics;
-using Robust.Client.Player;
 using Robust.Shared.Enums;
+using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
+using Robust.Shared.Maths;
 using Robust.Shared.Physics;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -16,24 +17,28 @@ public sealed partial class QueenEyeOverlay : Overlay
     private static readonly ProtoId<ShaderPrototype> StencilDrawShader = "StencilDraw";
 
     [Dependency] private IClyde _clyde = default!;
-    [Dependency] private IEntityManager _entities = default!;
-    [Dependency] private IPlayerManager _player = default!;
     [Dependency] private IPrototypeManager _proto = default!;
     [Dependency] private IGameTiming _timing = default!;
+    private readonly IEntityManager _entities;
+    private readonly SharedMapSystem _mapSystem;
 
     public override OverlaySpace Space => OverlaySpace.WorldSpace;
 
     private readonly HashSet<Vector2i> _visibleTiles = new();
+    private List<Entity<MapGridComponent>> _renderGrids = new();
 
     private IRenderTexture? _staticTexture;
     private IRenderTexture? _stencilTexture;
+    private EntityUid? _visibleGrid;
 
     private readonly float _updateRate = 1f / 30f;
     private float _accumulator;
 
-    public QueenEyeOverlay()
+    public QueenEyeOverlay(IEntityManager entManager)
     {
+        _entities = entManager;
         IoCManager.InjectDependencies(this);
+        _mapSystem = _entities.System<SharedMapSystem>();
         ZIndex = 2;
     }
 
@@ -52,20 +57,20 @@ public sealed partial class QueenEyeOverlay : Overlay
         var worldHandle = args.WorldHandle;
 
         var worldBounds = args.WorldBounds;
-
-        var playerEnt = _player.LocalEntity;
-        _entities.TryGetComponent(playerEnt, out TransformComponent? playerXform);
-        var gridUid = playerXform?.GridUid ?? EntityUid.Invalid;
-        _entities.TryGetComponent(gridUid, out MapGridComponent? grid);
-        _entities.TryGetComponent(gridUid, out BroadphaseComponent? broadphase);
-
         var invMatrix = args.Viewport.GetWorldToLocalMatrix();
         _accumulator -= (float) _timing.FrameTime.TotalSeconds;
 
-        if (grid != null && broadphase != null)
+        if (TryGetRenderGrid(args.MapId, worldBounds, out var gridUid, out var grid, out var broadphase))
         {
             var lookups = _entities.System<EntityLookupSystem>();
             var xforms = _entities.System<SharedTransformSystem>();
+
+            if (_visibleGrid != gridUid)
+            {
+                _visibleGrid = gridUid;
+                _visibleTiles.Clear();
+                _accumulator = 0f;
+            }
 
             if (_accumulator <= 0f)
             {
@@ -105,6 +110,9 @@ public sealed partial class QueenEyeOverlay : Overlay
         // Not on a grid
         else
         {
+            _visibleGrid = null;
+            _visibleTiles.Clear();
+
             worldHandle.RenderInRenderTarget(_stencilTexture!,
                 () =>
                 {
@@ -130,5 +138,32 @@ public sealed partial class QueenEyeOverlay : Overlay
 
         worldHandle.SetTransform(Matrix3x2.Identity);
         worldHandle.UseShader(null);
+    }
+
+    private bool TryGetRenderGrid(
+        MapId mapId,
+        Box2Rotated worldBounds,
+        out EntityUid gridUid,
+        out MapGridComponent grid,
+        out BroadphaseComponent broadphase)
+    {
+        _renderGrids.Clear();
+        _mapSystem.FindGridsIntersecting(mapId, worldBounds, ref _renderGrids, approx: true, includeMap: true);
+
+        foreach (var candidate in _renderGrids)
+        {
+            if (!_entities.TryGetComponent(candidate.Owner, out BroadphaseComponent? candidateBroadphase))
+                continue;
+
+            gridUid = candidate.Owner;
+            grid = candidate.Comp;
+            broadphase = candidateBroadphase;
+            return true;
+        }
+
+        gridUid = default;
+        grid = default!;
+        broadphase = default!;
+        return false;
     }
 }

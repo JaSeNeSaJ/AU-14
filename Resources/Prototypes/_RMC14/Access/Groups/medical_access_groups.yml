@@ -5,12 +5,14 @@
   tags:
   - CMAccessCMO
   - CMAccessMedical
+  - CMAccessMedPrep
   - RMCAccessMorgue
   - CMAccessResearch
   - RMCAccessCommand
   - CMAccessChemistry
   - RMCAccessDatabase
   - RMCAccessSeniorCommand
+  - RMCAccessLogs
 
 - type: accessGroup
   id: CMMedbay

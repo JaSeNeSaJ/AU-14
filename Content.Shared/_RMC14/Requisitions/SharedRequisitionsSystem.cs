@@ -5,6 +5,7 @@ using Content.Shared.Climbing.Components;
 using Content.Shared.GameTicking;
 using Content.Shared.StepTrigger.Systems;
 using Robust.Shared.Configuration;
+using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Physics;
 using Robust.Shared.Physics.Systems;
@@ -18,6 +19,7 @@ public abstract partial class SharedRequisitionsSystem : EntitySystem
 {
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private FixtureSystem _fixtures = default!;
+    [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedPhysicsSystem _physics = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
@@ -87,7 +89,7 @@ public abstract partial class SharedRequisitionsSystem : EntitySystem
             RemCompDeferred<ClimbableComponent>(railing);
     }
 
-    protected void SetRailingMode(Entity<RequisitionsRailingComponent> railing, RequisitionsRailingMode mode)
+    public void SetRailingMode(Entity<RequisitionsRailingComponent> railing, RequisitionsRailingMode mode)
     {
         if (railing.Comp.Mode == mode)
             return;
@@ -96,6 +98,15 @@ public abstract partial class SharedRequisitionsSystem : EntitySystem
         Dirty(railing);
 
         UpdateRailing(railing);
+    }
+
+    public void UpdateRailingsInRange(MapCoordinates coordinates, float radius, RequisitionsRailingMode mode)
+    {
+        var railings = _lookup.GetEntitiesInRange<RequisitionsRailingComponent>(coordinates, radius);
+        foreach (var railing in railings)
+        {
+            SetRailingMode(railing, mode);
+        }
     }
 
     // ChangeBudget with a null faction, will apply to ALL factions/accounts.
@@ -137,8 +148,13 @@ public abstract partial class SharedRequisitionsSystem : EntitySystem
         var balance = CompOrNull<RequisitionsAccountComponent>(computer.Comp.Account)?.Balance ?? 0;
         var full = elevator != null && IsFull(elevator.Value);
 
-        var state = new RequisitionsBuiState(mode, busy, balance, full);
+        var state = new RequisitionsBuiState(mode, busy, balance, full, GetStockInfo(computer));
         _ui.SetUiState(computer.Owner, RequisitionsUIKey.Key, state);
+    }
+
+    protected virtual List<RequisitionsStockInfo> GetStockInfo(Entity<RequisitionsComputerComponent> computer)
+    {
+        return new List<RequisitionsStockInfo>();
     }
 
     protected bool IsFull(Entity<RequisitionsElevatorComponent> elevator)

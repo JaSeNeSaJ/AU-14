@@ -18,6 +18,7 @@ using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Screens;
 using Content.Client.UserInterface.Systems.Chat.Widgets;
 using Content.Client.UserInterface.Systems.Gameplay;
+using Content.Shared._CMU14.Chat;
 using Content.Shared._RMC14.Chat;
 using Content.Shared.Administration;
 using Content.Shared.CCVar;
@@ -205,7 +206,10 @@ public sealed partial class ChatUIController : UIController
         _config.OnValueChanged(CCVars.ChatEnableColorName, (value) => { _chatNameColorsEnabled = value; });
         _chatNameColorsEnabled = _config.GetCVar(CCVars.ChatEnableColorName);
 
-        _speechBubbleRoot = new LayoutContainer();
+        _speechBubbleRoot = new LayoutContainer
+        {
+            MouseFilter = Control.MouseFilterMode.Ignore,
+        };
 
         UpdateChannelPermissions();
 
@@ -472,7 +476,18 @@ public sealed partial class ChatUIController : UIController
             return;
         }
 
+        if (ShouldHideRunechatSelfRadioBubble(ent, msg, speechType))
+            return;
+
         EnqueueSpeechBubble(ent, msg, speechType);
+    }
+
+    private bool ShouldHideRunechatSelfRadioBubble(EntityUid sender, ChatMessage msg, SpeechBubble.SpeechType speechType)
+    {
+        return speechType == SpeechBubble.SpeechType.Radio
+            && msg.Channel == ChatChannel.Radio
+            // && _config.GetCVar(CCVars.ChatEnableRunechatBubbles)
+            && _player.LocalSession?.AttachedEntity == sender;
     }
 
     private void CreateSpeechBubble(EntityUid entity, SpeechBubbleData speechData)
@@ -518,6 +533,14 @@ public sealed partial class ChatUIController : UIController
         if (!CanShowSpeechBubble(entity, out _))
             return;
 
+        if (_config.GetCVar(CCVars.ChatEnableRunechatBubbles) &&
+            CMURunechatStyles.IsInterrupting(message.SpeechStyleClass))
+        {
+            ClearSpeechBubbles(entity);
+            CreateSpeechBubble(entity, new SpeechBubbleData(message, speechType));
+            return;
+        }
+
         if (!_queuedSpeechBubbles.TryGetValue(entity, out var queueData))
         {
             queueData = new SpeechBubbleQueueData();
@@ -525,6 +548,19 @@ public sealed partial class ChatUIController : UIController
         }
 
         queueData.MessageQueue.Enqueue(new SpeechBubbleData(message, speechType));
+    }
+
+    private void ClearSpeechBubbles(EntityUid entity)
+    {
+        _queuedSpeechBubbles.Remove(entity);
+
+        if (!_activeSpeechBubbles.TryGetValue(entity, out var active))
+            return;
+
+        foreach (var bubble in active.ToArray())
+        {
+            RemoveSpeechBubble(entity, bubble);
+        }
     }
 
     private bool CanShowSpeechBubble(EntityUid entity, out bool sameMap)
@@ -594,7 +630,7 @@ public sealed partial class ChatUIController : UIController
 
             // Can only send local / radio / emote when attached to a non-ghost entity.
             // TODO: this logic is iffy (checking if controlling something that's NOT a ghost), is there a better way to check this?
-            if (_ghost is not {IsGhost: true})
+            if (_ghost is not { IsGhost: true })
             {
                 CanSendChannels |= ChatSelectChannel.Local;
                 CanSendChannels |= ChatSelectChannel.Whisper;
@@ -604,7 +640,7 @@ public sealed partial class ChatUIController : UIController
         }
 
         // Only ghosts and admins can send / see deadchat.
-        if (_admin.HasFlag(AdminFlags.Admin) || _ghost is {IsGhost: true})
+        if (_admin.HasFlag(AdminFlags.Admin) || _ghost is { IsGhost: true })
         {
             FilterableChannels |= ChatChannel.Dead;
             CanSendChannels |= ChatSelectChannel.Dead;
@@ -788,7 +824,7 @@ public sealed partial class ChatUIController : UIController
 
     public ChatSelectChannel MapLocalIfGhost(ChatSelectChannel channel)
     {
-        if (channel == ChatSelectChannel.Local && _ghost is {IsGhost: true})
+        if (channel == ChatSelectChannel.Local && _ghost is { IsGhost: true })
             return ChatSelectChannel.Dead;
 
         return channel;
@@ -919,7 +955,9 @@ public sealed partial class ChatUIController : UIController
     private void OnChatMessage(MsgChatMessage message)
     {
         var msg = message.Message;
-        ProcessChatMessage(msg, !msg.HidePopup);
+        // RMC14
+        ProcessChatMessage(msg, !msg.HidePopup || msg.UseEmoteSpeechBubble);
+        // RMC14
 
         if ((msg.Channel & ChatChannel.AdminRelated) == 0 ||
             _config.GetCVar(CCVars.ReplayRecordAdminChat))
@@ -1001,15 +1039,23 @@ public sealed partial class ChatUIController : UIController
         switch (msg.Channel)
         {
             case ChatChannel.Local:
-                AddSpeechBubble(msg, SpeechBubble.SpeechType.Say);
+                // RMC14
+                AddSpeechBubble(msg, msg.UseEmoteSpeechBubble ? SpeechBubble.SpeechType.Emote : SpeechBubble.SpeechType.Say);
+                // RMC14
                 break;
 
             case ChatChannel.Whisper:
-                AddSpeechBubble(msg, SpeechBubble.SpeechType.Whisper);
+                // RMC14
+                AddSpeechBubble(msg, msg.UseEmoteSpeechBubble ? SpeechBubble.SpeechType.Emote : SpeechBubble.SpeechType.Whisper);
+                // RMC14
+                break;
+
+            case ChatChannel.Radio:
+                AddSpeechBubble(msg, SpeechBubble.SpeechType.Radio);
                 break;
 
             case ChatChannel.Dead:
-                if (_ghost is not {IsGhost: true})
+                if (_ghost is not { IsGhost: true })
                     break;
 
                 AddSpeechBubble(msg, SpeechBubble.SpeechType.Say);
