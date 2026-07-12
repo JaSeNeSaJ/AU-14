@@ -6327,5 +6327,20 @@
   id: 431
   time: '2026-07-12T09:24:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1584
+- author: troytroy400
+  changes:
+  - message: USCM gear is now camo conforming!
+    type: Add
+  - message: Added a "Pin scream to hotbar" option under Settings > CMU to let players
+      opt back into having the scream emote pinned to their hotbar. 1984 has been
+      removed (for now).
+    type: Add
+  - message: Wired HelmetAccessory, OuterClothingAccessory and UniformAccessory rendering
+      into ItemCamouflageVisualizerSystem so helmet garb, armor components and ponchos
+      properly re-texture on camo change.
+    type: Code
+  id: 432
+  time: '2026-07-12T12:37:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1585
 Name: CMU
 Order: -1
