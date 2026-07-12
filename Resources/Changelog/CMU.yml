@@ -6350,5 +6350,12 @@
   id: 433
   time: '2026-07-12T13:00:05.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1586
+- author: TheHellFireo
+  changes:
+  - message: Added W buttons to xeno chat messages that let xenonids watch the sender.
+    type: Add
+  id: 434
+  time: '2026-07-12T13:23:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1587
 Name: CMU
 Order: -1
