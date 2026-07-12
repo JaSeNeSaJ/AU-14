@@ -6357,5 +6357,23 @@
   id: 434
   time: '2026-07-12T13:23:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1587
+- author: TheHellFireo
+  changes:
+  - message: Added pre-round balance feedback prompts for specialist weapons, xenonids,
+      and current map/mode combinations.
+    type: Add
+  - message: Added a `ratingstats` dashboard for viewing aggregated community balance
+      feedback.
+    type: Add
+  id: 435
+  time: '2026-07-12T14:09:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1589
+- author: TheHellFireo
+  changes:
+  - message: Fixed high decal counts causing severe server lag.
+    type: Fix
+  id: 436
+  time: '2026-07-12T14:17:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1590
 Name: CMU
 Order: -1
