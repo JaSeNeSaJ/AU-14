@@ -55,6 +55,34 @@
     spawn: AU14GeneralMedicalVendor
 
 - type: entity
+  parent: RMCSecureCaseMedicalBig
+  id: CMUCrateResearchTerminal
+  name: Weyland-Yutani research data terminal crate
+  description: A crate containing a computer linked to Weyland-Yutani's research servers. [color=red]WARNING: Cannot be moved after unpacking![/color]
+  components:
+  - type: SpawnOnTerminate
+    spawn: CMUResearchDataTerminal
+
+- type: entity
+  parent: RMCSecureCaseMedicalBig
+  id: CMUCrateXRF
+  name: x-ray fluorescence spectrometer crate
+  description: A crate containing an X-Ray Fluorescence spectrometer machine. [color=red]WARNING: RADIOACTIVE CONTENTS. WARNING: Cannot be moved after unpacking![/color]
+  components:
+  - type: SpawnOnTerminate
+    spawn: CMUXRFScanner
+
+- type: entity
+  parent: RMCSecureCaseMedicalBig
+  id: CMUCrateSim
+  name: synthesis simulator crate
+  description: A crate containing a specialized chemical synthesis machine linked to Weyland-Yutani's research servers. [color=red]WARNING: Cannot be moved after unpacking![/color]
+  components:
+  - type: SpawnOnTerminate
+    spawn: CMUChemSimulator
+
+
+- type: entity
   parent: RMCSecureCaseMedicalBig #Medical Vendor Crate
   id: AU14CrateMedicalBloodVendor
   name: WeYu blood dispenser crate
