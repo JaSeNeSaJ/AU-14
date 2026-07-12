@@ -26,6 +26,51 @@ namespace Content.Server.Database.Migrations.Postgres
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Content.Server.Database.AU14FactionDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("au14_faction_definitions_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("data");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_default");
+
+                    b.Property<DateTime>("LastEditedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_edited_at");
+
+                    b.Property<int>("SchemaVersion")
+                        .HasColumnType("integer")
+                        .HasColumnName("schema_version");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("PK_au14_faction_definitions");
+
+                    b.HasIndex("Title")
+                        .HasDatabaseName("IX_au14_faction_definitions_title");
+
+                    b.ToTable("au14_faction_definitions", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.AU14CustomConstructionEntry", b =>
                 {
                     b.Property<int>("Id")

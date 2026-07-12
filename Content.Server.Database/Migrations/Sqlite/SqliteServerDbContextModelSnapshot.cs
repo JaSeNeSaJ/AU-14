@@ -17,6 +17,49 @@ namespace Content.Server.Database.Migrations.Sqlite
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "10.0.6");
 
+            modelBuilder.Entity("Content.Server.Database.AU14FactionDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("au14_faction_definitions_id");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("TEXT")
+                        .HasColumnName("data");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("is_default");
+
+                    b.Property<DateTime>("LastEditedAt")
+                        .HasColumnType("TEXT")
+                        .HasColumnName("last_edited_at");
+
+                    b.Property<int>("SchemaVersion")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("schema_version");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("TEXT")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("PK_au14_faction_definitions");
+
+                    b.HasIndex("Title")
+                        .HasDatabaseName("IX_au14_faction_definitions_title");
+
+                    b.ToTable("au14_faction_definitions", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.AU14CustomConstructionEntry", b =>
                 {
                     b.Property<int>("Id")

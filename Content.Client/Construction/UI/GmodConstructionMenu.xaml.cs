@@ -226,6 +226,7 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         Modernize(TilesEditorButton);
         Modernize(LatheEditorButton);
         Modernize(ZLevelTogglesButton);
+        Modernize(InsforEditorButton);
         Modernize(BuildButton, toggle: true);
         Modernize(FavoriteButton);
         Modernize(EraseButton, toggle: true);
@@ -463,6 +464,14 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
             IoCManager.Resolve<IEntitySystemManager>()
                 .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
                 .OpenZLevelToggles();
+
+        // INSFOR -> the faction editor. A server console command, so the server does all
+        // authorization (host flag) and a server without the INSFOR feature simply reports an
+        // unknown command.
+        InsforEditorButton.OnPressed += _ =>
+            IoCManager.Resolve<Robust.Shared.Console.IConsoleHost>().ExecuteCommand("insforeditor");
+        // The Custom INSFOR editor was cancelled (too logically complicated); its button, command,
+        // and flag pipeline were removed - see git history to resurrect them.
 
         // The spawnlist buttons (and initial selection) are built once the presenter calls SetSpawnlists.
     }
