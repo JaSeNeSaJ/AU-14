@@ -922,7 +922,6 @@
     guides:
     - Chef
     - FoodRecipes
-  - type: Infectable # XenoEgg
 
 - type: entity
   name: crab
@@ -1094,7 +1093,6 @@
   - type: HTN
     rootTask:
       task: RuminantHostileCompound
-  - type: Infectable # XenoEgg
 
 # Note that we gotta make this bitch vomit someday when you feed it anthrax or sumthin. Needs to be a small item thief too and aggressive if attacked.
 - type: entity
@@ -3585,7 +3583,6 @@
   - type: HTN
     rootTask:
       task: RuminantCompound
-  - type: Infectable # XenoEgg
 
 - type: entity
   name: diona nymph
