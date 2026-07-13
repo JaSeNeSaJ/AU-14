@@ -6438,5 +6438,17 @@
   id: 443
   time: '2026-07-13T02:11:07.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1601
+- author: troytroy400
+  changes:
+  - message: Added the M34E1 Armored Engineering Vehicle. An alternative selection
+      to the APC, it is unarmed but incredibly good at clearing enemy fortifications.
+    type: Add
+  - message: Removed duplicate vehicle entries from the lift console.
+    type: Remove
+  - message: UPP vehicles in the lift console now use lore accurate names.
+    type: Fix
+  id: 444
+  time: '2026-07-13T10:09:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1603
 Name: CMU
 Order: -1
