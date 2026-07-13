@@ -243,7 +243,7 @@
       amount: 1
     - id: RMCAttachmentRailFlashlight
       amount: 1
-    - id: RMCSpeedLoaderRsh9 # TODO: munition swap/fix UPDATE: Done?
+    - id: RMCSpeedLoaderRsh9 # TODO: munition swap/fix
       amount: 3
     - id: RMCBeltBrowne
       amount: 1
