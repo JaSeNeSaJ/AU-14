@@ -216,7 +216,7 @@
   - type: Storage
     maxItemSize: Ginormous
     grid:
-    - 0,0,5,6
+    - 0,0,5,10
   - type: StorageFill
     contents:
     - id: CMHeadBeretCMP
@@ -243,8 +243,8 @@
       amount: 1
     - id: RMCAttachmentRailFlashlight
       amount: 1
-    - id: RMCSpeedLoaderRsh9 # TODO: munition swap/fix
-      amount: 3
+    - id: RMCSpeedLoaderRsh9 # TODO: munition swap/fix UPDATE: Done?
+      amount: 6
     - id: RMCBeltBrowne
       amount: 1
     - id: AU14TeleBaton
