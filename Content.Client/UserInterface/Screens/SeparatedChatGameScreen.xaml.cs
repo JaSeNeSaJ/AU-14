@@ -56,7 +56,6 @@ public sealed partial class SeparatedChatGameScreen : InGameScreen
         SetGrowVertical(Alerts, GrowDirection.Both);
 
         ScreenContainer.OnSplitResizeFinished += OnSplitResizeFinished;
-        ScreenContainer.ResizeMode = SplitContainer.SplitResizeMode.Free;
 
         ViewportContainer.OnResized += ResizeActionContainer;
         SeparatedChatPanel.OnResized += UpdateChatPanelScale;
@@ -122,7 +121,6 @@ public sealed partial class SeparatedChatGameScreen : InGameScreen
 
     public override void SetChatSize(Vector2 size)
     {
-        ScreenContainer.ResizeMode = SplitContainer.SplitResizeMode.Free;
         _pendingChatSplitFraction = NormalizeChatSplitFraction(size.X);
         _pendingChatSplitFrames = ApplyChatSplitFrames;
         ApplyPendingChatSplitFraction();
