@@ -159,7 +159,7 @@
       - VehicleTankArmorConcussive
       - VehicleTankArmorCaustic
       - VehicleTankArmorPaladin
-      - VehicleTankSnowplow
+      - VehicleTankSnowplow 
       - VehicleTankOverdriveEnhancer
     - name: M577 APC
       vehicle: VehicleAPC
