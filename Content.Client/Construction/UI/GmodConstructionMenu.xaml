@@ -123,6 +123,9 @@ SPDX-License-Identifier: AGPL-3.0-only
                                 <Button Name="ZLevelTogglesButton"
                                         Text="{Loc 'gmod-construction-menu-zlevel-toggles'}"
                                         HorizontalExpand="True" Margin="0 0 0 2"/>
+                                <Button Name="ZSyncListsButton"
+                                        Text="{Loc 'gmod-construction-menu-zsync-lists'}"
+                                        HorizontalExpand="True" Margin="0 0 0 2"/>
 
                                 <!-- INSFOR category: insfor-update intentionally layers this button onto
                                      the improved construction menu from building-improvement PR #1497.

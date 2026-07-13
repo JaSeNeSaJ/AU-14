@@ -226,6 +226,7 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         Modernize(TilesEditorButton);
         Modernize(LatheEditorButton);
         Modernize(ZLevelTogglesButton);
+        Modernize(ZSyncListsButton); // AU14: z-level border reflection black/whitelist
         Modernize(InsforEditorButton);
         Modernize(BuildButton, toggle: true);
         Modernize(FavoriteButton);
@@ -464,6 +465,12 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
             IoCManager.Resolve<IEntitySystemManager>()
                 .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
                 .OpenZLevelToggles();
+
+        // AU14: Admin Tools -> Z-Sync Lists (which walls mirror across z-levels as map borders).
+        ZSyncListsButton.OnPressed += _ =>
+            IoCManager.Resolve<IEntitySystemManager>()
+                .GetEntitySystem<_AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>()
+                .OpenZSyncLists();
 
         // INSFOR -> the faction editor. A server console command, so the server does all
         // authorization (host flag) and a server without the INSFOR feature simply reports an
