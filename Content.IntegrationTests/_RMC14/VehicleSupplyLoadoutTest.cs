@@ -446,6 +446,8 @@ public sealed class VehicleSupplyLoadoutTest
             var supply = entMan.System<VehicleSupplySystem>();
             var itemSlots = entMan.System<ItemSlotsSystem>();
 
+            ClearVehicleTechUnlocks(entMan);
+
             Assert.That(prototypes.TryIndex<EntityPrototype>(ConsoleId, out var consoleProto), Is.True);
             Assert.That(consoleProto!.TryComp<VehicleSupplyConsoleComponent>(out var console, factory), Is.True);
 
