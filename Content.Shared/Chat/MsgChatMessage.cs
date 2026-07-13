@@ -186,7 +186,7 @@ namespace Content.Shared.Chat
                 ChatChannel.Whisper => "WHSP",
                 ChatChannel.Emotes => "ME",
                 ChatChannel.Radio => "RAD",
-                ChatChannel.LOOC => "LOOC",
+                ChatChannel.LOOC => "HELP",
                 ChatChannel.OOC => "OOC",
                 ChatChannel.Dead => "DEAD",
                 ChatChannel.Admin => "ADMIN",

@@ -6357,5 +6357,86 @@
   id: 434
   time: '2026-07-12T13:23:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1587
+- author: TheHellFireo
+  changes:
+  - message: Added pre-round balance feedback prompts for specialist weapons, xenonids,
+      and current map/mode combinations.
+    type: Add
+  - message: Added a `ratingstats` dashboard for viewing aggregated community balance
+      feedback.
+    type: Add
+  id: 435
+  time: '2026-07-12T14:09:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1589
+- author: TheHellFireo
+  changes:
+  - message: Fixed high decal counts causing severe server lag.
+    type: Fix
+  id: 436
+  time: '2026-07-12T14:17:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1590
+- author: troytroy400
+  changes:
+  - message: Michael Bay has been conscripted to work on CMU. Explosions and firearms
+      now have screenshake. Both can be disabled/tweaked in accessibility settings.
+    type: Add
+  id: 437
+  time: '2026-07-12T15:42:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1592
+- author: Sniperzero112
+  changes:
+  - message: Knuckledusters built into WY PMC Gloves
+    type: Add
+  - message: SGO Medical HUD Element
+    type: Tweak
+  id: 438
+  time: '2026-07-12T15:47:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1593
+- author: troytroy400
+  changes:
+  - message: LOOC renamed to LHelp
+    type: Tweak
+  - message: LOOC has been renamed to LHELP. Rule changes now dictate LHelp (formerly
+      LOOC) can only be used for requesting/giving help. This is being done to combat
+      OOCfesting issues and hopefully leave the immersion unhampered.
+    type: Admin
+  id: 439
+  time: '2026-07-12T15:48:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1583
+- author: NileDeveloper
+  changes:
+  - message: Bug-161 Runechat does not sanitize markup from input
+    type: Fix
+  id: 440
+  time: '2026-07-12T19:06:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1594
+- author: troytroy400
+  changes:
+  - message: Gas Masks have been moved to their own section in the equipment vendor
+      and have a new item, the gas mask bag.
+    type: Add
+  - message: WPDP is now available for all factions in requisitions.
+    type: Add
+  - message: IFAKs are now logically stocked.
+    type: Tweak
+  - message: Adds missing medical equipment to equipment vendors.
+    type: Fix
+  id: 441
+  time: '2026-07-12T19:11:02.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1597
+- author: ScorchFollower
+  changes:
+  - message: Re-sprited Drone Operator's drone to be more aligned with CM's art style.
+    type: Tweak
+  id: 442
+  time: '2026-07-12T21:31:25.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1599
+- author: NileDeveloper
+  changes:
+  - message: Bug 180, issue with set words turning into te format for the hexcolor
+    type: Fix
+  id: 443
+  time: '2026-07-13T02:11:07.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1601
 Name: CMU
 Order: -1
