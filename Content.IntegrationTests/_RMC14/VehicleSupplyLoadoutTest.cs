@@ -210,6 +210,8 @@ public sealed class VehicleSupplyLoadoutTest
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var factory = server.EntMan.ComponentFactory;
 
+            ClearVehicleTechUnlocks(server.EntMan);
+
             Assert.That(prototypes.TryIndex<EntityPrototype>(ConsoleId, out var consoleProto), Is.True);
             Assert.That(consoleProto!.TryComp<VehicleSupplyConsoleComponent>(out var console, factory), Is.True);
 
@@ -248,12 +250,7 @@ public sealed class VehicleSupplyLoadoutTest
         await server.WaitPost(() =>
         {
             var entMan = server.EntMan;
-            var techQuery = entMan.EntityQueryEnumerator<VehicleSupplyTechComponent>();
-            while (techQuery.MoveNext(out var techUid, out var tech))
-            {
-                tech.Unlocked.Clear();
-                entMan.Dirty(techUid, tech);
-            }
+            ClearVehicleTechUnlocks(entMan);
 
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var factory = entMan.ComponentFactory;
@@ -348,12 +345,7 @@ public sealed class VehicleSupplyLoadoutTest
         await server.WaitPost(() =>
         {
             var entMan = server.EntMan;
-            var techQuery = entMan.EntityQueryEnumerator<VehicleSupplyTechComponent>();
-            while (techQuery.MoveNext(out var techUid, out var tech))
-            {
-                tech.Unlocked.Clear();
-                entMan.Dirty(techUid, tech);
-            }
+            ClearVehicleTechUnlocks(entMan);
 
             var prototypes = server.ResolveDependency<IPrototypeManager>();
             var factory = entMan.ComponentFactory;
@@ -742,5 +734,15 @@ public sealed class VehicleSupplyLoadoutTest
         }
 
         return count;
+    }
+
+    private static void ClearVehicleTechUnlocks(IEntityManager entMan)
+    {
+        var techQuery = entMan.EntityQueryEnumerator<VehicleSupplyTechComponent>();
+        while (techQuery.MoveNext(out var techUid, out var tech))
+        {
+            tech.Unlocked.Clear();
+            entMan.Dirty(techUid, tech);
+        }
     }
 }
