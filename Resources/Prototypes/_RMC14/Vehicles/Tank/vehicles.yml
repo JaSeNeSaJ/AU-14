@@ -240,7 +240,7 @@
   parent: VehicleTankBase
   id: VehicleAev
   name: M34E1 Armored Engineering Vehicle
-  description: An unarmed engineering vehicle build on the chassis of a Longstreet, fitted with a reinforced plow, built for hauling personnel/cargo and clearing enemy defenses without interrupting the flow of combat.
+  description: An unarmed engineering vehicle built on the chassis of a Longstreet Tank, fitted with a reinforced plow, built for hauling personnel/cargo and clearing enemy defenses without interrupting the flow of combat.
   components:
   - type: Sprite
     drawdepth: Mobs
