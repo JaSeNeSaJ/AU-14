@@ -316,3 +316,5 @@ Resources/Prototypes/_AU14/CustomConstruction/Generated/
 
 # Vibe stuff
 settings.local.json
+yaml-linter-stderr.txt
+yaml-linter-stdout.txt
