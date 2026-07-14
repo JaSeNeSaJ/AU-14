@@ -49,14 +49,14 @@
   - type: Sprite
     sprite: _RMC14/Objects/Kitchen/Plants/sunflower.rsi
   - type: SolutionContainerManager
-      solutions:
-        food:
-          maxVol: 3
-          reagents:
-          - ReagentId: CMUDigoxin
-            Quantity: 3
-    - type: Extractable
-      grindableSolutionName: food
+    solutions:
+      food:
+        maxVol: 3
+        reagents:
+        - ReagentId: CMUDigoxin
+          Quantity: 3
+  - type: Extractable
+    grindableSolutionName: food
 
 - type: seed
   id: plump
