@@ -177,7 +177,7 @@ public sealed class VehicleSupplyLoadoutTest
             AssertEntryGroup(entries, "VehicleHumvee", "vehicle-support");
             AssertEntryGroup(entries, "VehicleHumveeMedical", "vehicle-support");
             AssertEntryGroup(entries, "VehicleHumveeTransport", "vehicle-support");
-            AssertEntryGroup(entries, "VehicleSPPAPC", "vehicle-support");
+            AssertEntryGroup(entries, "VehicleSPPAPC", "vehicle-apc");
             AssertEntryGroup(entries, "VehicleBlackfoot", "vehicle-support");
             AssertEntryGroup(entries, "VehicleBlackfootRecon", "vehicle-support");
             AssertEntryGroup(entries, "VehicleBlackfootTransport", "vehicle-support");
