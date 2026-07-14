@@ -61,6 +61,17 @@
         density: 85
         layer:
         - BulletImpassable
+  - type: DrawableSolution
+    solution: blood
+  - type: SolutionContainerManager
+    solutions:
+      blood:
+        maxVol: 600
+        reagents:
+        - ReagentId: CMUXenoBlood
+          Quantity: 300
+        - ReagentId: CMUXenoPlasmaCatecholamine
+          Quantity: 300
   - type: XenoLight
   - type: XenoDevolve
     devolvesTo:
