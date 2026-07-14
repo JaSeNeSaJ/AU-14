@@ -14,6 +14,7 @@ namespace Content.Server._RMC14.Language.Systems;
 public sealed partial class LanguageSystem : SharedLanguageSystem
 {
     [Dependency] private LanguageLearningSystem _learning = default!;
+    [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private IComponentFactory _compFactory = default!;
 
     public override void Initialize()
@@ -356,7 +357,7 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         return result.ToString();
     }
 
-    // corrupted hive 
+    // corrupted hive
     private static readonly HashSet<string> CorruptedXenoExcludedSpoken = new()
     {
         "Primitive",
