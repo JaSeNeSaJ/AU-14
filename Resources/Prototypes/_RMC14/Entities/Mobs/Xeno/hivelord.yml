@@ -97,7 +97,7 @@
           Quantity: 200
         - ReagentId: CMUXenoPlasmaPurple
           Quantity: 200
-        - ReagentID: CMUXenoPlasmaPhero
+        - ReagentId: CMUXenoPlasmaPhero
           Quantity: 200
   - type: TacticalMapIcon
     icon:
