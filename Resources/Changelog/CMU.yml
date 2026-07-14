@@ -6604,5 +6604,84 @@
   id: 450
   time: '2026-07-14T08:06:11.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1611
+- author: troytroy400
+  changes:
+  - message: Added dirt mound barricades that can be thrown up with just a dirt filled
+      entrenching tool on any tile.
+    type: Add
+  - message: Added the bangalore demolition charge. A much more powerful (and mostly
+      silent) C4 charge that arms itself when placed on the ground and detonates a
+      short time later. Available in CT vendors.
+    type: Add
+  - message: Requisitions now has a small amount of every material available, along
+      with a large supply of the new HESCO kits.
+    type: Add
+  - message: CT point purchase prices have been lowered to account for new content
+      they can take.
+    type: Tweak
+  - message: CTs now get a free full size shovel in their kit.
+    type: Tweak
+  - message: HESCOs have build states now and can be assembled using a HESCO kit,
+      which can be found in req or in CT vendors.
+    type: Tweak
+  - message: Full size shovels now have a 10% less time doafter buff for all actions
+      involving a shovel.
+    type: Tweak
+  id: 451
+  time: '2026-07-14T12:10:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1614
+- author: MACMAN2003
+  changes:
+  - message: Weyland-Yutani security forces can now build better barricades alongside
+      building better worlds.
+    type: Tweak
+  id: 452
+  time: '2026-07-14T14:08:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1609
+- author: JaSeNeSaJ
+  changes:
+  - message: 'Sheperds'': Deeper river'
+    type: Add
+  - message: 'Sheperds'': 2nd specimen chamber'
+    type: Add
+  - message: 'Sheperds'': Phoron & Pill bottles boxes'
+    type: Add
+  - message: Water overlay that causes Asphyxiation damage to non-xenos/synths/carp
+    type: Add
+  - message: Strata platform style multi-z stairs
+    type: Add
+  id: 453
+  time: '2026-07-14T20:10:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1615
+- author: Crime481
+  changes:
+  - message: Port Nereid has had a mix-up for the consoles used for the body scanners.
+      Engineering staff has resolved that issue, now the body scanners are usable.
+    type: Fix
+  - message: Port Nereid had operating tables in places of autodoc pods due to budget
+      issues, the issue has been resolved. Now, the autodocs are usable.
+    type: Fix
+  - message: In the military medbay closet room on Hope's Retreat after a routine
+      inventory check, the stack of plasteel has been swapped for a stack of glass,
+      as intended. Now, you can dump all three stacks of materials in that closet
+      room into your local medilathe.
+    type: Tweak
+  - message: Fixed the gas mask pouch being stuck in closed state while empty.
+    type: Fix
+  id: 454
+  time: '2026-07-14T20:11:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1613
+- author: KriegersMustDie
+  changes:
+  - message: CMO stamp.
+    type: Add
+  - message: Ambassadors get more stuff and cheaper stuff.
+    type: Tweak
+  - message: Officers no longer throw their all **important** stamps on the floor
+      of the Bush.
+    type: Fix
+  id: 455
+  time: '2026-07-14T20:34:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1617
 Name: CMU
 Order: -1
