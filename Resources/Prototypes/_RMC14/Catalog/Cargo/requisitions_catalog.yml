@@ -54,6 +54,8 @@
         crate: RMCCrateFoldingBarricades
       - cost: 350
         crate: RMCCrateSuppliesBoxes
+      - cost: 9000
+        crate: CMUCratePreciousMetals
     - name: Food and Drinks
       entries:
       - cost: 380

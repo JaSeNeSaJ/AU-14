@@ -100,16 +100,16 @@
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/carrot.rsi
     - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 6
-        reagents:
-        - ReagentId: CMUPhenol
-          Quantity: 3
-        - ReagentID: CMUConiine
-          Quantity: 3
-  - type: Extractable
-    grindableSolutionName: food
+      solutions:
+        food:
+          maxVol: 6
+          reagents:
+          - ReagentId: CMUPhenol
+            Quantity: 3
+          - ReagentID: CMUConiine
+            Quantity: 3
+    - type: Extractable
+      grindableSolutionName: food
 
 - type: entity
   parent: SeedBase
@@ -123,10 +123,10 @@
     - type: SolutionContainerManager
       solutions:
         food:
-          maxVol: 3
-          reagents:
-          - ReagentId: CMUPsoralen
-            Quantity: 3
+        maxVol: 3
+        reagents:
+        - ReagentId: CMUPsoralen
+          Quantity: 3
     - type: Extractable
       grindableSolutionName: food
 
@@ -524,15 +524,15 @@
       seedId: poppy
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/poppy.rsi
-  - type: SolutionContainerManager
-    solutions:
-      food:
-        maxVol: 3
-        reagents:
-        - ReagentId: CMUAtropine
-          Quantity: 3
-  - type: Extractable
-    grindableSolutionName: food
+    - type: SolutionContainerManager
+      solutions:
+        food:
+          maxVol: 3
+          reagents:
+          - ReagentId: CMUAtropine
+            Quantity: 3
+    - type: Extractable
+      grindableSolutionName: food
 
 
 - type: entity
