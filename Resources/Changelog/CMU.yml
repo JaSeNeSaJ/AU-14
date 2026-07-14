@@ -6450,5 +6450,107 @@
   id: 444
   time: '2026-07-13T10:09:30.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1603
+- author: murdocstarsim
+  changes:
+  - message: Provost Offices come to deliver new SOP, UCMJ and Small Highroleplay
+      rule changes.
+    type: Add
+  - message: Provost Marshals have removed the line mentioning ALL military must abide
+      by SOP & UCMJ. Now only the command must abide by it (MP's can still get you!)
+      - By Twinkle.
+    type: Admin
+  - message: Provost Marshals have changed the High Roleplay Rules line mentioning
+      Command, Medical, Logistics, etc are not to deploy, to they must follow deployment
+      regulations and ensure their department is staffed before engaging in deployment.
+    type: Admin
+  - message: CMP was pretty annoyed seeing LO's deploy, now. LO, CMP & CMO are now
+      specifically stated they are to remain on the ship at all times.
+    type: Tweak
+  - message: APOLLO has noted a spelling error, 06 changed to O6 in Command regulations.
+    type: Tweak
+  - message: 'High Command have now removed the command section that stated: "All
+      Officers have the right to deploy to the frontline" because not all of you do.'
+    type: Remove
+  - message: IOs have been getting up to some dubious behaviour, and so, high command
+      has removed command staff withdrawing when a member of command has become permanently
+      deceased, meaning a dead IO won't prevent deployment of other officers.
+    type: Remove
+  - message: Provost enforcers have expanded upon our SOP's for an easier reading
+      process. All deployments are now in their own section.
+    type: Add
+  - message: Provost Marshals have heard the complaints; appeals take far too long
+      in insurgency. Appeals are now split between Military and Civilian. Military
+      appeals are the same process, vocal, recorded CMP, Adjutant & Commander Only.
+      Civilians are written and can be handled by any member of the command staff.
+    type: Tweak
+  - message: Provost enforcers continue to work on making our SOP's easier to read...
+      Vehicle regulations now have their own section to de-clutter the "Equipment
+      & Personnel" guidebook entry.
+    type: Add
+  - message: Our IO's haven't been dubious enough and need to get up to some more
+      mischief. High command has added that IOs now have a clause exempting them from
+      needing to stay near other marines; this is due to their covert nature, often
+      requiring them to be alone.
+    type: Tweak
+  - message: High command is tired of seeing privates being selected as squad leaders
+      over corporals. Squad leader status, when needing to be transferred, should
+      now be transferred to the highest-ranking member in that squad.
+    type: Add
+  - message: CMP has gotten annoyed, and in fear of his wrath, high command has renamed
+      DASO to DAS, disrespecting a superior, no longer just officers.
+    type: Tweak
+  - message: Provost enforcers work even more diligently. SOP section now has text
+      links to the new sections.
+    type: Add
+  - message: High command is tired of poor privates being unable to understand orders
+      on the radio because they don't speak the same language. Use of language has
+      been updated to include all military traffic on radio frequencies, to use the
+      unit's primary language
+    type: Tweak
+  id: 445
+  time: '2026-07-13T21:30:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1566
+- author: IMGXKILLER
+  changes:
+  - message: The Geneva Conventions of 12th August 2106
+    type: Add
+  - message: WICH
+    type: Remove
+  id: 446
+  time: '2026-07-13T22:23:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1598
+- author: HolySSSS
+  changes:
+  - message: Simple alcohol brewing expansion for the low price of suspense of disbelief.
+    type: Add
+  - message: Removed the black goo requirement in several alcohol recipes.
+    type: Remove
+  - message: Ingredients Vendor (a.k.a Galley Auxilliary) now includes 14 grapes and
+      14 berries.
+    type: Add
+  id: 447
+  time: '2026-07-14T00:21:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1606
+- author: maertayn
+  changes:
+  - message: big brother is watching your mentor helps
+    type: Admin
+  id: 448
+  time: '2026-07-14T04:04:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1607
+- author: troytroy400
+  changes:
+  - message: The LTB cannon is back on the menu for the tank. It has been heavily
+      nerfed in terms of damage/fire rate and must now have each round loaded one
+      at a time after firing.
+    type: Add
+  - message: The tank autocannon has been given a slight firerate buff to make it
+      a more viable option.
+    type: Tweak
+  - message: the retractable ladder now has its own unique sprite made by scorchfollower.
+    type: Tweak
+  id: 449
+  time: '2026-07-14T04:28:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1608
 Name: CMU
 Order: -1
