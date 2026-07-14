@@ -6552,5 +6552,57 @@
   id: 449
   time: '2026-07-14T04:28:37.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1608
+- author: troytroy400
+  changes:
+  - message: Added the GOVFOR Vehicle Commander job.
+    type: Add
+  - message: Added the GOVFOR Radio Traffic Operator job.
+    type: Add
+  - message: Added the GOVFOR Nurse job.
+    type: Add
+  - message: Added the GOVFOR Engineering Technician job.
+    type: Add
+  - message: Added an Engineering Staff vendor for Engineering Officer and Engineering
+      Technician.
+    type: Add
+  - message: Added a super PACAM generator + required fuel to the USS Bush along with
+      the new Engineering Staff vendor.
+    type: Add
+  - message: Combat Technician's rank set to E1 -> E2 at 10h.
+    type: Tweak
+  - message: Automatic Rifleman's rank set to E1 -> E2 at 10h.
+    type: Tweak
+  - message: Corpsman's rank set to E2.
+    type: Tweak
+  - message: Platoon Commander's rank set to O4 -> O5 at 50h.
+    type: Tweak
+  - message: Vehicle Crewman's rank set to E4 -> E5 at 10h.
+    type: Tweak
+  - message: Military Policeman's rank set to E4 -> E5 at 10h -> E6 at 24h.
+    type: Tweak
+  - message: Technician renamed to Logistics Technician.
+    type: Tweak
+  - message: Drone Operator's rank set to E5 -> E6 at 10h.
+    type: Tweak
+  - message: DCC's rank set to E5 -> E6 at 10h.
+    type: Tweak
+  - message: Advisor's rank set to E6 -> E7 at 10h -> E8 at 20h -> E8E at 30h -> E9
+      at 40h -> E9E at 50h.
+    type: Tweak
+  - message: Renamed "Technician" to "Logistics Technician".
+    type: Tweak
+  - message: Gave GOVFOR medical officer pharmacist as an alternate loadout ID option.
+    type: Tweak
+  - message: Renamed "Doctor" to "Medical Officer".
+    type: Tweak
+  - message: Reworked Engineering Officer and Logistics Officer starting gear to be
+      uniform with the LTs/ETs.
+    type: Tweak
+  - message: Fixed the K92 Maintenance Jack and gave it the vehicle servicing tool
+      quality.
+    type: Fix
+  id: 450
+  time: '2026-07-14T08:06:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1611
 Name: CMU
 Order: -1
