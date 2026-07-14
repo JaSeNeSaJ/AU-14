@@ -424,6 +424,8 @@
     quickEquip: false
     slots:
     - Suitstorage
+  - type: EntrenchingTool
+  - type: RMCShovel
   - type: UseDelay
     delay: 0.25
   - type: Appearance
