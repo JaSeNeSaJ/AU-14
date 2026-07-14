@@ -88,9 +88,9 @@ trait-category-quirks = Quirks
 
 humanoid-profile-editor-government-forces-label = Government Forces / { $segmentTitle }
 
-humanoid-profile-editor-segment-command = Command
-humanoid-profile-editor-segment-officer = Officer
-humanoid-profile-editor-segment-flight = Flight
+humanoid-profile-editor-segment-command = Operation Command
+humanoid-profile-editor-segment-officer = Department Command
+humanoid-profile-editor-segment-flight = Vehicle Crew
 humanoid-profile-editor-segment-support = Support
 humanoid-profile-editor-segment-leader = Infantry NCO
 humanoid-profile-editor-segment-line = Line Infantry

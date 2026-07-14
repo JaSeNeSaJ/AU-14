@@ -18,7 +18,7 @@ stamp-component-stamped-name-au14-mp = Military Police
 stamp-component-stamped-name-au14-cmo = Chief Medical Officer
 stamp-component-stamped-name-au14-mo = Medical Officer
 stamp-component-stamped-name-au14-lo = Logistics Officer
-stamp-component-stamped-name-au14-aux = Auxiliary Technician
+stamp-component-stamped-name-au14-aux = Logistics Technician
 stamp-component-stamped-name-au14-eo = Engineering Officer
 stamp-component-stamped-name-au14-sea = Senior Enlisted Advisor
 
