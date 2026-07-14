@@ -159,7 +159,7 @@
       - VehicleTankArmorConcussive
       - VehicleTankArmorCaustic
       - VehicleTankArmorPaladin
-      - VehicleTankSnowplow 
+      - VehicleTankSnowplow
       - VehicleTankOverdriveEnhancer
     - name: M577 APC
       vehicle: VehicleAPC
@@ -336,6 +336,10 @@
         - id: VehicleTankAceAutocannon
           name: ACE autocannon
           item: VehicleTankAceAutocannon
+          slot: primary::turret-cannon
+        - id: VehicleTankLTBCannon
+          name: LTB cannon
+          item: VehicleTankLTBCannon
           slot: primary::turret-cannon
         - id: VehicleTankDragonFlamer
           name: DRG-N flamer

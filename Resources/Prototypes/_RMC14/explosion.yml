@@ -24,9 +24,9 @@
   id: RMCLTBCannon
   damagePerIntensity:
     types:
-      Blunt: 40
-      Heat: 40
-      Structural: 1000
+      Blunt: 8
+      Heat: 8
+      Structural: 300
   tileBreakChance: [0, 0.5, 1]
   tileBreakIntensity: [0, 8, 20]
   tileBreakRerollReduction: 20
