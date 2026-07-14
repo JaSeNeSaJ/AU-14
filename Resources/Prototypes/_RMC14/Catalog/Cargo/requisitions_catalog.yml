@@ -84,6 +84,10 @@
         crate: RMCCrateClothingMedicalPouches
       - cost: 350
         crate: AU14CrateBoxFirefighting
+      - cost: 300
+        crate: CMUCrateGasMaskFilter
+      - cost: 1500
+        crate: CMUCrateGasMaskFilterHAZOPS
     - name: Medical
       entries:
       - cost: 350
@@ -108,6 +112,8 @@
         stockReplenishDelay: 600
       - cost: 850
         crate: CMUCrateLabGlassware
+      - cost: 350
+        crate: CMUCrateBiosuitMedical
     - name: Supplies
       entries:
       - cost: 350
