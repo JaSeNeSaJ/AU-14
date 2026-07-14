@@ -125,7 +125,7 @@
       - cost: 390
         crate: RMCCrateSupplyJanitor
       - cost: 350
-        crate: RMCCrateHydro
+        crate: AU14CrateHydroponics
       - cost: 340
         crate: hydroponicsTray
       - cost: 330
