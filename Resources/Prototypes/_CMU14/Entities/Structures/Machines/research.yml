@@ -10,6 +10,7 @@
       - Xeno
   - type: Transform
     anchored: false
+  - type: Anchorable
   - type: Physics
     bodyType: Static
     canCollide: false
@@ -36,6 +37,7 @@
   description: A spectrometer that bombards a sample in high energy radiation to detect emitted fluorescent x-ray patterns. By using the emission spectrum of the sample it can identify its chemical composition.
   components:
   - type: Appearance
+  - type: Anchorable
   - type: GenericVisualizer
     visuals:
       enum.XRFScannerVisuals.State:
@@ -90,6 +92,7 @@
   - type: Corrodible
     isCorrodible: false
   - type: InteractionOutline
+  - type: Anchorable
   - type: Sprite
     sprite: _AU14/Structures/Machines/Science/chem_simulator.rsi
     offset: "0.5, 0.5"

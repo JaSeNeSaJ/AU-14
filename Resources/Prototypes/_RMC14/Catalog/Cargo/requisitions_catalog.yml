@@ -106,6 +106,8 @@
         crate: AU14CrateBoxDefibrillator
         maxStock: 4
         stockReplenishDelay: 600
+      - cost: 850
+        crate: CMUCrateLabGlassware
     - name: Supplies
       entries:
       - cost: 350
