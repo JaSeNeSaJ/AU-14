@@ -6730,5 +6730,22 @@
   id: 459
   time: '2026-07-15T04:14:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1625
+- author: troytroy400
+  changes:
+  - message: Added the 'Regulation Appearance' tab to the character customization
+      UI, which has regulation preset hair colors/styles. When playing as military
+      characters, your appearance will be inherited from this category to keep your
+      character in-line with UCMJ/SOP. HRP is here.
+    type: Add
+  id: 460
+  time: '2026-07-15T13:11:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1628
+- author: ver0098
+  changes:
+  - message: A M34A2 with W-Y PMC color scheme has been added to the vehicle lift.
+    type: Add
+  id: 461
+  time: '2026-07-15T16:05:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1612
 Name: CMU
 Order: -1
