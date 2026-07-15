@@ -127,7 +127,7 @@
       - cost: 350
         crate: AU14CrateHydroponicsEquipment
       - cost: 600
-        crate: AU14CrateHydroponicsSeeds
+        crate: AU14CrateHydroSeeds
       - cost: 340
         crate: hydroponicsTray
       - cost: 330
