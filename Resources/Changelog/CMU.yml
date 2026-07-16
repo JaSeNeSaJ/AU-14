@@ -6747,5 +6747,30 @@
   id: 461
   time: '2026-07-15T16:05:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1612
+- author: MACMAN2003
+  changes:
+  - message: Weyland-Yutani were kind enough to deliver power to the people, and by
+      the people, I mean the employees of the Weymart in Barker's Lament.
+    type: Add
+  - message: The eggs in the sensor anomaly have been removed.
+    type: Remove
+  - message: The Weyland-Yutani facility's containment area has experienced corporate
+      downsizing.
+    type: Tweak
+  id: 462
+  time: '2026-07-16T01:43:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1622
+- author: troytroy400
+  changes:
+  - message: Added 40 new civilian hairstyle options.
+    type: Add
+  - message: Added a few missing hair styles to regulation appearance (elegant bun,
+      mullet, marine mohawk, low ponytail, ponytail 2, emo bun, emo).
+    type: Tweak
+  - message: The regulation appearance info header no longer lies to you.
+    type: Tweak
+  id: 463
+  time: '2026-07-16T03:23:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1630
 Name: CMU
 Order: -1
