@@ -144,6 +144,14 @@ namespace Content.Shared.Humanoid
             "HumanHairUndercutright",
             "RMCHumanHairUndercutTop",
             "RMCHumanHairWardaddy",
+
+            "RMCHumanHairPonytail2",
+            "AU14HumanHairLowPonyTail",
+            "RMCHumanHairMarineMohawk",
+            "RMCHumanHairMullet",
+            "AU14HumanHairElegant",
+            "RMCHumanHairEmo",
+            "RMCHumanHairEmobun",
         };
 
         /// <summary>
@@ -162,6 +170,17 @@ namespace Content.Shared.Humanoid
             "HumanFacialHair7oclock",
             "HumanFacialHair3oclock",
             "HumanFacialHairSelleck",
+
+            "HumanFacialHairSideburn",
+            "HumanFacialHairElvis",
+            "HumanFacialHairMutton",
+            "HumanFacialHairMoustache",
+            "HumanFacialHairPencilstache",
+            "HumanFacialHairWalrus",
+            "HumanFacialHairFumanchu",
+            "HumanFacialHairHogan",
+            "HumanFacialHairVandyke",
+            "RMCHumanFacialHairSoulfulSelleck",
         };
 
         /// <summary>
