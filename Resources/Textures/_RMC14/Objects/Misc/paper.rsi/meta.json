@@ -169,6 +169,49 @@
     {
       "name": "photo"
     },
+
+    {
+      "name": "wy_letterhead"
+    },
+    {
+      "name": "paper_faction_words"
+    },
+    {
+      "name": "uscm_letterhead"
+    },
+    {
+      "name": "clf_letterhead"
+    },
+    {
+      "name": "icsc_letterhead"
+    },
+    {
+      "name": "hyperdyne_letterhead"
+    },
+    {
+      "name": "kelland_letterhead"
+    },
+    {
+      "name": "ccaf_letterhead"
+    },
+    {
+      "name": "upp_letterhead"
+    },
+    {
+      "name": "vai_letterhead"
+    },
+    {
+      "name": "ua_letterhead"
+    },
+    {
+      "name": "seegson_letterhead"
+    },
+    {
+      "name": "twe_letterhead"
+    },
+    {
+      "name": "album"
+    },
     {
       "name": "clip"
     },
