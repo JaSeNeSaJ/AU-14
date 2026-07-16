@@ -6772,5 +6772,48 @@
   id: 463
   time: '2026-07-16T03:23:08.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1630
+- author: troytroy400
+  changes:
+  - message: Added new trait Slow Runner. This trait reduces maximum sprint speed
+      by 15%.
+    type: Add
+  - message: Added new trait Asthmatic. Sprinting gradually strains your breathing,
+      after a while your character will to being to cough and you will get oxygen
+      damage and a movement slowdown. Wearing armor makes strain build 10% faster.
+      Strain decays when you stop sprinting. Treated instantly by Dexalin, Dexalin+,
+      or Albuterol. Spawns with a an inhaler filled with one dose of Albuterol.
+    type: Add
+  - message: Added new trait Anemic. This trait makes you bleed 20% faster than normal.
+    type: Add
+  - message: Added new trait Random Drug Allergy. You are allergic to one of four
+      medications (Inaprovaline, Oxycodone, Tramadol, or Paracetamol). Metabolizing
+      the medication your allergic to triggers an allergic reaction that will gradually
+      build up toxin and oxygen damage, then eventually seizures. Naloxone or epinephrine
+      instantly cures the reaction and purges the allergen from your bloodstream entirely.
+      Spawns with a dogtag naming the allergen and an epipen.
+    type: Add
+  - message: Added new trait Panic Prone. Panic builds gradually from being shot,
+      taking a serious wound, getting shot at, getting knocked down by an explosion,
+      or witnessing someone die nearby. If the panic builds too high, your character
+      will scream periodically and your weapon skill will be temporarily affected
+      until your character is no longer paniced.
+    type: Add
+  - message: Added new trait Nicotine Addiction. Go more than 15 minutes without smoking
+      and you'll start craving a smoke. After a period without nicotine you'll begin
+      shaking at random intervals until you get that fix.
+    type: Add
+  - message: The Epilepsy trait has been fixed. It now causes you to have a seizure
+      every 25-30 minutes and lasts anywhere from 30-70 seconds
+    type: Fix
+  - message: GOVFOR roles were selectively updated to only be able to take relevant
+      traits. Combat troops can no-longer have crippling disabilities.
+    type: Tweak
+  - message: All gasmasks can now be used as internals, this is particularly helpful
+      for doing field surgery in a pinch. Some various relevant suits and armors now
+      have built in gas tanks.
+    type: Tweak
+  id: 464
+  time: '2026-07-16T14:29:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1632
 Name: CMU
 Order: -1
