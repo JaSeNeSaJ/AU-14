@@ -6604,5 +6604,216 @@
   id: 450
   time: '2026-07-14T08:06:11.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1611
+- author: troytroy400
+  changes:
+  - message: Added dirt mound barricades that can be thrown up with just a dirt filled
+      entrenching tool on any tile.
+    type: Add
+  - message: Added the bangalore demolition charge. A much more powerful (and mostly
+      silent) C4 charge that arms itself when placed on the ground and detonates a
+      short time later. Available in CT vendors.
+    type: Add
+  - message: Requisitions now has a small amount of every material available, along
+      with a large supply of the new HESCO kits.
+    type: Add
+  - message: CT point purchase prices have been lowered to account for new content
+      they can take.
+    type: Tweak
+  - message: CTs now get a free full size shovel in their kit.
+    type: Tweak
+  - message: HESCOs have build states now and can be assembled using a HESCO kit,
+      which can be found in req or in CT vendors.
+    type: Tweak
+  - message: Full size shovels now have a 10% less time doafter buff for all actions
+      involving a shovel.
+    type: Tweak
+  id: 451
+  time: '2026-07-14T12:10:54.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1614
+- author: MACMAN2003
+  changes:
+  - message: Weyland-Yutani security forces can now build better barricades alongside
+      building better worlds.
+    type: Tweak
+  id: 452
+  time: '2026-07-14T14:08:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1609
+- author: JaSeNeSaJ
+  changes:
+  - message: 'Sheperds'': Deeper river'
+    type: Add
+  - message: 'Sheperds'': 2nd specimen chamber'
+    type: Add
+  - message: 'Sheperds'': Phoron & Pill bottles boxes'
+    type: Add
+  - message: Water overlay that causes Asphyxiation damage to non-xenos/synths/carp
+    type: Add
+  - message: Strata platform style multi-z stairs
+    type: Add
+  id: 453
+  time: '2026-07-14T20:10:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1615
+- author: Crime481
+  changes:
+  - message: Port Nereid has had a mix-up for the consoles used for the body scanners.
+      Engineering staff has resolved that issue, now the body scanners are usable.
+    type: Fix
+  - message: Port Nereid had operating tables in places of autodoc pods due to budget
+      issues, the issue has been resolved. Now, the autodocs are usable.
+    type: Fix
+  - message: In the military medbay closet room on Hope's Retreat after a routine
+      inventory check, the stack of plasteel has been swapped for a stack of glass,
+      as intended. Now, you can dump all three stacks of materials in that closet
+      room into your local medilathe.
+    type: Tweak
+  - message: Fixed the gas mask pouch being stuck in closed state while empty.
+    type: Fix
+  id: 454
+  time: '2026-07-14T20:11:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1613
+- author: KriegersMustDie
+  changes:
+  - message: CMO stamp.
+    type: Add
+  - message: Ambassadors get more stuff and cheaper stuff.
+    type: Tweak
+  - message: Officers no longer throw their all **important** stamps on the floor
+      of the Bush.
+    type: Fix
+  id: 455
+  time: '2026-07-14T20:34:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1617
+- author: TheHellFireo
+  changes:
+  - message: Hands and feet can now be selected for fracture, internal bleeding, and
+      eschar surgeries.
+    type: Fix
+  - message: Weapons with two-point slings now use normal throwing physics.
+    type: Fix
+  - message: Fully repaired synthetics now return to an alive state after defibrillation
+      instead of remaining critical.
+    type: Fix
+  id: 456
+  time: '2026-07-15T00:04:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1619
+- author: murdocstarsim
+  changes:
+  - message: APOLLO has noted errors with new SOP's not appearing in the guidebook;
+      the issue has been fixed, and now deployments and vehicles should appear in
+      the guidebook under SOP.
+    type: Fix
+  id: 457
+  time: '2026-07-15T03:08:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1621
+- author: JaSeNeSaJ
+  changes:
+  - message: 'Sheperds'': Prevent water theft via shuttle'
+    type: Fix
+  id: 458
+  time: '2026-07-15T04:12:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1623
+- author: troytroy400
+  changes:
+  - message: Humans now gasp when they have asphyxiation damage.
+    type: Add
+  - message: Added all variants of the UPP van (armed, transport, logistics, MP and
+      medical) to the vehicle lift console.
+    type: Add
+  - message: Duplicate VTOL entries removed.
+    type: Fix
+  - message: Multiple vehicles have had their names updated to be in-line with the
+      lore.
+    type: Fix
+  - message: Welding fuel containers now explode with the proper explosion effects
+      and hurt a decent bit more.
+    type: Fix
+  id: 459
+  time: '2026-07-15T04:14:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1625
+- author: troytroy400
+  changes:
+  - message: Added the 'Regulation Appearance' tab to the character customization
+      UI, which has regulation preset hair colors/styles. When playing as military
+      characters, your appearance will be inherited from this category to keep your
+      character in-line with UCMJ/SOP. HRP is here.
+    type: Add
+  id: 460
+  time: '2026-07-15T13:11:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1628
+- author: ver0098
+  changes:
+  - message: A M34A2 with W-Y PMC color scheme has been added to the vehicle lift.
+    type: Add
+  id: 461
+  time: '2026-07-15T16:05:51.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1612
+- author: MACMAN2003
+  changes:
+  - message: Weyland-Yutani were kind enough to deliver power to the people, and by
+      the people, I mean the employees of the Weymart in Barker's Lament.
+    type: Add
+  - message: The eggs in the sensor anomaly have been removed.
+    type: Remove
+  - message: The Weyland-Yutani facility's containment area has experienced corporate
+      downsizing.
+    type: Tweak
+  id: 462
+  time: '2026-07-16T01:43:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1622
+- author: troytroy400
+  changes:
+  - message: Added 40 new civilian hairstyle options.
+    type: Add
+  - message: Added a few missing hair styles to regulation appearance (elegant bun,
+      mullet, marine mohawk, low ponytail, ponytail 2, emo bun, emo).
+    type: Tweak
+  - message: The regulation appearance info header no longer lies to you.
+    type: Tweak
+  id: 463
+  time: '2026-07-16T03:23:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1630
+- author: troytroy400
+  changes:
+  - message: Added new trait Slow Runner. This trait reduces maximum sprint speed
+      by 15%.
+    type: Add
+  - message: Added new trait Asthmatic. Sprinting gradually strains your breathing,
+      after a while your character will to being to cough and you will get oxygen
+      damage and a movement slowdown. Wearing armor makes strain build 10% faster.
+      Strain decays when you stop sprinting. Treated instantly by Dexalin, Dexalin+,
+      or Albuterol. Spawns with a an inhaler filled with one dose of Albuterol.
+    type: Add
+  - message: Added new trait Anemic. This trait makes you bleed 20% faster than normal.
+    type: Add
+  - message: Added new trait Random Drug Allergy. You are allergic to one of four
+      medications (Inaprovaline, Oxycodone, Tramadol, or Paracetamol). Metabolizing
+      the medication your allergic to triggers an allergic reaction that will gradually
+      build up toxin and oxygen damage, then eventually seizures. Naloxone or epinephrine
+      instantly cures the reaction and purges the allergen from your bloodstream entirely.
+      Spawns with a dogtag naming the allergen and an epipen.
+    type: Add
+  - message: Added new trait Panic Prone. Panic builds gradually from being shot,
+      taking a serious wound, getting shot at, getting knocked down by an explosion,
+      or witnessing someone die nearby. If the panic builds too high, your character
+      will scream periodically and your weapon skill will be temporarily affected
+      until your character is no longer paniced.
+    type: Add
+  - message: Added new trait Nicotine Addiction. Go more than 15 minutes without smoking
+      and you'll start craving a smoke. After a period without nicotine you'll begin
+      shaking at random intervals until you get that fix.
+    type: Add
+  - message: The Epilepsy trait has been fixed. It now causes you to have a seizure
+      every 25-30 minutes and lasts anywhere from 30-70 seconds
+    type: Fix
+  - message: GOVFOR roles were selectively updated to only be able to take relevant
+      traits. Combat troops can no-longer have crippling disabilities.
+    type: Tweak
+  - message: All gasmasks can now be used as internals, this is particularly helpful
+      for doing field surgery in a pinch. Some various relevant suits and armors now
+      have built in gas tanks.
+    type: Tweak
+  id: 464
+  time: '2026-07-16T14:29:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1632
 Name: CMU
 Order: -1
