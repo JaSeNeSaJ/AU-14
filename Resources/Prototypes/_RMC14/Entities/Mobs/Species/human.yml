@@ -19,7 +19,6 @@
     emoteCooldown: 6
     withChat: true
     hiddenFromChatWindow: true
-  - type: GaspOnAsphyxiation
   - type: FixedIdentity
     name: cm-chatsan-replacement-human
   - type: CMUHumanMedical

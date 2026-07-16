@@ -110,8 +110,8 @@
         - ReagentId: WeldingFuel
           Quantity: 1000
   - type: Explosive
-    explosionType: RMC
-    totalIntensity: 200
+    explosionType: Default
+    totalIntensity: 60
   - type: ReagentTank
     tankType: Fuel
   - type: Destructible

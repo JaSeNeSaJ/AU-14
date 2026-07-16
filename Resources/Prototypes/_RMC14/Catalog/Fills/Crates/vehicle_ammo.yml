@@ -1,12 +1,12 @@
 - type: entity
   parent: RMCCrateAmmo
   id: RMCCrateVehicleAmmoLTBCannon
-  name: LTB APHE cannon shell crate (x16)
+  name: LTB cannon magazines crate (x6)
   components:
   - type: StorageFill
     contents:
     - id: VehicleAmmoBoxLTBCannon
-      amount: 16
+      amount: 6
 
 - type: entity
   parent: RMCCrateAmmo

@@ -1,6 +1,5 @@
 using Content.Shared._CMU14.Medical.Core;
 using Content.Shared._RMC14.Damage;
-using Content.Shared._CMU14.Traits;
 using Content.Shared._RMC14.Medical.Stasis;
 using Content.Shared._RMC14.Medical.Wounds;
 using Content.Shared.Alert;
@@ -105,19 +104,7 @@ public abstract partial class SharedBloodstreamSystem : EntitySystem
                 if (!_mobStateSystem.IsDead(uid))
                 {
                     // Blood is removed from the bloodstream at a 1-1 rate with the bleed amount
-                    var bleedDrain = bloodstream.BleedAmount;
-                    if (TryComp(uid, out AnemicComponent? anemic))
-                    {
-                        bleedDrain *= anemic.BleedRateMultiplier;
-
-                        if (curTime >= anemic.NextWarnMessage)
-                        {
-                            anemic.NextWarnMessage = curTime + anemic.WarnCooldown;
-                            _popup.PopupEntity(Loc.GetString("au14-anemic-bleeding"), uid, uid, PopupType.MediumCaution);
-                        }
-                    }
-
-                    TryModifyBloodLevel((uid, bloodstream), -bleedDrain);
+                    TryModifyBloodLevel((uid, bloodstream), -bloodstream.BleedAmount);
                 }
 
                 // Bleed rate is reduced by the bleed reduction amount in the bloodstream component.

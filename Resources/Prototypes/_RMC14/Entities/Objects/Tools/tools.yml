@@ -355,7 +355,6 @@
     qualities:
     - Prying
     - Anchoring
-    - VehicleServicing
     useSound:
       path: /Audio/Items/jaws_pry.ogg
   - type: Prying
@@ -425,8 +424,6 @@
     quickEquip: false
     slots:
     - Suitstorage
-  - type: EntrenchingTool
-  - type: RMCShovel
   - type: UseDelay
     delay: 0.25
   - type: Appearance

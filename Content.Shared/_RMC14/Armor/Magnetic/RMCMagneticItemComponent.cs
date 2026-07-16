@@ -12,7 +12,4 @@ public sealed partial class RMCMagneticItemComponent : Component
 
     [DataField, AutoNetworkedField]
     public bool NeedsMagneticField;
-
-    [DataField, AutoNetworkedField]
-    public bool ReturnOnThrow = true;
 }
