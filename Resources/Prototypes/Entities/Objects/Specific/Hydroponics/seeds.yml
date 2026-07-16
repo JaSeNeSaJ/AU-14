@@ -854,6 +854,15 @@
       seedId: cherry
     - type: Sprite
       sprite: Objects/Specific/Hydroponics/cherry.rsi
+    - type: SolutionContainerManager
+      solutions:
+        food:
+          maxVol: 3
+          reagents:
+          - ReagentId: CMUCyanide
+            Quantity: 3
+    - type: Extractable
+      grindableSolutionName: food
 
 - type: entity
   parent: SeedBase
