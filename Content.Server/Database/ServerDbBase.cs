@@ -30,6 +30,7 @@ using Robust.Shared.Enums;
 using Robust.Shared.Network;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
+using Content.Shared.AU14.util;
 
 namespace Content.Server.Database
 {
@@ -241,6 +242,9 @@ namespace Content.Server.Database
             ProtoId<OriginPrototype>? origin = profile.Origin is { } originId
                 ? new ProtoId<OriginPrototype>(originId)
                 : (ProtoId<OriginPrototype>?)null;
+            ProtoId<PlatoonPrototype>? platoon = profile.Platoon is { } platoonId
+                ? new ProtoId<PlatoonPrototype>(platoonId)
+                : (ProtoId<PlatoonPrototype>?)null;
             var threatPreferences = ConvertThreatPreferences(profile.ThreatPreference);
             var gamemodeJobPriorities = ConvertGamemodeJobPriorities(profile.GamemodeJobPriorities);
             var gamemodeAntagPreferences = ConvertGamemodeAntagPreferences(profile.GamemodeAntagPreferences);
@@ -332,6 +336,7 @@ namespace Content.Server.Database
                 profile.XenoPostfix,
                 allegiance,
                 origin,
+                platoon,
                 threatPreferences,
                 gamemodeJobPriorities,
                 gamemodeAntagPreferences,

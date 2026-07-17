@@ -22,6 +22,7 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
 using Robust.Shared.Serialization;
 using Robust.Shared.Utility;
+using Content.Shared.AU14.util;
 
 namespace Content.Shared.Preferences
 {
@@ -213,6 +214,12 @@ namespace Content.Shared.Preferences
         [DataField]
         public ProtoId<OriginPrototype>? Origin { get; private set; } = "UAAmerica";
 
+        /// <summary>
+        /// The platoon selected for this character.
+        /// </summary>
+        [DataField]
+        public ProtoId<PlatoonPrototype>? Platoon { get; private set; } = null;
+
         public HumanoidCharacterProfile(
             string name,
             string flavortext,
@@ -235,6 +242,7 @@ namespace Content.Shared.Preferences
             string xenoPostfix,
             ProtoId<AllegiancePrototype>? allegiance = null,
             ProtoId<OriginPrototype>? origin = null,
+            ProtoId<PlatoonPrototype>? platoon = null,
             HashSet<ProtoId<ThreatPrototype>>? threatPreferences = null,
             Dictionary<string, Dictionary<ProtoId<JobPrototype>, JobPriority>>? gamemodeJobPriorities = null,
             Dictionary<string, HashSet<ProtoId<AntagPrototype>>>? gamemodeAntagPreferences = null,
@@ -262,6 +270,7 @@ namespace Content.Shared.Preferences
             XenoPostfix = xenoPostfix;
             Allegiance = allegiance;
             Origin = origin;
+            Platoon = platoon;
             _threatPreferences = threatPreferences ?? new();
             _gamemodeJobPriorities = NormalizeGamemodeJobPriorities(gamemodeJobPriorities);
             _gamemodeAntagPreferences = NormalizeGamemodeSetPreferences(gamemodeAntagPreferences);
@@ -381,6 +390,7 @@ namespace Content.Shared.Preferences
                 other.XenoPostfix,
                 other.Allegiance,
                 other.Origin,
+                other.Platoon,
                 new HashSet<ProtoId<ThreatPrototype>>(other.ThreatPreferences),
                 other.GamemodeJobPriorities.ToDictionary(
                     pair => pair.Key,
@@ -547,6 +557,14 @@ namespace Content.Shared.Preferences
         public HumanoidCharacterProfile WithOrigin(ProtoId<OriginPrototype>? origin)
         {
             return new(this) { Origin = origin };
+        }
+
+        public HumanoidCharacterProfile WithPlatoon(ProtoId<PlatoonPrototype>? platoon)
+        {
+            return new(this)
+            {
+                Platoon = platoon
+            };
         }
 
         public HumanoidCharacterProfile WithThreatPreference(ProtoId<ThreatPrototype> threat, bool pref)
@@ -859,6 +877,7 @@ namespace Content.Shared.Preferences
             if (XenoPostfix != other.XenoPostfix) return false;
             if (Allegiance != other.Allegiance) return false;
             if (Origin != other.Origin) return false;
+            if (Platoon != other.Platoon) return false;
             if (!_threatPreferences.SetEquals(other._threatPreferences)) return false;
             if (!GamemodeSetPreferencesEqual(_gamemodeThreatPreferences, other._gamemodeThreatPreferences)) return false;
             return Appearance.MemberwiseEquals(other.Appearance);
@@ -1277,6 +1296,7 @@ namespace Content.Shared.Preferences
             hashCode.Add(XenoPostfix);
             hashCode.Add(Allegiance);
             hashCode.Add(Origin);
+            hashCode.Add(Platoon);
             foreach (var threatPreference in _threatPreferences.Select(threat => threat.Id).OrderBy(id => id))
             {
                 hashCode.Add(threatPreference);
