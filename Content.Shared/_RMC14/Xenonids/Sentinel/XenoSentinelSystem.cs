@@ -3,6 +3,7 @@ using Content.Shared._RMC14.Atmos;
 using Content.Shared._RMC14.Armor;
 using Content.Shared._RMC14.Slow;
 using Content.Shared._RMC14.Synth;
+using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared._RMC14.Xenonids.Plasma;
 using Content.Shared._RMC14.Xenonids.Projectile;
 using Content.Shared.ActionBlocker;
@@ -45,6 +46,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
     [Dependency] private CMArmorSystem _armor = default!;
     [Dependency] private SharedColorFlashEffectSystem _colorFlash = default!;
     [Dependency] private DamageableSystem _damage = default!;
+    [Dependency] private SharedXenoHiveSystem _hive = default!;
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private MovementSpeedModifierSystem _movementSpeed = default!;
     [Dependency] private INetManager _net = default!;
@@ -472,10 +474,18 @@ public sealed partial class XenoSentinelSystem : EntitySystem
 
     private bool CanIntoxicateTarget(EntityUid source, EntityUid target)
     {
-        return !_mobState.IsDead(target) &&
-               _xeno.CanAbilityAttackTarget(source, target) &&
-               !HasComp<XenoComponent>(target) &&
-               !HasComp<SynthComponent>(target);
+        if (_mobState.IsDead(target) ||
+            HasComp<SynthComponent>(target) ||
+            !_xeno.CanAbilityAttackTarget(source, target))
+        {
+            return false;
+        }
+
+        if (!HasComp<XenoComponent>(target))
+            return true;
+
+        return _hive.GetHive(source) is not { } hive ||
+               !_hive.IsAllyOfHive(target, hive.Owner);
     }
 
     private void ApplyDrainSurge(EntityUid uid, int armor, TimeSpan duration)
