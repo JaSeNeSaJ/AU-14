@@ -821,6 +821,13 @@
   name: rmc-alerts-unconscious-name
   description: rmc-alerts-unconscious-desc
 
+- type: alert
+  id: XenoIntoxicated
+  icons: [ /Textures/Interface/Alerts/Intoxicated/intoxicated.png ]
+  name: Intoxicated
+  description: Toxin is burning through your body. Click to resist it; moving will interrupt the effort.
+  clickEvent: !type:XenoIntoxicatedResistAlertEvent
+
 - type: alertCategory
   id: SquadTracker
 

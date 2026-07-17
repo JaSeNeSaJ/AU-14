@@ -2,6 +2,8 @@ using System.Numerics;
 using Content.Shared._RMC14.Evasion;
 using Content.Shared._RMC14.Random;
 using Content.Shared._RMC14.Vehicle;
+using Content.Shared._RMC14.Weapons.Ranged.Brute;
+using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Hive;
 using Content.Shared.Examine;
 using Content.Shared.FixedPoint;
@@ -48,8 +50,18 @@ public sealed partial class RMCProjectileSystem : EntitySystem
         SubscribeLocalEvent<SpawnOnTerminateComponent, ProjectileHitEvent>(OnSpawnOnTerminateProjectileHit);
 
         SubscribeLocalEvent<PreventCollideWithDeadComponent, PreventCollideEvent>(OnPreventCollideWithDead);
+        SubscribeLocalEvent<RMCProjectileSkipXenosComponent, PreventCollideEvent>(OnSkipXenosPreventCollide);
 
         SubscribeLocalEvent<VehicleDamageMultiplierComponent, ProjectileHitEvent>(OnVehicleDamageMultiplierProjectileHit);
+    }
+
+    private void OnSkipXenosPreventCollide(Entity<RMCProjectileSkipXenosComponent> projectile, ref PreventCollideEvent args)
+    {
+        if (args.Cancelled)
+            return;
+
+        if (HasComp<XenoComponent>(args.OtherEntity))
+            args.Cancelled = true;
     }
 
     private void OnVehicleDamageMultiplierProjectileHit(Entity<VehicleDamageMultiplierComponent> ent, ref ProjectileHitEvent args)
