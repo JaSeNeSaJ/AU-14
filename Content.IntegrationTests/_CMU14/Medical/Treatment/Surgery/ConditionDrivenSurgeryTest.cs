@@ -33,6 +33,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Interaction;
 using Content.Shared.StatusEffectNew;
 using Robust.Shared.Configuration;
+using Robust.Shared.Containers;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Utility;
@@ -1909,6 +1910,160 @@ public sealed class ConditionDrivenSurgeryTest
             {
                 entMan.DeleteEntity(human);
                 entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task SeveredHandAppearsAsReattachableMissingSite()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var containers = entMan.System<SharedContainerSystem>();
+            var dispatch = entMan.System<CMUSurgeryDispatchSystem>();
+            var flow = entMan.System<SharedCMUSurgeryFlowSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            EntityUid severedHand = default;
+
+            try
+            {
+                entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+                var arm = GetBodyPart(entMan, human, BodyPartType.Arm, BodyPartSymmetry.Right);
+                severedHand = GetBodyPart(entMan, human, BodyPartType.Hand, BodyPartSymmetry.Right);
+                Assert.That(
+                    containers.TryGetContainingContainer((severedHand, null, null), out var handContainer),
+                    Is.True);
+                Assert.That(containers.Remove(severedHand, handContainer), Is.True);
+
+                var entries = dispatch.BuildPartEntries(human, surgeon, ignoreSkillRequirements: true);
+                var missingHand = entries.Find(entry =>
+                    entry.Type == BodyPartType.Hand
+                    && entry.Symmetry == BodyPartSymmetry.Right);
+
+                Assert.That(missingHand, Is.Not.Null);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(
+                        missingHand!.EligibleSurgeries.ConvertAll(entry => entry.SurgeryId),
+                        Does.Contain("CMUSurgeryReattachLimb"));
+                    Assert.That(
+                        flow.TryGetReattachAnchorPart(
+                            human,
+                            BodyPartType.Hand,
+                            BodyPartSymmetry.Right,
+                            out var anchor),
+                        Is.True);
+                    Assert.That(anchor, Is.EqualTo(arm));
+                    Assert.That(
+                        flow.LimbMatchesMissingSlot(
+                            human,
+                            severedHand,
+                            BodyPartType.Hand,
+                            BodyPartSymmetry.Right),
+                        Is.True);
+                });
+            }
+            finally
+            {
+                if (severedHand.Valid && entMan.EntityExists(severedHand))
+                    entMan.DeleteEntity(severedHand);
+                entMan.DeleteEntity(human);
+                entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task HandInternalBleedingOffersSurgery()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var dispatch = entMan.System<CMUSurgeryDispatchSystem>();
+            var human = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+            var surgeon = entMan.SpawnEntity("CMMobHuman", MapCoordinates.Nullspace);
+
+            try
+            {
+                entMan.EnsureComponent<CMUAutodocContainedPatientComponent>(human);
+                var hand = GetBodyPart(entMan, human, BodyPartType.Hand, BodyPartSymmetry.Right);
+                entMan.EnsureComponent<InternalBleedingComponent>(hand);
+
+                var entries = dispatch.BuildPartEntries(human, surgeon, ignoreSkillRequirements: true);
+                var handEntry = entries.Find(entry =>
+                    entry.Type == BodyPartType.Hand
+                    && entry.Symmetry == BodyPartSymmetry.Right);
+
+                Assert.That(handEntry, Is.Not.Null);
+                Assert.That(
+                    handEntry!.EligibleSurgeries.ConvertAll(entry => entry.SurgeryId),
+                    Does.Contain("CMUSurgeryCauterizeInternalBleeding"));
+            }
+            finally
+            {
+                entMan.DeleteEntity(human);
+                entMan.DeleteEntity(surgeon);
+            }
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ReattachingRoboticArmDoesNotRegrowMissingHand()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+
+        await server.WaitAssertion(() =>
+        {
+            var entMan = server.EntMan;
+            var body = entMan.System<SharedBodySystem>();
+            var containers = entMan.System<SharedContainerSystem>();
+            var medicalIndex = entMan.System<CMUMedicalBodyIndexSystem>();
+            var android = entMan.SpawnEntity("CMUDroneAndroid", MapCoordinates.Nullspace);
+            EntityUid severedHand = default;
+
+            try
+            {
+                var torso = GetBodyPart(entMan, android, BodyPartType.Torso, BodyPartSymmetry.None);
+                var arm = GetBodyPart(entMan, android, BodyPartType.Arm, BodyPartSymmetry.Left);
+                severedHand = GetBodyPart(entMan, android, BodyPartType.Hand, BodyPartSymmetry.Left);
+
+                Assert.That(
+                    containers.TryGetContainingContainer((severedHand, null, null), out var handContainer),
+                    Is.True);
+                Assert.That(containers.Remove(severedHand, handContainer), Is.True);
+                Assert.That(
+                    containers.TryGetContainingContainer((arm, null, null), out var armContainer),
+                    Is.True);
+                Assert.That(containers.Remove(arm, armContainer), Is.True);
+                Assert.That(body.AttachPart(torso, "left_arm", arm), Is.True);
+
+                Assert.That(
+                    medicalIndex.TryGetBodyPart(
+                        android,
+                        new CMUMedicalBodyPartKey(BodyPartType.Hand, BodyPartSymmetry.Left),
+                        out _),
+                    Is.False);
+            }
+            finally
+            {
+                if (severedHand.Valid && entMan.EntityExists(severedHand))
+                    entMan.DeleteEntity(severedHand);
+                entMan.DeleteEntity(android);
             }
         });
 
