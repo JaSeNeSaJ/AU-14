@@ -224,13 +224,13 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         return languageLearningEv.ProcessedMessage;
     }
 
-    public string ObfuscateMessageForListener(EntityUid listener, string speakerMessage, ProtoId<LanguagePrototype> language)
+    public string ObfuscateMessageForListener(EntityUid listener, string speakerMessage, ProtoId<LanguagePrototype> language, EntityUid speaker)
     {
         if (CanUnderstand(listener, language))
             return speakerMessage;
 
         // imaginary friends always speak in a way their owner understands
-        if (HasComp<ImaginaryFriendComponent>(listener))
+        if (TryComp<ImaginaryFriendComponent>(speaker, out var friend) && friend.Imaginer == listener)
             return speakerMessage;
 
         var similarity = GetSisterLanguageSimilarity(listener, language);
