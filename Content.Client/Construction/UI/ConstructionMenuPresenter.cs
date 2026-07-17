@@ -348,15 +348,9 @@ namespace Content.Client.Construction.UI
         /// </summary>
         private HashSet<string> BuildHiddenRecipeSet()
         {
-            var set = new HashSet<string>();
-
-            if (_systemManager.TryGetEntitySystem<Content.Client._AU14.Construction.CustomConstruction.CustomConstructionEditorClientSystem>(out var editor))
-                set.UnionWith(editor.HiddenRecipeIds);
-
-            foreach (var overrides in _prototypeManager.EnumeratePrototypes<Content.Shared._AU14.Construction.CustomConstruction.AU14MenuOverridesPrototype>())
-                set.UnionWith(overrides.HiddenRecipes);
-
-            return set;
+            var query = new ConstructionMenuFilterEvent(new HashSet<string>(), new HashSet<string>());
+            _constructionSystem?.QueryMenuExtensions(ref query);
+            return query.HiddenRecipes;
         }
 
         private List<ConstructionMenu.ConstructionMenuListData> GetAndSortRecipes((string, string) args)
@@ -376,6 +370,8 @@ namespace Content.Client.Construction.UI
 
             // Recipes an admin removed from the menu via "Remove Item" (works for vanilla recipes too).
             var hidden = BuildHiddenRecipeSet();
+            var filter = new ConstructionMenuFilterEvent(hidden, new HashSet<string>());
+            _constructionSystem?.QueryMenuExtensions(ref filter);
 
             foreach (var recipe in _prototypeManager.EnumerateCM<ConstructionPrototype>())
             {
@@ -399,7 +395,7 @@ namespace Content.Client.Construction.UI
                     // AU14 / "All" view (the spawnlist filter is off). The "Z-Level (Experimental)" page is a
                     // SEPARATE main category, so its spawnlists (Tiles, ZLevel) must not bleed into the All list -
                     // those constructs live only on their own page. (AU14 building overhaul - z-level separation.)
-                    else if (Content.Client._AU14.Construction.ZLevelPageSpawnlists.Contains(recipeSpawnlist))
+                    else if (filter.ExcludedSpawnlists.Contains(recipeSpawnlist))
                     {
                         continue;
                     }

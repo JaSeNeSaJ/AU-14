@@ -482,7 +482,16 @@ namespace Content.Client.Construction
 
             _ghosts.Clear();
         }
+
+        public void QueryMenuExtensions(ref ConstructionMenuFilterEvent args)
+        {
+            RaiseLocalEvent(ref args);
+        }
     }
+
+    /// <summary>Allows fork/content systems to contribute recipe visibility without coupling the generic menu to them.</summary>
+    [ByRefEvent]
+    public record struct ConstructionMenuFilterEvent(HashSet<string> HiddenRecipes, HashSet<string> ExcludedSpawnlists);
 
     public sealed partial class CraftingAvailabilityChangedArgs : EventArgs
     {
