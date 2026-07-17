@@ -1,4 +1,8 @@
+using Content.Server._AU14.ZLevelBuilding;
+using Content.Server.Shuttles.Components;
+using Content.Server.Shuttles.Systems;
 using Content.Shared._AU14.ZLevelBuilding;
+using Content.Shared.Shuttles.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Maths;
@@ -15,6 +19,16 @@ public sealed class TileApplierSystemTest
   components:
   - type: Transform
     anchored: true
+
+- type: entity
+  id: AU14TestStructuralAnchor
+  components:
+  - type: Transform
+    anchored: true
+  - type: StructuralSupport
+    isAnchor: true
+    isVerticalSupport: true
+    cantileverSpan: 3
 ";
 
     [Test]
@@ -52,6 +66,59 @@ public sealed class TileApplierSystemTest
                 Assert.That(entities.Deleted(support), Is.True);
                 Assert.That(entities.Deleted(dependent), Is.False);
                 Assert.That(entities.GetComponent<TransformComponent>(dependent).Anchored, Is.False);
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ColocatedSupportsRemainValidWhenEitherIsRemoved()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        EntityUid first = default;
+        EntityUid second = default;
+        await server.WaitAssertion(() =>
+        {
+            first = server.EntMan.SpawnEntity("AU14TestStructuralAnchor", map.GridCoords);
+            second = server.EntMan.SpawnEntity("AU14TestStructuralAnchor", map.GridCoords);
+
+            var supports = server.EntMan.System<ZLevelSupportSystem>();
+            supports.RecomputeGrid(map.Grid);
+            Assert.Multiple(() =>
+            {
+                Assert.That(server.EntMan.GetComponent<StructuralSupportComponent>(first).Supported, Is.True);
+                Assert.That(server.EntMan.GetComponent<StructuralSupportComponent>(second).Supported, Is.True);
+            });
+
+            server.EntMan.DeleteEntity(first);
+            supports.RecomputeGrid(map.Grid);
+            Assert.That(server.EntMan.GetComponent<StructuralSupportComponent>(second).Supported, Is.True);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task CompromisedShuttleIsRejectedByGenericFtlGate()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        await server.WaitAssertion(() =>
+        {
+            server.EntMan.EnsureComponent<ShuttleComponent>(map.Grid.Owner);
+            server.EntMan.EnsureComponent<ZCollapseCompromisedComponent>(map.Grid.Owner);
+
+            var shuttle = server.EntMan.System<ShuttleSystem>();
+            Assert.Multiple(() =>
+            {
+                Assert.That(shuttle.CanFTL(map.Grid.Owner, out var reason), Is.False);
+                Assert.That(reason, Is.Not.Empty);
             });
         });
 
