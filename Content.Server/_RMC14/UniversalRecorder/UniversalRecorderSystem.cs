@@ -562,7 +562,8 @@ public sealed partial class UniversalRecorderSystem : EntitySystem
             speech.FontId,
             speech.FontSize,
             speech.Bold,
-            line));
+            line,
+            SpeakerEntity: args.Source));
         tapeRuntime.UsedCapacity = currentDuration;
     }
 
@@ -1002,7 +1003,8 @@ public sealed partial class UniversalRecorderSystem : EntitySystem
             var text = _language.ObfuscateMessageForListener(
                 listener.Value,
                 entry.Text,
-                entry.Language);
+                entry.Language,
+                entry.SpeakerEntity ?? ent.Owner);
 
             var wrapped = Loc.GetString(
                 entry.Bold
@@ -1133,7 +1135,7 @@ public sealed partial class UniversalRecorderSystem : EntitySystem
         TimeSpan timestamp,
         string speakerName,
         string speechVerb,
-        string language,
+        ProtoId<LanguagePrototype> language,
         string text)
     {
         return $"{FormatTimestamp(timestamp)} [{language}] {speakerName} {speechVerb}, \"{text}\"";

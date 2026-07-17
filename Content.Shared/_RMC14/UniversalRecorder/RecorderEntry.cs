@@ -12,5 +12,6 @@ public readonly record struct RecorderEntry(
     string FontId,
     int FontSize,
     bool Bold,
-    string TranscriptLine
+    string TranscriptLine,
+    EntityUid? SpeakerEntity = null
 );
