@@ -259,7 +259,7 @@
     sound:
       collection: CMUMonkeyNoises
       params:
-        volume: -5
+        volume: -10
     min: 45
     max: 60
   - type: ComplexInteraction
