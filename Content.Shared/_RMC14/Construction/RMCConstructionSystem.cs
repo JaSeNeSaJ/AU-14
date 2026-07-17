@@ -5,6 +5,7 @@ using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Ladder;
 using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Marines.Skills;
+using Content.Shared.Construction;
 using Content.Shared.Construction.Components;
 using Content.Shared.Coordinates;
 using Content.Shared.DoAfter;
@@ -295,13 +296,15 @@ public sealed partial class RMCConstructionSystem : EntitySystem
         if (!Deleted(ent))
             UpdateStackAmountUI(ent);
 
+        var builtEntities = new List<EntityUid>();
         if (args.Amount > 1)
         {
-            SpawnMultiple(entry.Prototype, args.Amount, coordinates);
+            builtEntities.AddRange(SpawnMultiple(entry.Prototype, args.Amount, coordinates));
         }
         else
         {
             var built = SpawnAtPosition(entry.Prototype, coordinates);
+            builtEntities.Add(built);
 
             // AU14 anti-dupe: stamp the discount shortfall onto the built structure (see AU14MaterialShortfallSystem).
             if (au14Shortfall > 0)
@@ -318,6 +321,13 @@ public sealed partial class RMCConstructionSystem : EntitySystem
             // Removes collision with the construction until you leave
             if (!HasComp<BarricadeComponent>(built))
                 MakeConstructionImmuneToCollision(built, args.User);
+
+        }
+
+        foreach (var built in builtEntities)
+        {
+            var completedEv = new ConstructionCompletedEvent(built, args.User);
+            RaiseLocalEvent(built, ref completedEv, broadcast: true);
         }
     }
 

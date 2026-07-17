@@ -1,7 +1,6 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Content.Server._AU14.SavedBuilds;
 using Content.Server.Construction.Components;
 using Content.Shared._AU14.Construction.Steps;
 using Content.Shared._RMC14.Construction;
@@ -37,7 +36,6 @@ namespace Content.Server.Construction
         [Dependency] private SharedTransformSystem _transformSystem = default!;
         [Dependency] private EntityWhitelistSystem _whitelistSystem = default!;
         [Dependency] private RMCConstructionSystem _rmcConstruction = default!;
-        [Dependency] private PlayerBuiltSystem _playerBuilt = default!;
 
         // --- WARNING! LEGACY CODE AHEAD! ---
         // This entire file contains the legacy code for initial construction.
@@ -367,8 +365,8 @@ namespace Content.Server.Construction
                 completed.PerformAction(newEntity, user, EntityManager);
             }
 
-            // Stamp the builder for accountability + the saved-builds whitelist.
-            _playerBuilt.MarkBuilt(newEntity, user);
+            var completedEv = new ConstructionCompletedEvent(newEntity, user);
+            RaiseLocalEvent(newEntity, ref completedEv, broadcast: true);
 
             return newEntity;
         }
