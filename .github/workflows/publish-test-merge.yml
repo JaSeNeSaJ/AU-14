@@ -31,6 +31,8 @@ jobs:
     uses: ./.github/workflows/update-changelog.yml
     if: inputs.use_changelog == true
     secrets: inherit
+    permissions:
+      contents: write
 
   prepare:
     name: Resolve PR merges
