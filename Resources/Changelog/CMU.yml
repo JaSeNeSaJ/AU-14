@@ -6931,5 +6931,21 @@
   id: 471
   time: '2026-07-17T03:48:03.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1490
+- author: troytroy400
+  changes:
+  - message: LOOC is back. The LHelp test was not worthwhile enough to stay.
+    type: Remove
+  id: 472
+  time: '2026-07-17T05:59:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1639
+- author: troytroy400
+  changes:
+  - message: Added a hair tie system. If your character has hair long enough to be
+      tied back, you can right click your character and tie your hair back into multiple
+      styles. To untie your hair, you just right click and untie.
+    type: Add
+  id: 473
+  time: '2026-07-17T09:36:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1640
 Name: CMU
 Order: -1
