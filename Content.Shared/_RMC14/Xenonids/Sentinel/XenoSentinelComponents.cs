@@ -2,6 +2,7 @@ using Content.Shared.FixedPoint;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared._RMC14.Xenonids.Sentinel;
 
@@ -59,11 +60,11 @@ public sealed partial class XenoToxicSlashComponent : Component
     public SoundSpecifier HitSound = new SoundPathSpecifier("/Audio/Effects/spray3.ogg", AudioParams.Default.WithVolume(-4f));
 }
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 [Access(typeof(XenoSentinelSystem))]
 public sealed partial class XenoActiveToxicSlashComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan ExpiresAt;
 
     [DataField, AutoNetworkedField]
@@ -73,11 +74,11 @@ public sealed partial class XenoActiveToxicSlashComponent : Component
     public int StacksPerHit;
 }
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 [Access(typeof(XenoSentinelSystem))]
 public sealed partial class XenoToxicSlashSpeedComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan ExpiresAt;
 
     [DataField, AutoNetworkedField]
@@ -122,7 +123,7 @@ public sealed partial class XenoDrainStingComponent : Component
     public TimeSpan SurgeHeadbiteSoundDelay = TimeSpan.FromSeconds(0.5);
 }
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(raiseAfterAutoHandleState: true)]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState(raiseAfterAutoHandleState: true), AutoGenerateComponentPause]
 [Access(typeof(XenoSentinelSystem))]
 public sealed partial class XenoIntoxicatedComponent : Component
 {
@@ -132,11 +133,20 @@ public sealed partial class XenoIntoxicatedComponent : Component
     [DataField, AutoNetworkedField]
     public int MaxStacks = 30;
 
-    [DataField, AutoNetworkedField]
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan NextTick;
 
     [DataField, AutoNetworkedField]
     public TimeSpan TickEvery = TimeSpan.FromSeconds(2);
+
+    [DataField, AutoNetworkedField]
+    public FixedPoint2 TickBaseDamage = FixedPoint2.New(1);
+
+    [DataField, AutoNetworkedField]
+    public float TickDamageStackDivisor = 10;
+
+    [DataField, AutoNetworkedField]
+    public int TickDecay = 1;
 
     [DataField, AutoNetworkedField]
     public int HighStackThreshold = 20;
@@ -152,13 +162,16 @@ public sealed partial class XenoIntoxicatedComponent : Component
 
     [DataField, AutoNetworkedField]
     public TimeSpan ResistDuration = TimeSpan.FromSeconds(3);
+
+    [DataField, AutoNetworkedField]
+    public EntityUid? LastSource;
 }
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 [Access(typeof(XenoSentinelSystem))]
 public sealed partial class XenoDrainSurgeComponent : Component
 {
-    [DataField, AutoNetworkedField]
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan ExpiresAt;
 
     [DataField, AutoNetworkedField]

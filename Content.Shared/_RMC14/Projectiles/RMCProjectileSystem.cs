@@ -60,8 +60,18 @@ public sealed partial class RMCProjectileSystem : EntitySystem
         if (args.Cancelled)
             return;
 
-        if (HasComp<XenoComponent>(args.OtherEntity))
+        if (!TryComp(projectile, out ProjectileComponent? projectileComp) ||
+            projectileComp.Shooter is not { } shooter ||
+            _hive.GetHive(shooter) is not { } hive)
+        {
+            return;
+        }
+
+        if (HasComp<XenoComponent>(args.OtherEntity) &&
+            _hive.IsAllyOfHive(args.OtherEntity, hive.Owner))
+        {
             args.Cancelled = true;
+        }
     }
 
     private void OnVehicleDamageMultiplierProjectileHit(Entity<VehicleDamageMultiplierComponent> ent, ref ProjectileHitEvent args)

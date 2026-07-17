@@ -127,7 +127,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
         if (TryAddIntoxicated(shooter, args.Target, spit.Comp.Stacks))
         {
             _audio.PlayPvs(spit.Comp.HitSound, args.Target);
-            _popup.PopupEntity("Your toxic spit seeps into the victim.", args.Target, shooter);
+            _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-toxic-spit-hit"), args.Target, shooter);
         }
     }
 
@@ -148,7 +148,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
         ApplyToxicSlashSpeed(xeno, xeno.Comp.SpeedModifier, xeno.Comp.ActiveDuration);
 
         _audio.PlayPredicted(xeno.Comp.ActivateSound, xeno, xeno);
-        _popup.PopupClient("Your claws drip with toxin.", xeno, xeno);
+        _popup.PopupClient(Loc.GetString("rmc-xeno-sentinel-toxic-slash-start"), xeno, xeno);
         foreach (var action in _rmcActions.GetActionsWithEvent<XenoToxicSlashActionEvent>(xeno))
         {
             _actions.SetToggled(action.AsNullable(), true);
@@ -221,7 +221,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
             !TryComp(args.Target, out XenoIntoxicatedComponent? intoxicated) ||
             intoxicated.Stacks <= 0)
         {
-            _popup.PopupClient("They are not intoxicated enough to drain.", xeno, xeno, PopupType.SmallCaution);
+            _popup.PopupClient(Loc.GetString("rmc-xeno-sentinel-drain-sting-not-intoxicated"), xeno, xeno, PopupType.SmallCaution);
             return;
         }
 
@@ -261,7 +261,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
         if (intoxicated.Stacks <= 0)
             RemCompDeferred<XenoIntoxicatedComponent>(args.Target);
 
-        _popup.PopupEntity("Toxin violently drains from the victim!", args.Target, xeno);
+        _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-drain-sting-drain"), args.Target, xeno);
 
         if (stacks >= xeno.Comp.SurgeThreshold)
         {
@@ -351,12 +351,12 @@ public sealed partial class XenoSentinelSystem : EntitySystem
 
         if (intoxicated.Stacks <= 0)
         {
-            _popup.PopupEntity("You force the toxin out of your system.", ent, ent);
+            _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-intoxicated-resist-finish"), ent, ent);
             RemCompDeferred<XenoIntoxicatedComponent>(ent);
             return;
         }
 
-        _popup.PopupEntity("You resist some of the toxin.", ent, ent, PopupType.SmallCaution);
+        _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-intoxicated-resist-reduce"), ent, ent, PopupType.SmallCaution);
     }
 
     private bool TryStartIntoxicatedResist(EntityUid uid, XenoIntoxicatedComponent intoxicated)
@@ -458,6 +458,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
 
         var intoxicated = EnsureComp<XenoIntoxicatedComponent>(target);
         intoxicated.Stacks = Math.Clamp(intoxicated.Stacks + stacks, 0, intoxicated.MaxStacks);
+        intoxicated.LastSource = source;
         if (intoxicated.NextTick == TimeSpan.Zero)
             intoxicated.NextTick = _timing.CurTime + intoxicated.TickEvery;
 
@@ -465,7 +466,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
         UpdateIntoxicatedMovement(target, intoxicated);
         var filter = Filter.Pvs(target, entityManager: EntityManager);
         _colorFlash.RaiseEffect(Color.FromHex("#7DCC00"), new List<EntityUid> { target }, filter);
-        _popup.PopupEntity("You feel toxin burning through your body.", target, target, PopupType.SmallCaution);
+        _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-intoxicated-gained"), target, target, PopupType.SmallCaution);
         return true;
     }
 
@@ -484,7 +485,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
         surge.ExpiresAt = _timing.CurTime + duration;
         Dirty(uid, surge);
         _armor.UpdateArmorValue((uid, null));
-        _popup.PopupEntity("A bright green surge hardens your carapace!", uid, uid);
+        _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-drain-surge"), uid, uid);
     }
 
     private void ApplyToxicSlashSpeed(EntityUid uid, float speedModifier, TimeSpan duration)
@@ -551,7 +552,7 @@ public sealed partial class XenoSentinelSystem : EntitySystem
                 continue;
 
             RemCompDeferred<XenoActiveToxicSlashComponent>(uid);
-            _popup.PopupEntity("The toxin dries from your claws.", uid, uid, PopupType.SmallCaution);
+            _popup.PopupEntity(Loc.GetString("rmc-xeno-sentinel-toxic-slash-expire"), uid, uid, PopupType.SmallCaution);
         }
 
         var intoxicatedQuery = EntityQueryEnumerator<XenoIntoxicatedComponent>();
@@ -561,14 +562,21 @@ public sealed partial class XenoSentinelSystem : EntitySystem
                 continue;
 
             intoxicated.NextTick = time + intoxicated.TickEvery;
-            var tickDamage = FixedPoint2.New(1 + (int) MathF.Round(intoxicated.Stacks / 10f, MidpointRounding.AwayFromZero));
+            var stackDivisor = Math.Max(1f, intoxicated.TickDamageStackDivisor);
+            var tickDamage = intoxicated.TickBaseDamage + FixedPoint2.New((int) MathF.Round(intoxicated.Stacks / stackDivisor, MidpointRounding.AwayFromZero));
             var damage = new DamageSpecifier
             {
                 DamageDict = { ["Heat"] = tickDamage },
             };
-            _damage.TryChangeDamage(uid, damage);
+            var origin = intoxicated.LastSource is { Valid: true } source && !TerminatingOrDeleted(source)
+                ? source
+                : EntityUid.Invalid;
+            if (origin.Valid)
+                _damage.TryChangeDamage(uid, damage, origin: origin);
+            else
+                _damage.TryChangeDamage(uid, damage);
 
-            intoxicated.Stacks--;
+            intoxicated.Stacks = Math.Max(0, intoxicated.Stacks - intoxicated.TickDecay);
             Dirty(uid, intoxicated);
             UpdateIntoxicatedMovement(uid, intoxicated);
 

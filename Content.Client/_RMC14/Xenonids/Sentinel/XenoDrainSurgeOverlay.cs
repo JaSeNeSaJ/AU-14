@@ -1,9 +1,11 @@
 using System.Numerics;
+using Content.Shared._RMC14.Stealth;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Sentinel;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
 using Robust.Shared.Enums;
+using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 using static Robust.Shared.Utility.SpriteSpecifier;
@@ -23,8 +25,10 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
     private const float IntoxicatedRadius = 10f / EyeManager.PixelsPerMeter;
 
     private readonly IEntityManager _entity;
+    private readonly ContainerSystem _container;
     private readonly SpriteSystem _sprite;
     private readonly TransformSystem _transform;
+    private readonly EntityQuery<EntityActiveInvisibleComponent> _invisQuery;
     private readonly EntityQuery<TransformComponent> _xformQuery;
 
     [Dependency] private IGameTiming _timing = default!;
@@ -35,8 +39,10 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
     {
         IoCManager.InjectDependencies(this);
         _entity = entity;
+        _container = entity.System<ContainerSystem>();
         _sprite = entity.System<SpriteSystem>();
         _transform = entity.System<TransformSystem>();
+        _invisQuery = entity.GetEntityQuery<EntityActiveInvisibleComponent>();
         _xformQuery = entity.GetEntityQuery<TransformComponent>();
     }
 
@@ -48,7 +54,7 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
         var drainQuery = _entity.AllEntityQueryEnumerator<XenoDrainSurgeComponent, SpriteComponent, TransformComponent>();
         while (drainQuery.MoveNext(out var uid, out _, out var sprite, out var xform))
         {
-            if (xform.MapID != args.MapId)
+            if (ShouldSkip(uid, xform, args.MapId))
                 continue;
 
             DrawParticles(
@@ -70,7 +76,7 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
         var slashQuery = _entity.AllEntityQueryEnumerator<XenoActiveToxicSlashComponent, SpriteComponent, TransformComponent>();
         while (slashQuery.MoveNext(out var uid, out _, out var sprite, out var xform))
         {
-            if (xform.MapID != args.MapId)
+            if (ShouldSkip(uid, xform, args.MapId))
                 continue;
 
             DrawParticles(
@@ -91,7 +97,7 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
         var intoxicatedQuery = _entity.AllEntityQueryEnumerator<XenoIntoxicatedComponent, SpriteComponent, TransformComponent>();
         while (intoxicatedQuery.MoveNext(out var uid, out var intoxicated, out var sprite, out var xform))
         {
-            if (xform.MapID != args.MapId)
+            if (ShouldSkip(uid, xform, args.MapId))
                 continue;
 
             var count = Math.Clamp(
@@ -113,6 +119,13 @@ public sealed partial class XenoDrainSurgeOverlay : Overlay
                 Color.FromHex("#7DCC00"),
                 now);
         }
+    }
+
+    private bool ShouldSkip(EntityUid uid, TransformComponent xform, MapId mapId)
+    {
+        return xform.MapID != mapId ||
+               _container.IsEntityOrParentInContainer(uid, xform: xform) ||
+               _invisQuery.HasComp(uid);
     }
 
     private Vector2 GetDrainSurgeOffset(EntityUid uid, SpriteComponent sprite, TransformComponent xform)

@@ -824,8 +824,8 @@
 - type: alert
   id: XenoIntoxicated
   icons: [ /Textures/Interface/Alerts/Intoxicated/intoxicated.png ]
-  name: Intoxicated
-  description: Toxin is burning through your body. Click to resist it; moving will interrupt the effort.
+  name: rmc-xeno-sentinel-intoxicated-alert-name
+  description: rmc-xeno-sentinel-intoxicated-alert-desc
   clickEvent: !type:XenoIntoxicatedResistAlertEvent
 
 - type: alertCategory

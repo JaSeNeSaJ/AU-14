@@ -74,6 +74,9 @@ public sealed partial class XenoHudOverlay : Overlay
     private static readonly Rsi SlowIcon = new(RsiPathSlow, "stomp");
     private static readonly Rsi StunIcon = new(RsiPathFreeze, "freeze");
     private static readonly Rsi SynthIcon = new(RsiPath, "fake_tall");
+    private static readonly Rsi IntoxicatedRing = new(RsiPathIntoxicated, "intoxicated");
+    private static readonly Rsi IntoxicatedHighRing = new(RsiPathIntoxicated, "intoxicated_high");
+    private static readonly Rsi[] IntoxicatedAmountIcons = CreateIntoxicatedAmountIcons();
 
     [Dependency] private IEntityManager _entity = default!;
     [Dependency] private IOverlayManager _overlay = default!;
@@ -340,10 +343,10 @@ public sealed partial class XenoHudOverlay : Overlay
             if (level <= 0)
                 continue;
 
-            var amountIcon = new Rsi(RsiPathIntoxicated, $"intoxicated_amount{level}");
-            var ringIcon = new Rsi(RsiPathIntoxicated, level >= comp.HighStackThreshold
-                ? "intoxicated_high"
-                : "intoxicated");
+            var amountIcon = IntoxicatedAmountIcons[level];
+            var ringIcon = level >= comp.HighStackThreshold
+                ? IntoxicatedHighRing
+                : IntoxicatedRing;
 
             var amountTexture = _sprite.GetFrame(amountIcon, _timing.CurTime);
             var ringTexture = _sprite.GetFrame(ringIcon, _timing.CurTime);
@@ -396,6 +399,17 @@ public sealed partial class XenoHudOverlay : Overlay
             var position = new Vector2(xOffset, yOffset);
             handle.DrawTexture(texture, position);
         }
+    }
+
+    private static Rsi[] CreateIntoxicatedAmountIcons()
+    {
+        var icons = new Rsi[31];
+        for (var i = 0; i < icons.Length; i++)
+        {
+            icons[i] = new Rsi(RsiPathIntoxicated, $"intoxicated_amount{i}");
+        }
+
+        return icons;
     }
 
     private void DrawMarkedIcons(in OverlayDrawArgs args, Matrix3x2 scaleMatrix, Matrix3x2 rotationMatrix)
