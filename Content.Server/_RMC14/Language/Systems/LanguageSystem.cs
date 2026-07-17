@@ -160,31 +160,22 @@ public sealed partial class LanguageSystem : SharedLanguageSystem
         if (!Resolve(ent, ref ent.Comp, false))
             return false;
 
-        // Has no languages, so don't assign null into CurrentLanguage
+        ProtoId<LanguagePrototype>? target = null;
         if (ent.Comp.SpokenLanguages.Count == 0)
-        {
-            ent.Comp.CurrentLanguage = null;
+            target = null;
+        else if (ent.Comp.DefaultLanguage != null && ent.Comp.SpokenLanguages.Contains(ent.Comp.DefaultLanguage.Value))
+            target = ent.Comp.DefaultLanguage.Value;
+        else
+            target = ent.Comp.SpokenLanguages.First();
 
-            var update = new LanguagesUpdateEvent();
-            RaiseLocalEvent(ent, ref update);
-            Dirty(ent);
+        if (ent.Comp.CurrentLanguage == target)
+            return false;
 
-            return true;
-        }
-
-        if (ent.Comp.CurrentLanguage == null ||
-            !ent.Comp.SpokenLanguages.Contains(ent.Comp.CurrentLanguage.Value))
-        {
-            ent.Comp.CurrentLanguage = ent.Comp.SpokenLanguages.First();
-
-            var update = new LanguagesUpdateEvent();
-            RaiseLocalEvent(ent, ref update);
-            Dirty(ent);
-
-            return true;
-        }
-
-        return false;
+        ent.Comp.CurrentLanguage = target;
+        var update = new LanguagesUpdateEvent();
+        RaiseLocalEvent(ent, ref update);
+        Dirty(ent);
+        return true;
     }
 
     public void UpdateEntityLanguages(Entity<LanguageComponent?> ent)
