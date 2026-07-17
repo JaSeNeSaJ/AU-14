@@ -310,5 +310,4 @@
   - type: HTN
     rootTask:
       task: SimpleHostileCompound
-  - type: NoSlip
 # objectively speaking getting killed by an ape is funny but it is not parity. commented out incase this non-parity feature is deemed vital for some reason
