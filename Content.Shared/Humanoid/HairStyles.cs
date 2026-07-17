@@ -152,6 +152,8 @@ namespace Content.Shared.Humanoid
             "AU14HumanHairElegant",
             "RMCHumanHairEmo",
             "RMCHumanHairEmobun",
+            "HumanHairKagami",
+            "RMCHumanHairKagami",
         };
 
         /// <summary>
