@@ -474,13 +474,32 @@ namespace Content.Server.Construction
         ///          If the entity is deleted by an action, it will short-circuit and stop performing the rest of actions.</remarks>
         public void PerformActions(EntityUid uid, EntityUid? userUid, IEnumerable<IGraphAction> actions)
         {
-            foreach (var action in actions)
+            var before = new BeforeConstructionActionsEvent(userUid, actions.ToList());
+            RaiseLocalEvent(uid, before);
+
+            foreach (var action in before.Actions)
             {
                 // If an action deletes the entity, we stop performing the rest of actions.
                 if (!Exists(uid))
                     break;
 
                 action.PerformAction(uid, userUid, EntityManager);
+            }
+        }
+
+        /// <summary>
+        /// Raised immediately before a construction transaction performs its graph actions. Subscribers may
+        /// replace actions for this invocation without mutating the shared construction prototype.
+        /// </summary>
+        public sealed class BeforeConstructionActionsEvent : EntityEventArgs
+        {
+            public readonly EntityUid? User;
+            public readonly List<IGraphAction> Actions;
+
+            public BeforeConstructionActionsEvent(EntityUid? user, List<IGraphAction> actions)
+            {
+                User = user;
+                Actions = actions;
             }
         }
 
