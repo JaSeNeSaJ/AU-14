@@ -611,6 +611,7 @@ namespace Content.Server.Database
             profile.XenoPostfix = humanoid.XenoPostfix;
             profile.Allegiance = humanoid.Allegiance?.Id;
             profile.Origin = humanoid.Origin?.Id;
+            profile.Platoon = humanoid.Platoon?.Id;
             profile.ThreatPreference = humanoid.ThreatPreferences.Count == 0
                 ? null
                 : JsonSerializer.Serialize(humanoid.ThreatPreferences.Select(t => t.Id).OrderBy(id => id));
