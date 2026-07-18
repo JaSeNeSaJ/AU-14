@@ -6972,12 +6972,29 @@
   id: 476
   time: '2026-07-17T15:03:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1641
+- author: toot521
+  changes:
+  - message: Added Altyn-R2M Helmet with parasite resistance, sprite by agentcinnamon
+    type: Add
+  - message: Added Altyn-R2M to UPP Pointman WeaponSpec kit
+    type: Add
+  id: 477
+  time: '2026-07-17T15:03:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1641
 - author: TheHellFireo
   changes:
   - message: Fixed hands and feet missing from surgery and limb printer options, and
       stopped extremities from regenerating when parent limbs are reattached.
     type: Fix
-  id: 477
+  id: 478
+  time: '2026-07-17T17:40:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1644
+- author: TheHellFireo
+  changes:
+  - message: Fixed hands and feet missing from surgery and limb printer options, and
+      stopped extremities from regenerating when parent limbs are reattached.
+    type: Fix
+  id: 479
   time: '2026-07-17T17:40:43.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1644
 - author: maertayn
@@ -6997,8 +7014,44 @@
   - message: K92-S - a new bulky/strong maintenance jack variant for synths/WJ that
       acts as an all-round combination repair tool
     type: Add
-  id: 478
+  id: 480
   time: '2026-07-17T22:00:33.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1645
+- author: maertayn
+  changes:
+  - message: Added Vehicle Crewman vendors/vmarkers/accesses
+    type: Map
+  - message: LO matches Logistics (Aux) Tech in Construction/Engineering skill
+    type: Tweak
+  - message: Shovel is now a good Govfor alternative to the Pickaxe tool in destroying
+      fragile rocks (4 hits vs. 3 hits)
+    type: Tweak
+  - message: Vehicle crewman getting opposite faction headsets & Ids for Govfor/Opfor
+    type: Fix
+  - message: K92 Maintenance Jack can now actually perform the service vehicles repair
+      step
+    type: Fix
+  - message: K92-S - a new bulky/strong maintenance jack variant for synths/WJ that
+      acts as an all-round combination repair tool
+    type: Add
+  id: 481
+  time: '2026-07-17T22:00:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1645
+- author: Piticzu
+  changes:
+  - message: Added the Manticore Sentinel strain, a port of TGMC's Sentinel focused
+      on stacking Intoxicated with Toxic Spit and Toxic Slash, then consuming those
+      stacks with Drain Sting.
+    type: Add
+  id: 482
+  time: '2026-07-17T23:25:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1642
+- author: toot521
+  changes:
+  - message: Fixed crucial spelling error in the description of the Kramer Rifle
+    type: Fix
+  id: 483
+  time: '2026-07-18T01:16:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1649
 Name: CMU
 Order: -1
