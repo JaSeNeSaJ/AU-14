@@ -1,4 +1,3 @@
-using System.Numerics;
 using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
 using Content.Shared._RMC14.Xenonids.JoinXeno;
@@ -13,7 +12,7 @@ namespace Content.Client._RMC14.Xenonids.JoinXeno;
 public sealed class JoinXenoBui : BoundUserInterface
 {
     [ViewVariables]
-    private JoinXenoQueueWindow? _window;
+    private LarvaPoolWindow? _window;
 
     private readonly List<EntryState> _entries = new();
     private string _searchText = string.Empty;
@@ -47,12 +46,12 @@ public sealed class JoinXenoBui : BoundUserInterface
         UpdateVisibleEntries();
     }
 
-    private JoinXenoQueueWindow EnsureWindow()
+    private LarvaPoolWindow EnsureWindow()
     {
         if (_window is { Disposed: false })
             return _window;
 
-        _window = this.CreateWindow<JoinXenoQueueWindow>();
+        _window = this.CreateWindow<LarvaPoolWindow>();
         _window.SearchBar.OnTextChanged += OnSearchTextChanged;
         return _window;
     }
@@ -99,40 +98,18 @@ public sealed class JoinXenoBui : BoundUserInterface
 
         row.AddChild(textBox);
 
-        var button = new Button
-        {
-            Text = GetButtonText(entry),
-            TextAlign = Label.AlignMode.Center,
-            ClipText = false,
-            MinSize = new Vector2(132, 34),
-            VerticalAlignment = Control.VAlignment.Center,
-        };
-
-        if (entry.Status == JoinXenoQueueStatus.NotQueued)
-            button.AddStyleClass(StyleNano.StyleClassCrtAttentionButton);
-
-        button.OnPressed += _ => SendPredictedMessage(new JoinXenoHiveChoiceBuiMsg(entry.Hive));
-        row.AddChild(button);
-
         panel.AddChild(row);
         CrtLobbyTheme.Apply(panel);
         return panel;
-    }
-
-    private static string GetButtonText(JoinXenoHiveEntry entry)
-    {
-        return entry.Status == JoinXenoQueueStatus.NotQueued
-            ? Loc.GetString("rmc-xeno-larva-queue-join")
-            : Loc.GetString("rmc-xeno-larva-queue-leave");
     }
 
     private static string GetStatusText(JoinXenoHiveEntry entry)
     {
         return entry.Status switch
         {
-            JoinXenoQueueStatus.Queued => Loc.GetString("rmc-xeno-larva-queue-status-position", ("position", entry.Position)),
-            JoinXenoQueueStatus.Waiting => Loc.GetString("rmc-xeno-larva-queue-status-waiting"),
-            _ => Loc.GetString("rmc-xeno-larva-queue-status-available"),
+            LarvaPoolStatus.Eligible => Loc.GetString("rmc-xeno-larva-pool-status-position", ("position", entry.Position)),
+            LarvaPoolStatus.Waiting => Loc.GetString("rmc-xeno-larva-pool-status-waiting", ("position", entry.Position)),
+            _ => Loc.GetString("rmc-xeno-larva-pool-status-ineligible", ("position", entry.Position)),
         };
     }
 
@@ -147,7 +124,7 @@ public sealed class JoinXenoBui : BoundUserInterface
         if (_window is not { Disposed: false })
             return;
 
-        _window.CountLabel.Text = Loc.GetString("rmc-xeno-larva-queue-count", ("count", _entries.Count));
+        _window.CountLabel.Text = Loc.GetString("rmc-xeno-larva-pool-count", ("count", _entries.Count));
 
         var anyVisible = false;
         foreach (var entry in _entries)
@@ -161,8 +138,8 @@ public sealed class JoinXenoBui : BoundUserInterface
 
         _window.ContentPanel.Visible = anyVisible;
         _window.NoHivesMessage.Text = _entries.Count == 0
-            ? Loc.GetString("rmc-xeno-larva-queue-empty")
-            : Loc.GetString("rmc-xeno-larva-queue-no-results");
+            ? Loc.GetString("rmc-xeno-larva-pool-empty")
+            : Loc.GetString("rmc-xeno-larva-pool-no-results");
         _window.NoHivesMessage.Visible = !anyVisible;
     }
 

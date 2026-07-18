@@ -1,0 +1,1173 @@
+using System.Linq;
+using System.Numerics;
+using Content.IntegrationTests.Pair;
+using Content.Server.Administration.Managers;
+using Content.Server._RMC14.Xenonids.JoinXeno;
+using Content.Server._RMC14.Xenonids.Parasite;
+using Content.Server.Database;
+using Content.Server.GameTicking;
+using Content.Server.Mind;
+using Content.Server.Voting.Managers;
+using Content.Shared._RMC14.CCVar;
+using Content.Shared._RMC14.Dialog;
+using Content.Shared._RMC14.Medical.Unrevivable;
+using Content.Shared._RMC14.Thunderdome;
+using Content.Shared._RMC14.Xenonids;
+using Content.Shared._RMC14.Xenonids.Hive;
+using Content.Shared._RMC14.Xenonids.JoinXeno;
+using Content.Shared._RMC14.Xenonids.Parasite;
+using Content.Shared.Administration;
+using Content.Shared.CCVar;
+using Content.Shared.Ghost;
+using Content.Shared.Mind;
+using Content.Shared.Mobs;
+using Content.Shared.Mobs.Systems;
+using Content.Shared.Preferences;
+using Robust.Shared.GameObjects;
+using Robust.Shared.Map;
+using Robust.Shared.Network;
+using Robust.Shared.Player;
+using Robust.Shared.Timing;
+
+namespace Content.IntegrationTests._RMC14;
+
+[TestFixture]
+public sealed class LarvaPoolTest
+{
+    private const string SelectableXenoRole = "CMXenoSelectableXeno";
+
+    [Test]
+    public async Task AutomaticallyAssignsEligibleGhostWithoutConfirmation()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(larva));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task PreferenceChangesRecalculateEligibility()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.Never);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task StatusShowsCurrentEligibilityAndEstimatedPosition()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+
+            OpenLarvaPoolUi(entMan, ghost);
+            var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(entry.Position, Is.EqualTo(1));
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.Never);
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() =>
+        {
+            var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Ineligible));
+            Assert.That(entry.Position, Is.EqualTo(1));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task RevivableBodyBlocksAssignmentUntilItBecomesUnrevivable()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var mobState = entMan.System<MobStateSystem>();
+        var unrevivable = entMan.System<RMCUnrevivableSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid body = default;
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            body = entMan.SpawnEntity("CMMobHuman", map.GridCoords);
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords.Offset(new Vector2(1, 0)));
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(2, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Marine");
+            mind.TransferTo(mindId, body);
+            mobState.ChangeMobState(body, MobState.Dead);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await server.WaitAssertion(() => unrevivable.MakeUnrevivable(body));
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task StaffMustOpenPoolBeforeAutomaticAssignment()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var admins = server.ResolveDependency<IAdminManager>();
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await server.WaitAssertion(() =>
+        {
+            if (!admins.HasAdminFlag(player, AdminFlags.Moderator))
+                admins.PromoteHost(player);
+        });
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            var possessedXeno = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
+            hiveSystem.SetHive(possessedXeno, hive);
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, possessedXeno);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await server.WaitAssertion(() => OpenLarvaPoolUi(entMan, ghost));
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DeathTimerEligibilityRecalculatesWithoutRejoining()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 1);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DeathTimerStartsWhenBodyDiesRatherThanWhenPlayerGhosts()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 1);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var mobState = entMan.System<MobStateSystem>();
+        var unrevivable = entMan.System<RMCUnrevivableSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid body = default;
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        EntityUid mindId = default;
+        await server.WaitAssertion(() =>
+        {
+            body = entMan.SpawnEntity("CMMobHuman", map.GridCoords);
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords.Offset(new Vector2(1, 0)));
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(2, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
+            hiveSystem.SetHive(larva, hive);
+
+            mindId = mind.CreateMind(player.UserId, "Marine");
+            mind.TransferTo(mindId, body);
+            mobState.ChangeMobState(body, MobState.Dead);
+        });
+
+        await pair.RunSeconds(2);
+        await server.WaitAssertion(() =>
+        {
+            unrevivable.MakeUnrevivable(body);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task AvailableLarvaTakesPriorityOverAbandonedAdult()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid runner = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
+            hiveSystem.SetHive(runner, hive);
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(larva));
+            Assert.That(player.AttachedEntity, Is.Not.EqualTo(runner));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task AbandonedAdultIsAssignedWhenNoLarvaExists()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid runner = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(runner, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(runner));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ParasiteReservedLarvaIsNotAssignedFromPool()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+
+            var victim = entMan.SpawnEntity("CMMobHuman", map.GridCoords.Offset(new Vector2(2, 0)));
+            var infected = entMan.EnsureComponent<VictimInfectedComponent>(victim);
+#pragma warning disable RA0002
+            infected.InfectorUser = player.UserId;
+            infected.InfectorWantsLarva = true;
+
+            var larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
+            infected.SpawnedLarva = larva;
+#pragma warning restore RA0002
+            entMan.Dirty(victim, infected);
+
+            var burster = entMan.EnsureComponent<BursterComponent>(larva);
+            burster.BurstFrom = victim;
+            entMan.Dirty(larva, burster);
+            hiveSystem.SetHive(larva, hive);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+
+            OpenLarvaPoolUi(entMan, ghost);
+            var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(entry.Position, Is.EqualTo(1));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task TemporarilyBlockedLarvaIsAssignedWhenUnblocked()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            entMan.EnsureComponent<LarvaPoolClaimBlockedComponent>(larva);
+            hiveSystem.SetHive(larva, hive);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await server.WaitAssertion(() => entMan.RemoveComponent<LarvaPoolClaimBlockedComponent>(larva));
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task PausedLarvaIsAssignedOnlyAfterItIsUnpaused()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var metadata = entMan.System<MetaDataSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid larva = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(2, 0)));
+            metadata.SetEntityPaused(larva, true);
+            hiveSystem.SetHive(larva, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Observer");
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
+
+        await server.WaitAssertion(() => metadata.SetEntityPaused(larva, false));
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task LesserXenoIsNotAssignedFromPool()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 300);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            var lesser = entMan.SpawnEntity("CMXenoLesserDrone", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(lesser, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Lesser Drone");
+            mind.TransferTo(mindId, lesser);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            OpenLarvaPoolUi(entMan, ghost);
+            var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ThunderdomeTransferPreservesPoolPriorityAndBypassesDeathTimer()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 300);
+
+        var entMan = server.EntMan;
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        await server.WaitAssertion(() =>
+        {
+            entMan.EnsureComponent<ThunderdomeMapComponent>(map.MapUid);
+            var body = entMan.SpawnEntity("CMMobHuman", map.GridCoords);
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords.Offset(new Vector2(1, 0)));
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(2, 0)));
+
+            var mindId = mind.CreateMind(player.UserId, "Thunderdome Player");
+            mind.TransferTo(mindId, body);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            Assert.That(entMan.HasComponent<JoinXenoCooldownIgnoreComponent>(ghost), Is.True);
+            OpenLarvaPoolUi(entMan, ghost);
+            var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task StrandedXenoKeepsPoolTimeForBurrowedLarva()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var larvaPool = entMan.System<LarvaPoolSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid ghost = default;
+        EntityUid hive = default;
+        EntityUid runner = default;
+        EntityUid spawnPoint = default;
+        await server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            spawnPoint = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(3, 0)));
+            hiveSystem.SetHive(runner, hive);
+            hiveSystem.SetHive(spawnPoint, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            larvaPool.PreserveNextDeath(player.UserId);
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+
+            var hiveComp = entMan.GetComponent<HiveComponent>(hive);
+            entMan.DeleteEntity(runner);
+            hiveSystem.ChangeBurrowedLarva((hive, hiveComp), 1);
+        });
+
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.Not.EqualTo(ghost));
+            Assert.That(player.AttachedEntity, Is.Not.EqualTo(spawnPoint));
+            Assert.That(entMan.HasComponent<XenoComponent>(player.AttachedEntity), Is.True);
+            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+            Assert.That(entMan.GetComponent<HiveComponent>(hive).BurrowedLarva, Is.Zero);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ReconnectedCandidateAutomaticallyClaimsAbandonedAdult()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+        server.CfgMan.SetCVar(RMCCVars.RMCDisconnectedXenoGhostRoleTimeSeconds, 1);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid runner = default;
+        await server.WaitAssertion(() =>
+        {
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(runner, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        var playerName = await Disconnect(pair);
+        await pair.RunSeconds(2);
+        await server.WaitAssertion(() =>
+            Assert.That(entMan.HasComponent<AbandonedXenoPoolAvailableComponent>(runner), Is.True));
+
+        player = await Connect(pair, playerName);
+        await DeAdmin(pair, player);
+        await pair.RunSeconds(2);
+
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(runner)));
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DisconnectReconnectPreservesPoolPriority()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+            InLobby = true,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 300);
+        server.CfgMan.SetCVar(RMCCVars.RMCDisconnectedXenoGhostRoleTimeSeconds, 5);
+        server.CfgMan.SetCVar(CCVars.VoteEnabled, false);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid hive = default;
+        EntityUid runner = default;
+        await server.WaitAssertion(() =>
+        {
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(runner, hive);
+            entMan.EnsureComponent<LarvaPoolClaimBlockedComponent>(runner);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await CancelActiveVotes(pair);
+        var (_, laterGhost) = await AddDummyCandidate(pair, map.GridCoords.Offset(new Vector2(3, 0)));
+        var ticker = entMan.System<GameTicker>();
+        await server.WaitPost(() => ticker.StartRound());
+        await pair.RunTicksSync(5);
+        server.CfgMan.SetCVar(CCVars.GameLobbyEnabled, false);
+
+        var playerName = await Disconnect(pair);
+        await pair.RunSeconds(6);
+        await server.WaitAssertion(() =>
+            Assert.That(entMan.HasComponent<AbandonedXenoPoolAvailableComponent>(runner), Is.True));
+
+        player = await Connect(pair, playerName);
+        await DeAdmin(pair, player);
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            var reconnectedGhost = player.AttachedEntity;
+            Assert.That(reconnectedGhost, Is.Not.Null);
+            Assert.That(entMan.HasComponent<GhostComponent>(reconnectedGhost), Is.True);
+            Assert.That(entMan.HasComponent<JoinXenoCooldownIgnoreComponent>(reconnectedGhost), Is.True);
+
+            OpenLarvaPoolUi(entMan, reconnectedGhost!.Value);
+            OpenLarvaPoolUi(entMan, laterGhost);
+            var first = GetLarvaPoolState(entMan, reconnectedGhost.Value).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
+            var second = GetLarvaPoolState(entMan, laterGhost).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
+
+            Assert.That(first.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(first.Position, Is.EqualTo(1));
+            Assert.That(second.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(second.Position, Is.EqualTo(2));
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task DisconnectedBodyDeathResetsPriorityAndDeathTimer()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+            InLobby = true,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 300);
+        server.CfgMan.SetCVar(RMCCVars.RMCDisconnectedXenoGhostRoleTimeSeconds, 5);
+        server.CfgMan.SetCVar(CCVars.VoteEnabled, false);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var mobState = entMan.System<MobStateSystem>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        EntityUid hive = default;
+        EntityUid runner = default;
+        await server.WaitAssertion(() =>
+        {
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(runner, hive);
+
+            var mindId = mind.CreateMind(player.UserId, "Runner");
+            mind.TransferTo(mindId, runner);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await CancelActiveVotes(pair);
+        var (_, laterGhost) = await AddDummyCandidate(
+            pair,
+            map.GridCoords.Offset(new Vector2(3, 0)),
+            ignoreCooldown: true);
+        var ticker = entMan.System<GameTicker>();
+        await server.WaitPost(() => ticker.StartRound());
+        await pair.RunTicksSync(5);
+        server.CfgMan.SetCVar(CCVars.GameLobbyEnabled, false);
+
+        var playerName = await Disconnect(pair);
+        await server.WaitAssertion(() => mobState.ChangeMobState(runner, MobState.Dead));
+        await pair.RunSeconds(6);
+
+        player = await Connect(pair, playerName);
+        await DeAdmin(pair, player);
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            var reconnectedGhost = player.AttachedEntity;
+            Assert.That(reconnectedGhost, Is.Not.Null);
+            Assert.That(entMan.HasComponent<GhostComponent>(reconnectedGhost), Is.True);
+            Assert.That(entMan.HasComponent<JoinXenoCooldownIgnoreComponent>(reconnectedGhost), Is.False);
+
+            OpenLarvaPoolUi(entMan, reconnectedGhost!.Value);
+            OpenLarvaPoolUi(entMan, laterGhost);
+            var status = GetLarvaPoolState(entMan, reconnectedGhost.Value).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
+            var laterStatus = GetLarvaPoolState(entMan, laterGhost).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
+            Assert.Multiple(() =>
+            {
+                Assert.That(status.Status, Is.EqualTo(LarvaPoolStatus.Waiting));
+                Assert.That(laterStatus.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+                Assert.That(status.Position, Is.EqualTo(2));
+            });
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ParasiteRoleBlocksRecentlyDeadGhost()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var parasiteRoles = entMan.System<XenoEggRoleSystem>();
+
+        await server.WaitAssertion(() =>
+        {
+            var ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            Assert.That(entMan.HasComponent<GhostComponent>(ghost), Is.True);
+            Assert.That(parasiteRoles.UserCheck(ghost), Is.False);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task ParasiteRoleAllowsGhostAfterDeathTimer()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+        });
+
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+        var entMan = server.EntMan;
+        var parasiteRoles = entMan.System<XenoEggRoleSystem>();
+        var ghostSystem = entMan.System<SharedGhostSystem>();
+        var timing = server.ResolveDependency<IGameTiming>();
+
+        await server.WaitAssertion(() =>
+        {
+            var ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            var ghostComp = entMan.GetComponent<GhostComponent>(ghost);
+            ghostSystem.SetTimeOfDeath((ghost, ghostComp), timing.CurTime - TimeSpan.FromMinutes(3));
+
+            Assert.That(entMan.HasComponent<GhostComponent>(ghost), Is.True);
+            Assert.That(parasiteRoles.UserCheck(ghost), Is.True);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    private static void OpenLarvaPoolUi(IEntityManager entMan, EntityUid ghost)
+    {
+        var ev = new JoinXenoActionEvent
+        {
+            Performer = ghost,
+        };
+
+        entMan.EventBus.RaiseLocalEvent(ghost, ev);
+    }
+
+    private static JoinXenoBuiState GetLarvaPoolState(IEntityManager entMan, EntityUid ghost)
+    {
+        var ui = entMan.System<SharedUserInterfaceSystem>();
+        Assert.That(ui.TryGetUiState<JoinXenoBuiState>(ghost, JoinXenoUIKey.Key, out var state), Is.True);
+        return (JoinXenoBuiState) state!;
+    }
+
+    private static async Task<(ICommonSession Player, EntityUid Ghost)> AddDummyCandidate(
+        TestPair pair,
+        EntityCoordinates coordinates,
+        bool ignoreCooldown = false)
+    {
+        var player = await pair.Server.AddDummySession();
+        await pair.RunTicksSync(5);
+        var userDb = pair.Server.ResolveDependency<UserDbDataManager>();
+        await userDb.WaitLoadComplete(player);
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High, player.UserId);
+
+        var entMan = pair.Server.EntMan;
+        var ghostSystem = entMan.System<SharedGhostSystem>();
+        var larvaPool = entMan.System<LarvaPoolSystem>();
+        var mind = entMan.System<MindSystem>();
+        var timing = pair.Server.ResolveDependency<IGameTiming>();
+        EntityUid ghost = default;
+        await pair.Server.WaitAssertion(() =>
+        {
+            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, coordinates);
+
+            EntityUid mindId;
+            if (!mind.TryGetMind(player, out mindId, out _))
+                mindId = mind.CreateMind(player.UserId, "Observer");
+
+            mind.TransferTo(mindId, ghost);
+            mind.SetUserId(mindId, player.UserId);
+            larvaPool.OptInStaff(player.UserId);
+
+            if (ignoreCooldown)
+            {
+                entMan.EnsureComponent<JoinXenoCooldownIgnoreComponent>(ghost);
+                var ghostComp = entMan.GetComponent<GhostComponent>(ghost);
+                ghostSystem.SetTimeOfDeath(
+                    (ghost, ghostComp),
+                    timing.CurTime - TimeSpan.FromMinutes(10));
+            }
+        });
+
+        return (player, ghost);
+    }
+
+    private static async Task CancelActiveVotes(TestPair pair)
+    {
+        var votes = pair.Server.ResolveDependency<IVoteManager>();
+        await pair.Server.WaitPost(() =>
+        {
+            foreach (var vote in votes.ActiveVotes.ToArray())
+                vote.Cancel();
+        });
+        await pair.RunTicksSync(1);
+    }
+
+    private static async Task DeAdmin(TestPair pair, ICommonSession player)
+    {
+        await pair.Server.WaitAssertion(() =>
+        {
+            var admins = pair.Server.ResolveDependency<IAdminManager>();
+            if (admins.IsAdmin(player))
+                admins.DeAdmin(player);
+        });
+    }
+
+    private static async Task<string> Disconnect(TestPair pair)
+    {
+        var net = pair.Client.ResolveDependency<IClientNetManager>();
+        var player = pair.Player ?? throw new InvalidOperationException("Client session was not found on the server.");
+        var name = player.Name;
+
+        await pair.Client.WaitPost(() => net.ClientDisconnect("Abandoned xeno pool test disconnect."));
+        await pair.RunTicksSync(5);
+        return name;
+    }
+
+    private static async Task<ICommonSession> Connect(TestPair pair, string username)
+    {
+        var net = pair.Client.ResolveDependency<IClientNetManager>();
+        await Task.WhenAll(pair.Client.WaitIdleAsync(), pair.Server.WaitIdleAsync());
+        pair.Client.SetConnectTarget(pair.Server);
+        await pair.Client.WaitPost(() => net.ClientConnect(null!, 0, username));
+        await pair.RunTicksSync(5);
+        return pair.Player ?? throw new InvalidOperationException("Reconnected client session was not found on the server.");
+    }
+}

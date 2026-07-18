@@ -9,28 +9,22 @@ public enum JoinXenoUIKey : byte
 }
 
 [Serializable, NetSerializable]
-public enum JoinXenoQueueStatus : byte
+public enum LarvaPoolStatus : byte
 {
-    NotQueued,
-    Queued,
-    Waiting
+    Ineligible,
+    Waiting,
+    Eligible,
 }
 
 [Serializable, NetSerializable]
 public readonly record struct JoinXenoHiveEntry(
     NetEntity Hive,
     string HiveName,
-    JoinXenoQueueStatus Status,
+    LarvaPoolStatus Status,
     int Position);
 
 [Serializable, NetSerializable]
 public sealed class JoinXenoBuiState(List<JoinXenoHiveEntry> entries) : BoundUserInterfaceState
 {
     public readonly List<JoinXenoHiveEntry> Entries = entries;
-}
-
-[Serializable, NetSerializable]
-public sealed class JoinXenoHiveChoiceBuiMsg(NetEntity hive) : BoundUserInterfaceMessage
-{
-    public readonly NetEntity Hive = hive;
 }
