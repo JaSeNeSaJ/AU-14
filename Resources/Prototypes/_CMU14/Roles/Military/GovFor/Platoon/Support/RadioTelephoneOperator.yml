@@ -24,8 +24,7 @@
   - AU14RoundJobProfileMilitaryBase
   roundComponents:
   - type: AU14CallsignRole
-    suffix: ROMEO
-  - type: ANPRCRadioUser
+    radioTag: FTL
   - type: Skills
     preset: AU14SkillPresetPlatoonRTO
   - type: JobPrefix
@@ -102,9 +101,6 @@
   equipment:
     id: AU14JobIDCardGOVFORRadioTelephoneOperator
     ears: AU14HeadsetGovforMarineFTL
-    back: ANPRC117GRadioFilled
-    pocket1: ANPRCFillCardGOVFOR
-    pocket2: ANPRCFreqCard
 
 - type: startingGear
   id: AU14GearGOVFORRadioTelephoneOperatorDummy
@@ -136,6 +132,7 @@
   id: JobAU14JobGOVFORRadioTelephoneOperator
   points: 7
   groups:
+  - MarineBackpack
   - EyewearRMCPVE
   - MasksRMCPVE
   - HeadwearRMCPVE
@@ -163,9 +160,6 @@
   equipment:
     id: AU14JobIDCardOPFORRadioTelephoneOperator
     ears: AU14HeadsetOpforMarineFTL
-    back: ANPRC117GRadioOPFORFilled
-    pocket1: ANPRCFillCardOPFOR
-    pocket2: ANPRCFreqCard
 
 - type: entity
   parent: CMSpawnPointJobBase
