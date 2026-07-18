@@ -1080,6 +1080,10 @@ namespace Content.Server.Database.Migrations.Postgres
                         .HasColumnType("text")
                         .HasColumnName("origin");
 
+                    b.Property<string>("Platoon")
+                        .HasColumnType("text")
+                        .HasColumnName("platoon");
+
                     b.Property<bool>("PlaytimePerks")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("boolean")
