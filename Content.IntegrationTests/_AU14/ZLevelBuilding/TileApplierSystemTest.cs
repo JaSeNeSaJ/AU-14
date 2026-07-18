@@ -5,6 +5,7 @@ using Content.Shared._AU14.ZLevelBuilding;
 using Content.Shared.Shuttles.Components;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Maths;
 
 namespace Content.IntegrationTests._AU14.ZLevelBuilding;
@@ -97,6 +98,50 @@ public sealed class TileApplierSystemTest
             server.EntMan.DeleteEntity(first);
             supports.RecomputeGrid(map.Grid);
             Assert.That(server.EntMan.GetComponent<StructuralSupportComponent>(second).Supported, Is.True);
+        });
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task RemovingLastBeamCollapsesDependentUpperFloor()
+    {
+        await using var pair = await PoolManager.GetServerClient();
+        var server = pair.Server;
+        var map = await pair.CreateTestMap();
+
+        EntityUid upperGrid = default;
+        Vector2i upperTile = default;
+        await server.WaitAssertion(() =>
+        {
+            var entities = server.EntMan;
+            var transforms = entities.System<SharedTransformSystem>();
+            var maps = entities.System<SharedMapSystem>();
+            var building = entities.System<ZLevelBuildingSystem>();
+            var mapUid = entities.GetComponent<TransformComponent>(map.Grid.Owner).MapUid!.Value;
+            var world = transforms.ToMapCoordinates(map.GridCoords).Position;
+
+            var beam = entities.SpawnEntity("AU14NavalisSupportBeamGreen1Tile", map.GridCoords);
+            Assert.That(building.EnsureNeighborLevel(mapUid, 1, map.Grid.Owner, world, out var upperMap, out upperGrid), Is.True);
+
+            var upperMapComp = entities.GetComponent<MapComponent>(upperMap);
+            var upperCoords = transforms.ToCoordinates(upperGrid, new MapCoordinates(world, upperMapComp.MapId));
+            entities.SpawnEntity("AU14TileApplierPlating", upperCoords);
+
+            var upperGridComp = entities.GetComponent<MapGridComponent>(upperGrid);
+            upperTile = maps.TileIndicesFor(upperGrid, upperGridComp, upperCoords);
+            entities.DeleteEntity(beam);
+        });
+
+        // Five-second warning plus scheduling slack.
+        await pair.RunTicksSync(400);
+
+        await server.WaitAssertion(() =>
+        {
+            var entities = server.EntMan;
+            var maps = entities.System<SharedMapSystem>();
+            var upperGridComp = entities.GetComponent<MapGridComponent>(upperGrid);
+            Assert.That(maps.GetTileRef(upperGrid, upperGridComp, upperTile).Tile.IsEmpty, Is.True);
         });
 
         await pair.CleanReturnAsync();
