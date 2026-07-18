@@ -479,7 +479,7 @@
         name: Support
         options:
         - id: VehicleTankWarningArray
-          name: warning array
+          name: weapons sensor array
           item: VehicleTankWarningArray
           slot: support
         - id: VehicleTankOverdriveEnhancer
@@ -603,7 +603,7 @@
         name: Support
         options:
         - id: VehicleTankWarningArray
-          name: warning array
+          name: weapons sensor array
           item: VehicleTankWarningArray
           slot: support
         - id: VehicleTankOverdriveEnhancer
@@ -699,7 +699,7 @@
           item: VehicleSPPTankFlareModule
           slot: support
         - id: VehicleSPPTankWarningArray
-          name: warning array
+          name: weapons sensor array
           item: VehicleSPPTankWarningArray
           slot: support
         - id: VehicleSPPTankOverdriveEnhancer
