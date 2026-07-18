@@ -236,9 +236,10 @@ namespace Content.Client.Construction.UI
 
         public void SetConstructionSkillInfo(int skillLevel, int discountPercent)
         {
-            ConstructionSkillInfo.Text = Loc.GetString("construction-menu-skill-info",
+            ConstructionSkillInfo.SetMessage(Loc.GetString("construction-menu-skill-info",
                 ("skill", skillLevel),
-                ("discount", discountPercent));
+                ("discount", discountPercent)),
+                Color.FromHex("#72C7FF"));
             ConstructionSkillInfo.Visible = skillLevel > 0;
         }
 
