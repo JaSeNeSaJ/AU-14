@@ -70,6 +70,7 @@ namespace Content.Client.Construction.UI
         event EventHandler ClearAllGhosts;
 
         void ClearRecipeInfo();
+        void SetConstructionSkillInfo(int skillLevel, int discountPercent);
         void SetRecipeInfo(string name, string description, EntityPrototype? targetPrototype, Color iconColor, bool isItem, bool isFavorite, ConstructionPrototype prototype);
         void ResetPlacement();
 
@@ -230,6 +231,15 @@ namespace Content.Client.Construction.UI
             TargetTexture.Modulate = Color.White;
             FavoriteButton.Visible = false;
             RecipeStepList.Clear();
+            ConstructionSkillInfo.Visible = false;
+        }
+
+        public void SetConstructionSkillInfo(int skillLevel, int discountPercent)
+        {
+            ConstructionSkillInfo.Text = Loc.GetString("construction-menu-skill-info",
+                ("skill", skillLevel),
+                ("discount", discountPercent));
+            ConstructionSkillInfo.Visible = skillLevel > 0;
         }
 
         public sealed record ConstructionMenuListData(ConstructionPrototype Prototype, EntityPrototype TargetPrototype) : ListData;

@@ -641,6 +641,16 @@ namespace Content.Server.Construction
             {
                 switch (step)
                 {
+                    case MaterialConstructionGraphStep materialInsert:
+                        if (TryComp<StackComponent>(holding, out var stack) &&
+                            stack.StackTypeId == materialInsert.MaterialPrototypeId)
+                        {
+                            var cost = materialInsert.Amount;
+                            var costEv = new RMCConstructionCostEvent(user, stack.StackTypeId, cost, cost);
+                            RaiseLocalEvent(ref costEv);
+                            valid = stack.Count >= costEv.Cost;
+                        }
+                        break;
                     case EntityInsertConstructionGraphStep entityInsert:
                         if (entityInsert.EntityValid(holding, EntityManager, Factory))
                             valid = true;

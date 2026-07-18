@@ -1076,6 +1076,7 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
             ("count", info.EntityCount),
             ("source", string.IsNullOrEmpty(info.Source) ? "Unknown" : info.Source)));
         RecipeStepList.Clear();
+        ConstructionSkillInfo.Visible = false;
         FavoriteButton.Visible = true;
         FavoriteButton.Text = Loc.GetString("saved-build-place-original-button");
         BuildButton.Disabled = false;
@@ -1287,6 +1288,14 @@ public sealed partial class GmodConstructionMenu : DefaultWindow, IConstructionM
         GhostActionsRow.Visible = true;
 
         CloseDetailPanel();
+    }
+
+    public void SetConstructionSkillInfo(int skillLevel, int discountPercent)
+    {
+        ConstructionSkillInfo.Text = Loc.GetString("construction-menu-skill-info",
+            ("skill", skillLevel),
+            ("discount", discountPercent));
+        ConstructionSkillInfo.Visible = skillLevel > 0;
     }
 
     public void SetRecipeInfo(

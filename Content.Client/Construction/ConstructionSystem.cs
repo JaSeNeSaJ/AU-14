@@ -50,6 +50,7 @@ namespace Content.Client.Construction
             SubscribeLocalEvent<LocalPlayerAttachedEvent>(HandlePlayerAttached);
             SubscribeNetworkEvent<AckStructureConstructionMessage>(HandleAckStructure);
             SubscribeNetworkEvent<ResponseConstructionGuide>(OnConstructionGuideReceived);
+            SubscribeLocalEvent<PrototypesReloadedEventArgs>(OnConstructionPrototypesReloaded);
 
             CommandBinds.Builder
                 .Bind(ContentKeyFunctions.OpenCraftingMenu,
@@ -62,6 +63,19 @@ namespace Content.Client.Construction
 
             SubscribeLocalEvent<ConstructionGhostComponent, ExaminedEvent>(HandleConstructionGhostExamined);
             SubscribeLocalEvent<ConstructionGhostComponent, ComponentShutdown>(HandleGhostComponentShutdown);
+        }
+
+        private void OnConstructionPrototypesReloaded(PrototypesReloadedEventArgs args)
+        {
+            if (!args.WasModified<ConstructionPrototype>() &&
+                !args.WasModified<ConstructionGraphPrototype>() &&
+                !args.WasModified<EntityPrototype>())
+                return;
+
+            _guideCache.Clear();
+            _recipesMetadataCache.Clear();
+            WarmupRecipesCache();
+            ConstructionRecipesChanged?.Invoke(this, EventArgs.Empty);
         }
 
         private void HandleGhostComponentShutdown(EntityUid uid, ConstructionGhostComponent component, ComponentShutdown args)
@@ -233,6 +247,7 @@ namespace Content.Client.Construction
 
         public event EventHandler<CraftingAvailabilityChangedArgs>? CraftingAvailabilityChanged;
         public event EventHandler<string>? ConstructionGuideAvailable;
+        public event EventHandler? ConstructionRecipesChanged;
         public event EventHandler? ToggleCraftingWindow;
         public event EventHandler? FlipConstructionPrototype;
 
