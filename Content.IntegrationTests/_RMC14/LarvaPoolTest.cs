@@ -748,20 +748,21 @@ public sealed class LarvaPoolTest
     }
 
     [Test]
-    public async Task StrandedXenoKeepsPoolTimeForBurrowedLarva()
+    public async Task StrandedXenoReceivesCreditedBurrowedLarvaBeforeEarlierCandidate()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
             Connected = true,
             Dirty = true,
             DummyTicker = false,
+            InLobby = true,
         });
 
         await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
 
         var server = pair.Server;
-        var map = await pair.CreateTestMap();
         server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+        server.CfgMan.SetCVar(CCVars.VoteEnabled, false);
 
         var entMan = server.EntMan;
         var hiveSystem = entMan.System<SharedXenoHiveSystem>();
@@ -770,26 +771,84 @@ public sealed class LarvaPoolTest
         var player = server.PlayerMan.Sessions.Single();
         await DeAdmin(pair, player);
 
-        EntityUid ghost = default;
+        var dummyPlayer = await server.AddDummySession();
+        await pair.RunTicksSync(5);
+        var userDb = server.ResolveDependency<UserDbDataManager>();
+        await userDb.WaitLoadComplete(dummyPlayer);
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High, dummyPlayer.UserId);
+
+        await CancelActiveVotes(pair);
+        var ticker = entMan.System<GameTicker>();
+        await server.WaitPost(() => ticker.StartRound());
+        await server.WaitPost(() =>
+        {
+            ticker.JoinAsObserver(player);
+            ticker.JoinAsObserver(dummyPlayer);
+        });
+        await pair.RunTicksSync(5);
+        server.CfgMan.SetCVar(CCVars.GameLobbyEnabled, false);
+
+        var map = await pair.CreateTestMap();
+        EntityUid primaryGhost = default;
+        EntityUid dummyGhost = default;
         EntityUid hive = default;
         EntityUid runner = default;
         EntityUid spawnPoint = default;
         await server.WaitAssertion(() =>
         {
-            ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
+            Assert.That(player.AttachedEntity, Is.Not.Null);
+            Assert.That(dummyPlayer.AttachedEntity, Is.Not.Null);
+            primaryGhost = player.AttachedEntity.Value;
+            dummyGhost = dummyPlayer.AttachedEntity.Value;
+            Assert.That(entMan.HasComponent<GhostComponent>(primaryGhost), Is.True);
+            Assert.That(entMan.HasComponent<GhostComponent>(dummyGhost), Is.True);
+
             hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
             runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
             spawnPoint = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(3, 0)));
             hiveSystem.SetHive(runner, hive);
             hiveSystem.SetHive(spawnPoint, hive);
+        });
 
-            var mindId = mind.CreateMind(player.UserId, "Runner");
-            mind.TransferTo(mindId, runner);
-            larvaPool.PreserveNextDeath(player.UserId);
-            mind.TransferTo(mindId, ghost);
-            mind.SetUserId(mindId, player.UserId);
+        ICommonSession earlierPlayer = default!;
+        ICommonSession strandedPlayer = default!;
+        EntityUid earlierGhost = default;
+        EntityUid strandedGhost = default;
+        await server.WaitAssertion(() =>
+        {
+            OpenLarvaPoolUi(entMan, primaryGhost);
+            OpenLarvaPoolUi(entMan, dummyGhost);
+            var primaryStatus = GetLarvaPoolState(entMan, primaryGhost).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
+            var dummyStatus = GetLarvaPoolState(entMan, dummyGhost).Entries
+                .Single(e => e.Hive == entMan.GetNetEntity(hive));
 
+            Assert.That(primaryStatus.Position, Is.Not.EqualTo(dummyStatus.Position));
+            if (primaryStatus.Position < dummyStatus.Position)
+            {
+                earlierPlayer = player;
+                earlierGhost = primaryGhost;
+                strandedPlayer = dummyPlayer;
+                strandedGhost = dummyGhost;
+            }
+            else
+            {
+                earlierPlayer = dummyPlayer;
+                earlierGhost = dummyGhost;
+                strandedPlayer = player;
+                strandedGhost = primaryGhost;
+            }
+        });
+
+        await server.WaitAssertion(() =>
+        {
             var hiveComp = entMan.GetComponent<HiveComponent>(hive);
+            Assert.That(mind.TryGetMind(strandedPlayer, out var mindId, out _), Is.True);
+            mind.TransferTo(mindId, runner);
+            larvaPool.CreditStrandedXeno((hive, hiveComp), strandedPlayer.UserId);
+            mind.TransferTo(mindId, strandedGhost);
+            mind.SetUserId(mindId, strandedPlayer.UserId);
+
             entMan.DeleteEntity(runner);
             hiveSystem.ChangeBurrowedLarva((hive, hiveComp), 1);
         });
@@ -798,10 +857,10 @@ public sealed class LarvaPoolTest
 
         await server.WaitAssertion(() =>
         {
-            Assert.That(player.AttachedEntity, Is.Not.EqualTo(ghost));
-            Assert.That(player.AttachedEntity, Is.Not.EqualTo(spawnPoint));
-            Assert.That(entMan.HasComponent<XenoComponent>(player.AttachedEntity), Is.True);
-            Assert.That(entMan.HasComponent<DialogComponent>(ghost), Is.False);
+            Assert.That(earlierPlayer.AttachedEntity, Is.EqualTo(earlierGhost));
+            Assert.That(strandedPlayer.AttachedEntity, Is.Not.EqualTo(strandedGhost));
+            Assert.That(strandedPlayer.AttachedEntity, Is.Not.EqualTo(spawnPoint));
+            Assert.That(entMan.HasComponent<DialogComponent>(strandedGhost), Is.False);
             Assert.That(entMan.GetComponent<HiveComponent>(hive).BurrowedLarva, Is.Zero);
         });
 

@@ -936,8 +936,8 @@ public sealed partial class CMDistressSignalRuleSystem : GameRuleSystem<CMDistre
                         else
                             mind = _mind.CreateMind(session.UserId);
 
-                        if (comp.CountedInSlots && _hive.GetHive(xeno) != null)
-                            _larvaPool.PreserveNextDeath(session.UserId);
+                        if (comp.CountedInSlots && _hive.GetHive(xeno) is { } hive)
+                            _larvaPool.CreditStrandedXeno(hive, session.UserId);
 
                         var ghost = _ghost.SpawnGhost((mind.Owner, mind.Comp), xeno);
                         if (ghost != null)

@@ -69,6 +69,8 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     private readonly Dictionary<NetUserId, DeathTransition> _pendingDeaths = [];
     private readonly HashSet<NetUserId> _preserveNextDeath = [];
     private readonly HashSet<NetUserId> _staffOptIns = [];
+    private readonly List<StrandedXenoCredit> _strandedXenoCredits = [];
+    private readonly List<EntityUid> _strandedXenoHives = [];
 
     private EntityQuery<GhostComponent> _ghostQuery;
     private EntityQuery<HiveComponent> _hiveQuery;
@@ -104,6 +106,8 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         _pendingDeaths.Clear();
         _preserveNextDeath.Clear();
         _staffOptIns.Clear();
+        _strandedXenoCredits.Clear();
+        _strandedXenoHives.Clear();
         _nextRefresh = default;
         _nextPositionUpdate = default;
         _refreshRequested = false;
@@ -186,6 +190,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
             return;
         }
 
+        RemoveStrandedXenoCredit(userId);
         _pendingDeaths.Remove(userId);
         if (!_mobState.IsDead(ev.Entity))
         {
@@ -287,11 +292,29 @@ public sealed partial class LarvaPoolSystem : EntitySystem
 
     private void TryClaimForAllHives()
     {
+        _strandedXenoHives.Clear();
+        foreach (var credit in _strandedXenoCredits)
+        {
+            if (!_strandedXenoHives.Contains(credit.Hive))
+                _strandedXenoHives.Add(credit.Hive);
+        }
+
+        foreach (var hiveId in _strandedXenoHives)
+        {
+            if (_hiveQuery.TryComp(hiveId, out var hive))
+                TryClaimForHive((hiveId, hive));
+        }
+
         var hives = EntityQueryEnumerator<HiveComponent>();
         while (hives.MoveNext(out var hiveId, out var hive))
         {
+            if (_strandedXenoHives.Contains(hiveId))
+                continue;
+
             TryClaimForHive((hiveId, hive));
         }
+
+        _strandedXenoHives.Clear();
     }
 
     public void RequestAssignmentFor(EntityUid uid)
@@ -304,9 +327,15 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         }
     }
 
-    public void PreserveNextDeath(NetUserId userId)
+    /// <summary>
+    /// Preserves a stranded xeno's pool time and gives them first claim on their hive's replacement larva.
+    /// </summary>
+    public void CreditStrandedXeno(Entity<HiveComponent> hive, NetUserId userId)
     {
         _preserveNextDeath.Add(userId);
+        RemoveStrandedXenoCredit(userId);
+        _strandedXenoCredits.Insert(0, new StrandedXenoCredit(userId, hive.Owner));
+        _refreshRequested = true;
     }
 
     public void OptInStaff(NetUserId userId)
@@ -318,6 +347,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     private void TryClaimForHive(Entity<HiveComponent> hive)
     {
         var candidates = GetCandidates();
+        PrioritizeStrandedXenos(hive.Owner, candidates);
         var claimed = false;
         foreach (var candidate in candidates)
         {
@@ -329,6 +359,30 @@ public sealed partial class LarvaPoolSystem : EntitySystem
 
         if (claimed)
             NotifyPoolPositions();
+    }
+
+    private void PrioritizeStrandedXenos(EntityUid hive, List<LarvaPoolCandidate> candidates)
+    {
+        var insertAt = 0;
+        foreach (var credit in _strandedXenoCredits)
+        {
+            if (credit.Hive != hive)
+                continue;
+
+            var candidateIndex = candidates.FindIndex(candidate => candidate.Session.UserId == credit.UserId);
+            if (candidateIndex < 0)
+                continue;
+
+            var candidate = candidates[candidateIndex];
+            candidates.RemoveAt(candidateIndex);
+            candidates.Insert(insertAt, candidate);
+            insertAt++;
+        }
+    }
+
+    private void RemoveStrandedXenoCredit(NetUserId userId)
+    {
+        _strandedXenoCredits.RemoveAll(credit => credit.UserId == userId);
     }
 
     private bool TryClaimAvailable(Entity<HiveComponent> hive, ICommonSession session)
@@ -584,6 +638,8 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     }
 
     private readonly record struct DeathTransition(bool PreservePoolTime, bool BypassDeathTimer);
+
+    private readonly record struct StrandedXenoCredit(NetUserId UserId, EntityUid Hive);
 
     private readonly record struct LarvaPoolCandidate(ICommonSession Session, EntityUid Ghost);
 }
