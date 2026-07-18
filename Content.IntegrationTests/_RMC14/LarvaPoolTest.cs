@@ -2,6 +2,7 @@ using System.Linq;
 using System.Numerics;
 using Content.IntegrationTests.Pair;
 using Content.Server.Administration.Managers;
+using Content.Server.Afk;
 using Content.Server._RMC14.Xenonids.JoinXeno;
 using Content.Server._RMC14.Xenonids.Parasite;
 using Content.Server.Database;
@@ -789,8 +790,11 @@ public sealed class LarvaPoolTest
 
         var dummyPlayer = await server.AddDummySession();
         await pair.RunTicksSync(5);
+        await DeAdmin(pair, dummyPlayer);
         var userDb = server.ResolveDependency<UserDbDataManager>();
         await userDb.WaitLoadComplete(dummyPlayer);
+        var afk = server.ResolveDependency<IAfkManager>();
+        await server.WaitPost(() => afk.PlayerDidAction(dummyPlayer));
         await pair.SetJobPriority(SelectableXenoRole, JobPriority.High, dummyPlayer.UserId);
 
         await CancelActiveVotes(pair);
@@ -839,6 +843,8 @@ public sealed class LarvaPoolTest
             var dummyStatus = GetLarvaPoolState(entMan, dummyGhost).Entries
                 .Single(e => e.Hive == entMan.GetNetEntity(hive));
 
+            Assert.That(primaryStatus.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(dummyStatus.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
             Assert.That(primaryStatus.Position, Is.Not.EqualTo(dummyStatus.Position));
             if (primaryStatus.Position < dummyStatus.Position)
             {
@@ -876,6 +882,8 @@ public sealed class LarvaPoolTest
             Assert.That(earlierPlayer.AttachedEntity, Is.EqualTo(earlierGhost));
             Assert.That(strandedPlayer.AttachedEntity, Is.Not.EqualTo(strandedGhost));
             Assert.That(strandedPlayer.AttachedEntity, Is.Not.EqualTo(spawnPoint));
+            Assert.That(entMan.TryGetComponent(strandedPlayer.AttachedEntity, out XenoComponent? xeno), Is.True);
+            Assert.That(xeno!.Role.Id, Is.EqualTo("CMXenoLarva"));
             Assert.That(entMan.HasComponent<DialogComponent>(strandedGhost), Is.False);
             Assert.That(entMan.GetComponent<HiveComponent>(hive).BurrowedLarva, Is.Zero);
         });
