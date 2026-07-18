@@ -9,4 +9,9 @@ public sealed class GetLarvaPoolStatusEvent(NetUserId userId) : EntityEventArgs
     public Dictionary<EntityUid, LarvaPoolUserStatus> Pools { get; } = new();
 }
 
-public readonly record struct LarvaPoolUserStatus(LarvaPoolStatus Status, int Position);
+public readonly record struct LarvaPoolUserStatus(
+    LarvaPoolStatus Status,
+    int Position,
+    LarvaPoolIneligibilityReason IneligibilityReason,
+    bool PreferenceLoaded,
+    bool OptedIn);

@@ -1,7 +1,5 @@
 using System.Linq;
 using Content.Server.Administration.Managers;
-using Content.Server.Afk;
-using Content.Server.Afk.Events;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Events;
 using Content.Server.Ghost.Roles;
@@ -40,7 +38,6 @@ namespace Content.Server._RMC14.Xenonids.JoinXeno;
 public sealed partial class LarvaPoolSystem : EntitySystem
 {
     [Dependency] private IAdminManager _admin = default!;
-    [Dependency] private IAfkManager _afk = default!;
     [Dependency] private IBanManager _bans = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private GameTicker _gameTicker = default!;
@@ -50,6 +47,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     [Dependency] private MobStateSystem _mobState = default!;
     [Dependency] private ISharedPlayerManager _player = default!;
     [Dependency] private IServerPreferencesManager _preferences = default!;
+    [Dependency] private LarvaPoolPreferenceManager _larvaPoolPreferences = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private IGameTiming _timing = default!;
@@ -83,6 +81,8 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         _ghostQuery = GetEntityQuery<GhostComponent>();
         _hiveQuery = GetEntityQuery<HiveComponent>();
 
+        InitializeOffers();
+
         SubscribeLocalEvent<GetLarvaPoolCandidateCountEvent>(OnGetLarvaPoolCandidateCount);
         SubscribeLocalEvent<GetLarvaPoolStatusEvent>(OnGetLarvaPoolStatus);
         SubscribeLocalEvent<RoundRestartCleanupEvent>(OnCleanup);
@@ -91,11 +91,11 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         SubscribeLocalEvent<MobStateChangedEvent>(OnMobStateChanged);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<PlayerDetachedEvent>(OnPlayerDetached);
-        SubscribeLocalEvent<UnAFKEvent>(OnUnAFK);
         SubscribeLocalEvent<AbandonedXenoPoolAvailableComponent, ComponentStartup>(OnAbandonedAvailableStartup);
         SubscribeLocalEvent<LarvaPoolAvailableComponent, ComponentStartup>(OnAvailableStartup);
         SubscribeLocalEvent<LarvaPoolAvailableComponent, HiveChangedEvent>(OnAvailableHiveChanged);
         SubscribeLocalEvent<LarvaPoolAvailableComponent, MindRemovedMessage>(OnAvailableMindRemoved);
+        SubscribeLocalEvent<JoinXenoComponent, SetLarvaPoolOptInBuiMsg>(OnSetLarvaPoolOptIn);
     }
 
     private void OnCleanup(RoundRestartCleanupEvent ev)
@@ -108,6 +108,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         _staffOptIns.Clear();
         _strandedXenoCredits.Clear();
         _strandedXenoHives.Clear();
+        CleanupOffers();
         _nextRefresh = default;
         _nextPositionUpdate = default;
         _refreshRequested = false;
@@ -164,6 +165,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     private void OnPlayerAttached(PlayerAttachedEvent ev)
     {
         var userId = ev.Player.UserId;
+        CancelPendingOffer(userId, LarvaPoolOfferCancellation.Invalid);
         _pool.RecordJoined(userId, _timing.CurTime);
 
         if (_ghostQuery.TryComp(ev.Entity, out var ghost))
@@ -202,8 +204,14 @@ public sealed partial class LarvaPoolSystem : EntitySystem
 
     private void OnPlayerDetached(PlayerDetachedEvent ev)
     {
-        if (_gameTicker.RunLevel != GameRunLevel.InRound || _ghostQuery.HasComp(ev.Entity))
+        if (_gameTicker.RunLevel != GameRunLevel.InRound)
             return;
+
+        if (_ghostQuery.HasComp(ev.Entity))
+        {
+            CancelPendingOffer(ev.Player.UserId, LarvaPoolOfferCancellation.Disconnected);
+            return;
+        }
 
         var userId = ev.Player.UserId;
         var preserveNextDeath = _preserveNextDeath.Remove(userId);
@@ -236,12 +244,6 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         return false;
     }
 
-    private void OnUnAFK(ref UnAFKEvent ev)
-    {
-        if (ev.Session.AttachedEntity is { } attached && _ghostQuery.HasComp(attached))
-            _refreshRequested = true;
-    }
-
     private void OnBurrowedLarvaAdded(ref BurrowedLarvaAddedEvent ev)
     {
         if (_hiveQuery.HasComp(ev.Hive))
@@ -271,6 +273,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     public override void Update(float frameTime)
     {
         var time = _timing.CurTime;
+        ExpirePendingOffers(time);
         if (_nextPositionUpdate == default)
             _nextPositionUpdate = time + PositionUpdateInterval;
 
@@ -346,21 +349,33 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         _refreshRequested = true;
     }
 
-    private void TryClaimForHive(Entity<HiveComponent> hive)
+    private void OnSetLarvaPoolOptIn(Entity<JoinXenoComponent> ent, ref SetLarvaPoolOptInBuiMsg args)
     {
-        var candidates = GetCandidates();
-        PrioritizeStrandedXenos(hive.Owner, candidates);
-        var claimed = false;
-        foreach (var candidate in candidates)
+        if (args.Actor != ent.Owner ||
+            !TryComp(ent, out ActorComponent? actor) ||
+            !TryGetEntity(args.Hive, out var hive) ||
+            !_hiveQuery.HasComp(hive.Value))
         {
-            if (!TryClaimAvailable(hive, candidate.Session))
-                break;
-
-            claimed = true;
+            return;
         }
 
-        if (claimed)
-            NotifyPoolPositions();
+        var hiveId = GetHivePreferenceId(hive.Value);
+        if (!_larvaPoolPreferences.SetOptedIn(actor.PlayerSession.UserId, hiveId, args.OptedIn))
+            return;
+
+        if (!args.OptedIn &&
+            _pendingOffers.TryGetValue(actor.PlayerSession.UserId, out var pending) &&
+            pending.Hive == hive.Value)
+        {
+            CancelPendingOffer(actor.PlayerSession.UserId, LarvaPoolOfferCancellation.OptedOut);
+        }
+
+        _refreshRequested = true;
+    }
+
+    private void TryClaimForHive(Entity<HiveComponent> hive)
+    {
+        TryOfferForHive(hive);
     }
 
     private void PrioritizeStrandedXenos(EntityUid hive, List<LarvaPoolCandidate> candidates)
@@ -385,19 +400,6 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     private void RemoveStrandedXenoCredit(NetUserId userId)
     {
         _strandedXenoCredits.RemoveAll(credit => credit.UserId == userId);
-    }
-
-    private bool TryClaimAvailable(Entity<HiveComponent> hive, ICommonSession session)
-    {
-        if (TryGetAvailableLarva(hive, out var larva))
-            return AssignXeno(larva, session);
-
-        if (TryGetAbandonedXeno(hive, out var abandoned))
-            return AssignXeno(abandoned, session);
-
-        return hive.Comp.BurrowedLarva > 0 &&
-               _hive.HasBurrowedLarvaSpawnPoint(hive) &&
-               _hive.JoinBurrowedLarva(hive, session);
     }
 
     private bool TryGetAvailableLarva(Entity<HiveComponent> hive, out EntityUid larva)
@@ -475,6 +477,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         if (member.Hive != hive.Owner ||
             TerminatingOrDeleted(uid) ||
             MetaData(uid).EntityPaused ||
+            _pendingOfferTargets.ContainsKey(uid) ||
             HasComp<XenoEvolutionTransferComponent>(uid) ||
             HasComp<LarvaPoolClaimBlockedComponent>(uid) ||
             HasComp<XenoRecentlyDevolvedComponent>(uid) ||
@@ -518,8 +521,11 @@ public sealed partial class LarvaPoolSystem : EntitySystem
                 continue;
             }
 
+            if (!_larvaPoolPreferences.IsLoaded(session.UserId))
+                continue;
+
             _pool.RecordJoined(session.UserId, ghost.TimeOfDeath);
-            if (GetEligibility(session, (attached, ghost)) != LarvaPoolEligibility.Eligible)
+            if (GetEligibility(session, (attached, ghost)).Eligibility != LarvaPoolEligibility.Eligible)
                 continue;
 
             candidates.Add(new LarvaPoolCandidate(session, attached));
@@ -529,37 +535,106 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         return candidates;
     }
 
-    private void OnGetLarvaPoolCandidateCount(GetLarvaPoolCandidateCountEvent args)
+    private List<LarvaPoolCandidate> GetCandidatesForHive(EntityUid hive)
     {
-        args.Count = GetCandidates().Count;
+        var hiveId = GetHivePreferenceId(hive);
+        return GetCandidates()
+            .Where(candidate =>
+                _larvaPoolPreferences.TryGetOptedIn(candidate.Session.UserId, hiveId, out var optedIn) &&
+                optedIn)
+            .ToList();
     }
 
-    private LarvaPoolEligibility GetEligibility(ICommonSession session, Entity<GhostComponent> ghost)
+    private string GetHivePreferenceId(EntityUid hive)
+    {
+        return MetaData(hive).EntityPrototype?.ID ?? Name(hive);
+    }
+
+    private void OnGetLarvaPoolCandidateCount(GetLarvaPoolCandidateCountEvent args)
+    {
+        if (args.Hive is { } hive && _hiveQuery.HasComp(hive))
+        {
+            args.Count = GetCandidatesForHive(hive).Count;
+            return;
+        }
+
+        var candidates = GetCandidates();
+        args.Count = candidates.Count(candidate => IsOptedIntoAnyHive(candidate.Session.UserId));
+    }
+
+    private bool IsOptedIntoAnyHive(NetUserId userId)
+    {
+        var hives = EntityQueryEnumerator<HiveComponent>();
+        while (hives.MoveNext(out var hiveId, out _))
+        {
+            if (_larvaPoolPreferences.TryGetOptedIn(
+                    userId,
+                    GetHivePreferenceId(hiveId),
+                    out var optedIn) &&
+                optedIn)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private LarvaPoolEligibilityResult GetEligibility(ICommonSession session, Entity<GhostComponent> ghost)
     {
         if (!_preferences.TryGetCachedPreferences(session.UserId, out var preferences) ||
             preferences.SelectedCharacter is not HumanoidCharacterProfile profile)
         {
-            return LarvaPoolEligibility.Ineligible;
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.CharacterProfileUnavailable);
         }
 
         var preset = _gameTicker.CurrentPreset?.ID ?? _gameTicker.Preset?.ID;
         if (profile.GetJobPriorityForGamemode(preset, SelectableXenoRole) <= JobPriority.Never)
-            return LarvaPoolEligibility.Ineligible;
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.XenoPreferenceDisabled);
+        }
 
         var jobBans = _bans.GetJobBans(session.UserId);
-        if (jobBans == null || jobBans.Contains(SelectableXenoRole))
-            return LarvaPoolEligibility.Ineligible;
+        if (jobBans == null)
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.PreferenceDataLoading);
+        }
+
+        if (jobBans.Contains(SelectableXenoRole))
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.RoleBanned);
+        }
 
         var allowed = new IsJobAllowedEvent(session, SelectableXenoRole);
         RaiseLocalEvent(ref allowed);
         if (allowed.Cancelled)
-            return LarvaPoolEligibility.Ineligible;
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.RoleRequirements);
+        }
 
         if (HasRevivableBody(session))
-            return LarvaPoolEligibility.Ineligible;
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.RevivableBody);
+        }
 
         if (_admin.HasAdminFlag(session, AdminFlags.Moderator) && !_staffOptIns.Contains(session.UserId))
-            return LarvaPoolEligibility.Ineligible;
+        {
+            return new LarvaPoolEligibilityResult(
+                LarvaPoolEligibility.Ineligible,
+                LarvaPoolIneligibilityReason.StaffProtected);
+        }
 
         var wait = TimeSpan.FromSeconds(_config.GetCVar(RMCCVars.RMCLarvaPoolWaitSeconds));
         var deathTime = _deathTimes.GetValueOrDefault(session.UserId, ghost.Comp.TimeOfDeath);
@@ -567,12 +642,10 @@ public sealed partial class LarvaPoolSystem : EntitySystem
             !HasComp<JoinXenoCooldownIgnoreComponent>(ghost) &&
             _timing.CurTime - deathTime < wait)
         {
-            return LarvaPoolEligibility.Waiting;
+            return new LarvaPoolEligibilityResult(LarvaPoolEligibility.Waiting, LarvaPoolIneligibilityReason.None);
         }
 
-        return _afk.IsAfk(session)
-            ? LarvaPoolEligibility.Ineligible
-            : LarvaPoolEligibility.Eligible;
+        return new LarvaPoolEligibilityResult(LarvaPoolEligibility.Eligible, LarvaPoolIneligibilityReason.None);
     }
 
     private bool HasRevivableBody(ICommonSession session)
@@ -605,30 +678,69 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         _pool.RecordJoined(args.UserId, ghost.TimeOfDeath);
         var eligibility = GetEligibility(session, (attached, ghost));
         var candidates = GetCandidates();
-        var position = _pool.GetPosition(args.UserId, candidates.Select(candidate => candidate.Session.UserId));
         var hives = EntityQueryEnumerator<HiveComponent>();
         while (hives.MoveNext(out var hiveId, out _))
         {
-            var status = eligibility switch
+            var hivePreferenceId = GetHivePreferenceId(hiveId);
+            var preferenceLoaded = _larvaPoolPreferences.TryGetOptedIn(
+                args.UserId,
+                hivePreferenceId,
+                out var optedIn);
+            var activeCandidates = candidates
+                .Where(candidate =>
+                    _larvaPoolPreferences.TryGetOptedIn(
+                        candidate.Session.UserId,
+                        hivePreferenceId,
+                        out var candidateOptedIn) &&
+                    candidateOptedIn)
+                .Select(candidate => candidate.Session.UserId);
+            var position = _pool.GetPosition(args.UserId, activeCandidates);
+
+            var status = eligibility.Eligibility switch
             {
                 LarvaPoolEligibility.Eligible => LarvaPoolStatus.Eligible,
                 LarvaPoolEligibility.Waiting => LarvaPoolStatus.Waiting,
                 _ => LarvaPoolStatus.Ineligible,
             };
+            var reason = eligibility.IneligibilityReason;
 
-            args.Pools[hiveId] = new LarvaPoolUserStatus(status, position);
+            if (!preferenceLoaded)
+            {
+                status = LarvaPoolStatus.Ineligible;
+                reason = LarvaPoolIneligibilityReason.PreferenceDataLoading;
+            }
+            else if (!optedIn)
+            {
+                status = LarvaPoolStatus.Ineligible;
+                reason = LarvaPoolIneligibilityReason.OptedOut;
+            }
+
+            args.Pools[hiveId] = new LarvaPoolUserStatus(
+                status,
+                position,
+                reason,
+                preferenceLoaded,
+                optedIn);
         }
     }
 
     private void NotifyPoolPositions()
     {
-        var candidates = GetCandidates();
-        for (var i = 0; i < candidates.Count; i++)
+        var hives = EntityQueryEnumerator<HiveComponent>();
+        while (hives.MoveNext(out var hiveId, out _))
         {
-            _popup.PopupEntity(
-                Loc.GetString("rmc-xeno-larva-pool-position", ("position", i + 1)),
-                candidates[i].Ghost,
-                candidates[i].Ghost);
+            var candidates = GetCandidatesForHive(hiveId);
+            PrioritizeStrandedXenos(hiveId, candidates);
+            for (var i = 0; i < candidates.Count; i++)
+            {
+                _popup.PopupEntity(
+                    Loc.GetString(
+                        "rmc-xeno-larva-pool-position-hive",
+                        ("position", i + 1),
+                        ("hive", Name(hiveId))),
+                    candidates[i].Ghost,
+                    candidates[i].Ghost);
+            }
         }
     }
 
@@ -638,6 +750,10 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         Waiting,
         Eligible,
     }
+
+    private readonly record struct LarvaPoolEligibilityResult(
+        LarvaPoolEligibility Eligibility,
+        LarvaPoolIneligibilityReason IneligibilityReason);
 
     private readonly record struct DeathTransition(bool PreservePoolTime, bool BypassDeathTimer);
 

@@ -112,17 +112,26 @@ public sealed partial class JoinXenoSystem : EntitySystem
         {
             var status = LarvaPoolStatus.Ineligible;
             var position = 0;
+            var reason = LarvaPoolIneligibilityReason.PreferenceDataLoading;
+            var preferenceLoaded = false;
+            var optedIn = false;
             if (poolStatus.Pools.TryGetValue(hiveId, out var poolUserStatus))
             {
                 status = poolUserStatus.Status;
                 position = poolUserStatus.Position;
+                reason = poolUserStatus.IneligibilityReason;
+                preferenceLoaded = poolUserStatus.PreferenceLoaded;
+                optedIn = poolUserStatus.OptedIn;
             }
 
             entries.Add(new JoinXenoHiveEntry(
                 GetNetEntity(hiveId),
                 Name(hiveId, metaData),
                 status,
-                position));
+                position,
+                reason,
+                preferenceLoaded,
+                optedIn));
         }
 
         entries.Sort((a, b) => string.Compare(a.HiveName, b.HiveName, StringComparison.Ordinal));
@@ -192,8 +201,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
     private void OnJoinBurrowedLarva(JoinBurrowedLarvaRequest msg, EntitySessionEventArgs args)
     {
         if (!_rmcGameTicker.PlayerGameStatuses.TryGetValue(args.SenderSession.UserId, out var status) ||
-            status == PlayerGameStatus.JoinedGame ||
-            HasLarvaPoolCandidates())
+            status == PlayerGameStatus.JoinedGame)
         {
             return;
         }
@@ -202,6 +210,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
         while (query.MoveNext(out var comp))
         {
             if (!TryComp(comp.Hive, out HiveComponent? hive) ||
+                HasLarvaPoolCandidates(comp.Hive) ||
                 !_hive.JoinBurrowedLarva((comp.Hive, hive), args.SenderSession))
             {
                 continue;
@@ -222,14 +231,13 @@ public sealed partial class JoinXenoSystem : EntitySystem
         if (_net.IsClient)
             return;
 
-        var poolHasCandidates = HasLarvaPoolCandidates();
         var query = EntityQueryEnumerator<ActiveGameRuleComponent, CMDistressSignalRuleComponent, GameRuleComponent>();
         while (query.MoveNext(out _, out var comp, out _))
         {
             if (!TryComp(comp.Hive, out HiveComponent? hive))
                 continue;
 
-            var availableLarva = poolHasCandidates ? 0 : hive.BurrowedLarva;
+            var availableLarva = HasLarvaPoolCandidates(comp.Hive) ? 0 : hive.BurrowedLarva;
             var statusEv = new BurrowedLarvaStatusEvent(availableLarva);
             if (to != null)
             {
@@ -244,9 +252,9 @@ public sealed partial class JoinXenoSystem : EntitySystem
         }
     }
 
-    private bool HasLarvaPoolCandidates()
+    private bool HasLarvaPoolCandidates(EntityUid hive)
     {
-        var ev = new GetLarvaPoolCandidateCountEvent();
+        var ev = new GetLarvaPoolCandidateCountEvent(hive);
         RaiseLocalEvent(ev);
         return ev.Count > 0;
     }

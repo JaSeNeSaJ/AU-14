@@ -96,7 +96,38 @@ public sealed class JoinXenoBui : BoundUserInterface
             StyleClasses = { StyleNano.StyleClassCrtDimText },
         });
 
+        if (entry.Status == LarvaPoolStatus.Ineligible)
+        {
+            textBox.AddChild(new Label
+            {
+                Text = Loc.GetString(
+                    "rmc-xeno-larva-pool-ineligible-reason",
+                    ("reason", GetIneligibilityReason(entry.IneligibilityReason))),
+                ClipText = true,
+                HorizontalExpand = true,
+                StyleClasses = { StyleNano.StyleClassCrtDimText },
+            });
+        }
+
         row.AddChild(textBox);
+
+        var toggle = new Button
+        {
+            Text = entry.PreferenceLoaded
+                ? Loc.GetString(entry.OptedIn
+                    ? "rmc-xeno-larva-pool-opt-out"
+                    : "rmc-xeno-larva-pool-opt-in")
+                : Loc.GetString("rmc-xeno-larva-pool-preference-loading"),
+            Disabled = !entry.PreferenceLoaded,
+            MinWidth = 110,
+            VerticalAlignment = Control.VAlignment.Center,
+        };
+        toggle.OnPressed += _ =>
+        {
+            toggle.Disabled = true;
+            SendMessage(new SetLarvaPoolOptInBuiMsg(entry.Hive, !entry.OptedIn));
+        };
+        row.AddChild(toggle);
 
         panel.AddChild(row);
         CrtLobbyTheme.Apply(panel);
@@ -111,6 +142,24 @@ public sealed class JoinXenoBui : BoundUserInterface
             LarvaPoolStatus.Waiting => Loc.GetString("rmc-xeno-larva-pool-status-waiting", ("position", entry.Position)),
             _ => Loc.GetString("rmc-xeno-larva-pool-status-ineligible", ("position", entry.Position)),
         };
+    }
+
+    private static string GetIneligibilityReason(LarvaPoolIneligibilityReason reason)
+    {
+        var localizationId = reason switch
+        {
+            LarvaPoolIneligibilityReason.PreferenceDataLoading => "rmc-xeno-larva-pool-reason-preference-loading",
+            LarvaPoolIneligibilityReason.CharacterProfileUnavailable => "rmc-xeno-larva-pool-reason-character-profile",
+            LarvaPoolIneligibilityReason.XenoPreferenceDisabled => "rmc-xeno-larva-pool-reason-xeno-preference",
+            LarvaPoolIneligibilityReason.RoleBanned => "rmc-xeno-larva-pool-reason-role-banned",
+            LarvaPoolIneligibilityReason.RoleRequirements => "rmc-xeno-larva-pool-reason-role-requirements",
+            LarvaPoolIneligibilityReason.RevivableBody => "rmc-xeno-larva-pool-reason-revivable",
+            LarvaPoolIneligibilityReason.StaffProtected => "rmc-xeno-larva-pool-reason-staff-protected",
+            LarvaPoolIneligibilityReason.OptedOut => "rmc-xeno-larva-pool-reason-opted-out",
+            _ => "rmc-xeno-larva-pool-reason-unknown",
+        };
+
+        return Loc.GetString(localizationId);
     }
 
     private void OnSearchTextChanged(LineEditEventArgs args)
