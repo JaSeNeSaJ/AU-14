@@ -14,6 +14,17 @@
   - type: Physics
     bodyType: Static
     canCollide: false
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 25
+        mask:
+        - TabletopMachineMask
+        layer:
+        - TabletopMachineLayer
   - type: Sprite
     drawdepth: SmallObjects
     sprite: _RMC14/Structures/Machines/computer.rsi
@@ -51,6 +62,7 @@
   - type: Sprite
     drawdepth: SmallObjects
     sprite: _RMC14/Structures/Machines/Science/reagent_analyzer.rsi
+    noRot: true
     layers:
     - state: base
       map: [ "enum.XRFScannerVisuals.State" ]
@@ -78,6 +90,17 @@
     anchored: false
   - type: Physics
     bodyType: Static
+  - type: Fixtures
+    fixtures:
+      fix1:
+        shape:
+          !type:PhysShapeAabb
+          bounds: "-0.25,-0.25,0.25,0.25"
+        density: 25
+        mask:
+        - TabletopMachineMask
+        layer:
+        - TabletopMachineLayer
   - type: ContainerContainer
     containers:
       sample: !type:ContainerSlot
@@ -88,6 +111,17 @@
   name: synthesis simulator
   description: This computer uses advanced algorithms to perform simulations of reagent properties, for the purpose of calculating the synthesis required to make a new variant.
   components:
+  - type: Appearance
+  - type: GenericVisualizer
+    visuals:
+      enum.ChemSimulatorVisuals.Sim:
+        enum.ChemSimulatorVisuals.Sim:
+          Normal: { state: modifier }
+          Off: { state: modifier_off }
+          Running: { state: modifier_running }
+          Reading: { state: modifier_reading }
+          Printing: { state: modifier_printing }
+          Ready: { state: modifier_ready }
   - type: Clickable
   - type: Corrodible
     isCorrodible: false
