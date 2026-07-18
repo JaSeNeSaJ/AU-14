@@ -180,9 +180,6 @@ public sealed partial class XenoStompSystem : EntitySystem
             if (!_xeno.CanAbilityAttackTarget(xeno, receiver))
                 continue;
 
-            if (IsBlockedByObstacle(origin, _transform.GetMapCoordinates(receiver), xeno.Owner))
-                continue;
-
             if (xeno.Comp.SlowBigInsteadOfStun && _size.TryGetSize(receiver, out var size) && size >= RMCSizes.Big)
                 _slow.TrySlowdown(receiver, xeno.Comp.DebuffsHurtXenosMore ? _xeno.TryApplyXenoDebuffMultiplier(receiver, xeno.Comp.ParalyzeTime)
                     : xeno.Comp.ParalyzeTime, true);
