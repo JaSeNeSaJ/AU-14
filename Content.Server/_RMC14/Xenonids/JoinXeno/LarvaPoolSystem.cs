@@ -51,9 +51,9 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     [Dependency] private ISharedPlayerManager _player = default!;
     [Dependency] private IServerPreferencesManager _preferences = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
-    [Dependency] private RMCUnrevivableSystem _unrevivable = default!;
     [Dependency] private TagSystem _tag = default!;
     [Dependency] private IGameTiming _timing = default!;
+    [Dependency] private RMCUnrevivableSystem _unrevivable = default!;
 
     private static readonly ProtoId<JobPrototype> LarvaRole = "CMXenoLarva";
     private static readonly ProtoId<TagPrototype> LarvaTag = "RMCXenoLarva";
@@ -191,6 +191,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
         }
 
         RemoveStrandedXenoCredit(userId);
+        _staffOptIns.Remove(userId);
         _pendingDeaths.Remove(userId);
         if (!_mobState.IsDead(ev.Entity))
         {
@@ -220,7 +221,8 @@ public sealed partial class LarvaPoolSystem : EntitySystem
 
     private bool PreservesPoolTime(EntityUid uid)
     {
-        return BypassesDeathTimer(uid);
+        return BypassesDeathTimer(uid) ||
+               Transform(uid).MapUid is { } map && HasComp<ThunderdomeMapComponent>(map);
     }
 
     private bool BypassesDeathTimer(EntityUid uid)
@@ -231,7 +233,7 @@ public sealed partial class LarvaPoolSystem : EntitySystem
             return true;
         }
 
-        return Transform(uid).MapUid is { } map && HasComp<ThunderdomeMapComponent>(map);
+        return false;
     }
 
     private void OnUnAFK(ref UnAFKEvent ev)

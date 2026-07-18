@@ -233,7 +233,7 @@ public sealed class LarvaPoolTest
     }
 
     [Test]
-    public async Task StaffMustOpenPoolBeforeAutomaticAssignment()
+    public async Task StaffMustOptInForEachObserver()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
@@ -260,11 +260,12 @@ public sealed class LarvaPoolTest
         });
 
         EntityUid ghost = default;
+        EntityUid hive = default;
         EntityUid larva = default;
         await server.WaitAssertion(() =>
         {
             ghost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords);
-            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
             var possessedXeno = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
             larva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(3, 0)));
             hiveSystem.SetHive(possessedXeno, hive);
@@ -283,6 +284,21 @@ public sealed class LarvaPoolTest
         await pair.RunTicksSync(5);
 
         await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
+
+        EntityUid nextGhost = default;
+        await server.WaitAssertion(() =>
+        {
+            nextGhost = entMan.SpawnEntity(GameTicker.ObserverPrototypeName, map.GridCoords.Offset(new Vector2(4, 0)));
+            var nextLarva = entMan.SpawnEntity("CMXenoLarva", map.GridCoords.Offset(new Vector2(5, 0)));
+            hiveSystem.SetHive(nextLarva, hive);
+
+            Assert.That(mind.TryGetMind(player, out var mindId, out _), Is.True);
+            mind.TransferTo(mindId, nextGhost);
+            mind.SetUserId(mindId, player.UserId);
+        });
+
+        await pair.RunTicksSync(5);
+        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(nextGhost)));
         await pair.CleanReturnAsync();
     }
 
@@ -698,7 +714,7 @@ public sealed class LarvaPoolTest
     }
 
     [Test]
-    public async Task ThunderdomeTransferPreservesPoolPriorityAndBypassesDeathTimer()
+    public async Task ThunderdomeTransferDoesNotBypassDeathTimer()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
@@ -738,10 +754,10 @@ public sealed class LarvaPoolTest
         await server.WaitAssertion(() =>
         {
             Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
-            Assert.That(entMan.HasComponent<JoinXenoCooldownIgnoreComponent>(ghost), Is.True);
+            Assert.That(entMan.HasComponent<JoinXenoCooldownIgnoreComponent>(ghost), Is.False);
             OpenLarvaPoolUi(entMan, ghost);
             var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
-            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Waiting));
         });
 
         await pair.CleanReturnAsync();
