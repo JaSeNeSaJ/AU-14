@@ -150,7 +150,6 @@ public sealed class JoinXenoBui : BoundUserInterface
         {
             LarvaPoolIneligibilityReason.PreferenceDataLoading => "rmc-xeno-larva-pool-reason-preference-loading",
             LarvaPoolIneligibilityReason.CharacterProfileUnavailable => "rmc-xeno-larva-pool-reason-character-profile",
-            LarvaPoolIneligibilityReason.XenoPreferenceDisabled => "rmc-xeno-larva-pool-reason-xeno-preference",
             LarvaPoolIneligibilityReason.RoleBanned => "rmc-xeno-larva-pool-reason-role-banned",
             LarvaPoolIneligibilityReason.RoleRequirements => "rmc-xeno-larva-pool-reason-role-requirements",
             LarvaPoolIneligibilityReason.RevivableBody => "rmc-xeno-larva-pool-reason-revivable",

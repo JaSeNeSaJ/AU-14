@@ -75,7 +75,7 @@ public sealed partial class JoinXenoSystem : EntitySystem
         var query = EntityQueryEnumerator<JoinXenoComponent, ActorComponent>();
         while (query.MoveNext(out var uid, out _, out var actor))
         {
-            if (_ui.IsUiOpen(uid, JoinXenoUIKey.Key, uid))
+            if (_ui.IsUiOpen(uid, JoinXenoUIKey.Key))
                 UpdateJoinXenoUi(uid, actor.PlayerSession.UserId);
         }
     }

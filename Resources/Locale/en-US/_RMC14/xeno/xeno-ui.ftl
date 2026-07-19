@@ -34,7 +34,6 @@ rmc-xeno-larva-pool-preference-loading = Loading...
 rmc-xeno-larva-pool-ineligible-reason = Reason: {$reason}
 rmc-xeno-larva-pool-reason-preference-loading = Your larva pool eligibility data is still loading.
 rmc-xeno-larva-pool-reason-character-profile = Your character preferences are not available.
-rmc-xeno-larva-pool-reason-xeno-preference = Xeno is disabled in your role preferences.
 rmc-xeno-larva-pool-reason-role-banned = You are banned from selectable xeno roles.
 rmc-xeno-larva-pool-reason-role-requirements = You do not meet the selectable xeno role requirements.
 rmc-xeno-larva-pool-reason-revivable = You still have a revivable body.

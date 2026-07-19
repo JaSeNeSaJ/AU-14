@@ -87,7 +87,7 @@ public sealed class LarvaPoolTest
     }
 
     [Test]
-    public async Task PreferenceChangesRecalculateEligibility()
+    public async Task XenoPreferenceDoesNotBlockAutomaticOffer()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
@@ -123,10 +123,11 @@ public sealed class LarvaPoolTest
         });
 
         await pair.RunTicksSync(5);
-        await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(ghost)));
-
-        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
-        await pair.RunSeconds(2);
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.EqualTo(ghost));
+            AssertLarvaPoolOffer(entMan, ghost, entMan.GetComponent<MetaDataComponent>(larva).EntityName);
+        });
 
         await AcceptLarvaPoolOffer(pair, ghost);
         await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(larva)));
@@ -134,7 +135,7 @@ public sealed class LarvaPoolTest
     }
 
     [Test]
-    public async Task StatusShowsCurrentEligibilityAndEstimatedPosition()
+    public async Task OpenPoolWindowUpdatesEligibilityLive()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings
         {
@@ -147,7 +148,7 @@ public sealed class LarvaPoolTest
 
         var server = pair.Server;
         var map = await pair.CreateTestMap();
-        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 1);
 
         var entMan = server.EntMan;
         var mind = entMan.System<MindSystem>();
@@ -167,22 +168,21 @@ public sealed class LarvaPoolTest
 
             OpenLarvaPoolUi(entMan, ghost);
             var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
-            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Waiting));
             Assert.That(entry.Position, Is.EqualTo(1));
             Assert.That(entry.IneligibilityReason, Is.EqualTo(LarvaPoolIneligibilityReason.None));
             Assert.That(entry.PreferenceLoaded, Is.True);
             Assert.That(entry.OptedIn, Is.True);
         });
 
-        await pair.SetJobPriority(SelectableXenoRole, JobPriority.Never);
         await pair.RunSeconds(2);
 
         await server.WaitAssertion(() =>
         {
             var entry = GetLarvaPoolState(entMan, ghost).Entries.Single(e => e.Hive == entMan.GetNetEntity(hive));
-            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Ineligible));
+            Assert.That(entry.Status, Is.EqualTo(LarvaPoolStatus.Eligible));
             Assert.That(entry.Position, Is.EqualTo(1));
-            Assert.That(entry.IneligibilityReason, Is.EqualTo(LarvaPoolIneligibilityReason.XenoPreferenceDisabled));
+            Assert.That(entry.IneligibilityReason, Is.EqualTo(LarvaPoolIneligibilityReason.None));
         });
 
         await pair.CleanReturnAsync();

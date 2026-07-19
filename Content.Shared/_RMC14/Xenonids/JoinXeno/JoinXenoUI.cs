@@ -22,7 +22,6 @@ public enum LarvaPoolIneligibilityReason : byte
     None,
     PreferenceDataLoading,
     CharacterProfileUnavailable,
-    XenoPreferenceDisabled,
     RoleBanned,
     RoleRequirements,
     RevivableBody,

@@ -583,19 +583,11 @@ public sealed partial class LarvaPoolSystem : EntitySystem
     private LarvaPoolEligibilityResult GetEligibility(ICommonSession session, Entity<GhostComponent> ghost)
     {
         if (!_preferences.TryGetCachedPreferences(session.UserId, out var preferences) ||
-            preferences.SelectedCharacter is not HumanoidCharacterProfile profile)
+            preferences.SelectedCharacter is not HumanoidCharacterProfile)
         {
             return new LarvaPoolEligibilityResult(
                 LarvaPoolEligibility.Ineligible,
                 LarvaPoolIneligibilityReason.CharacterProfileUnavailable);
-        }
-
-        var preset = _gameTicker.CurrentPreset?.ID ?? _gameTicker.Preset?.ID;
-        if (profile.GetJobPriorityForGamemode(preset, SelectableXenoRole) <= JobPriority.Never)
-        {
-            return new LarvaPoolEligibilityResult(
-                LarvaPoolEligibility.Ineligible,
-                LarvaPoolIneligibilityReason.XenoPreferenceDisabled);
         }
 
         var jobBans = _bans.GetJobBans(session.UserId);
