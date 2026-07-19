@@ -86,6 +86,7 @@
     isCorrodible: false
   - type: InteractionOutline
   - type: XRFScanner
+    faction: corporate
   - type: Transform
     anchored: false
   - type: Physics
