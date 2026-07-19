@@ -23,6 +23,7 @@ using Content.Shared.Mind;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Systems;
 using Content.Shared.Preferences;
+using Robust.Shared.Console;
 using Robust.Shared.GameObjects;
 using Robust.Shared.Map;
 using Robust.Shared.Network;
@@ -611,6 +612,91 @@ public sealed class LarvaPoolTest
 
         await AcceptLarvaPoolOffer(pair, ghost);
         await server.WaitAssertion(() => Assert.That(player.AttachedEntity, Is.EqualTo(runner)));
+
+        await pair.CleanReturnAsync();
+    }
+
+    [Test]
+    public async Task GhostCommandOffersCriticalAdultToAnotherPlayer()
+    {
+        await using var pair = await PoolManager.GetServerClient(new PoolSettings
+        {
+            Connected = true,
+            Dirty = true,
+            DummyTicker = false,
+            InLobby = true,
+        });
+
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High);
+
+        var server = pair.Server;
+        server.CfgMan.SetCVar(RMCCVars.RMCLarvaPoolWaitSeconds, 0);
+        server.CfgMan.SetCVar(CCVars.VoteEnabled, false);
+
+        var entMan = server.EntMan;
+        var hiveSystem = entMan.System<SharedXenoHiveSystem>();
+        var mind = entMan.System<MindSystem>();
+        var mobState = entMan.System<MobStateSystem>();
+        var console = server.ResolveDependency<IConsoleHost>();
+        var player = server.PlayerMan.Sessions.Single();
+        await DeAdmin(pair, player);
+
+        var candidate = await server.AddDummySession();
+        await pair.RunTicksSync(5);
+        await DeAdmin(pair, candidate);
+        var userDb = server.ResolveDependency<UserDbDataManager>();
+        await userDb.WaitLoadComplete(candidate);
+        await pair.SetJobPriority(SelectableXenoRole, JobPriority.High, candidate.UserId);
+
+        await CancelActiveVotes(pair);
+        var ticker = entMan.System<GameTicker>();
+        await server.WaitPost(() => ticker.StartRound());
+        await server.WaitPost(() =>
+        {
+            ticker.JoinAsObserver(player);
+            ticker.JoinAsObserver(candidate);
+        });
+        await pair.RunTicksSync(5);
+        server.CfgMan.SetCVar(CCVars.GameLobbyEnabled, false);
+
+        var map = await pair.CreateTestMap();
+
+        EntityUid candidateGhost = default;
+        EntityUid runner = default;
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(candidate.AttachedEntity, Is.Not.Null);
+            candidateGhost = candidate.AttachedEntity.Value;
+            Assert.That(entMan.HasComponent<GhostComponent>(candidateGhost), Is.True);
+            entMan.EnsureComponent<JoinXenoCooldownIgnoreComponent>(candidateGhost);
+
+            var hive = entMan.SpawnEntity("CMXenoHive", map.GridCoords.Offset(new Vector2(1, 0)));
+            runner = entMan.SpawnEntity("CMXenoRunner", map.GridCoords.Offset(new Vector2(2, 0)));
+            hiveSystem.SetHive(runner, hive);
+
+            EntityUid mindId;
+            if (!mind.TryGetMind(player, out mindId, out _))
+                mindId = mind.CreateMind(player.UserId, "Runner");
+
+            mind.TransferTo(mindId, runner);
+            mind.SetUserId(mindId, player.UserId);
+            mobState.ChangeMobState(runner, MobState.Critical);
+        });
+
+        await server.WaitPost(() => console.GetSessionShell(player).ExecuteCommand("ghost"));
+        await pair.RunTicksSync(5);
+
+        await server.WaitAssertion(() =>
+        {
+            Assert.That(player.AttachedEntity, Is.Not.Null);
+            Assert.That(entMan.HasComponent<GhostComponent>(player.AttachedEntity), Is.True);
+            Assert.That(entMan.HasComponent<AbandonedXenoPoolAvailableComponent>(runner), Is.True);
+            Assert.That(mobState.IsCritical(runner), Is.True);
+            AssertLarvaPoolOffer(entMan, candidateGhost, entMan.GetComponent<MetaDataComponent>(runner).EntityName);
+        });
+
+        await AcceptLarvaPoolOffer(pair, candidateGhost);
+        await server.WaitAssertion(() => Assert.That(candidate.AttachedEntity, Is.EqualTo(runner)));
 
         await pair.CleanReturnAsync();
     }
