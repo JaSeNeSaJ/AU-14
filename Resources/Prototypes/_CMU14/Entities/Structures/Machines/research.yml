@@ -104,7 +104,38 @@
   - type: ContainerContainer
     containers:
       sample: !type:ContainerSlot
-    
+
+- type: entity
+  parent: CMUXRFScanner
+  id: CMUXRFScannerGovfor
+  suffix: GOVFOR
+  components:
+  - type: XRFScanner
+    faction: govfor
+
+- type: entity
+  parent: CMUXRFScanner
+  id: CMUXRFScannerOpfor
+  suffix: OPFOR
+  components:
+  - type: XRFScanner
+    faction: opfor
+
+- type: entity
+  parent: CMUXRFScanner
+  id: CMUXRFScannerColony
+  suffix: Colony
+  components:
+  - type: XRFScanner
+    faction: colony
+
+- type: entity
+  parent: CMUXRFScanner
+  id: CMUXRFScannerNobody
+  components:
+  - type: XRFScanner
+    faction: none
+
 - type: entity
   parent: CMBaseStructure
   id: CMUChemSimulator

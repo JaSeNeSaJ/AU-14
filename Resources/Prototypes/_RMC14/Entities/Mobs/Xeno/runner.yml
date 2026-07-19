@@ -72,6 +72,14 @@
           Quantity: 300
         - ReagentId: CMUXenoPlasmaCatecholamine
           Quantity: 300
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaCatecholamine
+        Quantity: 1
   - type: XenoLight
   - type: XenoDevolve
     devolvesTo:

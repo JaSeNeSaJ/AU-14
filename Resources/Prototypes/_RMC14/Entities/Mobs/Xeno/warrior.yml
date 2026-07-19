@@ -69,6 +69,14 @@
           Quantity: 300
         - ReagentId: CMUXenoPlasmaChitin
           Quantity: 300
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaChitin
+        Quantity: 1
   - type: XenoEvolution
     max: 500
     evolvesTo:

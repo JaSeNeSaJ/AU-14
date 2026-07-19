@@ -1,5 +1,6 @@
 - type: entity # TODO RMC14 split these into per file categories and inherit all to ASRS
   abstract: true
+  parent: CMUASRSResearchGoodies
   id: CMCargoCatalog
   components:
   - type: Speech
@@ -34,6 +35,8 @@
         crate: AU14CrateBoxFloorTiles
       - cost: 350
         crate: AU14CrateBoxFloorTilesWood
+      - cost: 350
+        crate: CMUCrateBiosuitGeneral #the colors on this one are yellow therefore engineering
     - name: Materials
       entries:
       - cost: 350
@@ -54,7 +57,7 @@
         crate: RMCCrateFoldingBarricades
       - cost: 350
         crate: RMCCrateSuppliesBoxes
-      - cost: 9000
+      - cost: 4500
         crate: CMUCratePreciousMetals
     - name: Food and Drinks
       entries:
@@ -90,6 +93,8 @@
         crate: CMUCrateGasMaskFilter
       - cost: 1500
         crate: CMUCrateGasMaskFilterHAZOPS
+      - cost: 350
+        crate: CMUCrateBiosuitSecurity
     - name: Medical
       entries:
       - cost: 350

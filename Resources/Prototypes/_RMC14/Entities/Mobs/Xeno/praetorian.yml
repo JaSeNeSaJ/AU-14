@@ -61,6 +61,16 @@
           Quantity: 200
         - ReagentId: CMUXenoPlasmaNeuro
           Quantity: 200
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoRoyalBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaPhero
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaNeuro
+        Quantity: 1
   - type: XenoPlasma
     plasma: 800
     maxPlasma: 800

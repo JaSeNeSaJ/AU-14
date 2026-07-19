@@ -68,6 +68,14 @@
           Quantity: 300
         - ReagentId: CMUXenoPlasmaNeuro
           Quantity: 300
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaNeuro
+        Quantity: 1
   - type: XenoTailStab
     tailDamage:
       groups:

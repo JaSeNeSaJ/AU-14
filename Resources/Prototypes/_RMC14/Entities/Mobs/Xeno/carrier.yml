@@ -74,6 +74,14 @@
           Quantity: 300
         - ReagentId: CMUXenoPlasmaPurple
           Quantity: 300
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaPurple
+        Quantity: 1
   - type: MovementSpeedModifier
     baseWalkSpeed: 2
     baseSprintSpeed: 3.5
@@ -223,6 +231,14 @@
           Quantity: 300
         - ReagentId: CMUXenoPlasmaEgg
           Quantity: 300
+  - type: SolutionRegeneration
+    solution: blood
+    generated:
+      reagents:
+      - ReagentId: CMUXenoBlood
+        Quantity: 1
+      - ReagentId: CMUXenoPlasmaEgg
+        Quantity: 1
   - type: XenoPheromones
     pheromonesMultiplier: 3
     pheroSuffix: strong
