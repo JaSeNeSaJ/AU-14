@@ -9,12 +9,12 @@ using Robust.Shared.Configuration;
 namespace Content.Client._RMC14.Xenonids.JoinXeno;
 
 [GenerateTypedNameReferences]
-public sealed partial class JoinXenoQueueWindow : DefaultWindow
+public sealed partial class LarvaPoolWindow : DefaultWindow
 {
     [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private IStylesheetManager _stylesheetManager = default!;
 
-    public JoinXenoQueueWindow()
+    public LarvaPoolWindow()
     {
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
