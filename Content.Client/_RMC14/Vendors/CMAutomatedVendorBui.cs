@@ -339,6 +339,15 @@ public sealed partial class CMAutomatedVendorBui : BoundUserInterface
                 uiEntry.Amount.Modulate = disabled ? Color.Red : Color.White;
                 uiEntry.Panel.Button.Disabled = disabled;
 
+                // Stock line: how many are left to buy at all (an infinity symbol when the entry has no
+                // stock cap).
+                var stockText = entry.Amount is { } stockLeft
+                    ? Loc.GetString("rmc-vending-stock-remaining", ("count", stockLeft))
+                    : Loc.GetString("rmc-vending-stock-infinite");
+
+                uiEntry.Stock.Text = stockText;
+                uiEntry.Stock.Modulate = disabled ? Color.Red : Color.White;
+
                 if (!string.IsNullOrWhiteSpace(uiEntry.Amount.Text))
                     anyAmount = true;
             }

@@ -7053,5 +7053,133 @@
   id: 483
   time: '2026-07-18T01:16:55.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1649
+- author: TheHellFireo
+  changes:
+  - message: Corrected the Geneva Conventions civilian-rights article number.
+    type: Fix
+  - message: Egg-sac visuals now fall back to the nearest available sprite state instead
+      of showing an error sprite.
+    type: Fix
+  - message: Removed duplicate orbital-law stamps from Orbital Arbiter and Orbital
+      Lawyer loadouts.
+    type: Fix
+  - message: Drone operators can control drones across connected adjacent z-level
+      openings, and drone repair time is corrected.
+    type: Fix
+  - message: The body-zone targeting doll now restores its selected zone after the
+      HUD reloads.
+    type: Fix
+  - message: The corporate security loadout now uses the correct corporate PMC uniform.
+    type: Fix
+  - message: Cancelling a Bulwark reflective shield early now applies its minimum
+      cooldown.
+    type: Fix
+  - message: Burrower stomp can pass through barricades without passing through walls
+      or other protected structures.
+    type: Fix
+  - message: Malformed chat markup now falls back safely instead of crashing chat
+      rendering.
+    type: Fix
+  - message: Stranded xenos are correctly offered eligible burrowed larva through
+      the larva queue.
+    type: Fix
+  - message: Sustained gunfire no longer causes muzzle-flash lighting to flicker or
+      consume shadow-casting light capacity.
+    type: Fix
+  - message: Mortars can fire across connected z-levels when an open launch column
+      exists.
+    type: Fix
+  - message: Sharp projectile mines and sentry IFF now use the correct collision and
+      faction state.
+    type: Fix
+  - message: Cassette audio is owned by and follows the cassette player instead of
+      playing globally.
+    type: Fix
+  - message: Delayed post-round role selection now preserves and processes the selected
+      job.
+    type: Fix
+  - message: Lurker invisibility, leap, and crippling-strike cooldown behavior is
+      corrected.
+    type: Fix
+  - message: Charger lunges no longer destroy structures that are protected from charging.
+    type: Fix
+  - message: Auxiliary Support Synths, Logistics Technicians, Engineering Technicians,
+      Intel and Junior Officers, Nurses, Working Joes, Vehicle Commanders, and Vehicle
+      Crew now join their faction auxiliary squad.
+    type: Fix
+  - message: Working Joes use the correct colony and OPFOR tactical-map icons while
+      retaining their dedicated Working Joe headsets.
+    type: Fix
+  - message: The OPFOR Logistics Technician lobby preview now includes its auxiliary
+      headset.
+    type: Fix
+  - message: Tank computers now label warning-array modules as weapons sensor arrays.
+    type: Fix
+  - message: Colony medical personnel fall back to Civilian payroll when the Medical
+      payroll console is unavailable, preventing missed salaries in Colony Fall and
+      Insurgency.
+    type: Fix
+  id: 484
+  time: '2026-07-18T15:14:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1654
+- author: TheHellFireo
+  changes:
+  - message: Replaced the xeno larva queue with an automatic larva pool that asks
+      selected ghosts whether they want the available xeno.
+    type: Add
+  - message: Added persistent per-hive opt-in and opt-out controls to the larva pool
+      menu.
+    type: Add
+  - message: The larva pool menu now explains why a player is currently ineligible
+      and shows their estimated per-hive position.
+    type: Add
+  - message: Opted-out players are skipped by that hive's picker and no longer occupy
+      positions for opted-in players.
+    type: Fix
+  - message: Player-controlled facehuggers retain first claim on larva from hosts
+      they infected.
+    type: Fix
+  - message: Normal xeno deaths reset the pool timer at death, while parasite and
+      lesser-drone transfers preserve pool time and bypass the timer.
+    type: Fix
+  - message: Stranded xenos receive priority for their credited burrowed larva during
+      hijack.
+    type: Fix
+  id: 485
+  time: '2026-07-18T21:51:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1655
+- author: troytroy400
+  changes:
+  - message: The food/water system has been reworked. Eating and drinking now take
+      twice as long and no longer auto-repeats. If you go long enough without food/water
+      you will start to get slowed down, then you will get a desaturated filter over
+      your screen and after a long period of time (around two hours) you will die
+      of thirst/hunger. On GOVFOR you will now spawn hungry and thirsty, so go get
+      some breakfast from the galley!
+    type: Tweak
+  - message: The USS Bush's first floor has been updated with missing vendors and
+      content, requisitions has a lot more quality of life now.
+    type: Add
+  - message: VMarkers for GOVFOR/OPFOR double doors now exist for mappers to use.
+    type: Add
+  - message: New armory shutter on the USS Bush that starts locked, but will auto-unlock
+      open if no GOVFOR Adjutant/Commander is on deck within five minutes of round
+      start. The armory door can be shut/opened from the CIC. If the armory is not
+      otherwise opened by the 30 minute mark of the round, the doors will automatically
+      open on their own.
+    type: Add
+  - message: Added new shipside clothing vendors to the USS Bush that contain shipside
+      uniforms for when the armory is not open. Has basic uniforms, shoes, softcovers
+      and other accessories.
+    type: Add
+  - message: The Nearsighted trait has been fixed. You now spawn with prescription
+      glasses and all glasses marked as prescription actually work.
+    type: Fix
+  - message: Inaprovaline overdose no longer makes you have a seizure to prevent cheesy
+      chemical spam tactics.
+    type: Fix
+  id: 486
+  time: '2026-07-19T08:26:40.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1651
 Name: CMU
 Order: -1
