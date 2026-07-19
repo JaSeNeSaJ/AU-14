@@ -490,6 +490,7 @@
   desc: reagent-desc-rmc-platinum
   physicalDesc: reagent-physical-desc-reasonably-metallic
   flavor: metallic
+  class: Rare
   color: "#edf5ff"
   boilingPoint: 3825.0
   meltingPoint: 1768.0
