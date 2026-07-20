@@ -7430,5 +7430,85 @@
   id: 490
   time: '2026-07-19T17:50:06.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1657
+- author: maertayn
+  changes:
+  - message: CMUUniversalPaperTool for the Counselor's Law Bundle & AO/LO & Corporate
+      Assistant
+    type: Add
+  - message: EO access to CT vendor
+    type: Tweak
+  id: 491
+  time: '2026-07-19T17:50:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1657
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed CLF surgeon time requirment
+    type: Fix
+  id: 492
+  time: '2026-07-20T03:12:27.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1660
+- author: sunzu432
+  changes:
+  - message: 'Hope''s Retreat: Thanks to assistance from the ICSC''s Chrono-Spatial
+      Division, additional limb printers have materialized in the Octanis Complex
+      Hospital and Fort Beauregard Medbay.'
+    type: Add
+  - message: 'Hope''s Retreat: Weyland-Yutani Dog Catchers have successfully removed
+      foreign biomass from deep in the Octanis Complex''s caves.'
+    type: Remove
+  - message: 'Hope''s Retreat: Funds have finally been appropriated to fix the requisitions
+      doors in Fort Beauregard.'
+    type: Fix
+  - message: 'Hope''s Retreat: In the wake of the unfortunate demise of a hardened
+      CLF veteran, the ICSC''s Chrono-Spatial Division has restored timeline integrity
+      and installed several late-join spawns for civilians.'
+    type: Fix
+  id: 493
+  time: '2026-07-20T03:13:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1662
+- author: wray-git
+  changes:
+  - message: Added the smelting crucible. Sit it on a lit fire to render iron ore
+      into metal, metal into plasteel, and scrap electronics into plastic. Melting
+      electronics gives off toxic fumes, so stand back.
+    type: Add
+  - message: Drones, hivelords and queens can now spin scab resin across holes in
+      the ground left by cave-ins.
+    type: Add
+  - message: Saved builds now place where you put them instead of at the corner of
+      the map, and large ones no longer take the server down.
+    type: Fix
+  - message: Fixed the underground river on Shepherd collapsing by itself and dropping
+      the bridges built over it.
+    type: Fix
+  - message: Floor tiles can now be built on beach, coast and shore terrain.
+    type: Fix
+  - message: Ghosts and players are no longer picked up when saving a build.
+    type: Fix
+  - message: Tiles in the construction menu now show their actual sprite instead of
+      generic plating.
+    type: Fix
+  - message: Range selection for saved builds is much smoother with large selections.
+    type: Tweak
+  - message: Admins can now use Mapper mode for saved builds.
+    type: Tweak
+  - message: Capturing other Z-levels when saving a build is now a checkbox instead
+      of always on.
+    type: Tweak
+  - message: The Spawnlist Deleter can now delete a single category instead of the
+      whole spawnlist.
+    type: Tweak
+  - message: Vendors no longer show the stock count twice.
+    type: Tweak
+  id: 494
+  time: '2026-07-20T03:26:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1663
+- author: maertayn
+  changes:
+  - message: ColonialMarinesAudio private repository support
+    type: Add
+  id: 495
+  time: '2026-07-20T03:26:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1668
 Name: CMU
 Order: -1
