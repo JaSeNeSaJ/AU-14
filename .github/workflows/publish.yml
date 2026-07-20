@@ -63,13 +63,15 @@ jobs:
         with:
           repository: AU-14/ColonialMarinesAudio
           token: ${{ env.AUDIO_REPO_TOKEN }}
-          path: _audio-overlay
+          path: __audio-overlay
 
       - name: Rsync CMAudio into Resources
         if: ${{ matrix.name == 'client' && env.AUDIO_REPO_TOKEN != '' }}
-        run: rsync -a --delete \
-          _audio-overlay/Resources/Audio/_CMU14/Private/ \
-          Resources/Audio/_CMU14/Private/
+        run: |
+          mkdir -p Resources/Audio/_CMU14/Private/
+          rsync -a --delete \
+            __audio-overlay/Resources/Audio/_CMU14/Private/ \
+            Resources/Audio/_CMU14/Private/
 
       - uses: actions/setup-dotnet@v5.2.0
         with:
