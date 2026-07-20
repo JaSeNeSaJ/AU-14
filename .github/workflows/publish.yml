@@ -17,6 +17,7 @@ on:
 env:
   DOTNET_VERSION: 10.0.x
   CONFIGURATION: Release
+  AUDIO_REPO_TOKEN: ${{ secrets.AUDIO_REPO_TOKEN }}
 
 jobs:
   changelog:
@@ -57,15 +58,15 @@ jobs:
           git submodule update --init --recursive --depth=1
 
       - name: Checkout ColonialMarinesAudio
-        if: ${{ matrix.name == 'client' && secrets.AUDIO_REPO_TOKEN != '' }}
+        if: ${{ matrix.name == 'client' && env.AUDIO_REPO_TOKEN != '' }}
         uses: actions/checkout@v6.0.2
         with:
           repository: AU-14/ColonialMarinesAudio
-          token: ${{ secrets.AUDIO_REPO_TOKEN }}
+          token: ${{ env.AUDIO_REPO_TOKEN }}
           path: _audio-overlay
 
       - name: Rsync CMAudio into Resources
-        if: ${{ matrix.name == 'client' && secrets.AUDIO_REPO_TOKEN != '' }}
+        if: ${{ matrix.name == 'client' && env.AUDIO_REPO_TOKEN != '' }}
         run: rsync -a --delete \
           _audio-overlay/Resources/Audio/_CMU14/Private/ \
           Resources/Audio/_CMU14/Private/
