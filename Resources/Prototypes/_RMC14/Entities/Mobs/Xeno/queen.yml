@@ -84,6 +84,7 @@
     - DoorXenoResin
     - XenoStickyResin
     - XenoFastResin
+    - XenoCollapseResin
     - XenoResinSpikes
     - HiveAcidPillarXeno
     canOrderConstruction:

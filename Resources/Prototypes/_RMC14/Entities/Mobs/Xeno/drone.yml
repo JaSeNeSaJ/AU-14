@@ -170,6 +170,7 @@
     - DoorXenoResin
     - XenoStickyResin
     - XenoFastResin
+    - XenoCollapseResin
     - XenoResinSpikes
   - type: VentCrawler
     ventCrawlIcon: drone
