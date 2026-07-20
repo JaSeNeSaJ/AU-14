@@ -134,6 +134,7 @@
     - DoorXenoResinThick
     - XenoStickyResin
     - XenoFastResin
+    - XenoCollapseResin
     - XenoResinSpikes
     - HiveAcidPillarXeno
     canOrderConstruction:
@@ -188,6 +189,7 @@
     - DoorXenoResin
     - XenoStickyResin
     - XenoFastResin
+    - XenoCollapseResin
     - XenoResinSpikes
     - XenoWeedsSource
     canOrderConstruction:

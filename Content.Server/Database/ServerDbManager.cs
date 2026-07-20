@@ -28,7 +28,7 @@ using MSLogLevel = Microsoft.Extensions.Logging.LogLevel;
 
 namespace Content.Server.Database
 {
-    public interface IServerDbManager
+    public partial interface IServerDbManager
     {
         void Init();
 
@@ -435,10 +435,6 @@ namespace Content.Server.Database
         Task<Dictionary<string, List<string>>?> GetAllActionOrders(Guid player);
 
         Task SetActionOrder(Guid player, string id, List<string> actions);
-
-        Task<HashSet<string>> GetLarvaPoolOptOuts(Guid player);
-
-        Task SetLarvaPoolOptIn(Guid player, string hiveId, bool optedIn);
 
         Task AddChatBan(
             int? round,
@@ -1416,18 +1412,6 @@ namespace Content.Server.Database
         {
             DbWriteOpsMetric.Inc();
             return RunDbCommand(() => _db.SetActionOrder(player, id, actions));
-        }
-
-        public Task<HashSet<string>> GetLarvaPoolOptOuts(Guid player)
-        {
-            DbReadOpsMetric.Inc();
-            return RunDbCommand(() => _db.GetLarvaPoolOptOuts(player));
-        }
-
-        public Task SetLarvaPoolOptIn(Guid player, string hiveId, bool optedIn)
-        {
-            DbWriteOpsMetric.Inc();
-            return RunDbCommand(() => _db.SetLarvaPoolOptIn(player, hiveId, optedIn));
         }
 
         public Task AddChatBan(
