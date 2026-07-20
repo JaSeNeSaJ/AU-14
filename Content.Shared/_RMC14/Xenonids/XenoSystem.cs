@@ -13,6 +13,7 @@ using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Tackle;
 using Content.Shared._RMC14.Vendors;
 using Content.Shared._RMC14.Weapons.Melee;
+using Content.Shared._RMC14.Xenonids.Construction;
 using Content.Shared._RMC14.Xenonids.Construction.Nest;
 using Content.Shared._RMC14.Xenonids.Devour;
 using Content.Shared._RMC14.Xenonids.Egg;
@@ -185,6 +186,16 @@ public sealed partial class XenoSystem : EntitySystem
 
         _eye.RefreshVisibilityMask(xeno.Owner);
         Dirty(xeno);
+
+        if (xeno.Comp.Role == "CMXenoQueen")
+        {
+            var boost = EnsureComp<QueenBuildingBoostComponent>(xeno);
+            boost.BuildSpeedMultiplier = 1.5f;
+            boost.RemoteUpgradeRange = 10f;
+            Dirty(xeno, boost);
+
+            Log.Info($"Queen building boost applied to {xeno.Owner}");
+        }
     }
 
     private void OnXenoGetAdditionalAccess(Entity<XenoComponent> xeno, ref GetAccessTagsEvent args)
