@@ -226,6 +226,7 @@ jobs:
           rsync -a --delete \
             __audio-overlay/Resources/Audio/_CMU14/Private/ \
             Resources/Audio/_CMU14/Private/
+          rm -rf __audio-overlay
 
       - uses: actions/setup-dotnet@v5.2.0
         with:
@@ -297,6 +298,9 @@ jobs:
           pattern: test-merge-release-*
           path: release
           merge-multiple: true
+
+      - name: Show package sizes
+        run: ls -lh release/
 
       - name: Publish test merge version
         run: Tools/publish_multi_request.py
