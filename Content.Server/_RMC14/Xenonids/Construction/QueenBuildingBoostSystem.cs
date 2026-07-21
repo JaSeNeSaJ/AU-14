@@ -11,6 +11,8 @@ public sealed class QueenBuildingBoostSystem : EntitySystem
     [Dependency] private readonly GameTicker _gameTicker = default!;
 
     private static readonly TimeSpan QueenBoostDuration = TimeSpan.FromMinutes(30);
+    private const float QueenBoostSpeedMultiplier = 0.5f;
+    private const float QueenBoostRemoteRange = 50f;
 
     private bool _boostExpired;
 
@@ -36,10 +38,10 @@ public sealed class QueenBuildingBoostSystem : EntitySystem
 
         construction.GiveQueenBoost(
             queen,
-            1.5f,
-            10f);
+            QueenBoostSpeedMultiplier,
+            QueenBoostRemoteRange);
 
-        Log.Info($"Queen building boost applied to {queen}");
+        Logger.GetSawmill("content").Info($"Queen building boost applied to {queen}");
     }
 
     public override void Update(float frameTime)
@@ -53,8 +55,8 @@ public sealed class QueenBuildingBoostSystem : EntitySystem
         if (_gameTicker.RoundDuration() < QueenBoostDuration)
             return;
 
-        RemoveQueenBoosts();
         _boostExpired = true;
+        RemoveQueenBoosts();
     }
 
     private void OnRoundRestartCleanup(RoundRestartCleanupEvent args)
@@ -72,7 +74,7 @@ public sealed class QueenBuildingBoostSystem : EntitySystem
         {
             construction.RemoveQueenBoost(queen);
 
-            Log.Info($"Removed queen building boost from {queen}");
+            Logger.GetSawmill("content").Info($"Removed queen building boost from {queen}");
         }
     }
 }
