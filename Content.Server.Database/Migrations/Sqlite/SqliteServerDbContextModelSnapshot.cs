@@ -1086,6 +1086,10 @@ namespace Content.Server.Database.Migrations.Sqlite
                         .HasColumnType("TEXT")
                         .HasColumnName("species");
 
+                    b.Property<bool>("Synthetic")
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("synthetic");
+
                     b.Property<string>("ThreatPreference")
                         .HasColumnType("TEXT")
                         .HasColumnName("threat_preference");
