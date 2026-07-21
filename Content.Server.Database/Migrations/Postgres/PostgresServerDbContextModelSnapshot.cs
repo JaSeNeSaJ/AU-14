@@ -26,6 +26,95 @@ namespace Content.Server.Database.Migrations.Postgres
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Content.Server.Database.AU14FactionDefinition", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("au14_faction_definitions_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Data")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("data");
+
+                    b.Property<bool>("IsDefault")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_default");
+
+                    b.Property<DateTime>("LastEditedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_edited_at");
+
+                    b.Property<int>("SchemaVersion")
+                        .HasColumnType("integer")
+                        .HasColumnName("schema_version");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("character varying(64)")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("PK_au14_faction_definitions");
+
+                    b.HasIndex("Title")
+                        .HasDatabaseName("IX_au14_faction_definitions_title");
+
+                    b.ToTable("au14_faction_definitions", (string)null);
+                });
+
+            modelBuilder.Entity("Content.Server.Database.AU14CustomConstructionEntry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("au14_custom_construction_entries_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("EntryKey")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("character varying(256)")
+                        .HasColumnName("entry_key");
+
+                    b.Property<string>("Kind")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("character varying(32)")
+                        .HasColumnName("kind");
+
+                    b.Property<DateTime>("LastEditedAt")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("last_edited_at");
+
+                    b.Property<string>("Yaml")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("yaml");
+
+                    b.HasKey("Id")
+                        .HasName("PK_au14_custom_construction_entries");
+
+                    b.HasIndex("Kind", "EntryKey")
+                        .IsUnique()
+                        .HasDatabaseName("IX_au14_custom_construction_entries_kind_entry_key");
+
+                    b.ToTable("au14_custom_construction_entries", (string)null);
+                });
+
             modelBuilder.Entity("Content.Server.Database.Admin", b =>
                 {
                     b.Property<Guid>("UserId")
@@ -1418,22 +1507,6 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.ToTable("rmc_discord_accounts", (string)null);
                 });
 
-            modelBuilder.Entity("Content.Server.Database.RMCLarvaPoolOptOut", b =>
-                {
-                    b.Property<Guid>("PlayerId")
-                        .HasColumnType("uuid")
-                        .HasColumnName("player_id");
-
-                    b.Property<string>("HiveId")
-                        .HasColumnType("text")
-                        .HasColumnName("hive_id");
-
-                    b.HasKey("PlayerId", "HiveId")
-                        .HasName("PK_rmc_larva_pool_opt_out");
-
-                    b.ToTable("rmc_larva_pool_opt_out", (string)null);
-                });
-
             modelBuilder.Entity("Content.Server.Database.RMCLinkedAccount", b =>
                 {
                     b.Property<Guid>("PlayerId")
@@ -2711,19 +2784,6 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.Navigation("Round");
                 });
 
-            modelBuilder.Entity("Content.Server.Database.RMCLarvaPoolOptOut", b =>
-                {
-                    b.HasOne("Content.Server.Database.Player", "Player")
-                        .WithMany("LarvaPoolOptOuts")
-                        .HasForeignKey("PlayerId")
-                        .HasPrincipalKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_rmc_larva_pool_opt_out_player_player_id");
-
-                    b.Navigation("Player");
-                });
-
             modelBuilder.Entity("Content.Server.Database.RMCLinkedAccount", b =>
                 {
                     b.HasOne("Content.Server.Database.RMCDiscordAccount", "Discord")
@@ -3193,8 +3253,6 @@ namespace Content.Server.Database.Migrations.Postgres
                     b.Navigation("CommendationsReceived");
 
                     b.Navigation("JobWhitelists");
-
-                    b.Navigation("LarvaPoolOptOuts");
 
                     b.Navigation("LinkedAccount");
 
