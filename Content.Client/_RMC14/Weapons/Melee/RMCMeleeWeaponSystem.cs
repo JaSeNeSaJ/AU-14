@@ -81,64 +81,38 @@ public sealed partial class RMCMeleeWeaponSystem : SharedRMCMeleeWeaponSystem
     public bool TryGetAlternativeXenoAttackTarget(EntityUid attacker, MapCoordinates clickCoords, IEnumerable<EntityUid> clickedEntities, [NotNullWhen(true)] out EntityUid? newTarget)
     {
         newTarget = null;
-        var tackleableEnts = clickedEntities;
 
-        var compareDistance = new Comparison<EntityUid>((EntityUid a, EntityUid b) =>
+        EntityUid? closestNonHive = null;
+        EntityUid? closestHive = null;
+        float closestNonHiveDist = float.MaxValue;
+        float closestHiveDist = float.MaxValue;
+
+        foreach (var ent in clickedEntities)
         {
-            var coordA = _transform.GetMapCoordinates(a);
-            var coordB = _transform.GetMapCoordinates(b);
-
-            var distanceA = (coordA.Position - clickCoords.Position).Length();
-            var distanceB = (coordB.Position - clickCoords.Position).Length();
-
-            if (distanceA > distanceB)
-            {
-                return 1;
-            }
-            else if (distanceA < distanceB)
-            {
-                return -1;
-            }
-            else
-            {
-                return 0;
-            }
-        });
-
-        List<EntityUid> hiveMobTargets = new();
-        List<EntityUid> nonHiveMobTargets = new();
-
-        foreach (var ent in tackleableEnts)
-        {
+            // For the purposes of finding an alternative target, non-mobs or dead mobs are ignored
             if (!HasComp<MobStateComponent>(ent) ||
                 _mobState.IsDead(ent))
             {
                 continue;
             }
+            
+            var curDist = (_transform.GetMapCoordinates(ent).Position - clickCoords.Position).Length();
+            var isSameHive = _hive.FromSameHive(attacker, ent);
 
-            if (_hive.FromSameHive(attacker, ent))
+            if (isSameHive && closestHiveDist > curDist)
             {
-                hiveMobTargets.Add(ent);
-                continue;
+                closestHive = ent;
+                closestHiveDist = curDist;
             }
-            nonHiveMobTargets.Add(ent);
+
+            if (!isSameHive && closestNonHiveDist > curDist)
+            {
+                closestNonHive = ent;
+                closestNonHiveDist = curDist;
+            }
         }
 
-        // Prioritze non-hive entities for targeting
-        if (nonHiveMobTargets.Count > 0)
-        {
-            nonHiveMobTargets.Sort(compareDistance);
-            newTarget = nonHiveMobTargets.First();
-            return true;
-        }
-
-        if (hiveMobTargets.Count > 0)
-        {
-            hiveMobTargets.Sort(compareDistance);
-            newTarget = hiveMobTargets.First();
-            return true;
-        }
-
-        return false;
+        newTarget = closestNonHive ?? closestHive;
+        return newTarget is not null;
     }
 }
