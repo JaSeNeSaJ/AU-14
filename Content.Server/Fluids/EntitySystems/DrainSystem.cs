@@ -127,6 +127,11 @@ public sealed partial class DrainSystem : SharedDrainSystem
         var query = EntityQueryEnumerator<DrainComponent>();
         while (query.MoveNext(out var uid, out var drain))
         {
+            // Skip drains that are mid-deletion; their transform/parent chain can be in a
+            // transient state while a deletion sweep is tearing down the surrounding hierarchy.
+            if (TerminatingOrDeleted(uid))
+                continue;
+
             drain.Accumulator += frameTime;
             if (drain.Accumulator < drain.DrainFrequency)
             {
