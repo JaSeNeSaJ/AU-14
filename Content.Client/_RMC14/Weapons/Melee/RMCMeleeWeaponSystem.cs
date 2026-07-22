@@ -78,7 +78,7 @@ public sealed partial class RMCMeleeWeaponSystem : SharedRMCMeleeWeaponSystem
     /// <param name="clickedEntities">All Entities that are under the clickCoords</param>
     /// <param name="newTarget"></param>
     /// <returns></returns>
-    public bool TryGetAlternativeXenoAttackTarget(EntityUid attacker, MapCoordinates clickCoords, List<EntityUid> clickedEntities, [NotNullWhen(true)] out EntityUid? newTarget)
+    public bool TryGetAlternativeXenoAttackTarget(EntityUid attacker, MapCoordinates clickCoords, IEnumerable<EntityUid> clickedEntities, [NotNullWhen(true)] out EntityUid? newTarget)
     {
         newTarget = null;
         var tackleableEnts = clickedEntities;
