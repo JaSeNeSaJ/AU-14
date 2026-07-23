@@ -142,6 +142,14 @@ public sealed partial class DrainSystem : SharedDrainSystem
             if (!managerQuery.TryGetComponent(uid, out var manager))
                 continue;
 
+            // ResolveSolution() trusts a non-null cached `drain.Solution` as-is (only asserting its
+            // validity in debug builds) instead of re-resolving it. If the solution entity it points to
+            // was deleted out from under us - e.g. by a bulk deletion sweep tearing down entities in an
+            // arbitrary order - that cached reference goes stale and must be cleared so a fresh lookup
+            // happens instead of tripping that debug assertion.
+            if (drain.Solution is { } cachedSolution && TerminatingOrDeleted(cachedSolution.Owner))
+                drain.Solution = null;
+
             // Best to do this one every second rather than once every tick...
             if (!_solutionContainerSystem.ResolveSolution((uid, manager), DrainComponent.SolutionName, ref drain.Solution, out var drainSolution))
                 continue;
@@ -175,9 +183,22 @@ public sealed partial class DrainSystem : SharedDrainSystem
 
                 foreach (var puddle in _puddles)
                 {
+                    // The puddle may have already been queued for deletion (e.g. by another drain
+                    // whose range overlaps this one, processed earlier this same tick) without having
+                    // been actually removed yet. Don't touch its solution in that case.
+                    if (TerminatingOrDeleted(puddle.Owner))
+                        continue;
+
                     // Queue the solution deletion if it's empty. EvaporationSystem might also do this
                     // but queuedelete should be pretty safe.
                     if (!_solutionContainerSystem.ResolveSolution(puddle.Owner, puddle.Comp.SolutionName, ref puddle.Comp.Solution, out var puddleSolution))
+                    {
+                        QueueDel(puddle);
+                        continue;
+                    }
+
+                    // Already fully drained (e.g. by another drain this tick) - just clean it up.
+                    if (puddleSolution.Volume <= 0)
                     {
                         QueueDel(puddle);
                         continue;
