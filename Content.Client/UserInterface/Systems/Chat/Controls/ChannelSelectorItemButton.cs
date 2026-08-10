@@ -15,6 +15,16 @@ public sealed class ChannelSelectorItemButton : Button
         Channel = selector;
         AddStyleClass(StyleNano.StyleClassChatChannelSelectorButton);
 
+        // Same treatment as ChatTabButton: these are built and rebuilt as selectable channels
+        // change, so CrtLobbyTheme's one-shot tree walk never sees them.
+        if (StyleNano.CrtUiEnabled)
+            AddStyleClass(StyleNano.StyleClassCrtButton);
+
+        // The popup is a fixed fraction of the input row, so the buttons share that width evenly
+        // instead of each sitting at its own text width.
+        HorizontalExpand = true;
+        MinHeight = 24;
+
         Text = ChannelSelectorButton.ChannelSelectorName(selector);
 
         var prefix = ChatUIController.ChannelPrefixes[selector];

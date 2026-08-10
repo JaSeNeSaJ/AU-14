@@ -70,8 +70,18 @@ internal static class CrtLobbyTheme
             case OptionButton option:
                 ApplyToOptionButton(option);
                 break;
+            // Must come before ContainerButton: CheckBox derives from it, not from Button, so it
+            // used to fall into the arm below and get the full button box. That is what turned every
+            // row of the options menu into a wide filled bar.
+            case CheckBox checkBox:
+                AddClass(checkBox, StyleNano.StyleClassCrtCheckBox);
+                break;
             case ContainerButton containerButton:
-                AddClass(containerButton, StyleNano.StyleClassCrtButton);
+                // A section heading is a button so it can be clicked to fold, but it already has its
+                // own banded box. Handing it the standard one too would tie two rules of equal
+                // specificity, which has no defined winner.
+                if (!containerButton.HasStyleClass(StyleNano.StyleClassCrtSectionHeader))
+                    AddClass(containerButton, StyleNano.StyleClassCrtButton);
                 break;
         }
 
@@ -81,7 +91,10 @@ internal static class CrtLobbyTheme
                 ApplyLabel(label);
                 break;
             case RichTextLabel richText when useCrtTypography:
-                AddClass(richText, StyleNano.StyleClassCrtRichText);
+                // Controls that already carry a more specific CRT rich-text class style themselves.
+                if (!richText.HasStyleClass(StyleNano.StyleClassCrtServerInfoText) &&
+                    !richText.HasStyleClass(StyleNano.StyleClassCrtCharacterSummary))
+                    AddClass(richText, StyleNano.StyleClassCrtRichText);
                 break;
             case LineEdit lineEdit:
                 if (useCrtTypography)
@@ -96,6 +109,22 @@ internal static class CrtLobbyTheme
                 break;
             case Slider slider:
                 AddClass(slider, StyleNano.StyleClassCrtSlider);
+                break;
+            case SpinBox spinBox:
+                // A SpinBox is a BoxContainer, so the walk reaches its +/- buttons and gives them
+                // the CRT button class - but they already carry NanoUI's spinbox-left/middle/right,
+                // and two rules of equal specificity have no defined winner. That's why the colour
+                // picker's steppers render as unthemed nubs inside a CRT window. Dropping the Nano
+                // classes leaves exactly one rule matching.
+                foreach (var child in spinBox.Children)
+                {
+                    if (child is not Button stepper)
+                        continue;
+
+                    stepper.RemoveStyleClass(SpinBox.LeftButtonStyle);
+                    stepper.RemoveStyleClass(SpinBox.MiddleButtonStyle);
+                    stepper.RemoveStyleClass(SpinBox.RightButtonStyle);
+                }
                 break;
             case ProgressBar progressBar:
                 AddClass(progressBar, StyleNano.StyleClassCrtProgressBar);

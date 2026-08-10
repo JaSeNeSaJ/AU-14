@@ -11,9 +11,14 @@ public sealed class SplitChatButton : ChatPopupButton<SplitChatPopup>
     {
         Text = $"{Loc.GetString("hud-chatbox-split-toggle")} +";
         MinWidth = 66;
-        MinHeight = 25;
+        MinHeight = 26;
         ToolTip = Loc.GetString("hud-chatbox-split-tooltip");
         StyleClasses.Add(StyleNano.StyleClassChatChannelSelectorButton);
+
+        // Matches the tab buttons it sits beside. Set here rather than through CrtLobbyTheme, which
+        // returns early on a ChatBox and never walks the chat's controls.
+        if (StyleNano.CrtUiEnabled)
+            AddStyleClass(StyleNano.StyleClassCrtButton);
     }
 
     public void SetSplitState(bool enabled, string? tabTitle)

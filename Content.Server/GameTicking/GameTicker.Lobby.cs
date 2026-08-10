@@ -140,6 +140,36 @@ namespace Content.Server.GameTicking
                 ("desc", desc));
         }
 
+        /// <summary>
+        ///     Structured round info for the lobby table. Order matters: these are laid out two
+        ///     columns per row, each heading with its value directly underneath.
+        /// </summary>
+        private List<LobbyRoundInfoField> GetRoundInfoFields()
+        {
+            const string govforColor = "#007EE7";
+            const string opforColor = "#FF2000";
+
+            var preset = CurrentPreset ?? Preset;
+            if (preset == null)
+                return new List<LobbyRoundInfoField>();
+
+            string Display(string? value) => !string.IsNullOrWhiteSpace(value) ? value : "None";
+
+            return new List<LobbyRoundInfoField>
+            {
+                new(Loc.GetString("lobby-info-govfor-ship"), Display(_auRoundSystem.GetSelectedGovforShip()), govforColor),
+                new(Loc.GetString("lobby-info-opfor-ship"), Display(_auRoundSystem.GetSelectedOpforShip()), opforColor),
+                new(Loc.GetString("lobby-info-govfor-platoon"), Display(_platoonSpawnRuleSystem.SelectedGovforPlatoon?.Name), govforColor),
+                new(Loc.GetString("lobby-info-opfor-platoon"), Display(_platoonSpawnRuleSystem.SelectedOpforPlatoon?.Name), opforColor),
+                new(Loc.GetString("lobby-info-planet"), Display(GetPlanetMapName())),
+                new(Loc.GetString("lobby-info-gamemode"), Display(LocalizeOrRaw(preset.ModeTitle))),
+                new(Loc.GetString("lobby-info-players"), Loc.GetString(
+                    "lobby-info-players-value",
+                    ("count", _playerManager.PlayerCount),
+                    ("ready", _playerGameStatuses.Values.Count(x => x == PlayerGameStatus.ReadyToPlay)))),
+            };
+        }
+
         private TickerConnectionStatusEvent GetConnectionStatusMsg()
         {
             return new TickerConnectionStatusEvent(RoundStartTimeSpan);
@@ -161,7 +191,7 @@ namespace Content.Server.GameTicking
 
         private TickerLobbyInfoEvent GetInfoMsg()
         {
-            return new (GetInfoText());
+            return new (GetInfoText(), GetRoundInfoFields());
         }
 
         private TickerRoundStatusEvent GetRoundStatusMsg()

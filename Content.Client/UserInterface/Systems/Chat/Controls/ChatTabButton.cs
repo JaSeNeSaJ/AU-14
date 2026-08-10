@@ -1,5 +1,6 @@
 using System;
 using System.Numerics;
+using Content.Client.Stylesheets;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
@@ -38,6 +39,12 @@ public sealed class ChatTabButton : Button
     {
         TabId = tabId;
         DefaultCursorShape = CursorShape.Hand;
+
+        // Match the CRT-styled buttons elsewhere in the UI (AHelp, Call Vote...). Set here rather
+        // than via CrtLobbyTheme because tabs are created and destroyed as channels change, and that
+        // pass only tags controls that already exist when it runs.
+        if (StyleNano.CrtUiEnabled)
+            AddStyleClass(StyleNano.StyleClassCrtButton);
     }
 
     public void SetDragVisualState(bool dragging, bool dropTarget)

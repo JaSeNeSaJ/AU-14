@@ -31,7 +31,9 @@ public class ChatInputBox : PanelContainer
             ToggleMode = true,
             StyleClasses = {"chatSelectorOptionButton"},
             MinWidth = 74,
-            MinHeight = 20
+            // The row is only as tall as its tallest child, and the CRT button box this now uses is
+            // much shorter than the NanoUI one, so this is what holds the input bar open.
+            MinHeight = 26
         };
         Container.AddChild(ChannelSelector);
         Input = new HistoryLineEdit
@@ -46,7 +48,7 @@ public class ChatInputBox : PanelContainer
         {
             Name = "FilterButton",
             StyleClasses = {"chatFilterOptionButton"},
-            MinSize = new Vector2(22, 20)
+            MinSize = new Vector2(28, 26)
         };
         Container.AddChild(FilterButton);
         AddStyleClass(StyleNano.StyleClassChatSubPanel);
@@ -58,8 +60,8 @@ public class ChatInputBox : PanelContainer
         Container.SeparationOverride = legacy ? 4 : 2;
         Container.Margin = new Thickness(0);
         ChannelSelector.MinWidth = legacy ? 75 : 74;
-        ChannelSelector.MinHeight = legacy ? 0 : 20;
-        FilterButton.MinSize = legacy ? Vector2.Zero : new Vector2(22, 20);
+        ChannelSelector.MinHeight = legacy ? 0 : 26;
+        FilterButton.MinSize = legacy ? Vector2.Zero : new Vector2(28, 26);
         FilterButton.SetLegacyMode(legacy);
     }
 

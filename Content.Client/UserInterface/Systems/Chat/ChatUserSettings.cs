@@ -36,6 +36,12 @@ public sealed class ChatSplitSettings
     public bool Enabled { get; set; }
     public string SecondaryTabId { get; set; } = ChatUserSettings.RadioTabId;
     public int SecondaryRatioPercent { get; set; } = ChatUserSettings.DefaultSplitSecondaryRatioPercent;
+
+    /// <summary>
+    ///     Panes side by side rather than stacked. Defaults to stacked, which is how the split
+    ///     behaved before the option existed.
+    /// </summary>
+    public bool Horizontal { get; set; }
 }
 
 public sealed record ChatStyleTarget(string Key, string Name, string DefaultColor, int? DefaultFontSize = null);
@@ -229,16 +235,19 @@ public static class ChatUserSettings
                 : RadioTabId,
             SecondaryRatioPercent = fields.Count >= 3 && int.TryParse(fields[2], out var ratio)
                 ? NormalizeSplitRatioPercent(ratio)
-                : DefaultSplitSecondaryRatioPercent
+                : DefaultSplitSecondaryRatioPercent,
+            // Fourth field, appended after the fact. Parsing by field count is what makes a value
+            // saved before this existed load as stacked rather than being thrown away.
+            Horizontal = fields.Count >= 4 && fields[3] == "1"
         };
     }
 
-    public static string SaveSplitPane(bool enabled, string secondaryTabId, int secondaryRatioPercent)
+    public static string SaveSplitPane(bool enabled, string secondaryTabId, int secondaryRatioPercent, bool horizontal)
     {
         var tabId = string.IsNullOrWhiteSpace(secondaryTabId)
             ? RadioTabId
             : secondaryTabId.Trim();
-        return $"{(enabled ? "1" : "0")}|{EscapeValue(tabId)}|{NormalizeSplitRatioPercent(secondaryRatioPercent)}";
+        return $"{(enabled ? "1" : "0")}|{EscapeValue(tabId)}|{NormalizeSplitRatioPercent(secondaryRatioPercent)}|{(horizontal ? "1" : "0")}";
     }
 
     public static List<ChatTabSettings> CreateDefaultTabs()

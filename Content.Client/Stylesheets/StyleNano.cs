@@ -1,5 +1,6 @@
 using System.Linq;
 using System.Numerics;
+using Content.Client._CMU14.UserInterface.ColorPicker;
 using Content.Client._RMC14;
 using Content.Client.ContextMenu.UI;
 using Content.Client.Examine;
@@ -104,6 +105,40 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtHeading = "CrtHeading";
         public const string StyleClassCrtHeadingBig = "CrtHeadingBig";
         public const string StyleClassCrtRichText = "CrtRichText";
+        public const string StyleClassCrtServerInfoText = "CrtServerInfoText";
+        public const string StyleClassCrtTableCell = "CrtTableCell";
+        public const string StyleClassCrtUnderlineRow = "CrtUnderlineRow";
+        public const string StyleClassCrtCharacterSummary = "CrtCharacterSummary";
+        public const string StyleClassCrtDivider = "CrtDivider";
+        public const string StyleClassCrtChatPanel = "CrtChatPanel";
+        public const string StyleClassCrtChatInput = "CrtChatInput";
+        public const string StyleClassCrtChatScrollBar = "CrtChatScrollBar";
+        public const string StyleClassCrtChatPopup = "CrtChatPopup";
+        public const string StyleClassCrtCheckBox = "CrtCheckBox";
+        public const string StyleClassCrtFooterRow = "CrtFooterRow";
+        public const string StyleClassCrtSectionHeader = "CrtSectionHeader";
+        public const string StyleClassCrtSliderValue = "CrtSliderValue";
+        public const string StyleClassCrtOptionRow = "CrtOptionRow";
+
+        /// <summary>
+        ///     The CRT font stack, with Noto fallbacks for glyphs the OSD font lacks.
+        /// </summary>
+        public static readonly string[] UavOsdFontStack =
+        {
+            "/Fonts/UAVOSD/UAV-OSD-Sans-Mono.ttf",
+            "/Fonts/NotoSans/NotoSans-Regular.ttf",
+            "/Fonts/NotoSans/NotoSansSymbols-Regular.ttf",
+            "/Fonts/NotoSans/NotoSansSymbols2-Regular.ttf"
+        };
+
+        /// <summary>
+        ///     For controls that need a CRT font outside the stylesheet, e.g. via FontOverride to
+        ///     beat a stylesheet rule of equal specificity.
+        /// </summary>
+        public static Font GetCrtFont(IResourceCache resCache, int size)
+        {
+            return resCache.GetFont(UavOsdFontStack, size);
+        }
         public const string StyleClassCrtLineEdit = "CrtLineEdit";
         public const string StyleClassCrtNativeLineEdit = "CrtNativeLineEdit";
         public const string StyleClassCrtSlider = "CrtSlider";
@@ -517,13 +552,7 @@ namespace Content.Client.Stylesheets
             var notoSansBold18 = resCache.NotoStack(variation: "Bold", size: 18);
             var notoSansBold20 = resCache.NotoStack(variation: "Bold", size: 20);
             var notoSansMono = resCache.GetFont("/EngineFonts/NotoSans/NotoSansMono-Regular.ttf", size: 12);
-            var uavOsdStack = new[]
-            {
-                "/Fonts/UAVOSD/UAV-OSD-Sans-Mono.ttf",
-                "/Fonts/NotoSans/NotoSans-Regular.ttf",
-                "/Fonts/NotoSans/NotoSansSymbols-Regular.ttf",
-                "/Fonts/NotoSans/NotoSansSymbols2-Regular.ttf"
-            };
+            var uavOsdStack = UavOsdFontStack;
             var robotoMonoBoldStack = new[]
             {
                 "/Fonts/RobotoMono/RobotoMono-Bold.ttf",
@@ -556,6 +585,15 @@ namespace Content.Client.Stylesheets
                 uavOsdStack,
                 size: 12
             );
+            // NOTE: the uavOsd* names above are misleading - uavOsd13/uavOsd14/uavOsdBold14 are all
+            // actually size 8. This one backs the lobby's intro lines. It shares a row with the
+            // SERVER INFO heading, so it has to stay small enough that the welcome line does not
+            // wrap - raise it only if you also give that row more width.
+            var uavOsdServerInfo = resCache.GetFont
+            (
+                uavOsdStack,
+                size: 8
+            );
             var robotoMonoBold11 = resCache.GetFont(robotoMonoBoldStack, size: 11);
             var robotoMonoBold12 = resCache.GetFont(robotoMonoBoldStack, size: 12);
             var robotoMonoBold14 = resCache.GetFont(robotoMonoBoldStack, size: 14);
@@ -565,6 +603,9 @@ namespace Content.Client.Stylesheets
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
             var crtRichTextFont = useCrtUi ? uavOsd14 : notoSans12;
+            var crtServerInfoFont = useCrtUi ? uavOsdServerInfo : notoSans12;
+            // Sized to leave room for the job line underneath without crowding the sprite beside it.
+            var crtCharacterSummaryFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 9) : notoSans12;
             var crtButtonLabelFont = useCrtUi ? uavOsdBold14 : notoSans12;
             var crtLineEditFont = useCrtUi ? uavOsd14 : notoSans12;
             var crtNativeLineEditFont = notoSans12;
@@ -802,6 +843,7 @@ namespace Content.Client.Stylesheets
                 BorderThickness = new Thickness(1),
                 DrawGrid = false,
                 DrawPixelation = true,
+                DrawCornerTicks = false,
                 CornerLength = 10,
                 PixelationBlockSize = 3,
                 PixelationSpacing = 150,
@@ -830,6 +872,7 @@ namespace Content.Client.Stylesheets
                 BorderThickness = new Thickness(1),
                 DrawGrid = false,
                 DrawPixelation = true,
+                DrawCornerTicks = false,
                 CornerLength = 8,
                 PixelationBlockSize = 2,
                 PixelationSpacing = 140,
@@ -858,6 +901,216 @@ namespace Content.Client.Stylesheets
                 ContentMarginRightOverride = 5,
                 ContentMarginTopOverride = 4,
                 ContentMarginBottomOverride = 4
+            };
+
+            // One cell of the lobby round-info table. Deliberately very tight: the right-hand lobby
+            // panel is height-constrained, and every pixel of padding here is multiplied by six.
+            var crtTableCell = new CrtStyleBox
+            {
+                BackgroundColor = CrtInsetBackground,
+                BorderColor = CrtGreenDim.WithAlpha(0.5f),
+                ScanlineColor = CrtGreen.WithAlpha(0.01f),
+                BorderThickness = new Thickness(1),
+                DrawCornerTicks = false,
+                DrawPixelation = false,
+                MaxScanlines = 1,
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 3,
+                ContentMarginBottomOverride = 3
+            };
+
+            // The lobby's chat surface: keeps chat's own dark backing for legibility, but takes the
+            // CrtPanel's border so it reads as a section of the same panel. Defined here rather than
+            // assigned to the control so it tracks the CRT palette when the stylesheet rebuilds.
+            var crtChatPanel = new StyleBoxFlat
+            {
+                BackgroundColor = ChatBackgroundColor,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(1),
+                ContentMarginLeftOverride = 2,
+                ContentMarginRightOverride = 2,
+            };
+
+            // The lobby's chat input row. Top rule only - the chat panel already supplies the left,
+            // right and bottom borders, so a full box here would double them up. The content margins
+            // are inner padding: none on the left so the channel button sits as far out as the
+            // message rows above it, a little on the right so the gear clears the panel border.
+            var crtChatInput = new StyleBoxFlat
+            {
+                BackgroundColor = Color.FromHex("#0D1014"),
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(0, 1, 0, 0),
+                ContentMarginLeftOverride = 0,
+                ContentMarginRightOverride = 2,
+                ContentMarginTopOverride = 2,
+                ContentMarginBottomOverride = 2,
+            };
+
+            // A checkbox is a toggle, not a button - but CheckBox derives from ContainerButton, so
+            // it used to inherit the full CrtButton box and every option row rendered as a wide
+            // filled bar. The tick texture already carries the state; all this needs to do is keep
+            // the row clickable and give a little padding.
+            // The bottom rule is what separates back-to-back toggles: a run of them reads as a list
+            // of rows instead of one undifferentiated block, which matters most where several are
+            // checked at once and their fills would otherwise merge.
+            var crtCheckBox = new StyleBoxFlat
+            {
+                BackgroundColor = Color.Transparent,
+                BorderColor = CrtGreenDim.WithAlpha(0.35f),
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                ContentMarginLeftOverride = 2,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 5,
+                ContentMarginBottomOverride = 5,
+            };
+
+            // Hover still has to be legible with no border to light up, so it's a faint wash.
+            var crtCheckBoxHover = new StyleBoxFlat(crtCheckBox)
+            {
+                BackgroundColor = CrtGreen.WithAlpha(0.10f),
+            };
+
+            // Checked is NOT a filled row. A CheckBox's pressed pseudo-class is its checked state, so
+            // tinting it painted every enabled option as a full-width green bar - a list with several
+            // on read as a block of solid colour with the text fighting it. The tick already says
+            // "on"; that is what the control is for.
+            var crtCheckBoxPressed = new StyleBoxFlat(crtCheckBox);
+
+            // Bottom rule across a whole option row, label included. Checkboxes already carry one via
+            // crtCheckBox; without this the sliders and dropdowns were the only rows in a section
+            // with no divider, so the rule appeared to stop partway along the list.
+            var crtOptionRow = new StyleBoxFlat
+            {
+                BackgroundColor = Color.Transparent,
+                BorderColor = CrtGreenDim.WithAlpha(0.35f),
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                ContentMarginLeftOverride = 2,
+                ContentMarginRightOverride = 0,
+                ContentMarginTopOverride = 2,
+                ContentMarginBottomOverride = 3,
+            };
+
+            // Boxes the value readout so it begins exactly where the track ends, carrying the same
+            // frame the slider draws around its empty portion. No left edge: the slider's own right
+            // border serves as the divider, and a second line there would read as a double rule.
+            var crtSliderValue = new StyleBoxFlat
+            {
+                BackgroundColor = CrtBackground,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(0, 2, 2, 2),
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 2,
+                ContentMarginBottomOverride = 2,
+            };
+
+            // Band behind a section heading in a settings list. Rules top and bottom only - side
+            // borders would close it into a box, and the whole point of these headings is to divide
+            // a long list without adding another rectangle to it.
+            var crtSectionHeader = new StyleBoxFlat
+            {
+                BackgroundColor = CrtPanelBackground,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(0, 1, 0, 1),
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 3,
+                ContentMarginBottomOverride = 3,
+            };
+
+            // Footer strip under a tabbed window. A single top rule rather than a full box: it sits
+            // inside the window frame and the tab panel already, and a third rectangle around three
+            // buttons is what made the options footer look so heavy.
+            var crtFooterRow = new StyleBoxFlat
+            {
+                BackgroundColor = CrtPanelBackground,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(0, 1, 0, 0),
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 5,
+                ContentMarginBottomOverride = 5,
+            };
+
+            // The channel-selector popup that sits on top of the chat input row. Deliberately much
+            // tighter than CrtInsetPanel (8/8/6/6): this is a strip spanning the input bar, not a
+            // window, and the CRT button chrome inside it already carries 3px + a border of its own.
+            var crtChatPopup = new StyleBoxFlat
+            {
+                BackgroundColor = CrtInsetBackground,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(1),
+                ContentMarginLeftOverride = 2,
+                ContentMarginRightOverride = 2,
+                ContentMarginTopOverride = 2,
+                ContentMarginBottomOverride = 2,
+            };
+
+            // The chat log's scrollbar. Separate from the general CrtScrollBar because that one is
+            // 16px wide (its grabber carries 8px content margins all round), which is far too heavy
+            // for a gutter running down the side of the message list.
+            //
+            // The track is what gives the gutter a visible channel - CrtScrollBar sets only a
+            // grabber, so it reads as a nub floating over the content. This bar is owned by
+            // ChatLogPanel rather than by the ScrollContainer, so it is always visible and the
+            // track is always drawn.
+            var crtChatScrollTrack = new StyleBoxFlat
+            {
+                BackgroundColor = CrtInsetBackground,
+                BorderColor = CrtGreenDim.WithAlpha(0.45f),
+                BorderThickness = new Thickness(1, 0, 0, 0),
+            };
+
+            var crtChatScrollGrabber = new StyleBoxFlat
+            {
+                BackgroundColor = CrtGreenDim.WithAlpha(0.7f),
+                BorderColor = CrtGreen.WithAlpha(0.38f),
+                BorderThickness = new Thickness(1),
+                // These margins are what set the bar's width - ScrollBar.MeasureOverride returns the
+                // grabber's MinimumSize - and its minimum grabber length. 4 gives a 8px gutter.
+                ContentMarginLeftOverride = 4,
+                ContentMarginRightOverride = 4,
+                ContentMarginTopOverride = 4,
+                ContentMarginBottomOverride = 4,
+            };
+
+            var crtChatScrollGrabberHover = new StyleBoxFlat(crtChatScrollGrabber)
+            {
+                BackgroundColor = CrtGreen.WithAlpha(0.48f),
+                BorderColor = CrtGreenSoft.WithAlpha(0.55f),
+            };
+
+            var crtChatScrollGrabberPressed = new StyleBoxFlat(crtChatScrollGrabber)
+            {
+                BackgroundColor = CrtGreen.WithAlpha(0.7f),
+                BorderColor = CrtGreenSoft.WithAlpha(0.78f),
+            };
+
+            // Solid divider rule. Must come from the stylesheet, not a control's own StyleBoxFlat:
+            // the stylesheet is rebuilt whenever the CRT palette changes, whereas a colour baked
+            // into a control at construction stays whatever the palette was at that moment.
+            var crtDivider = new StyleBoxFlat
+            {
+                BackgroundColor = CrtGreenDim,
+                ContentMarginTopOverride = 2,
+            };
+
+            // Bottom rule under the lobby's SERVER INFO row. The rich-text markup has no underline
+            // tag (only bold/italic/color/head/bullet/font/cmdlink), so the line is drawn as a
+            // border on the row instead.
+            var crtUnderlineRow = new CrtStyleBox
+            {
+                BackgroundColor = Color.Transparent,
+                BorderColor = CrtGreenDim.WithAlpha(0.7f),
+                BorderThickness = new Thickness(0, 0, 0, 1),
+                DrawCornerTicks = false,
+                DrawPixelation = false,
+                DrawScanlines = false,
+                ContentMarginLeftOverride = 0,
+                ContentMarginRightOverride = 0,
+                ContentMarginTopOverride = 0,
+                ContentMarginBottomOverride = 2
             };
 
             var crtHeaderPanel = new CrtStyleBox
@@ -895,6 +1148,7 @@ namespace Content.Client.Stylesheets
                 PixelationShadowColor = CrtBackground.WithAlpha(0.1f),
                 BorderThickness = new Thickness(1),
                 DrawPixelation = true,
+                DrawCornerTicks = false,
                 CornerLength = 6,
                 PixelationBlockSize = 2,
                 PixelationSpacing = 118,
@@ -1048,6 +1302,9 @@ namespace Content.Client.Stylesheets
                 ContentMarginBottomOverride = 2
             };
 
+            // 2px, not 1: this frame is only really seen along the unfilled part of the track, and a
+            // hairline there left the slider looking like a floating bar rather than a bounded
+            // control. It also has to hold its own against the value box butted up beside it.
             var crtSliderBackground = new CrtStyleBox
             {
                 BackgroundColor = CrtBackground,
@@ -1055,7 +1312,7 @@ namespace Content.Client.Stylesheets
                 CornerColor = CrtGreen.WithAlpha(0.16f),
                 ScanlineColor = CrtGreen.WithAlpha(0.01f),
                 NoiseColor = CrtGreenSoft.WithAlpha(0.035f),
-                BorderThickness = new Thickness(1),
+                BorderThickness = new Thickness(2),
                 DrawCornerTicks = false,
                 NoiseSpacing = 12,
                 NoiseChance = 13,
@@ -1065,9 +1322,13 @@ namespace Content.Client.Stylesheets
                 ContentMarginBottomOverride = 8
             };
 
+            // Transparent, and that is deliberate. Slider adds its panels in the order background,
+            // fill, foreground, grabber, and anchors the foreground to the full width - so an opaque
+            // colour here paints straight over the filled portion and every slider renders as one
+            // flat bar with no readable level. The background supplies the empty part of the track.
             var crtSliderForeground = new StyleBoxFlat
             {
-                BackgroundColor = CrtSliderForeground,
+                BackgroundColor = Color.Transparent,
             };
             crtSliderForeground.SetContentMarginOverride(StyleBox.Margin.Vertical, 8);
 
@@ -1076,6 +1337,21 @@ namespace Content.Client.Stylesheets
                 BackgroundColor = CrtGreenDim,
             };
             crtSliderFill.SetContentMarginOverride(StyleBox.Margin.Vertical, 8);
+
+            // ColorableSlider asks for these two by name when a channel's track has to read as a
+            // true colour ramp rather than the CRT palette - tinting those green would defeat the
+            // point of a colour picker. Without them the lookup returns null and the track is blank.
+            var crtSliderFillWhite = new StyleBoxFlat
+            {
+                BackgroundColor = Color.White,
+            };
+            crtSliderFillWhite.SetContentMarginOverride(StyleBox.Margin.Vertical, 8);
+
+            var crtSliderBackgroundWhite = new StyleBoxFlat
+            {
+                BackgroundColor = Color.White,
+            };
+            crtSliderBackgroundWhite.SetContentMarginOverride(StyleBox.Margin.Vertical, 8);
 
             var crtSliderGrabber = new StyleBoxFlat
             {
@@ -2680,6 +2956,66 @@ namespace Content.Client.Stylesheets
                     .Prop(PanelContainer.StylePropertyPanel, crtHeaderPanel)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                Element<PanelContainer>().Class(StyleClassCrtTableCell)
+                    .Prop(PanelContainer.StylePropertyPanel, crtTableCell)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtUnderlineRow)
+                    .Prop(PanelContainer.StylePropertyPanel, crtUnderlineRow)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtDivider)
+                    .Prop(PanelContainer.StylePropertyPanel, crtDivider)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtChatPanel)
+                    .Prop(PanelContainer.StylePropertyPanel, crtChatPanel)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtChatInput)
+                    .Prop(PanelContainer.StylePropertyPanel, crtChatInput)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtChatPopup)
+                    .Prop(PanelContainer.StylePropertyPanel, crtChatPopup)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtFooterRow)
+                    .Prop(PanelContainer.StylePropertyPanel, crtFooterRow)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtSectionHeader)
+                    .Prop(PanelContainer.StylePropertyPanel, crtSectionHeader)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtSliderValue)
+                    .Prop(PanelContainer.StylePropertyPanel, crtSliderValue)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtOptionRow)
+                    .Prop(PanelContainer.StylePropertyPanel, crtOptionRow)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // The clickable variant used by CmuOptionSection. A ContainerButton takes its box
+                // from a different property than a PanelContainer, so it needs its own rule.
+                Element<ContainerButton>().Class(StyleClassCrtSectionHeader)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtSectionHeader)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCheckBox)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCheckBox)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCheckBox)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCheckBoxHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCheckBox)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCheckBoxPressed)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<ContainerButton>().Class(StyleClassCrtButton)
                     .Prop(ContainerButton.StylePropertyStyleBox, crtButton)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
@@ -2760,7 +3096,22 @@ namespace Content.Client.Stylesheets
                     .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
                 Element<RichTextLabel>().Class(StyleClassCrtRichText)
-                    .Prop("font", crtRichTextFont),
+                    .Prop("font", crtRichTextFont)
+                    // The uavOsd font has very tight vertical metrics; at the default scale of 1.0
+                    // multi-line blocks (lobby server info, guidebook text) render with no visible
+                    // gap between lines. Tune this if CRT body text looks cramped or too airy.
+                    .Prop(nameof(RichTextLabel.LineHeightScale), 1.25f),
+
+                // The lobby's character name/age lines, sized up so they carry the block.
+                Element<RichTextLabel>().Class(StyleClassCrtCharacterSummary)
+                    .Prop("font", crtCharacterSummaryFont)
+                    .Prop(nameof(RichTextLabel.LineHeightScale), 1.2f),
+
+                // Lobby server-info block. Larger than normal CRT body text and slightly airier,
+                // since it is the first thing a player reads and the panel has room to spare.
+                Element<RichTextLabel>().Class(StyleClassCrtServerInfoText)
+                    .Prop("font", crtServerInfoFont)
+                    .Prop(nameof(RichTextLabel.LineHeightScale), 1.35f),
 
                 Element<ItemList>().Class(StyleClassCrtItemList)
                     .Prop(ItemList.StylePropertyBackground, crtItemListBackground)
@@ -2792,6 +3143,23 @@ namespace Content.Client.Stylesheets
                     .Pseudo(ScrollBar.StylePseudoClassGrabbed)
                     .Prop(ScrollBar.StylePropertyGrabber, crtScrollGrabberPressed),
 
+                // Chat log gutter. The track has to be repeated on every pseudo-class: style
+                // properties are resolved per rule, so a rule that only sets the grabber leaves the
+                // track unset and the channel vanishes the moment the grabber is hovered.
+                Element<VScrollBar>().Class(StyleClassCrtChatScrollBar)
+                    .Prop(ScrollBar.StylePropertyTrack, crtChatScrollTrack)
+                    .Prop(ScrollBar.StylePropertyGrabber, crtChatScrollGrabber),
+
+                Element<VScrollBar>().Class(StyleClassCrtChatScrollBar)
+                    .Pseudo(ScrollBar.StylePseudoClassHover)
+                    .Prop(ScrollBar.StylePropertyTrack, crtChatScrollTrack)
+                    .Prop(ScrollBar.StylePropertyGrabber, crtChatScrollGrabberHover),
+
+                Element<VScrollBar>().Class(StyleClassCrtChatScrollBar)
+                    .Pseudo(ScrollBar.StylePseudoClassGrabbed)
+                    .Prop(ScrollBar.StylePropertyTrack, crtChatScrollTrack)
+                    .Prop(ScrollBar.StylePropertyGrabber, crtChatScrollGrabberPressed),
+
                 Element<LineEdit>().Class(StyleClassCrtLineEdit)
                     .Prop(LineEdit.StylePropertyStyleBox, crtLineEdit)
                     .Prop("font", crtLineEditFont)
@@ -2806,11 +3174,18 @@ namespace Content.Client.Stylesheets
                     .Prop(LineEdit.StylePropertyCursorColor, crtHeadingColor)
                     .Prop(LineEdit.StylePropertySelectionColor, crtSelectionColor),
 
+                // The colour picker's gradient fields. No class: every one of them wants the frame,
+                // and without it a gradient sits on the background with no edge at all.
+                Element<ColorFieldControl>()
+                    .Prop(ColorFieldControl.StylePropertyBorderColor, CrtGreenDim),
+
                 Element<Slider>().Class(StyleClassCrtSlider)
                     .Prop(Slider.StylePropertyBackground, crtSliderBackground)
                     .Prop(Slider.StylePropertyForeground, crtSliderForeground)
                     .Prop(Slider.StylePropertyFill, crtSliderFill)
-                    .Prop(Slider.StylePropertyGrabber, crtSliderGrabber),
+                    .Prop(Slider.StylePropertyGrabber, crtSliderGrabber)
+                    .Prop(ColorableSlider.StylePropertyFillWhite, crtSliderFillWhite)
+                    .Prop(ColorableSlider.StylePropertyBackgroundWhite, crtSliderBackgroundWhite),
 
                 Element<ProgressBar>().Class(StyleClassCrtProgressBar)
                     .Prop(ProgressBar.StylePropertyBackground, crtProgressBackground)

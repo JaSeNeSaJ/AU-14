@@ -189,11 +189,11 @@ namespace Content.Client.Lobby
             {
                 Lobby!.StartTime.Text = string.Empty;
                 var roundTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
-                Lobby!.StationTime.Text = Loc.GetString("lobby-state-player-status-round-time", ("hours", roundTime.Hours), ("minutes", roundTime.Minutes));
+                Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-time-short", ("hours", roundTime.Hours), ("minutes", roundTime.Minutes));
                 return;
             }
 
-            Lobby!.StationTime.Text = Loc.GetString("lobby-state-player-status-round-not-started");
+            Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-not-started-short");
             string text;
 
             if (_gameTicker.Paused)
@@ -274,6 +274,8 @@ namespace Content.Client.Lobby
             {
                 Lobby!.ServerInfo.SetInfoBlob(_gameTicker.ServerInfoBlob);
             }
+
+            Lobby!.ServerInfo.SetRoundInfo(_gameTicker.ServerRoundInfo);
 
             var minutesToday = _playtimeTracking.PlaytimeMinutesToday;
             if (minutesToday > 60)

@@ -45,6 +45,7 @@ ui-options-event-music = Event Music
 ui-options-admin-sounds = Play Admin Sounds
 ui-options-bwoink-sound = Play AHelp Notification Sound
 ui-options-volume-label = Volume
+ui-options-audio-toggles = Sounds
 
 ## Graphics menu
 
@@ -55,8 +56,7 @@ ui-options-interface-label = Interface
 
 
 ui-options-auto-fill-highlights = Auto-fill the highlights with the character's information
-ui-options-highlights-color = Highlighs color:
-ui-options-highlights-color-example = This is an highlighted text!
+ui-options-highlights-color = Your highlight color is:
 ui-options-show-held-item = Show held item next to cursor
 ui-options-show-combat-mode-indicators = Show combat mode indicators with cursor
 ui-options-opaque-storage-window = Opaque storage window
@@ -357,9 +357,12 @@ cmd-options-help = Usage: options [tab]
 
 ## Accessibility menu
 
-ui-options-accessability-header-cmu = CMU
+ui-options-accessability-header-cmu = CMU Specific
 ui-options-accessability-header-visuals = Visuals
 ui-options-accessability-header-content = Content
+ui-options-accessability-header-announcements = Announcements
+ui-options-accessability-header-opacity = Opacity
+ui-options-accessability-header-highlights = Chat highlights
 
 ui-options-enable-color-name = Add colors to character names
 ui-options-colorblind-friendly = Colorblind friendly mode

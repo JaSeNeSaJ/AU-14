@@ -35,13 +35,18 @@ public sealed partial class ChatMessageRow : PanelContainer
 
         HorizontalExpand = true;
         Margin = new Thickness(0, 0, 0, isBoxed ? Math.Max(metrics.OuterBottomMargin, 4) : metrics.OuterBottomMargin);
-        PanelOverride = new StyleBoxFlat
+        // The channel accent is a triangle in the top-right corner rather than a stripe down the
+        // left edge, so rows read as tagged rather than bracketed.
+        PanelOverride = new ChatAccentStyleBox
         {
             BackgroundColor = GetBackground(message),
+            AccentColor = accent,
+            AccentSize = metrics.AccentSize,
             BorderColor = accent,
-            BorderThickness = isBoxed ? new Thickness(2, 2, 2, 2) : new Thickness(2, 0, 0, 0),
-            ContentMarginLeftOverride = 4,
-            ContentMarginRightOverride = 4,
+            BorderThickness = isBoxed ? new Thickness(2, 2, 2, 2) : new Thickness(0),
+            ContentMarginLeftOverride = 6,
+            // Leave room for the corner triangle so it never sits on top of the text.
+            ContentMarginRightOverride = 4 + metrics.AccentSize,
             ContentMarginTopOverride = metrics.VerticalPadding,
             ContentMarginBottomOverride = metrics.VerticalPadding
         };
@@ -61,12 +66,13 @@ public sealed partial class ChatMessageRow : PanelContainer
         var prefix = BuildPrefix(message);
         if (prefix != null)
         {
+            // MinWidth keeps the common short tags in a tidy column, but no MaxWidth/ClipText:
+            // longer tags (ADMIN, ALERT, MENTOR) should push the message across rather than be
+            // silently chopped to "ADM"/"ALER".
             row.AddChild(new Label
             {
                 Text = prefix,
                 MinWidth = metrics.PrefixMinWidth,
-                MaxWidth = metrics.PrefixMaxWidth,
-                ClipText = true,
                 Modulate = accent,
                 FontOverride = sideFont,
                 VerticalAlignment = VAlignment.Top
@@ -193,14 +199,14 @@ public sealed partial class ChatMessageRow : PanelContainer
     private static RowMetrics GetMetrics(int? fontSize)
     {
         if (fontSize == null)
-            return new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 16);
+            return new RowMetrics(2, 4, 0, 1.06f, 42, 25, 16, 10);
 
         return fontSize.Value switch
         {
-            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 46, 20, 14),
-            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 52, 22, 15),
-            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 56, 24, 16),
-            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 58, 25, 18)
+            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 20, 14, 8),
+            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 22, 15, 9),
+            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 24, 16, 10),
+            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 25, 18, 11)
         };
     }
 
@@ -294,7 +300,7 @@ public sealed partial class ChatMessageRow : PanelContainer
         int OuterBottomMargin,
         float LineHeightScale,
         int PrefixMinWidth,
-        int PrefixMaxWidth,
         int RepeatMinWidth,
-        int FollowButtonSize);
+        int FollowButtonSize,
+        int AccentSize);
 }
