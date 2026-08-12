@@ -1,0 +1,142 @@
+using System.Numerics;
+using Content.Shared.CCVar;
+using Robust.Client.Graphics;
+using Robust.Client.UserInterface;
+using Robust.Shared.Configuration;
+using Robust.Shared.IoC;
+using Robust.Shared.Prototypes;
+
+namespace Content.Client._CMU14.Interface;
+
+/// <summary>
+///     Draws <see cref="Source"/> through the CRT shader - scanlines, crawling grain, and a roll bar
+///     that shears the image sideways as it passes.
+/// </summary>
+/// <remarks>
+///     <para>
+///     The shear is why this renders the source into a texture first rather than laying an overlay on
+///     top. An overlay can only add pixels over what is beneath it; it can never move them. Once the
+///     UI is in a texture the shader can sample it at an offset, which is what produces the tear.
+///     </para>
+///     <para>
+///     Sits <em>after</em> <see cref="Source"/> in the tree, so the source has already drawn normally
+///     by the time this runs; the shaded copy is opaque and covers it. That avoids having to suppress
+///     the source's own drawing, which the UI system offers no hook for - a parent cannot skip its
+///     children, and hiding the source would stop <c>RenderControl</c> reaching it too.
+///     </para>
+///     <para>
+///     Once the source is a texture, bloom and barrel curvature become possible in the same pass.
+///     Neither is implemented yet.
+///     </para>
+/// </remarks>
+public sealed class CrtScreenControl : Control
+{
+    private const string ShaderId = "CMUCrtTerminal";
+
+    [Dependency] private readonly IConfigurationManager _cfg = default!;
+    [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private readonly IClyde _clyde = default!;
+    [Dependency] private readonly IUserInterfaceManager _ui = default!;
+
+    private readonly ShaderInstance? _shader;
+
+    private IRenderTexture? _target;
+    private Vector2i _targetSize;
+
+    /// <summary>The subtree to draw through the shader. Must precede this control in the tree.</summary>
+    public Control? Source { get; set; }
+
+    public Color Phosphor { get; set; } = Color.FromHex("#46FF8E");
+
+
+    /// <summary>False means the shader prototype did not resolve and nothing will ever draw.</summary>
+    public bool ShaderLoaded => _shader != null;
+
+    /// <summary>Set when the render-target path threw, so the console command can report why.</summary>
+    public string? LastError { get; private set; }
+
+    public CrtScreenControl()
+    {
+        IoCManager.InjectDependencies(this);
+
+        MouseFilter = MouseFilterMode.Ignore;
+        CanKeyboardFocus = false;
+
+        if (_proto.TryIndex<ShaderPrototype>(ShaderId, out var proto))
+            _shader = proto.InstanceUnique();
+    }
+
+    // The IRenderHandle overload rather than the DrawingHandleScreen one: RenderControl needs an
+    // IRenderHandle and DrawingHandleScreen has no way back to it.
+    protected override void Draw(IRenderHandle renderHandle)
+    {
+        var handle = renderHandle.DrawingHandleScreen;
+
+        if (_shader == null || Source == null)
+            return;
+
+        var intensity = _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
+        if (intensity <= 0f)
+            return;
+
+        var size = PixelSize;
+        if (size.X <= 0 || size.Y <= 0)
+            return;
+
+        if (_target == null || _targetSize != size)
+        {
+            _target?.Dispose();
+            _target = _clyde.CreateRenderTarget(size, RenderTargetColorFormat.Rgba8Srgb, name: "cmu-crt");
+            _targetSize = size;
+        }
+
+        try
+        {
+            // Re-entrant render pass: we are inside the UI's own draw when this runs. If the engine
+            // objects to that, it will surface here rather than taking the client down.
+            handle.RenderInRenderTarget(_target,
+                () => _ui.RenderControl(renderHandle, Source, Vector2i.Zero),
+                Color.Transparent);
+        }
+        catch (Exception e)
+        {
+            LastError = e.Message;
+            return;
+        }
+
+        LastError = null;
+
+        _shader.SetParameter("pitch", _cfg.GetCVar(CCVars.CMUCrtEffectPitch));
+        _shader.SetParameter("intensity", intensity);
+        _shader.SetParameter("staticAmount", _cfg.GetCVar(CCVars.CMUCrtEffectStatic));
+        _shader.SetParameter("rollPeriod", _cfg.GetCVar(CCVars.CMUCrtEffectRollPeriod));
+        _shader.SetParameter("rollSweep", _cfg.GetCVar(CCVars.CMUCrtEffectRollSweep));
+        _shader.SetParameter("rollHeight", _cfg.GetCVar(CCVars.CMUCrtEffectRollHeight));
+        _shader.SetParameter("rollDisplace", _cfg.GetCVar(CCVars.CMUCrtEffectRollDisplace));
+        _shader.SetParameter("rollLift", _cfg.GetCVar(CCVars.CMUCrtEffectRollLift));
+        _shader.SetParameter("curvature", _cfg.GetCVar(CCVars.CMUCrtEffectCurvature));
+        _shader.SetParameter("vignette", _cfg.GetCVar(CCVars.CMUCrtEffectVignette));
+        _shader.SetParameter("aspect", size.Y > 0 ? size.X / (float) size.Y : 1f);
+        _shader.SetParameter("phosphor", Linear(Phosphor));
+
+        handle.UseShader(_shader);
+        handle.DrawTextureRect(_target.Texture, PixelSizeBox);
+        handle.UseShader(null);
+    }
+
+    /// <summary>
+    ///     Converts an sRGB colour to linear for use as a shader uniform.
+    /// </summary>
+    /// <remarks>
+    ///     <see cref="Color"/> components are sRGB. The render target is <c>Rgba8Srgb</c>, so the GPU
+    ///     encodes linear to sRGB on write - handing sRGB components straight to the shader means
+    ///     they get encoded a second time and publish far brighter than the colour chosen. Near
+    ///     blacks suffer worst: 7/255 arriving as roughly 48/255 is the difference between invisible
+    ///     and a pale band around the picture.
+    /// </remarks>
+    private static Vector3 Linear(Color srgb)
+    {
+        var linear = Color.FromSrgb(srgb);
+        return new Vector3(linear.R, linear.G, linear.B);
+    }
+}

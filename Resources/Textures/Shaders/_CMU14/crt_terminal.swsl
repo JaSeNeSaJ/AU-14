@@ -1,0 +1,68 @@
+light_mode unshaded;
+
+uniform highp float pitch;
+uniform highp float intensity;
+uniform highp float staticAmount;
+
+uniform highp float rollPeriod;
+uniform highp float rollSweep;
+uniform highp float rollHeight;
+uniform highp float rollDisplace;
+uniform highp float rollLift;
+
+uniform highp float curvature;
+uniform highp float vignette;
+uniform highp float aspect;
+
+uniform highp vec3 phosphor;
+
+const highp float TAU = 6.28318530718;
+
+void fragment() {
+    highp float lit = intensity;
+
+    // r2 in real pixel proportions, 1 at the corners. In UV alone a wide control is treated as
+    // square, so the falloff becomes an ellipse and bites unevenly on the two axes.
+    highp vec2 centred = UV * 2.0 - 1.0;
+    highp vec2 asp = vec2(aspect, 1.0);
+    highp vec2 inPixels = centred * asp;
+    highp float r2 = dot(inPixels, inPixels) / dot(asp, asp);
+
+    // Barrel. No masking and no surround: the casing is a texture whose transparent cut-out defines
+    // the screen's shape, so the shader has no business drawing an edge of its own. Everything it
+    // painted out here previously had to be colour-matched against the backdrop by hand, and never
+    // quite was. Clamping the sample instead means the corners smear the outermost backdrop pixel -
+    // a flat colour, so there is nothing to streak - and the cut-out hides them regardless.
+    highp vec2 warped = (centred * (1.0 + curvature * r2)) * 0.5 + 0.5;
+
+    // Roll bar. A Gaussian envelope eases the shear in and out; the sine inside it pushes the image
+    // one way then back, which reads as a tear rather than a clean sideways slide.
+    highp float cycle = fract(TIME / max(rollPeriod, 0.001)) * (rollPeriod / max(rollSweep, 0.001));
+    highp float bandY = cycle * (1.0 + rollHeight * 4.0) - rollHeight * 2.0;
+    highp float inSweep = step(cycle, 1.0);
+
+    highp float dist = abs(warped.y - bandY) / max(rollHeight, 0.0001);
+    highp float fall = exp(-dist * dist * 1.6) * inSweep * lit;
+    highp float shear = sin(dist * 3.1) * rollDisplace * fall;
+
+    highp vec4 base = zTexture(clamp(warped + vec2(shear, 0.0), 0.0, 1.0));
+
+    // Scanlines. Cosine, so a soft bright centre easing into a dark gap rather than a hard bar.
+    highp float phase = (FRAGCOORD.y / max(pitch, 1.0)) + TIME * 0.02;
+    highp float gap = 0.5 - 0.5 * cos(phase * TAU);
+    highp float dark = gap * 0.55 * lit;
+
+    // Grain. The lifting half is capped well below the dipping half: anything adding light on every
+    // pixel every frame becomes a permanent wash, and a wash you stare at for minutes is fatiguing.
+    highp vec2 noise = zRandom(FRAGCOORD.xy * SCREEN_PIXEL_SIZE + vec2(TIME * 11.0, TIME * 7.0));
+    highp float grain = (noise.x - 0.5) * staticAmount * 0.5 * lit;
+
+    highp float vig = 1.0 - clamp(vignette * r2 * r2, 0.0, 1.0);
+
+    highp vec3 rgb = base.rgb;
+    rgb = rgb * (1.0 - dark + max(grain, 0.0) * 0.35 - max(-grain, 0.0));
+    rgb = rgb + phosphor * fall * rollLift;
+    rgb = rgb * vig;
+
+    COLOR = vec4(rgb, 1.0);
+}
