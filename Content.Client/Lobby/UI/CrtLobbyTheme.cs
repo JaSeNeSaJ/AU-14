@@ -156,7 +156,11 @@ internal static class CrtLobbyTheme
             label.HasStyleClass(StyleNano.StyleClassCrtText) ||
             label.HasStyleClass(StyleNano.StyleClassCrtDimText) ||
             label.HasStyleClass(StyleNano.StyleClassCrtHeading) ||
-            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBig))
+            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBig) ||
+            // The lobby countdown swaps to these as it runs down, and Apply re-runs on a palette
+            // change - which could land while the countdown is amber and hand it a second font rule.
+            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBigWarning) ||
+            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBigDanger))
             return;
 
         if (label.HasStyleClass(StyleNano.StyleClassLabelHeadingBigger))
@@ -193,6 +197,8 @@ internal static class CrtLobbyTheme
         control.RemoveStyleClass(StyleNano.StyleClassCrtDimText);
         control.RemoveStyleClass(StyleNano.StyleClassCrtHeading);
         control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBig);
+        control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigWarning);
+        control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigDanger);
         control.RemoveStyleClass(StyleNano.StyleClassCrtRichText);
         control.RemoveStyleClass(StyleNano.StyleClassCrtLineEdit);
         control.RemoveStyleClass(StyleNano.StyleClassCrtItemList);

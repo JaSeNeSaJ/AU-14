@@ -76,6 +76,15 @@ public sealed partial class CCVars
         CVarDef.Create("cmu.crt_effect_vignette", 0.35f, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    ///     Runs the CRT surface texture - scanlines and grain - over ordinary menus. Separate from
+    ///     the effect's own settings because a prop terminal and a settings page want the same
+    ///     texture at very different strengths, and because this is the one that can hurt
+    ///     readability.
+    /// </summary>
+    public static readonly CVarDef<bool> CMUCrtMenuEffect =
+        CVarDef.Create("cmu.crt_menu_effect", true, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     ///     How much of the control, per side, is casing rather than glass. The tube face is inset by
     ///     this much and the barrel curve then rounds its corners, so the screen is a screen-shaped
     ///     region inside a bezel rather than a rectangle with warped contents. Zero puts the glass

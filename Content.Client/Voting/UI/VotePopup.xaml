@@ -1,7 +1,10 @@
-<Control xmlns="https://spacestation14.io" MinWidth="560" MaxWidth="1280" RectClipContent="True">
+<Control xmlns="https://spacestation14.io" MinWidth="620" MaxWidth="1280" RectClipContent="True">
     <PanelContainer Name="VotePanel" StyleClasses="CrtPanel" />
 
-    <BoxContainer Name="MainContent" Margin="10 8" Orientation="Vertical" SeparationOverride="6">
+    <!-- Margin is deliberately larger than the panel's own: the options are the widest thing in
+         here, and at 10 they sat all but touching the border. Kept in step with
+         ContentHorizontalMargin in the code-behind, which uses it to work out how many columns fit. -->
+    <BoxContainer Name="MainContent" Margin="14 12" Orientation="Vertical" SeparationOverride="8">
         <Label Name="VoteCaller" StyleClasses="CrtHeading" />
         <RichTextLabel Name="VoteTitle" StyleClasses="CrtRichText" />
         <Button Margin="0 2" Name="FollowVoteTarget" Text="{Loc 'ui-vote-follow-button-popup'}" Visible="False" />

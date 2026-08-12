@@ -13,6 +13,11 @@
                 <CheckBox Name="RunechatSpeechBubblesCheckBox" Text="{Loc 'ui-options-runechat-speech'}" />
                 <ui:OptionSlider Name="RunechatSpeechBubbleScaleSlider" Title="{Loc 'ui-options-runechat-speech-scale'}" />
 
+                <Label Text="{Loc 'cmu-ui-options-voting'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
+                <CheckBox Name="VoteUiLargeCheckBox"
+                          Text="{Loc 'cmu-ui-options-vote-ui-large'}"
+                          ToolTip="{Loc 'cmu-ui-options-vote-ui-large-tooltip'}" />
+
                 <Label Text="{Loc 'ui-options-cmu-chat'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
                 <CheckBox Name="ChatGhostFollowButton" Text="{Loc 'cmu-ui-options-chat-follow-button'}" />
                 <CheckBox Name="ExamineLogInChatCheckBox" Text="{Loc 'cmu-ui-options-examine-log-in-chat'}" />

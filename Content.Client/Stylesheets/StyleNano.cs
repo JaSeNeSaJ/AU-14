@@ -93,6 +93,7 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtWindowHeader = "CrtWindowHeader";
         public const string StyleClassCrtWindowTitle = "CrtWindowTitle";
         public const string StyleClassCrtPanel = "CrtPanel";
+        public const string StyleClassCrtPanelTicked = "CrtPanelTicked";
         public const string StyleClassCrtInsetPanel = "CrtInsetPanel";
         public const string StyleClassCrtQuietPanel = "CrtQuietPanel";
         public const string StyleClassCrtHeaderPanel = "CrtHeaderPanel";
@@ -104,6 +105,8 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtDimText = "CrtDimText";
         public const string StyleClassCrtHeading = "CrtHeading";
         public const string StyleClassCrtHeadingBig = "CrtHeadingBig";
+        public const string StyleClassCrtHeadingBigWarning = "CrtHeadingBigWarning";
+        public const string StyleClassCrtHeadingBigDanger = "CrtHeadingBigDanger";
         public const string StyleClassCrtRichText = "CrtRichText";
         public const string StyleClassCrtServerInfoText = "CrtServerInfoText";
         public const string StyleClassCrtTableCell = "CrtTableCell";
@@ -199,6 +202,17 @@ namespace Content.Client.Stylesheets
         public static Color CrtGreenDim => _crtUiEnabled ? _crtPalette.AccentDim : DefaultCrtDim;
         public static Color CrtGreenSoft => _crtUiEnabled ? _crtPalette.AccentSoft : Color.White;
         public static Color CrtGreenDisabled => _crtUiEnabled ? _crtPalette.AccentDisabled : DefaultCrtDisabled;
+        /// <summary>
+        ///     Semantic colours for the CRT theme. The palette derives all eighteen of its colours
+        ///     from a single hue, so on its own it cannot say "warning" or "danger" - a fill can only
+        ///     ever be the theme colour, brighter. These borrow the Orange and Red presets' own
+        ///     accents rather than a hand-picked hex, so they already sit at the luminance an accent
+        ///     needs against a dark phosphor background and stay legible under any preset.
+        ///     Known limit: under the Red preset, danger and accent coincide and the signal flattens.
+        /// </summary>
+        public static Color CrtWarning => _crtUiEnabled ? CrtPalette.Orange.Accent : ConcerningOrangeFore;
+        public static Color CrtDanger => _crtUiEnabled ? CrtPalette.Red.Accent : DangerousRedFore;
+
         public static readonly Color GoodGreenFore = Color.FromHex("#31843E");
         public static readonly Color ConcerningOrangeFore = Color.FromHex("#A5762F");
         public static readonly Color DangerousRedFore = Color.FromHex("#BB3232");
@@ -859,6 +873,41 @@ namespace Content.Client.Stylesheets
                 ContentMarginBottomOverride = 8
             };
 
+            // crtPanel with the corner brackets left on. The vote popup builds its panel this way and
+            // it is what makes the popup read as a piece of equipment rather than a flat card; the
+            // lobby action panel sits directly above a vote popup, so the two have to agree.
+            var crtPanelTicked = new CrtStyleBox
+            {
+                BackgroundColor = CrtPanelBackground,
+                BorderColor = CrtGreenDim,
+                CornerColor = CrtGreen.WithAlpha(0.28f),
+                ScanlineColor = CrtGreen.WithAlpha(0.016f),
+                GridColor = CrtGreen.WithAlpha(0.01f),
+                NoiseColor = CrtGreenSoft.WithAlpha(0.045f),
+                PixelationColor = CrtGreen.WithAlpha(0.035f),
+                PixelationShadowColor = CrtBackground.WithAlpha(0.16f),
+                BorderThickness = new Thickness(1),
+                DrawGrid = false,
+                DrawPixelation = true,
+                DrawCornerTicks = true,
+                CornerLength = 10,
+                PixelationBlockSize = 3,
+                PixelationSpacing = 150,
+                PixelationChance = 12,
+                PixelationClusterSize = 2,
+                PixelationSeed = 61,
+                NoiseSpacing = 10,
+                NoiseChance = 9,
+                NoiseSeed = 11,
+                // Tighter than crtPanel's 10/10/8/8. This panel is nothing but a heading and a
+                // button grid, both of which already carry their own separations, so the panel's
+                // padding was compounding rather than framing.
+                ContentMarginLeftOverride = 8,
+                ContentMarginRightOverride = 8,
+                ContentMarginTopOverride = 6,
+                ContentMarginBottomOverride = 6
+            };
+
             var crtInsetPanel = new CrtStyleBox
             {
                 BackgroundColor = CrtInsetBackground,
@@ -901,6 +950,31 @@ namespace Content.Client.Stylesheets
                 ContentMarginRightOverride = 5,
                 ContentMarginTopOverride = 4,
                 ContentMarginBottomOverride = 4
+            };
+
+            // Background for a StripeBack. Borderless on purpose: a StripeBack only ever sits inside
+            // a CrtPanel, and a bordered rectangle inside a bordered panel reads as a box in a box.
+            // The band is delimited instead by the edge lines StripeBack draws itself, which span the
+            // full width and so read as two rules rather than a frame.
+            var crtStripeBack = new CrtStyleBox
+            {
+                BackgroundColor = CrtInsetBackground,
+                ScanlineColor = CrtGreen.WithAlpha(0.014f),
+                NoiseColor = CrtGreenSoft.WithAlpha(0.04f),
+                PixelationColor = CrtGreen.WithAlpha(0.03f),
+                PixelationShadowColor = CrtPanelBackground.WithAlpha(0.14f),
+                BorderThickness = new Thickness(0),
+                DrawGrid = false,
+                DrawPixelation = true,
+                DrawCornerTicks = false,
+                PixelationBlockSize = 2,
+                PixelationSpacing = 140,
+                PixelationChance = 14,
+                PixelationClusterSize = 1,
+                PixelationSeed = 67,
+                NoiseSpacing = 11,
+                NoiseChance = 10,
+                NoiseSeed = 17
             };
 
             // One cell of the lobby round-info table. Deliberately very tight: the right-hand lobby
@@ -2944,6 +3018,10 @@ namespace Content.Client.Stylesheets
                     .Prop(PanelContainer.StylePropertyPanel, crtPanel)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                Element<PanelContainer>().Class(StyleClassCrtPanelTicked)
+                    .Prop(PanelContainer.StylePropertyPanel, crtPanelTicked)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<PanelContainer>().Class(StyleClassCrtInsetPanel)
                     .Prop(PanelContainer.StylePropertyPanel, crtInsetPanel)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
@@ -3080,6 +3158,14 @@ namespace Content.Client.Stylesheets
                     .Prop(Label.StylePropertyFont, crtHeadingBigFont)
                     .Prop(Label.StylePropertyFontColor, crtHeadingColor),
 
+                Element<Label>().Class(StyleClassCrtHeadingBigWarning)
+                    .Prop(Label.StylePropertyFont, crtHeadingBigFont)
+                    .Prop(Label.StylePropertyFontColor, CrtWarning),
+
+                Element<Label>().Class(StyleClassCrtHeadingBigDanger)
+                    .Prop(Label.StylePropertyFont, crtHeadingBigFont)
+                    .Prop(Label.StylePropertyFontColor, CrtDanger),
+
                 Element<Label>().Class(StyleClassCrtButtonLabel)
                     .Prop(Label.StylePropertyFont, crtButtonLabelFont)
                     .Prop(Label.StylePropertyFontColor, crtTextColor)
@@ -3199,7 +3285,12 @@ namespace Content.Client.Stylesheets
                     .Prop(TabContainer.StylePropertyTabFontColorInactive, crtDimTextColor),
 
                 Element<StripeBack>().Class(StyleClassCrtStripeBack)
-                    .Prop(StripeBack.StylePropertyBackground, crtInsetPanel),
+                    .Prop(StripeBack.StylePropertyBackground, crtStripeBack)
+                    // The edges are the whole point of the control - they band the strip off from
+                    // what surrounds it without boxing it in. They were previously hidden because
+                    // StripeBack's own light grey drew a stray white rule through the theme; now
+                    // that the colour is styleable they carry the separation the border used to.
+                    .Prop(StripeBack.StylePropertyEdgeColor, CrtGreenDim.WithAlpha(0.55f)),
 
                 Element<TextureButton>().Class(StyleClassCrtIconButton)
                     .Prop(Control.StylePropertyModulateSelf, crtTextColor),

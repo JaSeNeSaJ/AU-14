@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client.Stylesheets;
 using Content.Shared.CCVar;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
@@ -48,6 +49,21 @@ public sealed class CrtScreenControl : Control
 
     public Color Phosphor { get; set; } = Color.FromHex("#46FF8E");
 
+    /// <summary>
+    ///     Per-instance overrides; null falls through to the cvar. A menu wants a much quieter
+    ///     effect than a prop terminal does - no bulge, no tearing, just the surface texture - while
+    ///     still sharing the cvars that tune that texture so both move together.
+    /// </summary>
+    public float? Curvature { get; set; }
+
+    public float? Vignette { get; set; }
+
+    /// <summary>
+    ///     Whether the roll bar runs. Off for anything being read continuously: a band that shears
+    ///     the text sideways is characterful on a prop and obstructive on a settings page.
+    /// </summary>
+    public bool Roll { get; set; } = true;
+
 
     /// <summary>False means the shader prototype did not resolve and nothing will ever draw.</summary>
     public bool ShaderLoaded => _shader != null;
@@ -73,6 +89,14 @@ public sealed class CrtScreenControl : Control
         var handle = renderHandle.DrawingHandleScreen;
 
         if (_shader == null || Source == null)
+            return;
+
+        // Checked here, every frame, rather than trusted to callers. This is a CRT-theme effect and
+        // must never appear on the base UI - but each window gating it for itself means every new
+        // caller has to remember, and has to subscribe to every cvar that could change the answer.
+        // OptionsMenu did neither correctly: it watched CrtUiEnabled but only re-applied the
+        // palette, so turning the theme off left the grain running on the settings window.
+        if (!StyleNano.CrtUiEnabled)
             return;
 
         var intensity = _cfg.GetCVar(CCVars.CMUCrtEffectIntensity);
@@ -112,10 +136,14 @@ public sealed class CrtScreenControl : Control
         _shader.SetParameter("rollPeriod", _cfg.GetCVar(CCVars.CMUCrtEffectRollPeriod));
         _shader.SetParameter("rollSweep", _cfg.GetCVar(CCVars.CMUCrtEffectRollSweep));
         _shader.SetParameter("rollHeight", _cfg.GetCVar(CCVars.CMUCrtEffectRollHeight));
-        _shader.SetParameter("rollDisplace", _cfg.GetCVar(CCVars.CMUCrtEffectRollDisplace));
-        _shader.SetParameter("rollLift", _cfg.GetCVar(CCVars.CMUCrtEffectRollLift));
-        _shader.SetParameter("curvature", _cfg.GetCVar(CCVars.CMUCrtEffectCurvature));
-        _shader.SetParameter("vignette", _cfg.GetCVar(CCVars.CMUCrtEffectVignette));
+        _shader.SetParameter("rollDisplace",
+            Roll ? _cfg.GetCVar(CCVars.CMUCrtEffectRollDisplace) : 0f);
+        _shader.SetParameter("rollLift",
+            Roll ? _cfg.GetCVar(CCVars.CMUCrtEffectRollLift) : 0f);
+        _shader.SetParameter("curvature",
+            Curvature ?? _cfg.GetCVar(CCVars.CMUCrtEffectCurvature));
+        _shader.SetParameter("vignette",
+            Vignette ?? _cfg.GetCVar(CCVars.CMUCrtEffectVignette));
         _shader.SetParameter("aspect", size.Y > 0 ? size.X / (float) size.Y : 1f);
         _shader.SetParameter("phosphor", Linear(Phosphor));
 

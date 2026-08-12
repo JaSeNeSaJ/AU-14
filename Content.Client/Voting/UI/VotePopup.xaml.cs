@@ -33,11 +33,27 @@ namespace Content.Client.Voting.UI
         private const int CompactOptionMinWidth = 220;
         private const int WideOptionMinWidth = 400;
         private const int SingleOptionMinWidth = 560;
-        private const int OptionMinHeight = 30;
-        private const int TallOptionMinHeight = 44;
+        private const int OptionMinHeight = 34;
+        private const int TallOptionMinHeight = 48;
         private const int WideOptionTextLength = 24;
         private const int VeryWideOptionTextLength = 42;
         private const int TallOptionTextLength = 32;
+
+        /// <summary>
+        ///     Matches HSeparationOverride on VoteOptionsContainer. Needed here to work out how many
+        ///     columns actually fit.
+        /// </summary>
+        private const int OptionSeparation = 8;
+
+        /// <summary>
+        ///     Horizontal margin on MainContent, doubled. The options have this much less room than
+        ///     the popup itself.
+        /// </summary>
+        private const int ContentHorizontalMargin = 28;
+
+        private const float LargeUiScale = 1.35f;
+
+        private float OptionScale => _cfg.GetCVar(CCVars.CMUVoteUiLarge) ? LargeUiScale : 1f;
 
         public VotePopup(VoteManager.ActiveVote vote)
         {
@@ -49,6 +65,7 @@ namespace Content.Client.Voting.UI
             CrtLobbyTheme.Apply(this);
             _cfg.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledChanged);
             _cfg.OnValueChanged(CCVars.CrtUiColor, OnCrtUiColorChanged);
+            _cfg.OnValueChanged(CCVars.CMUVoteUiLarge, OnVoteUiLargeChanged);
 
             if (_vote.TargetEntity != null && _vote.TargetEntity != 0)
             {
@@ -88,6 +105,15 @@ namespace Content.Client.Voting.UI
             ReflowOptions(GetRawOptionTexts());
         }
 
+        protected override void Resized()
+        {
+            base.Resized();
+
+            // Column count depends on how much room we actually got, and that isn't known until the
+            // first layout pass - nor when the window or the lobby split is resized afterwards.
+            ReflowOptions(GetRawOptionTexts());
+        }
+
         [Obsolete("Controls should only be removed from UI tree instead of being disposed")]
         protected override void Dispose(bool disposing)
         {
@@ -95,6 +121,14 @@ namespace Content.Client.Voting.UI
 
             _cfg.UnsubValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledChanged);
             _cfg.UnsubValueChanged(CCVars.CrtUiColor, OnCrtUiColorChanged);
+            _cfg.UnsubValueChanged(CCVars.CMUVoteUiLarge, OnVoteUiLargeChanged);
+        }
+
+        private void OnVoteUiLargeChanged(bool _)
+        {
+            // Reset the cache or ReflowOptions decides nothing changed and returns early.
+            _optionColumns = -1;
+            ReflowOptions(GetRawOptionTexts());
         }
 
         private void OnCrtUiEnabledChanged(bool _)
@@ -192,10 +226,11 @@ namespace Content.Client.Voting.UI
             if (texts.Length == 0)
                 return;
 
+            var scale = OptionScale;
             var longest = GetLongestTextLine(texts);
-            var columns = GetOptionColumns(texts.Length, longest);
-            var minWidth = GetOptionMinWidth(columns, longest);
-            var minHeight = longest > TallOptionTextLength ? TallOptionMinHeight : OptionMinHeight;
+            var columns = GetOptionColumns(texts.Length, longest, scale);
+            var minWidth = (int) (GetOptionMinWidth(columns, longest) * scale);
+            var minHeight = (int) ((longest > TallOptionTextLength ? TallOptionMinHeight : OptionMinHeight) * scale);
 
             if (_optionColumns == columns &&
                 _optionMinWidth == minWidth &&
@@ -219,21 +254,31 @@ namespace Content.Client.Voting.UI
             }
         }
 
-        private static int GetOptionColumns(int optionCount, int longestText)
+        private int GetOptionColumns(int optionCount, int longestText, float scale)
         {
-            if (optionCount <= 0)
-                return 1;
-
             if (optionCount <= 1)
                 return 1;
 
-            if (longestText > VeryWideOptionTextLength)
-                return 1;
+            var preferred = longestText switch
+            {
+                > VeryWideOptionTextLength => 1,
+                > WideOptionTextLength => 2,
+                _ => Math.Min(3, optionCount),
+            };
 
-            if (longestText > WideOptionTextLength)
-                return 2;
+            // Clamp against the width actually available. Picking a column count purely from text
+            // length is what let the options run past the panel: the popup sets RectClipContent, so
+            // a column that doesn't fit is a button with its label sliced off rather than a row that
+            // wraps. Width is zero until the first layout pass, so fall back to the preference then
+            // and let Resized correct it.
+            var available = Width - ContentHorizontalMargin;
+            if (available <= 0)
+                return preferred;
 
-            return Math.Min(3, optionCount);
+            var columnWidth = CompactOptionMinWidth * scale + OptionSeparation;
+            var fits = (int) ((available + OptionSeparation) / columnWidth);
+
+            return Math.Clamp(fits, 1, preferred);
         }
 
         private static int GetOptionMinWidth(int columns, int longestText)

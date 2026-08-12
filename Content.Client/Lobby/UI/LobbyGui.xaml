@@ -1,14 +1,14 @@
 <lobbyUi:LobbyGui
     xmlns="https://spacestation14.io"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:maths="clr-namespace:Robust.Shared.Maths;assembly=Robust.Shared.Maths"
     xmlns:cc="clr-namespace:Content.Client.Administration.UI.CustomControls"
     xmlns:controls="clr-namespace:Content.Client.UserInterface.Controls"
     xmlns:vote="clr-namespace:Content.Client.Voting.UI"
     xmlns:style="clr-namespace:Content.Client.Stylesheets"
     xmlns:lobbyUi="clr-namespace:Content.Client.Lobby.UI"
     xmlns:info="clr-namespace:Content.Client.Info"
-    xmlns:widgets="clr-namespace:Content.Client.UserInterface.Systems.Chat.Widgets">
+    xmlns:widgets="clr-namespace:Content.Client.UserInterface.Systems.Chat.Widgets"
+    xmlns:cmu="clr-namespace:Content.Client._CMU14.Interface">
     <!-- Background -->
     <TextureRect Access="Public" VerticalExpand="True" HorizontalExpand="True" Name="Background"
                  Stretch="KeepAspectCovered" />
@@ -20,37 +20,51 @@
                 <Control Name="DefaultState" VerticalExpand="True">
                     <BoxContainer Name="TopLeft" Orientation="Vertical">
                         <!-- Left Top Panel -->
-                        <PanelContainer StyleClasses="CrtPanel" HorizontalAlignment="Left" Name="LeftSideTop"
+                        <!-- Ticked panel so this reads as the same piece of equipment as a VotePopup.
+                             It no longer matches the popup's 620 width: with the factions behind
+                             JoinRoundWindow there are only four buttons left, and stretching them to
+                             a vote popup's width would put back the empty space that move removed. -->
+                        <PanelContainer StyleClasses="CrtPanelTicked" HorizontalAlignment="Left" Name="LeftSideTop"
                                         VerticalAlignment="Top">
-                            <BoxContainer Orientation="Vertical" HorizontalAlignment="Center" MaxWidth="800">
-                                <info:LinkBanner Name="LinkBanner" VerticalExpand="false" HorizontalAlignment="Center"
-                                                 Margin="3 3 3 3" />
-                                <controls:StripeBack>
-                                    <BoxContainer Orientation="Horizontal" SeparationOverride="6" Margin="3 3 3 3">
-                                        <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public"
-                                                            Text="{Loc 'ui-lobby-observe-button'}"
-                                                            StyleClasses="ButtonBig"
-                                                            WindowType="{x:Type lobbyUi:ObserveWarningWindow}" />
-                                        <Label Name="StartTime"
-                                               Access="Public"
-                                               Align="Left"
-                                               FontColorOverride="{x:Static maths:Color.DarkGray}"
-                                               StyleClasses="LabelBig" HorizontalExpand="True" />
-                                        <!-- RMC14/AU -->
-                                        <Button Name="JoinGovforButton" Access="Public"
-                                                Text="{Loc 'rmc-lobby-join-govfor'}"
-                                                StyleClasses="ButtonBig" MinWidth="137" Visible="False" />
-                                        <Button Name="JoinOpforButton" Access="Public"
-                                                Text="{Loc 'rmc-lobby-join-opfor'}"
-                                                StyleClasses="ButtonBig" MinWidth="137" Visible="False" />
-                                        <Button Name="JoinOtherButton" Access="Public"
-                                                Text="{Loc 'rmc-lobby-join-other'}"
-                                                StyleClasses="ButtonBig" MinWidth="137" Visible="False" />
-                                        <Button Name="ReadyButton" Access="Public" ToggleMode="True"
-                                                Text="{Loc 'ui-lobby-ready-up-button'}"
-                                                StyleClasses="ButtonBig" MinWidth="137" />
-                                    </BoxContainer>
-                                </controls:StripeBack>
+                            <BoxContainer Orientation="Vertical" SeparationOverride="5" MinWidth="380" MaxWidth="1040">
+                                <!-- The countdown is a heading, not a spacer. It used to sit between
+                                     Observe and Ready with HorizontalExpand, so whenever it had no
+                                     text it was a hole that grew to fill the row - and it stranded
+                                     Observe at one end looking undersized. LobbyState swaps the style
+                                     class as the clock runs down, so this one is the starting state.
+                                     The two lines are one block: they belong closer to each other
+                                     than the block does to the buttons. -->
+                                <BoxContainer Orientation="Vertical" SeparationOverride="1">
+                                    <Label Name="StartTime" Access="Public" Align="Left"
+                                           StyleClasses="CrtHeadingBig" />
+                                    <Label Name="LobbyStatusLine" Access="Public" Align="Left"
+                                           StyleClasses="CrtDimText" Visible="False" />
+                                </BoxContainer>
+
+                                <!-- Two buttons wide, and only ever two on this row: ReadyButton
+                                     pre-round, JoinRoundButton once the round is running. The four
+                                     faction choices moved into JoinRoundWindow - they are one
+                                     decision taken once, not something worth four permanent slots. -->
+                                <GridContainer Name="ActionButtons" Columns="2" HorizontalExpand="True"
+                                               HSeparationOverride="6" VSeparationOverride="4">
+                                    <Button Name="ReadyButton" Access="Public" ToggleMode="True"
+                                            Text="{Loc 'ui-lobby-ready-up-button'}"
+                                            StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True" />
+                                    <!-- RMC14/AU -->
+                                    <Button Name="JoinRoundButton" Access="Public"
+                                            Text="{Loc 'cmu-lobby-join-round'}"
+                                            StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True"
+                                            Visible="False" />
+                                    <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public"
+                                                        Text="{Loc 'ui-lobby-observe-button'}"
+                                                        StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True"
+                                                        WindowType="{x:Type lobbyUi:ObserveWarningWindow}" />
+                                </GridContainer>
+
+                                <!-- Reference links share the action grid's metrics but sit under a
+                                     rule, so Rules doesn't read as another faction choice. -->
+                                <PanelContainer StyleClasses="CrtDivider" />
+                                <info:LinkBanner Name="LinkBanner" VerticalExpand="false" HorizontalExpand="True" />
                                 <RichTextLabel Name="PlaytimeComment" Visible="False" Access="Public" HorizontalAlignment="Center" />
                             </BoxContainer>
                         </PanelContainer>
@@ -101,10 +115,26 @@
                                        Scale="0.5 0.5" />
                     </BoxContainer>
                     <controls:HSpacer Spacing="4" />
-                    <!-- Server info: heading and intro text share the top row -->
-                    <info:ServerInfo Name="ServerInfo" Access="Public" VerticalExpand="false"
-                           Title="{Loc 'ui-lobby-server-info-block'}"
-                           Margin="3 0 3 3" HorizontalExpand="True" />
+                    <!-- Server info: heading and intro text share the top row.
+                         Wrapped for the CRT effect. The margin moved onto the wrapper so ServerInfo
+                         fills it exactly - the render target captures the subtree at its origin, so
+                         any offset between source and overlay shows up as the shaded copy sitting a
+                         few pixels off its original.
+                         ServerInfoBacking exists because ServerInfo is a BoxContainer with no
+                         background: the shader writes opaque, so without something solid underneath
+                         it the transparent gaps between cells would come back as black. It is the
+                         panel colour, so it is invisible against the CrtPanel behind it. -->
+                    <Control Name="ServerInfoScreen" HorizontalExpand="True" Margin="3 0 3 3">
+                        <Control Name="ServerInfoContent" HorizontalExpand="True">
+                            <PanelContainer Name="ServerInfoBacking" HorizontalExpand="True"
+                                            VerticalExpand="True" />
+                            <info:ServerInfo Name="ServerInfo" Access="Public" VerticalExpand="false"
+                                   Title="{Loc 'ui-lobby-server-info-block'}"
+                                   HorizontalExpand="True" />
+                        </Control>
+                        <cmu:CrtScreenControl Name="ServerInfoCrt" HorizontalExpand="True"
+                                              VerticalExpand="True" />
+                    </Control>
                     <controls:HSpacer Spacing="5" />
                     <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public" />
                     <controls:HSpacer Spacing="5" />

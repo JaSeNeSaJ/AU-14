@@ -1,19 +1,28 @@
 <DefaultWindow xmlns="https://spacestation14.io"
             xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
             xmlns:options="clr-namespace:Content.Client._RMC14.UserInterface.Options"
+            xmlns:cmu="clr-namespace:Content.Client._CMU14.Interface"
             Title="{Loc 'ui-options-title'}"
             MinSize="800 450">
-    <!-- No CrtPanel wrapper. The window frame is one border and the TabContainer draws its own
-         panel under the tab strip; a panel between them was a third concentric rectangle that added
-         nothing but a rule and 10px of inset. -->
-    <TabContainer Name="Tabs" Access="Public" StyleClasses="CrtTabContainer" VerticalExpand="True" HorizontalExpand="True">
-        <tabs:MiscTab Name="MiscTab" />
-        <tabs:GraphicsTab Name="GraphicsTab" />
-        <tabs:KeyRebindTab Name="KeyRebindTab" />
-        <tabs:AudioTab Name="AudioTab" />
-        <options:VoicelinesTab Name="VoicelinesTab" />
-        <tabs:AccessibilityTab Name="AccessibilityTab" />
-        <tabs:CmuTab Name="CmuTab" />
-        <tabs:AdminOptionsTab Name="AdminOptionsTab" />
-    </TabContainer>
+    <!-- CrtContent holds everything the shader re-draws; CrtOverlay is its sibling and draws after
+         it, so the shaded copy covers the original. See CrtScreenControl for why it has to be a
+         sibling rather than a parent. -->
+    <Control>
+        <Control Name="CrtContent" HorizontalExpand="True" VerticalExpand="True">
+            <!-- No CrtPanel wrapper. The window frame is one border and the TabContainer draws its own
+                 panel under the tab strip; a panel between them was a third concentric rectangle that added
+                 nothing but a rule and 10px of inset. -->
+            <TabContainer Name="Tabs" Access="Public" StyleClasses="CrtTabContainer" VerticalExpand="True" HorizontalExpand="True">
+                <tabs:MiscTab Name="MiscTab" />
+                <tabs:GraphicsTab Name="GraphicsTab" />
+                <tabs:KeyRebindTab Name="KeyRebindTab" />
+                <tabs:AudioTab Name="AudioTab" />
+                <options:VoicelinesTab Name="VoicelinesTab" />
+                <tabs:AccessibilityTab Name="AccessibilityTab" />
+                <tabs:CmuTab Name="CmuTab" />
+                <tabs:AdminOptionsTab Name="AdminOptionsTab" />
+            </TabContainer>
+        </Control>
+        <cmu:CrtScreenControl Name="CrtOverlay" HorizontalExpand="True" VerticalExpand="True" />
+    </Control>
 </DefaultWindow>
