@@ -9,9 +9,11 @@
                  shortens it, which is what made the opacity group look ragged. -->
             <Label Name="NameLabel" HorizontalExpand="True" MinWidth="160" VerticalAlignment="Center" />
             <Slider Name="Slider" Access="Public" MinWidth="300" />
-            <!-- Butted straight against the track with no margin, so its frame continues the
-                 slider's rather than floating beside it. -->
-            <PanelContainer StyleClasses="CrtSliderValue">
+            <!-- Named so code-behind can swap it to the base/NanoUI box (see the constructor):
+                 butted straight against the track with no margin and no left border, its frame
+                 continues the slider's own - a treatment that only reads correctly on the CRT
+                 slider, which draws a matching frame around its track for it to continue. -->
+            <PanelContainer Name="ValuePanel" StyleClasses="CrtSliderValue">
                 <Label Name="ValueLabel" Access="Public" MinWidth="42" Align="Right" VerticalAlignment="Center" />
             </PanelContainer>
         </BoxContainer>

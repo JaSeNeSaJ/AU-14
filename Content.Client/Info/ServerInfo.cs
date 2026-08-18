@@ -39,10 +39,13 @@ namespace Content.Client.Info
                 VerticalAlignment = VAlignment.Center,
             };
 
-            AddChild(new PanelContainer
+            // The rule under this row is a CRT-genre convention - the rich-text markup used
+            // elsewhere has no underline tag, so CRT draws the separator as a border instead. NanoUI
+            // has no such convention and no matching visual language for it, so the row stays a
+            // plain, unstyled grouping box in base mode rather than carrying a CRT-only decoration.
+            var titleRow = new PanelContainer
             {
                 HorizontalExpand = true,
-                StyleClasses = { StyleNano.StyleClassCrtUnderlineRow },
                 Children =
                 {
                     new BoxContainer
@@ -53,7 +56,12 @@ namespace Content.Client.Info
                         Children = { _title, _welcomeHeading },
                     },
                 },
-            });
+            };
+
+            if (StyleNano.CrtUiEnabled)
+                titleRow.AddStyleClass(StyleNano.StyleClassCrtUnderlineRow);
+
+            AddChild(titleRow);
 
             // Round info is a real grid rather than pre-formatted text so the columns stay aligned
             // at any panel width and however long a ship or platoon name gets.
@@ -71,7 +79,7 @@ namespace Content.Client.Info
             {
                 HorizontalExpand = true,
                 Align = Label.AlignMode.Center,
-                StyleClasses = { StyleNano.StyleClassCrtText },
+                StyleClasses = { StyleNano.StyleClassCrtTableCellText },
             };
             _roundTimeCell = MakeCell(Loc.GetString("lobby-info-round-time"), RoundTimeLabel);
 
@@ -152,7 +160,7 @@ namespace Content.Client.Info
                     Text = field.Value,
                     HorizontalExpand = true,
                     Align = Label.AlignMode.Center,
-                    StyleClasses = { StyleNano.StyleClassCrtText },
+                    StyleClasses = { StyleNano.StyleClassCrtTableCellText },
                 };
 
                 if (field.Color != null && Color.TryFromHex(field.Color) is { } color)
@@ -175,7 +183,7 @@ namespace Content.Client.Info
                 Text = headingText,
                 HorizontalExpand = true,
                 Align = Label.AlignMode.Center,
-                StyleClasses = { StyleNano.StyleClassCrtText },
+                StyleClasses = { StyleNano.StyleClassCrtTableCellText },
             };
 
             return new PanelContainer

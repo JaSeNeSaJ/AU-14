@@ -74,10 +74,15 @@ namespace Content.Client.Lobby.UI
         /// </summary>
         private void SetUpServerInfoCrt()
         {
-            ServerInfoBacking.PanelOverride = new StyleBoxFlat
-            {
-                BackgroundColor = StyleNano.CrtPanelBackground
-            };
+            // A style class, not a hand-set PanelOverride: a class-based rule re-resolves every
+            // time the stylesheet rebuilds, where reading StyleNano.CrtPanelBackground once and
+            // storing the result is a snapshot that only ever reflects the state at the moment this
+            // method happened to run. That snapshot is what let a base-mode client show the
+            // CRT-enabled colour here - this method's first call landed before StylesheetManager had
+            // corrected _crtUiEnabled from the class's compile-time default of true. Applying the
+            // class once, here, is enough - see StyleClassCrtPanelFill.
+            if (!ServerInfoBacking.HasStyleClass(StyleNano.StyleClassCrtPanelFill))
+                ServerInfoBacking.AddStyleClass(StyleNano.StyleClassCrtPanelFill);
 
             ServerInfoCrt.Source = ServerInfoContent;
             ServerInfoCrt.Phosphor = StyleNano.CrtGreen;

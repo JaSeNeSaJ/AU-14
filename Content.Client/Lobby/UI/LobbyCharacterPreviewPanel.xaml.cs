@@ -40,6 +40,26 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
         // that rule on specificity.
         if (StyleNano.CrtUiEnabled)
             IgnoreAllegianceButton.Label.FontOverride = StyleNano.GetCrtFont(_resourceCache, 10);
+
+        // Base menu only: toggled on turns the button solid red. The default Pressed state for a
+        // plain Button is a thin highlighted border, easy to miss at a glance for something that
+        // changes spawn behaviour. The CRT theme already themes every button consistently through
+        // CrtButton, so this is left alone there.
+        if (!StyleNano.CrtUiEnabled)
+            IgnoreAllegianceButton.AddStyleClass(StyleNano.StyleClassButtonToggleRed);
+
+        // Colour alone is never a safe state indicator - readable differently depending on vision,
+        // and on the CRT theme specifically the accent is player-configurable, so "red" can't be
+        // assumed to contrast with it. The label states on/off directly instead.
+        UpdateIgnoreAllegianceText(IgnoreAllegianceButton.Pressed);
+        IgnoreAllegianceButton.OnToggled += args => UpdateIgnoreAllegianceText(args.Pressed);
+    }
+
+    private void UpdateIgnoreAllegianceText(bool pressed)
+    {
+        IgnoreAllegianceButton.Text = Loc.GetString(pressed
+            ? "lobby-character-preview-ignore-allegiance-on"
+            : "lobby-character-preview-ignore-allegiance-off");
     }
 
     public void SetLoaded(bool value)

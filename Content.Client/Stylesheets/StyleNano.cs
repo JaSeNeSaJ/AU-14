@@ -93,6 +93,19 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtWindowHeader = "CrtWindowHeader";
         public const string StyleClassCrtWindowTitle = "CrtWindowTitle";
         public const string StyleClassCrtPanel = "CrtPanel";
+
+        /// <summary>
+        ///     A plain, borderless flat fill in <see cref="CrtPanelBackground"/> - no corner ticks,
+        ///     no padding, none of CrtStyleBox's other trimmings. For backing a control that has no
+        ///     background of its own (so it doesn't show black through its gaps) and needs to stay
+        ///     invisible against a CrtPanel behind it. A style class rather than a hand-set
+        ///     StyleBoxFlat: reading CrtPanelBackground once and storing the result is a snapshot
+        ///     that never updates when the stylesheet later rebuilds, whereas a class-based rule
+        ///     re-resolves every time. That distinction is why ServerInfoBacking, built the
+        ///     snapshot way, briefly carried the CRT-enabled colour on a base-mode client - the
+        ///     value it read had not yet been corrected from the class default when it ran.
+        /// </summary>
+        public const string StyleClassCrtPanelFill = "CrtPanelFill";
         public const string StyleClassCrtPanelTicked = "CrtPanelTicked";
         public const string StyleClassCrtInsetPanel = "CrtInsetPanel";
         public const string StyleClassCrtQuietPanel = "CrtQuietPanel";
@@ -122,6 +135,27 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtSectionHeader = "CrtSectionHeader";
         public const string StyleClassCrtSliderValue = "CrtSliderValue";
         public const string StyleClassCrtOptionRow = "CrtOptionRow";
+
+        /// <summary>
+        ///     Base/NanoUI variant of <see cref="StyleClassCrtSliderValue"/> - see the stylebox
+        ///     comment where it is built for why the two cannot share one class.
+        /// </summary>
+        public const string StyleClassNanoSliderValue = "NanoSliderValue";
+
+        /// <summary>
+        ///     Text inside a round-info table cell (<see cref="StyleClassCrtTableCell"/>). Its own
+        ///     class rather than reusing <see cref="StyleClassCrtText"/> so the base-mode font can be
+        ///     sized down for this one dense table without shrinking every other CrtText label in the
+        ///     base UI.
+        /// </summary>
+        public const string StyleClassCrtTableCellText = "CrtTableCellText";
+
+        /// <summary>
+        ///     Turns a toggled <c>Button</c> solid red on the base theme. The CRT theme already
+        ///     themes every button consistently through <see cref="StyleClassCrtButton"/>, so this
+        ///     is applied only when that theme is off - see call sites.
+        /// </summary>
+        public const string StyleClassButtonToggleRed = "ButtonToggleRed";
 
         /// <summary>
         ///     The CRT font stack, with Noto fallbacks for glyphs the OSD font lacks.
@@ -554,6 +588,7 @@ namespace Content.Client.Stylesheets
             var notoSansItalic10 = resCache.NotoStack(variation: "Italic", size: 10);
             var notoSans12 = resCache.NotoStack(size: 12);
             var notoSansItalic12 = resCache.NotoStack(variation: "Italic", size: 12);
+            var notoSansBold11 = resCache.NotoStack(variation: "Bold", size: 11);
             var notoSansBold12 = resCache.NotoStack(variation: "Bold", size: 12);
             var notoSansBoldItalic12 = resCache.NotoStack(variation: "BoldItalic", size: 12);
             var notoSansBoldItalic14 = resCache.NotoStack(variation: "BoldItalic", size: 14);
@@ -613,6 +648,11 @@ namespace Content.Client.Stylesheets
             var robotoMonoBold14 = resCache.GetFont(robotoMonoBoldStack, size: 14);
             var useCrtUi = CrtUiEnabled;
             var crtTextFont = useCrtUi ? uavOsdBold14 : notoSans12;
+            // The round-info table (GOVFOR SHIP, PLANET, ...) reported too big in base mode at the
+            // shared 12px CrtText size, then too thin once dropped to plain 10px regular - a
+            // dense, all-caps-heading table wants weight, not just a smaller size. Bold 11px is the
+            // middle ground. CRT keeps its own shared size untouched either way.
+            var crtTableCellFont = useCrtUi ? crtTextFont : notoSansBold11;
             var crtDimFont = useCrtUi ? uavOsd13 : notoSans10;
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
@@ -873,6 +913,14 @@ namespace Content.Client.Stylesheets
                 ContentMarginBottomOverride = 8
             };
 
+            // See StyleClassCrtPanelFill: a plain fill in the same colour crtPanel uses, with none
+            // of its border/corner/texture trimmings, for backing a control that must stay invisible
+            // against a CrtPanel behind it.
+            var crtPanelFill = new StyleBoxFlat
+            {
+                BackgroundColor = CrtPanelBackground,
+            };
+
             // crtPanel with the corner brackets left on. The vote popup builds its panel this way and
             // it is what makes the popup read as a piece of equipment rather than a flat card; the
             // lobby action panel sits directly above a vote popup, so the two have to agree.
@@ -1073,6 +1121,23 @@ namespace Content.Client.Stylesheets
                 BackgroundColor = CrtBackground,
                 BorderColor = CrtGreenDim,
                 BorderThickness = new Thickness(0, 2, 2, 2),
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 2,
+                ContentMarginBottomOverride = 2,
+            };
+
+            // Base/NanoUI variant. The box above is deliberately borderless on the left and flush
+            // against the slider so it reads as a continuation of the frame the CRT slider draws
+            // around its own track - that reasoning only holds because the CRT slider has such a
+            // frame to continue. NanoUI's slider draws no matching edge, so the same box read as a
+            // fragment with a missing left side and no gap from the track. A full border plus real
+            // separation (added as a margin at the call site) fixes both without touching the CRT box.
+            var nanoSliderValue = new StyleBoxFlat
+            {
+                BackgroundColor = CrtBackground,
+                BorderColor = CrtGreenDim,
+                BorderThickness = new Thickness(1),
                 ContentMarginLeftOverride = 6,
                 ContentMarginRightOverride = 6,
                 ContentMarginTopOverride = 2,
@@ -2945,6 +3010,11 @@ namespace Content.Client.Stylesheets
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorHoveredRed),
                 // ---
 
+                // Toggle Red (base theme only - see StyleClassButtonToggleRed) ---
+                Element<Button>().Class(StyleClassButtonToggleRed).Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(Control.StylePropertyModulateSelf, CrtDanger),
+                // ---
+
                 // Green Button ---
                 Element<Button>().Class("ButtonColorGreen")
                     .Prop(Control.StylePropertyModulateSelf, ButtonColorGoodDefault),
@@ -3018,6 +3088,10 @@ namespace Content.Client.Stylesheets
                     .Prop(PanelContainer.StylePropertyPanel, crtPanel)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                Element<PanelContainer>().Class(StyleClassCrtPanelFill)
+                    .Prop(PanelContainer.StylePropertyPanel, crtPanelFill)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<PanelContainer>().Class(StyleClassCrtPanelTicked)
                     .Prop(PanelContainer.StylePropertyPanel, crtPanelTicked)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
@@ -3068,6 +3142,10 @@ namespace Content.Client.Stylesheets
 
                 Element<PanelContainer>().Class(StyleClassCrtSliderValue)
                     .Prop(PanelContainer.StylePropertyPanel, crtSliderValue)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassNanoSliderValue)
+                    .Prop(PanelContainer.StylePropertyPanel, nanoSliderValue)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
                 Element<PanelContainer>().Class(StyleClassCrtOptionRow)
@@ -3144,6 +3222,10 @@ namespace Content.Client.Stylesheets
 
                 Element<Label>().Class(StyleClassCrtText)
                     .Prop(Label.StylePropertyFont, crtTextFont)
+                    .Prop(Label.StylePropertyFontColor, crtTextColor),
+
+                Element<Label>().Class(StyleClassCrtTableCellText)
+                    .Prop(Label.StylePropertyFont, crtTableCellFont)
                     .Prop(Label.StylePropertyFontColor, crtTextColor),
 
                 Element<Label>().Class(StyleClassCrtDimText)
