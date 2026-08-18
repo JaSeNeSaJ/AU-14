@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Linq;
 using Content.Client._RMC14.Chat;
 using Content.Client.Stylesheets;
@@ -634,6 +634,13 @@ public partial class ChatBox : UIWidget
         {
             button.Text = GetTabButtonText(tabId);
             button.Pressed = tabId == _activeTabId;
+
+            // Mirror the active flag onto a style class. Pressed alone does not raise the pressed
+            // pseudo-class outside toggle mode, so the stylesheet could not see which tab was active.
+            if (button.Pressed)
+                button.AddStyleClass(StyleNano.StyleClassCrtChatTabSelected);
+            else
+                button.RemoveStyleClass(StyleNano.StyleClassCrtChatTabSelected);
             button.Modulate = tabId == _activeTabId
                 ? Color.FromHex("#9fd0b3")
                 : Color.FromHex("#737987");

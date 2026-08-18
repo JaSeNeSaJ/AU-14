@@ -1,4 +1,4 @@
-using Robust.Shared.Configuration;
+﻿using Robust.Shared.Configuration;
 
 namespace Content.Shared.CCVar;
 
@@ -17,6 +17,28 @@ public sealed partial class CCVars
     ///     <c>cmu_crt</c> test window, which exists to tune the look in isolation before it is
     ///     applied to any real surface.
     /// </summary>
+    /// <summary>
+    ///     Playtime in minutes below which the guidebook opens itself in the lobby, or 0 to never do
+    ///     it. Was a hardcoded 60, which means every fresh client - including a second test client on
+    ///     the same machine - opens with the guidebook covering the middle of the screen.
+    /// </summary>
+    public static readonly CVarDef<int> CMUGuidebookAutoOpenPlaytime =
+        CVarDef.Create("cmu.guidebook_auto_open_minutes", 60, CVar.CLIENTONLY);
+
+    /// <summary>
+    ///     Seconds between automatic screenshots, or 0 for off. A development aid: the client's
+    ///     console cannot be written to from outside the process, so a screenshot command alone still
+    ///     needs a person to type it. This can be set from the launch line
+    ///     (<c>--cvar cmu.screenshot_interval=5</c>), which closes the loop for anyone iterating on UI
+    ///     without being able to see the screen.
+    /// </summary>
+    /// <remarks>
+    ///     Deliberately not ARCHIVE: an archived value would persist into a player's config and keep
+    ///     writing files forever, and a changed default would never reach anyone who already has one.
+    /// </remarks>
+    public static readonly CVarDef<float> CMUScreenshotInterval =
+        CVarDef.Create("cmu.screenshot_interval", 0f, CVar.CLIENTONLY);
+
     public static readonly CVarDef<float> CMUCrtEffectIntensity =
         CVarDef.Create("cmu.crt_effect_intensity", 0.5f, CVar.CLIENTONLY | CVar.ARCHIVE);
 

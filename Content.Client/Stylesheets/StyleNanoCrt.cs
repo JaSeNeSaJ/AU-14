@@ -91,6 +91,14 @@ namespace Content.Client.Stylesheets
         ///     instead - Surface1 resting, Surface3 selected.
         /// </summary>
         public const string StyleClassCrtChatTab = "CrtChatTab";
+
+        /// <summary>
+        ///     The active channel tab. A real style class rather than the pressed pseudo-class: the
+        ///     tab bar marks its active tab with the <c>Pressed</c> property, which only raises that
+        ///     pseudo-class in toggle mode - so the selected tab rendered as resting while a merely
+        ///     hovered one lifted, making the active channel the darkest tab in the bar.
+        /// </summary>
+        public const string StyleClassCrtChatTabSelected = "CrtChatTabSelected";
         public const string StyleClassCrtChatInput = "CrtChatInput";
         public const string StyleClassCrtChatScrollBar = "CrtChatScrollBar";
         public const string StyleClassCrtChatPopup = "CrtChatPopup";
@@ -919,7 +927,7 @@ namespace Content.Client.Stylesheets
 
             var crtChatScrollGrabber = new StyleBoxFlat
             {
-                BackgroundColor = CrtTerminalPalette.Surface3,
+                BackgroundColor = CrtTerminalPalette.Surface2,
                 BorderColor = Color.Transparent,
                 BorderThickness = new Thickness(1),
                 // These margins are what set the bar's width - ScrollBar.MeasureOverride returns the
@@ -982,9 +990,13 @@ namespace Content.Client.Stylesheets
             // separation the outlines left on the chrome became the loudest thing on the screen. The
             // states are carried entirely by fill now - which they already were, the border was
             // never the thing distinguishing hover from pressed.
+            // On the surface ladder, not the old CrtPalette button family. Those two are different
+            // greens, so a button sitting on a ladder surface read as a foreign box laid on top -
+            // which is what made a plain filled chip look like it had a border round it. States are
+            // the ladder's own steps, so a button is simply a surface one level up from its ground.
             var crtButton = new CrtStyleBox
             {
-                BackgroundColor = CrtButtonBackground,
+                BackgroundColor = CrtTerminalPalette.Surface2,
                 BorderThickness = new Thickness(0),
                 DrawCornerTicks = false,
                 ContentMarginLeftOverride = 12,
@@ -995,30 +1007,30 @@ namespace Content.Client.Stylesheets
 
             var crtButtonHover = new CrtStyleBox(crtButton)
             {
-                BackgroundColor = CrtButtonHoverBackground,
+                BackgroundColor = CrtTerminalPalette.Surface3,
             };
 
             var crtButtonPressed = new CrtStyleBox(crtButton)
             {
-                BackgroundColor = CrtButtonPressedBackground,};
+                BackgroundColor = CrtTerminalPalette.Surface4,};
 
             var crtButtonDisabled = new CrtStyleBox(crtButton)
             {
-                BackgroundColor = CrtButtonDisabledBackground,
+                BackgroundColor = CrtTerminalPalette.Surface1,
             };
 
             var crtAttentionButton = new CrtStyleBox(crtButton)
             {
-                BackgroundColor = CrtButtonHoverBackground,
+                BackgroundColor = CrtTerminalPalette.Surface3,
             };
 
             var crtAttentionButtonHover = new CrtStyleBox(crtAttentionButton)
             {
-                BackgroundColor = CrtButtonPressedBackground,};
+                BackgroundColor = CrtTerminalPalette.Surface4,};
 
             var crtAttentionButtonPressed = new CrtStyleBox(crtAttentionButton)
             {
-                BackgroundColor = CrtButtonPressedBackground,};
+                BackgroundColor = CrtTerminalPalette.Surface4,};
 
             var crtLineEdit = new CrtStyleBox
             {
@@ -1273,8 +1285,7 @@ namespace Content.Client.Stylesheets
                     .Pseudo(ContainerButton.StylePseudoClassHover)
                     .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabHover),
 
-                Element<ContainerButton>().Class(StyleClassCrtChatTab)
-                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                Element<ContainerButton>().Class(StyleClassCrtChatTabSelected)
                     .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected),
 
                 Element<PanelContainer>().Class(StyleClassCrtChatPanel)
