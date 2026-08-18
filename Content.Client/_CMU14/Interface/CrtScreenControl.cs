@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 using Content.Client.Stylesheets;
 using Content.Shared.CCVar;
 using Robust.Client.Graphics;
@@ -33,6 +33,7 @@ namespace Content.Client._CMU14.Interface;
 public sealed class CrtScreenControl : Control
 {
     private const string ShaderId = "CMUCrtTerminal";
+
 
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
@@ -130,8 +131,18 @@ public sealed class CrtScreenControl : Control
 
         LastError = null;
 
-        _shader.SetParameter("pitch", _cfg.GetCVar(CCVars.CMUCrtEffectPitch));
+        // Authored values, used as authored. An earlier version of this scaled the amplitudes down by
+        // control size, on the theory that defaults tuned on a 1000x800 mock must be too strong for a
+        // small panel. That was wrong twice over: it made the effect nearly invisible on the surface
+        // it was meant to fix, and capping the roll bar's shear to a few pixels turned one coherent
+        // tear into per-glyph speckle, which reads as corrupted text rather than as a CRT. The roll
+        // bar is supposed to displace text by several characters - that is what makes it a roll bar.
+        //
+        // Surfaces that genuinely want a quieter effect say so through the per-instance properties
+        // below, which is a caller stating an intent rather than this control guessing one from a
+        // rectangle.
         _shader.SetParameter("intensity", intensity);
+        _shader.SetParameter("pitch", _cfg.GetCVar(CCVars.CMUCrtEffectPitch));
         _shader.SetParameter("staticAmount", _cfg.GetCVar(CCVars.CMUCrtEffectStatic));
         _shader.SetParameter("rollPeriod", _cfg.GetCVar(CCVars.CMUCrtEffectRollPeriod));
         _shader.SetParameter("rollSweep", _cfg.GetCVar(CCVars.CMUCrtEffectRollSweep));

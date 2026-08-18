@@ -1,3 +1,4 @@
+﻿using System;
 using System.Collections.Generic;
 using Content.Client.Changelog;
 using Content.Client.Credits;
@@ -19,24 +20,50 @@ namespace Content.Client.Info
     /// </summary>
     public sealed class ServerInfo : BoxContainer
     {
-        private readonly NanoHeading _title;
-        private readonly NanoHeading _welcomeHeading;
+        private readonly Label _title;
         private readonly GridContainer _roundInfoGrid;
-        private readonly PanelContainer _roundTimeCell;
         private readonly BoxContainer _extraLines;
 
         public ServerInfo()
         {
             Orientation = LayoutOrientation.Vertical;
 
-            _title = new NanoHeading { VerticalAlignment = VAlignment.Center };
-
-            // The server's title line, styled to match the heading beside it.
-            _welcomeHeading = new NanoHeading
+            // A plain label, not a NanoHeading. NanoHeading draws its own bordered panel, which is
+            // the boxed treatment the section headings used to carry - a frame around a word, on a
+            // screen where nothing else has a frame any more.
+            _title = new Label
             {
-                HorizontalExpand = true,
-                HorizontalAlignment = HAlignment.Center,
                 VerticalAlignment = VAlignment.Center,
+                StyleClasses = { StyleNano.StyleClassCrtFieldLabel },
+            };
+
+            RoundTimeLabel = new Label
+            {
+                StyleClasses = { StyleNano.StyleClassCrtStatValue },
+            };
+            PlayersLabel = new Label
+            {
+                StyleClasses = { StyleNano.StyleClassCrtStatValue },
+            };
+
+            // Inline in the heading row rather than cells of their own. As tall narrow cells beside
+            // the character block these two wasted most of their box - they are one short line each,
+            // so they want to be wide and short. The heading row was already there and mostly empty,
+            // so putting them in it costs no vertical height at all and removes the leftover column
+            // the character block could never fill.
+            StatsColumn = new BoxContainer
+            {
+                Orientation = LayoutOrientation.Horizontal,
+                SeparationOverride = 6,
+                VerticalAlignment = VAlignment.Center,
+                Children =
+                {
+                    MakeInlineLabel(Loc.GetString("lobby-info-players")),
+                    PlayersLabel,
+                    MakeInlineLabel("|"),
+                    MakeInlineLabel(Loc.GetString("lobby-info-round-time")),
+                    RoundTimeLabel,
+                },
             };
 
             // The rule under this row is a CRT-genre convention - the rich-text markup used
@@ -53,13 +80,10 @@ namespace Content.Client.Info
                         Orientation = LayoutOrientation.Horizontal,
                         HorizontalExpand = true,
                         SeparationOverride = 8,
-                        Children = { _title, _welcomeHeading },
+                        Children = { _title, new Control { HorizontalExpand = true }, StatsColumn },
                     },
                 },
             };
-
-            if (StyleNano.CrtUiEnabled)
-                titleRow.AddStyleClass(StyleNano.StyleClassCrtUnderlineRow);
 
             AddChild(titleRow);
 
@@ -69,19 +93,11 @@ namespace Content.Client.Info
             {
                 Columns = 2,
                 HorizontalExpand = true,
-                HSeparationOverride = 4,
-                VSeparationOverride = 3,
+                HSeparationOverride = 2,
+                VSeparationOverride = 2,
                 Margin = new Thickness(0, 4, 0, 0),
             };
             AddChild(_roundInfoGrid);
-
-            RoundTimeLabel = new Label
-            {
-                HorizontalExpand = true,
-                Align = Label.AlignMode.Center,
-                StyleClasses = { StyleNano.StyleClassCrtTableCellText },
-            };
-            _roundTimeCell = MakeCell(Loc.GetString("lobby-info-round-time"), RoundTimeLabel);
 
             _extraLines = new BoxContainer
             {
@@ -107,6 +123,17 @@ namespace Content.Client.Info
         public Label RoundTimeLabel { get; }
 
         /// <summary>
+        ///     The player count, shown in <see cref="StatsColumn"/> rather than in the round-info grid.
+        /// </summary>
+        public Label PlayersLabel { get; }
+
+        /// <summary>
+        ///     Players and round time, as a standalone column for the lobby to place beside the
+        ///     character block. Never parented into the round-info grid.
+        /// </summary>
+        public Control StatsColumn { get; }
+
+        /// <summary>
         ///     Sets the server's intro text. The first line becomes the title heading and is drawn as
         ///     plain text, so it must not contain markup. Any further lines render underneath.
         /// </summary>
@@ -121,9 +148,11 @@ namespace Content.Client.Info
                 if (trimmed.Length == 0)
                     continue;
 
+                // The first line is the server's own name, which used to be drawn as a heading beside
+                // "SERVER INFO". It is dropped: the lobby's own header already says which server this
+                // is, so repeating it inside the panel was duplication taking up a whole row.
                 if (first)
                 {
-                    _welcomeHeading.Text = trimmed;
                     first = false;
                     continue;
                 }
@@ -146,50 +175,78 @@ namespace Content.Client.Info
         /// </summary>
         public void SetRoundInfo(IReadOnlyList<LobbyRoundInfoField> fields)
         {
-            // The timer cell outlives the rebuild - detach it so DisposeAllChildren doesn't take
-            // RoundTimeLabel with it.
-            if (_roundTimeCell.Parent == _roundInfoGrid)
-                _roundInfoGrid.RemoveChild(_roundTimeCell);
-
             _roundInfoGrid.DisposeAllChildren();
 
-            foreach (var field in fields)
+            // The lead pair, and the trailing player count, are both positional - see
+            // GameTicker.GetRoundInfoFields, which owns the order. Planet and gamemode lead; the
+            // player count is last and is consumed by StatsColumn instead of being drawn in the grid,
+            // so the grid is left with exactly the paired GOVFOR/OPFOR fields and never a ragged row.
+            const int leadCells = 2;
+            var gridCount = Math.Max(0, fields.Count - 1);
+
+            for (var i = 0; i < gridCount; i++)
             {
+                var field = fields[i];
+                var lead = i < leadCells;
+
                 var value = new Label
                 {
                     Text = field.Value,
                     HorizontalExpand = true,
-                    Align = Label.AlignMode.Center,
-                    StyleClasses = { StyleNano.StyleClassCrtTableCellText },
+                    Align = Label.AlignMode.Left,
+                    ClipText = true,
+                    StyleClasses =
+                    {
+                        lead
+                            ? StyleNano.StyleClassCrtFieldValueLead
+                            : StyleNano.StyleClassCrtFieldValue,
+                    },
                 };
 
                 if (field.Color != null && Color.TryFromHex(field.Color) is { } color)
                     value.FontColorOverride = color;
 
-                _roundInfoGrid.AddChild(MakeCell(field.Label, value));
+                var cellClass = lead
+                    ? StyleNano.StyleClassCrtTableCellLead
+                    : (i - leadCells) / _roundInfoGrid.Columns % 2 == 0
+                        ? StyleNano.StyleClassCrtTableCell
+                        : StyleNano.StyleClassCrtTableCellAlt;
+
+                _roundInfoGrid.AddChild(MakeCell(field.Label, value, cellClass));
             }
 
-            _roundInfoGrid.AddChild(_roundTimeCell);
-
-            // Keep a trailing odd cell from stretching across both columns.
-            if ((fields.Count + 1) % 2 != 0)
-                _roundInfoGrid.AddChild(new Control());
+            if (fields.Count > 0)
+                PlayersLabel.Text = fields[^1].Value;
         }
 
-        private static PanelContainer MakeCell(string headingText, Label value)
+        private static Label MakeInlineLabel(string text)
+        {
+            return new Label
+            {
+                Text = text,
+                StyleClasses = { StyleNano.StyleClassCrtFieldLabel },
+                VerticalAlignment = VAlignment.Center,
+            };
+        }
+
+        private static PanelContainer MakeCell(
+            string headingText,
+            Label value,
+            string cellClass = StyleNano.StyleClassCrtTableCell)
         {
             var heading = new Label
             {
                 Text = headingText,
                 HorizontalExpand = true,
-                Align = Label.AlignMode.Center,
-                StyleClasses = { StyleNano.StyleClassCrtTableCellText },
+                Align = Label.AlignMode.Left,
+                ClipText = true,
+                StyleClasses = { StyleNano.StyleClassCrtFieldLabel },
             };
 
             return new PanelContainer
             {
                 HorizontalExpand = true,
-                StyleClasses = { StyleNano.StyleClassCrtTableCell },
+                StyleClasses = { cellClass },
                 Children =
                 {
                     new BoxContainer

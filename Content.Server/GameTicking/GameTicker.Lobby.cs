@@ -155,14 +155,19 @@ namespace Content.Server.GameTicking
 
             string Display(string? value) => !string.IsNullOrWhiteSpace(value) ? value : "None";
 
+            // Order is the display order - the lobby renders these in sequence, so this list is
+            // where the panel's reading order is decided. Planet and gamemode lead because they are
+            // what a player checks first to decide whether to ready up; the GOVFOR/OPFOR pairs are
+            // reference detail read afterwards, and each pair is kept adjacent so the two sides sit
+            // side by side in the two-column grid rather than stacking.
             return new List<LobbyRoundInfoField>
             {
+                new(Loc.GetString("lobby-info-planet"), Display(GetPlanetMapName())),
+                new(Loc.GetString("lobby-info-gamemode"), Display(LocalizeOrRaw(preset.ModeTitle))),
                 new(Loc.GetString("lobby-info-govfor-ship"), Display(_auRoundSystem.GetSelectedGovforShip()), govforColor),
                 new(Loc.GetString("lobby-info-opfor-ship"), Display(_auRoundSystem.GetSelectedOpforShip()), opforColor),
                 new(Loc.GetString("lobby-info-govfor-platoon"), Display(_platoonSpawnRuleSystem.SelectedGovforPlatoon?.Name), govforColor),
                 new(Loc.GetString("lobby-info-opfor-platoon"), Display(_platoonSpawnRuleSystem.SelectedOpforPlatoon?.Name), opforColor),
-                new(Loc.GetString("lobby-info-planet"), Display(GetPlanetMapName())),
-                new(Loc.GetString("lobby-info-gamemode"), Display(LocalizeOrRaw(preset.ModeTitle))),
                 new(Loc.GetString("lobby-info-players"), Loc.GetString(
                     "lobby-info-players-value",
                     ("count", _playerManager.PlayerCount),

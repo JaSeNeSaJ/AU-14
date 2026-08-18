@@ -1,3 +1,4 @@
+﻿using Content.Client._CMU14.Interface;
 using Content.Client.Message;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Systems.EscapeMenu;
@@ -58,35 +59,69 @@ namespace Content.Client.Lobby.UI
             CollapseButton.OnPressed += _ => TogglePanel(false);
             ExpandButton.OnPressed += _ => TogglePanel(true);
 
-            SetUpServerInfoCrt();
+            SetUpLobbyCrt();
             _cfg.OnValueChanged(CCVars.CMUCrtMenuEffect, OnMenuEffectChanged);
             _cfg.OnValueChanged(CCVars.CrtUiEnabled, OnCrtEnabledChanged);
         }
 
-        private void OnMenuEffectChanged(bool _) => SetUpServerInfoCrt();
-        private void OnCrtEnabledChanged(bool _) => SetUpServerInfoCrt();
+        private void OnMenuEffectChanged(bool _) => SetUpLobbyCrt();
+        private void OnCrtEnabledChanged(bool _) => SetUpLobbyCrt();
 
         /// <summary>
-        ///     The full prop-terminal treatment on the server info panel - curvature, roll bar,
-        ///     grain, the lot - straight off the shared cvars rather than toned down. This is the
-        ///     surface to find out on: it is read in glances rather than studied, so if a moving
-        ///     artifact is going to be tolerable anywhere in the real UI, it is here.
+        ///     The prop-terminal treatment on the lobby column above the chat. Decides what the tube
+        ///     is showing and how hard it is worked; the effect's own amplitudes come from the shared
+        ///     cvars inside <see cref="CrtScreenControl"/>.
         /// </summary>
-        private void SetUpServerInfoCrt()
+        private void SetUpLobbyCrt()
         {
-            // A style class, not a hand-set PanelOverride: a class-based rule re-resolves every
-            // time the stylesheet rebuilds, where reading StyleNano.CrtPanelBackground once and
-            // storing the result is a snapshot that only ever reflects the state at the moment this
-            // method happened to run. That snapshot is what let a base-mode client show the
-            // CRT-enabled colour here - this method's first call landed before StylesheetManager had
-            // corrected _crtUiEnabled from the class's compile-time default of true. Applying the
-            // class once, here, is enough - see StyleClassCrtPanelFill.
+            var crt = StyleNano.CrtUiEnabled;
+
+            // Two planes, one step apart: Surface0 behind the whole column and Surface1 for the
+            // server-info block, so that block reads as a section inside a screen rather than the
+            // whole field being flat. That is the mock's Surface0/Surface1 relationship, and it only
+            // works because those constants are genuinely different luminances - the shipped CRT
+            // palette packs every surface into about five percent of the range and cannot do it.
+            //
+            // Both are only visible because their contents are inset in the XAML; with rows flush to
+            // the edges there is no air for a backdrop to show through. They also stop the shader
+            // writing black: it writes opaque, so any transparent region in the captured subtree
+            // would come back black without something solid underneath.
+            //
+            // A literal colour is safe in a PanelOverride. The snapshot bug this method used to carry
+            // came from reading the *theme-dependent* StyleNano.CrtPanelBackground getter once, before
+            // StylesheetManager had corrected _crtUiEnabled from its compile-time default of true.
+            // These are constants, and the override is re-applied whenever either cvar changes.
+            // Surface0, the same plane as the column behind it. This was Surface1 - a lighter block
+            // under the whole server-info section - but the mock has no such intermediate plane: the
+            // cells carry the tones and the space between them is the tube. A lighter block under
+            // them flattened the difference between the cell fills and put a visible rectangle edge
+            // around the section, which is the box this panel keeps growing back.
+            ServerInfoBacking.PanelOverride = crt
+                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface0 }
+                : null;
+
+            LobbyCrtBacking.PanelOverride = crt
+                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface0 }
+                : null;
+
+            // Left in place for base mode, where clearing the override above hands the panel back to
+            // the stylesheet rule.
             if (!ServerInfoBacking.HasStyleClass(StyleNano.StyleClassCrtPanelFill))
                 ServerInfoBacking.AddStyleClass(StyleNano.StyleClassCrtPanelFill);
 
-            ServerInfoCrt.Source = ServerInfoContent;
-            ServerInfoCrt.Phosphor = StyleNano.CrtGreen;
-            ServerInfoCrt.Visible = _cfg.GetCVar(CCVars.CMUCrtMenuEffect) && StyleNano.CrtUiEnabled;
+            if (!CharacterPreview.CharacterBacking.HasStyleClass(StyleNano.StyleClassCrtPanelFill))
+                CharacterPreview.CharacterBacking.AddStyleClass(StyleNano.StyleClassCrtPanelFill);
+
+            LobbyCrt.Source = LobbyCrtContent;
+            LobbyCrt.Phosphor = StyleNano.CrtGreen;
+
+            // Everything the mock does except the bulge. Curvature is the one part of that look that
+            // cannot survive here: the mock earns its barrel from a bezel PNG whose bowed cut-out
+            // masks the corners, and there is no bezel around a panel embedded in the lobby, so the
+            // warp would just bend straight text against a square edge. Vignette and the roll bar stay
+            // at cvar strength - they are most of what reads as a tube.
+            LobbyCrt.Curvature = 0f;
+            LobbyCrt.Visible = _cfg.GetCVar(CCVars.CMUCrtMenuEffect) && crt;
         }
 
         public void PositionBalanceRatingContainer()

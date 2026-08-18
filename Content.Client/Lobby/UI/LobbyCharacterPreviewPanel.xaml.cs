@@ -1,4 +1,4 @@
-using System.Numerics;
+﻿using System.Numerics;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Controls;
 using Robust.Client.ResourceManagement;
@@ -27,6 +27,7 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
     ///     name is measured against the wrong font.
     /// </summary>
     private const int CharacterSummaryFontSize = 9;
+
 
     private EntityUid? _previewDummy;
 
@@ -96,7 +97,12 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
         var lineHeight = StyleNano.GetCrtFont(_resourceCache, CharacterSummaryFontSize)
             .GetLineHeight(1f);
 
+        // Height is capped to one line so a long name cannot push the rest of the block down. The
+        // width cap that used to sit beside this is gone: it made the name *wrap*, and this cap then
+        // hid the wrapped line - so "Zachary Thompson" rendered as "Zachary". The stats column that
+        // cap was protecting no longer exists, so there is nothing left to protect.
         SummaryName.MaxHeight = lineHeight * SummaryName.LineHeightScale;
+
     }
 
     private static void SetSummaryLine(RichTextLabel label, string markup)
@@ -131,8 +137,11 @@ public sealed partial class LobbyCharacterPreviewPanel : Control
         var spriteView = new SpriteView
         {
             OverrideDirection = Direction.South,
-            Scale = new Vector2(4f, 4f),
-            MaxSize = new Vector2(112, 112),
+            // Down from 4x/112. The sprite was the tallest thing in the block and set its height,
+            // which is the height the stats column beside it has to match; smaller here buys the row
+            // back the vertical space without costing legibility on a 32px source sprite.
+            Scale = new Vector2(3f, 3f),
+            MaxSize = new Vector2(84, 84),
             Stretch = SpriteView.StretchMode.Fill,
         };
         spriteView.SetEntity(uid);
