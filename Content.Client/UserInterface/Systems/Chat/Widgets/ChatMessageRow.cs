@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Numerics;
 using Content.Client.Stylesheets;
 using Content.Client.Resources;
@@ -253,10 +253,19 @@ public sealed partial class ChatMessageRow : PanelContainer
 
     private static Color GetBackground(ChatMessage message)
     {
+        // An explicit override is semantic - examine echoes and the like - so it survives either way.
         if (message.Display?.BackgroundColorOverride is { } backgroundOverride)
             return backgroundOverride;
 
         var channel = message.Channel;
+
+        // Under the CRT theme, rows carry no fill of their own. The per-channel colours below are
+        // off-palette hex tuned for the base theme's near-black log - dropped onto the CRT surface
+        // ladder they read as bands of unrelated colour, the admin maroon worst of all. Channel
+        // identity does not depend on them: it is carried by the prefix colour and by the accent
+        // triangle in the corner, both of which are untouched here.
+        if (StyleNano.CrtUiEnabled)
+            return Color.Transparent;
 
         if ((channel & ChatChannel.AdminRelated) != 0)
             return Color.FromHex("#23151e");

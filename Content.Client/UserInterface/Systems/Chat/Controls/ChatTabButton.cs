@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Numerics;
 using Content.Client.Stylesheets;
 using Robust.Client.Graphics;
@@ -44,7 +44,7 @@ public sealed class ChatTabButton : Button
         // than via CrtLobbyTheme because tabs are created and destroyed as channels change, and that
         // pass only tags controls that already exist when it runs.
         if (StyleNano.CrtUiEnabled)
-            AddStyleClass(StyleNano.StyleClassCrtButton);
+            AddStyleClass(StyleNano.StyleClassCrtChatTab);
     }
 
     public void SetDragVisualState(bool dragging, bool dropTarget)

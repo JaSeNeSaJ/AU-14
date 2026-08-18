@@ -83,6 +83,14 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtCharacterSummary = "CrtCharacterSummary";
         public const string StyleClassCrtDivider = "CrtDivider";
         public const string StyleClassCrtChatPanel = "CrtChatPanel";
+
+        /// <summary>
+        ///     A chat channel tab. Its own class rather than <see cref="StyleClassCrtButton"/>: a tab
+        ///     is a selector, not an action, and the generic pressed-button fill made the active tab
+        ///     the brightest thing in the panel. Selection is a one-step lift on the surface ladder
+        ///     instead - Surface1 resting, Surface3 selected.
+        /// </summary>
+        public const string StyleClassCrtChatTab = "CrtChatTab";
         public const string StyleClassCrtChatInput = "CrtChatInput";
         public const string StyleClassCrtChatScrollBar = "CrtChatScrollBar";
         public const string StyleClassCrtChatPopup = "CrtChatPopup";
@@ -861,6 +869,28 @@ namespace Content.Client.Stylesheets
             // The channel-selector popup that sits on top of the chat input row. Deliberately much
             // tighter than CrtInsetPanel (8/8/6/6): this is a strip spanning the input bar, not a
             // window, and the CRT button chrome inside it already carries 3px + a border of its own.
+            var crtChatTab = new StyleBoxFlat
+            {
+                BackgroundColor = CrtTerminalPalette.Surface1,
+                ContentMarginLeftOverride = 14,
+                ContentMarginRightOverride = 14,
+                ContentMarginTopOverride = 5,
+                ContentMarginBottomOverride = 5,
+            };
+
+            var crtChatTabHover = new StyleBoxFlat(crtChatTab)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface3,
+            };
+
+            // Surface4, not Surface3. Hover already uses Surface3, so a selected tab that also used
+            // it was indistinguishable from a hovered one - the state that matters most looked like
+            // the state that matters least.
+            var crtChatTabSelected = new StyleBoxFlat(crtChatTab)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface4,
+            };
+
             var crtChatPopup = new StyleBoxFlat
             {
                 BackgroundColor = CrtInsetBackground,
@@ -1235,6 +1265,17 @@ namespace Content.Client.Stylesheets
                 Element<PanelContainer>().Class(StyleClassCrtDivider)
                     .Prop(PanelContainer.StylePropertyPanel, crtDivider)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatTab)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTab),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatTab)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabHover),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatTab)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected),
 
                 Element<PanelContainer>().Class(StyleClassCrtChatPanel)
                     .Prop(PanelContainer.StylePropertyPanel, crtChatPanel)

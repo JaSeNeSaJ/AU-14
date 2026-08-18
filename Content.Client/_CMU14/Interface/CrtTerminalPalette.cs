@@ -1,4 +1,4 @@
-using Robust.Shared.Maths;
+﻿using Robust.Shared.Maths;
 
 namespace Content.Client._CMU14.Interface;
 
@@ -24,6 +24,17 @@ namespace Content.Client._CMU14.Interface;
 /// </remarks>
 public static class CrtTerminalPalette
 {
+    // Ladder note (2026-08-19): Surface2 and Surface3 were widened from #142519 and #1C3323. The
+    // old values put every surface inside the bottom ~20% of the range - greens of 16/26/37/51 out
+    // of 255 - which is why nothing could be distinguished by fill and every boundary needed a
+    // border, the root of the box-in-box problem. The step *ratios* are unchanged; only the
+    // absolute level moved. Verified side by side in docs/cmu/crt-gallery.html before applying.
+    //
+    // These sit under the shader, and the scanline pass darkens everything on top of them, so they
+    // read dimmer in game than in a browser. If they land too bright, the tested next step down is
+    // Surface1 #0C1810 / Surface2 #132A1C / Surface3 #1C3F2D / Surface4 #285538 - do not go below
+    // that, it collapses the banding back into one tone.
+
     /// <summary>Behind everything. Not pure black - a phosphor tube never is.</summary>
     public static readonly Color Void = Color.FromHex("#040705");
 
@@ -34,10 +45,16 @@ public static class CrtTerminalPalette
     public static readonly Color Surface1 = Color.FromHex("#0D1A12");
 
     /// <summary>One row inside a section.</summary>
-    public static readonly Color Surface2 = Color.FromHex("#142519");
+    public static readonly Color Surface2 = Color.FromHex("#152F20");
 
-    /// <summary>Header and status strips; selected rows.</summary>
-    public static readonly Color Surface3 = Color.FromHex("#1C3323");
+    /// <summary>Header and status strips; hover.</summary>
+    public static readonly Color Surface3 = Color.FromHex("#204833");
+
+    /// <summary>
+    ///     Selected. The ladder needed a fourth step: with only three, hover and selected both landed
+    ///     on Surface3 and were indistinguishable, so a selected tab looked exactly like a hovered one.
+    /// </summary>
+    public static readonly Color Surface4 = Color.FromHex("#2E6241");
 
     /// <summary>Hairline, for the few places a rule still says something a fill cannot.</summary>
     public static readonly Color Line = Color.FromHex("#2A5238");
