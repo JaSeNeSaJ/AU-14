@@ -149,7 +149,7 @@
                                  background: the shader writes opaque, so without something solid underneath
                                  it the transparent gaps between cells would come back as black. It is the
                                  panel colour, so it is invisible against the CrtPanel behind it. -->
-                            <Control Name="ServerInfoScreen" HorizontalExpand="True" Margin="3 0 3 3">
+                            <Control Name="ServerInfoScreen" HorizontalExpand="True" Margin="0 0 0 3">
                                 <Control Name="ServerInfoContent" HorizontalExpand="True">
                                     <PanelContainer Name="ServerInfoBacking" HorizontalExpand="True"
                                                     VerticalExpand="True" />
@@ -166,8 +166,6 @@
                             </Control>
                             <controls:HSpacer Spacing="5" />
                             <lobbyUi:LobbyCharacterPreviewPanel Name="CharacterPreview" Access="Public" />
-                            <controls:HSpacer Spacing="5" />
-                            <BoxContainer MinHeight="6" />
                         </BoxContainer>
                     </Control>
                     <cmu:CrtScreenControl Name="LobbyCrt" HorizontalExpand="True"
@@ -176,7 +174,7 @@
                     <!-- No negative margins any more: they existed only to cancel CrtPanel's content
                          margins, and RightSide is now a CrtScreenPanel with none to cancel. -->
                     <widgets:ChatBox Name="Chat" Access="Public" VerticalExpand="True"
-                                     MinHeight="50" />
+                                     Margin="10 0 10 8" MinHeight="50" />
                 </BoxContainer>
             </PanelContainer>
         </SplitContainer>

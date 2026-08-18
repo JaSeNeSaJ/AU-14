@@ -727,28 +727,32 @@ namespace Content.Client.Stylesheets
             // The lobby's chat surface: keeps chat's own dark backing for legibility, but takes the
             // CrtPanel's border so it reads as a section of the same panel. Defined here rather than
             // assigned to the control so it tracks the CRT palette when the stylesheet rebuilds.
+            // Surface1, the same tone as a table cell, and no border. The chat used to keep its own
+            // near-black backing and a green outline on the theory that it must stay legible - but
+            // legibility comes from the text colour against its ground, and Surface1 is still dark.
+            // The outline was the last framed rectangle on the screen.
             var crtChatPanel = new StyleBoxFlat
             {
-                BackgroundColor = ChatBackgroundColor,
-                BorderColor = CrtGreenDim,
-                BorderThickness = new Thickness(1),
-                ContentMarginLeftOverride = 2,
-                ContentMarginRightOverride = 2,
+                BackgroundColor = CrtTerminalPalette.Surface1,
+                BorderThickness = new Thickness(0),
+                ContentMarginLeftOverride = 10,
+                ContentMarginRightOverride = 10,
             };
 
             // The lobby's chat input row. Top rule only - the chat panel already supplies the left,
             // right and bottom borders, so a full box here would double them up. The content margins
             // are inner padding: none on the left so the channel button sits as far out as the
             // message rows above it, a little on the right so the gear clears the panel border.
+            // Surface3 - the lightest tone, as the mock uses for the input bar and the header strip.
+            // It reads as the active band at the foot of the log without a rule above it to say so.
             var crtChatInput = new StyleBoxFlat
             {
-                BackgroundColor = Color.FromHex("#0D1014"),
-                BorderColor = CrtGreenDim,
-                BorderThickness = new Thickness(0, 1, 0, 0),
-                ContentMarginLeftOverride = 0,
-                ContentMarginRightOverride = 2,
-                ContentMarginTopOverride = 2,
-                ContentMarginBottomOverride = 2,
+                BackgroundColor = CrtTerminalPalette.Surface3,
+                BorderThickness = new Thickness(0),
+                ContentMarginLeftOverride = 10,
+                ContentMarginRightOverride = 10,
+                ContentMarginTopOverride = 6,
+                ContentMarginBottomOverride = 6,
             };
 
             // A checkbox is a toggle, not a button - but CheckBox derives from ContainerButton, so
@@ -878,15 +882,15 @@ namespace Content.Client.Stylesheets
             // track is always drawn.
             var crtChatScrollTrack = new StyleBoxFlat
             {
-                BackgroundColor = CrtInsetBackground,
-                BorderColor = CrtGreenDim.WithAlpha(0.45f),
+                BackgroundColor = CrtTerminalPalette.Surface0,
+                BorderColor = Color.Transparent,
                 BorderThickness = new Thickness(1, 0, 0, 0),
             };
 
             var crtChatScrollGrabber = new StyleBoxFlat
             {
-                BackgroundColor = CrtGreenDim.WithAlpha(0.7f),
-                BorderColor = CrtGreen.WithAlpha(0.38f),
+                BackgroundColor = CrtTerminalPalette.Surface3,
+                BorderColor = Color.Transparent,
                 BorderThickness = new Thickness(1),
                 // These margins are what set the bar's width - ScrollBar.MeasureOverride returns the
                 // grabber's MinimumSize - and its minimum grabber length. 4 gives a 8px gutter.
@@ -898,14 +902,12 @@ namespace Content.Client.Stylesheets
 
             var crtChatScrollGrabberHover = new StyleBoxFlat(crtChatScrollGrabber)
             {
-                BackgroundColor = CrtGreen.WithAlpha(0.48f),
-                BorderColor = CrtGreenSoft.WithAlpha(0.55f),
+                BackgroundColor = CrtGreenDim.WithAlpha(0.55f),
             };
 
             var crtChatScrollGrabberPressed = new StyleBoxFlat(crtChatScrollGrabber)
             {
-                BackgroundColor = CrtGreen.WithAlpha(0.7f),
-                BorderColor = CrtGreenSoft.WithAlpha(0.78f),
+                BackgroundColor = CrtGreenDim.WithAlpha(0.8f),
             };
 
             // Solid divider rule. Must come from the stylesheet, not a control's own StyleBoxFlat:
