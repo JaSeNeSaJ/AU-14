@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using Content.Client._CMU14.Interface;
 using Content.Client._RMC14.Chat;
 using Content.Client.Stylesheets;
 using Content.Client.UserInterface.Systems.Chat;
@@ -63,7 +64,13 @@ public partial class ChatBox : UIWidget
     private int _secondaryRatioPercent = ChatUserSettings.DefaultSplitSecondaryRatioPercent;
     private bool _syncingFilter;
     private bool LegacyPresentation => _forceLegacyPresentation || _legacyChatEnabled;
-    private static readonly Color StructuredMessageTextColor = Color.FromHex("#D6DCE0");
+    /// <summary>
+    ///     Body colour when <c>chat.color_whole_message</c> is off, so only the prefix carries the
+    ///     channel colour. A property rather than a static readonly field: the CRT flag is set during
+    ///     client init and a field initialiser can run before that.
+    /// </summary>
+    private static Color StructuredMessageTextColor =>
+        StyleNano.CrtUiEnabled ? CrtTerminalPalette.Text : Color.FromHex("#D6DCE0");
 
     public bool Main { get; set; }
 
@@ -101,7 +108,7 @@ public partial class ChatBox : UIWidget
     private readonly Queue<RepeatedMessage> _primaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _secondaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _legacyRepeatQueue = new();
-    private readonly HashSet<string> _whitelist = ["mono", "scramble", "bolditalic", "bold", "bullet", "cmdlink", "color", "font", "head", "italic", "langicon"];
+    private readonly HashSet<string> _whitelist = BuildMarkupWhitelist();
     // RMC14
 
     public ChatBox()
@@ -132,13 +139,17 @@ public partial class ChatBox : UIWidget
         TabOverflowButton.Popup.OnTabSelected += OnOverflowTabSelected;
         SecondaryResizeHandle.OnDragged += OnSplitResizeDragged;
         SecondaryResizeHandle.OnDragEnded += OnSplitResizeEnded;
-        // Give the tab strip its own surface with a rule beneath it, so the tabs read as chrome
-        // rather than floating above the message log.
-        // Background only, no bottom rule: the chat panel now has its own border, and a rule here
-        // read as a stray hairline between the tabs and the first message.
+        // Transparent under CRT: the tabs sit directly on the chat's Surface0 ground with no band
+        // behind them. A strip needs a fill only if the tabs on it have fills of their own to be
+        // separated from, and they no longer do - a resting tab draws nothing at all now, so a band
+        // here would be a rectangle marking out empty space. The old hardcoded hex was a blue-grey
+        // belonging to no palette, and being a PanelOverride it beat every stylesheet rule aimed
+        // at it.
         TabHeaderPanel.PanelOverride = new StyleBoxFlat
         {
-            BackgroundColor = Color.FromHex("#0C0F12"),
+            BackgroundColor = StyleNano.CrtUiEnabled
+                ? Color.Transparent
+                : Color.FromHex("#0C0F12"),
         };
 
         _controller = UserInterfaceManager.GetUIController<ChatUIController>();
@@ -635,15 +646,30 @@ public partial class ChatBox : UIWidget
             button.Text = GetTabButtonText(tabId);
             button.Pressed = tabId == _activeTabId;
 
-            // Mirror the active flag onto a style class. Pressed alone does not raise the pressed
-            // pseudo-class outside toggle mode, so the stylesheet could not see which tab was active.
+            // Mirror the active flag onto a style class. Pressed does raise the pressed pseudo-class
+            // here, but it also raises for a tab that merely has a click held on it, so the class is
+            // what tells the stylesheet which tab is actually selected.
             if (button.Pressed)
                 button.AddStyleClass(StyleNano.StyleClassCrtChatTabSelected);
             else
                 button.RemoveStyleClass(StyleNano.StyleClassCrtChatTabSelected);
-            button.Modulate = tabId == _activeTabId
-                ? Color.FromHex("#9fd0b3")
-                : Color.FromHex("#737987");
+            // Modulate multiplies the whole control, its stylebox included, so using it to carry
+            // "active" repainted the tab's fill as well as its label - which is how the strip ended
+            // up off the ladder no matter what the stylesheet said. Under CRT the fill already says
+            // active (Surface1 resting, Surface4 selected), so only the label wants colouring.
+            if (StyleNano.CrtUiEnabled)
+            {
+                button.Modulate = Color.White;
+                button.Label.FontColorOverride = button.Pressed
+                    ? CrtTerminalPalette.TextBright
+                    : CrtTerminalPalette.TextDim;
+            }
+            else
+            {
+                button.Modulate = tabId == _activeTabId
+                    ? Color.FromHex("#9fd0b3")
+                    : Color.FromHex("#737987");
+            }
         }
 
         UpdateTabDragVisuals();
@@ -1195,8 +1221,14 @@ public partial class ChatBox : UIWidget
         var fontSize = ChatUserSettings.ResolveFontSize(style) ??
                        ChatUserSettings.ResolveMarkupFontSize(msg.WrappedMessage) ??
                        ChatUserSettings.DefaultFontSize;
-        var accentColor = styleColor ?? msg.Display?.AccentColor;
-        var messageColor = styleColor ?? msg.MessageColorOverride ?? msg.Display?.AccentColor ?? msg.Channel.TextColor();
+        // The CRT channel colour sits *after* anything the message carries deliberately - a user's
+        // own style, an admin's OOC colour, and a per-message accent (radio channels, examine) - and
+        // *before* ChatChannelExtensions.TextColor, whose LightSkyBlue/HotPink/MediumPurple belong
+        // to no palette. So the fixed channels come onto the ladder while a squad radio keeps the
+        // colour its prototype gives it.
+        var crtColor = ChatUserSettings.CrtChannelColor(msg.Channel);
+        var accentColor = styleColor ?? msg.Display?.AccentColor ?? crtColor;
+        var messageColor = styleColor ?? msg.MessageColorOverride ?? msg.Display?.AccentColor ?? crtColor ?? msg.Channel.TextColor();
         var bodyColor = _colorWholeMessage ? messageColor : StructuredMessageTextColor;
         var formatted = CreateFormattedMessage(msg, messageColor, style);
 
@@ -1380,6 +1412,47 @@ public partial class ChatBox : UIWidget
         }
 
         return index;
+    }
+
+    /// <summary>
+    ///     Markup tags chat is allowed to render. Anything not listed is dropped by
+    ///     <see cref="FilterProblematicTags"/> and its text renders in the control's own font.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///     <c>bold</c> and <c>bolditalic</c> are dropped under CRT, and that is a fix rather than a
+    ///     restriction. <c>BoldTag</c> resolves the <b>global</b> <c>DefaultBold</c> font prototype,
+    ///     so a bold span ignores the control's font entirely - which meant sender names, which are
+    ///     bold, rendered in proportional NotoSans while the message beside them was the mono OSD
+    ///     face. At the shared size of 8 the proportional face reads noticeably smaller and thinner,
+    ///     which is what made the names hard to read.
+    ///     </para>
+    ///     <para>
+    ///     Dropping the tag here is deliberately narrower than the engine's supported alternative,
+    ///     <c>FontTagHijackHolder.Hijack</c>: that intercepts prototype resolution globally and would
+    ///     change bold text in the guidebook and everywhere else, to fix a problem that only exists
+    ///     in chat. A terminal has no bold anyway.
+    ///     </para>
+    ///     <para>
+    ///     <c>italic</c> has the same flaw (<c>DefaultItalic</c>) and is deliberately left in - it is
+    ///     not currently causing a visible problem, and dropping it would take emote formatting with
+    ///     it. Revisit if italic text starts looking out of place.
+    ///     </para>
+    /// </remarks>
+    private static HashSet<string> BuildMarkupWhitelist()
+    {
+        var tags = new HashSet<string>
+        {
+            "mono", "scramble", "bullet", "cmdlink", "color", "font", "head", "italic", "langicon"
+        };
+
+        if (!StyleNano.CrtUiEnabled)
+        {
+            tags.Add("bold");
+            tags.Add("bolditalic");
+        }
+
+        return tags;
     }
 
     // RMC14

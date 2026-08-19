@@ -196,7 +196,11 @@ namespace Content.Shared.Chat
                 ChatChannel.LOOC => "LOOC",
                 ChatChannel.OOC => "OOC",
                 ChatChannel.Dead => "DEAD",
-                ChatChannel.Admin => "ADMIN",
+                // ADM, not ADMIN: three characters fit the chat's prefix column alongside SAY/OOC/RAD
+                // instead of filling it and leaving admin messages with no gap before their text.
+                // ChatMessageRow.GetChannelLabel has a fallback copy of this table - it prefers this
+                // one when the message carries a label, so both have to say the same thing.
+                ChatChannel.Admin => "ADM",
                 ChatChannel.AdminAlert => "ALERT",
                 ChatChannel.AdminChat => "ASAY",
                 ChatChannel.MentorChat => "MENTOR",

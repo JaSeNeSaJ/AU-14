@@ -39,6 +39,21 @@ public sealed partial class CCVars
     public static readonly CVarDef<float> CMUScreenshotInterval =
         CVarDef.Create("cmu.screenshot_interval", 0f, CVar.CLIENTONLY);
 
+    /// <summary>
+    ///     Opens the proposed-chat mock window on startup. Empty for off; otherwise
+    ///     <c>&lt;selection&gt;,&lt;input&gt;</c> - selection one of <c>inverted|s4|underline</c>,
+    ///     input one of <c>band|flat|chip</c>. For example
+    ///     <c>--cvar cmu.chatmock=inverted,band</c>.
+    /// </summary>
+    /// <remarks>
+    ///     Same reason as <see cref="CMUScreenshotInterval"/>: <c>cmu_chatmock</c> alone still needs a
+    ///     person to type it, because the client's console is drawn in-game and cannot be written to
+    ///     from outside the process. Pairing this with the screenshot interval makes the whole
+    ///     look-at-it-and-change-it loop run without anyone watching.
+    /// </remarks>
+    public static readonly CVarDef<string> CMUChatMock =
+        CVarDef.Create("cmu.chatmock", "", CVar.CLIENTONLY);
+
     public static readonly CVarDef<float> CMUCrtEffectIntensity =
         CVarDef.Create("cmu.crt_effect_intensity", 0.5f, CVar.CLIENTONLY | CVar.ARCHIVE);
 

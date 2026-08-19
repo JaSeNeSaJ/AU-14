@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Content.Shared.Chat;
 using Content.Shared.Radio;
@@ -27,13 +28,17 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
         // returns early on a ChatBox and so never walks the chat's controls at all.
         if (StyleNano.CrtUiEnabled)
         {
-            AddStyleClass(StyleNano.StyleClassCrtButton);
+            // The chip's own class, not CrtButton. CrtButton is sized to be pressed (12x5), which
+            // at three letters produced a slab filling most of the input bar's height - a box
+            // inside a box. See StyleClassCrtChatChannelChip.
+            AddStyleClass(StyleNano.StyleClassCrtChatChannelChip);
 
-            // The CRT button box is far tighter than the NanoUI one it replaces - 3px of vertical
-            // padding and an 8px label - so on its own it shrinks the whole input row around it.
+            // 8, matching the message bodies. RichTextLabel takes its font only from the stylesheet,
+            // so the log is pinned to uavOsd 8 and this has to meet it there - at 12 the prompt was
+            // half again the size of the text beside it.
             // FontOverride rather than a style class: the CRT rule sizes every button label through
             // a single parent-child selector that a competing class would only tie with.
-            Label.FontOverride = StyleNano.GetCrtFont(IoCManager.Resolve<IResourceCache>(), 12);
+            Label.FontOverride = StyleNano.GetCrtFont(IoCManager.Resolve<IResourceCache>(), 8);
         }
 
         Popup.Selected += OnChannelSelected;
@@ -125,6 +130,21 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
     public void UpdateChannelSelectButton(ChatSelectChannel channel, RadioChannelPrototype? radio)
     {
         Text = radio != null ? Loc.GetString(radio.Name) : ChannelSelectorName(channel);
-        Modulate = radio?.Color ?? ChannelSelectColor(channel);
+        var channelColor = radio?.Color ?? ChannelSelectColor(channel);
+
+        // Under CRT the chip is always accent green and the stylesheet says so - the channel is
+        // already named in words on the chip itself, and the gallery carries channel identity in
+        // the log prefix alone. Modulate has to be neutralised either way: it multiplies the
+        // stylebox as well as the label, so the channel colour was repainting the chip's Surface2
+        // fill (OOC's LightSkyBlue turned it into a near-black teal box).
+        if (StyleNano.CrtUiEnabled)
+        {
+            Modulate = Color.White;
+            Label.FontColorOverride = null;
+        }
+        else
+        {
+            Modulate = channelColor;
+        }
     }
 }

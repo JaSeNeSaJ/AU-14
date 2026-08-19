@@ -19,6 +19,21 @@ public sealed partial class ChatMessageRow : PanelContainer
     [Dependency] private IClientConsoleHost _consoleHost = default!;
     [Dependency] private IResourceCache _resourceCache = default!;
 
+    /// <summary>
+    ///     Size of the side labels under CRT. Must track <c>crtRichTextFont</c> in
+    ///     <c>StyleNanoCrt</c> (<c>uavOsd</c> 8), which is what pins the message bodies.
+    /// </summary>
+    private const int CrtMessageFontSize = 8;
+
+    /// <summary>
+    ///     Line spacing for CRT message bodies. The uavOsd face has very tight vertical metrics, so
+    ///     the ~1.06 the base theme uses leaves wrapped messages with almost no gap between lines.
+    ///     Matches the value <c>StyleClassCrtRichText</c> sets, which cannot apply here because
+    ///     <see cref="RichTextLabel.LineHeightScale"/> is set directly on the control and a direct
+    ///     set beats the stylesheet.
+    /// </summary>
+    private const float CrtLineHeightScale = 1.25f;
+
     private readonly Label _repeatBadge;
     private readonly RichTextLabel _messageLabel;
 
@@ -59,16 +74,29 @@ public sealed partial class ChatMessageRow : PanelContainer
         };
         AddChild(row);
 
-        var sideFont = fontSize == null
-            ? null
-            : _resourceCache.GetFont("/Fonts/NotoSans/NotoSans-Regular.ttf", fontSize.Value);
+        // Under CRT the side labels (channel prefix, repeat badge) take the OSD face at the size the
+        // message bodies sit at, so the prefix column and the text beside it are one typeface at one
+        // size rather than two.
+        //
+        // Deliberately ignores `fontSize`, and that needs saying: RichTextLabel has no FontOverride,
+        // so the body is whatever the stylesheet's CrtRichText says (uavOsd 8) and cannot follow the
+        // caller's size. It never could - before CRT the body simply used the theme default and
+        // `fontSize` only ever reached these side labels. Honouring it here would scale the prefix
+        // away from a body that cannot move. Making chat text scalable under CRT means emitting a
+        // [font size=N] tag into the markup; until then these stay locked together.
+        var sideFont = StyleNano.CrtUiEnabled
+            ? StyleNano.GetCrtFont(_resourceCache, CrtMessageFontSize)
+            : fontSize == null
+                ? null
+                : _resourceCache.GetFont("/Fonts/NotoSans/NotoSans-Regular.ttf", fontSize.Value);
 
         var prefix = BuildPrefix(message);
         if (prefix != null)
         {
-            // MinWidth keeps the common short tags in a tidy column, but no MaxWidth/ClipText:
-            // longer tags (ADMIN, ALERT, MENTOR) should push the message across rather than be
-            // silently chopped to "ADM"/"ALER".
+            // MinWidth keeps the common short tags in a tidy column, but no MaxWidth/ClipText: the
+            // remaining long tags (ALERT, MENTOR) push the message across rather than being silently
+            // chopped mid-word. Shortening a label is a decision to make in GetChannelLabel, where
+            // it is legible - clipping is the same thing happening by accident.
             row.AddChild(new Label
             {
                 Text = prefix,
@@ -95,8 +123,17 @@ public sealed partial class ChatMessageRow : PanelContainer
         {
             HorizontalExpand = true,
             VerticalAlignment = VAlignment.Top,
-            LineHeightScale = metrics.LineHeightScale
+            LineHeightScale = StyleNano.CrtUiEnabled ? CrtLineHeightScale : metrics.LineHeightScale
         };
+
+        // RichTextLabel resolves its font ONLY from the stylesheet - it has no FontOverride - so
+        // without this class the message bodies fall back to the theme default and render
+        // proportional while every label around them is the mono OSD face. That single miss is most
+        // of what stopped the chat reading as a terminal, and it is invisible from the outside
+        // because nothing errors and the text still appears.
+        if (StyleNano.CrtUiEnabled)
+            _messageLabel.AddStyleClass(StyleNano.StyleClassCrtRichText);
+
         _messageLabel.SetMessage(formatted, defaultColor: textColor);
         row.AddChild(_messageLabel);
 
@@ -227,7 +264,11 @@ public sealed partial class ChatMessageRow : PanelContainer
             ChatChannel.LOOC => "LOOC",
             ChatChannel.OOC => "OOC",
             ChatChannel.Dead => "DEAD",
-            ChatChannel.Admin => "ADMIN",
+            // ADM, not ADMIN: at three characters it fits the prefix column with the common tags
+            // instead of filling it and leaving no gap before the text. This switch is only the
+            // fallback - a message that carries Display.ChannelLabel uses that instead, and it is
+            // set from the matching table in MsgChatMessage. Keep the two in step.
+            ChatChannel.Admin => "ADM",
             ChatChannel.AdminAlert => "ALERT",
             ChatChannel.AdminChat => "ASAY",
             ChatChannel.MentorChat => "MENTOR",

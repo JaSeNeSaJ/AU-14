@@ -1,5 +1,7 @@
-using System.Numerics;
+﻿using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client.Resources;
+using Content.Client.Stylesheets;
 using Content.Shared.Chat;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -102,18 +104,23 @@ public sealed class ChannelFilterButton : ChatPopupButton<ChannelFilterPopup>
     private void UpdateChildColors()
     {
         if (_textureRect == null) return;
+
+        // The stock colours are blue-greys (#7b7e9e and friends), which left the gear as the one
+        // off-palette thing on an otherwise green input row. Under CRT it takes the text ladder
+        // instead: dim at rest, body text on hover, accent while the popup is open.
+        var crt = StyleNano.CrtUiEnabled;
         switch (DrawMode)
         {
             case DrawModeEnum.Normal:
-                _textureRect.ModulateSelfOverride = ColorNormal;
+                _textureRect.ModulateSelfOverride = crt ? CrtTerminalPalette.TextDim : ColorNormal;
                 break;
 
             case DrawModeEnum.Pressed:
-                _textureRect.ModulateSelfOverride = ColorPressed;
+                _textureRect.ModulateSelfOverride = crt ? CrtTerminalPalette.Accent : ColorPressed;
                 break;
 
             case DrawModeEnum.Hover:
-                _textureRect.ModulateSelfOverride = ColorHovered;
+                _textureRect.ModulateSelfOverride = crt ? CrtTerminalPalette.Text : ColorHovered;
                 break;
 
             case DrawModeEnum.Disabled:

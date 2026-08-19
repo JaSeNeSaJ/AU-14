@@ -93,13 +93,23 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtChatTab = "CrtChatTab";
 
         /// <summary>
-        ///     The active channel tab. A real style class rather than the pressed pseudo-class: the
-        ///     tab bar marks its active tab with the <c>Pressed</c> property, which only raises that
-        ///     pseudo-class in toggle mode - so the selected tab rendered as resting while a merely
-        ///     hovered one lifted, making the active channel the darkest tab in the bar.
+        ///     The active channel tab. A real style class alongside the pressed pseudo-class, not
+        ///     instead of it. <see cref="Robust.Client.UserInterface.Controls.BaseButton.DrawMode"/>
+        ///     reports Pressed both for a button with <c>Pressed</c> set and for one with a click
+        ///     merely held on it, so the pseudo-class alone cannot tell a selected tab from a tab
+        ///     being clicked. This class carries the selection; the pseudo-class carries the input.
         /// </summary>
         public const string StyleClassCrtChatTabSelected = "CrtChatTabSelected";
         public const string StyleClassCrtChatInput = "CrtChatInput";
+
+        /// <summary>
+        ///     The channel chip at the left of the input row ("OOC", "SAY", a radio name). Its own
+        ///     class rather than <see cref="StyleClassCrtButton"/>: a CRT button is sized to be
+        ///     pressed, and at that size a three-letter chip became a slab filling most of the bar's
+        ///     height, which is what made it read as a box inside a box. The gallery draws it as a
+        ///     snug label - Surface2, accent text, 10x3 padding - so this matches those values.
+        /// </summary>
+        public const string StyleClassCrtChatChannelChip = "CrtChatChannelChip";
         public const string StyleClassCrtChatScrollBar = "CrtChatScrollBar";
         public const string StyleClassCrtChatPopup = "CrtChatPopup";
         public const string StyleClassCrtCheckBox = "CrtCheckBox";
@@ -747,28 +757,62 @@ namespace Content.Client.Stylesheets
             // near-black backing and a green outline on the theory that it must stay legible - but
             // legibility comes from the text colour against its ground, and Surface1 is still dark.
             // The outline was the last framed rectangle on the screen.
+            // Surface0 and NO content margins. This is the "one ground" change: this panel used to be
+            // Surface1 with 10px of padding, which made it a lighter wrapper around all three bands -
+            // and the 9px of it left showing on either side of the input bar is what read as a border
+            // around that bar, though nothing was ever stroked. As the darkest surface with zero
+            // padding it stops being a frame and becomes the ground the bands sit on.
+            //
+            // The padding it used to supply now lives on the log's own container, so the bands can go
+            // full bleed while their *contents* stay inset. See ChatBox.xaml's ChatPanes margin.
             var crtChatPanel = new StyleBoxFlat
             {
-                BackgroundColor = CrtTerminalPalette.Surface1,
+                BackgroundColor = CrtTerminalPalette.Surface0,
                 BorderThickness = new Thickness(0),
-                ContentMarginLeftOverride = 10,
-                ContentMarginRightOverride = 10,
             };
 
             // The lobby's chat input row. Top rule only - the chat panel already supplies the left,
             // right and bottom borders, so a full box here would double them up. The content margins
             // are inner padding: none on the left so the channel button sits as far out as the
             // message rows above it, a little on the right so the gear clears the panel border.
-            // Surface3 - the lightest tone, as the mock uses for the input bar and the header strip.
-            // It reads as the active band at the foot of the log without a rule above it to say so.
+            // Surface1, one step off the Surface0 ground - not Surface3. With the chat's ground now
+            // the darkest surface, one step is enough to mark the live line, and Surface3 on top of
+            // Surface0 is a jump wide enough that the bar reads as a separate plate laid on the
+            // panel. The channel is a prompt rather than a chip now (see crtChatChannelChip), so the
+            // bar no longer has to out-contrast a box sitting on it.
             var crtChatInput = new StyleBoxFlat
             {
-                BackgroundColor = CrtTerminalPalette.Surface3,
+                BackgroundColor = CrtTerminalPalette.Surface1,
                 BorderThickness = new Thickness(0),
-                ContentMarginLeftOverride = 10,
-                ContentMarginRightOverride = 10,
-                ContentMarginTopOverride = 6,
-                ContentMarginBottomOverride = 6,
+                ContentMarginLeftOverride = 12,
+                ContentMarginRightOverride = 12,
+                ContentMarginTopOverride = 8,
+                ContentMarginBottomOverride = 8,
+            };
+
+            // A prompt, not a chip: no fill. This was the last nested box on the row - a three-letter
+            // label in a box, in a bar, in a panel - and the label already says which channel in
+            // words, so the box was carrying no information the text did not. Accent text on the
+            // input band reads as a prompt, which is what it is.
+            //
+            // Padding stays small but non-zero, and identical in both states. A hover that changed
+            // the content margins would resize the control and shove the input field sideways every
+            // time the pointer crossed it.
+            var crtChatChannelChip = new StyleBoxFlat
+            {
+                BackgroundColor = Color.Transparent,
+                BorderThickness = new Thickness(0),
+                ContentMarginLeftOverride = 6,
+                ContentMarginRightOverride = 6,
+                ContentMarginTopOverride = 3,
+                ContentMarginBottomOverride = 3,
+            };
+
+            // Hover still needs to say "this is clickable", and with no resting fill to brighten,
+            // a fill is the only thing left. One step off the input band, which is Surface1.
+            var crtChatChannelChipHover = new StyleBoxFlat(crtChatChannelChip)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface2,
             };
 
             // A checkbox is a toggle, not a button - but CheckBox derives from ContainerButton, so
@@ -877,26 +921,41 @@ namespace Content.Client.Stylesheets
             // The channel-selector popup that sits on top of the chat input row. Deliberately much
             // tighter than CrtInsetPanel (8/8/6/6): this is a strip spanning the input bar, not a
             // window, and the CRT button chrome inside it already carries 3px + a border of its own.
+            // No fill at all when resting. This is the change that stops the tab strip reading as
+            // boxes: with nothing else filled, the selected tab cannot look like a chip stacked on a
+            // strip stacked on a panel. A resting tab is now just its label on the chat's ground.
+            // The bottom margin leaves room for the selected tab's underline so tabs do not shift
+            // vertically as selection moves between them.
             var crtChatTab = new StyleBoxFlat
             {
-                BackgroundColor = CrtTerminalPalette.Surface1,
+                BackgroundColor = Color.Transparent,
                 ContentMarginLeftOverride = 14,
                 ContentMarginRightOverride = 14,
                 ContentMarginTopOverride = 5,
                 ContentMarginBottomOverride = 5,
             };
 
+            // Hover is one step off the ground and no more. It has to be visible without competing
+            // with selection, which is now drawn in accent.
             var crtChatTabHover = new StyleBoxFlat(crtChatTab)
             {
-                BackgroundColor = CrtTerminalPalette.Surface3,
+                BackgroundColor = CrtTerminalPalette.Surface2,
             };
 
-            // Surface4, not Surface3. Hover already uses Surface3, so a selected tab that also used
-            // it was indistinguishable from a hovered one - the state that matters most looked like
-            // the state that matters least.
+            // Selection is a 2px accent rule, not a fill - agreed 2026-08-19 against the alternatives
+            // (inverted accent block, Surface4 fill). This is a deliberate exception to the theme's
+            // borderless rule and it earns it: the rule marks *selection*, it is accent-coloured so
+            // it cannot be mistaken for structure, and it never sits between two surfaces - which is
+            // exactly what made the Line hairline ambiguous everywhere else.
+            //
+            // The 2px comes out of the bottom content margin rather than adding to it, so a selected
+            // tab is the same height as a resting one.
             var crtChatTabSelected = new StyleBoxFlat(crtChatTab)
             {
-                BackgroundColor = CrtTerminalPalette.Surface4,
+                BackgroundColor = Color.Transparent,
+                BorderColor = CrtTerminalPalette.Accent,
+                BorderThickness = new Thickness(0, 0, 0, 2),
+                ContentMarginBottomOverride = 3,
             };
 
             var crtChatPopup = new StyleBoxFlat
@@ -1278,15 +1337,123 @@ namespace Content.Client.Stylesheets
                     .Prop(PanelContainer.StylePropertyPanel, crtDivider)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                // Every rule below carries a pseudo-class, and that is load-bearing rather than
+                // decorative. A tab button also gets StyleClassChatChannelSelectorButton, whose
+                // stock rule is Element<Button> + one class; Robust scores an element type by how
+                // far it sits below Control, so Button (3) outranks ContainerButton (2) and a
+                // plain Element<ContainerButton>().Class(CrtChatTab) rule lost to it outright, at
+                // every value it was ever given. Class selectors are compared before types, so the
+                // pseudo takes this side to two classes and the stock rule can no longer win.
+                //
+                // Pinning ModulateSelf is part of the same fix: the generic button rules set it
+                // per pseudo-class, and left alone they multiply the flat fills below by NanoUI's
+                // slate. Every CrtButton rule already does this - these were the odd ones out.
                 Element<ContainerButton>().Class(StyleClassCrtChatTab)
-                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTab),
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTab)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatTab)
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTab)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
 
                 Element<ContainerButton>().Class(StyleClassCrtChatTab)
                     .Pseudo(ContainerButton.StylePseudoClassHover)
-                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabHover),
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // An *inactive* tab renders pressed too, for as long as a click is held on it -
+                // DrawMode counts an in-progress press, not just the Pressed property. Without this
+                // rule that state fell through to the generic button rules and the tab flashed
+                // NanoUI slate on mouse-down. Held reads the same as hovered, which is the state it
+                // is already in.
+                Element<ContainerButton>().Class(StyleClassCrtChatTab)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // The active tab, which carries both classes - so these tie with the resting rules
+                // above on specificity and win only by sitting after them. Keep them in this order:
+                // it is what stops the pressed rule just above from claiming the active tab.
+                //
+                // Both call sites set Pressed, so the pressed variant is the one that normally
+                // fires and the active tab keeps its fill under the pointer - DrawMode checks
+                // Pressed before hover. The class is the second, independent signal: it is what
+                // distinguishes a genuinely selected tab from one that merely has a click held on
+                // it, since DrawMode reports both as pressed.
+                Element<ContainerButton>().Class(StyleClassCrtChatTabSelected)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
 
                 Element<ContainerButton>().Class(StyleClassCrtChatTabSelected)
-                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected),
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatTabSelected)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatTabSelected)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // The channel chip. Pseudo variants for the same reason the tab rules have them:
+                // this control also carries chatSelectorOptionButton, whose stock rule is on the
+                // deeper Button type and outranks a one-class rule here.
+                Element<ContainerButton>().Class(StyleClassCrtChatChannelChip)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatChannelChip)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatChannelChip)
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatChannelChip)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtChatChannelChip)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatChannelChipHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // Open (the popup is showing) reads the same as hover - it is the same "you are
+                // touching this" state, and the popup itself is the real feedback.
+                Element<ContainerButton>().Class(StyleClassCrtChatChannelChip)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtChatChannelChipHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // Accent, not the channel's own colour. The gallery carries channel identity in the
+                // log prefix only; the chip already says which channel in words, so colouring it
+                // per-channel just put an off-palette hue on the busiest row of the panel.
+                Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatChannelChip))
+                    .Child(Element<Label>())
+                    .Prop(Label.StylePropertyFontColor, useCrtUi ? CrtTerminalPalette.Accent : Color.White),
+
+                // The chat input itself. There was no CRT rule for this class at all, so the typed
+                // text and the placeholder stayed NanoUI's proportional grey (#D6DCE0) while every
+                // surface around them had gone terminal - the single biggest reason the input row
+                // did not read as a terminal. StyleBoxEmpty matches the stock rule: the bar behind
+                // it already supplies the fill and padding.
+                Element<LineEdit>().Class(StyleClassChatLineEdit)
+                    .Prop(LineEdit.StylePropertyStyleBox, new StyleBoxEmpty())
+                    .Prop("font", crtLineEditFont)
+                    .Prop("font-color", useCrtUi ? CrtTerminalPalette.Text : Color.FromHex("#D6DCE0"))
+                    .Prop(LineEdit.StylePropertyCursorColor, useCrtUi ? CrtTerminalPalette.Accent : Color.White)
+                    .Prop(LineEdit.StylePropertySelectionColor, crtSelectionColor),
+
+                Element<LineEdit>().Class(StyleClassChatLineEdit)
+                    .Pseudo(LineEdit.StylePseudoClassPlaceholder)
+                    .Prop("font-color", useCrtUi ? CrtTerminalPalette.TextDim : Color.FromHex("#7F8792")),
+
+                // Chat chrome takes the same font as the message bodies. RichTextLabel can only be
+                // given a font through the stylesheet, so the bodies are pinned to crtRichTextFont
+                // (uavOsd 8) and everything beside them has to match or the panel reads as chrome
+                // laid over a log rather than as one terminal. This was a real mismatch: the channel
+                // chip was 12 against text at 8, half again as large.
+                Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatTab))
+                    .Child(Element<Label>())
+                    .Prop(Label.StylePropertyFont, crtRichTextFont),
+
+                Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatChannelChip))
+                    .Child(Element<Label>())
+                    .Prop(Label.StylePropertyFont, crtRichTextFont),
 
                 Element<PanelContainer>().Class(StyleClassCrtChatPanel)
                     .Prop(PanelContainer.StylePropertyPanel, crtChatPanel)
