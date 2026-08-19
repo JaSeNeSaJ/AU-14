@@ -24,8 +24,10 @@
                  that panel became the chat's full-bleed Surface0 ground: the bands (tab strip, log,
                  input row) now run edge to edge, and only their *contents* are inset. Message rows
                  add 6 of their own, so text lands 15 from the panel edge, matching the mock.
+                 The right side is 3, not 9: the scrollbar lives inside this container, so whatever
+                 is set here is added to the bar's own width before anything reaches the panel edge.
                  No bottom margin - the input row sits directly on the log. -->
-            <BoxContainer Name="ChatPanes" Access="Public" Orientation="Vertical" SeparationOverride="2" HorizontalExpand="True" VerticalExpand="True" Margin="9 2 9 0">
+            <BoxContainer Name="ChatPanes" Access="Public" Orientation="Vertical" SeparationOverride="2" HorizontalExpand="True" VerticalExpand="True" Margin="9 2 3 0">
                 <widgets:ChatLogPanel Name="Contents" Access="Public" HorizontalExpand="True" VerticalExpand="True" />
                 <BoxContainer Name="SecondaryPane" Access="Public" Visible="False" Orientation="Vertical" SeparationOverride="0" HorizontalExpand="True" VerticalExpand="True">
                     <widgets:ChatSplitResizeHandle Name="SecondaryResizeHandle" Access="Public" HorizontalExpand="True" MinHeight="4"/>

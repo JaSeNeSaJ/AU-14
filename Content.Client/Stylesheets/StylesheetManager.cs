@@ -19,11 +19,13 @@ namespace Content.Client.Stylesheets
         {
             StyleNano.SetCrtUiEnabled(_configurationManager.GetCVar(CCVars.CrtUiEnabled));
             StyleNano.SetCrtPalette(_configurationManager.GetCVar(CCVars.CrtUiColor));
+            StyleNano.SetChatReadableFont(_configurationManager.GetCVar(CCVars.CMUChatReadableFont));
             RefreshNanoSheet();
             SheetSpace = new StyleSpace(_resourceCache).Stylesheet;
 
             _configurationManager.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledChanged);
             _configurationManager.OnValueChanged(CCVars.CrtUiColor, OnCrtUiColorChanged);
+            _configurationManager.OnValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontChanged);
         }
 
         public void PreviewCrtUi(bool enabled, string color)
@@ -49,6 +51,17 @@ namespace Content.Client.Stylesheets
         private void OnCrtUiColorChanged(string color)
         {
             StyleNano.SetCrtPalette(color);
+            RefreshNanoSheet();
+        }
+
+        /// <summary>
+        ///     Rebuilding the sheet is only half of it - message rows and the channel prompt bake a
+        ///     FontOverride at construction and will not pick a new one up. ChatBox listens to the
+        ///     same cvar and rebuilds itself; see ChatBox.OnChatReadableFontChanged.
+        /// </summary>
+        private void OnChatReadableFontChanged(bool enabled)
+        {
+            StyleNano.SetChatReadableFont(enabled);
             RefreshNanoSheet();
         }
 

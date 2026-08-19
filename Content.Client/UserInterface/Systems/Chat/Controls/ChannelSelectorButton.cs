@@ -33,12 +33,13 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
             // inside a box. See StyleClassCrtChatChannelChip.
             AddStyleClass(StyleNano.StyleClassCrtChatChannelChip);
 
-            // 8, matching the message bodies. RichTextLabel takes its font only from the stylesheet,
-            // so the log is pinned to uavOsd 8 and this has to meet it there - at 12 the prompt was
-            // half again the size of the text beside it.
+            // Matches the message bodies, whichever face those are currently using. RichTextLabel
+            // takes its font only from the stylesheet, so the log is pinned there and this has to
+            // meet it - at 12 against a log at 8 the prompt was half again the size of the text
+            // beside it.
             // FontOverride rather than a style class: the CRT rule sizes every button label through
             // a single parent-child selector that a competing class would only tie with.
-            Label.FontOverride = StyleNano.GetCrtFont(IoCManager.Resolve<IResourceCache>(), 8);
+            RefreshChatFont();
         }
 
         Popup.Selected += OnChannelSelected;
@@ -47,6 +48,19 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
         {
             Select(firstSelector);
         }
+    }
+
+    /// <summary>
+    ///     Re-read the chat font. Called when the readable-font option changes: a FontOverride set at
+    ///     construction survives a stylesheet rebuild, so the prompt would otherwise be the one thing
+    ///     on the row still in the old face.
+    /// </summary>
+    public void RefreshChatFont()
+    {
+        if (!StyleNano.CrtUiEnabled)
+            return;
+
+        Label.FontOverride = StyleNano.GetChatFont(IoCManager.Resolve<IResourceCache>());
     }
 
     protected override UIBox2 GetPopupPosition()

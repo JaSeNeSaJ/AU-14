@@ -103,6 +103,15 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtChatInput = "CrtChatInput";
 
         /// <summary>
+        ///     A chat message body. Its own class rather than <see cref="StyleClassCrtRichText"/>,
+        ///     which is shared with the guidebook and the lobby's text blocks: chat has a readable-font
+        ///     accessibility option (<see cref="CCVars.CMUChatReadableFont"/>) and those must not
+        ///     follow it. <see cref="RichTextLabel"/> takes its font only from the stylesheet, so this
+        ///     class is the only way to reach a message body's typeface at all.
+        /// </summary>
+        public const string StyleClassCrtChatText = "CrtChatText";
+
+        /// <summary>
         ///     The channel chip at the left of the input row ("OOC", "SAY", a radio name). Its own
         ///     class rather than <see cref="StyleClassCrtButton"/>: a CRT button is sized to be
         ///     pressed, and at that size a three-letter chip became a slab filling most of the bar's
@@ -201,6 +210,7 @@ namespace Content.Client.Stylesheets
 
         private static CrtPalette _crtPalette = CrtPalette.Green;
         private static bool _crtUiEnabled = true;
+        private static bool _chatReadableFont;
         private static readonly Color DefaultCrtBackground = Color.FromHex("#07090B");
         private static readonly Color DefaultCrtPanelBackground = Color.FromHex("#25252A");
         private static readonly Color DefaultCrtPanelBackgroundAlt = Color.FromHex("#202023");
@@ -266,6 +276,39 @@ namespace Content.Client.Stylesheets
         public static void SetCrtUiEnabled(bool enabled)
         {
             _crtUiEnabled = enabled;
+        }
+
+        /// <summary>
+        ///     Chat is drawn in a plain proportional face rather than the terminal one. Accessibility
+        ///     option; see <see cref="CCVars.CMUChatReadableFont"/> for why it exists.
+        /// </summary>
+        public static bool ChatReadableFont => _chatReadableFont;
+
+        public static void SetChatReadableFont(bool enabled)
+        {
+            _chatReadableFont = enabled;
+        }
+
+        /// <summary>Point size chat uses in terminal mode. Must match <c>crtChatFont</c>.</summary>
+        public const int ChatCrtFontSize = 8;
+
+        /// <summary>
+        ///     Point size chat uses in readable mode. Larger than the terminal size on purpose: the
+        ///     8px that suits a dense all-caps face is small for a proportional one, and the whole
+        ///     point of the option is legibility.
+        /// </summary>
+        public const int ChatReadableFontSize = 12;
+
+        /// <summary>
+        ///     The font chat should use right now. For the controls that set a FontOverride directly
+        ///     rather than taking one from a rule - anything whose stylesheet rule would only tie on
+        ///     specificity.
+        /// </summary>
+        public static Font GetChatFont(IResourceCache resCache)
+        {
+            return _chatReadableFont
+                ? resCache.NotoStack(size: ChatReadableFontSize)
+                : GetCrtFont(resCache, ChatCrtFontSize);
         }
 
         private sealed class CrtPalette
@@ -595,6 +638,18 @@ namespace Content.Client.Stylesheets
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
             var crtRichTextFont = useCrtUi ? uavOsd14 : notoSans12;
+
+            // Chat's own font, kept separate from crtRichTextFont on purpose. That one is shared with
+            // the guidebook, the lobby's server info and every other rich-text block, and the
+            // readable-chat option must not drag those with it - it exists to make *conversation*
+            // legible, not to opt out of the theme. See CCVars.CMUChatReadableFont.
+            var crtChatFont = useCrtUi && !ChatReadableFont
+                ? uavOsd14
+                : resCache.NotoStack(size: ChatReadableFontSize);
+
+            // The OSD face has tight vertical metrics and needs the extra leading; NotoSans does not,
+            // and at 1.25 it looks gappy rather than airy.
+            var crtChatLineHeight = useCrtUi && !ChatReadableFont ? 1.25f : 1.0f;
             var crtServerInfoFont = useCrtUi ? uavOsdServerInfo : notoSans12;
             // Sized to leave room for the job line underneath without crowding the sprite beside it.
             var crtCharacterSummaryFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 9) : notoSans12;
@@ -1053,6 +1108,12 @@ namespace Content.Client.Stylesheets
             // greens, so a button sitting on a ladder surface read as a foreign box laid on top -
             // which is what made a plain filled chip look like it had a border round it. States are
             // the ladder's own steps, so a button is simply a surface one level up from its ground.
+            // Top and bottom are 6/4, not 5/5, and the asymmetry is on purpose. The uavOsd face is
+            // all-caps and its line box reserves descender room that a label like AHELP or CUSTOMIZE
+            // never uses, so centring the *box* leaves the visible ink sitting about 3px high in
+            // every button. Measured at padTop=4/padBottom=7 across AHELP, CALL VOTE, CUSTOMIZE and
+            // IGNORE ALLEGIANCE before this; 1px out after, with the button height unchanged.
+            // Re-measure if the button font size ever changes - this compensates for one metric.
             var crtButton = new CrtStyleBox
             {
                 BackgroundColor = CrtTerminalPalette.Surface2,
@@ -1060,8 +1121,8 @@ namespace Content.Client.Stylesheets
                 DrawCornerTicks = false,
                 ContentMarginLeftOverride = 12,
                 ContentMarginRightOverride = 12,
-                ContentMarginTopOverride = 5,
-                ContentMarginBottomOverride = 5
+                ContentMarginTopOverride = 6,
+                ContentMarginBottomOverride = 4
             };
 
             var crtButtonHover = new CrtStyleBox(crtButton)
@@ -1433,7 +1494,7 @@ namespace Content.Client.Stylesheets
                 // it already supplies the fill and padding.
                 Element<LineEdit>().Class(StyleClassChatLineEdit)
                     .Prop(LineEdit.StylePropertyStyleBox, new StyleBoxEmpty())
-                    .Prop("font", crtLineEditFont)
+                    .Prop("font", crtChatFont)
                     .Prop("font-color", useCrtUi ? CrtTerminalPalette.Text : Color.FromHex("#D6DCE0"))
                     .Prop(LineEdit.StylePropertyCursorColor, useCrtUi ? CrtTerminalPalette.Accent : Color.White)
                     .Prop(LineEdit.StylePropertySelectionColor, crtSelectionColor),
@@ -1447,13 +1508,21 @@ namespace Content.Client.Stylesheets
                 // (uavOsd 8) and everything beside them has to match or the panel reads as chrome
                 // laid over a log rather than as one terminal. This was a real mismatch: the channel
                 // chip was 12 against text at 8, half again as large.
+                // Message bodies. RichTextLabel has no FontOverride, so this rule is the only route
+                // to their typeface - which is also why the readable-font option has to be a
+                // stylesheet concern rather than something set on the control.
+                Element<RichTextLabel>().Class(StyleClassCrtChatText)
+                    .Prop("font", crtChatFont)
+                    .Prop(nameof(RichTextLabel.LineHeightScale), crtChatLineHeight),
+
                 Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatTab))
                     .Child(Element<Label>())
-                    .Prop(Label.StylePropertyFont, crtRichTextFont),
+                    .Prop(Label.StylePropertyFont, crtChatFont)
+                    .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
                 Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatChannelChip))
                     .Child(Element<Label>())
-                    .Prop(Label.StylePropertyFont, crtRichTextFont),
+                    .Prop(Label.StylePropertyFont, crtChatFont),
 
                 Element<PanelContainer>().Class(StyleClassCrtChatPanel)
                     .Prop(PanelContainer.StylePropertyPanel, crtChatPanel)
@@ -1611,10 +1680,16 @@ namespace Content.Client.Stylesheets
                     .Prop(Label.StylePropertyFontColor, crtTextColor)
                     .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
+                // AlignMode.Center was missing here, so every CRT button label sat left in a button
+                // wider than its text - visible on AHELP, CALL VOTE, OPTIONS, CUSTOMIZE, anything
+                // whose box is set by a MinWidth or a shared column rather than by the text. The
+                // CrtNativeButtonLabel rule immediately below has always centred; this one just
+                // never got the same line.
                 Child().Parent(Element<Button>().Class(StyleClassCrtButton))
                     .Child(Element<Label>())
                     .Prop(Label.StylePropertyFont, crtButtonLabelFont)
-                    .Prop(Label.StylePropertyFontColor, crtTextColor),
+                    .Prop(Label.StylePropertyFontColor, crtTextColor)
+                    .Prop(Label.StylePropertyAlignMode, Label.AlignMode.Center),
 
                 Element<Label>().Class(StyleClassCrtNativeButtonLabel)
                     .Prop(Label.StylePropertyFont, notoSans12)

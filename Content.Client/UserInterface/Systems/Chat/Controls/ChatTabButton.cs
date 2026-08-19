@@ -44,7 +44,15 @@ public sealed class ChatTabButton : Button
         // than via CrtLobbyTheme because tabs are created and destroyed as channels change, and that
         // pass only tags controls that already exist when it runs.
         if (StyleNano.CrtUiEnabled)
+        {
             AddStyleClass(StyleNano.StyleClassCrtChatTab);
+
+            // Tabs carry a MinWidth of at least 58, so the label is narrower than the button and
+            // would sit at its left edge - with the selection underline spanning the full width, an
+            // active tab's rule looked offset from its own text. See CrtLobbyTheme.ApplyControl for
+            // why this cannot come from the stylesheet.
+            Label.HorizontalExpand = true;
+        }
     }
 
     public void SetDragVisualState(bool dragging, bool dropTarget)

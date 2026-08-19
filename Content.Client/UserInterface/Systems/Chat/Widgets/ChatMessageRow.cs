@@ -20,19 +20,17 @@ public sealed partial class ChatMessageRow : PanelContainer
     [Dependency] private IResourceCache _resourceCache = default!;
 
     /// <summary>
-    ///     Size of the side labels under CRT. Must track <c>crtRichTextFont</c> in
-    ///     <c>StyleNanoCrt</c> (<c>uavOsd</c> 8), which is what pins the message bodies.
-    /// </summary>
-    private const int CrtMessageFontSize = 8;
-
-    /// <summary>
     ///     Line spacing for CRT message bodies. The uavOsd face has very tight vertical metrics, so
     ///     the ~1.06 the base theme uses leaves wrapped messages with almost no gap between lines.
-    ///     Matches the value <c>StyleClassCrtRichText</c> sets, which cannot apply here because
-    ///     <see cref="RichTextLabel.LineHeightScale"/> is set directly on the control and a direct
-    ///     set beats the stylesheet.
+    ///     The readable font does not have that problem and looks gappy at 1.25.
     /// </summary>
-    private const float CrtLineHeightScale = 1.25f;
+    /// <remarks>
+    ///     Has to be set on the control even though <c>CrtChatText</c> carries the same value: a
+    ///     direct set of <see cref="RichTextLabel.LineHeightScale"/> beats the stylesheet, so leaving
+    ///     it to the rule would mean whatever the base theme's metrics happened to be. Keep the two
+    ///     in step.
+    /// </remarks>
+    private static float CrtLineHeightScale => StyleNano.ChatReadableFont ? 1.0f : 1.25f;
 
     private readonly Label _repeatBadge;
     private readonly RichTextLabel _messageLabel;
@@ -85,7 +83,7 @@ public sealed partial class ChatMessageRow : PanelContainer
         // away from a body that cannot move. Making chat text scalable under CRT means emitting a
         // [font size=N] tag into the markup; until then these stay locked together.
         var sideFont = StyleNano.CrtUiEnabled
-            ? StyleNano.GetCrtFont(_resourceCache, CrtMessageFontSize)
+            ? StyleNano.GetChatFont(_resourceCache)
             : fontSize == null
                 ? null
                 : _resourceCache.GetFont("/Fonts/NotoSans/NotoSans-Regular.ttf", fontSize.Value);
@@ -132,7 +130,7 @@ public sealed partial class ChatMessageRow : PanelContainer
         // of what stopped the chat reading as a terminal, and it is invisible from the outside
         // because nothing errors and the text still appears.
         if (StyleNano.CrtUiEnabled)
-            _messageLabel.AddStyleClass(StyleNano.StyleClassCrtRichText);
+            _messageLabel.AddStyleClass(StyleNano.StyleClassCrtChatText);
 
         _messageLabel.SetMessage(formatted, defaultColor: textColor);
         row.AddChild(_messageLabel);
@@ -235,16 +233,22 @@ public sealed partial class ChatMessageRow : PanelContainer
 
     private static RowMetrics GetMetrics(int? fontSize)
     {
-        if (fontSize == null)
-            return new RowMetrics(2, 4, 0, 1.06f, 42, 25, 16, 10);
+        var metrics = fontSize == null
+            ? new RowMetrics(2, 4, 0, 1.06f, 42, 25, 16, 10)
+            : fontSize.Value switch
+            {
+                <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 20, 14, 8),
+                <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 22, 15, 9),
+                <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 24, 16, 10),
+                _ => new RowMetrics(2, 4, 0, 1.06f, 42, 25, 18, 11)
+            };
 
-        return fontSize.Value switch
-        {
-            <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 20, 14, 8),
-            <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 22, 15, 9),
-            <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 24, 16, 10),
-            _ => new RowMetrics(2, 4, 0, 1.06f, 42, 25, 18, 11)
-        };
+        // No corner accent triangle under CRT, and that is mostly about space rather than taste.
+        // Every row reserved 4 + AccentSize on its right edge to keep text clear of the wedge, which
+        // with the pane margin and the scrollbar made the right-hand gutter about twice the width of
+        // the left. The triangle was also saying what the prefix column already says twice over - in
+        // words and in the same colour - so it was the obvious thing to spend.
+        return StyleNano.CrtUiEnabled ? metrics with { AccentSize = 0 } : metrics;
     }
 
     private static string? GetChannelLabel(ChatMessage message)

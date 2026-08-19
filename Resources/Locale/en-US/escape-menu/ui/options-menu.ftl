@@ -1,4 +1,4 @@
-## General stuff
+﻿## General stuff
 
 ui-options-title = Game Options
 ui-options-tab-accessibility = Accessibility
@@ -367,6 +367,8 @@ ui-options-accessability-header-highlights = Chat highlights
 ui-options-enable-color-name = Add colors to character names
 ui-options-colorblind-friendly = Colorblind friendly mode
 ui-options-crt-ui-enabled = Use CRT UI theme
+ui-options-crt-chat-readable-font = Readable chat font
+ui-options-crt-chat-readable-font-tooltip = Draws chat in a plain font instead of the terminal one, which has no lowercase letters. The rest of the CRT theme is unaffected.
 ui-options-crt-ui-color = UI colour
 ui-options-crt-ui-color-green = Green (default)
 ui-options-crt-ui-color-blue = Blue

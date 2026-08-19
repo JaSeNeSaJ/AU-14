@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+using Content.Client._CMU14.Interface;
 using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
 using Content.Shared.CCVar;
@@ -25,6 +26,8 @@ namespace Content.Client.Voting.UI
 
         private readonly VoteManager.ActiveVote _vote;
         private readonly Button[] _voteButtons;
+        // Only populated under CRT, where each option is a bar with its count on the right.
+        private readonly Label[] _voteCounts;
         private readonly NetEntity? _targetEntity;
         private int _optionColumns = -1;
         private int _optionMinWidth = -1;
@@ -76,6 +79,7 @@ namespace Content.Client.Voting.UI
 
             Modulate = Color.White.WithAlpha(0.96f);
             _voteButtons = new Button[vote.Entries.Length];
+            _voteCounts = new Label[vote.Entries.Length];
             var group = new ButtonGroup();
 
             for (var i = 0; i < _voteButtons.Length; i++)
@@ -88,12 +92,28 @@ namespace Content.Client.Voting.UI
                     MinHeight = OptionMinHeight,
                     ClipText = false,
                     RectClipContent = false,
-                    TextAlign = Label.AlignMode.Center,
+                    TextAlign = StyleNano.CrtUiEnabled ? Label.AlignMode.Left : Label.AlignMode.Center,
                     StyleClasses = { StyleNano.StyleClassCrtButton }
                 };
                 button.Label.AddStyleClass(StyleNano.StyleClassCrtButtonLabel);
                 button.Label.HorizontalExpand = true;
                 button.Label.VAlign = Label.VAlignMode.Center;
+
+                if (StyleNano.CrtUiEnabled)
+                {
+                    // The count is its own label so it can sit hard right while the name stays left -
+                    // a Button has exactly one Label and it cannot align two things at once.
+                    var count = new Label
+                    {
+                        HorizontalAlignment = HAlignment.Right,
+                        VerticalAlignment = VAlignment.Center,
+                        Margin = new Thickness(0, 0, 10, 0),
+                    };
+                    count.AddStyleClass(StyleNano.StyleClassCrtButtonLabel);
+                    button.AddChild(count);
+                    _voteCounts[i] = count;
+                }
+
                 _voteButtons[i] = button;
                 VoteOptionsContainer.AddChild(button);
                 var i1 = i;
@@ -172,6 +192,14 @@ namespace Content.Client.Voting.UI
             MinimizedTitle.Text = _vote.Title;
             var buttonTexts = new string[_voteButtons.Length];
 
+            // Total, not max: a bar should read as this option's share of the vote, so a lone vote in
+            // a four-way split is a quarter bar rather than a full one.
+            var totalVotes = 0;
+            foreach (var e in _vote.Entries)
+            {
+                totalVotes += e.Votes;
+            }
+
             for (var i = 0; i < _voteButtons.Length; i++)
             {
                 var entry = _vote.Entries[i];
@@ -185,9 +213,36 @@ namespace Content.Client.Voting.UI
                     buttonText = Loc.GetString("ui-vote-button-no-votes", ("text", entry.Text));
                 }
 
+                // Reflow still measures the combined string. It is what decides how wide an option
+                // has to be, and under CRT the name and the count are drawn at opposite ends of that
+                // same width - so the text it measures has to include both.
                 buttonTexts[i] = buttonText;
-                _voteButtons[i].Text = buttonText;
                 _voteButtons[i].ToolTip = buttonText;
+
+                if (StyleNano.CrtUiEnabled)
+                {
+                    _voteButtons[i].Text = entry.Text;
+                    _voteButtons[i].StyleBoxOverride = new CmuVoteBarStyleBox
+                    {
+                        TrackColor = CrtTerminalPalette.Surface1,
+                        FillColor = CrtTerminalPalette.Surface3,
+                        AccentColor = CrtTerminalPalette.Accent,
+                        Fraction = totalVotes > 0 ? entry.Votes / (float) totalVotes : 0f,
+                        IsOurVote = _vote.OurVote == i,
+                    };
+
+                    if (_voteCounts[i] is { } count)
+                    {
+                        count.Text = _vote.DisplayVotes ? entry.Votes.ToString() : string.Empty;
+                        count.FontColorOverride = entry.Votes > 0
+                            ? CrtTerminalPalette.TextBright
+                            : CrtTerminalPalette.TextDim;
+                    }
+                }
+                else
+                {
+                    _voteButtons[i].Text = buttonText;
+                }
 
                 if (_vote.OurVote == i)
                     _voteButtons[i].Pressed = true;
@@ -214,7 +269,10 @@ namespace Content.Client.Voting.UI
 
             var scale = OptionScale;
             var longest = GetLongestTextLine(texts);
-            var columns = GetOptionColumns(texts.Length, longest, scale);
+            // One column under CRT. The options are bars now, and bars are only comparable when they
+            // share a baseline and a width - side by side in three columns they are four unrelated
+            // rectangles rather than one chart.
+            var columns = StyleNano.CrtUiEnabled ? 1 : GetOptionColumns(texts.Length, longest, scale);
             var minWidth = (int) (GetOptionMinWidth(columns, longest) * scale);
             var minHeight = (int) ((longest > TallOptionTextLength ? TallOptionMinHeight : OptionMinHeight) * scale);
 

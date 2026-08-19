@@ -1,4 +1,5 @@
-using System.Numerics;
+﻿using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Content.Shared.Chat;
 using Robust.Client.Graphics;
@@ -113,12 +114,19 @@ public sealed class ChatLogPanel : PanelContainer
 
         if (StyleNano.CrtUiEnabled)
         {
-            // The class is for the label's colour, which then tracks the palette. The size comes
-            // from a FontOverride because the CRT button rule sets every button label to 8px, and a
-            // competing style class would only tie it on specificity.
+            // Sized to the log, not above it. This was 12 against a chat that is 8 everywhere else,
+            // so the one control that appears over the messages was also the largest text in the
+            // panel. Accent rather than body text because it is the only thing here that is an
+            // action - and with the fill deliberately removed, colour is all it has left to say so.
             _scrollToLatest.AddStyleClass(StyleNano.StyleClassCrtButton);
             _scrollToLatest.Label.FontOverride =
-                StyleNano.GetCrtFont(IoCManager.Resolve<IResourceCache>(), 12);
+                StyleNano.GetChatFont(IoCManager.Resolve<IResourceCache>());
+            _scrollToLatest.Label.FontColorOverride = CrtTerminalPalette.Accent;
+            _scrollToLatest.MinSize = new Vector2(160, 20);
+            // The button is 160 wide and the label is not, so without this the text sits at its left
+            // edge rather than under the middle of the log. See CrtLobbyTheme.ApplyControl - chat is
+            // skipped by that walk, so it has to be repeated here.
+            _scrollToLatest.Label.HorizontalExpand = true;
         }
 
         _scrollToLatest.OnPressed += _ => ScrollToBottom();

@@ -30,6 +30,12 @@ public sealed partial class CmuTab : Control
         crtUiEnabled.PreviewValueChanged += UpdateCrtUiOptionsPreview;
         crtUiColor.PreviewValueChanged += UpdateCrtUiOptionsPreview;
 
+        // Not previewed like the two above, and not hidden when CRT is off either - it only does
+        // anything under the CRT theme, but it is an accessibility setting and hiding it behind
+        // another toggle is how people fail to find it. It applies on Apply like every other
+        // checkbox here.
+        Control.AddOptionCheckBox(CCVars.CMUChatReadableFont, ChatReadableFontCheckBox);
+
         Control.AddOptionCheckBox(CCVars.ChatEnableRunechatBubbles, RunechatSpeechBubblesCheckBox);
         Control.AddOptionPercentSlider(CCVars.ChatRunechatBubbleScale, RunechatSpeechBubbleScaleSlider, 0.5f, 2f);
         Control.AddOptionCheckBox(CCVars.CMUVoteUiLarge, VoteUiLargeCheckBox);

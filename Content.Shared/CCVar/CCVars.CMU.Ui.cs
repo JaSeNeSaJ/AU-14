@@ -54,6 +54,26 @@ public sealed partial class CCVars
     public static readonly CVarDef<string> CMUChatMock =
         CVarDef.Create("cmu.chatmock", "", CVar.CLIENTONLY);
 
+    /// <summary>
+    ///     Draw chat in a plain proportional face instead of the terminal one, leaving the rest of
+    ///     the CRT theme alone. An accessibility option, not a cosmetic one.
+    /// </summary>
+    /// <remarks>
+    ///     <para>
+    ///     The uavOsd face the CRT theme uses is all-caps by design - it has no lowercase glyphs at
+    ///     all - so every message in the log renders shouting whatever the sender typed. That is
+    ///     fine for the handful of words on a piece of chrome and hard work for a conversation,
+    ///     especially at the 8px the terminal look wants. This swaps the chat's font only.
+    ///     </para>
+    ///     <para>
+    ///     ARCHIVE, because someone who needs it needs it every session. Deliberately independent of
+    ///     <see cref="CrtUiEnabled"/>: turning the whole theme off to make chat readable is exactly
+    ///     the trade this exists to avoid.
+    ///     </para>
+    /// </remarks>
+    public static readonly CVarDef<bool> CMUChatReadableFont =
+        CVarDef.Create("cmu.chat_readable_font", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
     public static readonly CVarDef<float> CMUCrtEffectIntensity =
         CVarDef.Create("cmu.crt_effect_intensity", 0.5f, CVar.CLIENTONLY | CVar.ARCHIVE);
 

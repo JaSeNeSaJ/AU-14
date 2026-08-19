@@ -57,6 +57,16 @@ internal static class CrtLobbyTheme
         {
             case Button button:
                 AddClass(button, StyleNano.StyleClassCrtButton);
+
+                // Centring a button label takes two things, and the stylesheet can only do one of
+                // them. AlignMode centres the text inside the Label's own box; this makes that box
+                // actually span the button. Without it the Label is exactly text-width, AlignMode
+                // has nothing to centre within, and the label sits left in any button whose width
+                // comes from a MinWidth or a shared column - AHELP, CUSTOMIZE, CALL VOTE.
+                // HorizontalExpand is a plain property, not a style property, so it cannot be set
+                // from a rule and has to happen here.
+                button.Label.HorizontalExpand = true;
+
                 if (useCrtTypography)
                 {
                     button.Label.RemoveStyleClass(StyleNano.StyleClassCrtNativeButtonLabel);

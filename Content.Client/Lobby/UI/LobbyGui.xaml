@@ -41,25 +41,29 @@
                                            StyleClasses="CrtDimText" Visible="False" />
                                 </BoxContainer>
 
-                                <!-- Two buttons wide, and only ever two on this row: ReadyButton
-                                     pre-round, JoinRoundButton once the round is running. The four
-                                     faction choices moved into JoinRoundWindow - they are one
-                                     decision taken once, not something worth four permanent slots. -->
-                                <GridContainer Name="ActionButtons" Columns="2" HorizontalExpand="True"
-                                               HSeparationOverride="6" VSeparationOverride="4">
+                                <!-- Ranked, not a grid of equals. Only one of Ready/Join is ever
+                                     visible - whichever it is, it is the thing you came here to do,
+                                     so it gets the full width and the taller box. Observe sits under
+                                     it at a smaller height: a real action, but not the one being
+                                     offered. Side by side at identical size they read as a choice
+                                     between two equivalent things, which they are not.
+                                     The four faction choices moved into JoinRoundWindow - they are
+                                     one decision taken once, not four permanent slots. -->
+                                <BoxContainer Name="ActionButtons" Orientation="Vertical"
+                                              HorizontalExpand="True" SeparationOverride="4">
                                     <Button Name="ReadyButton" Access="Public" ToggleMode="True"
                                             Text="{Loc 'ui-lobby-ready-up-button'}"
-                                            StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True" />
+                                            StyleClasses="ButtonBig" MinHeight="36" HorizontalExpand="True" />
                                     <!-- RMC14/AU -->
                                     <Button Name="JoinRoundButton" Access="Public"
                                             Text="{Loc 'cmu-lobby-join-round'}"
-                                            StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True"
+                                            StyleClasses="ButtonBig" MinHeight="36" HorizontalExpand="True"
                                             Visible="False" />
                                     <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public"
                                                         Text="{Loc 'ui-lobby-observe-button'}"
-                                                        StyleClasses="ButtonBig" MinHeight="28" HorizontalExpand="True"
+                                                        StyleClasses="ButtonBig" MinHeight="26" HorizontalExpand="True"
                                                         WindowType="{x:Type lobbyUi:ObserveWarningWindow}" />
-                                </GridContainer>
+                                </BoxContainer>
 
                                 <!-- Reference links share the action grid's metrics but sit under a
                                      rule, so Rules doesn't read as another faction choice. -->

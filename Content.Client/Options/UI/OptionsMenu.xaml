@@ -9,9 +9,12 @@
          sibling rather than a parent. -->
     <Control>
         <Control Name="CrtContent" HorizontalExpand="True" VerticalExpand="True">
-            <!-- No CrtPanel wrapper. The window frame is one border and the TabContainer draws its own
-                 panel under the tab strip; a panel between them was a third concentric rectangle that added
-                 nothing but a rule and 10px of inset. -->
+            <!-- CrtPanelFill, not CrtPanel: a plain ground with no border and no inset, so this is
+                 still not a third concentric rectangle. It exists because TabContainer paints its
+                 panel only *below* the tab strip - the strip itself is left transparent, and inside
+                 the CRT render target transparent came out white past the last tab. Same rule as the
+                 chat: give it a ground rather than leaving a hole. -->
+            <PanelContainer StyleClasses="CrtPanelFill" HorizontalExpand="True" VerticalExpand="True">
             <TabContainer Name="Tabs" Access="Public" StyleClasses="CrtTabContainer" VerticalExpand="True" HorizontalExpand="True">
                 <tabs:MiscTab Name="MiscTab" />
                 <tabs:GraphicsTab Name="GraphicsTab" />
@@ -22,6 +25,7 @@
                 <tabs:CmuTab Name="CmuTab" />
                 <tabs:AdminOptionsTab Name="AdminOptionsTab" />
             </TabContainer>
+            </PanelContainer>
         </Control>
         <cmu:CrtScreenControl Name="CrtOverlay" HorizontalExpand="True" VerticalExpand="True" />
     </Control>

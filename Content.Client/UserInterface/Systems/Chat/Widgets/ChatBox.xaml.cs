@@ -159,6 +159,7 @@ public partial class ChatBox : UIWidget
         _controller.RegisterChat(this);
         _config.OnValueChanged(CCVars.ChatLegacyMode, OnLegacyModeCvarChanged);
         _config.OnValueChanged(CCVars.ChatColorWholeMessage, OnColorWholeMessageCvarChanged);
+        _config.OnValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontCvarChanged);
 
         _tabs = ChatUserSettings.LoadTabs(_config.GetCVar(CCVars.ChatTabs));
         _styles = ChatUserSettings.LoadStyles(_config.GetCVar(CCVars.ChatChannelStyles));
@@ -1109,6 +1110,19 @@ public partial class ChatBox : UIWidget
 
         _config.SetCVar(CCVars.ChatColorWholeMessage, enabled);
         _config.SaveToFile();
+    }
+
+    /// <summary>
+    ///     Rebuild everything that baked a font at construction. StylesheetManager has already
+    ///     swapped the sheet by the time this runs, which covers the message bodies and the input
+    ///     line - but the channel prompt, the tab labels and every existing message row set a
+    ///     FontOverride when they were built and will happily keep the old face forever.
+    /// </summary>
+    private void OnChatReadableFontCvarChanged(bool enabled)
+    {
+        ChatInput.ChannelSelector.RefreshChatFont();
+        RebuildTabs();
+        Repopulate();
     }
 
     private void OnLegacyModeCvarChanged(bool enabled)
