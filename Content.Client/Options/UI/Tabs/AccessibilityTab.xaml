@@ -16,12 +16,22 @@
 
                 <cmu:CmuOptionSection Title="{Loc 'ui-options-accessability-header-announcements'}">
                     <ui:OptionDropDown Name="AnnouncementStyleDropDown" Title="{Loc 'rmc-ui-options-announcements-style'}" />
+                    <!-- Per-announcement overrides, from upstream. The container is filled in code;
+                         nothing references it yet on either side, but it is upstream's UI for the
+                         announcement work and dropping it would quietly diverge from them. -->
+                    <Label Name="AnnouncementPresetOverridesLabel"
+                           Text="{Loc 'rmc-ui-options-announcements-style-per-announcement'}"
+                           StyleClasses="LabelKeyText" />
+                    <BoxContainer Name="AnnouncementPresetOverridesContainer" Orientation="Vertical" />
                 </cmu:CmuOptionSection>
 
                 <cmu:CmuOptionSection Title="{Loc 'ui-options-accessability-header-cmu'}">
                     <CheckBox Name="ExplosionScreenShakeEnabledCheckBox" Text="{Loc 'ui-options-explosion-screen-shake-enabled'}" />
                     <CheckBox Name="ExplosionScreenShakeIgnoreFarCheckBox" Text="{Loc 'ui-options-explosion-screen-shake-ignore-far'}" />
                     <CheckBox Name="FirearmScreenShakeEnabledCheckBox" Text="{Loc 'ui-options-firearm-screen-shake-enabled'}" />
+                    <!-- New upstream option. Required, not optional: AccessibilityTab.xaml.cs
+                         references it, so the tab does not compile without it. -->
+                    <CheckBox Name="MuteScriptedSoundsCheckBox" Text="{Loc 'ui-options-mute-scripted-sounds'}" />
                 </cmu:CmuOptionSection>
 
                 <cmu:CmuOptionSection Title="{Loc 'ui-options-accessability-header-visuals'}">

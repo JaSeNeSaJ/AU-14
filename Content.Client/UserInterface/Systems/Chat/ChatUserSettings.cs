@@ -175,7 +175,7 @@ public static class ChatUserSettings
         foreach (var target in CrtStyleTargets)
         {
             if (string.Equals(target.Key, key, StringComparison.OrdinalIgnoreCase))
-                return Color.TryFromHex(target.DefaultColor);
+                return Color.TryFromHex(target.DefaultColor, out var defaultColor) ? defaultColor : null;
         }
 
         return null;
@@ -404,7 +404,7 @@ public static class ChatUserSettings
         if (style?.Color == null)
             return null;
 
-        return Color.TryFromHex(style.Color);
+        return Color.TryFromHex(style.Color, out var color) ? color : null;
     }
 
     public static int? ResolveFontSize(ChatStyleSettings? style)
@@ -487,8 +487,7 @@ public static class ChatUserSettings
         if (string.IsNullOrWhiteSpace(color))
             return null;
 
-        var parsed = Color.TryFromHex(color.Trim());
-        return parsed?.ToHex();
+        return Color.TryFromHex(color.Trim(), out var parsed) ? parsed.ToHex() : null;
     }
 
     public static int? NormalizeFontSize(string? fontSize)

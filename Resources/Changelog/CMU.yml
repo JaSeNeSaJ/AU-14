@@ -8808,32 +8808,81 @@
   id: 559
   time: '2026-08-02T15:49:30.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1766
+- author: maertayn
+  changes:
+  - message: Upon CLF Intel Computer capture, sends faxes to military/warship command
+      and CMB with the remaining CLF roster and a colonyAlert - uses announce for
+      Govfor as fallback (missing valid fax) - happy hunting!
+    type: Add
+  - message: Insfor Editor (Vanilla CLF) would spawn the upstream Intel Computer not
+      the CMU claimable one
+    type: Fix
+  - message: Prodigy (PART) Tech Unlock spawning 32nd & removed random tier 2 skip
+    type: Fix
+  - message: Updated the Objective Console UI
+    type: Add
+  - message: Late/admin spawned objectives are now added to Intel (except duplicate/other
+      preset objectives)
+    type: Add
+  - message: Player count check for preset votes is skipped in DEBUG builds
+    type: Code
+  id: 560
+  time: '2026-08-02T15:49:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1766
 - author: johnnny34y
   changes:
   - message: XM20A2 maybe fixed
     type: Fix
-  id: 560
+  id: 561
+  time: '2026-08-02T16:20:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1765
+- author: johnnny34y
+  changes:
+  - message: XM20A2 maybe fixed
+    type: Fix
+  id: 562
   time: '2026-08-02T16:20:34.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1765
 - author: verentr
   changes:
   - message: 'temperature requirements from the newly added reagents in #1673.'
     type: Remove
-  id: 561
+  id: 563
+  time: '2026-08-02T16:22:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1758
+- author: verentr
+  changes:
+  - message: 'temperature requirements from the newly added reagents in #1673.'
+    type: Remove
+  id: 564
   time: '2026-08-02T16:22:15.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1758
 - author: blueDev2
   changes:
   - message: Hive collapse occurs 10 minutes after queen dies without replacement.
     type: Tweak
-  id: 562
+  id: 565
+  time: '2026-08-02T16:36:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1760
+- author: blueDev2
+  changes:
+  - message: Hive collapse occurs 10 minutes after queen dies without replacement.
+    type: Tweak
+  id: 566
   time: '2026-08-02T16:36:35.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1760
 - author: CatoChristopherMrow
   changes:
   - message: Fixed default sentry IFF
     type: Fix
-  id: 563
+  id: 567
+  time: '2026-08-02T16:40:17.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1764
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed default sentry IFF
+    type: Fix
+  id: 568
   time: '2026-08-02T16:40:17.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1764
 - author: Vencallium
@@ -8875,8 +8924,800 @@
     type: Add
   - message: Added copious amounts of television to city and fort
     type: Add
-  id: 564
+  id: 569
   time: '2026-08-02T16:47:31.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1743
+- author: Vencallium
+  changes:
+  - message: Added chemistry and surgical bays to Joint Base Schaefer's medbay
+    type: Add
+  - message: Added catwalk and firing platforms to Joint Base Schaefer
+    type: Add
+  - message: Expanded cargo and added vehicle lift to Joint Base Schaefer
+    type: Add
+  - message: Added an ordnance technicians' room in the cargo in Joint Base Schaefer
+    type: Add
+  - message: Added an auxiliary entrance to Joint Base Schaefer accessible via Hangar
+      Bay leading to filtration
+    type: Add
+  - message: Added a 2nd floor and roof access to CMB precinct
+    type: Add
+  - message: Added a 2nd floor and roof access to the University of Albacetrie Medical
+      Center
+    type: Add
+  - message: Added a 2nd floor and a Cuppa Joe's shop to the University of Albacetrie
+      School of Xenogbi
+    type: Add
+  - message: Added roofs to everything; you can access all of them
+    type: Add
+  - message: Added massive sewer expansion housing 4 new discreet CLF spawns
+    type: Add
+  - message: Added massive Weyland-Yutani biomedical research facility
+    type: Add
+  - message: Added catwalks to spaceport
+    type: Add
+  - message: Relocated LZ2 to be apart of the CMB precinct
+    type: Add
+  - message: Map now has copious amounts of rechargers
+    type: Add
+  - message: Caves reworked with a lot of mineable rock
+    type: Add
+  - message: Added journalist office
+    type: Add
+  - message: Added copious amounts of television to city and fort
+    type: Add
+  id: 570
+  time: '2026-08-02T16:47:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1743
+- author: P-MCT
+  changes:
+  - message: Tasers no longer insta-stun. It takes 3 consecutive shots out of your
+      8 round battery to outright stun an individual.
+    type: Tweak
+  id: 571
+  time: '2026-08-02T18:47:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1756
+- author: CatoChristopherMrow
+  changes:
+  - message: Vehicle Commander skills have been set to appropriate WO level
+    type: Tweak
+  id: 572
+  time: '2026-08-02T21:37:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1772
+- author: maertayn
+  changes:
+  - message: Hivemind not showing when ghosting and toggling nearby / radio only
+    type: Fix
+  id: 573
+  time: '2026-08-02T22:37:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1776
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed turrets, again.
+    type: Fix
+  id: 574
+  time: '2026-08-02T22:37:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1775
+- author: Vencallium
+  changes:
+  - message: Fixed areas not having proper power Supply/APCs
+    type: Tweak
+  id: 575
+  time: '2026-08-02T23:24:06.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1777
+- author: Vencallium
+  changes:
+  - message: Spawns & vendors for new GOVFOR roles
+    type: Add
+  - message: Fixed We-Yu lab stairs not functioning properly
+    type: Fix
+  id: 576
+  time: '2026-08-03T01:57:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1779
+- author: TheHellFireo
+  changes:
+  - message: spawning across connected station z-levels.
+    type: Fix
+  id: 577
+  time: '2026-08-03T02:09:57.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1781
+- author: Vencallium
+  changes:
+  - message: Copious amounts of rechargers to the map
+    type: Add
+  - message: Areas and doors to the ambassadorial complex
+    type: Fix
+  - message: Reagent grinder to the We-Yu lab
+    type: Add
+  - message: All the stairs on the map because they were tweaking
+    type: Fix
+  - message: Infinite amount of miners
+    type: Add
+  - message: Lawyer and Arbiter spawner
+    type: Add
+  id: 578
+  time: '2026-08-03T08:30:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1782
+- author: HotdogMan52
+  changes:
+  - message: added twenty (20) units of XM20A2 Pulse Rifle to HAZOPS Requisitions
+      Vendor
+    type: Tweak
+  - message: replaced the NSG23 in WYPMC Requisitions Vendor to the non-ID locked
+      variant due to the ID lock binding to the user who vends the rifle and not the
+      actual user
+    type: Tweak
+  id: 579
+  time: '2026-08-04T11:07:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1788
+- author: HotdogMan52
+  changes:
+  - message: upped QYJ damage from 35 to 45
+    type: Tweak
+  - message: removed QYJ IFF lockout since it's a non-smart gun
+    type: Tweak
+  - message: stopped GAU-19 from locking up due to IFF
+    type: Tweak
+  id: 580
+  time: '2026-08-04T11:07:14.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1787
+- author: verentr
+  changes:
+  - message: Added Russian Red and Albuterol crafting recipes.
+    type: Add
+  - message: Changed Russian Red as a medicine, now acts as a very crude treatment
+      for genetic damage.
+    type: Tweak
+  - message: Changed OD amounts for Albuterol (20 OD, 30 Crit OD) and Dexalin Plus
+      (5 OD, 15 Crit OD).
+    type: Tweak
+  - message: Changed soporifics drowsiness so it no longer accumulates, no more 5
+      minutes of fading in and out of consciousness.
+    type: Tweak
+  - message: Fixed CMB CIU corpsman vendor, can now take 6 injectors of choice.
+    type: Fix
+  id: 581
+  time: '2026-08-04T11:07:42.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1785
+- author: deepdarkdepths
+  changes:
+  - message: SHARP mines are now visible through walls for xenomorphs.
+    type: Tweak
+  - message: The first two tiers of the HE mine do less damage.
+    type: Tweak
+  - message: It takes slightly longer for mines to upgrade to the next tier.
+    type: Tweak
+  id: 582
+  time: '2026-08-04T11:07:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1784
+- author: P-MCT
+  changes:
+  - message: Hey Liaison good news! Corporate just sent us the EVA-Laser weapons we
+      asked for. They're older models and we'll have to order them through the ASRS,
+      but for 1500? They'll do us in a pinch.
+    type: Add
+  id: 583
+  time: '2026-08-04T11:11:03.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1755
+- author: P-MCT
+  changes:
+  - message: Double plus good news chaps! We trimmed the excess fat off of the  FV150
+      'Hobelar' chassis, and now it can finally fit in those tight enclosed spaces!
+      Give those insurgent devils the what for eh?
+    type: Tweak
+  - message: New weapon sounds for the L23, L54, SLRa1/2
+    type: Tweak
+  id: 584
+  time: '2026-08-05T04:48:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1791
+- author: deepdarkdepths
+  changes:
+  - message: Barricades and some other structures can no longer be built inside vehicles.
+    type: Fix
+  id: 585
+  time: '2026-08-05T04:58:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1792
+- author: HotdogMan52
+  changes:
+  - message: QYJ can now use an S4 2x mini-scope
+    type: Tweak
+  id: 586
+  time: '2026-08-05T10:46:18.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1793
+- author: HotdogMan52
+  changes:
+  - message: Added magazine boxes into cardboard crafting menu, categorized per faction
+    type: Add
+  id: 587
+  time: '2026-08-05T18:07:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1794
+- author: rokudara-sen
+  changes:
+  - message: CLF earpieces now work when clipped to a vest, coat, webbing, or armour,
+      rather than only to a jumpsuit
+    type: Fix
+  - message: Earpiece users are now notified when no relay is in range instead of
+      receiving no feedback
+    type: Fix
+  - message: RADIO CHECK now includes headsets and earpieces, preventing a cell with
+      one manpack from incorrectly reporting NOTHING HEARD
+    type: Fix
+  - message: The CLF Cell Leader can now draw the cell's communications kit alongside
+      the Radio Operator
+    type: Tweak
+  - message: The CLF now receives two clandestine relay sets at round start instead
+      of one
+    type: Tweak
+  - message: The issued CLF manpack now starts tuned to the cell and command nets
+    type: Tweak
+  - message: The CLF Cell Leader now receives a standing orders sheet. Writing the
+      cell's intent and passing the word adds it to every member's character brief,
+      including members recruited later. Orders may be issued three times per round
+      with a ten-minute cooldown
+    type: Add
+  - message: Added the clfcomms command, which disables the new communications system
+      for CLF and INSFOR without affecting GOVFOR or OPFOR
+    type: Admin
+  - message: AU14CommsToggleSystem is now the single source of truth for whether the
+      communications overhaul applies to a channel
+    type: Code
+  id: 588
+  time: '2026-08-06T12:18:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1796
+- author: Sniperzero112
+  changes:
+  - message: Turret upgrade kit to get variants on your turrets depending which one
+      you took!
+    type: Add
+  - message: Changed vendors to have flame turrets instead of sniper & mini variant
+      turrets because you got upgrade kits now!
+    type: Tweak
+  id: 589
+  time: '2026-08-06T12:19:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1795
+- author: Sniperzero112
+  changes:
+  - message: Removed free turrets from the British!
+    type: Fix
+  id: 590
+  time: '2026-08-06T23:37:13.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1798
+- author: ArturUr1
+  changes:
+  - message: Synthetic surgery has been upgraded to level 4
+    type: Tweak
+  id: 591
+  time: '2026-08-06T23:39:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1797
+- author: MACMAN2003
+  changes:
+  - message: Reagent grinders can now link to a smart chemical storage for the purposes
+      of bottling (and disposing) the reagents they have stored.
+    type: Add
+  - message: Monkey cube crates now have a 30 minute cooldown after being bought before
+      you can buy another.
+    type: Tweak
+  id: 592
+  time: '2026-08-06T23:42:25.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1799
+- author: HotdogMan52
+  changes:
+  - message: Added a 30-round magazine for M16s that are available in CMB CIU requisition
+      and CLF requisition vendors
+    type: Add
+  - message: Replaced current textures for M16 series rifles with new ones made by
+      *nzzy*
+    type: Tweak
+  id: 593
+  time: '2026-08-07T20:45:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1802
+- author: verentr
+  changes:
+  - message: Updated albuterol description.
+    type: Fix
+  - message: Head Physician now spawns with a colony headset.
+    type: Fix
+  id: 594
+  time: '2026-08-07T20:45:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1801
+- author: MACMAN2003
+  changes:
+  - message: Research now has a section in the guidebook!
+    type: Add
+  id: 595
+  time: '2026-08-07T20:46:15.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1800
+- author: potatoed6
+  changes:
+  - message: Added neomorph threat
+    type: Add
+  id: 596
+  time: '2026-08-07T20:47:04.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1562
+- author: P-MCT
+  changes:
+  - message: Good news chaps! The engineers have just sent us a new piece of kit for
+      our Hobelar. The experimental L215A1 Heavy Electrolaser! It's still a work in
+      progress and it hasn't exactly been field tested, but with an attached power
+      bank it's an extremely longlasting weapon. Just be careful where you shoot the
+      blasted thing! It does not have IFF, you are shooting a laser assisted bolt
+      of electricity after all!
+    type: Add
+  - message: Those nurses who paid attention in their medical studies should now have
+      surgery level 2, and medical level 3.
+    type: Tweak
+  - message: XM99a has had it's damage increased from 105 heat to 162 heat. Asphyxiation
+      damage reduced to 20, 3 hits Drones.
+    type: Tweak
+  - message: RXF-M5 increased heat damage from 20 to 25. Firerate reduced.
+    type: Tweak
+  id: 597
+  time: '2026-08-08T03:59:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1803
+- author: HotdogMan52
+  changes:
+  - message: Swapped the 7x43mm ammo box in requisitions to the right one so it can
+      actually be used to refill SLR magazines
+    type: Tweak
+  id: 598
+  time: '2026-08-09T13:16:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1805
+- author: IMGXKILLER
+  changes:
+  - message: UNISC Squad Third Party call for Colony Admin.
+    type: Add
+  id: 599
+  time: '2026-08-09T13:37:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1804
+- author: deepdarkdepths
+  changes:
+  - message: Crusher's charge has had its windup delay doubled. Range reduced to 5
+      tiles. Damage reduced.
+    type: Tweak
+  - message: Soak duration lasts for 4 seconds instead of 3.
+    type: Tweak
+  - message: Directional stomp's damage reduced.
+    type: Tweak
+  - message: Brutalize's AP damage reduced.
+    type: Tweak
+  id: 600
+  time: '2026-08-10T03:17:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1811
+- author: P-MCT
+  changes:
+  - message: Combat correspondents have now been authorised to deploy in operations
+      being conducted against insurgencies.
+    type: Tweak
+  - message: Shotguns have been properly lubricated. You can now pump and fire faster.
+    type: Tweak
+  - message: Requisitions ASRS have now been properly issued all variants of tank
+      shell crates.
+    type: Tweak
+  id: 601
+  time: '2026-08-10T03:17:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1807
+- author: OverusedMeme
+  changes:
+  - message: USCM and HAZOP's will now find the M41AE2 HPR and its magazines orderable
+      through their ASRS console!
+    type: Add
+  - message: Both GOVFOR and OPFOR Logistics Officers will have their missing approval
+      stamp.
+    type: Fix
+  id: 602
+  time: '2026-08-10T03:19:52.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1812
+- author: JaSeNeSaJ
+  changes:
+  - message: 'DS: M68 thermal cloak (unnerfed)'
+    type: Add
+  id: 603
+  time: '2026-08-12T01:54:36.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1813
+- author: JaSeNeSaJ
+  changes:
+  - message: 'DS: M68 thermal cloak (unnerfed)'
+    type: Add
+  id: 604
+  time: '2026-08-12T01:54:36.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1813
+- author: DarkFNC
+  changes:
+  - message: New Lambda floor tile for use by mappers. Made by @Nzzy - Thanks for
+      making this!
+    type: Add
+  - message: Recoloured MP flat style berets in two variants (one for officers and
+      one for the CMP). These appear as a hat pick in MP and CMP vendors for most
+      factions.
+    type: Add
+  id: 605
+  time: '2026-08-12T01:55:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1810
+- author: DarkFNC
+  changes:
+  - message: New Lambda floor tile for use by mappers. Made by @Nzzy - Thanks for
+      making this!
+    type: Add
+  - message: Recoloured MP flat style berets in two variants (one for officers and
+      one for the CMP). These appear as a hat pick in MP and CMP vendors for most
+      factions.
+    type: Add
+  id: 606
+  time: '2026-08-12T01:55:08.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1810
+- author: IMGXKILLER
+  changes:
+  - message: Ghille Suit to Sniper Kit
+    type: Add
+  id: 607
+  time: '2026-08-12T01:55:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1814
+- author: IMGXKILLER
+  changes:
+  - message: Ghille Suit to Sniper Kit
+    type: Add
+  id: 608
+  time: '2026-08-12T01:55:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1814
+- author: Michellechkya
+  changes:
+  - message: Added UPP chevrons sprites
+    type: Add
+  id: 609
+  time: '2026-08-12T01:57:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1815
+- author: Michellechkya
+  changes:
+  - message: Added UPP chevrons sprites
+    type: Add
+  id: 610
+  time: '2026-08-12T01:57:00.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1815
+- author: Vencallium
+  changes:
+  - message: Fixed various mapping issues on Stable Garrison and the USS George W.
+      Bush, including disposals, stairs, utilities, vendors, and misplaced entities.
+    type: Map
+  - message: Chasms can no longer be covered by xenonid weeds.
+    type: Fix
+  - message: Chemistry vendors now provide consistent stock without random shortages.
+    type: Tweak
+  id: 611
+  time: '2026-08-13T21:48:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1823
+- author: Vencallium
+  changes:
+  - message: Fixed various mapping issues on Stable Garrison and the USS George W.
+      Bush, including disposals, stairs, utilities, vendors, and misplaced entities.
+    type: Map
+  - message: Chasms can no longer be covered by xenonid weeds.
+    type: Fix
+  - message: Chemistry vendors now provide consistent stock without random shortages.
+    type: Tweak
+  id: 612
+  time: '2026-08-13T21:48:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1823
+- author: potatoed6
+  changes:
+  - message: Prodigy liaison, goon, lawyer, PPO for colonies and as a lawyer third
+      party.
+    type: Add
+  - message: Added prodigy survs
+    type: Add
+  - message: Glock 75, Glock 77 and underbarrel taser for prodigy.
+    type: Add
+  - message: new clothes for prodigy.
+    type: Add
+  id: 613
+  time: '2026-08-13T21:54:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1821
+- author: potatoed6
+  changes:
+  - message: Prodigy liaison, goon, lawyer, PPO for colonies and as a lawyer third
+      party.
+    type: Add
+  - message: Added prodigy survs
+    type: Add
+  - message: Glock 75, Glock 77 and underbarrel taser for prodigy.
+    type: Add
+  - message: new clothes for prodigy.
+    type: Add
+  id: 614
+  time: '2026-08-13T21:54:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1821
+- author: deepdarkdepths
+  changes:
+  - message: Evolving into a Corrupted Hive Queen now requires a minimum of 30 hours
+      of xeno playtime.
+    type: Add
+  id: 615
+  time: '2026-08-13T21:59:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1820
+- author: deepdarkdepths
+  changes:
+  - message: Evolving into a Corrupted Hive Queen now requires a minimum of 30 hours
+      of xeno playtime.
+    type: Add
+  id: 616
+  time: '2026-08-13T21:59:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1820
+- author: P-MCT
+  changes:
+  - message: New patriotism directive straight from HICOM, we've been issued brand
+      new mountable UA Flags as a support module for the longstreet. Oh, and it always
+      emits an active target for CAS as well. Salute to old glory when you see her!
+    type: Add
+  - message: We've just got back our patent rights for the RE700 cupola for the Longstreet,
+      it fires almost twice as fast! But we can't find the IFF module for it. You'll
+      have to do without.
+    type: Add
+  - message: By jove finally! The FV150 adapter mounts for the snowplow & artillery
+      module were just found, and can now be called up via the vehicle support lift.
+    type: Add
+  - message: Good news and bad news lads, the good news. We've just got the hull mounted
+      L98 GPMG up and running. It can lay down a constant field of fire on a 140 degree
+      angle, but you can't hit your rear or flanks.
+    type: Add
+  - message: The bad news, our Longstreet's secondaries we had on loan from the USCM
+      for the FV150 are now being sent back. That includes the Tow, Flamer, M56, &
+      grenade launcher.
+    type: Tweak
+  - message: Snowplow moved to support module section, sacrificing a support module,
+      which will allow armor to be placed on the longstreet.
+    type: Tweak
+  id: 617
+  time: '2026-08-13T22:02:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1817
+- author: P-MCT
+  changes:
+  - message: New patriotism directive straight from HICOM, we've been issued brand
+      new mountable UA Flags as a support module for the longstreet. Oh, and it always
+      emits an active target for CAS as well. Salute to old glory when you see her!
+    type: Add
+  - message: We've just got back our patent rights for the RE700 cupola for the Longstreet,
+      it fires almost twice as fast! But we can't find the IFF module for it. You'll
+      have to do without.
+    type: Add
+  - message: By jove finally! The FV150 adapter mounts for the snowplow & artillery
+      module were just found, and can now be called up via the vehicle support lift.
+    type: Add
+  - message: Good news and bad news lads, the good news. We've just got the hull mounted
+      L98 GPMG up and running. It can lay down a constant field of fire on a 140 degree
+      angle, but you can't hit your rear or flanks.
+    type: Add
+  - message: The bad news, our Longstreet's secondaries we had on loan from the USCM
+      for the FV150 are now being sent back. That includes the Tow, Flamer, M56, &
+      grenade launcher.
+    type: Tweak
+  - message: Snowplow moved to support module section, sacrificing a support module,
+      which will allow armor to be placed on the longstreet.
+    type: Tweak
+  id: 618
+  time: '2026-08-13T22:02:21.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1817
+- author: realtesteraccount
+  changes:
+  - message: Changed the Cost of the WYPMC 3rd party from 7500 to 17500
+    type: Add
+  id: 619
+  time: '2026-08-14T13:15:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1826
+- author: realtesteraccount
+  changes:
+  - message: Changed the Cost of the WYPMC 3rd party from 7500 to 17500
+    type: Add
+  id: 620
+  time: '2026-08-14T13:15:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1826
+- author: OverusedMeme
+  changes:
+  - message: 100 XM20A2 magazines in HAZOP's Standard Ammunition within their requisition
+      vendor, as well as two pre-filled mag boxes of XM20A2.
+    type: Add
+  - message: a crafting recipe for the XM20A2s magazine box
+    type: Add
+  - message: a Mk86 Automatic Grenade Launcher crate case, and it's respective ammo
+      within Govfors ASRS catalog for every platoon (except the UPP)
+    type: Add
+  - message: Replaced incompatible M42A2 collapsible stock with the proper M42A1 wooden
+      stock for HAZOP's requestion vendor.
+    type: Tweak
+  - message: A Spelling issue mixing up the APC Frontal Cannon ammo crate and the
+      RE-RE700 Rotary Cannon ammo crate in the ASRS
+    type: Fix
+  id: 621
+  time: '2026-08-14T13:17:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1824
+- author: OverusedMeme
+  changes:
+  - message: 100 XM20A2 magazines in HAZOP's Standard Ammunition within their requisition
+      vendor, as well as two pre-filled mag boxes of XM20A2.
+    type: Add
+  - message: a crafting recipe for the XM20A2s magazine box
+    type: Add
+  - message: a Mk86 Automatic Grenade Launcher crate case, and it's respective ammo
+      within Govfors ASRS catalog for every platoon (except the UPP)
+    type: Add
+  - message: Replaced incompatible M42A2 collapsible stock with the proper M42A1 wooden
+      stock for HAZOP's requestion vendor.
+    type: Tweak
+  - message: A Spelling issue mixing up the APC Frontal Cannon ammo crate and the
+      RE-RE700 Rotary Cannon ammo crate in the ASRS
+    type: Fix
+  id: 622
+  time: '2026-08-14T13:17:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1824
+- author: P-MCT
+  changes:
+  - message: Slows speed on the FV150 when the snowplow is attached.
+    type: Tweak
+  id: 623
+  time: '2026-08-14T19:22:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1828
+- author: maertayn
+  changes:
+  - message: AEGIS integration
+    type: Add
+  id: 624
+  time: '2026-08-14T22:44:32.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1829
+- author: CatoChristopherMrow
+  changes:
+  - message: You can now walk on walls a z-level below you
+    type: Tweak
+  - message: Walls now support structures above them
+    type: Tweak
+  - message: You can no longer use z-level girders to make floating structures
+    type: Tweak
+  - message: Fixed the second level of stable garrison redux being marked as a dropship,
+      and therefor unbuildable
+    type: Fix
+  - message: Fixed tunneling on some maps making the entire z-level marked as a cave,
+      leading to the entire colony collapsing when a tunnel was build on stable garrison
+      redux
+    type: Fix
+  - message: Removed fun. Fuck you.
+    type: Remove
+  id: 625
+  time: '2026-08-15T04:34:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1830
+- author: CatoChristopherMrow
+  changes:
+  - message: Med and blood vends now require med 2 instead of a specific job
+    type: Tweak
+  id: 626
+  time: '2026-08-15T10:11:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1832
+- author: CatoChristopherMrow
+  changes:
+  - message: Added most experimental tools to the col synth loadout, along with a
+      proper point amount and cost
+    type: Add
+  - message: Removed govfor synths free extra synth equipment via loadout piece (sorrrrry)
+    type: Remove
+  - message: Expanded a few webbings and pouch options for synths
+    type: Tweak
+  id: 627
+  time: '2026-08-15T21:51:31.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1833
+- author: Vencallium
+  changes:
+  - message: Hotfixed Stable Garrison and the USS George W. Bush, including communications,
+      medical, research, disposal, access, and equipment layout fixes.
+    type: Map
+  - message: Added a deployable Weyland-Yutani UA-635C sentry system with locked corporate
+      IFF recognition.
+    type: Add
+  id: 628
+  time: '2026-08-16T01:52:20.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1835
+- author: Vencallium
+  changes:
+  - message: AEGIS OB spawner to requisitions
+    type: Add
+  - message: Alpha, Bravo & Charlie supply drops to requisitions
+    type: Add
+  id: 629
+  time: '2026-08-16T08:09:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1836
+- author: TheMaiji
+  changes:
+  - message: Prevent powerloaders and chairs from flying across z-levels.
+    type: Fix
+  - message: Prevent falling vehicles from damaging their buckled occupants.
+    type: Fix
+  id: 630
+  time: '2026-08-16T13:46:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1837
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed govfor pointbuy amount
+    type: Fix
+  id: 631
+  time: '2026-08-16T16:55:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1838
+- author: troytroy400
+  changes:
+  - message: Added destroyable multiz roof tiles for mapping.
+    type: Add
+  - message: Added a round-start free crate system for ASRS gated by gamemode and
+      faction. Currently at round start on FoF and DS, GOVFOR/OPFOR will get a free
+      mortar kit and a FOB Tent Crate.
+    type: Add
+  - message: Filled HESCO barricades can now be barbwired when they are below wall-size.
+    type: Tweak
+  id: 632
+  time: '2026-08-16T17:35:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1839
+- author: Vencallium
+  changes:
+  - message: Restored the CMB Marshal spawn point to the intended upper level of Stable
+      Garrison.
+    type: Fix
+  id: 633
+  time: '2026-08-16T20:50:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1841
+- author: Vencallium
+  changes:
+  - message: Echo & Delta supply drop pads to requisitions
+    type: Add
+  - message: Duplicate zlevels on Stable Garrison
+    type: Fix
+  id: 634
+  time: '2026-08-16T23:11:26.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1843
+- author: maertayn
+  changes:
+  - message: AEGIS + Provost paperworks added to Universal Paper Tool
+    type: Add
+  - message: SFX Engine - create yaml sequences of audio + announcements to play for
+      scripted (PvE) events (e.g. distant battlefields) - can be run manually (scriptedsound
+      command) or initiated via code
+    type: Add
+  - message: Warships will scuttle when evacuation is started by Command, cannot abort
+      engine criticality with 5min left on the clock. Mirrors the Alien movie self-destruct
+      using the SFX engine (WIP)
+    type: Add
+  - message: Warship scuttle is disabled behind cvar `cmu.game.enable_evac_sfx` until
+      it's tested properly
+    type: Tweak
+  - message: Orbital Bombardments explosions can opt-in for the `MultiZ` boolean field
+      to explode across Z-levels instead of being local to one layer
+    type: Tweak
+  - message: Lighting was changed, some maps may lack proper light fixtures (like
+      around corners)
+    type: Map
+  - message: Engine updated from v278 to v288.1
+    type: Code
+  id: 635
+  time: '2026-08-17T01:24:39.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1842
+- author: CatoChristopherMrow
+  changes:
+  - message: Wouldn't YOU like to know, freak.
+    type: Tweak
+  id: 636
+  time: '2026-08-17T03:11:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1846
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed barker -1 and stable +1
+    type: Fix
+  id: 637
+  time: '2026-08-17T15:18:10.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1847
+- author: maertayn
+  changes:
+  - message: SquadLeaderHeadsetComponent causing DoS because of an empty/null channels
+      list (NRE)
+    type: Fix
+  - message: Mute the scripted sound event(s) under Accessibility settings
+    type: Tweak
+  - message: ship_draft.yml (ShipAmbienceDraft) is an example sound sequence with
+      explanatory comments
+    type: Code
+  id: 638
+  time: '2026-08-17T19:57:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1848
 Name: CMU
 Order: -1

@@ -203,7 +203,7 @@ namespace Content.Client.Info
                     },
                 };
 
-                if (field.Color != null && Color.TryFromHex(field.Color) is { } color)
+                if (field.Color != null && Color.TryFromHex(field.Color, out var color))
                     value.FontColorOverride = color;
 
                 var cellClass = lead

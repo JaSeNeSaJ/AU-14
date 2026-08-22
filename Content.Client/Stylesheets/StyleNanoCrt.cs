@@ -302,7 +302,7 @@ namespace Content.Client.Stylesheets
                 CCVars.CrtUiColorOrange => CrtPalette.Orange,
                 CCVars.CrtUiColorRed => CrtPalette.Red,
                 CCVars.CrtUiColorPurple => CrtPalette.Purple,
-                _ => Color.TryFromHex(palette) is { } color
+                _ => Color.TryFromHex(palette, out var color)
                     ? CrtPalette.FromAccent(color)
                     : CrtPalette.Green,
             };

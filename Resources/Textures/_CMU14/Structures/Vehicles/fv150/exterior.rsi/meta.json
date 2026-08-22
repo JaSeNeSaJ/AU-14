@@ -31,6 +31,14 @@
             "name": "heavy_autocannon_0",
             "directions": 4
         },
+	    {
+            "name": "heavy_electrolaser_0",
+            "directions": 4
+        },
+		{
+            "name": "heavy_electrolaser_1",
+            "directions": 4
+        },
         {
             "name": "heavy_autocannon_1",
             "directions": 4
@@ -53,6 +61,22 @@
         },
         {
             "name": "slauncher_2",
+            "directions": 4
+        },
+		{
+            "name": "twesnowplow_0",
+            "directions": 4
+        },
+	    {
+            "name": "twesnowplow_1",
+            "directions": 4
+        },
+		{
+            "name": "tweartillerymod_0",
+            "directions": 4
+        },
+        {
+            "name": "tweartillerymod_1",
             "directions": 4
         },
         {

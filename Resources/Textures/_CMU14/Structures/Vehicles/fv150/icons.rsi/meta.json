@@ -13,8 +13,14 @@
         {
             "name": "heavy_autocannon"
         },
+	    {
+            "name": "heavy_electrolaser"
+        },
         {
             "name": "mounted_cupola"
+        },
+	    {
+            "name": "tweartillery"
         },
         {
             "name": "slauncher_0"

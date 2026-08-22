@@ -31,6 +31,8 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - NeomorphsThreat
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreatDistress
 #    - badBloodClanThreat
@@ -145,6 +147,8 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - NeomorphsThreat
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
@@ -283,6 +287,7 @@
     threats:
     - cultistThreat
     - XenoThreatCF
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
@@ -423,6 +428,7 @@
     daycycleenabled: true
     threats:
     - XenoThreat
+    - NeomorphsThreat
     - abominationsThreatDistress
     thirdparties:
     - USArmy
@@ -464,6 +470,7 @@
     faction: ua
     threats:
     - XenoThreatCF
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreatDistress
 
@@ -531,11 +538,16 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - NeomorphsThreat
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreatDistress
 #    - badBloodClanThreat
 
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - WEYUSurvLarge
     - WEYUSurvMedium
     - WEYUSurvSmall
@@ -598,6 +610,8 @@
     - cultistThreat
     - XenoThreat
     - XenoThreatCF
+    - NeomorphsThreat
+    - NeomorphsThreatCF
 #    - badBloodClanThreat
 
     thirdparties:
@@ -674,6 +688,8 @@
     - cultistThreatOnMarker
     - XenoThreat
     - XenoThreatCF
+    - NeomorphsThreat
+    - NeomorphsThreatCF
     - wendigoThreat
     - abominationsThreat
     - abominationsThreatDistress
@@ -710,6 +726,9 @@
     daycycleenabled: true
     faction: ua
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - ICRCReliefParty
     - cultistThirdParty
     - UPPGROM
@@ -737,6 +756,7 @@
     threats:
     - cultistThreat
     - XenoThreat
+    - NeomorphsThreat
     - wendigoThreat
  #   - TribalsThreat
     - abominationsThreatDistress
@@ -772,6 +792,9 @@
     daycycleenabled: true
     faction: ua
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - IASFSurvLarge
     - IASFSurvMedium
     - IASFSurvSmall
@@ -800,6 +823,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
+    - NeomorphsThreat
     #- TribalsThreat
 #    - badBloodClanThreat
 
@@ -830,6 +854,9 @@
     opforinship: true
     daycycleenabled: true
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -858,6 +885,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
+    - NeomorphsThreat
  #   - TribalsThreat
 #    - badBloodClanThreat
 
@@ -889,6 +917,9 @@
     opforinship: true
     daycycleenabled: true
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -916,6 +947,7 @@
     - abominationThirdParty
     threats:
     - XenoThreat
+    - NeomorphsThreat
 #    - TribalsThreat
 #    - badBloodClanThreat
 
@@ -945,6 +977,9 @@
     opforinship: true
     daycycleenabled: false
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -976,6 +1011,7 @@
     threats:
     - abominationsThreatDistress
     - XenoThreat
+    - NeomorphsThreat
 #    - badBloodClanThreat
     jobScalingFof: DefaultGovforOpforScale
     jobScalingIns: DefaultInsurgencyScale
@@ -1007,6 +1043,9 @@
     opforinship: true
     daycycleenabled: false
     thirdparties:
+    - ProdigySurvLarge
+    - ProdigySurvMedium
+    - ProdigySurvSmall
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -1032,6 +1071,7 @@
     threats:
     - abominationsThreatDistress
     - XenoThreat
+    - NeomorphsThreat
 #    - badBloodClanThreat
 
     jobScalingFof: DefaultGovforOpforScale
@@ -1165,6 +1205,7 @@
     - WEYUSurvSmall
     threats:
     - XenoThreat
+    - NeomorphsThreat
     - cultistThreatOnMarker
     - abominationsThreat
     - abominationsThreatDistress
