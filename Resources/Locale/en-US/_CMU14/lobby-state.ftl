@@ -15,3 +15,20 @@ cmu-lobby-join-colonists-desc = Lorem ipsum dolor sit amet, consectetur adipisci
 cmu-lobby-join-govfor-desc = Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Nisi ut aliquip ex ea commodo consequat duis aute irure.
 cmu-lobby-join-opfor-desc = Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Excepteur sint occaecat cupidatat non proident sunt in culpa.
 cmu-lobby-join-other-desc = Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
+
+# The ready toggle names the state it is IN. The slashes are doing the same job as the inverted
+# fill behind them - the state has to be obvious without reading the word. Only the ready side is
+# marked, deliberately: an empty bracket on the other one added a second thing to read without
+# saying anything the dark fill and the dim text did not already say.
+cmu-lobby-ready-yes = /// READY ///
+cmu-lobby-ready-no = Not ready
+
+# The round clock: a caption saying what is being counted, and a face holding only the value. The
+# split is what lets the face be sized to be read across the screen - a face carrying a whole
+# sentence could not be.
+cmu-lobby-clock-caption-countdown = Round starts in
+cmu-lobby-clock-caption-start = Round start
+cmu-lobby-clock-caption-elapsed = Round in progress
+cmu-lobby-clock-face-soon = Soon
+cmu-lobby-clock-face-paused = Paused
+cmu-lobby-clock-face-now = Now

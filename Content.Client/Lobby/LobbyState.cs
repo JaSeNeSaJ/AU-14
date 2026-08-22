@@ -1,4 +1,7 @@
+using System;
 using System.Linq;
+using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client._CMU14.Lobby;
 using Content.Client._RMC14.LinkAccount;
 using Content.Client.Audio;
@@ -50,6 +53,7 @@ namespace Content.Client.Lobby
         // The faction choices, opened from JoinRoundButton. Held so a second press re-focuses the
         // one window rather than stacking another copy on top of it.
         private JoinRoundWindow? _joinRoundWindow;
+        private bool _clockPlaced;
 
         protected override Type? LinkedScreenType { get; } = typeof(LobbyGui);
         public LobbyGui? Lobby;
@@ -92,6 +96,7 @@ namespace Content.Client.Lobby
             Lobby.CharacterPreview.IgnoreAllegianceToggle.OnToggled += OnIgnoreAllegianceToggled;
             Lobby.ReadyButton.OnPressed += OnReadyPressed;
             Lobby.ReadyButton.OnToggled += OnReadyToggled;
+            Lobby.RoundClock.PositionChanged += OnRoundClockMoved;
 
             _gameTicker.InfoBlobUpdated += UpdateLobbyUi;
             _gameTicker.LobbyStatusUpdated += LobbyStatusUpdated;
@@ -120,6 +125,7 @@ namespace Content.Client.Lobby
             Lobby.CharacterPreview.IgnoreAllegianceToggle.OnToggled -= OnIgnoreAllegianceToggled;
             Lobby!.ReadyButton.OnPressed -= OnReadyPressed;
             Lobby!.ReadyButton.OnToggled -= OnReadyToggled;
+            Lobby!.RoundClock.PositionChanged -= OnRoundClockMoved;
 
             // Unhook RMC14 buttons
             Lobby.JoinRoundButton.OnPressed -= OnJoinRoundPressed;
@@ -160,62 +166,167 @@ namespace Content.Client.Lobby
         private void OnReadyToggled(BaseButton.ButtonToggledEventArgs args)
         {
             SetReady(args.Pressed);
+
+            // Immediately, not on the server's echo. UpdateLobbyUi is what normally repaints this,
+            // and it runs on a lobby status update - so without this the mark and the colour lag the
+            // click by a round trip, which reads as the button not having worked.
+            UpdateReadyAppearance();
+        }
+
+        /// <summary>
+        ///     Put the ready toggle into the state it is actually in.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///     The box comes from <see cref="StyleNano.StyleClassCrtReadyToggle"/>, which keys off the
+        ///     Pressed pseudo-class. The mark and the label colour are set here because neither can
+        ///     come from a rule: the text is content, and a per-state font colour would need a rule
+        ///     selecting a label by its parent's pseudo-class.
+        ///     </para>
+        ///     <para>
+        ///     Three channels, deliberately - fill, edge colour, and a mark that reads with no colour
+        ///     at all. The old version moved one step up the surface ladder and changed nothing else,
+        ///     which is why it was easy to miss whether you had readied up.
+        ///     </para>
+        /// </remarks>
+        private void UpdateReadyAppearance()
+        {
+            // Shared with the cmu.panel_preview=ready harness, so what that shows is what this
+            // does. They drifted apart once already and the harness quietly showed the wrong state.
+            CmuReadyToggle.Apply(Lobby!.ReadyButton, Lobby!.ReadyButton.Pressed);
         }
 
         public override void FrameUpdate(FrameEventArgs e)
         {
+            // The clock is a caption and a face. The caption says what is being counted so the face
+            // never has to carry a sentence, which is what lets it be read at a glance rather than
+            // parsed - the whole reason it left the action panel's heading slot.
             if (_gameTicker.IsGameStarted)
             {
                 var roundTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
                 Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-time-short", ("hours", roundTime.Hours), ("minutes", roundTime.Minutes));
 
-                // Upstream blanks the countdown here. The panel's heading slot would then be empty
-                // and the button grid would sit against the top border, so the two states would not
-                // look like the same panel. Say what's happening instead.
-                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-state-round-in-progress");
-                SetCountdownUrgency(CountdownUrgency.None);
-                Lobby!.LobbyStatusLine.Text = Loc.GetString("cmu-lobby-state-round-elapsed",
-                    ("hours", roundTime.Hours), ("minutes", roundTime.Minutes));
-                Lobby!.LobbyStatusLine.Visible = true;
+                // The clock counts down to the round starting. Once it has, there is nothing left
+                // to count and it becomes a panel sitting in the middle of the screen for no
+                // reason - the header already carries the elapsed time. So it goes away.
+                Lobby!.RoundClock.Visible = false;
                 return;
             }
 
+            Lobby!.RoundClock.Visible = true;
             Lobby!.LobbyStatusLine.Visible = false;
             Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-not-started-short");
-            string text;
+            PlaceRoundClock();
 
             if (_gameTicker.Paused)
             {
-                text = Loc.GetString("lobby-state-paused");
                 // Paused is indefinite, not urgent - it must not sit there glowing red.
+                Lobby!.ClockCaption.Text = Loc.GetString("cmu-lobby-clock-caption-start");
+                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-paused");
                 SetCountdownUrgency(CountdownUrgency.None);
+                return;
             }
-            else if (_gameTicker.StartTime < _gameTiming.CurTime)
+
+            Lobby!.ClockCaption.Text = Loc.GetString("cmu-lobby-clock-caption-countdown");
+
+            if (_gameTicker.StartTime < _gameTiming.CurTime)
             {
                 SetCountdownUrgency(CountdownUrgency.Imminent);
-                Lobby!.StartTime.Text = Loc.GetString("lobby-state-soon");
+                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-soon");
                 return;
+            }
+
+            var difference = _gameTicker.StartTime - _gameTiming.CurTime;
+            var seconds = difference.TotalSeconds;
+            SetCountdownUrgency(GetCountdownUrgency(seconds));
+
+            if (seconds < 0)
+            {
+                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-now");
+            }
+            else if (difference.TotalHours >= 1)
+            {
+                Lobby!.StartTime.Text = $"{Math.Floor(difference.TotalHours)}:{difference.Minutes:D2}:{difference.Seconds:D2}";
             }
             else
             {
-                var difference = _gameTicker.StartTime - _gameTiming.CurTime;
-                var seconds = difference.TotalSeconds;
-                SetCountdownUrgency(GetCountdownUrgency(seconds));
-                if (seconds < 0)
-                {
-                    text = Loc.GetString(seconds < -5 ? "lobby-state-right-now-question" : "lobby-state-right-now-confirmation");
-                }
-                else if (difference.TotalHours >= 1)
-                {
-                    text = $"{Math.Floor(difference.TotalHours)}:{difference.Minutes:D2}:{difference.Seconds:D2}";
-                }
-                else
-                {
-                    text = $"{difference.Minutes}:{difference.Seconds:D2}";
-                }
+                Lobby!.StartTime.Text = $"{difference.Minutes}:{difference.Seconds:D2}";
+            }
+        }
+
+        /// <summary>
+        ///     Put the clock where the player left it, or in its default place the first time.
+        /// </summary>
+        /// <remarks>
+        ///     Runs every frame but does its work once: a control has no size until the first layout
+        ///     pass, and a fraction of the free space cannot be resolved before then. Retrying until
+        ///     it takes is simpler than hooking whichever pass happens to be the one that gives the
+        ///     panel a size.
+        /// </remarks>
+        private void PlaceRoundClock()
+        {
+            var clock = Lobby!.RoundClock;
+            var layer = Lobby!.ClockLayer;
+
+            // The layer has to span the window, and it does not do so on its own: a LayoutContainer
+            // positions its children absolutely and therefore reports no desired size, which leaves
+            // it zero-sized inside the root Control. Everything downstream then clamps into a
+            // zero-by-zero box, which is how the clock ended up pinned to the top-left corner and
+            // why it could not be dragged at all. Guarded so this is not a layout invalidation
+            // every frame.
+            if (layer.Size != Lobby!.Size)
+                layer.SetSize = Lobby!.Size;
+
+            var room = layer.Size - clock.Size;
+
+            // Nothing to place into yet. A control has no size until the first layout pass, and the
+            // panel behind it is still growing for a few frames after that.
+            if (room.X <= 0f || room.Y <= 0f)
+                return;
+
+            var savedX = _cfg.GetCVar(CCVars.CMULobbyClockX);
+            var savedY = _cfg.GetCVar(CCVars.CMULobbyClockY);
+
+            if (savedX >= 0f && savedY >= 0f)
+            {
+                // A position the player chose. Apply it once and then leave it alone - re-applying
+                // every frame would fight the drag that is setting it.
+                if (_clockPlaced)
+                    return;
+
+                _clockPlaced = clock.TryPlaceAtFraction(new Vector2(savedX, savedY));
+                return;
             }
 
-            Lobby!.StartTime.Text = Loc.GetString("lobby-state-round-start-countdown-text", ("timeLeft", text));
+            // Untouched, so keep it in its default place: horizontally in the gap between the
+            // action column and the server-info screen, vertically near the top.
+            //
+            // Recomputed every frame rather than latched on the first one. The first frame with a
+            // non-zero size is not the frame the layout has settled on, and latching there put the
+            // clock up beside the action panel instead of in the gap. Recomputing also means the
+            // default follows a window resize and the right-hand panel being collapsed.
+            var left = CmuPanelMetrics.LobbyActionColumnWidth;
+
+            // The right-hand screen's own edge, so the clock centres in the space actually left
+            // rather than in a guess at it. Collapsed, there is no edge and the window is the limit.
+            var right = Lobby!.RightSide.Visible
+                ? Lobby!.RightSide.GlobalPosition.X
+                : layer.Size.X;
+
+            var x = Math.Clamp((left + right - clock.Size.X) / 2f, 0f, room.X);
+            var y = Math.Clamp(CmuPanelMetrics.LobbyClockTopMargin, 0f, room.Y);
+
+            LayoutContainer.SetPosition(clock, new Vector2(x, y));
+        }
+
+        private void OnRoundClockMoved(Vector2 fraction)
+        {
+            // Set before the cvars, not after: the moment a saved position exists, PlaceRoundClock
+            // would start applying it, and applying a position mid-drag fights the drag.
+            _clockPlaced = true;
+
+            _cfg.SetCVar(CCVars.CMULobbyClockX, fraction.X);
+            _cfg.SetCVar(CCVars.CMULobbyClockY, fraction.Y);
         }
 
         /// <summary>
@@ -244,9 +355,9 @@ namespace Content.Client.Lobby
         {
             var styleClass = urgency switch
             {
-                CountdownUrgency.Imminent => StyleNano.StyleClassCrtHeadingBigDanger,
-                CountdownUrgency.Soon => StyleNano.StyleClassCrtHeadingBigWarning,
-                _ => StyleNano.StyleClassCrtHeadingBig
+                CountdownUrgency.Imminent => StyleNano.StyleClassCrtClockDanger,
+                CountdownUrgency.Soon => StyleNano.StyleClassCrtClockWarning,
+                _ => StyleNano.StyleClassCrtClock
             };
 
             var label = Lobby!.StartTime;
@@ -255,9 +366,9 @@ namespace Content.Client.Lobby
 
             // Swap, never stack: all three rules set the same font and font colour, and two matching
             // rules of equal specificity have no defined winner.
-            label.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBig);
-            label.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigWarning);
-            label.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigDanger);
+            label.RemoveStyleClass(StyleNano.StyleClassCrtClock);
+            label.RemoveStyleClass(StyleNano.StyleClassCrtClockWarning);
+            label.RemoveStyleClass(StyleNano.StyleClassCrtClockDanger);
             label.AddStyleClass(styleClass);
         }
 
@@ -289,10 +400,12 @@ namespace Content.Client.Lobby
             else
             {
                 Lobby!.StartTime.Text = string.Empty;
-                Lobby!.ReadyButton.Text = Loc.GetString(Lobby!.ReadyButton.Pressed ? "lobby-state-player-status-ready": "lobby-state-player-status-not-ready");
                 Lobby!.ReadyButton.ToggleMode = true;
                 Lobby!.ReadyButton.Disabled = false;
                 Lobby!.ReadyButton.Pressed = _gameTicker.AreWeReady;
+
+                // After Pressed, never before: the mark and the colour are read off it.
+                UpdateReadyAppearance();
                 Lobby!.ObserveButton.Disabled = true;
 
                 // RMC14/CMU

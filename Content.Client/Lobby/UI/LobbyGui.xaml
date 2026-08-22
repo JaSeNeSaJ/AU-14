@@ -26,21 +26,8 @@
                              a vote popup's width would put back the empty space that move removed. -->
                         <PanelContainer StyleClasses="CrtPanelTicked" HorizontalAlignment="Left" Name="LeftSideTop"
                                         VerticalAlignment="Top">
-                            <BoxContainer Orientation="Vertical" SeparationOverride="5" MinWidth="380" MaxWidth="1040">
-                                <!-- The countdown is a heading, not a spacer. It used to sit between
-                                     Observe and Ready with HorizontalExpand, so whenever it had no
-                                     text it was a hole that grew to fill the row - and it stranded
-                                     Observe at one end looking undersized. LobbyState swaps the style
-                                     class as the clock runs down, so this one is the starting state.
-                                     The two lines are one block: they belong closer to each other
-                                     than the block does to the buttons. -->
-                                <BoxContainer Orientation="Vertical" SeparationOverride="1">
-                                    <Label Name="StartTime" Access="Public" Align="Left"
-                                           StyleClasses="CrtHeadingBig" />
-                                    <Label Name="LobbyStatusLine" Access="Public" Align="Left"
-                                           StyleClasses="CrtDimText" Visible="False" />
-                                </BoxContainer>
-
+                            <BoxContainer Orientation="Vertical" SeparationOverride="5" MaxWidth="1040"
+                                          MinWidth="{x:Static cmu:CmuPanelMetrics.LobbyActionColumnWidth}">
                                 <!-- Ranked, not a grid of equals. Only one of Ready/Join is ever
                                      visible - whichever it is, it is the thing you came here to do,
                                      so it gets the full width and the taller box. Observe sits under
@@ -49,19 +36,31 @@
                                      between two equivalent things, which they are not.
                                      The four faction choices moved into JoinRoundWindow - they are
                                      one decision taken once, not four permanent slots. -->
-                                <BoxContainer Name="ActionButtons" Orientation="Vertical"
-                                              HorizontalExpand="True" SeparationOverride="4">
+                                <BoxContainer Name="ActionButtons" Orientation="Vertical" HorizontalExpand="True"
+                                              SeparationOverride="{x:Static cmu:CmuPanelMetrics.GroupSeparation}">
+                                    <!-- CrtReadyToggle, not ButtonBig: this control's job is to say
+                                         which of two states you are in, and the shared button box
+                                         says only that it is pressable. CrtLobbyTheme withholds the
+                                         standard CRT button class from anything wearing this. -->
                                     <Button Name="ReadyButton" Access="Public" ToggleMode="True"
                                             Text="{Loc 'ui-lobby-ready-up-button'}"
-                                            StyleClasses="ButtonBig" MinHeight="36" HorizontalExpand="True" />
+                                            StyleClasses="CrtReadyToggle" HorizontalExpand="True"
+                                            MinHeight="{x:Static cmu:CmuPanelMetrics.RowTall}" />
                                     <!-- RMC14/AU -->
                                     <Button Name="JoinRoundButton" Access="Public"
                                             Text="{Loc 'cmu-lobby-join-round'}"
-                                            StyleClasses="ButtonBig" MinHeight="36" HorizontalExpand="True"
+                                            StyleClasses="ButtonBig" HorizontalExpand="True"
+                                            MinHeight="{x:Static cmu:CmuPanelMetrics.Row}"
                                             Visible="False" />
+                                    <!-- A rule, not just a gap. Ready/Join and Observe are ranked
+                                         rather than equal, and off-theme two stacked buttons of the
+                                         same fill read as one control without something between
+                                         them. -->
+                                    <PanelContainer StyleClasses="CrtDivider" />
                                     <cc:UICommandButton Command="observe" Name="ObserveButton" Access="Public"
                                                         Text="{Loc 'ui-lobby-observe-button'}"
-                                                        StyleClasses="ButtonBig" MinHeight="26" HorizontalExpand="True"
+                                                        StyleClasses="ButtonBig" HorizontalExpand="True"
+                                                        MinHeight="{x:Static cmu:CmuPanelMetrics.RowCompact}"
                                                         WindowType="{x:Type lobbyUi:ObserveWarningWindow}" />
                                 </BoxContainer>
 
@@ -124,7 +123,7 @@
                         <BoxContainer Orientation="Vertical" HorizontalExpand="True"
                                       Margin="10 8 10 8">
                             <!-- Top row: server name, action buttons and the collapse arrow share one line -->
-                            <BoxContainer Orientation="Horizontal" MinSize="0 40" Name="HeaderContainer" Access="Public"
+                            <BoxContainer Orientation="Horizontal" MinHeight="{x:Static cmu:CmuPanelMetrics.Header}" Name="HeaderContainer" Access="Public"
                                           SeparationOverride="4">
                                 <Label Name="ServerName" Access="Public" StyleClasses="LabelHeadingBigger" VAlign="Center"
                                        HorizontalExpand="True" HorizontalAlignment="Left" Margin="4 0 8 0" />
@@ -140,7 +139,6 @@
                                                TexturePath="filled_right_arrow.svg.192dpi"
                                                VerticalAlignment="Center"
                                                Margin="6 0 2 0"
-                                               ModulateSelfOverride="#9DFFB6"
                                                Scale="0.5 0.5" />
                             </BoxContainer>
                             <controls:HSpacer Spacing="4" />
@@ -194,16 +192,45 @@
                         VerticalAlignment="Top"
                         Margin="0 0 2 0"
                         Visible="False">
-            <BoxContainer Orientation="Horizontal" MinSize="0 40">
+            <BoxContainer Orientation="Horizontal" MinHeight="{x:Static cmu:CmuPanelMetrics.Header}">
                 <TextureButton Name="ExpandButton"
                             TexturePath="filled_left_arrow.svg.192dpi"
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
-                            ModulateSelfOverride="#9DFFB6"
                             Scale="0.5 0.5"/>
             </BoxContainer>
         </PanelContainer>
     </BoxContainer>
+    <!-- The round clock. It used to be the action panel's heading, which put the one thing here
+         you are meant to notice without looking at it in the corner of the screen, at heading
+         size, next to the buttons.
+
+         At the root rather than inside DefaultState, for two reasons. It has to survive the switch
+         into character customization - SwitchState hides whichever state is not showing, and the
+         clock going with it meant losing the countdown exactly when a player is busy and most
+         likely to lose track of it. And the drag has to range over the whole window, which it
+         cannot do from inside a container that is only as big as one column.
+
+         MouseFilter is Ignore so this full-window layer does not swallow clicks meant for the
+         lobby underneath; the clock itself sets Stop, because it is the part you grab.
+
+         LobbyState places it - by default clear of the action column and near the top, or wherever
+         it was last dropped - and hides it once the round is running, since a clock counting down
+         to something that already happened is just another thing on the screen. -->
+    <LayoutContainer Name="ClockLayer" Access="Public" MouseFilter="Ignore"
+                     HorizontalExpand="True" VerticalExpand="True">
+        <cmu:CmuDraggablePanel Name="RoundClock" Access="Public" StyleClasses="CrtPanelTicked">
+            <BoxContainer Orientation="Vertical" SeparationOverride="1"
+                          Margin="{x:Static cmu:CmuPanelMetrics.ContentPadding}">
+                <Label Name="ClockCaption" Access="Public" Align="Center"
+                       StyleClasses="CrtDimText" />
+                <Label Name="StartTime" Access="Public" Align="Center"
+                       StyleClasses="CrtClock" MinWidth="190" />
+                <Label Name="LobbyStatusLine" Access="Public" Align="Center"
+                       StyleClasses="CrtDimText" Visible="False" />
+            </BoxContainer>
+        </cmu:CmuDraggablePanel>
+    </LayoutContainer>
     <BoxContainer Name="BalanceRatingContainer"
                   Access="Public"
                   Orientation="Vertical"

@@ -75,12 +75,47 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtHeading = "CrtHeading";
         public const string StyleClassCrtHeadingBig = "CrtHeadingBig";
         public const string StyleClassCrtHeadingBigWarning = "CrtHeadingBigWarning";
+
+        /// <summary>
+        ///     The lobby clock face. Its own size step rather than a bigger heading: a heading shares
+        ///     a panel with body text and has to stay in proportion to it, whereas this is read from
+        ///     across the screen and has nothing beside it to keep in scale with.
+        /// </summary>
+        public const string StyleClassCrtClock = "CrtClock";
+
+        public const string StyleClassCrtClockWarning = "CrtClockWarning";
+        public const string StyleClassCrtClockDanger = "CrtClockDanger";
+
+        /// <summary>
+        ///     The ready toggle, which has to say which of two states it is in rather than merely
+        ///     look pressable. Deliberately not a <see cref="StyleClassCrtButton"/> variant - both
+        ///     rules would match the same control at the same specificity, which has no defined
+        ///     winner, so <c>CrtLobbyTheme</c> withholds the button class from anything wearing this.
+        /// </summary>
+        public const string StyleClassCrtReadyToggle = "CrtReadyToggle";
+
+        /// <summary>
+        ///     The ready toggle while it is on. A second class rather than a Pressed rule on the
+        ///     first: the toggle carries exactly one of the two at a time, so only one rule can ever
+        ///     match it. The pseudo-class version of this rendered both states identically - the
+        ///     bare class rule and the Pressed rule matched the same control at the same
+        ///     specificity, and that has no defined winner.
+        /// </summary>
+        public const string StyleClassCrtReadyToggleOn = "CrtReadyToggleOn";
         public const string StyleClassCrtHeadingBigDanger = "CrtHeadingBigDanger";
         public const string StyleClassCrtRichText = "CrtRichText";
         public const string StyleClassCrtServerInfoText = "CrtServerInfoText";
         public const string StyleClassCrtTableCell = "CrtTableCell";
         public const string StyleClassCrtUnderlineRow = "CrtUnderlineRow";
         public const string StyleClassCrtCharacterSummary = "CrtCharacterSummary";
+
+        /// <summary>
+        ///     A block heading - SERVER INFO, CHARACTER. Its own class because off-theme it wants to
+        ///     be a heading and under CRT it wants to stay the small caps strip it already is: these
+        ///     were sharing <see cref="StyleClassCrtFieldLabel"/> with the field names inside the
+        ///     block, which off-theme left a section title the same size as the labels beneath it.
+        /// </summary>
+        public const string StyleClassCrtSectionTitle = "CrtSectionTitle";
         public const string StyleClassCrtDivider = "CrtDivider";
         public const string StyleClassCrtChatPanel = "CrtChatPanel";
 
@@ -576,6 +611,7 @@ namespace Content.Client.Stylesheets
             var notoSansBold12 = resCache.NotoStack(variation: "Bold", size: 12);
             var notoSansBold16 = resCache.NotoStack(variation: "Bold", size: 16);
             var notoSansBold18 = resCache.NotoStack(variation: "Bold", size: 18);
+            var notoSansBold28 = resCache.NotoStack(variation: "Bold", size: 28);
             var notoSansBold11 = resCache.NotoStack(variation: "Bold", size: 11);
             var uavOsdStack = UavOsdFontStack;
             var uavOsd13 = resCache.GetFont
@@ -624,6 +660,11 @@ namespace Content.Client.Stylesheets
             // uavOsd* locals are all size 8 despite their names - so these are picked by eye against
             // the rest of the panel rather than scaled off crtTextFont.
             var crtFieldLabelFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 8) : notoSansBold11;
+
+            // Same as the field label under CRT, deliberately - the terminal look leans on the caps
+            // strip rather than on size, and it is already right. Off-theme it becomes a real
+            // heading.
+            var crtSectionTitleFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 8) : notoSansBold16;
             var crtFieldValueFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 11) : notoSans12;
             var crtFieldValueLeadFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 10) : notoSansBold16;
 
@@ -637,6 +678,12 @@ namespace Content.Client.Stylesheets
             var crtDimFont = useCrtUi ? uavOsd13 : notoSans10;
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
+
+            // The lobby clock face. Roughly twice the big heading, because it is the one thing on
+            // the lobby meant to be read without looking at it - the number you catch out of the
+            // corner of an eye while reading the server info. The OSD sizes run small (see the note
+            // above: uavOsdBold18 is really size 12), so this is picked by eye, not by ratio.
+            var crtClockFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 22) : notoSansBold28;
             var crtRichTextFont = useCrtUi ? uavOsd14 : notoSans12;
 
             // Chat's own font, kept separate from crtRichTextFont on purpose. That one is shared with
@@ -1114,10 +1161,15 @@ namespace Content.Client.Stylesheets
             // every button. Measured at padTop=4/padBottom=7 across AHELP, CALL VOTE, CUSTOMIZE and
             // IGNORE ALLEGIANCE before this; 1px out after, with the button height unchanged.
             // Re-measure if the button font size ever changes - this compensates for one metric.
+            // Bordered off-theme, borderless under CRT. The CRT ladder separates a button from its
+            // panel by fill alone, which is the whole point of widening it - but the neutral ladder
+            // has nothing like that much room between steps, so off-theme a button needs an edge to
+            // be a button at all. Every control on the lobby was an unmarked rectangle without this.
             var crtButton = new CrtStyleBox
             {
                 BackgroundColor = CrtTerminalPalette.Surface2,
-                BorderThickness = new Thickness(0),
+                BorderColor = CrtTerminalPalette.Line,
+                BorderThickness = useCrtUi ? new Thickness(0) : new Thickness(1),
                 DrawCornerTicks = false,
                 ContentMarginLeftOverride = 12,
                 ContentMarginRightOverride = 12,
@@ -1151,6 +1203,43 @@ namespace Content.Client.Stylesheets
             var crtAttentionButtonPressed = new CrtStyleBox(crtAttentionButton)
             {
                 BackgroundColor = CrtTerminalPalette.Surface4,};
+
+            // The ready toggle. Not-ready is the theme's inert ground with a dim edge - switched
+            // off, and it should look it. The two states have to be told apart at a glance, so they
+            // differ on fill, on edge colour, and on the mark in the label, rather than by one step
+            // of the surface ladder - which is what left the old pressed state all but invisible
+            // (Surface2 to Surface4 and nothing else).
+            //
+            // The edge is a single rule down the leading side, not a frame: a box inside a box is
+            // the one thing this theme has refused everywhere else.
+            // Not ready: the theme's inert ground with a dim edge. Switched off, and it looks it.
+            var crtReadyToggle = new CrtStyleBox(crtButton)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface1,
+                BorderColor = CrtTerminalPalette.TextDim,
+                BorderThickness = new Thickness(3, 0, 0, 0),
+            };
+
+            var crtReadyToggleHover = new CrtStyleBox(crtReadyToggle)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface2,
+            };
+
+            // Ready: inverted. Not one step up the surface ladder - a lit panel with dark text on
+            // it, which is the largest difference this palette can make between two states of one
+            // control. The first attempt moved Surface2 to Surface4 and was genuinely hard to read
+            // at a glance; a step on the ladder says "hovered", it does not say "you are ready".
+            var crtReadyToggleOn = new CrtStyleBox(crtReadyToggle)
+            {
+                BackgroundColor = Color.InterpolateBetween(
+                    CrtTerminalPalette.Surface4, CrtTerminalPalette.Accent, 0.7f),
+                BorderColor = CrtTerminalPalette.TextBright,
+            };
+
+            var crtReadyToggleOnHover = new CrtStyleBox(crtReadyToggleOn)
+            {
+                BackgroundColor = CrtTerminalPalette.Accent,
+            };
 
             var crtLineEdit = new CrtStyleBox
             {
@@ -1624,6 +1713,54 @@ namespace Content.Client.Stylesheets
                     .Prop(ContainerButton.StylePropertyStyleBox, crtButtonDisabled)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                // Off. No bare class rule and no Pressed rule: the toggle wears exactly one of the
+                // two ready classes at a time, so for any given state exactly one of these matches
+                // and there is no tie to resolve.
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggle)
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggle)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggle)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggleHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggle)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggleHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggle)
+                    .Pseudo(ContainerButton.StylePseudoClassDisabled)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtButtonDisabled)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // On.
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggleOn)
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggleOn)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggleOn)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggleOnHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // Pressed, not hover: a ToggleMode button that is on holds the Pressed pseudo-class
+                // for as long as it is on, so this - not the Normal rule above - is what a ready
+                // player actually looks at. Pointing it at the hover box left the resting state at
+                // full accent and gave hovering nothing left to say.
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggleOn)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtReadyToggleOn)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtReadyToggleOn)
+                    .Pseudo(ContainerButton.StylePseudoClassDisabled)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtButtonDisabled)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<Label>().Class(StyleClassCrtText)
                     .Prop(Label.StylePropertyFont, crtTextFont)
                     .Prop(Label.StylePropertyFontColor, crtTextColor),
@@ -1638,6 +1775,10 @@ namespace Content.Client.Stylesheets
                 // from size, so the label can sit at a colour that is muted rather than murky.
                 Element<Label>().Class(StyleClassCrtFieldLabel)
                     .Prop(Label.StylePropertyFont, crtFieldLabelFont)
+                    .Prop(Label.StylePropertyFontColor, crtFieldLabelColor),
+
+                Element<Label>().Class(StyleClassCrtSectionTitle)
+                    .Prop(Label.StylePropertyFont, crtSectionTitleFont)
                     .Prop(Label.StylePropertyFontColor, crtFieldLabelColor),
 
                 Element<Label>().Class(StyleClassCrtFieldValue)
@@ -1673,6 +1814,20 @@ namespace Content.Client.Stylesheets
 
                 Element<Label>().Class(StyleClassCrtHeadingBigDanger)
                     .Prop(Label.StylePropertyFont, crtHeadingBigFont)
+                    .Prop(Label.StylePropertyFontColor, CrtDanger),
+
+                // The clock face. Three colours, one font - the urgency swap must not also change
+                // the size, or the panel resizes under the countdown as it runs down.
+                Element<Label>().Class(StyleClassCrtClock)
+                    .Prop(Label.StylePropertyFont, crtClockFont)
+                    .Prop(Label.StylePropertyFontColor, CrtTerminalPalette.TextBright),
+
+                Element<Label>().Class(StyleClassCrtClockWarning)
+                    .Prop(Label.StylePropertyFont, crtClockFont)
+                    .Prop(Label.StylePropertyFontColor, CrtWarning),
+
+                Element<Label>().Class(StyleClassCrtClockDanger)
+                    .Prop(Label.StylePropertyFont, crtClockFont)
                     .Prop(Label.StylePropertyFontColor, CrtDanger),
 
                 Element<Label>().Class(StyleClassCrtButtonLabel)

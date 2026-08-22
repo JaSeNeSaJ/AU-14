@@ -56,7 +56,13 @@ internal static class CrtLobbyTheme
         switch (control)
         {
             case Button button:
-                AddClass(button, StyleNano.StyleClassCrtButton);
+                // Withheld from the ready toggle, which brings its own box. Adding this too would
+                // leave two rules matching the same control at the same specificity, and that has
+                // no defined winner - the toggle would look like an ordinary button on some runs
+                // and not others. Its label still gets the shared typography below.
+                if (!button.HasStyleClass(StyleNano.StyleClassCrtReadyToggle) &&
+                    !button.HasStyleClass(StyleNano.StyleClassCrtReadyToggleOn))
+                    AddClass(button, StyleNano.StyleClassCrtButton);
 
                 // Centring a button label takes two things, and the stylesheet can only do one of
                 // them. AlignMode centres the text inside the Label's own box; this makes that box
@@ -170,7 +176,12 @@ internal static class CrtLobbyTheme
             // The lobby countdown swaps to these as it runs down, and Apply re-runs on a palette
             // change - which could land while the countdown is amber and hand it a second font rule.
             label.HasStyleClass(StyleNano.StyleClassCrtHeadingBigWarning) ||
-            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBigDanger))
+            label.HasStyleClass(StyleNano.StyleClassCrtHeadingBigDanger) ||
+            // Same reason as the headings: the clock swaps between these three as it runs down, and
+            // Apply re-runs on a palette change, which could land while it is amber.
+            label.HasStyleClass(StyleNano.StyleClassCrtClock) ||
+            label.HasStyleClass(StyleNano.StyleClassCrtClockWarning) ||
+            label.HasStyleClass(StyleNano.StyleClassCrtClockDanger))
             return;
 
         if (label.HasStyleClass(StyleNano.StyleClassLabelHeadingBigger))
@@ -209,6 +220,9 @@ internal static class CrtLobbyTheme
         control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBig);
         control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigWarning);
         control.RemoveStyleClass(StyleNano.StyleClassCrtHeadingBigDanger);
+        control.RemoveStyleClass(StyleNano.StyleClassCrtClock);
+        control.RemoveStyleClass(StyleNano.StyleClassCrtClockWarning);
+        control.RemoveStyleClass(StyleNano.StyleClassCrtClockDanger);
         control.RemoveStyleClass(StyleNano.StyleClassCrtRichText);
         control.RemoveStyleClass(StyleNano.StyleClassCrtLineEdit);
         control.RemoveStyleClass(StyleNano.StyleClassCrtItemList);
