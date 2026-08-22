@@ -1,27 +1,37 @@
-<Control xmlns="https://spacestation14.io" MinWidth="620" MaxWidth="1280" RectClipContent="True">
+<Control xmlns="https://spacestation14.io"
+         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+         xmlns:ui="clr-namespace:Content.Client._CMU14.Interface"
+         MinWidth="620" MaxWidth="1280" RectClipContent="True">
     <PanelContainer Name="VotePanel" StyleClasses="CrtPanel" />
 
-    <!-- Margin is deliberately larger than the panel's own: the options are the widest thing in
-         here, and at 10 they sat all but touching the border. Kept in step with
-         ContentHorizontalMargin in the code-behind, which uses it to work out how many columns fit. -->
-    <BoxContainer Name="MainContent" Margin="14 12" Orientation="Vertical" SeparationOverride="8">
+    <!-- ContentPadding rather than the panel's own inset: the options are the widest thing in here,
+         and at PanelPadding they sat all but touching the border. ContentHorizontalMargin in the
+         code-behind is derived from the same constant - it uses it to work out how many columns
+         fit, and the two drifting apart is how options end up sliced off at the edge. -->
+    <BoxContainer Name="MainContent" Margin="{x:Static ui:CmuPanelMetrics.ContentPadding}"
+                  Orientation="Vertical"
+                  SeparationOverride="{x:Static ui:CmuPanelMetrics.RowSeparation}">
         <Label Name="VoteCaller" StyleClasses="CrtHeading" />
         <RichTextLabel Name="VoteTitle" StyleClasses="CrtRichText" />
         <Button Margin="0 2" Name="FollowVoteTarget" Text="{Loc 'ui-vote-follow-button-popup'}" Visible="False" />
 
         <GridContainer Columns="3" Name="VoteOptionsContainer" HorizontalExpand="True"
-            HSeparationOverride="8" VSeparationOverride="6" />
+            HSeparationOverride="{x:Static ui:CmuPanelMetrics.RowSeparation}"
+            VSeparationOverride="{x:Static ui:CmuPanelMetrics.RowSeparation}" />
         <BoxContainer Orientation="Horizontal" Margin="0 2 0 0">
             <ProgressBar Margin="0 0 8 0" HorizontalExpand="True" Name="TimeLeftBar" MinValue="0" MaxValue="1" MinSize="0 20" StyleClasses="CrtProgressBar" />
             <Label Name="TimeLeftText" StyleClasses="CrtHeading" MinWidth="42" HorizontalAlignment="Right" />
-            <Button Name="MinimizeButton" Text="{Loc 'ui-vote-minimize'}" Margin="8 0 0 0" MinWidth="80" />
+            <Button Name="MinimizeButton" Text="{Loc 'ui-vote-minimize'}" Margin="8 0 0 0"
+                    MinWidth="{x:Static ui:CmuPanelMetrics.ButtonNarrow}" />
         </BoxContainer>
     </BoxContainer>
 
-    <BoxContainer Name="MinimizedContent" Margin="10 8" Orientation="Horizontal" Visible="False"
-            HorizontalExpand="True" VerticalAlignment="Center">
+    <BoxContainer Name="MinimizedContent" Margin="{x:Static ui:CmuPanelMetrics.PanelPadding}"
+                  Orientation="Horizontal" Visible="False"
+                  HorizontalExpand="True" VerticalAlignment="Center">
         <Label Name="MinimizedTitle" HorizontalExpand="True" StyleClasses="CrtHeading" ClipText="True" />
         <Label Name="MinimizedTimeLeft" StyleClasses="CrtHeading" MinWidth="42" HorizontalAlignment="Right" Margin="0 0 8 0" />
-        <Button Name="RestoreButton" Text="{Loc 'ui-vote-restore'}" MinWidth="80" />
+        <Button Name="RestoreButton" Text="{Loc 'ui-vote-restore'}"
+                MinWidth="{x:Static ui:CmuPanelMetrics.ButtonNarrow}" />
     </BoxContainer>
 </Control>

@@ -33,14 +33,6 @@ namespace Content.Client._CMU14.Interface;
 /// </remarks>
 public sealed class CmuChoiceCard : PanelContainer
 {
-    /// <summary>
-    ///     Width the description is allowed before it wraps. Without a cap a
-    ///     <see cref="RichTextLabel"/> reports its whole unwrapped line as its desired width, and a
-    ///     window sized to that grows until every description fits on one line - which is how the
-    ///     join-round window first came out over 1300px wide.
-    /// </summary>
-    public const int DefaultDescriptionWidth = 430;
-
     /// <summary>The card's edge, its fill, the button's fill, and the text colour.</summary>
     public readonly record struct Palette(Color Edge, Color Fill, Color Button, Color Text);
 
@@ -62,8 +54,8 @@ public sealed class CmuChoiceCard : PanelContainer
         string description,
         Palette palette,
         bool buttonOnLeft = true,
-        int buttonWidth = 164,
-        int descriptionWidth = DefaultDescriptionWidth)
+        float buttonWidth = CmuPanelMetrics.ButtonWide,
+        float descriptionWidth = CmuPanelMetrics.DescriptionWidth)
     {
         _palette = palette;
         _buttonOnLeft = buttonOnLeft;
@@ -72,7 +64,7 @@ public sealed class CmuChoiceCard : PanelContainer
         Button = new Button
         {
             Text = buttonText,
-            MinSize = new Vector2(buttonWidth, 46),
+            MinSize = new Vector2(buttonWidth, CmuPanelMetrics.RowTall),
             VerticalExpand = true,
         };
 
@@ -86,7 +78,7 @@ public sealed class CmuChoiceCard : PanelContainer
         {
             HorizontalExpand = true,
             MaxWidth = descriptionWidth,
-            Margin = new Thickness(14, 10),
+            Margin = CmuPanelMetrics.ContentPadding,
             VerticalAlignment = VAlignment.Center,
         };
 

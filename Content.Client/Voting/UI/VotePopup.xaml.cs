@@ -36,8 +36,6 @@ namespace Content.Client.Voting.UI
         private const int CompactOptionMinWidth = 220;
         private const int WideOptionMinWidth = 400;
         private const int SingleOptionMinWidth = 560;
-        private const int OptionMinHeight = 34;
-        private const int TallOptionMinHeight = 48;
         private const int WideOptionTextLength = 24;
         private const int VeryWideOptionTextLength = 42;
         private const int TallOptionTextLength = 32;
@@ -46,13 +44,14 @@ namespace Content.Client.Voting.UI
         ///     Matches HSeparationOverride on VoteOptionsContainer. Needed here to work out how many
         ///     columns actually fit.
         /// </summary>
-        private const int OptionSeparation = 8;
+        private const int OptionSeparation = CmuPanelMetrics.RowSeparation;
 
         /// <summary>
         ///     Horizontal margin on MainContent, doubled. The options have this much less room than
-        ///     the popup itself.
+        ///     the popup itself. Derived rather than typed: the XAML sets that margin from the same
+        ///     constant, and if this number stops matching it, options get sliced off at the border.
         /// </summary>
-        private const int ContentHorizontalMargin = 28;
+        private const int ContentHorizontalMargin = CmuPanelMetrics.ContentPaddingHorizontal * 2;
 
         private const float LargeUiScale = 1.35f;
 
@@ -89,7 +88,7 @@ namespace Content.Client.Voting.UI
                     ToggleMode = true,
                     Group = group,
                     HorizontalExpand = true,
-                    MinHeight = OptionMinHeight,
+                    MinHeight = CmuPanelMetrics.Row,
                     ClipText = false,
                     RectClipContent = false,
                     TextAlign = StyleNano.CrtUiEnabled ? Label.AlignMode.Left : Label.AlignMode.Center,
@@ -178,10 +177,10 @@ namespace Content.Client.Voting.UI
                 CornerColor = StyleNano.CrtGreen.WithAlpha(0.28f),
                 BorderThickness = new Thickness(1),
                 CornerLength = 10,
-                ContentMarginLeftOverride = 10,
-                ContentMarginRightOverride = 10,
-                ContentMarginTopOverride = 8,
-                ContentMarginBottomOverride = 8
+                ContentMarginLeftOverride = CmuPanelMetrics.PanelPadding.Left,
+                ContentMarginRightOverride = CmuPanelMetrics.PanelPadding.Right,
+                ContentMarginTopOverride = CmuPanelMetrics.PanelPadding.Top,
+                ContentMarginBottomOverride = CmuPanelMetrics.PanelPadding.Bottom
             };
         }
 
@@ -274,7 +273,7 @@ namespace Content.Client.Voting.UI
             // rectangles rather than one chart.
             var columns = StyleNano.CrtUiEnabled ? 1 : GetOptionColumns(texts.Length, longest, scale);
             var minWidth = (int) (GetOptionMinWidth(columns, longest) * scale);
-            var minHeight = (int) ((longest > TallOptionTextLength ? TallOptionMinHeight : OptionMinHeight) * scale);
+            var minHeight = (int) ((longest > TallOptionTextLength ? CmuPanelMetrics.RowTall : CmuPanelMetrics.Row) * scale);
 
             if (_optionColumns == columns &&
                 _optionMinWidth == minWidth &&

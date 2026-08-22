@@ -31,15 +31,72 @@ public sealed partial class JoinRoundWindow : DefaultWindow
     [Dependency] private readonly IConfigurationManager _cfg = default!;
     [Dependency] private readonly IStylesheetManager _stylesheetManager = default!;
 
+    /// <summary>
+    ///     Colonists. The plain one on purpose - they are the default, least exotic choice, so it
+    ///     gets a neutral grey-green rather than a faction colour. Being the only card with no hue
+    ///     is itself the signal.
+    /// </summary>
+    private static readonly CmuChoiceCard.Palette ColonistsPalette = new(
+        Color.FromHex("#5E6B64"), Color.FromHex("#0E1211"), Color.FromHex("#18201D"), Color.FromHex("#C2CCC6"));
+
+    /// <summary>Govfor keeps the terminal green - it is the house faction and the theme's own hue.</summary>
+    private static readonly CmuChoiceCard.Palette GovforPalette = new(
+        Color.FromHex("#2E6241"), Color.FromHex("#0B1710"), Color.FromHex("#152F20"), Color.FromHex("#8FE9AE"));
+
+    private static readonly CmuChoiceCard.Palette OpforPalette = new(
+        Color.FromHex("#8C3038"), Color.FromHex("#170C0E"), Color.FromHex("#2A1417"), Color.FromHex("#FF9E9E"));
+
+    /// <summary>Other - mostly xenomorphs, hence purple.</summary>
+    private static readonly CmuChoiceCard.Palette OtherPalette = new(
+        Color.FromHex("#5B4A8C"), Color.FromHex("#120E1B"), Color.FromHex("#1E1830"), Color.FromHex("#CDBCFF"));
+
+    /// <summary>
+    ///     Kept as properties because <see cref="Content.Client.Lobby.LobbyState"/> binds to them by
+    ///     name, and the buttons now belong to the cards rather than to the XAML.
+    /// </summary>
+    public Button JoinColonistsButton => _colonists.Button;
+
+    public Button JoinGovforButton => _govfor.Button;
+
+    public Button JoinOpforButton => _opfor.Button;
+
+    public Button JoinOtherButton => _other.Button;
+
+    private readonly CmuChoiceCard _colonists;
+    private readonly CmuChoiceCard _govfor;
+    private readonly CmuChoiceCard _opfor;
+    private readonly CmuChoiceCard _other;
+
     public JoinRoundWindow()
     {
         Title = Loc.GetString("cmu-lobby-join-round-window-title");
         RobustXamlLoader.Load(this);
         IoCManager.InjectDependencies(this);
+
+        // The button alternates left and right down the list, and that is doing work rather than
+        // decoration: four identical rows read as a table you scan past, whereas a zig-zag makes
+        // each card its own object and forces the eye to stop at each one.
+        _colonists = AddCard("lobby-state-ready-button-join-state", "cmu-lobby-join-colonists-desc", ColonistsPalette, buttonOnLeft: true);
+        _govfor = AddCard("rmc-lobby-join-govfor", "cmu-lobby-join-govfor-desc", GovforPalette, buttonOnLeft: false);
+        _opfor = AddCard("rmc-lobby-join-opfor", "cmu-lobby-join-opfor-desc", OpforPalette, buttonOnLeft: true);
+        _other = AddCard("rmc-lobby-join-other", "cmu-lobby-join-other-desc", OtherPalette, buttonOnLeft: false);
+
         ApplyCrtPalette();
 
         _cfg.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledChanged);
         _cfg.OnValueChanged(CCVars.CrtUiColor, OnCrtUiColorChanged);
+    }
+
+    private CmuChoiceCard AddCard(string buttonKey, string descKey, CmuChoiceCard.Palette palette, bool buttonOnLeft)
+    {
+        var card = new CmuChoiceCard(
+            Loc.GetString(buttonKey),
+            Loc.GetString(descKey),
+            palette,
+            buttonOnLeft);
+
+        Choices.AddChild(card);
+        return card;
     }
 
     [Obsolete("Controls should only be removed from UI tree instead of being disposed")]
@@ -61,30 +118,6 @@ public sealed partial class JoinRoundWindow : DefaultWindow
         ApplyCrtPalette();
     }
 
-    /// <summary>
-    ///     One faction's look: the card's edge and fill, its button, and its body text.
-    /// </summary>
-    private readonly record struct FactionStyle(Color Edge, Color Fill, Color Button, Color Text);
-
-    /// <summary>
-    ///     Colonists. The plain one on purpose - they are the default, least exotic choice, so it
-    ///     gets a neutral grey-green rather than a faction colour. Being the only card with no hue
-    ///     is itself the signal.
-    /// </summary>
-    private static readonly FactionStyle ColonistsStyle = new(
-        Color.FromHex("#5E6B64"), Color.FromHex("#0E1211"), Color.FromHex("#18201D"), Color.FromHex("#C2CCC6"));
-
-    /// <summary>Govfor keeps the terminal green - it is the house faction and the theme's own hue.</summary>
-    private static readonly FactionStyle GovforStyle = new(
-        Color.FromHex("#2E6241"), Color.FromHex("#0B1710"), Color.FromHex("#152F20"), Color.FromHex("#8FE9AE"));
-
-    private static readonly FactionStyle OpforStyle = new(
-        Color.FromHex("#8C3038"), Color.FromHex("#170C0E"), Color.FromHex("#2A1417"), Color.FromHex("#FF9E9E"));
-
-    /// <summary>Other - mostly xenomorphs, hence purple.</summary>
-    private static readonly FactionStyle OtherStyle = new(
-        Color.FromHex("#5B4A8C"), Color.FromHex("#120E1B"), Color.FromHex("#1E1830"), Color.FromHex("#CDBCFF"));
-
     private void ApplyCrtPalette()
     {
         Stylesheet = _stylesheetManager.SheetNano;
@@ -92,65 +125,9 @@ public sealed partial class JoinRoundWindow : DefaultWindow
 
         // After the theme walk, never before. ApplyWindow re-tags every control in the tree and hands
         // the buttons the shared CrtButton box; anything set earlier would simply be replaced.
-        ApplyFactionStyles();
-    }
-
-    /// <summary>
-    ///     Paint each card, button and description in its faction's colours.
-    /// </summary>
-    /// <remarks>
-    ///     Overrides rather than style classes throughout. These are four one-off looks that exist
-    ///     only in this window, and a class per faction would mean four near-identical rule sets in
-    ///     the stylesheet earning nothing. It also has to beat <see cref="CrtLobbyTheme"/>, which has
-    ///     just finished putting every button on the same box.
-    /// </remarks>
-    private void ApplyFactionStyles()
-    {
-        Apply(ColonistsCard, JoinColonistsButton, JoinColonistsDesc, "cmu-lobby-join-colonists-desc", ColonistsStyle, buttonOnLeft: true);
-        Apply(GovforCard, JoinGovforButton, JoinGovforDesc, "cmu-lobby-join-govfor-desc", GovforStyle, buttonOnLeft: false);
-        Apply(OpforCard, JoinOpforButton, JoinOpforDesc, "cmu-lobby-join-opfor-desc", OpforStyle, buttonOnLeft: true);
-        Apply(OtherCard, JoinOtherButton, JoinOtherDesc, "cmu-lobby-join-other-desc", OtherStyle, buttonOnLeft: false);
-    }
-
-    private static void Apply(
-        PanelContainer card,
-        Button button,
-        RichTextLabel description,
-        string locKey,
-        FactionStyle style,
-        bool buttonOnLeft)
-    {
-        // The card carries the only full border in the window. A 1px edge is enough to bound it
-        // without turning the list into four heavy boxes - the fill is doing most of the separating.
-        card.PanelOverride = new StyleBoxFlat
-        {
-            BackgroundColor = style.Fill,
-            BorderColor = style.Edge,
-            BorderThickness = new Thickness(1),
-        };
-
-        // The button is a segment of the card rather than a control placed on it: it fills the card's
-        // full height and runs flush into the border, and its only edge is the single rule facing the
-        // text. Bordering all four sides here would put a box inside a box, which is the one thing
-        // this theme has consistently refused.
-        button.StyleBoxOverride = new StyleBoxFlat
-        {
-            BackgroundColor = style.Button,
-            BorderColor = style.Edge,
-            BorderThickness = buttonOnLeft
-                ? new Thickness(0, 0, 1, 0)
-                : new Thickness(1, 0, 0, 0),
-            ContentMarginLeftOverride = 12,
-            ContentMarginRightOverride = 12,
-            ContentMarginTopOverride = 6,
-            ContentMarginBottomOverride = 4,
-        };
-
-        button.Label.FontColorOverride = style.Text;
-        button.Label.HorizontalExpand = true;
-        button.Label.Align = Label.AlignMode.Center;
-
-        // Dimmed against the button's own text so the button stays the thing the eye lands on.
-        description.SetMessage(Loc.GetString(locKey), defaultColor: style.Text.WithAlpha(0.72f));
+        _colonists.ApplyPalette();
+        _govfor.ApplyPalette();
+        _opfor.ApplyPalette();
+        _other.ApplyPalette();
     }
 }
