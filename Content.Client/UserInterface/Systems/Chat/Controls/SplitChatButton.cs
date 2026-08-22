@@ -41,7 +41,7 @@ public sealed class SplitChatButton : ChatPopupButton<SplitChatPopup>
         }
         else
         {
-            Modulate = enabled ? Color.FromHex("#9fd0b3") : Color.FromHex("#737987");
+            Modulate = enabled ? Color.White : Color.FromHex("#737987");
         }
 
         MinWidth = enabled && tabTitle != null ? Math.Max(92, 54 + tabTitle.Length * 8) : 66;

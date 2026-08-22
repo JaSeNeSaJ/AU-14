@@ -6,7 +6,7 @@
         <!-- Plain label, not a NanoHeading: NanoHeading draws a bordered panel around the word, and
              nothing else on this screen has a frame any more. -->
         <Label Name="Header" Text="{Loc 'lobby-character-preview-panel-header'}"
-               StyleClasses="CrtFieldLabel" />
+               StyleClasses="CrtSectionTitle" />
         <!-- One full-width panel. This was briefly a character block beside a column of round stats,
              which only moved the dead space rather than removing it: players and round time are one
              short line each, so a tall narrow cell wasted most of itself and left a gap nothing could
@@ -28,9 +28,14 @@
                         <BoxContainer Name="ViewBox" Orientation="Horizontal" VerticalAlignment="Center">
 
                         </BoxContainer>
+                        <!-- No RectClipContent here. It was clipping vertically as well as
+                             horizontally, and off-theme the summary is set in a proportional face
+                             tall enough to overflow the row the sprite sets - which sliced the top
+                             off the player's name. SummaryName does its own horizontal clipping,
+                             which is the only clipping that was ever wanted. -->
                         <BoxContainer Orientation="Vertical" HorizontalExpand="True"
                                       VerticalAlignment="Center" SeparationOverride="3"
-                                      Margin="4 0 4 0" RectClipContent="True">
+                                      Margin="4 0 4 0">
                             <!-- Clipped to one line in code; a longer name is cut off rather than
                                  wrapping and pushing the age and job line down. -->
                             <RichTextLabel Name="SummaryName" StyleClasses="CrtCharacterSummary" RectClipContent="True" />

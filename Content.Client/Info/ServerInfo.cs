@@ -34,7 +34,7 @@ namespace Content.Client.Info
             _title = new Label
             {
                 VerticalAlignment = VAlignment.Center,
-                StyleClasses = { StyleNano.StyleClassCrtFieldLabel },
+                StyleClasses = { StyleNano.StyleClassCrtSectionTitle },
             };
 
             RoundTimeLabel = new Label

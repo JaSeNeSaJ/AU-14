@@ -76,7 +76,7 @@ public sealed class ChatTabOverflowPopup : Popup
             }
             else
             {
-                button.Modulate = active ? Color.FromHex("#9fd0b3") : Color.FromHex("#737987");
+                button.Modulate = active ? Color.White : Color.FromHex("#737987");
             }
 
             button.OnPressed += _ =>

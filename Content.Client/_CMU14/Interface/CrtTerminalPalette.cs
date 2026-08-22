@@ -1,25 +1,42 @@
-﻿using Robust.Shared.Maths;
+﻿using Content.Client.Stylesheets;
+using Robust.Shared.Maths;
 
 namespace Content.Client._CMU14.Interface;
 
 /// <summary>
-///     A proposed replacement ladder for the green phosphor look.
+///     The surface ladder and text tones the CRT theme is built from - and the neutral ladder that
+///     stands in for it when the theme is switched off.
 /// </summary>
 /// <remarks>
 ///     <para>
-///     The shipped palette derives all eighteen of its colours from one hue and packs every surface
+///     The shipped palette derived all eighteen of its colours from one hue and packed every surface
 ///     between <c>#000906</c> and <c>#032314</c> - about five percent of the luminance range, all of
-///     it near-black. Three problems follow from that one fact, and all three showed up in practice:
-///     surfaces cannot be told apart by fill, so every boundary has to be a border, which is what
-///     produces the box-in-box look; nothing can signal danger, because a fill can only ever be the
-///     theme colour brighter; and a scanline has no luminance to modulate, so it is either invisible
-///     or a colour cast.
+///     it near-black. Three problems followed from that one fact, and all three showed up in
+///     practice: surfaces could not be told apart by fill, so every boundary had to be a border,
+///     which is what produces the box-in-box look; nothing could signal danger, because a fill could
+///     only ever be the theme colour brighter; and a scanline had no luminance to modulate, so it was
+///     either invisible or a colour cast.
 ///     </para>
 ///     <para>
 ///     This ladder fixes the cause rather than the symptoms. Four surface steps, each visibly lighter
 ///     than the last, so a panel can sit inside a panel and be read as separate without a rule
 ///     between them. Text is genuinely bright - an Aliens terminal is high contrast, dim green on
 ///     black is a different look entirely. Caution and alert are off-hue on purpose.
+///     </para>
+///     <para>
+///     <b>Every member is a property, not a field, and every one of them is mode-aware.</b> That is
+///     the whole reason this file reads the way it does. These used to be plain constants, so a
+///     control wearing a <c>Crt*</c> style class kept its green fill after the theme was switched
+///     off - and since the XAML names those classes directly, that was most of the lobby. Turning
+///     the theme off left a green UI in a proportional font, which is nobody's design.
+///     <see cref="StyleNano"/>'s own colours had always fallen back; this file was the one that did
+///     not.
+///     </para>
+///     <para>
+///     The off values are the stock NanoUI greys, keyed to what each step is used *for* rather than
+///     to its green's luminance: the panel steps land on the existing neutral panel colours, and the
+///     interactive steps land on NanoUI's own button colours, so a button in base mode is the slate
+///     it always was.
 ///     </para>
 /// </remarks>
 public static class CrtTerminalPalette
@@ -35,42 +52,59 @@ public static class CrtTerminalPalette
     // Surface1 #0C1810 / Surface2 #132A1C / Surface3 #1C3F2D / Surface4 #285538 - do not go below
     // that, it collapses the banding back into one tone.
 
+    private static bool Crt => StyleNano.CrtUiEnabled;
+
     /// <summary>Behind everything. Not pure black - a phosphor tube never is.</summary>
-    public static readonly Color Void = Color.FromHex("#040705");
+    public static Color Void => Crt ? Color.FromHex("#040705") : Color.FromHex("#0E0E10");
 
     /// <summary>Window body.</summary>
-    public static readonly Color Surface0 = Color.FromHex("#071009");
+    public static Color Surface0 => Crt ? Color.FromHex("#071009") : Color.FromHex("#1A1A1D");
 
     /// <summary>A section or group within the body.</summary>
-    public static readonly Color Surface1 = Color.FromHex("#0D1A12");
+    public static Color Surface1 => Crt ? Color.FromHex("#0D1A12") : Color.FromHex("#212126");
 
-    /// <summary>One row inside a section.</summary>
-    public static readonly Color Surface2 = Color.FromHex("#152F20");
+    /// <summary>
+    ///     One row inside a section, and the resting fill of a button.
+    /// </summary>
+    /// <remarks>
+    ///     Off-theme this has to stay clear of <c>DefaultCrtPanelBackground</c> (#25252A), which is
+    ///     what the panels under these rows are painted with. The first pass set it to exactly that
+    ///     value and every button on the lobby vanished into the panel behind it - same fill, no
+    ///     border, nothing to see. Distinct fills are half the fix; the border below is the rest.
+    /// </remarks>
+    public static Color Surface2 => Crt ? Color.FromHex("#152F20") : Color.FromHex("#343440");
 
     /// <summary>Header and status strips; hover.</summary>
-    public static readonly Color Surface3 = Color.FromHex("#204833");
+    public static Color Surface3 => Crt ? Color.FromHex("#204833") : Color.FromHex("#42424F");
 
     /// <summary>
     ///     Selected. The ladder needed a fourth step: with only three, hover and selected both landed
-    ///     on Surface3 and were indistinguishable, so a selected tab looked exactly like a hovered one.
+    ///     on Surface3 and were indistinguishable, so a selected tab looked exactly like a hovered
+    ///     one. Off-theme this is NanoUI's own button colour, which is what a pressed or selected
+    ///     control looked like before any of this existed.
     /// </summary>
-    public static readonly Color Surface4 = Color.FromHex("#2E6241");
+    public static Color Surface4 => Crt ? Color.FromHex("#2E6241") : Color.FromHex("#525266");
 
     /// <summary>Hairline, for the few places a rule still says something a fill cannot.</summary>
-    public static readonly Color Line = Color.FromHex("#2A5238");
+    public static Color Line => Crt ? Color.FromHex("#2A5238") : Color.FromHex("#4A4A57");
 
     /// <summary>Field labels and other secondary text.</summary>
-    public static readonly Color TextDim = Color.FromHex("#4E9C6B");
+    public static Color TextDim => Crt ? Color.FromHex("#4E9C6B") : Color.FromHex("#9A9A9A");
 
     /// <summary>Body text.</summary>
-    public static readonly Color Text = Color.FromHex("#8FE9AE");
+    public static Color Text => Crt ? Color.FromHex("#8FE9AE") : Color.FromHex("#E0E0E0");
 
     /// <summary>Headings and values worth reading first.</summary>
-    public static readonly Color TextBright = Color.FromHex("#C9FFDC");
+    public static Color TextBright => Crt ? Color.FromHex("#C9FFDC") : Color.White;
 
-    /// <summary>The phosphor itself. Bars, pips, active states.</summary>
-    public static readonly Color Accent = Color.FromHex("#46FF8E");
+    /// <summary>
+    ///     The phosphor itself. Bars, pips, active states. Off-theme it is NanoGold, matching
+    ///     <see cref="StyleNano.CrtGreen"/>, which has always fallen back to the same colour - so
+    ///     the two ways of asking for "the accent" agree in both modes.
+    /// </summary>
+    public static Color Accent => Crt ? Color.FromHex("#46FF8E") : StyleNano.NanoGold;
 
-    public static readonly Color Caution = Color.FromHex("#FFB454");
-    public static readonly Color Alert = Color.FromHex("#FF4E5E");
+    public static Color Caution => Crt ? Color.FromHex("#FFB454") : StyleNano.ConcerningOrangeFore;
+
+    public static Color Alert => Crt ? Color.FromHex("#FF4E5E") : StyleNano.DangerousRedFore;
 }

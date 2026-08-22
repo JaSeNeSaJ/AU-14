@@ -57,12 +57,44 @@ namespace Content.Client.Stylesheets
         /// <summary>
         ///     Rebuilding the sheet is only half of it - message rows and the channel prompt bake a
         ///     FontOverride at construction and will not pick a new one up. ChatBox listens to the
-        ///     same cvar and rebuilds itself; see ChatBox.OnChatReadableFontChanged.
+        ///     same cvar and rebuilds itself; see ChatBox.OnChatReadableFontChanged. Everything
+        ///     outside chat is caught by the full refresh below.
         /// </summary>
         private void OnChatReadableFontChanged(bool enabled)
         {
             StyleNano.SetChatReadableFont(enabled);
             RefreshNanoSheet();
+            RefreshOpenUi();
+        }
+
+        /// <summary>
+        ///     Make every control already on screen re-read the stylesheet.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///     Swapping <see cref="IUserInterfaceManager.Stylesheet"/> is not by itself enough for
+        ///     anything already built and sitting there: a control that has run its style update
+        ///     once has no reason to run it again. This walks every root and forces it, which is
+        ///     what makes an options toggle land on windows that are open behind the options menu
+        ///     rather than only on things opened afterwards.
+        ///     </para>
+        ///     <para>
+        ///     Restyling only. It deliberately does not re-run the CRT theme pass, which would hand
+        ///     CRT typography to the windows that opt out of it on purpose - the admin-help
+        ///     conversation windows are readable prose and are meant to stay in a proportional face.
+        ///     </para>
+        ///     <para>
+        ///     Not called from <see cref="RefreshNanoSheet"/> itself, because that runs on every
+        ///     tick of the colour picker's preview and a whole-tree restyle per tick is not free.
+        ///     </para>
+        /// </remarks>
+        private void RefreshOpenUi()
+        {
+            foreach (var root in _userInterfaceManager.AllRoots)
+            {
+                root.InvalidateStyleSheet();
+                root.ForceRunStyleUpdate();
+            }
         }
 
         private void RefreshNanoSheet()

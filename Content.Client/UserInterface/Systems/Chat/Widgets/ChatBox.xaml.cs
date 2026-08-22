@@ -667,8 +667,11 @@ public partial class ChatBox : UIWidget
             }
             else
             {
+                // White, not the pale green this used to be. Off-theme nothing else on the
+                // screen is green, and an active tab is signalled perfectly well by being brighter
+                // than the inactive ones.
                 button.Modulate = tabId == _activeTabId
-                    ? Color.FromHex("#9fd0b3")
+                    ? Color.White
                     : Color.FromHex("#737987");
             }
         }

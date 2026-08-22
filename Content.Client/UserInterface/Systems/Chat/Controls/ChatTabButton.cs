@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Robust.Client.Graphics;
 using Robust.Client.UserInterface;
@@ -59,7 +60,9 @@ public sealed class ChatTabButton : Button
     {
         StyleBoxOverride = (dragging, dropTarget) switch
         {
-            (true, _) => CreateDragStyle(Color.FromHex("#173523"), Color.FromHex("#7fd89a"), new Thickness(1)),
+            // Through the palette so the drag feedback follows the theme; hardcoded it was the
+            // one green left on an off-theme screen.
+            (true, _) => CreateDragStyle(CrtTerminalPalette.Surface2, CrtTerminalPalette.Accent, new Thickness(1)),
             (_, true) => CreateDragStyle(Color.FromHex("#1b2638"), Color.FromHex("#82b7ff"), new Thickness(2)),
             _ => null
         };

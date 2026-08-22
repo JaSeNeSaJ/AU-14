@@ -74,7 +74,13 @@ namespace Content.Client.Lobby.UI
         /// </summary>
         private void SetUpLobbyCrt()
         {
-            var crt = StyleNano.CrtUiEnabled;
+            // The cvar, not StyleNano's cached copy. That static starts life at its compile-time
+            // default of true and is only corrected once StylesheetManager initialises, so anything
+            // reading it earlier gets "CRT is on" and bakes a green into a PanelOverride that no
+            // later rebuild touches - the override is a snapshot, and only this method clears it.
+            // That is exactly what left the whole server-info column painted Surface0 green with the
+            // theme switched off. The cvar is right from the moment it is parsed.
+            var crt = _cfg.GetCVar(CCVars.CrtUiEnabled);
 
             // Two planes, one step apart: Surface0 behind the whole column and Surface1 for the
             // server-info block, so that block reads as a section inside a screen rather than the
