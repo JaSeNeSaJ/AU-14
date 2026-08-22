@@ -42,12 +42,17 @@ public sealed partial class ChatMessageRow : PanelContainer
         var accent = accentOverride ?? GetAccent(message, textColor);
         var metrics = GetMetrics(fontSize);
 
-        // Messages with a custom background (e.g. examine echoes) get a full box outline and some
-        // breathing room, so a run of them doesn't melt into one undifferentiated block of color.
-        var isBoxed = message.Display?.BackgroundColorOverride != null;
+        // A message carrying its own background - xeno announcements, examine echoes - gets that
+        // colour as a fill plus some breathing room, so a run of them doesn't melt into one
+        // undifferentiated block.
+        //
+        // Fill only, deliberately: this used to add a 2px outline on all four sides as well, which
+        // put a framed box inside the chat pane's own panel. A band of colour already separates the
+        // message from the log around it, and it does so without drawing a second border to read.
+        var isTinted = message.Display?.BackgroundColorOverride != null;
 
         HorizontalExpand = true;
-        Margin = new Thickness(0, 0, 0, isBoxed ? Math.Max(metrics.OuterBottomMargin, 4) : metrics.OuterBottomMargin);
+        Margin = new Thickness(0, 0, 0, isTinted ? Math.Max(metrics.OuterBottomMargin, 4) : metrics.OuterBottomMargin);
         // The channel accent is a triangle in the top-right corner rather than a stripe down the
         // left edge, so rows read as tagged rather than bracketed.
         PanelOverride = new ChatAccentStyleBox
@@ -55,8 +60,6 @@ public sealed partial class ChatMessageRow : PanelContainer
             BackgroundColor = GetBackground(message),
             AccentColor = accent,
             AccentSize = metrics.AccentSize,
-            BorderColor = accent,
-            BorderThickness = isBoxed ? new Thickness(2, 2, 2, 2) : new Thickness(0),
             ContentMarginLeftOverride = 6,
             // Leave room for the corner triangle so it never sits on top of the text.
             ContentMarginRightOverride = 4 + metrics.AccentSize,
@@ -298,7 +301,9 @@ public sealed partial class ChatMessageRow : PanelContainer
 
     private static Color GetBackground(ChatMessage message)
     {
-        // An explicit override is semantic - examine echoes and the like - so it survives either way.
+        // An explicit override is semantic - a xeno announcement's purple, examine echoes - so it
+        // survives the CRT branch below, which is what makes announcements readable as a block under
+        // a theme where every other row is transparent.
         if (message.Display?.BackgroundColorOverride is { } backgroundOverride)
             return backgroundOverride;
 

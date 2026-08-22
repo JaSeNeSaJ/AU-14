@@ -18,6 +18,21 @@ public sealed partial class XenoAnnounceSystem : SharedXenoAnnounceSystem
 {
     private const string QueenAnnouncementPreset = "XenoQueen";
 
+    /// <summary>
+    ///     Row tint for xeno announcements in chat.
+    /// </summary>
+    /// <remarks>
+    ///     Announcements carry no channel prefix - <c>ChatMessageRow.IsUnlabeledRadioSystemMessage</c>
+    ///     suppresses it - so in a busy log they were a bare run of coloured text with nothing marking
+    ///     where they began or ended. Under the CRT theme that was total: rows there draw no fill of
+    ///     their own, so a xeno announcement was indistinguishable from ordinary radio chatter.
+    ///     A band gives it an edge to read against without adding a prefix that would say "RAD".
+    ///
+    ///     Dark enough that the announcement's own #7575F3 title and red body still sit clearly on
+    ///     top of it - this is a ground, not a highlight.
+    /// </remarks>
+    private static readonly Color AnnouncementBackground = Color.FromHex("#2A1740");
+
     [Dependency] private IAdminLogManager _adminLogs = default!;
     [Dependency] private AudioSystem _audio = default!;
     [Dependency] private IChatManager _chat = default!;
@@ -61,7 +76,7 @@ public sealed partial class XenoAnnounceSystem : SharedXenoAnnounceSystem
             _generalAnnounce.AnnounceAdvanced(request, filter);
         }
 
-        _chat.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrapped, source, false, true, null, hidePopup: true);
+        _chat.ChatMessageToManyFiltered(filter, ChatChannel.Radio, message, wrapped, source, false, true, null, hidePopup: true, backgroundColorOverride: AnnouncementBackground);
         _audio.PlayGlobal(sound, filter, true);
 
         if (popup == null)

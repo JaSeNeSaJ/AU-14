@@ -126,7 +126,12 @@ namespace Content.Shared.Chat
             ChatDisplayMetadata? display = null,
             string? languageIcon = null, // RMC14
             NetEntity ghostFollowEntity = default,
-            NetEntity xenoWatchEntity = default) // CMU14
+            NetEntity xenoWatchEntity = default,
+            // Tints the row's background without the caller having to build a whole
+            // ChatDisplayMetadata just to set one field. Applied after the default display is
+            // resolved, so a caller can tint a message and still get the channel's normal
+            // sender/verb/label handling.
+            Color? backgroundColorOverride = null) // CMU14
         {
             Channel = channel;
             Message = message;
@@ -144,6 +149,8 @@ namespace Content.Shared.Chat
             SpeechStyleClass = speechStyleClass;
             RepeatCheckSender = repeatCheckSender;
             Display = display ?? CreateDefaultDisplay(channel);
+            if (backgroundColorOverride != null)
+                Display.BackgroundColorOverride = backgroundColorOverride;
             LanguageIcon = languageIcon;
         }
 
