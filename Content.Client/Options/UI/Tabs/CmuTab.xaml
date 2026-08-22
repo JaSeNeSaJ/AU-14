@@ -6,8 +6,14 @@
             <BoxContainer Orientation="Vertical" Margin="10 8 10 8" SeparationOverride="2" VerticalExpand="True">
                 <Label Text="{Loc 'ui-options-cmu-crt'}" StyleClasses="LabelKeyText" />
                 <CheckBox Name="CrtUiEnabledCheckBox" Text="{Loc 'ui-options-crt-ui-enabled'}" />
+                <!-- CRT colour picker, switched off for now. Uncomment this and the four blocks
+                     marked "CRT colour picker" in CmuTab.xaml.cs to bring it back; nothing else was
+                     removed. The cvar, the palette resolution and every window's subscription to
+                     accessibility.crt_ui_color are all still live, so the theme still honours
+                     whatever colour is configured - players just cannot change it from here.
                 <ui:OptionColorSlider Name="CrtUiColorSlider"
                                       Title="{Loc 'ui-options-crt-ui-color'}" />
+                     -->
                 <CheckBox Name="ChatReadableFontCheckBox"
                           Text="{Loc 'ui-options-crt-chat-readable-font'}"
                           ToolTip="{Loc 'ui-options-crt-chat-readable-font-tooltip'}" />

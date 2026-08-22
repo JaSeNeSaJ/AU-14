@@ -25,10 +25,13 @@ public sealed partial class CmuTab : Control
         IoCManager.InjectDependencies(this);
 
         var crtUiEnabled = Control.AddOption(new OptionCrtUiEnabled(Control, _cfg, CrtUiEnabledCheckBox));
-        // No SelectorType to set any more - CmuColorPicker is HSV by construction.
-        var crtUiColor = Control.AddOption(new OptionCrtUiColor(Control, _cfg, CrtUiColorSlider));
         crtUiEnabled.PreviewValueChanged += UpdateCrtUiOptionsPreview;
-        crtUiColor.PreviewValueChanged += UpdateCrtUiOptionsPreview;
+
+        // CRT colour picker (1/4) - switched off. Re-enable together with the slider in CmuTab.xaml
+        // and the three blocks below. OptionCrtUiColor itself is left whole and untouched.
+        // No SelectorType to set any more - CmuColorPicker is HSV by construction.
+        // var crtUiColor = Control.AddOption(new OptionCrtUiColor(Control, _cfg, CrtUiColorSlider));
+        // crtUiColor.PreviewValueChanged += UpdateCrtUiOptionsPreview;
 
         // Not previewed like the two above, and not hidden when CRT is off either - it only does
         // anything under the CRT theme, but it is an accessibility setting and hiding it behind
@@ -53,15 +56,25 @@ public sealed partial class CmuTab : Control
         UpdateCrtUiOptionsVisibility();
     }
 
+    /// <summary>
+    ///     Nothing to show or hide while the colour picker is switched off. Kept as a method so
+    ///     re-enabling it is one uncommented line rather than a reshuffle of its two callers.
+    /// </summary>
     private void UpdateCrtUiOptionsVisibility()
     {
-        CrtUiColorSlider.Visible = CrtUiEnabledCheckBox.Pressed;
+        // CRT colour picker (2/4).
+        // CrtUiColorSlider.Visible = CrtUiEnabledCheckBox.Pressed;
     }
 
     private void UpdateCrtUiOptionsPreview()
     {
         UpdateCrtUiOptionsVisibility();
-        CrtUiPreviewChanged?.Invoke(CrtUiEnabledCheckBox.Pressed, CrtUiColorSlider.Picker.Color.ToHex());
+
+        // CRT colour picker (3/4). With no picker to read, the preview uses the colour already in
+        // the cvar - so toggling the theme on and off still previews in the configured colour
+        // rather than snapping to a default the player never chose.
+        CrtUiPreviewChanged?.Invoke(CrtUiEnabledCheckBox.Pressed, _cfg.GetCVar(CCVars.CrtUiColor));
+        // CrtUiPreviewChanged?.Invoke(CrtUiEnabledCheckBox.Pressed, CrtUiColorSlider.Picker.Color.ToHex());
     }
 
     private sealed class OptionCrtUiEnabled : BaseOptionCVar<bool>
@@ -134,6 +147,10 @@ public sealed partial class CmuTab : Control
         }
     }
 
+    /// <summary>
+    ///     CRT colour picker (4/4). Unused while the picker is switched off - deliberately left
+    ///     whole rather than deleted, so turning it back on is uncommenting, not rewriting.
+    /// </summary>
     private sealed class OptionCrtUiColor : BaseOptionCVar<string>
     {
         private readonly OptionColorSlider _slider;
