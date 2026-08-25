@@ -38,6 +38,12 @@
                                      one decision taken once, not four permanent slots. -->
                                 <BoxContainer Name="ActionButtons" Orientation="Vertical" HorizontalExpand="True"
                                               SeparationOverride="{x:Static cmu:CmuPanelMetrics.GroupSeparation}">
+                                    <!-- The clock, folded. The countdown is the button's own label so
+                                         this stays one control, not a panel inside the panel. -->
+                                    <Button Name="DockedClockButton" Access="Public"
+                                            ToolTip="{Loc 'cmu-lobby-clock-restore-tooltip'}"
+                                            HorizontalExpand="True" Visible="False"
+                                            MinHeight="{x:Static cmu:CmuPanelMetrics.Row}" />
                                     <!-- CrtReadyToggle, not ButtonBig: this control's job is to say
                                          which of two states you are in, and the shared button box
                                          says only that it is pressable. CrtLobbyTheme withholds the
@@ -222,8 +228,16 @@
         <cmu:CmuDraggablePanel Name="RoundClock" Access="Public" StyleClasses="CrtPanelTicked">
             <BoxContainer Orientation="Vertical" SeparationOverride="1"
                           Margin="{x:Static cmu:CmuPanelMetrics.ContentPadding}">
-                <Label Name="ClockCaption" Access="Public" Align="Center"
-                       StyleClasses="CrtDimText" />
+                <!-- Fold control on the caption line, not over the body: the body is the drag handle. -->
+                <BoxContainer Orientation="Horizontal" SeparationOverride="4">
+                    <Label Name="ClockCaption" Access="Public" Align="Center"
+                           StyleClasses="CrtDimText" HorizontalExpand="True" />
+                    <!-- CrtLobbyTheme never reaches this subtree (it runs on MainContainer only),
+                         so CmuIconButton colours itself. Arrow points at where the clock folds to. -->
+                    <cmu:CmuIconButton Name="ClockMinimizeButton" Access="Public"
+                                       TexturePath="/Textures/Interface/Default/filled_left_arrow.svg.192dpi.png"
+                                       ToolTip="{Loc 'cmu-lobby-clock-minimize-tooltip'}" />
+                </BoxContainer>
                 <Label Name="StartTime" Access="Public" Align="Center"
                        StyleClasses="CrtClock" MinWidth="190" />
                 <Label Name="LobbyStatusLine" Access="Public" Align="Center"

@@ -97,6 +97,8 @@ namespace Content.Client.Lobby
             Lobby.ReadyButton.OnPressed += OnReadyPressed;
             Lobby.ReadyButton.OnToggled += OnReadyToggled;
             Lobby.RoundClock.PositionChanged += OnRoundClockMoved;
+            Lobby.ClockMinimizeButton.OnPressed += OnClockMinimizePressed;
+            Lobby.DockedClockButton.OnPressed += OnClockRestorePressed;
 
             _gameTicker.InfoBlobUpdated += UpdateLobbyUi;
             _gameTicker.LobbyStatusUpdated += LobbyStatusUpdated;
@@ -126,6 +128,8 @@ namespace Content.Client.Lobby
             Lobby!.ReadyButton.OnPressed -= OnReadyPressed;
             Lobby!.ReadyButton.OnToggled -= OnReadyToggled;
             Lobby!.RoundClock.PositionChanged -= OnRoundClockMoved;
+            Lobby!.ClockMinimizeButton.OnPressed -= OnClockMinimizePressed;
+            Lobby!.DockedClockButton.OnPressed -= OnClockRestorePressed;
 
             // Unhook RMC14 buttons
             Lobby.JoinRoundButton.OnPressed -= OnJoinRoundPressed;
@@ -206,23 +210,30 @@ namespace Content.Client.Lobby
                 var roundTime = _gameTiming.CurTime.Subtract(_gameTicker.RoundStartTimeSpan);
                 Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-time-short", ("hours", roundTime.Hours), ("minutes", roundTime.Minutes));
 
-                // The clock counts down to the round starting. Once it has, there is nothing left
-                // to count and it becomes a panel sitting in the middle of the screen for no
-                // reason - the header already carries the elapsed time. So it goes away.
+                // Nothing left to count, and the header already carries elapsed time. Both forms go.
                 Lobby!.RoundClock.Visible = false;
+                Lobby!.DockedClockButton.Visible = false;
                 return;
             }
 
-            Lobby!.RoundClock.Visible = true;
+            var minimized = _cfg.GetCVar(CCVars.CMULobbyClockMinimized);
+            Lobby!.RoundClock.Visible = !minimized;
+            Lobby!.DockedClockButton.Visible = minimized;
             Lobby!.LobbyStatusLine.Visible = false;
             Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-not-started-short");
-            PlaceRoundClock();
+
+            // Skipped while folded: PlaceRoundClock's default branch centres using the panel's own
+            // size, which is zero when it isn't drawn, and would bank a garbage position.
+            if (!minimized)
+                PlaceRoundClock();
 
             if (_gameTicker.Paused)
             {
                 // Paused is indefinite, not urgent - it must not sit there glowing red.
                 Lobby!.ClockCaption.Text = Loc.GetString("cmu-lobby-clock-caption-start");
-                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-paused");
+                SetClockFace(
+                    Loc.GetString("cmu-lobby-clock-face-paused"),
+                    Loc.GetString("cmu-lobby-clock-docked-paused"));
                 SetCountdownUrgency(CountdownUrgency.None);
                 return;
             }
@@ -232,7 +243,9 @@ namespace Content.Client.Lobby
             if (_gameTicker.StartTime < _gameTiming.CurTime)
             {
                 SetCountdownUrgency(CountdownUrgency.Imminent);
-                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-soon");
+                SetClockFace(
+                    Loc.GetString("cmu-lobby-clock-face-soon"),
+                    Loc.GetString("cmu-lobby-clock-docked-soon"));
                 return;
             }
 
@@ -242,16 +255,42 @@ namespace Content.Client.Lobby
 
             if (seconds < 0)
             {
-                Lobby!.StartTime.Text = Loc.GetString("cmu-lobby-clock-face-now");
+                SetClockFace(
+                    Loc.GetString("cmu-lobby-clock-face-now"),
+                    Loc.GetString("cmu-lobby-clock-docked-now"));
+                return;
             }
-            else if (difference.TotalHours >= 1)
-            {
-                Lobby!.StartTime.Text = $"{Math.Floor(difference.TotalHours)}:{difference.Minutes:D2}:{difference.Seconds:D2}";
-            }
-            else
-            {
-                Lobby!.StartTime.Text = $"{difference.Minutes}:{difference.Seconds:D2}";
-            }
+
+            var face = difference.TotalHours >= 1
+                ? $"{Math.Floor(difference.TotalHours)}:{difference.Minutes:D2}:{difference.Seconds:D2}"
+                : $"{difference.Minutes}:{difference.Seconds:D2}";
+
+            SetClockFace(face, Loc.GetString("cmu-lobby-clock-docked", ("time", face)));
+        }
+
+        /// <summary>
+        ///     Write the countdown to both forms of the clock. Urgency colour is the floating face
+        ///     only; folded, the wording carries it instead.
+        /// </summary>
+        private void SetClockFace(string face, string docked)
+        {
+            Lobby!.StartTime.Text = face;
+
+            // Guarded: Label.Text invalidates measure on every set, and this one sits in the action
+            // column's stack rather than a LayoutContainer.
+            var button = Lobby!.DockedClockButton;
+            if (button.Text != docked)
+                button.Text = docked;
+        }
+
+        private void OnClockMinimizePressed(BaseButton.ButtonEventArgs args)
+        {
+            _cfg.SetCVar(CCVars.CMULobbyClockMinimized, true);
+        }
+
+        private void OnClockRestorePressed(BaseButton.ButtonEventArgs args)
+        {
+            _cfg.SetCVar(CCVars.CMULobbyClockMinimized, false);
         }
 
         /// <summary>

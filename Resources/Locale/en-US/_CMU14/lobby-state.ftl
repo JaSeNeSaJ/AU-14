@@ -30,3 +30,12 @@ cmu-lobby-clock-caption-elapsed = Round in progress
 cmu-lobby-clock-face-soon = Soon
 cmu-lobby-clock-face-paused = Paused
 cmu-lobby-clock-face-now = Now
+
+# Folding the clock away into the action column, and getting it back. The docked button's label is
+# the countdown itself, so it needs a format rather than a fixed string.
+cmu-lobby-clock-minimize-tooltip = Fold the clock into the panel on the left
+cmu-lobby-clock-restore-tooltip = Put the clock back where it was
+cmu-lobby-clock-docked = Round in {$time}
+cmu-lobby-clock-docked-paused = Round start paused
+cmu-lobby-clock-docked-soon = Round starts soon
+cmu-lobby-clock-docked-now = Round starting now

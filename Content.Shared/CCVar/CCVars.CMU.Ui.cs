@@ -115,6 +115,13 @@ public sealed partial class CCVars
         CVarDef.Create("cmu.lobby_clock_y", -1f, CVar.CLIENTONLY | CVar.ARCHIVE);
 
     /// <summary>
+    ///     Whether the round clock is folded into the action column instead of floating over the
+    ///     lobby. ARCHIVE so it doubles as the preference; does not clear the dragged position.
+    /// </summary>
+    public static readonly CVarDef<bool> CMULobbyClockMinimized =
+        CVarDef.Create("cmu.lobby_clock_minimized", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
     ///     Draw chat in a plain proportional face instead of the terminal one, leaving the rest of
     ///     the CRT theme alone. An accessibility option, not a cosmetic one.
     /// </summary>
