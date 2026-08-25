@@ -1,4 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using Content.Shared.Administration;
 using Content.Shared.Chat;
 using Content.Shared.Players.RateLimiting;
