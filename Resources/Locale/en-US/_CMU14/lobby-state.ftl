@@ -9,12 +9,10 @@ cmu-lobby-join-round = Join the Round
 cmu-lobby-join-round-window-title = Join the Round
 cmu-lobby-join-round-prompt = Pick a side to join as.
 
-# PLACEHOLDER TEXT - lorem ipsum standing in until the real descriptions are written.
-# One per choice in the join popup, kept to two or three sentences so the list stays scannable.
-cmu-lobby-join-colonists-desc = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-cmu-lobby-join-govfor-desc = Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris. Nisi ut aliquip ex ea commodo consequat duis aute irure.
-cmu-lobby-join-opfor-desc = Duis aute irure dolor in reprehenderit in voluptate velit esse cillum. Excepteur sint occaecat cupidatat non proident sunt in culpa.
-cmu-lobby-join-other-desc = Sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem.
+cmu-lobby-join-colonists-desc = Whether by signing a contract or choosing to start over, you now live on one of hundreds of colonies on the fringes of human-controlled space. Some are glad of the flag flying over it. Others are counting the days until it comes down.
+cmu-lobby-join-govfor-desc = Money, healthcare, free college. For one reason or another, you now serve in one of the many military or paramilitary organizations that keep order on the frontier. Law is on your side, enforce it.
+cmu-lobby-join-opfor-desc = Sovereignty, profit, or a score worth settling. You now serve one of the powers the frontier's authorities call hostile, a title that depends entirely on who is doing the calling. You have your own orders and your own flag. Neither answers to theirs.
+cmu-lobby-join-other-desc = Humanity has a knack for destroying itself, and out here it finally has competition. Hives that empty a colony in a night, hunters who come for the sport, things the survivors never agree on a name for. Whatever you are, you did not come to negotiate.
 
 # The ready toggle names the state it is IN. The slashes are doing the same job as the inverted
 # fill behind them - the state has to be obvious without reading the word. Only the ready side is
