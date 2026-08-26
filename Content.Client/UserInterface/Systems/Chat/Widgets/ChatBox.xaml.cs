@@ -1287,7 +1287,10 @@ public partial class ChatBox : UIWidget
 
     private FormattedMessage CreateFormattedMessage(ChatMessage message, Color color, ChatStyleSettings? style = null)
     {
-        var markup = StripChatActionCommandLink(message.WrappedMessage, message);
+        // TrimEnd, because a wrapper that ends in a line break renders as blank rows at the foot of
+        // the message - invisible until announcements gained a background. RMC14's WrapHive is the
+        // one that does it today.
+        var markup = StripChatActionCommandLink(message.WrappedMessage.TrimEnd(), message);
         markup = StripDuplicateChannelPrefix(markup, message);
         markup = _colorWholeMessage
             ? ChatUserSettings.ApplyStyleMarkup(markup, style, ChatUserSettings.DefaultFontSize)
@@ -1348,7 +1351,7 @@ public partial class ChatBox : UIWidget
         if (!string.IsNullOrWhiteSpace(message.LanguageIcon))
             AddChatMarkup(formatted, $"[langicon language=\"{FormattedMessage.EscapeStringParameter(message.LanguageIcon)}\"][/langicon]", message.Channel);
         // RMC14
-        AddChatMarkup(formatted, message.WrappedMessage, message.Channel);
+        AddChatMarkup(formatted, message.WrappedMessage.TrimEnd(), message.Channel);
 
         formatted.Pop();
 

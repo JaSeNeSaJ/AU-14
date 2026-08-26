@@ -131,7 +131,8 @@ namespace Content.Shared.Chat
             // ChatDisplayMetadata just to set one field. Applied after the default display is
             // resolved, so a caller can tint a message and still get the channel's normal
             // sender/verb/label handling.
-            Color? backgroundColorOverride = null) // CMU14
+            Color? backgroundColorOverride = null,
+            Color? accentColorOverride = null) // CMU14
         {
             Channel = channel;
             Message = message;
@@ -151,6 +152,8 @@ namespace Content.Shared.Chat
             Display = display ?? CreateDefaultDisplay(channel);
             if (backgroundColorOverride != null)
                 Display.BackgroundColorOverride = backgroundColorOverride;
+            if (accentColorOverride != null)
+                Display.AccentColor = accentColorOverride;
             LanguageIcon = languageIcon;
         }
 

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Content.Client.Resources;
 using Content.Shared._CMU14.Ghost;
@@ -42,14 +43,9 @@ public sealed partial class ChatMessageRow : PanelContainer
         var accent = accentOverride ?? GetAccent(message, textColor);
         var metrics = GetMetrics(fontSize);
 
-        // A message carrying its own background - xeno announcements, examine echoes - gets that
-        // colour as a fill plus some breathing room, so a run of them doesn't melt into one
-        // undifferentiated block.
-        //
-        // Fill only, deliberately: this used to add a 2px outline on all four sides as well, which
-        // put a framed box inside the chat pane's own panel. A band of colour already separates the
-        // message from the log around it, and it does so without drawing a second border to read.
-        var isTinted = message.Display?.BackgroundColorOverride != null;
+        // Fill and a left rule, never a full outline: four sides is a framed box inside the pane's box.
+        var isAnnouncement = IsUnlabeledRadioSystemMessage(message);
+        var isTinted = isAnnouncement || message.Display?.BackgroundColorOverride != null;
 
         HorizontalExpand = true;
         Margin = new Thickness(0, 0, 0, isTinted ? Math.Max(metrics.OuterBottomMargin, 4) : metrics.OuterBottomMargin);
@@ -60,11 +56,15 @@ public sealed partial class ChatMessageRow : PanelContainer
             BackgroundColor = GetBackground(message),
             AccentColor = accent,
             AccentSize = metrics.AccentSize,
+            BorderColor = accent,
+            BorderThickness = isAnnouncement ? new Thickness(2, 0, 0, 0) : new Thickness(0),
             ContentMarginLeftOverride = 6,
             // Leave room for the corner triangle so it never sits on top of the text.
             ContentMarginRightOverride = 4 + metrics.AccentSize,
-            ContentMarginTopOverride = metrics.VerticalPadding,
-            ContentMarginBottomOverride = metrics.VerticalPadding
+            // Asymmetric on purpose: the 1.25 line height puts its leading under the last line, so
+            // equal padding renders bottom-heavy. 5/3 is what measures 6/6 on screen.
+            ContentMarginTopOverride = metrics.VerticalPadding + (isAnnouncement ? 5 : 0),
+            ContentMarginBottomOverride = metrics.VerticalPadding + (isAnnouncement ? 3 : 0)
         };
 
         var row = new BoxContainer
@@ -133,7 +133,11 @@ public sealed partial class ChatMessageRow : PanelContainer
         // of what stopped the chat reading as a terminal, and it is invisible from the outside
         // because nothing errors and the text still appears.
         if (StyleNano.CrtUiEnabled)
-            _messageLabel.AddStyleClass(StyleNano.StyleClassCrtChatText);
+        {
+            _messageLabel.AddStyleClass(isAnnouncement
+                ? StyleNano.StyleClassCrtChatAnnouncementText
+                : StyleNano.StyleClassCrtChatText);
+        }
 
         _messageLabel.SetMessage(formatted, defaultColor: textColor);
         row.AddChild(_messageLabel);
@@ -314,8 +318,10 @@ public sealed partial class ChatMessageRow : PanelContainer
         // ladder they read as bands of unrelated colour, the admin maroon worst of all. Channel
         // identity does not depend on them: it is carried by the prefix colour and by the accent
         // triangle in the corner, both of which are untouched here.
+        // The one row that keeps a fill under CRT: announcements carry no prefix, so without a band
+        // nothing marks where one starts. Surface2 is one rung up from the chat ground.
         if (StyleNano.CrtUiEnabled)
-            return Color.Transparent;
+            return IsUnlabeledRadioSystemMessage(message) ? CrtTerminalPalette.Surface2 : Color.Transparent;
 
         if ((channel & ChatChannel.AdminRelated) != 0)
             return Color.FromHex("#23151e");

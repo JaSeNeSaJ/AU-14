@@ -146,6 +146,9 @@ namespace Content.Client.Stylesheets
         /// </summary>
         public const string StyleClassCrtChatText = "CrtChatText";
 
+        /// <summary>Announcement body. Two points up from <see cref="StyleClassCrtChatText"/>.</summary>
+        public const string StyleClassCrtChatAnnouncementText = "CrtChatAnnouncementText";
+
         /// <summary>
         ///     The channel chip at the left of the input row ("OOC", "SAY", a radio name). Its own
         ///     class rather than <see cref="StyleClassCrtButton"/>: a CRT button is sized to be
@@ -697,6 +700,9 @@ namespace Content.Client.Stylesheets
             // The OSD face has tight vertical metrics and needs the extra leading; NotoSans does not,
             // and at 1.25 it looks gappy rather than airy.
             var crtChatLineHeight = useCrtUi && !ChatReadableFont ? 1.25f : 1.0f;
+            var crtChatAnnouncementFont = useCrtUi && !ChatReadableFont
+                ? GetCrtFont(resCache, ChatCrtFontSize + 2)
+                : resCache.NotoStack(size: ChatReadableFontSize + 2);
             var crtServerInfoFont = useCrtUi ? uavOsdServerInfo : notoSans12;
             // Sized to leave room for the job line underneath without crowding the sprite beside it.
             var crtCharacterSummaryFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 9) : notoSans12;
@@ -1602,6 +1608,10 @@ namespace Content.Client.Stylesheets
                 // stylesheet concern rather than something set on the control.
                 Element<RichTextLabel>().Class(StyleClassCrtChatText)
                     .Prop("font", crtChatFont)
+                    .Prop(nameof(RichTextLabel.LineHeightScale), crtChatLineHeight),
+
+                Element<RichTextLabel>().Class(StyleClassCrtChatAnnouncementText)
+                    .Prop("font", crtChatAnnouncementFont)
                     .Prop(nameof(RichTextLabel.LineHeightScale), crtChatLineHeight),
 
                 Child().Parent(Element<ContainerButton>().Class(StyleClassCrtChatTab))
