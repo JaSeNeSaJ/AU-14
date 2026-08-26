@@ -139,18 +139,7 @@ public partial class ChatBox : UIWidget
         TabOverflowButton.Popup.OnTabSelected += OnOverflowTabSelected;
         SecondaryResizeHandle.OnDragged += OnSplitResizeDragged;
         SecondaryResizeHandle.OnDragEnded += OnSplitResizeEnded;
-        // Transparent under CRT: the tabs sit directly on the chat's Surface0 ground with no band
-        // behind them. A strip needs a fill only if the tabs on it have fills of their own to be
-        // separated from, and they no longer do - a resting tab draws nothing at all now, so a band
-        // here would be a rectangle marking out empty space. The old hardcoded hex was a blue-grey
-        // belonging to no palette, and being a PanelOverride it beat every stylesheet rule aimed
-        // at it.
-        TabHeaderPanel.PanelOverride = new StyleBoxFlat
-        {
-            BackgroundColor = StyleNano.CrtUiEnabled
-                ? Color.Transparent
-                : Color.FromHex("#0C0F12"),
-        };
+        ApplyTabHeaderBackground(StyleNano.CrtUiEnabled);
 
         _controller = UserInterfaceManager.GetUIController<ChatUIController>();
         _controller.MessageAdded += OnMessageAdded;
@@ -1134,7 +1123,26 @@ public partial class ChatBox : UIWidget
     private void OnCrtUiEnabledCvarChanged(bool enabled)
     {
         _whitelist = BuildMarkupWhitelist(enabled);
+        ApplyTabHeaderBackground(enabled);
         Repopulate();
+    }
+
+    /// <summary>
+    ///     Transparent under CRT: the tabs sit directly on the chat's Surface0 ground with no band
+    ///     behind them. A strip needs a fill only if the tabs on it have fills of their own to be
+    ///     separated from, and they no longer do - a resting tab draws nothing at all now, so a band
+    ///     here would be a rectangle marking out empty space. The old hardcoded hex was a blue-grey
+    ///     belonging to no palette, and being a PanelOverride it beat every stylesheet rule aimed
+    ///     at it.
+    /// </summary>
+    private void ApplyTabHeaderBackground(bool crtEnabled)
+    {
+        TabHeaderPanel.PanelOverride = new StyleBoxFlat
+        {
+            BackgroundColor = crtEnabled
+                ? Color.Transparent
+                : Color.FromHex("#0C0F12"),
+        };
     }
 
     private void OnLegacyModeCvarChanged(bool enabled)
