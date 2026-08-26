@@ -18,7 +18,7 @@ namespace Content.Client._CMU14.Interface;
 /// </summary>
 /// <remarks>
 ///     <para>
-///     The counterpart to <see cref="CmuChatMockAutoOpenSystem"/>, for the panels that share
+///     For the panels that share
 ///     <see cref="CmuPanelMetrics"/>. Two of them sit behind a lobby button and the third only
 ///     exists while a vote is running, so a change to a measurement they all read could not be
 ///     looked at without a person driving the client - which is how three separate no-op changes
@@ -36,9 +36,8 @@ public sealed partial class CmuPanelPreviewSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
 
     /// <summary>
-    ///     Wait before opening, for the same reason <see cref="CmuChatMockAutoOpenSystem"/> does: the
-    ///     UI root exists well before the lobby has finished building itself, and a window opened
-    ///     into that gap gets buried by whatever is added afterwards.
+    ///     Wait before opening: the UI root exists well before the lobby has finished building
+    ///     itself, and a window opened into that gap gets buried by whatever is added afterwards.
     /// </summary>
     private static readonly TimeSpan OpenDelay = TimeSpan.FromSeconds(3);
 

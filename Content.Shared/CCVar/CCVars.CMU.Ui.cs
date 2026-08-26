@@ -21,35 +21,6 @@ public sealed partial class CCVars
         CVarDef.Create("cmu.guidebook_auto_open_minutes", 60, CVar.CLIENTONLY);
 
     /// <summary>
-    ///     Seconds between automatic screenshots, or 0 for off. A development aid: the client's
-    ///     console cannot be written to from outside the process, so a screenshot command alone still
-    ///     needs a person to type it. This can be set from the launch line
-    ///     (<c>--cvar cmu.screenshot_interval=5</c>), which closes the loop for anyone iterating on UI
-    ///     without being able to see the screen.
-    /// </summary>
-    /// <remarks>
-    ///     Deliberately not ARCHIVE: an archived value would persist into a player's config and keep
-    ///     writing files forever, and a changed default would never reach anyone who already has one.
-    /// </remarks>
-    public static readonly CVarDef<float> CMUScreenshotInterval =
-        CVarDef.Create("cmu.screenshot_interval", 0f, CVar.CLIENTONLY);
-
-    /// <summary>
-    ///     Opens the proposed-chat mock window on startup. Empty for off; otherwise
-    ///     <c>&lt;selection&gt;,&lt;input&gt;</c> - selection one of <c>inverted|s4|underline</c>,
-    ///     input one of <c>band|flat|chip</c>. For example
-    ///     <c>--cvar cmu.chatmock=inverted,band</c>.
-    /// </summary>
-    /// <remarks>
-    ///     Same reason as <see cref="CMUScreenshotInterval"/>: <c>cmu_chatmock</c> alone still needs a
-    ///     person to type it, because the client's console is drawn in-game and cannot be written to
-    ///     from outside the process. Pairing this with the screenshot interval makes the whole
-    ///     look-at-it-and-change-it loop run without anyone watching.
-    /// </remarks>
-    public static readonly CVarDef<string> CMUChatMock =
-        CVarDef.Create("cmu.chatmock", "", CVar.CLIENTONLY);
-
-    /// <summary>
     ///     Opens one or more of the small CRT panels on startup so they can be looked at without
     ///     anyone clicking through the lobby to reach them. Comma-separated, any of <c>join</c>,
     ///     <c>staffhelp</c>, <c>vote</c>, <c>ready</c> - for example
@@ -57,7 +28,7 @@ public sealed partial class CCVars
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///     Same reason as <see cref="CMUChatMock"/>. These three are the panels that share
+    ///     These three are the panels that share
     ///     <c>CmuPanelMetrics</c>, and until now two of them could only be reached by clicking a
     ///     lobby button and the third needed an actual vote to be running - so a change to their
     ///     shared measurements could not be checked without a person driving the client.
@@ -80,8 +51,7 @@ public sealed partial class CCVars
     /// </summary>
     /// <remarks>
     ///     <para>
-    ///     The last piece of the look-at-it-without-a-person loop, alongside
-    ///     <see cref="CMUScreenshotInterval"/> and <see cref="CMUPanelPreview"/>. The client's
+    ///     A development aid, alongside <see cref="CMUPanelPreview"/>. The client's
     ///     console is drawn in-game and cannot be written to from outside the process, so anything
     ///     reachable only by a console command was unreachable when nobody was at the keyboard.
     ///     </para>

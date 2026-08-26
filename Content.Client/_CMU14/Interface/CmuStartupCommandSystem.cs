@@ -12,10 +12,9 @@ namespace Content.Client._CMU14.Interface;
 /// </summary>
 /// <remarks>
 ///     <para>
-///     The last piece of the unattended loop. <see cref="CmuAutoScreenshotSystem"/> removed the
-///     person from the capture and <see cref="CmuPanelPreviewSystem"/> removed them from opening a
-///     window, but anything that needs a console command still needed someone at the keyboard - the
-///     client's console is drawn in-game and cannot be written to from outside the process.
+///     A development aid. <see cref="CmuPanelPreviewSystem"/> opens a window without anyone
+///     clicking; this covers anything that needs a console command instead, since the client's
+///     console is drawn in-game and cannot be written to from outside the process.
 ///     </para>
 ///     <para>
 ///     The case that prompted it: the lobby only exists before a round starts, and the dev config
