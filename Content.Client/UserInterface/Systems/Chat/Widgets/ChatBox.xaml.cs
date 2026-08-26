@@ -108,7 +108,7 @@ public partial class ChatBox : UIWidget
     private readonly Queue<RepeatedMessage> _primaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _secondaryRepeatQueue = new();
     private readonly Queue<RepeatedMessage> _legacyRepeatQueue = new();
-    private readonly HashSet<string> _whitelist = BuildMarkupWhitelist();
+    private HashSet<string> _whitelist = BuildMarkupWhitelist(StyleNano.CrtUiEnabled);
     // RMC14
 
     public ChatBox()
@@ -160,6 +160,7 @@ public partial class ChatBox : UIWidget
         _config.OnValueChanged(CCVars.ChatLegacyMode, OnLegacyModeCvarChanged);
         _config.OnValueChanged(CCVars.ChatColorWholeMessage, OnColorWholeMessageCvarChanged);
         _config.OnValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontCvarChanged);
+        _config.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledCvarChanged);
 
         _tabs = ChatUserSettings.LoadTabs(_config.GetCVar(CCVars.ChatTabs));
         _styles = ChatUserSettings.LoadStyles(_config.GetCVar(CCVars.ChatChannelStyles));
@@ -1128,6 +1129,14 @@ public partial class ChatBox : UIWidget
         Repopulate();
     }
 
+    // The whitelist depends on the theme, so it has to be rebuilt here - the already-rendered rows
+    // were filtered against the old one and only Repopulate puts them back through the new one.
+    private void OnCrtUiEnabledCvarChanged(bool enabled)
+    {
+        _whitelist = BuildMarkupWhitelist(enabled);
+        Repopulate();
+    }
+
     private void OnLegacyModeCvarChanged(bool enabled)
     {
         var wasLegacy = LegacyPresentation;
@@ -1459,14 +1468,17 @@ public partial class ChatBox : UIWidget
     ///     it. Revisit if italic text starts looking out of place.
     ///     </para>
     /// </remarks>
-    private static HashSet<string> BuildMarkupWhitelist()
+    // Takes the flag rather than reading StyleNano.CrtUiEnabled: StylesheetManager subscribes to the
+    // same cvar and is what sets that static, and the cvar system does not order subscribers, so
+    // reading it from our own handler can see the pre-toggle value.
+    private static HashSet<string> BuildMarkupWhitelist(bool crtEnabled)
     {
         var tags = new HashSet<string>
         {
             "mono", "scramble", "bullet", "cmdlink", "color", "font", "head", "italic", "langicon"
         };
 
-        if (!StyleNano.CrtUiEnabled)
+        if (!crtEnabled)
         {
             tags.Add("bold");
             tags.Add("bolditalic");
@@ -1585,6 +1597,8 @@ public partial class ChatBox : UIWidget
         _controller.FilterableChannelsChanged -= OnFilterableChannelsChanged;
         _config.UnsubValueChanged(CCVars.ChatLegacyMode, OnLegacyModeCvarChanged);
         _config.UnsubValueChanged(CCVars.ChatColorWholeMessage, OnColorWholeMessageCvarChanged);
+        _config.UnsubValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontCvarChanged);
+        _config.UnsubValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledCvarChanged);
         ChatInput.Input.OnTextEntered -= OnTextEntered;
         ChatInput.Input.OnKeyBindDown -= OnInputKeyBindDown;
         ChatInput.Input.OnTextChanged -= OnTextChanged;

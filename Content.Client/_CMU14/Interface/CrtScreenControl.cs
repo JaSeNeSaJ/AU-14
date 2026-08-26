@@ -83,6 +83,15 @@ public sealed class CrtScreenControl : Control
             _shader = proto.InstanceUnique();
     }
 
+    // Close() only removes the control from the tree, it never calls Dispose() - so the render
+    // target has to be released here or it outlives every window that ever hosted this control.
+    protected override void ExitedTree()
+    {
+        base.ExitedTree();
+        _target?.Dispose();
+        _target = null;
+    }
+
     // The IRenderHandle overload rather than the DrawingHandleScreen one: RenderControl needs an
     // IRenderHandle and DrawingHandleScreen has no way back to it.
     protected override void Draw(IRenderHandle renderHandle)
