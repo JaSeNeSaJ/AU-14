@@ -128,19 +128,36 @@
                              edge to edge behind them as the screen plane. -->
                         <BoxContainer Orientation="Vertical" HorizontalExpand="True"
                                       Margin="10 8 10 8">
-                            <!-- Top row: server name, action buttons and the collapse arrow share one line -->
+                            <!-- The server name gets its own line. It is operator-configured text of no
+                                 bounded length, and sharing the row with the buttons meant a long one
+                                 squeezed them - the name expanded and the actions gave up the width.
+                                 CrtHeading rather than LabelHeadingBigger: it already resolves to bold
+                                 12 off-theme against the old bold 20, and to the terminal heading face
+                                 under CRT, so one class covers both. It is also on ApplyLabel's
+                                 early-return list, so the theme will not add a second font rule on top
+                                 of it and leave two matching at equal specificity.
+                                 No HorizontalAlignment here: Left makes the label take its desired
+                                 width, and ClipText makes that width zero, which renders nothing at
+                                 all. Stretch is what lets ClipText clip against the row instead. -->
+                            <Label Name="ServerName" Access="Public" StyleClasses="CrtHeading" VAlign="Center"
+                                   HorizontalExpand="True" ClipText="True"
+                                   Margin="4 0 8 0" />
+                            <controls:HSpacer Spacing="6" />
+                            <!-- Action buttons and the collapse arrow. The four buttons each expand, so
+                                 they share the line evenly instead of bunching at one end - the row is
+                                 theirs now that the server name has its own. The arrow is left at its
+                                 natural width: it is an affordance on the panel, not a fifth action, and
+                                 stretching it to a quarter of the row would say otherwise. -->
                             <BoxContainer Orientation="Horizontal" MinHeight="{x:Static cmu:CmuPanelMetrics.Header}" Name="HeaderContainer" Access="Public"
                                           SeparationOverride="4">
-                                <Label Name="ServerName" Access="Public" StyleClasses="LabelHeadingBigger" VAlign="Center"
-                                       HorizontalExpand="True" HorizontalAlignment="Left" Margin="4 0 8 0" />
                                 <Button Name="AHelpButton" Access="Public" Text="{Loc 'ui-lobby-ahelp-button'}"
-                                        StyleClasses="ButtonBig" VerticalAlignment="Center" />
+                                        StyleClasses="ButtonBig" VerticalAlignment="Center" HorizontalExpand="True" />
                                 <vote:VoteCallMenuButton Name="CallVoteButton" StyleClasses="ButtonBig"
-                                                         VerticalAlignment="Center" />
+                                                         VerticalAlignment="Center" HorizontalExpand="True" />
                                 <Button Name="OptionsButton" Access="Public" StyleClasses="ButtonBig"
-                                        Text="{Loc 'ui-lobby-options-button'}" VerticalAlignment="Center" />
+                                        Text="{Loc 'ui-lobby-options-button'}" VerticalAlignment="Center" HorizontalExpand="True" />
                                 <Button Name="LeaveButton" Access="Public" StyleClasses="ButtonBig"
-                                        Text="{Loc 'ui-lobby-leave-button'}" VerticalAlignment="Center" />
+                                        Text="{Loc 'ui-lobby-leave-button'}" VerticalAlignment="Center" HorizontalExpand="True" />
                                 <TextureButton Name="CollapseButton"
                                                TexturePath="filled_right_arrow.svg.192dpi"
                                                VerticalAlignment="Center"
