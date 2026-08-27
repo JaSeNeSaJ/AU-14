@@ -23,7 +23,7 @@
     prefix: au14-job-prefix-colonyadminassistant
   - type: TacticalMapIcon
     icon:
-      sprite: /Textures/_AU14/Interface/au14colonyjobicons.rsi
+      sprite: /Textures/_CMU14/Interface/cmucolonyblips.rsi
       state: admin_assistant
 
   name: au14-job-name-civiliancolonyadminasssistant
@@ -61,6 +61,8 @@
   - AU14AccessColonyAdministrator
   - AU14AccessColonyMarshall
   roleWeight: 0.25
+  weight: 10 # priority role
+  displayWeight: 9
 
 - type: startingGear
   id: AU14GearCivilianColonyAdminAssistant

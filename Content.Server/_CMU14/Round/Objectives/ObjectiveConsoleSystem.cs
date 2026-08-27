@@ -185,6 +185,9 @@ public sealed partial class ObjectiveConsoleSystem : SharedObjectiveConsoleSyste
             {
                 statusDisplay = ObjectiveStatusDisplay.Uncompleted;
             }
+            if (statusDisplay == ObjectiveStatusDisplay.Uncompleted
+                && objComp.Repeating)
+                statusDisplay = ObjectiveStatusDisplay.Repeating;
             ObjectiveTypeDisplay typeDisplay;
             if (objComp.ObjectiveLevel == 3)
                 typeDisplay = ObjectiveTypeDisplay.Win;
@@ -213,6 +216,11 @@ public sealed partial class ObjectiveConsoleSystem : SharedObjectiveConsoleSyste
                 int toKill = killComp.KillCount;
                 killComp.AmountKilledPerFaction.TryGetValue(consoleFaction.ToLowerInvariant(), out int killed);
                 fetchProgress = $"{killed}/{toKill} kills";
+            }
+            if (TryComp(objUid, out ArrestObjectiveComponent? arrestComp))
+            {
+                arrestComp.AmountArrestedPerFaction.TryGetValue(consoleFaction.ToLowerInvariant(), out int arrested);
+                fetchProgress = $"{arrested}/{arrestComp.ArrestCount} arrests";
             }
 
             var displayDesc2 = objComp.ObjectiveDescription;

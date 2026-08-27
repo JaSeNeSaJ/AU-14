@@ -38,6 +38,7 @@
     - CMU14ActionXenoPathogenDigTunnel
     - CMU14ActionXenoPathogenDevolve
     - CMU14ActionXenoPathogenOrderConstruction
+    - CMU14ActionXenoPathogenRegurgitate
   - type: TunnelRenamer
   - type: XenoBurrow
   - type: XenoConstruction
@@ -52,7 +53,6 @@
     - CMU14PathogenPlasmaTreeConstructionNode
     - CMU14PathogenRecoveryNodeConstructionNode
     - CMU14PathogenSporecasterConstructionNode
-    - CMU14ActionXenoPathogenRegurgitate
   - type: XenoDevour
   - type: XenoHeadbite
     damage:
@@ -155,7 +155,7 @@
     name: cmu-job-name-pathogen-neomorph
   - type: Speech
     speechSounds: Pathogen
- 
+
 - type: entity
   parent: CMU14XenoNeomorphBase
   id: CMU14XenoNeomorph
