@@ -1593,6 +1593,11 @@ public partial class ChatBox : UIWidget
         _controller.NotifyChatFocus(false);
     }
 
+    // Does not run on the normal path: screens are cached in UserInterfaceManager and UnloadScreen
+    // only removes them from the tree, so nothing here fires when chat goes away. That is correct
+    // for the cvar subscriptions below - this widget outlives the unload and has to keep tracking
+    // them - but it means this method cannot be relied on to release anything that actually needs
+    // releasing. Free that where the engine really does call you, as CrtScreenControl does.
     [System.Obsolete]
     protected override void Dispose(bool disposing)
     {

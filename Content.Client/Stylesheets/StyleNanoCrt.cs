@@ -236,6 +236,38 @@ namespace Content.Client.Stylesheets
         {
             return resCache.GetFont(UavOsdFontStack, size);
         }
+
+        /// <summary>
+        ///     Chat's face under the CRT theme, and the one place the OSD font is deliberately not
+        ///     used.
+        /// </summary>
+        /// <remarks>
+        ///     <para>
+        ///     UAV-OSD is an all-caps face, which suits labels, headings and readouts - short, fixed
+        ///     strings. Chat is prose written by players: in caps it loses the case out of names, reads
+        ///     as shouting, and gives up the ascenders and descenders that make a wall of text
+        ///     scannable.
+        ///     </para>
+        ///     <para>
+        ///     RobotoMono rather than NotoSans, because monospace keeps the terminal character the
+        ///     theme is built on - this should read as a different terminal face, not as an escape from
+        ///     the theme. The readable-chat option already exists for that, and this is not it. The
+        ///     Noto entries are the same glyph fallbacks <see cref="UavOsdFontStack"/> carries.
+        ///     </para>
+        /// </remarks>
+        public static readonly string[] CrtChatFontStack =
+        {
+            "/Fonts/RobotoMono/RobotoMono-Regular.ttf",
+            "/Fonts/NotoSans/NotoSans-Regular.ttf",
+            "/Fonts/NotoSans/NotoSansSymbols-Regular.ttf",
+            "/Fonts/NotoSans/NotoSansSymbols2-Regular.ttf"
+        };
+
+        public static Font GetCrtChatFont(IResourceCache resCache, int size)
+        {
+            return resCache.GetFont(CrtChatFontStack, size);
+        }
+
         public const string StyleClassCrtLineEdit = "CrtLineEdit";
         public const string StyleClassCrtNativeLineEdit = "CrtNativeLineEdit";
         public const string StyleClassCrtSlider = "CrtSlider";
@@ -327,8 +359,15 @@ namespace Content.Client.Stylesheets
             _chatReadableFont = enabled;
         }
 
-        /// <summary>Point size chat uses in terminal mode. Must match <c>crtChatFont</c>.</summary>
-        public const int ChatCrtFontSize = 8;
+        /// <summary>
+        ///     Point size chat uses in terminal mode. Must match <c>crtChatFont</c>.
+        /// </summary>
+        /// <remarks>
+        ///     Larger than the 8 the OSD face used here. That face is all-caps, so every glyph filled
+        ///     the full cap height; a face with lowercase spends roughly half its point size on the
+        ///     x-height, so the same number reads smaller and 8 came out under what it replaced.
+        /// </remarks>
+        public const int ChatCrtFontSize = 11;
 
         /// <summary>
         ///     Point size chat uses in readable mode. Larger than the terminal size on purpose: the
@@ -346,7 +385,7 @@ namespace Content.Client.Stylesheets
         {
             return _chatReadableFont
                 ? resCache.NotoStack(size: ChatReadableFontSize)
-                : GetCrtFont(resCache, ChatCrtFontSize);
+                : GetCrtChatFont(resCache, ChatCrtFontSize);
         }
 
         private sealed class CrtPalette
@@ -617,40 +656,16 @@ namespace Content.Client.Stylesheets
             var notoSansBold28 = resCache.NotoStack(variation: "Bold", size: 28);
             var notoSansBold11 = resCache.NotoStack(variation: "Bold", size: 11);
             var uavOsdStack = UavOsdFontStack;
-            var uavOsd13 = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 8
-            );
-            var uavOsd14 = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 8
-            );
-            var uavOsdBold14 = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 8
-            );
-            var uavOsdBold16 = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 10
-            );
-            var uavOsdBold18 = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 12
-            );
+            var uavOsd13 = GetCrtFont(resCache, 8);
+            var uavOsd14 = GetCrtFont(resCache, 8);
+            var uavOsdBold14 = GetCrtFont(resCache, 8);
+            var uavOsdBold16 = GetCrtFont(resCache, 10);
+            var uavOsdBold18 = GetCrtFont(resCache, 12);
             // NOTE: the uavOsd* names above are misleading - uavOsd13/uavOsd14/uavOsdBold14 are all
             // actually size 8. This one backs the lobby's intro lines. It shares a row with the
             // SERVER INFO heading, so it has to stay small enough that the welcome line does not
             // wrap - raise it only if you also give that row more width.
-            var uavOsdServerInfo = resCache.GetFont
-            (
-                uavOsdStack,
-                size: 8
-            );
+            var uavOsdServerInfo = GetCrtFont(resCache, 8);
             var useCrtUi = CrtUiEnabled;
             var crtTextFont = useCrtUi ? uavOsdBold14 : notoSans12;
             // The round-info table (GOVFOR SHIP, PLANET, ...) reported too big in base mode at the
@@ -662,14 +677,14 @@ namespace Content.Client.Stylesheets
             // The round-info field pair. The OSD font's nominal sizes run small - the existing
             // uavOsd* locals are all size 8 despite their names - so these are picked by eye against
             // the rest of the panel rather than scaled off crtTextFont.
-            var crtFieldLabelFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 8) : notoSansBold11;
+            var crtFieldLabelFont = useCrtUi ? GetCrtFont(resCache, 8) : notoSansBold11;
 
             // Same as the field label under CRT, deliberately - the terminal look leans on the caps
             // strip rather than on size, and it is already right. Off-theme it becomes a real
             // heading.
-            var crtSectionTitleFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 8) : notoSansBold16;
-            var crtFieldValueFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 11) : notoSans12;
-            var crtFieldValueLeadFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 10) : notoSansBold16;
+            var crtSectionTitleFont = useCrtUi ? GetCrtFont(resCache, 8) : notoSansBold16;
+            var crtFieldValueFont = useCrtUi ? GetCrtFont(resCache, 11) : notoSans12;
+            var crtFieldValueLeadFont = useCrtUi ? GetCrtFont(resCache, 10) : notoSansBold16;
 
             // Muted, not dim. CrtGreenDim is the theme's "switched off" tone and is too dark to read
             // at label size; this sits between it and the body colour.
@@ -677,7 +692,7 @@ namespace Content.Client.Stylesheets
                 ? Color.InterpolateBetween(CrtGreenDim, CrtGreenSoft, 0.45f)
                 : Color.FromHex("#B8B8B8");
             var crtFieldValueColor = useCrtUi ? CrtGreenSoft : Color.White;
-            var crtStatValueFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 9) : notoSansBold11;
+            var crtStatValueFont = useCrtUi ? GetCrtFont(resCache, 9) : notoSansBold11;
             var crtDimFont = useCrtUi ? uavOsd13 : notoSans10;
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
@@ -686,7 +701,7 @@ namespace Content.Client.Stylesheets
             // the lobby meant to be read without looking at it - the number you catch out of the
             // corner of an eye while reading the server info. The OSD sizes run small (see the note
             // above: uavOsdBold18 is really size 12), so this is picked by eye, not by ratio.
-            var crtClockFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 22) : notoSansBold28;
+            var crtClockFont = useCrtUi ? GetCrtFont(resCache, 22) : notoSansBold28;
             var crtRichTextFont = useCrtUi ? uavOsd14 : notoSans12;
 
             // Chat's own font, kept separate from crtRichTextFont on purpose. That one is shared with
@@ -694,18 +709,18 @@ namespace Content.Client.Stylesheets
             // readable-chat option must not drag those with it - it exists to make *conversation*
             // legible, not to opt out of the theme. See CCVars.CMUChatReadableFont.
             var crtChatFont = useCrtUi && !ChatReadableFont
-                ? uavOsd14
+                ? GetCrtChatFont(resCache, ChatCrtFontSize)
                 : resCache.NotoStack(size: ChatReadableFontSize);
 
             // The OSD face has tight vertical metrics and needs the extra leading; NotoSans does not,
             // and at 1.25 it looks gappy rather than airy.
             var crtChatLineHeight = useCrtUi && !ChatReadableFont ? 1.25f : 1.0f;
             var crtChatAnnouncementFont = useCrtUi && !ChatReadableFont
-                ? GetCrtFont(resCache, ChatCrtFontSize + 2)
+                ? GetCrtChatFont(resCache, ChatCrtFontSize + 2)
                 : resCache.NotoStack(size: ChatReadableFontSize + 2);
             var crtServerInfoFont = useCrtUi ? uavOsdServerInfo : notoSans12;
             // Sized to leave room for the job line underneath without crowding the sprite beside it.
-            var crtCharacterSummaryFont = useCrtUi ? resCache.GetFont(uavOsdStack, size: 9) : notoSans12;
+            var crtCharacterSummaryFont = useCrtUi ? GetCrtFont(resCache, 9) : notoSans12;
             var crtButtonLabelFont = useCrtUi ? uavOsdBold14 : notoSans12;
             var crtLineEditFont = useCrtUi ? uavOsd14 : notoSans12;
             var crtNativeLineEditFont = notoSans12;

@@ -75,16 +75,15 @@ public sealed partial class ChatMessageRow : PanelContainer
         };
         AddChild(row);
 
-        // Under CRT the side labels (channel prefix, repeat badge) take the OSD face at the size the
+        // Under CRT the side labels (channel prefix, repeat badge) take the chat face at the size the
         // message bodies sit at, so the prefix column and the text beside it are one typeface at one
         // size rather than two.
         //
         // Deliberately ignores `fontSize`, and that needs saying: RichTextLabel has no FontOverride,
-        // so the body is whatever the stylesheet's CrtRichText says (uavOsd 8) and cannot follow the
-        // caller's size. It never could - before CRT the body simply used the theme default and
-        // `fontSize` only ever reached these side labels. Honouring it here would scale the prefix
-        // away from a body that cannot move. Making chat text scalable under CRT means emitting a
-        // [font size=N] tag into the markup; until then these stay locked together.
+        // so the body is whatever the stylesheet's CrtChatText says and cannot follow the caller's
+        // size. It never could - before CRT the body simply used the theme default and `fontSize`
+        // only ever reached these side labels. Honouring it here would scale the prefix away from a
+        // body that cannot move.
         var sideFont = StyleNano.CrtUiEnabled
             ? StyleNano.GetChatFont(_resourceCache)
             : fontSize == null
