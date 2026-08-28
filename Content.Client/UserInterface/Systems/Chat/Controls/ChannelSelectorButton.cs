@@ -141,20 +141,48 @@ public sealed class ChannelSelectorButton : ChatPopupButton<ChannelSelectorPopup
         };
     }
 
+    /// <summary>
+    ///     The channel's colour under the CRT theme: the hue above, rebuilt at the channel band's
+    ///     fixed luminance so nine channels are tellable apart without any of them glaring.
+    /// </summary>
+    /// <remarks>
+    ///     Local and Whisper stay on the ladder rather than taking a hue: they are where a player
+    ///     spends most of their time, and a hue there would mean the chip never stops shouting.
+    /// </remarks>
+    public static Color CrtChannelColor(ChatSelectChannel channel)
+    {
+        return channel switch
+        {
+            ChatSelectChannel.Local => CrtTerminalPalette.Text,
+            ChatSelectChannel.Whisper => CrtTerminalPalette.TextDim,
+            ChatSelectChannel.Radio => CrtTerminalPalette.Accent,
+            ChatSelectChannel.Emotes => CrtTerminalPalette.ChannelTone(Color.FromHex("#C9A7EA")),
+            ChatSelectChannel.LOOC => CrtTerminalPalette.ChannelTone(Color.FromHex("#4FD2C2")),
+            ChatSelectChannel.OOC => CrtTerminalPalette.ChannelTone(Color.FromHex("#73BDF6")),
+            ChatSelectChannel.Dead => CrtTerminalPalette.ChannelTone(Color.FromHex("#8D7BD4")),
+            // Admin and Mentor keep the palette's own severity tones rather than a rebuilt hue: they
+            // are the two that mean "staff are involved", which is exactly what Alert and Caution
+            // already say everywhere else in the theme.
+            ChatSelectChannel.Admin => CrtTerminalPalette.Alert,
+            ChatSelectChannel.Mentor => CrtTerminalPalette.Caution,
+            _ => CrtTerminalPalette.Text,
+        };
+    }
+
     public void UpdateChannelSelectButton(ChatSelectChannel channel, RadioChannelPrototype? radio)
     {
         Text = radio != null ? Loc.GetString(radio.Name) : ChannelSelectorName(channel);
         var channelColor = radio?.Color ?? ChannelSelectColor(channel);
 
-        // Under CRT the chip is always accent green and the stylesheet says so - the channel is
-        // already named in words on the chip itself, and the gallery carries channel identity in
-        // the log prefix alone. Modulate has to be neutralised either way: it multiplies the
-        // stylebox as well as the label, so the channel colour was repainting the chip's Surface2
-        // fill (OOC's LightSkyBlue turned it into a near-black teal box).
+        // Modulate multiplies the stylebox as well as the label, so a channel colour applied that
+        // way repaints the chip's fill too; FontColorOverride touches only the text. A radio
+        // channel's own prototype colour is pinned to the band's luminance rather than replaced.
         if (StyleNano.CrtUiEnabled)
         {
             Modulate = Color.White;
-            Label.FontColorOverride = null;
+            Label.FontColorOverride = radio != null
+                ? CrtTerminalPalette.ChannelTone(radio.Color)
+                : CrtChannelColor(channel);
         }
         else
         {

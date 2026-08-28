@@ -15,17 +15,23 @@ namespace Content.Client.Stylesheets
         public Stylesheet SheetNano { get; private set; } = default!;
         public Stylesheet SheetSpace { get; private set; } = default!;
 
+        /// <inheritdoc />
+        public event Action? ChatFontChanged;
+
         public void Initialize()
         {
             StyleNano.SetCrtUiEnabled(_configurationManager.GetCVar(CCVars.CrtUiEnabled));
             StyleNano.SetCrtPalette(_configurationManager.GetCVar(CCVars.CrtUiColor));
             StyleNano.SetChatReadableFont(_configurationManager.GetCVar(CCVars.CMUChatReadableFont));
+            StyleNano.SetChatFontStep(
+                StyleNano.ParseChatFontStep(_configurationManager.GetCVar(CCVars.CMUChatBigFont)));
             RefreshNanoSheet();
             SheetSpace = new StyleSpace(_resourceCache).Stylesheet;
 
             _configurationManager.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledChanged);
             _configurationManager.OnValueChanged(CCVars.CrtUiColor, OnCrtUiColorChanged);
             _configurationManager.OnValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontChanged);
+            _configurationManager.OnValueChanged(CCVars.CMUChatBigFont, OnChatBigFontChanged);
         }
 
         public void PreviewCrtUi(bool enabled, string color)
@@ -63,8 +69,28 @@ namespace Content.Client.Stylesheets
         private void OnChatReadableFontChanged(bool enabled)
         {
             StyleNano.SetChatReadableFont(enabled);
+            ApplyChatFontChange();
+        }
+
+        private void OnChatBigFontChanged(string setting)
+        {
+            StyleNano.SetChatFontStep(StyleNano.ParseChatFontStep(setting));
+            ApplyChatFontChange();
+        }
+
+        /// <summary>
+        ///     The shared tail of both chat font options.
+        /// </summary>
+        /// <remarks>
+        ///     Order is the point: statics, then sheet, then restyle, and only then chat. Listening to
+        ///     the cvars directly let chat rebuild first, which left the controls that bake a
+        ///     FontOverride at the old size while the message bodies moved with the sheet.
+        /// </remarks>
+        private void ApplyChatFontChange()
+        {
             RefreshNanoSheet();
             RefreshOpenUi();
+            ChatFontChanged?.Invoke();
         }
 
         /// <summary>

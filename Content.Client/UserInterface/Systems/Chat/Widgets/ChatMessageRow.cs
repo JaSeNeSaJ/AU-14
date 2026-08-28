@@ -1,15 +1,16 @@
-﻿using System;
+using System;
 using System.Numerics;
 using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Content.Client.Resources;
-using Content.Shared._CMU14.Ghost;
 using Content.Shared._CMU14.Xenonids.Watch;
+using Content.Shared.CCVar;
 using Content.Shared.Chat;
 using Robust.Client.Console;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
 using Robust.Client.UserInterface.Controls;
+using Robust.Shared.Configuration;
 using Robust.Shared.IoC;
 using Robust.Shared.Utility;
 
@@ -19,6 +20,7 @@ public sealed partial class ChatMessageRow : PanelContainer
 {
     [Dependency] private IClientConsoleHost _consoleHost = default!;
     [Dependency] private IResourceCache _resourceCache = default!;
+    [Dependency] private IConfigurationManager _config = default!;
 
     /// <summary>
     ///     Line spacing for CRT message bodies. The uavOsd face has very tight vertical metrics, so
@@ -53,12 +55,16 @@ public sealed partial class ChatMessageRow : PanelContainer
         // left edge, so rows read as tagged rather than bracketed.
         PanelOverride = new ChatAccentStyleBox
         {
-            BackgroundColor = GetBackground(message),
+            BackgroundColor = GetBackground(message, accent, CrtTintSaturation(_config.GetCVar(CCVars.CMUChatRowTint))),
             AccentColor = accent,
             AccentSize = metrics.AccentSize,
             BorderColor = accent,
             BorderThickness = isAnnouncement ? new Thickness(2, 0, 0, 0) : new Thickness(0),
-            ContentMarginLeftOverride = 6,
+            // A content margin, not a margin on ChatPanes: DoDraw paints the row's full box, so a
+            // wrapper margin insets the fill along with the text and leaves bare ground down every
+            // tinted row. This is the message column - crtChatInput's inset (8) plus the channel
+            // chip's own (6) has to equal it, by hand.
+            ContentMarginLeftOverride = 14,
             // Leave room for the corner triangle so it never sits on top of the text.
             ContentMarginRightOverride = 4 + metrics.AccentSize,
             // Asymmetric on purpose: the 1.25 line height puts its leading under the last line, so
@@ -107,12 +113,6 @@ public sealed partial class ChatMessageRow : PanelContainer
             });
         }
 
-        if (message.GhostFollowEntity.Valid)
-        {
-            var followButton = CreateFollowButton(message, metrics, textColor);
-            row.AddChild(followButton);
-        }
-
         if (message.XenoWatchEntity.Valid)
         {
             var watchButton = CreateXenoWatchButton(message, metrics, textColor);
@@ -152,31 +152,6 @@ public sealed partial class ChatMessageRow : PanelContainer
             FontOverride = sideFont
         };
         row.AddChild(_repeatBadge);
-    }
-
-    private Button CreateFollowButton(ChatMessage message, RowMetrics metrics, Color textColor)
-    {
-        var followButtonSize = new Vector2(metrics.FollowButtonSize, metrics.FollowButtonSize);
-        var followButtonColor = textColor.WithAlpha(1f);
-        var followButton = new Button
-        {
-            Text = Loc.GetString("cmu-chat-manager-follow-button"),
-            ToolTip = Loc.GetString("cmu-chat-manager-follow-button-tooltip"),
-            MinSize = followButtonSize,
-            MaxSize = followButtonSize,
-            Margin = new Thickness(2, 5, 2, 0),
-            ModulateSelfOverride = followButtonColor,
-            VerticalAlignment = VAlignment.Top,
-            StyleClasses = { StyleNano.StyleClassChatGhostFollowButton }
-        };
-
-        followButton.Label.HorizontalExpand = true;
-        followButton.Label.HorizontalAlignment = HAlignment.Center;
-        followButton.Label.VerticalAlignment = VAlignment.Center;
-        followButton.Label.Align = Label.AlignMode.Center;
-        followButton.Label.FontColorOverride = followButtonColor;
-        followButton.OnPressed += _ => _consoleHost.ExecuteCommand($"{CMUGhostFollowCommand.CommandName} {message.GhostFollowEntity}");
-        return followButton;
     }
 
     private Button CreateXenoWatchButton(ChatMessage message, RowMetrics metrics, Color textColor)
@@ -239,14 +214,16 @@ public sealed partial class ChatMessageRow : PanelContainer
 
     private static RowMetrics GetMetrics(int? fontSize)
     {
+        // Padding gives a row its own interior and the bottom margin separates it from the next
+        // without drawing a rule; at the older, tighter values a full log read as one block of text.
         var metrics = fontSize == null
-            ? new RowMetrics(2, 4, 0, 1.06f, 42, 25, 16, 10)
+            ? new RowMetrics(4, 4, 3, 1.12f, 42, 25, 16, 10)
             : fontSize.Value switch
             {
-                <= 9 => new RowMetrics(1, 3, 0, 1.0f, 34, 20, 14, 8),
-                <= 11 => new RowMetrics(1, 3, 0, 1.02f, 38, 22, 15, 9),
-                <= 13 => new RowMetrics(2, 4, 0, 1.04f, 40, 24, 16, 10),
-                _ => new RowMetrics(2, 4, 0, 1.06f, 42, 25, 18, 11)
+                <= 9 => new RowMetrics(3, 3, 2, 1.08f, 34, 20, 14, 8),
+                <= 11 => new RowMetrics(3, 3, 2, 1.10f, 38, 22, 15, 9),
+                <= 13 => new RowMetrics(4, 4, 3, 1.12f, 40, 24, 16, 10),
+                _ => new RowMetrics(4, 4, 3, 1.14f, 42, 25, 18, 11)
             };
 
         // No corner accent triangle under CRT, and that is mostly about space rather than taste.
@@ -302,25 +279,60 @@ public sealed partial class ChatMessageRow : PanelContainer
             && string.Equals(display.ChannelLabel, "RAD", StringComparison.OrdinalIgnoreCase);
     }
 
-    private static Color GetBackground(ChatMessage message)
+    /// <summary>
+    ///     Saturation for a CRT row tint, or null when the player has them switched off.
+    /// </summary>
+    private static float? CrtTintSaturation(string setting)
+    {
+        return setting switch
+        {
+            CCVars.CMUChatRowTintFull => CrtTerminalPalette.ChatTintSaturationFull,
+            CCVars.CMUChatRowTintMuted => CrtTerminalPalette.ChatTintSaturationMuted,
+            _ => null
+        };
+    }
+
+    /// <summary>
+    ///     Which channels take a fill under CRT: the ones upstream actually tints. Local, whisper and
+    ///     emotes stay on the ground - upstream's #101214 and #151515 against a #0b0c0e log are fills
+    ///     on paper only, and filling them here would make the log a wall of bands.
+    /// </summary>
+    private static bool TakesCrtTint(ChatChannel channel)
+    {
+        if ((channel & ChatChannel.AdminRelated) != 0)
+            return true;
+
+        return channel is ChatChannel.Radio
+            or ChatChannel.OOC
+            or ChatChannel.LOOC
+            or ChatChannel.Dead
+            or ChatChannel.Server
+            or ChatChannel.Notifications;
+    }
+
+    private static Color GetBackground(ChatMessage message, Color accent, float? tintSaturation)
     {
         // An explicit override is semantic - a xeno announcement's purple, examine echoes - so it
-        // survives the CRT branch below, which is what makes announcements readable as a block under
-        // a theme where every other row is transparent.
+        // survives the CRT branch below.
         if (message.Display?.BackgroundColorOverride is { } backgroundOverride)
             return backgroundOverride;
 
         var channel = message.Channel;
 
-        // Under the CRT theme, rows carry no fill of their own. The per-channel colours below are
-        // off-palette hex tuned for the base theme's near-black log - dropped onto the CRT surface
-        // ladder they read as bands of unrelated colour, the admin maroon worst of all. Channel
-        // identity does not depend on them: it is carried by the prefix colour and by the accent
-        // triangle in the corner, both of which are untouched here.
-        // The one row that keeps a fill under CRT: announcements carry no prefix, so without a band
-        // nothing marks where one starts. Surface2 is one rung up from the chat ground.
         if (StyleNano.CrtUiEnabled)
-            return IsUnlabeledRadioSystemMessage(message) ? CrtTerminalPalette.Surface2 : Color.Transparent;
+        {
+            // Announcements carry no prefix, so without a band nothing marks where one starts.
+            if (IsUnlabeledRadioSystemMessage(message))
+                return CrtTerminalPalette.Surface2;
+
+            // Rebuilt from the ladder rather than using the hexes below, which are tuned for the
+            // base theme's near-black log: the tint wears the prefix's own hue at Surface2's
+            // luminance, so every tinted row is one step off the ground and the same step.
+            if (tintSaturation is { } saturation && TakesCrtTint(channel))
+                return CrtTerminalPalette.ChatRowTint(accent, saturation);
+
+            return Color.Transparent;
+        }
 
         if ((channel & ChatChannel.AdminRelated) != 0)
             return Color.FromHex("#23151e");

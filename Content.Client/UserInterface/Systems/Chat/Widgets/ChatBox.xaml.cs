@@ -34,6 +34,7 @@ public partial class ChatBox : UIWidget
     [Dependency] private ILogManager _log = default!;
     [Dependency] private IConfigurationManager _config = default!;
     [Dependency] private IPrototypeManager _prototype = default!;
+    [Dependency] private IStylesheetManager _stylesheetManager = default!;
 
     private readonly ISawmill _sawmill;
     private readonly ChatUIController _controller;
@@ -62,6 +63,13 @@ public partial class ChatBox : UIWidget
     private bool _colorWholeMessage;
     private ChatChannel _legacyChannelMask = (ChatChannel) ushort.MaxValue;
     private int _secondaryRatioPercent = ChatUserSettings.DefaultSplitSecondaryRatioPercent;
+    /// <summary>
+    ///     How far a chat band's contents sit in from the panel edge under CRT. The bands are full
+    ///     bleed: one that stops short of the edge leaves a ring of ground that reads as a border.
+    ///     Kept in step by hand with ChatPanes' margin and crtChatInput's content margins.
+    /// </summary>
+    private const int ChatBandInset = 10;
+
     private bool _syncingFilter;
     private bool LegacyPresentation => _forceLegacyPresentation || _legacyChatEnabled;
     /// <summary>
@@ -148,7 +156,8 @@ public partial class ChatBox : UIWidget
         _controller.RegisterChat(this);
         _config.OnValueChanged(CCVars.ChatLegacyMode, OnLegacyModeCvarChanged);
         _config.OnValueChanged(CCVars.ChatColorWholeMessage, OnColorWholeMessageCvarChanged);
-        _config.OnValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontCvarChanged);
+        _stylesheetManager.ChatFontChanged += RemakeForChatFontChange;
+        _config.OnValueChanged(CCVars.CMUChatRowTint, OnChatRowTintCvarChanged);
         _config.OnValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledCvarChanged);
 
         _tabs = ChatUserSettings.LoadTabs(_config.GetCVar(CCVars.ChatTabs));
@@ -1111,10 +1120,25 @@ public partial class ChatBox : UIWidget
     ///     line - but the channel prompt, the tab labels and every existing message row set a
     ///     FontOverride when they were built and will happily keep the old face forever.
     /// </summary>
-    private void OnChatReadableFontCvarChanged(bool enabled)
+    /// <summary>
+    ///     Rebuild the whole chat after a font option changed. Driven by
+    ///     <see cref="IStylesheetManager.ChatFontChanged"/> rather than the cvar, so the sheet
+    ///     already carries the new size by the time rows are rebuilt against it. The chip and the
+    ///     scroll button bake a FontOverride and are not rows, so a repopulate alone misses them.
+    /// </summary>
+    private void RemakeForChatFontChange()
     {
         ChatInput.ChannelSelector.RefreshChatFont();
+        Contents.RefreshChatFont();
+        SecondaryContents.RefreshChatFont();
         RebuildTabs();
+        Repopulate();
+    }
+
+    // Every row bakes its fill into a PanelOverride when it is built, so nothing short of a
+    // repopulate picks the new tint up.
+    private void OnChatRowTintCvarChanged(string setting)
+    {
         Repopulate();
     }
 
@@ -1128,21 +1152,28 @@ public partial class ChatBox : UIWidget
     }
 
     /// <summary>
-    ///     Transparent under CRT: the tabs sit directly on the chat's Surface0 ground with no band
-    ///     behind them. A strip needs a fill only if the tabs on it have fills of their own to be
-    ///     separated from, and they no longer do - a resting tab draws nothing at all now, so a band
-    ///     here would be a rectangle marking out empty space. The old hardcoded hex was a blue-grey
-    ///     belonging to no palette, and being a PanelOverride it beat every stylesheet rule aimed
-    ///     at it.
+    ///     The seam, when this chat is the lobby sidebar's lower zone.
     /// </summary>
+    /// <remarks>
+    ///     The strip names which conversation is showing, so it belongs to the zone above the log and
+    ///     carries that zone's <c>Surface1</c>; the step down to <c>Surface0</c> and the 1px rule land
+    ///     on its bottom edge, one boundary rather than two. Tabs sit on that rule with no bottom
+    ///     margin, which lets a selected tab's accent underline replace its segment of it.
+    /// </remarks>
     private void ApplyTabHeaderBackground(bool crtEnabled)
     {
         TabHeaderPanel.PanelOverride = new StyleBoxFlat
         {
             BackgroundColor = crtEnabled
-                ? Color.Transparent
+                ? CrtTerminalPalette.Surface1
                 : Color.FromHex("#0C0F12"),
+            BorderColor = CrtTerminalPalette.Line,
+            BorderThickness = crtEnabled ? new Thickness(0, 0, 0, 1) : new Thickness(0),
         };
+
+        TabHeader.Margin = crtEnabled
+            ? new Thickness(ChatBandInset, 4, ChatBandInset, 0)
+            : new Thickness(4);
     }
 
     private void OnLegacyModeCvarChanged(bool enabled)
@@ -1610,7 +1641,8 @@ public partial class ChatBox : UIWidget
         _controller.FilterableChannelsChanged -= OnFilterableChannelsChanged;
         _config.UnsubValueChanged(CCVars.ChatLegacyMode, OnLegacyModeCvarChanged);
         _config.UnsubValueChanged(CCVars.ChatColorWholeMessage, OnColorWholeMessageCvarChanged);
-        _config.UnsubValueChanged(CCVars.CMUChatReadableFont, OnChatReadableFontCvarChanged);
+        _stylesheetManager.ChatFontChanged -= RemakeForChatFontChange;
+        _config.UnsubValueChanged(CCVars.CMUChatRowTint, OnChatRowTintCvarChanged);
         _config.UnsubValueChanged(CCVars.CrtUiEnabled, OnCrtUiEnabledCvarChanged);
         ChatInput.Input.OnTextEntered -= OnTextEntered;
         ChatInput.Input.OnKeyBindDown -= OnInputKeyBindDown;

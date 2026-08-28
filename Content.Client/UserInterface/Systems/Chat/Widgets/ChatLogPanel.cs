@@ -81,7 +81,10 @@ public sealed class ChatLogPanel : PanelContainer
         _scrollBar = new VScrollBar
         {
             VerticalExpand = true,
-            MinWidth = 8
+            // Matches crtChatScrollGrabber's own computed minimum (its content margins sum to 10) -
+            // this is a floor, not the thing actually setting the width, but it should say the same
+            // number as the stylebox or the two silently drift apart on the next retune.
+            MinWidth = 10
         };
         _scrollBar.OnValueChanged += OnScrollBarValueChanged;
         // Chat is skipped by CrtLobbyTheme (Apply returns early on a ChatBox), so this is set here
@@ -96,8 +99,14 @@ public sealed class ChatLogPanel : PanelContainer
             Orientation = BoxContainer.LayoutOrientation.Vertical,
             SeparationOverride = 0,
             HorizontalExpand = true,
-            VerticalExpand = false
+            VerticalExpand = false,
+            // Messages sit on the floor and grow upward, the way a terminal does. Align rather than a
+            // leading spacer: an expanding spacer is measured, and ScrollContainer measures its
+            // content unbounded, so the spacer's DesiredSize.Y explodes and every scroll computation
+            // reading _rows.DesiredSize.Y breaks with it. Align only moves children at arrange time.
+            Align = BoxContainer.AlignMode.End
         };
+
         _scroll.AddChild(_rows);
 
         _scrollToLatest = new Button
@@ -131,6 +140,18 @@ public sealed class ChatLogPanel : PanelContainer
 
         _scrollToLatest.OnPressed += _ => ScrollToBottom();
         root.AddChild(_scrollToLatest);
+    }
+
+    /// <summary>
+    ///     Re-read the chat font onto the scroll-to-latest button: its FontOverride is baked once and
+    ///     outlives a stylesheet rebuild, and it is not a row, so a repopulate never rebuilds it.
+    /// </summary>
+    public void RefreshChatFont()
+    {
+        if (!StyleNano.CrtUiEnabled)
+            return;
+
+        _scrollToLatest.Label.FontOverride = StyleNano.GetChatFont(IoCManager.Resolve<IResourceCache>());
     }
 
     public ChatMessageRow AddMessage(ChatMessage message, FormattedMessage formatted, Color color, Color? accentOverride = null, int? fontSize = null)
