@@ -1,8 +1,9 @@
-﻿using System.Numerics;
+using System.Numerics;
 using Content.Client._CMU14.Interface;
 using Content.Client._CMU14.UserInterface.ColorPicker;
 using Content.Client.Resources;
 using Content.Client.UserInterface.Controls;
+using Content.Client.UserInterface.Systems.Chat.Widgets;
 using Content.Shared.CCVar;
 using Robust.Client.Graphics;
 using Robust.Client.ResourceManagement;
@@ -66,6 +67,26 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtInsetPanel = "CrtInsetPanel";
         public const string StyleClassCrtQuietPanel = "CrtQuietPanel";
         public const string StyleClassCrtHeaderPanel = "CrtHeaderPanel";
+        /// <summary>
+        ///     The ground a <see cref="StyleClassCrtCommandCell"/> row sits on. Filled with
+        ///     <c>Void</c>, so the 1px separations between cells show through as gaps rather than as
+        ///     borders - the cells are told apart by the dark line between two fills, and nothing is
+        ///     stroked.
+        /// </summary>
+        public const string StyleClassCrtCommandBand = "CrtCommandBand";
+
+        /// <summary>
+        ///     One command in a band. Replaces a row of individually outlined buttons: fill says
+        ///     pressable, the gap says separate, and four frames come off the panel.
+        /// </summary>
+        public const string StyleClassCrtCommandCell = "CrtCommandCell";
+
+        /// <summary>
+        ///     A cell in a command band that is not itself a <see cref="ContainerButton"/> - the
+        ///     collapse arrow. Resting fill only; it has no states to show.
+        /// </summary>
+        public const string StyleClassCrtCommandCellPanel = "CrtCommandCellPanel";
+
         public const string StyleClassCrtButton = "CrtButton";
         public const string StyleClassCrtAttentionButton = "CrtAttentionButton";
         public const string StyleClassCrtButtonLabel = "CrtButtonLabel";
@@ -73,6 +94,20 @@ namespace Content.Client.Stylesheets
         public const string StyleClassCrtText = "CrtText";
         public const string StyleClassCrtDimText = "CrtDimText";
         public const string StyleClassCrtHeading = "CrtHeading";
+
+        /// <summary>
+        ///     A heading that shares its row with something else, so it has to give ground. The
+        ///     sidebar's server name is the case: operator-configured text of no bounded length next
+        ///     to a round-state readout, where the name is the half that clips.
+        /// </summary>
+        public const string StyleClassCrtHeadingSmall = "CrtHeadingSmall";
+
+        /// <summary>
+        ///     Right-hand end of a heading row - a status readout beside a title, dim and small so it
+        ///     is legible without competing with the heading it sits next to.
+        /// </summary>
+        public const string StyleClassCrtHeadingStatus = "CrtHeadingStatus";
+
         public const string StyleClassCrtHeadingBig = "CrtHeadingBig";
         public const string StyleClassCrtHeadingBigWarning = "CrtHeadingBigWarning";
 
@@ -116,6 +151,15 @@ namespace Content.Client.Stylesheets
         ///     block, which off-theme left a section title the same size as the labels beneath it.
         /// </summary>
         public const string StyleClassCrtSectionTitle = "CrtSectionTitle";
+
+        /// <summary>
+        ///     The hairline that runs from a section title to the right edge of its row. A rule
+        ///     rather than a fill because it divides nothing - it is the oldest terminal device
+        ///     there is, and it is what stops a heading reading as another line of body text.
+        ///     Give it <c>HorizontalExpand</c> and <c>MinHeight="1"</c>; it has no content to
+        ///     size itself from.
+        /// </summary>
+        public const string StyleClassCrtSectionRule = "CrtSectionRule";
         public const string StyleClassCrtDivider = "CrtDivider";
         public const string StyleClassCrtChatPanel = "CrtChatPanel";
 
@@ -136,6 +180,15 @@ namespace Content.Client.Stylesheets
         /// </summary>
         public const string StyleClassCrtChatTabSelected = "CrtChatTabSelected";
         public const string StyleClassCrtChatInput = "CrtChatInput";
+
+        /// <summary>
+        ///     AHelp/MentorHelp's own chat input band - a filled row with a rule on the top and
+        ///     bottom edges, rather than an unstyled wrapper with no visible background or border at
+        ///     all. Not <see cref="StyleClassCrtChatInput"/>: that one is borderless by design (the
+        ///     lobby chat's seam rule already marks the boundary above it), and these windows have no
+        ///     such rule to lean on.
+        /// </summary>
+        public const string StyleClassCrtBwoinkInput = "CrtBwoinkInput";
 
         /// <summary>
         ///     A chat message body. Its own class rather than <see cref="StyleClassCrtRichText"/>,
@@ -281,6 +334,7 @@ namespace Content.Client.Stylesheets
         private static CrtPalette _crtPalette = CrtPalette.Green;
         private static bool _crtUiEnabled = true;
         private static bool _chatReadableFont;
+        private static int _chatFontStep;
         private static readonly Color DefaultCrtBackground = Color.FromHex("#07090B");
         private static readonly Color DefaultCrtPanelBackground = Color.FromHex("#25252A");
         private static readonly Color DefaultCrtPanelBackgroundAlt = Color.FromHex("#202023");
@@ -360,21 +414,53 @@ namespace Content.Client.Stylesheets
         }
 
         /// <summary>
-        ///     Point size chat uses in terminal mode. Must match <c>crtChatFont</c>.
+        ///     Points added to chat's normal size by <see cref="CCVars.CMUChatBigFont"/>. 0, 1 or 2.
+        /// </summary>
+        public static int ChatFontStep => _chatFontStep;
+
+        public static void SetChatFontStep(int step)
+        {
+            _chatFontStep = Math.Clamp(step, 0, ChatBigFontMaxStep);
+        }
+
+        /// <summary>
+        ///     The <see cref="CCVars.CMUChatBigFont"/> cvar's string as a point step. An unrecognised
+        ///     value reads as off rather than throwing, so a stale client_config costs only the default.
+        /// </summary>
+        public static int ParseChatFontStep(string setting)
+        {
+            return setting switch
+            {
+                CCVars.CMUChatBigFontOne => 1,
+                CCVars.CMUChatBigFontTwo => 2,
+                _ => 0,
+            };
+        }
+
+        /// <summary>
+        ///     Base point size chat uses in terminal mode. Must match <c>crtChatFont</c>.
         /// </summary>
         /// <remarks>
         ///     Larger than the 8 the OSD face used here. That face is all-caps, so every glyph filled
         ///     the full cap height; a face with lowercase spends roughly half its point size on the
         ///     x-height, so the same number reads smaller and 8 came out under what it replaced.
         /// </remarks>
-        public const int ChatCrtFontSize = 11;
+        public const int ChatCrtFontSizeBase = 11;
 
         /// <summary>
-        ///     Point size chat uses in readable mode. Larger than the terminal size on purpose: the
-        ///     8px that suits a dense all-caps face is small for a proportional one, and the whole
-        ///     point of the option is legibility.
+        ///     Base point size chat uses in readable mode. Larger than the terminal size on purpose:
+        ///     what suits a dense all-caps face is small for a proportional one.
         /// </summary>
-        public const int ChatReadableFontSize = 12;
+        public const int ChatReadableFontSizeBase = 12;
+
+        /// <summary>Largest step the big-font option offers, applied to whichever face is in use.</summary>
+        public const int ChatBigFontMaxStep = 2;
+
+        /// <summary>Terminal-mode chat size as it stands right now, big-font option included.</summary>
+        public static int ChatCrtFontSize => ChatCrtFontSizeBase + _chatFontStep;
+
+        /// <summary>Readable-mode chat size as it stands right now, big-font option included.</summary>
+        public static int ChatReadableFontSize => ChatReadableFontSizeBase + _chatFontStep;
 
         /// <summary>
         ///     The font chat should use right now. For the controls that set a FontOverride directly
@@ -695,6 +781,10 @@ namespace Content.Client.Stylesheets
             var crtStatValueFont = useCrtUi ? GetCrtFont(resCache, 9) : notoSansBold11;
             var crtDimFont = useCrtUi ? uavOsd13 : notoSans10;
             var crtHeadingFont = useCrtUi ? uavOsdBold16 : notoSansBold12;
+            // Half a step down from crtHeadingFont's 10, for a heading that shares its row. Written as
+            // a size rather than reusing uavOsdBold14, which is really 8 - the same size as body text,
+            // where a heading stops reading as one. See StyleClassCrtHeadingSmall.
+            var crtHeadingSmallFont = useCrtUi ? GetCrtFont(resCache, 9) : notoSansBold11;
             var crtHeadingBigFont = useCrtUi ? uavOsdBold18 : notoSansBold18;
 
             // The lobby clock face. Roughly twice the big heading, because it is the one thing on
@@ -764,11 +854,17 @@ namespace Content.Client.Stylesheets
             // See StyleClassCrtPanelFill: a plain fill in the same colour crtPanel uses, with none
             // of its border/corner/texture trimmings, for backing a control that must stay invisible
             // against a CrtPanel behind it.
+            // Corner ticks, no border. The sidebar needs an outer edge that says "instrument" without
+            // enclosing anything - a stroked rect here is the outermost of the nested boxes, and
+            // everything inside it then has to justify not being one too. Four L-marks read as a
+            // device and leave all four sides open.
             var crtScreenPanel = new CrtStyleBox
             {
                 BackgroundColor = CrtTerminalPalette.Surface0,
                 BorderThickness = new Thickness(0),
-                DrawCornerTicks = false,
+                DrawCornerTicks = true,
+                CornerColor = CrtTerminalPalette.Line,
+                CornerLength = 11,
                 ContentMarginLeftOverride = 0,
                 ContentMarginRightOverride = 0,
                 ContentMarginTopOverride = 0,
@@ -778,6 +874,40 @@ namespace Content.Client.Stylesheets
             var crtPanelFill = new StyleBoxFlat
             {
                 BackgroundColor = CrtPanelBackground,
+            };
+
+            // The command band. Void behind the cells so the 1px separations read as gaps cut in one
+            // plate; the cells themselves are borderless fills stepping up on hover. Padding is
+            // vertical only - the outer cells run to the band's edges, so the band has no rim.
+            var crtCommandBand = new StyleBoxFlat
+            {
+                BackgroundColor = CrtTerminalPalette.Void,
+                BorderThickness = new Thickness(0),
+            };
+
+            var crtCommandCell = new StyleBoxFlat
+            {
+                BackgroundColor = CrtTerminalPalette.Surface2,
+                BorderThickness = new Thickness(0),
+                ContentMarginLeftOverride = 4,
+                ContentMarginRightOverride = 4,
+                ContentMarginTopOverride = 5,
+                ContentMarginBottomOverride = 5,
+            };
+
+            var crtCommandCellHover = new StyleBoxFlat(crtCommandCell)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface3,
+            };
+
+            var crtCommandCellPressed = new StyleBoxFlat(crtCommandCell)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface4,
+            };
+
+            var crtCommandCellDisabled = new StyleBoxFlat(crtCommandCell)
+            {
+                BackgroundColor = CrtTerminalPalette.Surface1,
             };
 
             // crtPanel with the corner brackets left on. The vote popup builds its panel this way and
@@ -895,20 +1025,37 @@ namespace Content.Client.Stylesheets
             };
 
             // The lobby's chat input row. Top rule only - the chat panel already supplies the left,
-            // right and bottom borders, so a full box here would double them up. The content margins
-            // are inner padding: none on the left so the channel button sits as far out as the
-            // message rows above it, a little on the right so the gear clears the panel border.
+            // right and bottom borders, so a full box here would double them up.
             // Surface1, one step off the Surface0 ground - not Surface3. With the chat's ground now
             // the darkest surface, one step is enough to mark the live line, and Surface3 on top of
             // Surface0 is a jump wide enough that the bar reads as a separate plate laid on the
             // panel. The channel is a prompt rather than a chip now (see crtChatChannelChip), so the
             // bar no longer has to out-contrast a box sitting on it.
+            // The ChatBox carries no outer margin, so these are insets from the true panel edge.
+            // Left is 8 because the channel chip's own box adds 6 more before its label: 8 + 6 puts
+            // the chip's text on the same x as ChatMessageRow's message prefixes. Right stays 14 -
+            // the filter button on that end has no inner inset.
             var crtChatInput = new StyleBoxFlat
             {
                 BackgroundColor = CrtTerminalPalette.Surface1,
                 BorderThickness = new Thickness(0),
-                ContentMarginLeftOverride = 12,
-                ContentMarginRightOverride = 12,
+                ContentMarginLeftOverride = 8,
+                ContentMarginRightOverride = 14,
+                ContentMarginTopOverride = 10,
+                ContentMarginBottomOverride = 10,
+            };
+
+            // AHelp/MentorHelp's input band. Surface1 for the same reason the lobby chat's input bar
+            // is Surface1 - one step off the window's Surface0 ground is enough to mark the live
+            // line without the jump to Surface3 reading as a separate plate. Unlike the lobby chat,
+            // there is no seam rule above this to lean on, so the border carries both edges itself.
+            var crtBwoinkInput = new StyleBoxFlat
+            {
+                BackgroundColor = CrtTerminalPalette.Surface1,
+                BorderColor = CrtTerminalPalette.Line,
+                BorderThickness = new Thickness(0, 1, 0, 1),
+                ContentMarginLeftOverride = 10,
+                ContentMarginRightOverride = 10,
                 ContentMarginTopOverride = 8,
                 ContentMarginBottomOverride = 8,
             };
@@ -1049,10 +1196,16 @@ namespace Content.Client.Stylesheets
             // strip stacked on a panel. A resting tab is now just its label on the chat's ground.
             // The bottom margin leaves room for the selected tab's underline so tabs do not shift
             // vertically as selection moves between them.
+            // Left is cut down to 2 (was 14) - applies to every tab, but the one it's actually for is
+            // the first: with it, ALL's own text lands close to where the 10px band inset (see
+            // ChatBandInset in ChatBox.xaml.cs) already put it, matching the row prefixes and the
+            // input prompt below rather than sitting noticeably further in. Every later tab's own
+            // left padding shrinks the same way, which also pulls the tabs a bit closer together -
+            // an acceptable side effect, not the point. Right keeps the old 14.
             var crtChatTab = new StyleBoxFlat
             {
                 BackgroundColor = Color.Transparent,
-                ContentMarginLeftOverride = 14,
+                ContentMarginLeftOverride = 2,
                 ContentMarginRightOverride = 14,
                 ContentMarginTopOverride = 5,
                 ContentMarginBottomOverride = 5,
@@ -1100,34 +1253,48 @@ namespace Content.Client.Stylesheets
             // grabber, so it reads as a nub floating over the content. This bar is owned by
             // ChatLogPanel rather than by the ScrollContainer, so it is always visible and the
             // track is always drawn.
+            // Hairlines top and bottom, not a filled channel - a border, not a background, is what
+            // keeps this from re-becoming a second surface running down the log. BorderThickness on
+            // a StyleBoxFlat draws full width by default, which is exactly what a 10px-wide lane
+            // wants; there is no meaningful "inset" to speak of at this size.
             var crtChatScrollTrack = new StyleBoxFlat
             {
                 BackgroundColor = CrtTerminalPalette.Surface0,
-                BorderColor = Color.Transparent,
-                BorderThickness = new Thickness(1, 0, 0, 0),
+                BorderColor = CrtTerminalPalette.Line,
+                BorderThickness = new Thickness(0, 1, 0, 1),
             };
 
-            var crtChatScrollGrabber = new StyleBoxFlat
+            // A shape, not a fill. Design docs/cmu/crt-chat-scrollbar.html has the full set this was
+            // picked from - "shipped 2026-08-27" was a flat coloured rectangle dimmed low enough to
+            // solve "too loud" by going unnoticed instead. A bar with end-caps wider than itself
+            // reads as a handle with stops from its geometry alone, which survives being dim in a way
+            // a plain rectangle cannot - see ChatScrollThumbStyleBox for why.
+            //
+            // Content margins: left+right set the control's own width (10, up from the 4px
+            // stopgap - the bracket shape needs room to read as a bracket, and being airy rather
+            // than solid is what keeps 10px from reading as "loud" the way a solid 8px fill did).
+            // Top+bottom set the *minimum draggable thumb length* on a long log, not a visual
+            // margin - 8, enough that the two 2px caps never touch even at minimum size.
+            var crtChatScrollGrabber = new ChatScrollThumbStyleBox
             {
-                BackgroundColor = CrtTerminalPalette.Surface2,
-                BorderColor = Color.Transparent,
-                BorderThickness = new Thickness(1),
-                // These margins are what set the bar's width - ScrollBar.MeasureOverride returns the
-                // grabber's MinimumSize - and its minimum grabber length. 4 gives a 8px gutter.
-                ContentMarginLeftOverride = 4,
-                ContentMarginRightOverride = 4,
+                BarColor = CrtTerminalPalette.Line,
+                CapColor = CrtTerminalPalette.TextDim,
+                ContentMarginLeftOverride = 5,
+                ContentMarginRightOverride = 5,
                 ContentMarginTopOverride = 4,
                 ContentMarginBottomOverride = 4,
             };
 
-            var crtChatScrollGrabberHover = new StyleBoxFlat(crtChatScrollGrabber)
+            var crtChatScrollGrabberHover = new ChatScrollThumbStyleBox(crtChatScrollGrabber)
             {
-                BackgroundColor = CrtGreenDim.WithAlpha(0.55f),
+                BarColor = CrtTerminalPalette.TextDim,
+                CapColor = CrtTerminalPalette.Text,
             };
 
-            var crtChatScrollGrabberPressed = new StyleBoxFlat(crtChatScrollGrabber)
+            var crtChatScrollGrabberPressed = new ChatScrollThumbStyleBox(crtChatScrollGrabber)
             {
-                BackgroundColor = CrtGreenDim.WithAlpha(0.8f),
+                BarColor = CrtTerminalPalette.Accent,
+                CapColor = CrtTerminalPalette.Accent,
             };
 
             // Solid divider rule. Must come from the stylesheet, not a control's own StyleBoxFlat:
@@ -1137,6 +1304,13 @@ namespace Content.Client.Stylesheets
             {
                 BackgroundColor = CrtGreenDim,
                 ContentMarginTopOverride = 2,
+            };
+
+            // See StyleClassCrtSectionRule. Line rather than CrtGreenDim, and no content margin: this
+            // runs beside a heading at 1px, where crtDivider's 2px reads as a bar.
+            var crtSectionRule = new StyleBoxFlat
+            {
+                BackgroundColor = CrtTerminalPalette.Line,
             };
 
             // Bottom rule under the lobby's SERVER INFO row. The rich-text markup has no underline
@@ -1646,6 +1820,10 @@ namespace Content.Client.Stylesheets
                     .Prop(PanelContainer.StylePropertyPanel, crtChatInput)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
 
+                Element<PanelContainer>().Class(StyleClassCrtBwoinkInput)
+                    .Prop(PanelContainer.StylePropertyPanel, crtBwoinkInput)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<PanelContainer>().Class(StyleClassCrtChatPopup)
                     .Prop(PanelContainer.StylePropertyPanel, crtChatPopup)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
@@ -1689,6 +1867,42 @@ namespace Content.Client.Stylesheets
                     .Pseudo(ContainerButton.StylePseudoClassPressed)
                     .Prop(ContainerButton.StylePropertyStyleBox, crtCheckBoxPressed)
                     .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtCommandBand)
+                    .Prop(PanelContainer.StylePropertyPanel, crtCommandBand)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<PanelContainer>().Class(StyleClassCrtCommandCellPanel)
+                    .Prop(PanelContainer.StylePropertyPanel, crtCommandCell)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCommandCell)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCommandCell)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCommandCell)
+                    .Pseudo(ContainerButton.StylePseudoClassNormal)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCommandCell)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCommandCell)
+                    .Pseudo(ContainerButton.StylePseudoClassHover)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCommandCellHover)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCommandCell)
+                    .Pseudo(ContainerButton.StylePseudoClassPressed)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCommandCellPressed)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                Element<ContainerButton>().Class(StyleClassCrtCommandCell)
+                    .Pseudo(ContainerButton.StylePseudoClassDisabled)
+                    .Prop(ContainerButton.StylePropertyStyleBox, crtCommandCellDisabled)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
+                // No label rule of its own: CrtLobbyTheme still hands these labels
+                // StyleClassCrtButtonLabel, and a second rule here would tie with it at equal
+                // specificity, which has no defined winner.
 
                 Element<ContainerButton>().Class(StyleClassCrtButton)
                     .Prop(ContainerButton.StylePropertyStyleBox, crtButton)
@@ -1806,6 +2020,10 @@ namespace Content.Client.Stylesheets
                     .Prop(Label.StylePropertyFont, crtSectionTitleFont)
                     .Prop(Label.StylePropertyFontColor, crtFieldLabelColor),
 
+                Element<PanelContainer>().Class(StyleClassCrtSectionRule)
+                    .Prop(PanelContainer.StylePropertyPanel, crtSectionRule)
+                    .Prop(Control.StylePropertyModulateSelf, Color.White),
+
                 Element<Label>().Class(StyleClassCrtFieldValue)
                     .Prop(Label.StylePropertyFont, crtFieldValueFont)
                     .Prop(Label.StylePropertyFontColor, crtFieldValueColor),
@@ -1828,6 +2046,14 @@ namespace Content.Client.Stylesheets
                 Element<Label>().Class(StyleClassCrtHeading)
                     .Prop(Label.StylePropertyFont, crtHeadingFont)
                     .Prop(Label.StylePropertyFontColor, crtHeadingColor),
+
+                Element<Label>().Class(StyleClassCrtHeadingSmall)
+                    .Prop(Label.StylePropertyFont, crtHeadingSmallFont)
+                    .Prop(Label.StylePropertyFontColor, crtHeadingColor),
+
+                Element<Label>().Class(StyleClassCrtHeadingStatus)
+                    .Prop(Label.StylePropertyFont, crtDimFont)
+                    .Prop(Label.StylePropertyFontColor, crtDimTextColor),
 
                 Element<Label>().Class(StyleClassCrtHeadingBig)
                     .Prop(Label.StylePropertyFont, crtHeadingBigFont)
