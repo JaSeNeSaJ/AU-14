@@ -102,12 +102,24 @@ namespace Content.Client.Lobby.UI
             // cells carry the tones and the space between them is the tube. A lighter block under
             // them flattened the difference between the cell fills and put a visible rectangle edge
             // around the section, which is the box this panel keeps growing back.
+            // Surface1, one rung up from the chat below it. The two zones tile the whole sidebar, so
+            // this is not a lighter block sitting on a field - it is the ground changing at the seam,
+            // and that change is what divides the sidebar without anything being stroked.
+            //
+            // ServerInfoBacking and CharacterBacking follow it exactly. They exist to stop the shader
+            // writing black through transparent gaps, not to be seen; left on Surface0 under a
+            // Surface1 zone each would read as a darker rectangle, which is the box this panel keeps
+            // growing back.
             ServerInfoBacking.PanelOverride = crt
-                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface0 }
+                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface1 }
+                : null;
+
+            CharacterPreview.CharacterBacking.PanelOverride = crt
+                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface1 }
                 : null;
 
             LobbyCrtBacking.PanelOverride = crt
-                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface0 }
+                ? new StyleBoxFlat { BackgroundColor = CrtTerminalPalette.Surface1 }
                 : null;
 
             // Left in place for base mode, where clearing the override above hands the panel back to
@@ -128,6 +140,10 @@ namespace Content.Client.Lobby.UI
             // at cvar strength - they are most of what reads as a tube.
             LobbyCrt.Curvature = 0f;
             LobbyCrt.Visible = _cfg.GetCVar(CCVars.CMUCrtMenuEffect) && crt;
+
+            // The chat's raster. Gated on the same cvar as the block above so the sidebar is either
+            // a screen or it is not; the overlay checks the theme flag itself every frame.
+            ChatScanlines.Visible = _cfg.GetCVar(CCVars.CMUCrtMenuEffect) && crt;
         }
 
         public void PositionBalanceRatingContainer()

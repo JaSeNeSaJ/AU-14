@@ -220,6 +220,8 @@ namespace Content.Client.Lobby
             Lobby!.RoundClock.Visible = !minimized;
             Lobby!.DockedClockButton.Visible = minimized;
             Lobby!.LobbyStatusLine.Visible = false;
+            // Words, not a placeholder duration: the sidebar header no longer carries the round
+            // state, so this is the only place it shows.
             Lobby!.StationTime.Text = Loc.GetString("lobby-state-round-not-started-short");
 
             // Skipped while folded: PlaceRoundClock's default branch centres using the panel's own
@@ -234,7 +236,7 @@ namespace Content.Client.Lobby
                 SetClockFace(
                     Loc.GetString("cmu-lobby-clock-face-paused"),
                     Loc.GetString("cmu-lobby-clock-docked-paused"));
-                SetCountdownUrgency(CountdownUrgency.None);
+                SetCountdownUrgency(CmuCountdownUrgency.Level.Normal);
                 return;
             }
 
@@ -242,7 +244,7 @@ namespace Content.Client.Lobby
 
             if (_gameTicker.StartTime < _gameTiming.CurTime)
             {
-                SetCountdownUrgency(CountdownUrgency.Imminent);
+                SetCountdownUrgency(CmuCountdownUrgency.Level.Imminent);
                 SetClockFace(
                     Loc.GetString("cmu-lobby-clock-face-soon"),
                     Loc.GetString("cmu-lobby-clock-docked-soon"));
@@ -251,7 +253,7 @@ namespace Content.Client.Lobby
 
             var difference = _gameTicker.StartTime - _gameTiming.CurTime;
             var seconds = difference.TotalSeconds;
-            SetCountdownUrgency(GetCountdownUrgency(seconds));
+            SetCountdownUrgency(CmuCountdownUrgency.Get(seconds));
 
             if (seconds < 0)
             {
@@ -368,34 +370,12 @@ namespace Content.Client.Lobby
             _cfg.SetCVar(CCVars.CMULobbyClockY, fraction.Y);
         }
 
-        /// <summary>
-        ///     How loud the countdown should be. Colour is the only channel here, so the thresholds
-        ///     are wide enough to be noticed at a glance rather than read off a clock.
-        /// </summary>
-        private enum CountdownUrgency
-        {
-            None,
-            Soon,
-            Imminent
-        }
-
-        private const double CountdownSoonSeconds = 60;
-        private const double CountdownImminentSeconds = 20;
-
-        private static CountdownUrgency GetCountdownUrgency(double seconds)
-        {
-            if (seconds <= CountdownImminentSeconds)
-                return CountdownUrgency.Imminent;
-
-            return seconds <= CountdownSoonSeconds ? CountdownUrgency.Soon : CountdownUrgency.None;
-        }
-
-        private void SetCountdownUrgency(CountdownUrgency urgency)
+        private void SetCountdownUrgency(CmuCountdownUrgency.Level urgency)
         {
             var styleClass = urgency switch
             {
-                CountdownUrgency.Imminent => StyleNano.StyleClassCrtClockDanger,
-                CountdownUrgency.Soon => StyleNano.StyleClassCrtClockWarning,
+                CmuCountdownUrgency.Level.Imminent => StyleNano.StyleClassCrtClockDanger,
+                CmuCountdownUrgency.Level.Soon => StyleNano.StyleClassCrtClockWarning,
                 _ => StyleNano.StyleClassCrtClock
             };
 

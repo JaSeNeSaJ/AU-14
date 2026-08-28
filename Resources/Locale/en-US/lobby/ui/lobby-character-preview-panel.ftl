@@ -17,10 +17,12 @@ lobby-character-preview-ignore-allegiance-on = /// Ignore Allegiance: On ///
 
 # Two-line character summary shown beside the preview sprite. The pronoun and its verb have to stay
 # inside one selector ("He is" vs "They are"), so the colour wraps the whole phrase.
+# Both hues sit well under the terminal text's own brightness so they read as secondary rather than
+# as two alarm colours on a green screen: saturation 0.22, luminance 0.62. See docs/cmu/09-theming.md.
 lobby-character-summary-name = This is [color=#FFFFFF]{$name}[/color]
-lobby-character-summary-age = [color=#58CCFF]{$gender ->
+lobby-character-summary-age = [color=#88A3AF]{$gender ->
     [male] He is
     [female] She is
     [epicene] They are
     *[other] It is
-}[/color] [color=#FF7A7A]{$age}[/color] years old
+}[/color] [color=#BF9595]{$age}[/color] years old

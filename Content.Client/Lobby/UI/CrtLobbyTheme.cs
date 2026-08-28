@@ -37,6 +37,24 @@ internal static class CrtLobbyTheme
         Apply(window, includeChat, useCrtTypography);
     }
 
+    /// <summary>
+    ///     Swaps an <see cref="OutputPanel"/>'s scrollbar to the chat log's bracket-capped thumb
+    ///     instead of the plain <see cref="StyleNano.StyleClassCrtScrollBar"/> every other scrollbar
+    ///     gets from the general tree walk - for panels like AHelp/Mentor Help whose message log
+    ///     should read as the same instrument as the main chat.
+    /// </summary>
+    public static void ApplyChatScrollBar(OutputPanel output)
+    {
+        if (!StyleNano.CrtUiEnabled)
+            return;
+
+        if (output.Children.OfType<VScrollBar>().FirstOrDefault() is not { } scrollBar)
+            return;
+
+        scrollBar.RemoveStyleClass(StyleNano.StyleClassCrtScrollBar);
+        AddClass(scrollBar, StyleNano.StyleClassCrtChatScrollBar);
+    }
+
     public static void ApplyToOptionButton(OptionButton option)
     {
         if (!StyleNano.CrtUiEnabled)
@@ -60,8 +78,11 @@ internal static class CrtLobbyTheme
                 // leave two rules matching the same control at the same specificity, and that has
                 // no defined winner - the toggle would look like an ordinary button on some runs
                 // and not others. Its label still gets the shared typography below.
+                // Command cells are withheld for the same reason: they carry their own borderless box
+                // and the standard one would tie with it at equal specificity.
                 if (!button.HasStyleClass(StyleNano.StyleClassCrtReadyToggle) &&
-                    !button.HasStyleClass(StyleNano.StyleClassCrtReadyToggleOn))
+                    !button.HasStyleClass(StyleNano.StyleClassCrtReadyToggleOn) &&
+                    !button.HasStyleClass(StyleNano.StyleClassCrtCommandCell))
                     AddClass(button, StyleNano.StyleClassCrtButton);
 
                 // Centring a button label takes two things, and the stylesheet can only do one of
@@ -96,7 +117,8 @@ internal static class CrtLobbyTheme
                 // A section heading is a button so it can be clicked to fold, but it already has its
                 // own banded box. Handing it the standard one too would tie two rules of equal
                 // specificity, which has no defined winner.
-                if (!containerButton.HasStyleClass(StyleNano.StyleClassCrtSectionHeader))
+                if (!containerButton.HasStyleClass(StyleNano.StyleClassCrtSectionHeader) &&
+                    !containerButton.HasStyleClass(StyleNano.StyleClassCrtCommandCell))
                     AddClass(containerButton, StyleNano.StyleClassCrtButton);
                 break;
         }
@@ -155,7 +177,11 @@ internal static class CrtLobbyTheme
                 AddClass(itemList, StyleNano.StyleClassCrtItemList);
                 break;
             case ScrollBar scrollBar:
-                AddClass(scrollBar, StyleNano.StyleClassCrtScrollBar);
+                // Left alone if ApplyChatScrollBar already opted this one into the chat's bracket-
+                // capped thumb - both classes match VScrollBar at equal specificity, so having both
+                // present has no defined winner (same trap as the SpinBox steppers above).
+                if (!scrollBar.HasStyleClass(StyleNano.StyleClassCrtChatScrollBar))
+                    AddClass(scrollBar, StyleNano.StyleClassCrtScrollBar);
                 break;
             case StripeBack stripeBack:
                 AddClass(stripeBack, StyleNano.StyleClassCrtStripeBack);

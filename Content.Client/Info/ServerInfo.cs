@@ -73,6 +73,11 @@ namespace Content.Client.Info
             var titleRow = new PanelContainer
             {
                 HorizontalExpand = true,
+                // Air above and below. The heading and the two stats had none of their own, so they
+                // sat hard against the command band above and the round table below and read as one
+                // dense block rather than as a section with a title. Small on purpose: this row is
+                // three short items and does not want a margin wide enough to become a gap.
+                Margin = new Thickness(0, 7, 0, 6),
                 Children =
                 {
                     new BoxContainer
@@ -80,7 +85,22 @@ namespace Content.Client.Info
                         Orientation = LayoutOrientation.Horizontal,
                         HorizontalExpand = true,
                         SeparationOverride = 8,
-                        Children = { _title, new Control { HorizontalExpand = true }, StatsColumn },
+                        // A hairline in place of the plain spacer that used to hold this row open.
+                        // The gap between the title and the stats was already there and doing
+                        // nothing; a rule across it is what makes the heading read as a section
+                        // break rather than as one more line of text, and it costs no height.
+                        Children =
+                        {
+                            _title,
+                            new PanelContainer
+                            {
+                                StyleClasses = { StyleNano.StyleClassCrtSectionRule },
+                                HorizontalExpand = true,
+                                VerticalAlignment = VAlignment.Center,
+                                MinHeight = 1,
+                            },
+                            StatsColumn,
+                        },
                     },
                 },
             };

@@ -5,8 +5,14 @@
     <BoxContainer Name="VBox" Orientation="Vertical">
         <!-- Plain label, not a NanoHeading: NanoHeading draws a bordered panel around the word, and
              nothing else on this screen has a frame any more. -->
-        <Label Name="Header" Text="{Loc 'lobby-character-preview-panel-header'}"
-               StyleClasses="CrtSectionTitle" />
+        <!-- Title, then a hairline to the right edge. The rule is what stops a section heading
+             reading as one more line of body text; it divides nothing, so it is not a border. -->
+        <BoxContainer Orientation="Horizontal" HorizontalExpand="True" SeparationOverride="8">
+            <Label Name="Header" Text="{Loc 'lobby-character-preview-panel-header'}"
+                   StyleClasses="CrtSectionTitle" VerticalAlignment="Center" />
+            <PanelContainer StyleClasses="CrtSectionRule" HorizontalExpand="True"
+                            VerticalAlignment="Center" MinHeight="1" Margin="0 0 2 0" />
+        </BoxContainer>
         <!-- One full-width panel. This was briefly a character block beside a column of round stats,
              which only moved the dead space rather than removing it: players and round time are one
              short line each, so a tall narrow cell wasted most of itself and left a gap nothing could
