@@ -1,4 +1,4 @@
-﻿<tabs:CmuTab xmlns="https://spacestation14.io"
+<tabs:CmuTab xmlns="https://spacestation14.io"
              xmlns:tabs="clr-namespace:Content.Client.Options.UI.Tabs"
              xmlns:ui="clr-namespace:Content.Client.Options.UI">
     <BoxContainer Orientation="Vertical">
@@ -17,6 +17,12 @@
                 <CheckBox Name="ChatReadableFontCheckBox"
                           Text="{Loc 'ui-options-crt-chat-readable-font'}"
                           ToolTip="{Loc 'ui-options-crt-chat-readable-font-tooltip'}" />
+                <ui:OptionDropDown Name="ChatBigFontDropDown"
+                                   Title="{Loc 'ui-options-crt-chat-big-font'}"
+                                   ToolTip="{Loc 'ui-options-crt-chat-big-font-tooltip'}" />
+                <ui:OptionDropDown Name="ChatRowTintDropDown"
+                                   Title="{Loc 'ui-options-crt-chat-row-tint'}"
+                                   ToolTip="{Loc 'ui-options-crt-chat-row-tint-tooltip'}" />
 
                 <Label Text="{Loc 'ui-options-cmu-runechat'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
                 <CheckBox Name="RunechatSpeechBubblesCheckBox" Text="{Loc 'ui-options-runechat-speech'}" />
@@ -28,7 +34,6 @@
                           ToolTip="{Loc 'cmu-ui-options-vote-ui-large-tooltip'}" />
 
                 <Label Text="{Loc 'ui-options-cmu-chat'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
-                <CheckBox Name="ChatGhostFollowButton" Text="{Loc 'cmu-ui-options-chat-follow-button'}" />
                 <CheckBox Name="ExamineLogInChatCheckBox" Text="{Loc 'cmu-ui-options-examine-log-in-chat'}" />
                 <CheckBox Name="ExamineFullTextInChatCheckBox" Text="{Loc 'cmu-ui-options-examine-full-text-in-chat'}" />
 

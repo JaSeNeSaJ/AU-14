@@ -111,6 +111,40 @@ public sealed partial class CCVars
     public static readonly CVarDef<bool> CMUChatReadableFont =
         CVarDef.Create("cmu.chat_readable_font", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 
+    public const string CMUChatBigFontOff = "off";
+    public const string CMUChatBigFontOne = "one";
+    public const string CMUChatBigFontTwo = "two";
+
+    /// <summary>
+    ///     How many points chat is drawn above its normal size - one of
+    ///     <see cref="CMUChatBigFontOff"/>, <see cref="CMUChatBigFontOne"/> or
+    ///     <see cref="CMUChatBigFontTwo"/>. Chat only; nothing else in the UI moves.
+    /// </summary>
+    /// <remarks>
+    ///     Two steps because the useful amount differs by monitor. Composes with
+    ///     <see cref="CMUChatReadableFont"/>: the step applies to whichever face chat is using.
+    /// </remarks>
+    public static readonly CVarDef<string> CMUChatBigFont =
+        CVarDef.Create("cmu.chat_big_font", CMUChatBigFontOff, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    public const string CMUChatRowTintOff = "off";
+    public const string CMUChatRowTintMuted = "muted";
+    public const string CMUChatRowTintFull = "full";
+
+    /// <summary>
+    ///     How strongly a chat row is tinted by its channel under the CRT theme - one of
+    ///     <see cref="CMUChatRowTintFull"/>, <see cref="CMUChatRowTintMuted"/> or
+    ///     <see cref="CMUChatRowTintOff"/>. Off is what the theme shipped with; every row sat on the
+    ///     ground and only the prefix said which channel it was.
+    /// </summary>
+    /// <remarks>
+    ///     Muted rather than full by default: the two differ only in saturation, and the loud version
+    ///     of the admin band is the one thing about the upstream fills that was worth objecting to.
+    ///     See docs/cmu/13-chat.md for the tint recipe.
+    /// </remarks>
+    public static readonly CVarDef<string> CMUChatRowTint =
+        CVarDef.Create("cmu.chat_row_tint", CMUChatRowTintMuted, CVar.CLIENTONLY | CVar.ARCHIVE);
+
     /// <summary>
     ///     Overall strength of the CRT effect - scanlines, grain and the roll bar together, 0 to 1.
     ///     The individual settings below shape each one; this scales the lot.
