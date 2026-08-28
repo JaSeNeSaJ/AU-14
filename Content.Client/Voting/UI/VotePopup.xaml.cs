@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Content.Client._CMU14.Interface;
 using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
@@ -168,15 +168,23 @@ namespace Content.Client.Voting.UI
             VotePanel.PanelOverride = CreateVotePanelStyleBox();
         }
 
+        /// <summary>
+        ///     One ground, not a bordered box - the same chassis as <c>CrtScreenPanel</c>, built here
+        ///     by hand because this panel needs its own <see cref="CmuPanelMetrics.PanelPadding"/>
+        ///     inset rather than the shared class's zero margin.
+        /// </summary>
         private static CrtStyleBox CreateVotePanelStyleBox()
         {
             return new CrtStyleBox
             {
-                BackgroundColor = StyleNano.CrtPanelBackground,
-                BorderColor = StyleNano.CrtGreenDim,
-                CornerColor = StyleNano.CrtGreen.WithAlpha(0.28f),
-                BorderThickness = new Thickness(1),
-                CornerLength = 10,
+                BackgroundColor = CrtTerminalPalette.Surface0,
+                BorderColor = CrtTerminalPalette.Line,
+                CornerColor = CrtTerminalPalette.Line,
+                // Off-theme has no ladder to separate this panel from what's behind it, so it keeps a
+                // border; under CRT the fill against Void does that job and a border is the
+                // box-in-box this pass has been removing everywhere else.
+                BorderThickness = StyleNano.CrtUiEnabled ? new Thickness(0) : new Thickness(1),
+                CornerLength = 11,
                 ContentMarginLeftOverride = CmuPanelMetrics.PanelPadding.Left,
                 ContentMarginRightOverride = CmuPanelMetrics.PanelPadding.Right,
                 ContentMarginTopOverride = CmuPanelMetrics.PanelPadding.Top,
@@ -186,7 +194,11 @@ namespace Content.Client.Voting.UI
 
         public void UpdateData()
         {
-            VoteTitle.SetMessage(FormattedMessage.FromUnformatted(_vote.Title));
+            // TextBright rather than the RichTextLabel default: this is the question the popup
+            // exists to ask, and the caller line above it is deliberately dim so the two don't
+            // compete for the same first glance.
+            VoteTitle.SetMessage(FormattedMessage.FromUnformatted(_vote.Title),
+                defaultColor: StyleNano.CrtUiEnabled ? CrtTerminalPalette.TextBright : null);
             VoteCaller.Text = Loc.GetString("ui-vote-created", ("initiator", _vote.Initiator));
             MinimizedTitle.Text = _vote.Title;
             var buttonTexts = new string[_voteButtons.Length];
@@ -220,22 +232,39 @@ namespace Content.Client.Voting.UI
 
                 if (StyleNano.CrtUiEnabled)
                 {
-                    _voteButtons[i].Text = entry.Text;
+                    var isOurs = _vote.OurVote == i;
+
+                    // ">" rather than a checkmark: the OSD face is an unknown quantity outside ASCII,
+                    // and a missing-glyph box is a worse failure than a plain marker. Un-selected rows
+                    // get two spaces so every option's name still starts on the same column.
+                    _voteButtons[i].Text = (isOurs ? "> " : "  ") + entry.Text;
+
+                    // Four things change together for the own-vote row - marker, brighter track,
+                    // stepped-up fill, wider edge - so no single pixel has to be noticed.
                     _voteButtons[i].StyleBoxOverride = new CmuVoteBarStyleBox
                     {
-                        TrackColor = CrtTerminalPalette.Surface1,
-                        FillColor = CrtTerminalPalette.Surface3,
+                        TrackColor = isOurs ? CrtTerminalPalette.Surface2 : CrtTerminalPalette.Surface1,
+                        // Not Accent: at full brightness the fill washed out the text on top of it as
+                        // the share grew (~1.2:1 and 1:1). Surface4 stays a rung above the non-ours
+                        // fill without competing; the edge stripe still carries the accent.
+                        FillColor = isOurs ? CrtTerminalPalette.Surface4 : CrtTerminalPalette.Surface3,
                         AccentColor = CrtTerminalPalette.Accent,
                         Fraction = totalVotes > 0 ? entry.Votes / (float) totalVotes : 0f,
-                        IsOurVote = _vote.OurVote == i,
+                        IsOurVote = isOurs,
+                        AccentWidth = isOurs ? 4f : 2f,
                     };
+                    _voteButtons[i].Label.FontColorOverride = isOurs
+                        ? CrtTerminalPalette.TextBright
+                        : CrtTerminalPalette.Text;
 
                     if (_voteCounts[i] is { } count)
                     {
                         count.Text = _vote.DisplayVotes ? entry.Votes.ToString() : string.Empty;
-                        count.FontColorOverride = entry.Votes > 0
-                            ? CrtTerminalPalette.TextBright
-                            : CrtTerminalPalette.TextDim;
+                        count.FontColorOverride = isOurs
+                            ? CrtTerminalPalette.Accent
+                            : entry.Votes > 0
+                                ? CrtTerminalPalette.TextBright
+                                : CrtTerminalPalette.TextDim;
                     }
                 }
                 else
@@ -375,12 +404,21 @@ namespace Content.Client.Voting.UI
             // Round up a second.
             timeLeft = TimeSpan.FromSeconds(Math.Ceiling(timeLeft.TotalSeconds));
 
-            TimeLeftBar.Value = Math.Min(1, (float) ((curTime.TotalSeconds - _vote.StartTime.TotalSeconds)
-                / (_vote.EndTime.TotalSeconds - _vote.StartTime.TotalSeconds)));
-
-            TimeLeftText.Text = $"{timeLeft:m\\:ss}";
+            var text = $"{timeLeft:m\\:ss}";
+            TimeLeftText.Text = text;
             if (MinimizedContent.Visible)
-                MinimizedTimeLeft.Text = $"{timeLeft:m\\:ss}";
+                MinimizedTimeLeft.Text = text;
+
+            // Same colour the round clock escalates through as it runs down - green, amber, red -
+            // just on the text rather than a swapped style class, since these two already carry
+            // CrtHeading for their size and a second class competing for the same font-colour
+            // property is a tie with no defined winner.
+            if (StyleNano.CrtUiEnabled)
+            {
+                var color = CmuCountdownUrgency.GetColor(timeLeft.TotalSeconds);
+                TimeLeftText.FontColorOverride = color;
+                MinimizedTimeLeft.FontColorOverride = color;
+            }
         }
 
         private void SetMinimized(bool minimized)
