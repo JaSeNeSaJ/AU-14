@@ -1,4 +1,6 @@
-﻿using Content.Client.Stylesheets;
+using System;
+using System.Numerics;
+using Content.Client.Stylesheets;
 using Robust.Shared.Maths;
 
 namespace Content.Client._CMU14.Interface;
@@ -107,4 +109,73 @@ public static class CrtTerminalPalette
     public static Color Caution => Crt ? Color.FromHex("#FFB454") : StyleNano.ConcerningOrangeFore;
 
     public static Color Alert => Crt ? Color.FromHex("#FF4E5E") : StyleNano.DangerousRedFore;
+
+    /// <summary>
+    ///     Saturation of a chat row tint at full strength: <see cref="Surface2"/>'s own, so a green
+    ///     channel lands exactly on that rung and every other hue is that same rung rotated.
+    /// </summary>
+    public const float ChatTintSaturationFull = 0.553f;
+
+    /// <summary>Saturation of a muted chat row tint. Same rung, same hues, less of them.</summary>
+    public const float ChatTintSaturationMuted = 0.30f;
+
+    /// <summary>
+    ///     A chat row fill carrying <paramref name="hue"/> at the luminance of <see cref="Surface2"/>,
+    ///     the rung announcements already sit on. Pinning luminance rather than HSV value is the
+    ///     whole point: at equal value a blue row sinks into the ground while a green one floats.
+    /// </summary>
+    public static Color ChatRowTint(Color hue, float saturation)
+    {
+        // HSV -> RGB is linear in value, so luminance is too. Build the hue at value 1 and scale
+        // once rather than searching for the value that lands on the rung.
+        var h = Color.ToHsv(hue).X;
+        var full = Color.FromHsv(new Vector4(h, saturation, 1f, 1f));
+        var value = Luminance(Surface2) / Luminance(full);
+        return Color.FromHsv(new Vector4(h, saturation, Math.Clamp(value, 0f, 1f), 1f));
+    }
+
+    /// <summary>
+    ///     Luminance every channel tone is pinned to. Below <see cref="Text"/>'s own (~0.82) because
+    ///     blue and violet cannot reach that - a strict pin would clamp them at full value and hand
+    ///     back the neon primaries this palette exists to avoid. Every hue is reachable here.
+    /// </summary>
+    public const float ChannelToneLuminance = 0.66f;
+
+    /// <summary>
+    ///     Saturation of a channel tone. Enough to tell nine channels apart at a glance, low enough
+    ///     that they still read as tinted phosphor rather than as arbitrary UI colours.
+    /// </summary>
+    public const float ChannelToneSaturation = 0.42f;
+
+    /// <summary>
+    ///     <paramref name="hue"/> rebuilt at the channel band's fixed luminance and saturation.
+    /// </summary>
+    /// <remarks>
+    ///     The same trick as <see cref="ChatRowTint"/>, aimed at text rather than fills: take the hue
+    ///     only, and rebuild it at a known luminance. Picking channel colours by eye is what produced
+    ///     the shipped set - <c>LightSkyBlue</c>, <c>HotPink</c>, <c>MediumPurple</c> - where the pink
+    ///     burns and the purple is nearly unreadable on a dark ground, because equal HSV *value* is
+    ///     nothing like equal brightness across hues.
+    /// </remarks>
+    public static Color ChannelTone(Color hue)
+    {
+        if (!Crt)
+            return hue;
+
+        var h = Color.ToHsv(hue).X;
+        var full = Color.FromHsv(new Vector4(h, ChannelToneSaturation, 1f, 1f));
+        var value = ChannelToneLuminance / Luminance(full);
+        return Color.FromHsv(new Vector4(h, ChannelToneSaturation, Math.Clamp(value, 0f, 1f), 1f));
+    }
+
+    /// <summary>
+    ///     Rec. 709 weights applied to the sRGB values as stored, not to linear light. Deliberate:
+    ///     every other colour in this file is an sRGB hex compared against its neighbours the same
+    ///     way, and converting here would put the tints on a different scale to the ladder they are
+    ///     meant to sit on.
+    /// </summary>
+    private static float Luminance(Color color)
+    {
+        return 0.2126f * color.R + 0.7152f * color.G + 0.0722f * color.B;
+    }
 }

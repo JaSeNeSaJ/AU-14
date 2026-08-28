@@ -60,11 +60,52 @@ public sealed class CrtScreenControl : Control
     public float? Vignette { get; set; }
 
     /// <summary>
+    ///     Seconds between roll bars; null falls through to the cvar. Overridable for the same reason
+    ///     as the two above: the shipped 19s is right for a surface being used and far too slow for
+    ///     one being reviewed side by side with the other artifacts.
+    /// </summary>
+    public float? RollPeriod { get; set; }
+
+    /// <summary>
     ///     Whether the roll bar runs. Off for anything being read continuously: a band that shears
     ///     the text sideways is characterful on a prop and obstructive on a settings page.
     /// </summary>
     public bool Roll { get; set; } = true;
 
+    /// <summary>
+    ///     Whether the animated grain runs. Off for anything being read continuously: per-pixel noise
+    ///     redrawn every frame under a paragraph is constant motion in the worst place for it.
+    ///     Scanlines are static and stay on either way - they are the part that reads as a tube.
+    /// </summary>
+    public bool Grain { get; set; } = true;
+
+
+    /// <summary>
+    ///     Which scheduled artifact fires: 0 cycles through them by a hash of the cycle index,
+    ///     1 tear, 2 chroma split, 3 dropout. Forcing one is for the control kit, where each has to
+    ///     be looked at in isolation rather than waited for.
+    /// </summary>
+    public enum ArtifactKind
+    {
+        Cycle = 0,
+        Tear = 1,
+        Chroma = 2,
+        Dropout = 3,
+    }
+
+    /// <summary>
+    ///     Strength of the scheduled artifacts, 0 for none. Left at 0 the surface behaves exactly as
+    ///     it did before artifacts existed - the roll bar and grain are unaffected by this.
+    /// </summary>
+    public float ArtifactAmount { get; set; }
+
+    /// <summary>Seconds between artifact events.</summary>
+    public float ArtifactPeriod { get; set; } = 11f;
+
+    /// <summary>How long one event lasts, in seconds.</summary>
+    public float ArtifactSweep { get; set; } = 0.5f;
+
+    public ArtifactKind Artifact { get; set; } = ArtifactKind.Cycle;
 
     /// <summary>False means the shader prototype did not resolve and nothing will ever draw.</summary>
     public bool ShaderLoaded => _shader != null;
@@ -152,14 +193,20 @@ public sealed class CrtScreenControl : Control
         // rectangle.
         _shader.SetParameter("intensity", intensity);
         _shader.SetParameter("pitch", _cfg.GetCVar(CCVars.CMUCrtEffectPitch));
-        _shader.SetParameter("staticAmount", _cfg.GetCVar(CCVars.CMUCrtEffectStatic));
-        _shader.SetParameter("rollPeriod", _cfg.GetCVar(CCVars.CMUCrtEffectRollPeriod));
+        _shader.SetParameter("staticAmount",
+            Grain ? _cfg.GetCVar(CCVars.CMUCrtEffectStatic) : 0f);
+        _shader.SetParameter("rollPeriod",
+            RollPeriod ?? _cfg.GetCVar(CCVars.CMUCrtEffectRollPeriod));
         _shader.SetParameter("rollSweep", _cfg.GetCVar(CCVars.CMUCrtEffectRollSweep));
         _shader.SetParameter("rollHeight", _cfg.GetCVar(CCVars.CMUCrtEffectRollHeight));
         _shader.SetParameter("rollDisplace",
             Roll ? _cfg.GetCVar(CCVars.CMUCrtEffectRollDisplace) : 0f);
         _shader.SetParameter("rollLift",
             Roll ? _cfg.GetCVar(CCVars.CMUCrtEffectRollLift) : 0f);
+        _shader.SetParameter("artifactAmount", ArtifactAmount);
+        _shader.SetParameter("artifactPeriod", ArtifactPeriod);
+        _shader.SetParameter("artifactSweep", ArtifactSweep);
+        _shader.SetParameter("artifactMode", (float) Artifact);
         _shader.SetParameter("curvature",
             Curvature ?? _cfg.GetCVar(CCVars.CMUCrtEffectCurvature));
         _shader.SetParameter("vignette",
