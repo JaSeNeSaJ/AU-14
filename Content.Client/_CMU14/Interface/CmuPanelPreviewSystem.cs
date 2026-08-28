@@ -2,13 +2,19 @@ using System;
 using System.Numerics;
 using Content.Client._CMU14.Lobby;
 using Content.Client._RMC14.Mentor;
+using Content.Client.Administration.UI.Bwoink;
+using Content.Client.Lobby.UI;
 using Content.Client.Stylesheets;
+using Content.Client.UserInterface.Systems.Bwoink;
 using Content.Client.Voting;
 using Content.Client.Voting.UI;
+using Content.Shared.Administration;
 using Content.Shared.CCVar;
+using Robust.Client.UserInterface;
 using Robust.Client.UserInterface.Controls;
 using Robust.Client.UserInterface.CustomControls;
 using Robust.Shared.Configuration;
+using Robust.Shared.IoC;
 using Robust.Shared.Timing;
 
 namespace Content.Client._CMU14.Interface;
@@ -69,14 +75,25 @@ public sealed partial class CmuPanelPreviewSystem : EntitySystem
                     Open(new JoinRoundWindow(), opened++);
                     break;
                 case "staffhelp":
-                case "ahelp":
                     Open(new StaffHelpWindow(), opened++);
+                    break;
+                // The chat panel itself sits behind the staffhelp card's pick, one more click no
+                // preview command can make - these open it directly, the same reasoning as every
+                // other case here.
+                case "ahelp":
+                    Open(CreateBwoinkPreview(), opened++);
+                    break;
+                case "mentorhelp":
+                    Open(CreateMentorHelpPreview(), opened++);
                     break;
                 case "vote":
                     Open(CreateVotePreview(), opened++);
                     break;
                 case "ready":
                     Open(CreateReadyPreview(), opened++);
+                    break;
+                case "observe":
+                    Open(new ObserveWarningWindow(), opened++);
                     break;
             }
         }
@@ -91,6 +108,57 @@ public sealed partial class CmuPanelPreviewSystem : EntitySystem
     {
         window.OpenCenteredAt(new Vector2(0.42f + index * 0.06f, 0.34f + index * 0.13f));
         window.MoveToFront();
+    }
+
+    /// <summary>
+    ///     AHelp's chat panel, standalone - bypasses <c>AHelpUIController</c> entirely rather than
+    ///     faking a live conversation through it. <c>BwoinkPanel</c> only ever needed the one
+    ///     delegate to send a message, so a no-op is enough to look at. The one exception is the
+    ///     intro notice: it's pushed through <see cref="AHelpUIController.BuildIntroText"/> so the
+    ///     header colour and bullet layout can actually be looked at, since that text only otherwise
+    ///     appears the moment a real AHelp window opens.
+    /// </summary>
+    /// <remarks>
+    ///     The theme call mirrors <c>AHelpUIController.EnsureInit</c> exactly
+    ///     (<c>includeChat: true</c>, plain typography) - the CRT pass is applied by the controller
+    ///     that opens a window, never by the window itself, so a preview that skips this step opens
+    ///     looking like base NanoUI regardless of the CRT cvar.
+    /// </remarks>
+    private static DefaultWindow CreateBwoinkPreview()
+    {
+        var panel = new BwoinkPanel(_ => { });
+        panel.ReceiveLine(new SharedBwoinkSystem.BwoinkTextMessage(
+            default, SharedBwoinkSystem.SystemUserId, UserAHelpUIHandler.BuildIntroText()));
+        var root = new PanelContainer
+        {
+            HorizontalExpand = true,
+            VerticalExpand = true,
+            StyleClasses = { StyleNano.StyleClassCrtScreenPanel },
+        };
+        root.AddChild(panel);
+
+        var window = new DefaultWindow
+        {
+            Title = "AHelp (preview)",
+            MinSize = new Vector2(600, 360),
+        };
+        window.Contents.AddChild(root);
+        window.Stylesheet = IoCManager.Resolve<IStylesheetManager>().SheetNano;
+        CrtLobbyTheme.ApplyWindow(window, includeChat: true, useCrtTypography: false);
+        return window;
+    }
+
+    /// <summary>
+    ///     Same reasoning as <see cref="CreateBwoinkPreview"/>: the real window comes from
+    ///     <c>StaffHelpUIController.ApplyCrtChrome</c>, which this replicates so the preview matches
+    ///     what opening it through the actual button does.
+    /// </summary>
+    private static MentorHelpWindow CreateMentorHelpPreview()
+    {
+        var window = new MentorHelpWindow();
+        window.Stylesheet = IoCManager.Resolve<IStylesheetManager>().SheetNano;
+        CrtLobbyTheme.ApplyWindow(window, useCrtTypography: false);
+        return window;
     }
 
     /// <summary>
@@ -157,7 +225,11 @@ public sealed partial class CmuPanelPreviewSystem : EntitySystem
             DisplayVotes = true,
             OurVote = 1,
             StartTime = TimeSpan.Zero,
-            EndTime = TimeSpan.FromMinutes(30),
+            // Short enough to actually watch: opens green, ambers around a minute left (open the
+            // preview and wait), reds in the last 20s (CmuCountdownUrgency) - a real vote's whole
+            // reason for existing. 30 minutes here would preview only the state nobody has to wait to
+            // see.
+            EndTime = TimeSpan.FromSeconds(75),
             Entries =
             [
                 new VoteManager.VoteEntry("Yes") { Votes = 7 },
