@@ -53,7 +53,7 @@
           - RMCMagazineRifleM54CHEAP
           - RMCMagazineRifleM54CWP
   - type: GunDamageModifier
-    multiplier: 1.1
+    multiplier: 2.1
   - type: AttachableHolder
     slots:
       rmc-aslot-barrel:
