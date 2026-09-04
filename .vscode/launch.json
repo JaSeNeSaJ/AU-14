@@ -32,6 +32,18 @@
             "stopAtEntry": false
         },
         {
+            "name": "Server (Stable Garrison Redux)",
+            "type": "coreclr",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/Content.Server/Content.Server.dll",
+            "args": [
+                "--cvar",
+                "game.map=CMULV376BarkersLament"
+            ],
+            "console": "integratedTerminal",
+            "stopAtEntry": false
+        },
+        {
             "name": "YAML Linter",
             "type": "coreclr",
             "request": "launch",
@@ -47,6 +59,14 @@
             "name": "Server/Client",
             "configurations": [
                 "Server",
+                "Client"
+            ],
+            "preLaunchTask": "build"
+        },
+        {
+            "name": "Server/Client (Stable Garrison Redux)",
+            "configurations": [
+                "Server (Stable Garrison Redux)",
                 "Client"
             ],
             "preLaunchTask": "build"
