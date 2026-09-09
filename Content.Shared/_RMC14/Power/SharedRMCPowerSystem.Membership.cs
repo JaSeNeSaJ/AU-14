@@ -1,6 +1,6 @@
 namespace Content.Shared._RMC14.Power;
 
-public abstract partial class SharedRMCPowerSystem
+public abstract partial class SharedRMCPowerSystem // CMU14 Class
 {
     private void RemoveCMUReceiverFromArea(Entity<RMCPowerReceiverComponent> ent)
     {
