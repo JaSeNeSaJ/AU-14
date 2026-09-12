@@ -20,13 +20,24 @@
     scatterDegrees: 30
     chargingSpeedMultiplier: 0.5
     projectileId: RMCProjectileDespoilerAcidShot
-    lingeringAcidChance: 0.25
+    lingeringAcidChance: 1
     projectileSpeed: 12
     minRangeTiles: 1
     maxRangeTiles: 6
     minProjectileScale: 0.9
     maxProjectileScale: 1.33
     postFireCooldown: 12
+   - type: ModifyTargetOnHit
+    add:
+    - type: UserAcided
+      armorPiercing: 40
+      damage:
+        types:
+          Heat: 1
+      duration: 20
+    whistlist:
+      components:
+      - Marine
     chargeSound:
       path: /Audio/_RMC14/Xeno/acid_sizzle1.ogg
     fireSound:
