@@ -30,7 +30,7 @@ public sealed partial class XenoRageComponent : Component
     public TimeSpan RageDecayTime = TimeSpan.FromSeconds(5); // CMU14 modified
 
     [DataField, AutoNetworkedField]
-    public TimeSpan RageLockDuration = TimeSpan.FromSeconds(12); // CMU14 modified
+    public TimeSpan RageLockDuration = TimeSpan.FromSeconds(10);
 
     [DataField, AutoNetworkedField]
     public TimeSpan RageCooldownDuration = TimeSpan.FromSeconds(10);
