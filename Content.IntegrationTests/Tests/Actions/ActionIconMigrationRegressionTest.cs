@@ -76,8 +76,11 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
         });
     }
 
-    [Test]
-    public async Task UnmappedStaticIconUsesFirstSpriteLayer()
+    [TestCase("ActionSleep", "/Textures/Clothing/Head/Hats/pyjamasyndicatered.rsi", "icon")]
+    [TestCase("CMUActionCargoVehicleReturn", "/Textures/_RMC14/Objects/Devices/command_tablet.rsi", "cotablet")]
+    [TestCase("CMUActionCargoVehicleToggleBay", "/Textures/CMU14/Structures/vehicles/cargo_carrier.rsi", "cargo_open")]
+    [TestCase("CMUActionCargoVehicleSelfDestruct", "/Textures/_RMC14/Objects/Weapons/Grenades/rcm20mm/he.rsi", "icon")]
+    public async Task StaticIconsUseVisibleFirstSpriteLayer(string prototype, string rsi, string state)
     {
         var map = await Pair.CreateTestMap();
         EntityUid serverAction = default;
@@ -87,7 +90,7 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
         {
             await Server.WaitPost(() =>
             {
-                serverAction = SEntMan.SpawnEntity("ActionSleep", map.GridCoords);
+                serverAction = SEntMan.SpawnEntity(prototype, map.GridCoords);
                 netAction = SEntMan.GetNetEntity(serverAction);
             });
             await Pair.RunUntilSynced();
@@ -104,7 +107,7 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
                     out var iconLayer,
                     false), Is.True);
                 Assert.That(iconLayer, Is.Zero);
-                Assert.That(sprite[iconLayer].Visible, Is.True);
+                AssertRsiLayer(sprites, action, ActionVisuals.Icon, rsi, state, visible: true);
             });
         }
         finally
@@ -160,7 +163,7 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
             var vehicle = ClientEntity("ActionVehicleToggleView");
 
             AssertRsiLayer(spriteSystem, ClientEntity("ActionMarineCallToAttention"), ActionVisuals.Icon,
-                "/Textures/Actions/GOVFOR/call_to_attention.rsi", "attention", visible: true);
+                "/Textures/CMU14/Actions/GOVFOR/call_to_attention.rsi", "attention", visible: true);
             AssertRsiLayer(spriteSystem, ClientEntity("RMCActionViewIntelObjectives"), ActionVisuals.Icon,
                 "/Textures/_RMC14/Objects/Misc/paper.rsi", "folder_white", visible: true);
             AssertTextureLayer(spriteSystem, ClientEntity("ActionWendigoVoice"), ActionVisuals.Icon,
@@ -172,6 +175,8 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
                 ActionVisuals.IconToggled,
                 out initialDynamicLayer,
                 false);
+            if (!hasReservedLayer)
+                initialDynamicLayer = -1;
             Assert.That(Client.System<AppearanceSystem>().TryGetData<SpriteSpecifier>(
                 dynamicAction,
                 ActionState.DynamicIconToggled,
@@ -265,13 +270,19 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
                 "/Textures/Interface/Actions/scream.png", visible: true, expectedLayer: dynamicLayer);
         });
 
-        await Server.WaitPost(() => Server.System<ServerActionsSystem>().SetIconOn(dynamic, entityIcon));
+        await Server.WaitPost(() =>
+        {
+            Server.System<ServerActionsSystem>().SetIconOn(dynamic, entityIcon);
+            Server.System<ServerActionsSystem>().SetIconOn(vehicleServer, textureIcon);
+        });
         await Pair.RunUntilSynced();
         await Client.WaitAssertion(() =>
         {
             var spriteSystem = Client.System<SpriteSystem>();
             var dynamicAction = ClientEntity("CMActionToggleAttachable");
             var layer = GetLayer(spriteSystem, dynamicAction, ActionVisuals.IconToggled, out var index);
+            AssertTextureLayer(spriteSystem, ClientEntity("ActionVehicleToggleView"), ActionVisuals.IconToggled,
+                "/Textures/Interface/Actions/scream.png", visible: false, expectedLayer: initialVehicleToggledLayer);
             Assert.Multiple(() =>
             {
                 Assert.That(index, Is.EqualTo(dynamicLayer));
@@ -314,6 +325,20 @@ public sealed class ActionIconMigrationRegressionTest : GameTest
                     "static toggled layers must retain their original map");
                 Assert.That(GetLayer(spriteSystem, vehicle, ActionVisuals.IconToggled).Color, Is.EqualTo(Color.Magenta));
             });
+            AssertTextureLayer(spriteSystem, vehicle, ActionVisuals.IconToggled,
+                "/Textures/Interface/Actions/eyeclose.png", visible: true, color: Color.Magenta);
+        });
+
+        await Server.WaitPost(() => Server.System<ServerActionsSystem>().SetToggled(dynamic, true));
+        await Pair.RunUntilSynced();
+        await Client.WaitAssertion(() =>
+        {
+            var sprites = Client.System<SpriteSystem>();
+            var action = ClientEntity("CMActionToggleAttachable");
+            Assert.That(GetLayer(sprites, action, ActionVisuals.Icon).Visible, Is.True,
+                "toggling after clearing a dynamic icon must fall back to the normal icon");
+            Assert.That(GetLayer(sprites, action, ActionVisuals.IconToggled).Visible, Is.False);
+            Assert.That(Client.System<ClientActionsSystem>().HasToggleIcon(action), Is.False);
         });
 
         await Client.WaitAssertion(() =>

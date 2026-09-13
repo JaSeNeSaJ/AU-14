@@ -176,9 +176,17 @@ namespace Content.Server.Entry
         public override void Update(ModUpdateLevel level, FrameEventArgs frameEventArgs)
         {
             base.Update(level, frameEventArgs);
+            _performanceDiagnostics.ObservePhase(level);
 
             switch (level)
             {
+                // CMU14 Begin: capture the indexed frame before catch-up simulation overwrites it.
+                case ModUpdateLevel.InputPostEngine:
+                    // The previous frame is now indexed, and catch-up ticks have not overwritten it yet.
+                    _performanceDiagnostics.Update();
+                    break;
+                // CMU14 End
+
                 case ModUpdateLevel.PostEngine:
                 {
                     _euiManager.SendUpdates();
@@ -191,7 +199,7 @@ namespace Content.Server.Entry
                     _playTimeTracking.Update();
                     _watchlistWebhookManager.Update();
                     _connection.Update();
-                    _performanceDiagnostics.Update();
+                    _performanceDiagnostics.EndFrameCallbacks(); // CMU14: close the measured content frame interval.
                     break;
             }
         }

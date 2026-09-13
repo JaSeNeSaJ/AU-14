@@ -23,6 +23,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
     [Dependency] private EntityQuery<HandsComponent> _handsQuery = default!;
 
     private DoAfter[] _doAfters = Array.Empty<DoAfter>();
+    private readonly List<(EntityUid Uid, ActiveDoAfterComponent Active, DoAfterComponent Component)> _activeDoAfters = new();
 
     public override void Update(float frameTime)
     {
@@ -30,9 +31,18 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
 
         var time = GameTiming.CurTime;
 
+        // Callbacks can start do-afters on other entities, invalidating the live query.
+        _activeDoAfters.Clear();
         var enumerator = EntityQueryEnumerator<ActiveDoAfterComponent, DoAfterComponent>();
         while (enumerator.MoveNext(out var uid, out var active, out var comp))
         {
+            _activeDoAfters.Add((uid, active, comp));
+        }
+
+        foreach (var (uid, active, comp) in _activeDoAfters)
+        {
+            if (active.Deleted || comp.Deleted || TerminatingOrDeleted(uid) || Paused(uid))
+                continue;
 
             try
             {
@@ -83,6 +93,7 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
             }
 
         }
+        _activeDoAfters.Clear();
     }
 
     protected void Update(
@@ -236,16 +247,21 @@ public abstract partial class SharedDoAfterSystem : EntitySystem
         if (args.BreakOnMove && !(!args.BreakOnWeightlessMove && _gravity.IsWeightless(args.User)))
         {
             var movementEntity = doAfter.MovementEntity;
-            var movementXform = Transform(movementEntity);
+            if (!TryComp(movementEntity, out TransformComponent? movementXform) || TerminatingOrDeleted(movementEntity))
+                return true;
 
             // Whether the effective movement entity has moved too much from its original position.
             if (!_transform.InRange(movementXform.Coordinates, doAfter.UserPosition, args.MovementThreshold))
                 return true;
 
             // Whether the distance between the effective movement entity and the target(if any) has changed too much.
-            if (args.Target is { } target && Transform(target).Coordinates.TryDistance(EntityManager, movementXform.Coordinates, out var distance))
+            if (args.Target is { } target)
             {
-                if (Math.Abs(distance - doAfter.TargetDistance) > args.MovementThreshold)
+                if (!TryComp(target, out TransformComponent? targetXform))
+                    return true;
+
+                if (targetXform.Coordinates.TryDistance(EntityManager, movementXform.Coordinates, out var distance)
+                    && Math.Abs(distance - doAfter.TargetDistance) > args.MovementThreshold)
                     return true;
             }
         }

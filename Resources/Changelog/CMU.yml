@@ -10574,5 +10574,166 @@
   id: 676
   time: '2026-08-31T20:43:49.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1816
+- author: IMGXKILLER
+  changes:
+  - message: Replaced 6 Capital crimes for one Geneva Crime
+    type: Add
+  id: 677
+  time: '2026-09-03T06:28:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1891
+- author: johnnny34y
+  changes:
+  - message: The new dynamic gunships now spawn correctly
+    type: Fix
+  id: 678
+  time: '2026-09-05T19:02:45.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1897
+- author: DoguhanOzgurAkca
+  changes:
+  - message: rework the lobby UI partially.
+    type: Tweak
+  id: 679
+  time: '2026-09-06T13:19:56.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1854
+- author: johnnny34y
+  changes:
+  - message: HAZOPS XMP5A6 damage modified buffed to 1.35 and spread reduced by one.
+    type: Tweak
+  id: 680
+  time: '2026-09-06T13:20:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1888
+- author: CatoChristopherMrow
+  changes:
+  - message: Added sidearms for Colony Admin
+    type: Add
+  - message: Removed the mataba from stable garrison redux
+    type: Remove
+  - message: Colony Admins can now spend points to customize their skills, to better
+      suit their previous carrier
+    type: Add
+  - message: Robbed the XO of their mataba
+    type: Remove
+  id: 681
+  time: '2026-09-06T13:20:56.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1892
+- author: Berkin101
+  changes:
+  - message: Barricade collisions are now fixed!
+    type: Fix
+  id: 682
+  time: '2026-09-06T13:24:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1878
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed the pilot hud and the dropship movement
+    type: Fix
+  id: 683
+  time: '2026-09-07T04:41:05.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1903
+- author: maertayn
+  changes:
+  - message: 'Updated contrib docs, AI-agent conventions: read CONTRIBUTING.md & bootstrap
+      AGENTS-CMU.md'
+    type: Code
+  - message: Scope ghost warp PVS override to selected tab mobs to regain performance
+    type: Add
+  id: 684
+  time: '2026-09-07T13:11:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1907
+- author: Berkin101
+  changes:
+  - message: Added a search bar to options->controls.
+    type: Add
+  id: 685
+  time: '2026-09-09T14:03:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1911
+- author: Berkin101
+  changes:
+  - message: Added a search bar to options->controls.
+    type: Add
+  id: 686
+  time: '2026-09-09T14:03:58.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1911
+- author: TheHellFireo
+  changes:
+  - message: Fixed deleted sentries causing repeated network-state failures and delayed
+      updates.
+    type: Fix
+  - message: Fixed several equipment, interaction, stamp, and character-save errors.
+    type: Fix
+  - message: Added bounded error summaries and phase timings to server stall reports.
+    type: Admin
+  id: 687
+  time: '2026-09-09T20:38:28.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1915
+- author: deepdarkdepths
+  changes:
+  - message: Queen has breathing sounds now.
+    type: Add
+  id: 688
+  time: '2026-09-09T21:04:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1914
+- author: deepdarkdepths
+  changes:
+  - message: Queen now has separate ability bar ordering for both immature and mature
+      states to avoid having to redo them every time you spawn in.
+    type: Fix
+  id: 689
+  time: '2026-09-10T04:53:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1917
+- author: deepdarkdepths
+  changes:
+  - message: Added xeno vision to large vehicles.
+    type: Tweak
+  id: 690
+  time: '2026-09-10T04:53:55.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1918
+- author: deepdarkdepths
+  changes:
+  - message: Xeno acid action remains toggled until deactivated or another ability
+      is used
+    type: Tweak
+  id: 691
+  time: '2026-09-10T04:54:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1919
+- author: TheHellFireo
+  changes:
+  - message: Fixed stale area-power references and power loads after equipment is
+      removed or moved.
+    type: Fix
+  - message: Fixed missing fighters in small CLF survivor groups.
+    type: Fix
+  - message: Improved gameplay stall and client synchronization diagnostics.
+    type: Admin
+  id: 692
+  time: '2026-09-10T13:35:04.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1921
+- author: OverusedMeme
+  changes:
+  - message: The M240 now has a wield delay of 1 second, the M240-T now has a wield
+      delay of 1.75 seconds
+    type: Tweak
+  - message: Fixed an issue where spam wielding the M240 and M240-T would double the
+      amount of time required until you can shoot.
+    type: Fix
+  id: 693
+  time: '2026-09-10T15:30:49.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1920
+- author: Vencallium
+  changes:
+  - message: Increased dropship fabricator point generation to 2 points per second.
+    type: Tweak
+  id: 694
+  time: '2026-09-11T17:19:43.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1925
+- author: TheHellFireo
+  changes:
+  - message: Reduced hitches when filling storage and preparing large supply deliveries.
+    type: Fix
+  - message: Improved capture and attribution of short gameplay stalls.
+    type: Admin
+  id: 695
+  time: '2026-09-12T00:24:09.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1933
 Name: CMU
 Order: -1

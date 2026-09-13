@@ -24,7 +24,9 @@ using Content.Shared.Chat;
 using Content.Shared.CombatMode;
 using Content.Shared.Coordinates;
 using Content.Shared.Dataset;
+using Content.Shared.Damage.Systems;
 using Content.Shared.DoAfter;
+using Content.Shared.Drunk;
 using Content.Shared.Ghost;
 using Content.Shared.Ghost.Components;
 using Content.Shared.Hands;
@@ -47,6 +49,7 @@ using Content.Shared.Radio;
 using Content.Shared.Radio.Components;
 using Content.Shared.SSDIndicator;
 using Content.Shared.StatusEffectNew;
+using Content.Shared.Stunnable;
 using Content.Shared.Throwing;
 using Content.Shared.Tools;
 using Content.Shared.Tools.Components;
@@ -116,6 +119,7 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
 
     public override void Initialize()
     {
+        InitializeCombatDrones();
         base.Initialize();
 
         _actorQuery = GetEntityQuery<ActorComponent>();
@@ -140,6 +144,7 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         SubscribeLocalEvent<CMUDroneControlTabletComponent, EntityTerminatingEvent>(OnTabletTerminating);
 
         SubscribeLocalEvent<CMUDroneAndroidComponent, ComponentInit>(OnDroneInit);
+        SubscribeLocalEvent<CMUDroneAndroidComponent, BeforeStatusEffectAddedEvent>(OnDroneBeforeStatusEffectAdded);
         SubscribeLocalEvent<CMUDroneAndroidComponent, InteractUsingEvent>(OnDroneInteractUsing);
         SubscribeLocalEvent<CMUDroneAndroidComponent, CMUDroneModuleInstallDoAfterEvent>(OnDroneModuleInstallComplete);
         SubscribeLocalEvent<CMUDroneAndroidComponent, CMUDroneModuleUninstallDoAfterEvent>(OnDroneModuleUninstallComplete);
@@ -163,6 +168,9 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         SubscribeLocalEvent<CMURemotePilotingComponent, HeadsetRadioReceiveRelayEvent>(OnPilotingHeadsetReceive);
         SubscribeLocalEvent<CMURemotePilotingComponent, UpdateCanMoveEvent>(OnPilotingUpdateCanMove);
         SubscribeLocalEvent<CMURemotePilotingComponent, MoveEvent>(OnPilotingMove);
+        SubscribeLocalEvent<CMURemotePilotingComponent, DamageChangedEvent>(OnPilotingDamageChanged);
+        SubscribeLocalEvent<CMURemotePilotingComponent, StunnedEvent>(OnPilotingStunned);
+        SubscribeLocalEvent<CMURemotePilotingComponent, KnockedDownEvent>(OnPilotingKnockedDown);
         SubscribeLocalEvent<CMURemotePilotingComponent, MobStateChangedEvent>(OnPilotingMobStateChanged);
         SubscribeLocalEvent<CMURemotePilotingComponent, UseAttemptEvent>(OnPilotingAttempt);
         SubscribeLocalEvent<CMURemotePilotingComponent, PickupAttemptEvent>(OnPilotingAttempt);
@@ -179,6 +187,7 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        UpdateCombatDrones();
 
         FlushPendingOperatorEndControls();
         FlushPendingSessionEndControls();
@@ -446,6 +455,12 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         EnsureModuleContainer(ent);
     }
 
+    private void OnDroneBeforeStatusEffectAdded(Entity<CMUDroneAndroidComponent> ent, ref BeforeStatusEffectAddedEvent args)
+    {
+        if (args.Effect == SharedDrunkSystem.Drunk)
+            args.Cancelled = true;
+    }
+
     private void OnDroneInteractUsing(Entity<CMUDroneAndroidComponent> ent, ref InteractUsingEvent args)
     {
         if (args.Handled)
@@ -460,6 +475,9 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
 
         if (TryComp<CMUDroneModuleComponent>(args.Used, out var module))
         {
+            if (!ent.Comp.SupportsModules)
+                return;
+
             args.Handled = TryStartModuleInstall(ent, (args.Used, module), args.User);
             return;
         }
@@ -537,7 +555,10 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
     private void OnDroneMobStateChanged(Entity<CMUDroneAndroidComponent> ent, ref MobStateChangedEvent args)
     {
         if (args.NewMobState == MobState.Alive)
+        {
+            RefreshDroneDormantEffect(ent);
             return;
+        }
 
         SetDroneDormantEffect(ent, false);
         StopDroneFollowing(ent, null, false);
@@ -886,6 +907,22 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         EndControlForOperator(ent.Owner, Loc.GetString("cmu-drone-control-ended-operator-disabled"));
     }
 
+    private void OnPilotingDamageChanged(Entity<CMURemotePilotingComponent> ent, ref DamageChangedEvent args)
+    {
+        if (ent.Comp.BlocksInput && args.DamageIncreased)
+            QueueEndControlForOperator(ent, Loc.GetString("cmu-drone-control-ended-operator-hurt"));
+    }
+
+    private void OnPilotingStunned(Entity<CMURemotePilotingComponent> ent, ref StunnedEvent args)
+    {
+        QueueEndControlForOperator(ent, Loc.GetString("cmu-drone-control-ended-operator-disabled"));
+    }
+
+    private void OnPilotingKnockedDown(Entity<CMURemotePilotingComponent> ent, ref KnockedDownEvent args)
+    {
+        QueueEndControlForOperator(ent, Loc.GetString("cmu-drone-control-ended-operator-disabled"));
+    }
+
     private void OnPilotingAttempt(EntityUid uid, CMURemotePilotingComponent component, CancellableEntityEventArgs args)
     {
         if (component.BlocksInput)
@@ -1229,6 +1266,13 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         var drone = Spawn(frame.Comp.DronePrototype, xform.Coordinates);
         _transform.SetLocalRotation(drone, xform.LocalRotation);
 
+        RegisterAssembledDrone(drone, user, operatorComp);
+        QueueDel(key);
+        QueueDel(frame.Owner);
+    }
+
+    private void RegisterAssembledDrone(EntityUid drone, EntityUid user, CMUDroneOperatorComponent operatorComp)
+    {
         var droneComp = EnsureComp<CMUDroneAndroidComponent>(drone);
         droneComp.Operator = user;
         SuppressSsdIndicator(drone);
@@ -1243,9 +1287,6 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
             Loc.GetString("cmu-drone-assembly-finish", ("drone", drone)),
             drone,
             user);
-
-        QueueDel(key);
-        QueueDel(frame.Owner);
     }
 
     private Container EnsureFramePartsContainer(Entity<CMUDroneFrameComponent> frame)
@@ -1620,6 +1661,7 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
         pilot.MindId = resolvedMind;
         pilot.BlocksInput = true;
         pilot.BodyMoveGraceUntil = _timing.CurTime + BodyMoveGrace;
+        pilot.BodyStartCoordinates = Transform(user).Coordinates;
         RemoveOperatorSsdIndicator((user, pilot));
 
         var session = EnsureComp<CMUDroneControlSessionComponent>(linkedDrone);
@@ -2001,7 +2043,8 @@ public sealed partial class CMUDroneOperatorSystem : EntitySystem
             return false;
         }
 
-        if (!args.OldPosition.TryDistance(EntityManager, args.NewPosition, out var distance))
+        // Measure total displacement, so repeated small pushes cannot bypass the safeguard.
+        if (!ent.Comp.BodyStartCoordinates.TryDistance(EntityManager, args.NewPosition, out var distance))
             return false;
 
         return distance <= BodyMoveGraceDistance;

@@ -1,3 +1,4 @@
+using System; // CMU14: needed for Array.Empty
 using Content.Shared.Ghost.Systems;
 using NUnit.Framework;
 
@@ -141,6 +142,30 @@ public sealed class GhostWarpGroupingTest
         {
             Assert.That(grouping.Tab, Is.EqualTo(GhostWarpGrouping.TabLocations));
             Assert.That(grouping.Section, Is.EqualTo(GhostWarpGrouping.SectionWarpPoints));
+        });
+    }
+
+    [Test]
+    public void DefaultTabMatchesWindowTabOrder()
+    {
+        var warps = new[]
+        {
+            new GhostWarp(default, "Xeno", false, tab: GhostWarpGrouping.TabXenos),
+            new GhostWarp(default, "Marine", false, tab: GhostWarpGrouping.TabMilitary),
+            new GhostWarp(default, "Loc", true),
+        };
+
+        var tie = new[]
+        {
+            new GhostWarp(default, "Marine", false, tab: GhostWarpGrouping.TabMilitary),
+            new GhostWarp(default, "Gov", false, tab: GhostWarpGrouping.TabGovfor),
+        };
+
+        Assert.Multiple(() =>
+        {
+            Assert.That(GhostWarpGrouping.GetDefaultTab(warps), Is.EqualTo(GhostWarpGrouping.TabMilitary));
+            Assert.That(GhostWarpGrouping.GetDefaultTab(tie), Is.EqualTo(GhostWarpGrouping.TabGovfor));
+            Assert.That(GhostWarpGrouping.GetDefaultTab(Array.Empty<GhostWarp>()), Is.EqualTo(GhostWarpGrouping.TabOther));
         });
     }
 

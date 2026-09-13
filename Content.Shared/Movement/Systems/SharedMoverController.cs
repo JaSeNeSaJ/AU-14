@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Shared.ActionBlocker;
 using Content.Shared.CCVar;
 using Content.Shared.Friction;
+using Content.Shared.Ghost.Components; // CMU14
 using Content.Shared.Gravity;
 using Content.Shared.Inventory;
 using Content.Shared.Maps;
@@ -68,6 +69,7 @@ public abstract partial class SharedMoverController : VirtualController
     [Dependency] protected EntityQuery<PullableComponent> PullableQuery = default!;
     [Dependency] protected EntityQuery<TransformComponent> XformQuery = default!;
     [Dependency] protected EntityQuery<CMUTileMovementComponent> TileMovementQuery = default!;
+    [Dependency] protected EntityQuery<GhostComponent> GhostQuery = default!; // CMU14
 
     private static readonly ProtoId<TagPrototype> FootstepSoundTag = "FootstepSound";
 
@@ -260,7 +262,9 @@ public abstract partial class SharedMoverController : VirtualController
         ContentTileDefinition? tileDef = null;
 
         // Try doing tile movement instead of the usual analog movement, if this entity has it enabled.
-        if (TileMovementQuery.TryComp(uid, out var tileMovement))
+        if (TileMovementQuery.TryComp(uid, out var tileMovement) // CMU14: ghosts and contained mobs never slide
+            && !GhostQuery.HasComponent(uid)
+            && !_container.IsEntityInContainer(uid))
         {
             if (!weightless && !inAirHelpless)
             {
@@ -738,9 +742,34 @@ public abstract partial class SharedMoverController : VirtualController
         float frameTime
     )
     {
+        var movementSpeed = GetEntityMoveSpeed(physicsUid, inputMover.Sprinting);
+
+        // Invalid coordinates must not reach the slide timeout, snapping, or velocity calculation.
+        // Leave the transform in place so its owner can correct it without an arbitrary teleport.
+        if (!float.IsFinite(targetTransform.LocalPosition.X) ||
+            !float.IsFinite(targetTransform.LocalPosition.Y) ||
+            (tileMovement.SlideActive &&
+             !float.IsFinite((tileMovement.Destination - tileMovement.Origin.Position).LengthSquared())))
+        {
+            EndSlide(physicsUid, tileMovement);
+            tileMovement.FailureSlideActive = false;
+            tileMovement.LastTickLocalCoordinates = null;
+            Dirty(uid, tileMovement);
+            return true;
+        }
+
+        // A stopped mover cannot finish or start a slide. In particular, a zero-distance
+        // centering slide at zero speed produces NaN when calculating its duration.
+        if ((!float.IsFinite(movementSpeed) || movementSpeed <= 0f) &&
+            (tileMovement.SlideActive || tileMovement.WasWeightlessLastTick ||
+             StripWalk(inputMover.HeldMoveButtons) != MoveButtons.None))
+        {
+            EndSlide(physicsUid, tileMovement);
+            tileMovement.FailureSlideActive = false;
+        }
         // For smoothness' sake, if we just arrived on a grid after pixel moving in space then initiate a slide
         // towards the center of the tile we're on and continue. It feels much nicer this way.
-        if (tileMovement.WasWeightlessLastTick)
+        else if (tileMovement.WasWeightlessLastTick)
         {
             InitializeSlideToCenter(physicsUid, tileMovement);
             UpdateSlide(physicsUid, physicsUid, tileMovement, inputMover);
@@ -787,8 +816,6 @@ public abstract partial class SharedMoverController : VirtualController
             // If we're sliding...
             if (tileMovement.SlideActive)
             {
-                var movementSpeed = GetEntityMoveSpeed(uid, inputMover.Sprinting);
-
                 // Check whether we should end the slide.
                 if (CheckForSlideEnd(
                     StripWalk(inputMover.HeldMoveButtons),
@@ -872,9 +899,9 @@ public abstract partial class SharedMoverController : VirtualController
     )
     {
         // minPressedTime will be 1.05x the time it should take for you to go from 1 tile to another. Need to
-        // account for diagonals being sqrt(2) length as well. Max of 10 seconds just in case.
+        // account for diagonals being sqrt(2) length as well. Max of 20 seconds just in case.
         var distanceToDestination = (tileMovement.Destination - tileMovement.Origin.Position).Length();
-        var minPressedTime = Math.Min((1.05f / movementSpeed) * distanceToDestination, 20);
+        var minPressedTime = Math.Min(1.05 * distanceToDestination / movementSpeed, 20);
 
         // We need to stop the move once we are close enough. This isn't perfect, since it technically ends the move
         // 1 tick early in some cases. This is because there's a fundamental issue where because this is a physics-based
@@ -986,6 +1013,13 @@ public abstract partial class SharedMoverController : VirtualController
             }
 
             movementVelocity = parentRotation.RotateVec(movementVelocity);
+
+            if (!float.IsFinite(movementVelocity.X) || !float.IsFinite(movementVelocity.Y))
+            {
+                EndSlide(physicsUid, tileMovement);
+                tileMovement.FailureSlideActive = false;
+                return;
+            }
 
             // Apply final velocity to physics body.
             PhysicsSystem.SetLinearVelocity(physicsUid, movementVelocity, body: physicsComponent);

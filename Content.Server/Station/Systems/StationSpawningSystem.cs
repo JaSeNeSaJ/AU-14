@@ -1,6 +1,7 @@
 using System.Collections.Frozen;
 using Content.Server.Access.Systems;
 using Content.Server.CMU14.Roles;
+using Content.Server.CMU14.Diagnostics.Performance; // CMU14
 using Content.Server.CMU14.Round;
 using Content.Server.Humanoid;
 using Content.Server.Jobs;
@@ -73,6 +74,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
     [Dependency] private MarkingManager _markingManager = default!;
     [Dependency] private ISharedAdminLogManager _adminLog = default!;
     [Dependency] private MindSystem _mindSystem = default!;
+    [Dependency] private ICMUServerPerformanceDiagnostics _performance = default!; // CMU14
 
     private static readonly PlatoonJobClass[] PlatoonJobClasses = Enum.GetValues<PlatoonJobClass>();
     private static readonly FrozenDictionary<PlatoonJobClass, string> PlatoonJobClassNames = PlatoonJobClasses.ToFrozenDictionary(v => v, v => v.ToString());
@@ -175,6 +177,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         EntityUid? entity = null)
     {
         // --- Platoon job override logic start ---
+        using var operation = _performance.MeasureOperation("player-spawn", job?.Id); // CMU14: retain slow spawn attribution.
         string? jobId = job?.ToString();
         var originalJob = job;
         _prototypeManager.Resolve(originalJob, out JobPrototype? originalPrototype);
@@ -266,6 +269,9 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
                 EquipRoleName(jobEntity, loadout, loadoutProto);
 
             DoJobSpecials(job, jobEntity);
+            if (loadout != null && loadoutProto != null)
+                ApplyRoleLoadoutEffects(jobEntity, loadout, loadoutProto);
+
             ApplyRegulationAppearance(jobEntity, profile);
             ApplyTeamFaction(jobEntity, team);
 
@@ -299,7 +305,7 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
         }
 
         if (loadout != null && loadoutProto != null)
-            EquipRoleLoadout(entity.Value, loadout, loadoutProto);
+            EquipRoleLoadout(entity.Value, loadout, loadoutProto, applyEffects: false);
 
         if (prototype?.StartingGear != null)
         {
@@ -381,6 +387,11 @@ public sealed partial class StationSpawningSystem : SharedStationSpawningSystem
             SetPdaAndIdCardDataWithSplitJob(entity.Value, metaDataEntity.EntityName, prototype, originalPrototype ?? prototype, station);
 
         DoJobSpecials(job, entity.Value);
+
+        // Job profiles establish the base skill preset, so loadout upgrades must run afterwards.
+        if (loadout != null && loadoutProto != null)
+            ApplyRoleLoadoutEffects(entity.Value, loadout, loadoutProto);
+
         ApplyRegulationAppearance(entity.Value, profile);
         _identity.QueueIdentityUpdate(entity.Value);
 
