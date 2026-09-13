@@ -121,7 +121,7 @@
   id: AU14GearOPFOROfficerLogistics
   equipment:
     id: AU14IDCardOPFOROfficerLogistics
-    ears: AU14HeadsetGovforCommand
+    ears: AU14HeadsetOpforCommand
     outerClothing: RMCHazardVestBlue
     shoes: CMBootsBlackFilled
     head: RMCHardhatWhite
@@ -158,7 +158,7 @@
     shoes: CMBootsBlack
     head: CMHeadCapPeakedFormal
     jumpsuit: CMJumpsuitXOFormal
-    ears: AU14HeadsetGovforCommand
+    ears: AU14HeadsetOpforCommand
 
 # ├──[ Spawnpoints ]─────────────────────────────────────────────────┤
 - type: entity
