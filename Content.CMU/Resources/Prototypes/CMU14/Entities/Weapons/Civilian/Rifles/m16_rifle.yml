@@ -62,6 +62,8 @@
         priority: 2
         whitelist:
           tags:
+          - CMUMagazineRifleM16APExt
+          - CMUMagazineRifleM16AP
           - RMCMagazineRifleM16
           - CMUMagazineRifleM16Extended
   - type: GunDamageModifier
@@ -257,6 +259,8 @@
         priority: 2
         whitelist:
           tags:
+          - CMUMagazineRifleM16AP
+          - CMUMagazineRifleM16APExt
           - RMCMagazineRifleM16
           - CMUMagazineRifleM16Extended
   - type: GunDamageModifier
