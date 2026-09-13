@@ -256,7 +256,7 @@
       types:
         Piercing: 40
   - type: CMArmorPiercing
-    amount: 20
+    amount: 5
 
 - type: Tag
   id: RMCMagazineRifleM16
