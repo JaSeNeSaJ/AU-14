@@ -865,6 +865,8 @@
       choices: { CMUPrimaryWeapon: 1 }
       entries:
       - id: AU14KitWeaponM20A
+      - id: AU14KitWeaponM16A1
+      - id: AU14KitWeaponM16A2
       - id: AU14KitWeaponMar40
       - id: AU14KitWeaponMP5
       - id: AU14KitWeaponP90
@@ -878,6 +880,8 @@
         amount: 60
       - id: RMCMagazineRifleMAR40
         amount: 60 
+      - id: RMCMagazineRifleM16
+        amount: 60
     - name: Handguns
       choices: { CMUHandgunsWeapon: 1 }
       entries:
@@ -1049,6 +1053,10 @@
       entries:
       - id: AUWeaponRifleM20A
         amount: 30
+      - id: WeaponRifleM16
+        amount: 30
+      - id: RMCWeaponRifleM16A5
+        amount: 30
       - id: WeaponSMGMP5
         amount: 30
       - id: RMCWeaponSMGPDW90
@@ -1080,8 +1088,12 @@
         amount: 200
       - id: RMCMagazineSMGPDW90
         amount: 200
+      - id: RMCMagazineRifleM16
+        amount: 200
+      - id: CMUMagazineRifleM16Extended
+        amount: 50
       - id: RMCMagazineSMGPDW90AP
-        amount: 15
+        amount: 25
       - id: RMCBoxShotgunBuckshot
         amount: 25
       - id: RMCBoxShotgunFlechette
@@ -1118,6 +1130,8 @@
       entries:
       - id: RMCCrateBoxBulletsRifle
         amount: 2
+      - id: RMCBoxMagazineRifleM16
+        amount: 2 
       - id: CMUBoxMagazineSMGMP5
         amount: 2
       - id: CMUBoxMagazineSMGPDW90
