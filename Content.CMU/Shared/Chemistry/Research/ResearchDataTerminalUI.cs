@@ -48,3 +48,6 @@ public sealed class ResearchDataTerminalPrintChemBuiMsg(int idx) : BoundUserInte
 {
     public readonly int Index = idx;
 }
+
+[Serializable, NetSerializable]
+public sealed class CMUResearchReduceCooldownBuiMsg : BoundUserInterfaceMessage;
