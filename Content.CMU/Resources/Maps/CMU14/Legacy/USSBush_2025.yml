@@ -24179,7 +24179,7 @@ entities:
       parent: 2
     - type: Fixtures
       fixtures: {}
-- proto: RMCTacticalMapTable
+- proto: CMUTacticalMapTableGovfor
   entities:
   - uid: 4030
     components:
