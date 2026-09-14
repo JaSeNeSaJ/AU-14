@@ -1053,9 +1053,9 @@
       entries:
       - id: AUWeaponRifleM20A
         amount: 30
-      - id: WeaponRifleM16
+      - id: AU14WeaponRifleM16A1
         amount: 30
-      - id: RMCWeaponRifleM16A5
+      - id: AU14WeaponRifleM16A2
         amount: 30
       - id: WeaponSMGMP5
         amount: 30
