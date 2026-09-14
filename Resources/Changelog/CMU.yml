@@ -10781,6 +10781,13 @@
   id: 700
   time: '2026-09-12T22:41:22.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1938
+- author: flex5hybrid
+  changes:
+  - message: Moved hardcoded CMU user-facing strings into Fluent localization.
+    type: Code
+  id: 701
+  time: '2026-09-12T22:41:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1938
 - author: Vencallium
   changes:
   - message: "Fixed tactical hovering over empty +1 airspace during Distress Signal,\
@@ -10788,28 +10795,59 @@
     type: Fix
   - message: Added an empty upper z-level to Bosenmori Basho.
     type: Map
-  id: 701
+  id: 702
+  time: '2026-09-12T23:40:12.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1939
+- author: Vencallium
+  changes:
+  - message: "Fixed tactical hovering over empty +1 airspace during Distress Signal,\
+      \ excluding Hope\u2019s Retreat."
+    type: Fix
+  - message: Added an empty upper z-level to Bosenmori Basho.
+    type: Map
+  id: 703
   time: '2026-09-12T23:40:12.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1939
 - author: CatoChristopherMrow
   changes:
   - message: Added various belts, a new gun, and a few other qol items to colony cargo.
     type: Add
-  id: 702
+  id: 704
+  time: '2026-09-12T23:40:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1930
+- author: CatoChristopherMrow
+  changes:
+  - message: Added various belts, a new gun, and a few other qol items to colony cargo.
+    type: Add
+  id: 705
   time: '2026-09-12T23:40:35.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1930
 - author: CatoChristopherMrow
   changes:
   - message: Fixed gunships stealing some tiles, along with other various minor fixes
     type: Fix
-  id: 703
+  id: 706
+  time: '2026-09-12T23:41:19.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1924
+- author: CatoChristopherMrow
+  changes:
+  - message: Fixed gunships stealing some tiles, along with other various minor fixes
+    type: Fix
+  id: 707
   time: '2026-09-12T23:41:19.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1924
 - author: Nox38
   changes:
   - message: APCs should now fit full squads inside.
     type: Tweak
-  id: 704
+  id: 708
+  time: '2026-09-12T23:48:03.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1936
+- author: Nox38
+  changes:
+  - message: APCs should now fit full squads inside.
+    type: Tweak
+  id: 709
   time: '2026-09-12T23:48:03.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1936
 - author: deepdarkdepths
@@ -10818,7 +10856,16 @@
     type: Add
   - message: Runner has slightly more HP.
     type: Tweak
-  id: 705
+  id: 710
+  time: '2026-09-13T00:27:59.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1940
+- author: deepdarkdepths
+  changes:
+  - message: Added a new damage based evasion mechanic for Runner.
+    type: Add
+  - message: Runner has slightly more HP.
+    type: Tweak
+  id: 711
   time: '2026-09-13T00:27:59.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1940
 - author: silasadam
@@ -10836,8 +10883,220 @@
     type: Tweak
   - message: Yautja have a map symbol&hunting traps track the target for 5 minutes.
     type: Add
-  id: 706
+  id: 712
   time: '2026-09-13T00:28:33.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1931
+- author: silasadam
+  changes:
+  - message: Added Yautja Limb regeneration
+    type: Add
+  - message: Yautja healing gun can heal IB/Fracs/Eschar/etc on a long do-after.
+    type: Tweak
+  - message: Yautja take several tackles to knock down. [4]
+    type: Tweak
+  - message: Yautja hunting traps are now completely invisible to everyone except
+      the yautja.
+    type: Tweak
+  - message: Yautja cloak has been returned to true-cloak status.
+    type: Tweak
+  - message: Yautja have a map symbol&hunting traps track the target for 5 minutes.
+    type: Add
+  id: 713
+  time: '2026-09-13T00:28:33.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1931
+- author: deepdarkdepths
+  changes:
+  - message: Base and Berserker Ravager stat values tweaked.
+    type: Tweak
+  id: 714
+  time: '2026-09-13T01:32:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1943
+- author: deepdarkdepths
+  changes:
+  - message: Base and Berserker Ravager stat values tweaked.
+    type: Tweak
+  id: 715
+  time: '2026-09-13T01:32:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1943
+- author: deepdarkdepths
+  changes:
+  - message: Base and Berserker Ravager stat values tweaked.
+    type: Tweak
+  id: 716
+  time: '2026-09-13T01:32:34.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1943
+- author: ILoveDespoiler
+  changes:
+  - message: changed Despoilers Armor, Explosion Armor, Speed, Plasma Costs, Catalyze
+      Hypertension Cost, Hypertension Bonus Damage, and Catalyze Buff Duration
+    type: Tweak
+  id: 717
+  time: '2026-09-13T14:30:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1945
+- author: ILoveDespoiler
+  changes:
+  - message: changed Despoilers Armor, Explosion Armor, Speed, Plasma Costs, Catalyze
+      Hypertension Cost, Hypertension Bonus Damage, and Catalyze Buff Duration
+    type: Tweak
+  id: 718
+  time: '2026-09-13T14:30:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1945
+- author: flex5hybrid
+  changes:
+  - message: Made additional spawn menu role names localizable.
+    type: Code
+  id: 719
+  time: '2026-09-14T00:03:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1947
+- author: flex5hybrid
+  changes:
+  - message: Made additional spawn menu role names localizable.
+    type: Code
+  id: 720
+  time: '2026-09-14T00:03:29.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1947
+- author: maertayn
+  changes:
+  - message: Synth repairs are no longer instant and scale with construction skill
+    type: Tweak
+  - message: X clearance research now costs 16CR and stays locked until 90 minutes
+    type: Tweak
+  - message: The ape threat kit is rebuilt with z-jumps, hurled debris, limb ripping
+      and
+    type: Tweak
+  - message: Overdue various FoF tweaks, fixes and additions - side balancing + opfor
+      roles - hotspot/KoTH has to be playtested by fire for me to tweak/balance it
+      properly
+    type: Tweak
+  - message: Botanical reagents use names distinct from upstream chemistry
+    type: Tweak
+  - message: Atmospherics overhaul, heavy WIP, breathing and over-pressure is still
+      disabled - pipe/power risers and air vents across Z-levels, construction recipes,
+      inflatable walls, crystallizer (turn gas into materials), portable gas miners
+      & generators, power backup generators flick on with loss of power, canisters
+      and pipes, phoron gas and violent fires, colony atmosian, power fixes ahead
+      of tile/grid/powernets
+    type: Add
+  - message: Map atmospherics corrected (GridAtmosphere `fixgridatmos`) across the
+      shared map pool
+    type: Add
+  - message: Fixed the mapping smart-merge driver in Content.Tools after 4 years dormancy
+    type: Map
+  - message: Staircase falling on Stable Garrison Redux near the Diner
+    type: Fix
+  - message: The L66A2 ammo box no longer shows the gun sprite when held
+    type: Fix
+  - message: US Army third-parties spawn with loaded magazines
+    type: Fix
+  - message: Xeno egg and FoF tech deliveries land in the correct faction's ASRS
+    type: Fix
+  - message: TWE Pointman shield raises through its action again
+    type: Fix
+  - message: Disconnecting no longer leaves a black-screen zombie client (duct tape
+      fix of an engine issue)
+    type: Fix
+  - message: Self-destruct SFX is restored, as was lost in Rebase
+    type: Fix
+  - message: The ghost warp menu opens on the locations tab and force sends only preview
+      entities (no more organs, or backpack/pocket items being loaded per entity)
+    type: Fix
+  - message: UPP and Paramarine squads plus the counteragent syringe are back, lost
+      in Rebase
+    type: Fix
+  - message: Survivor spawns are no longer broken, the interest system was holding
+      it hostage
+    type: Fix
+  - message: Colony antags receive starting skills additional to job skill (doesn't
+      overwrite), synth antags can use weapons (malfunctioning) - also job blacklists
+      are significantly different, expect more colonist antags
+    type: Add
+  - message: PlatoonSpawnRuleSystem cleaned up, now uses faction_swaps.yml for Govfor
+      <-> Opfor swaps (includes all missing/forgotten swaps for Bush)
+    type: Code
+  - message: VMarkers for Opfor are removed in favor of simply using Govfor entities,
+      if the ship/planet/grid is Opfor faction it will simply swap it
+    type: Map
+  - message: '`znetwork-save` will now save the entire loaded multiZ network recursively
+      to your bin folder'
+    type: Map
+  id: 721
+  time: '2026-09-14T00:53:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1950
+- author: maertayn
+  changes:
+  - message: Synth repairs are no longer instant and scale with construction skill
+    type: Tweak
+  - message: X clearance research now costs 16CR and stays locked until 90 minutes
+    type: Tweak
+  - message: The ape threat kit is rebuilt with z-jumps, hurled debris, limb ripping
+      and
+    type: Tweak
+  - message: Overdue various FoF tweaks, fixes and additions - side balancing + opfor
+      roles - hotspot/KoTH has to be playtested by fire for me to tweak/balance it
+      properly
+    type: Tweak
+  - message: Botanical reagents use names distinct from upstream chemistry
+    type: Tweak
+  - message: Atmospherics overhaul, heavy WIP, breathing and over-pressure is still
+      disabled - pipe/power risers and air vents across Z-levels, construction recipes,
+      inflatable walls, crystallizer (turn gas into materials), portable gas miners
+      & generators, power backup generators flick on with loss of power, canisters
+      and pipes, phoron gas and violent fires, colony atmosian, power fixes ahead
+      of tile/grid/powernets
+    type: Add
+  - message: Map atmospherics corrected (GridAtmosphere `fixgridatmos`) across the
+      shared map pool
+    type: Add
+  - message: Fixed the mapping smart-merge driver in Content.Tools after 4 years dormancy
+    type: Map
+  - message: Staircase falling on Stable Garrison Redux near the Diner
+    type: Fix
+  - message: The L66A2 ammo box no longer shows the gun sprite when held
+    type: Fix
+  - message: US Army third-parties spawn with loaded magazines
+    type: Fix
+  - message: Xeno egg and FoF tech deliveries land in the correct faction's ASRS
+    type: Fix
+  - message: TWE Pointman shield raises through its action again
+    type: Fix
+  - message: Disconnecting no longer leaves a black-screen zombie client (duct tape
+      fix of an engine issue)
+    type: Fix
+  - message: Self-destruct SFX is restored, as was lost in Rebase
+    type: Fix
+  - message: The ghost warp menu opens on the locations tab and force sends only preview
+      entities (no more organs, or backpack/pocket items being loaded per entity)
+    type: Fix
+  - message: UPP and Paramarine squads plus the counteragent syringe are back, lost
+      in Rebase
+    type: Fix
+  - message: Survivor spawns are no longer broken, the interest system was holding
+      it hostage
+    type: Fix
+  - message: Colony antags receive starting skills additional to job skill (doesn't
+      overwrite), synth antags can use weapons (malfunctioning) - also job blacklists
+      are significantly different, expect more colonist antags
+    type: Add
+  - message: PlatoonSpawnRuleSystem cleaned up, now uses faction_swaps.yml for Govfor
+      <-> Opfor swaps (includes all missing/forgotten swaps for Bush)
+    type: Code
+  - message: VMarkers for Opfor are removed in favor of simply using Govfor entities,
+      if the ship/planet/grid is Opfor faction it will simply swap it
+    type: Map
+  - message: '`znetwork-save` will now save the entire loaded multiZ network recursively
+      to your bin folder'
+    type: Map
+  id: 722
+  time: '2026-09-14T00:53:35.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1950
+- author: jok989372-lgtm
+  changes:
+  - message: Added new main gun for WY PMC.
+    type: Add
+  - message: Added many new accessories for WY PMC.
+    type: Add
+  id: 723
+  time: '2026-09-14T01:48:22.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1937
 Name: CMU
 Order: -1

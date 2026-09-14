@@ -6,6 +6,7 @@ using Content.Server.GameTicking;
 using Content.Shared.CMU14.Chemistry.Reagents;
 using Content.Shared.CMU14.Chemistry.Research;
 using Content.Shared.CMU14.Chemistry.Reagent;
+using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared.CCVar;
@@ -57,6 +58,9 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     private bool ready;
     private int _nextContractId;
 
+    [ViewVariables(VVAccess.ReadOnly)]
+    public TimeSpan XClearanceLockout = TimeSpan.FromMinutes(60);
+
     [Dependency] private ServerReagentGeneratorSystem _generator = default!;
     [Dependency] private IGameTiming _timer = default!;
     [Dependency] private IRobustRandom _random = default!;
@@ -72,6 +76,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     [Dependency] private ILogManager _logman = default!;
     [Dependency] private SharedTransformSystem _xform = default!;
     [Dependency] private XRFScannerSystem _scanner = default!;
+    [Dependency] private SharedGameTicker _ticker = default!;
 
     private Dictionary<Entity<ResearchDataTerminalComponent>, int> _printing = [];
     private HashSet<Entity<ResearchDataTerminalComponent>> _printingLast = [];
@@ -98,6 +103,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         Subs.CVar(_cfg, CCVars.RefreshTime, time => RerollTime = TimeSpan.FromSeconds(time), true);
         Subs.CVar(_cfg, CCVars.TerminalChems, chems => ResearchChemAmount = chems, true);
         Subs.CVar(_cfg, CCVars.CashRewardMult, dosh => ResearchCashRewardMult = dosh, true);
+        Subs.CVar(_cfg, CCVars.XClearanceLockout, t => XClearanceLockout = TimeSpan.FromSeconds(t), true);
     }
 
     protected override void OnResearchBalanceChanged(string faction) => UpdateFactionUI(faction);
@@ -136,24 +142,27 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     private int UpgradeCost(string faction)
     {
         var clearance = GetClearance(faction);
-        return clearance == 5 ? 5 : (_researchLevelIncreaseMult * clearance) + 1;
+        return (_researchLevelIncreaseMult * clearance) + 1;
     }
 
     private void OnUpgradeAttempt(Entity<ResearchDataTerminalComponent> ent, ref ResearchDataTerminalAttemptUpgradeBuiMsg args)
     {
         var faction = ent.Comp.Faction;
         var clearance = GetClearance(faction);
+        if (clearance == 5 && _ticker.RoundDuration() < XClearanceLockout)
+        {
+            UpdateUI(ent);
+            return;
+        }
         var cost = UpgradeCost(faction);
         if (clearance >= 6 || GetCredits(faction) < cost)
             return;
         UpdateClearance(GetCredits(faction) - cost, clearance + 1, faction);
         if (clearance == 5)
         {
-            var xrf = GetNearestXRF(ent.Owner);
-            var elevator = xrf == EntityUid.Invalid ? NetEntity.Invalid : _scanner.GetFactionElevator(xrf, null);
-            if (elevator != NetEntity.Invalid && TryComp<RequisitionsElevatorComponent>(GetEntity(elevator), out var comp))
+            if (TryGetCipherElevator(ent.Owner, args.Actor, out var elevator))
             {
-                comp.Orders.Add(new RequisitionsEntry { Cost = 0, Crate = "CMUCrateSecureCipheringExperiment" });
+                elevator.Comp.Orders.Add(new RequisitionsEntry { Cost = 0, Crate = "CMUCrateSecureCipheringExperiment" });
                 SpawnNextToOrDrop("CMUCipherHintPaperInformDeliv", ent.Owner);
             }
             else
@@ -293,6 +302,9 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
     {
         var faction = ent.Comp.Faction;
         var research = GetResearch(faction);
+        TimeSpan? xLockedUntil = null;
+        if (GetClearance(faction) == 5 && _ticker.RoundDuration() < XClearanceLockout)
+            xLockedUntil = _timer.CurTime + (XClearanceLockout - _ticker.RoundDuration());
         var state = new ResearchDataTerminalBuiState(
             ids: research.Selectable.ToList(),
             data: new(research.Reports),
@@ -301,6 +313,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
             credits: GetCredits(faction),
             clearance: GetClearance(faction),
             upgradecost: UpgradeCost(faction),
+            xLockedUntil: xLockedUntil,
             picked: research.Picked);
         _ui.SetUiState(ent.Owner, ResearchDataTerminalUI.Key, state);
     }
@@ -330,7 +343,7 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
 
     private void OnPrintLast(Entity<ResearchDataTerminalComponent> ent, ref ResearchDataTerminalPrintLastBuiMsg args)
     {
-        
+
         _printingLast.Add(ent);
     }
 
@@ -454,6 +467,38 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
             datcomp.Completed = value.Item7;
             datcomp.Data = value.Item5;
         }
+    }
+
+    private bool TryGetCipherElevator(EntityUid terminal, EntityUid actor, out Entity<RequisitionsElevatorComponent> elevator)
+    {
+        if (TryComp<MarineComponent>(actor, out var marine)
+            && !string.IsNullOrEmpty(marine.Faction))
+        {
+            var actorQuery = EntityQueryEnumerator<RequisitionsElevatorComponent>();
+            while (actorQuery.MoveNext(out var elevUid, out var elevComp))
+            {
+                if (elevComp.Faction.Equals(marine.Faction, StringComparison.OrdinalIgnoreCase))
+                {
+                    elevator = (elevUid, elevComp);
+                    return true;
+                }
+            }
+        }
+
+        var xrf = GetNearestXRF(terminal);
+        if (xrf != EntityUid.Invalid)
+        {
+            var net = _scanner.GetFactionElevator(xrf, null);
+            if (net != NetEntity.Invalid
+                && TryComp<RequisitionsElevatorComponent>(GetEntity(net), out var xrfComp))
+            {
+                elevator = (GetEntity(net), xrfComp);
+                return true;
+            }
+        }
+
+        elevator = default;
+        return false;
     }
 
     public EntityUid GetNearestXRF(EntityUid ent)
