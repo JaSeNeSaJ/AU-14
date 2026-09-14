@@ -116,7 +116,6 @@
     - CMXenoCarrier
     - CMXenoBurrower
     - CMXenoHivelord
-    earlyEvolvesTo:
     - CMXenoLurker
     - CMXenoSpitter
     - CMXenoWarrior
