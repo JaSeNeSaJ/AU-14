@@ -318,21 +318,41 @@ public sealed partial class ServerResearchDataTerminalSystem : SharedResearchDat
         _ui.SetUiState(ent.Owner, ResearchDataTerminalUI.Key, state);
     }
 
-    public void PickChem(string id, Entity<ResearchDataTerminalComponent>? ent = null)
+    /// <summary>
+    /// Atomically reserves one contract for a faction before contract generation raises further events.
+    /// </summary>
+    public bool TryReserveContract(string faction, string id, out GeneratedReagentData reagent)
     {
-        var faction = ent?.Comp.Faction ?? "corporate";
         var research = GetResearch(faction);
-        if (research.Picked || !research.Selectable.Any(reagent => reagent.ID == id))
-            return;
-        var reagent = research.Selectable.First(reagent => reagent.ID == id);
-        LegalizeChem(reagent);
-        research.Selectable.Remove(reagent);
+        var index = research.Selectable.FindIndex(candidate => candidate.ID == id);
+        if (research.Picked || index < 0)
+        {
+            reagent = default;
+            return false;
+        }
+
+        reagent = research.Selectable[index];
         research.Picked = true;
-        if (ent is { } terminal)
-            PrintContract(terminal, reagent.ID);
         research.NextReroll = _timer.CurTime + PickedRerollTime;
         research.LastTime = _timer.CurTime;
+        research.Selectable.RemoveAt(index);
+
+        // Push the lock before contract generation can raise any further events. Open windows on every
+        // same-faction terminal are disabled together, and stale requests are rejected above.
         UpdateFactionUI(faction);
+        return true;
+    }
+
+    public bool PickChem(string id, Entity<ResearchDataTerminalComponent>? ent = null)
+    {
+        var faction = ent?.Comp.Faction ?? "corporate";
+        if (!TryReserveContract(faction, id, out var reagent))
+            return false;
+
+        LegalizeChem(reagent);
+        if (ent is { } terminal)
+            PrintContract(terminal, reagent.ID);
+        return true;
     }
 
     private void OnPickChem(Entity<ResearchDataTerminalComponent> ent, ref ResearchDataTerminalPickChemBuiMsg args)

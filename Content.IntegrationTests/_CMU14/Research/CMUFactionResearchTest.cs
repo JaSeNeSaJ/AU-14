@@ -3,6 +3,7 @@ using Content.Server.CMU14.Chemistry.Research;
 using Content.Server._RMC14.Requisitions;
 using Content.Shared._RMC14.Requisitions.Components;
 using Content.Shared._RMC14.Projectiles;
+using Content.Shared.CMU14.Chemistry.Reagents;
 using Content.Shared.CMU14.Chemistry.Research;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Timing;
@@ -103,6 +104,41 @@ public sealed class CMUFactionResearchTest : GameTest
                 system.ResearchChemAmount = oldCount;
                 system.UpdateClearance(0, 1, "govfor");
                 system.UpdateClearance(0, 1, "opfor");
+                gov.Picked = op.Picked = false;
+                gov.NextReroll = op.NextReroll = TimeSpan.Zero;
+            }
+        });
+    }
+
+    [Test]
+    public async Task AcceptingContractLocksEveryTerminalInFaction()
+    {
+        await Server.WaitAssertion(() =>
+        {
+            var system = SEntMan.System<ServerResearchDataTerminalSystem>();
+            var gov = system.GetResearch("govfor");
+            var op = system.GetResearch("opfor");
+            gov.Selectable.Add(new GeneratedReagentData { ID = "gov-contract-one" });
+            gov.Selectable.Add(new GeneratedReagentData { ID = "gov-contract-two" });
+            op.Selectable.Add(new GeneratedReagentData { ID = "op-contract" });
+
+            try
+            {
+                Assert.That(system.TryReserveContract("govfor", "gov-contract-one", out var accepted), Is.True);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(accepted.ID, Is.EqualTo("gov-contract-one"));
+                    Assert.That(gov.Picked, Is.True);
+                    Assert.That(system.TryReserveContract("govfor", "gov-contract-two", out _), Is.False,
+                        "A stale window from another GOVFOR terminal must not accept another contract.");
+                    Assert.That(system.TryReserveContract("opfor", "op-contract", out _), Is.True,
+                        "A different faction's contract pool must remain available.");
+                });
+            }
+            finally
+            {
+                gov.Selectable.Clear();
+                op.Selectable.Clear();
                 gov.Picked = op.Picked = false;
                 gov.NextReroll = op.NextReroll = TimeSpan.Zero;
             }
