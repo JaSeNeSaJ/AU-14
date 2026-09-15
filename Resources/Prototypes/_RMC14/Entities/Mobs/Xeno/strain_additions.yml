@@ -174,10 +174,10 @@
   - type: Sprite
     sprite: _CM13/Mobs/Xenos/Reaper/reaper.rsi
   - type: MobThresholds
-    thresholds: # CMU14 modified
+    thresholds:
       0: Alive
-      600: Critical
-      700: Dead
+      650: Critical
+      750: Dead
   - type: Xeno
     role: CMXenoCarrier
     actionIds:
@@ -210,7 +210,7 @@
     maxPlasma: 900
     plasmaRegenOnWeeds: 4
   - type: XenoPheromones
-    pheromonesMultiplier: 2.5 # CMU14 modified
+    pheromonesMultiplier: 3
     pheroSuffix: strong
   - type: CMArmor
     xenoArmor: 10 # CMU14 modified
