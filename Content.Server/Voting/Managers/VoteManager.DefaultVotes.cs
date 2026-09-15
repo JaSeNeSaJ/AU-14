@@ -32,6 +32,7 @@ namespace Content.Server.Voting.Managers
         private VotingSystem? _votingSystem;
         private RoleSystem? _roleSystem;
         private GameTicker? _gameTicker;
+        private string? _previousPreset; // CMU14
 
         private static readonly Dictionary<StandardVoteType, CVarDef<bool>> VoteTypesToEnableCVars = new()
         {
@@ -224,6 +225,9 @@ namespace Content.Server.Voting.Managers
         {
             var presets = GetGamePresets();
 
+            if (_previousPreset != null && presets.Count > 1) // CMU14 addition
+                presets.Remove(_previousPreset);
+
             var alone = _playerManager.PlayerCount == 1 && initiator != null;
             var options = new VoteOptions
             {
@@ -263,6 +267,9 @@ namespace Content.Server.Voting.Managers
                         Loc.GetString("ui-vote-gamemode-win", ("winner", Loc.GetString(presets[picked]))));
                 }
                 _adminLogger.Add(LogType.Vote, LogImpact.Medium, $"Preset vote finished: {picked}");
+
+                _previousPreset = picked; // CMU14 addition
+
                 var ticker = _entityManager.EntitySysManager.GetEntitySystem<GameTicker>();
                 ticker.SetGamePreset(picked);
                 ticker.SendGamemodeVoteWinnerDiscordPing(picked);
