@@ -4,6 +4,7 @@ using System.Numerics;
 using System.Runtime.InteropServices;
 using Content.Server.Administration.Logs;
 using Content.Server.CMU14.Round;
+using Content.Server.CMU14.Diagnostics.Performance; // CMU14
 using Content.Server.Cargo.Components;
 using Content.Server.Cargo.Systems;
 using Content.Shared.CMU14.Requisitions;
@@ -46,6 +47,7 @@ using Robust.Shared.Map;
 using Robust.Shared.Network;
 using Robust.Shared.Physics.Dynamics;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Profiling; // CMU14
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
 using static Content.Shared._RMC14.Requisitions.Components.RequisitionsElevatorMode;
@@ -71,6 +73,10 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     [Dependency] private XenoSystem _xeno = default!;
     [Dependency] private IPrototypeManager _prototypeManager = default!;
     [Dependency] private PricingSystem _pricing = default!;
+    // CMU14 Begin: attribute shipment preparation and publication separately.
+    [Dependency] private ProfManager _profiler = default!;
+    [Dependency] private ICMUServerPerformanceDiagnostics _performance = default!;
+    // CMU14 End
 
     private static readonly EntProtoId AccountId = "RMCASRSAccount";
     private static readonly EntProtoId PaperRequisitionInvoice = "RMCPaperRequisitionInvoice";
@@ -92,10 +98,10 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         _chasmQuery = GetEntityQuery<ChasmComponent>();
         _chasmFallingQuery = GetEntityQuery<ChasmFallingComponent>();
+        SubscribeLocalEvent<RequisitionsDeliveryComponent, ComponentShutdown>(OnDeliveryShutdown); // CMU14
         SubscribeLocalEvent<ColonyAtmComponent, EntInsertedIntoContainerMessage>(OnMoneyInserted);
 
         SubscribeLocalEvent<RequisitionsComputerComponent, MapInitEvent>(OnComputerMapInit);
-        SubscribeLocalEvent<RequisitionsComputerComponent, ComponentStartup>(OnComputerStartup);
         SubscribeLocalEvent<RequisitionsComputerComponent, ComponentShutdown>(OnComputerShutdown);
         SubscribeLocalEvent<RequisitionsComputerComponent, BeforeActivatableUIOpenEvent>(OnComputerBeforeActivatableUIOpen);
 
@@ -109,12 +115,6 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         Subs.CVar(_config, RMCCVars.RMCRequisitionsBalanceGain, v => _gain = v, true);
         Subs.CVar(_config, RMCCVars.RMCRequisitionsFreeCratesXenoDivider, v => _freeCratesXenoDivider = v, true);
         Subs.CVar(_config, AU14CCVars.SellCargoRewards, v => _sellCargoRewards = v, true);
-    }
-
-    private void OnComputerStartup(EntityUid uid, RequisitionsComputerComponent comp, ComponentStartup args)
-    {
-        ApplyPlatoonCatalogToComputer(uid, comp);
-        ResetStock((uid, comp));
     }
 
     private void OnComputerMapInit(EntityUid uid, RequisitionsComputerComponent comp, MapInitEvent args)
@@ -503,25 +503,25 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
             Dirty(elevator);
     }
 
+    // CMU14 method: publish cargo prepared during travel instead of spawning the shipment in one tick.
     private void SpawnOrders(Entity<RequisitionsElevatorComponent> elevator)
     {
+        using var profile = _profiler.Group("CMU Requisitions Publish");
+        using var operation = _performance.MeasureOperation("requisitions-publish");
         var comp = elevator.Comp;
         if (comp.Mode == Raised)
         {
+            var delivery = Comp<RequisitionsDeliveryComponent>(elevator);
             var coordinates = _transform.GetMoverCoordinates(elevator);
             var xOffset = comp.Radius;
             var yOffset = comp.Radius;
             int remainingDeliveries = GetElevatorCapacity(elevator);
-            foreach (var order in comp.Orders)
+            for (var orderIndex = 0; orderIndex < comp.Orders.Count; orderIndex++)
             {
-                var crate = SpawnAtPosition(order.Crate, coordinates.Offset(new Vector2(xOffset, yOffset)));
+                var order = comp.Orders[orderIndex];
+                var crate = delivery.Roots[orderIndex];
+                _transform.SetCoordinates(crate, coordinates.Offset(new Vector2(xOffset, yOffset)));
                 remainingDeliveries--;
-
-                foreach (var prototype in order.Entities)
-                {
-                    var entity = Spawn(prototype, MapCoordinates.Nullspace);
-                    _entityStorage.Insert(entity, crate);
-                }
 
                 // If this order came from a department console, attach a department note
                 // instead of the generic invoice so it shows on the crate label.
@@ -546,15 +546,21 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
             }
 
             comp.Orders.Clear();
+            delivery.Roots.Clear();
+            RemComp<RequisitionsDeliveryComponent>(elevator);
 
             var query = EntityQueryEnumerator<RequisitionsCustomDeliveryComponent>();
 
-            while (query.MoveNext(out var entityUid, out _))
+            while (query.MoveNext(out var entityUid, out var deliveryComp)) // CMU14
             {
                 // If elevator is full, abort and break out of the loop. Any remaining custom deliveries will be on
                 // the next elevator shipment.
                 if (remainingDeliveries <= 0)
                     break;
+
+                if (!string.IsNullOrEmpty(deliveryComp.Faction) // CMU14
+                    && !deliveryComp.Faction.Equals(comp.Faction, StringComparison.OrdinalIgnoreCase))
+                    continue;
 
                 // Remove the component so it doesn't get "delivered" again next elevator cycle.
                 RemCompDeferred<RequisitionsCustomDeliveryComponent>(entityUid);
@@ -655,6 +661,7 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
+        _deliverySteps = 0; // CMU14: share the preparation budget across elevators this update.
 
         var time = _timing.CurTime;
         var updateUI = false;
@@ -1014,6 +1021,13 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
         if (elevator.ToggledAt == null)
             return false;
 
+        // CMU14 Begin: prepare cargo while the lift is travelling. If a delayed update skipped the trip,
+        // keep the lift closed until the bounded preparation has finished.
+        bool deliveryReady = true;
+        if (elevator.Mode == Raising || elevator.Mode == Preparing && elevator.NextMode == Raising)
+            deliveryReady = PrepareDelivery(ent);
+        // CMU14 End
+
         TryPlayAudio(ent);
 
         var delay = elevator.NextMode == Raising ? elevator.RaiseDelay : elevator.LowerDelay;
@@ -1053,6 +1067,10 @@ public sealed partial class RequisitionsSystem : SharedRequisitionsSystem
 
         if (time > elevator.ToggledAt + moveDelay)
         {
+            // CMU14 Begin: keep the platform closed until its shipment is complete.
+            if (elevator.Mode == Raising && !deliveryReady)
+                return false;
+            // CMU14 End
             elevator.Audio = null;
 
             var mode = elevator.Mode switch
