@@ -241,10 +241,12 @@ public sealed partial class ThirdPartySystem : EntitySystem
 
         // Maintain compatibility with existing code that uses these locals.
         bool useDropship = entryMethod.Equals("shuttle", StringComparison.OrdinalIgnoreCase);
+
+        // CMU14 Begin: aborting dropped the whole party when every LZ was claimed or re-factioned
+        // by a visiting military dropship. Ground insertion still delivers the party.
+        var chosenDestination = EntityUid.Invalid;
         if (useDropship)
         {
-            // Dropship step (existing behavior)
-            EntityUid? chosenDestination = null;
             EntityQueryEnumerator<DropshipDestinationComponent, TransformComponent> destQuery = _entityManager
                 .EntityQueryEnumerator<DropshipDestinationComponent, TransformComponent>();
             while (destQuery.MoveNext(out EntityUid destUid, out DropshipDestinationComponent? destComp,
@@ -257,14 +259,19 @@ public sealed partial class ThirdPartySystem : EntitySystem
                 }
             }
 
-            if (chosenDestination == null)
+            if (chosenDestination == EntityUid.Invalid)
             {
-                _sawmill.Error(
-                    "[ThirdPartySystem] No valid third-party dropship landing destination found. Aborting third party spawn.");
-                return false;
+                _sawmill.Warning(
+                    "[ThirdPartySystem] No valid third-party dropship landing destination found. Falling back to ground spawn.");
+                useDropship = false;
+                entryMethod = "ground";
             }
+        }
+        // CMU14 End
 
-            EntityUid destination = chosenDestination.Value;
+        if (useDropship)
+        {
+            EntityUid destination = chosenDestination;
             _sawmill.Debug($"[ThirdPartySystem] Found valid dropship destination: {destination}");
 
             DeserializationOptions deserializationOpts = DeserializationOptions.Default with { InitializeMaps = true };
