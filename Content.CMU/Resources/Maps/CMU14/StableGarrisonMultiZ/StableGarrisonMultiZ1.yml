@@ -4,8 +4,8 @@ meta:
   engineVersion: v278.0.0
   forkId: ""
   forkVersion: ""
-  time: 08/16/2026 02:42:00
-  entityCount: 58288
+  time: 08/24/2026 10:28:41
+  entityCount: 58678
 maps:
 - 1
 grids:
@@ -678,7 +678,7 @@ entities:
           version: 7
         6,-9:
           ind: 6,-9
-          tiles: KQAAAAAAAA4AAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAlwEAAAAAACkAAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABUAAAAAAAAAAAAAAAAAAAAAAAAAAJcBAAAAAAApAAAAAAAADgAAAAAAAA4AAAAAAAAOAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAACXAQAAAAAADgAAAAAAAKUAAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAFQAAAAAAABUAAAAAAAAAAAAAAAAAmAEAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQAAAAAAABUAAAAAAAAVAAAAAAAAFQAAAAAAABUAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAmQEAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAABUAAAAAAAAVAAAAAAAAAAAAAAAAAJcBAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAACXAQAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAlwEAAAAAAA==
+          tiles: KQAAAAAAAA4AAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAFQAAAAAAABUAAAAAAAAAAAAAAAAAlwEAAAAAACkAAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAOAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJoBAAAAAAAAAAAAAAAAAAAAAAAAAJcBAAAAAAApAAAAAAAADgAAAAAAAA4AAAAAAAAOAAAAAAAADgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACaAQAAAAAAAAAAAAAAAAAAAAAAAACXAQAAAAAADgAAAAAAAKUAAAAAAAAOAAAAAAAADgAAAAAAAA4AAAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVAAAAAAAAFQAAAAAAABUAAAAAAAAAAAAAAAAAmAEAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAClAAAAAAAApQAAAAAAAKUAAAAAAAClAAAAAAAApQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFQAAAAAAABUAAAAAAAAVAAAAAAAAFQAAAAAAABUAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAmQEAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAABUAAAAAAAAVAAAAAAAAAAAAAAAAAJcBAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAAVAAAAAAAAAAAAAAAAAAAAAAAAAACXAQAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAewAAAAAAAHsAAAAAAAB7AAAAAAAAFQAAAAAAAAAAAAAAAAAAAAAAAAAAlwEAAAAAAA==
           version: 7
         4,-6:
           ind: 4,-6
@@ -18275,30 +18275,30 @@ entities:
         126,-76: AU14AreaStableGarrisonJBSMaints
         126,-75: AU14AreaStableGarrisonJBSMaints
         126,-74: AU14AreaStableGarrisonJBSMaints
-        194,-68: AU14AreaGarrisonHospitalParking
-        194,-67: AU14AreaGarrisonHospitalParking
-        194,-66: AU14AreaGarrisonHospitalParking
-        194,-65: AU14AreaGarrisonHospitalParking
-        195,-68: AU14AreaGarrisonHospitalParking
-        195,-67: AU14AreaGarrisonHospitalParking
-        195,-66: AU14AreaGarrisonHospitalParking
-        195,-65: AU14AreaGarrisonHospitalParking
-        196,-68: AU14AreaGarrisonHospitalParking
-        196,-67: AU14AreaGarrisonHospitalParking
-        196,-66: AU14AreaGarrisonHospitalParking
-        196,-65: AU14AreaGarrisonHospitalParking
-        197,-68: AU14AreaGarrisonHospitalParking
-        197,-67: AU14AreaGarrisonHospitalParking
-        197,-65: AU14AreaGarrisonHospitalParking
+        194,-68: AU14AreaGarrisonHospital
+        194,-67: AU14AreaGarrisonHospital
+        194,-66: AU14AreaGarrisonHospital
+        194,-65: AU14AreaGarrisonHospital
+        195,-68: AU14AreaGarrisonHospital
+        195,-67: AU14AreaGarrisonHospital
+        195,-66: AU14AreaGarrisonHospital
+        195,-65: AU14AreaGarrisonHospital
+        196,-68: AU14AreaGarrisonHospital
+        196,-67: AU14AreaGarrisonHospital
+        196,-66: AU14AreaGarrisonHospital
+        196,-65: AU14AreaGarrisonHospital
+        197,-68: AU14AreaGarrisonHospital
+        197,-67: AU14AreaGarrisonHospital
+        197,-65: AU14AreaGarrisonHospital
         198,-71: AU14AreaGarrisonHospital
         198,-70: AU14AreaGarrisonHospital
-        198,-68: AU14AreaGarrisonHospitalParking
-        198,-67: AU14AreaGarrisonHospitalParking
-        198,-66: AU14AreaGarrisonHospitalParking
-        198,-65: AU14AreaGarrisonHospitalParking
+        198,-68: AU14AreaGarrisonHospital
+        198,-67: AU14AreaGarrisonHospital
+        198,-66: AU14AreaGarrisonHospital
+        198,-65: AU14AreaGarrisonHospital
         198,-64: AU14AreaGarrisonHospital
         198,-63: AU14AreaGarrisonHospital
-        197,-66: AU14AreaGarrisonHospitalParking
+        197,-66: AU14AreaGarrisonHospital
         199,-74: AU14AreaGarrisonHospital
         199,-73: AU14AreaGarrisonHospital
         199,-72: AU14AreaGarrisonHospital
@@ -18397,20 +18397,20 @@ entities:
         190,-63: AU14AreaGarrisonHospital
         191,-63: AU14AreaGarrisonHospital
         191,-64: AU14AreaGarrisonHospital
-        191,-65: AU14AreaGarrisonNorthWestColonyGrounds
-        191,-66: AU14AreaGarrisonNorthWestColonyGrounds
-        191,-67: AU14AreaGarrisonNorthWestColonyGrounds
-        191,-68: AU14AreaGarrisonNorthWestColonyGrounds
+        191,-65: AU14AreaGarrisonHospital
+        191,-66: AU14AreaGarrisonHospital
+        191,-67: AU14AreaGarrisonHospital
+        191,-68: AU14AreaGarrisonHospital
         191,-76: AU14AreaStableGarrisonMedicalCenter2ndFloor
         191,-77: AU14AreaStableGarrisonMedicalCenter2ndFloor
-        192,-65: AU14AreaGarrisonNorthWestColonyGrounds
-        192,-66: AU14AreaGarrisonNorthWestColonyGrounds
-        192,-67: AU14AreaGarrisonNorthWestColonyGrounds
-        192,-68: AU14AreaGarrisonNorthWestColonyGrounds
-        193,-65: AU14AreaGarrisonNorthWestColonyGrounds
-        193,-66: AU14AreaGarrisonNorthWestColonyGrounds
-        193,-68: AU14AreaGarrisonNorthWestColonyGrounds
-        193,-67: AU14AreaGarrisonNorthWestColonyGrounds
+        192,-65: AU14AreaGarrisonHospital
+        192,-66: AU14AreaGarrisonHospital
+        192,-67: AU14AreaGarrisonHospital
+        192,-68: AU14AreaGarrisonHospital
+        193,-65: AU14AreaGarrisonHospital
+        193,-66: AU14AreaGarrisonHospital
+        193,-68: AU14AreaGarrisonHospital
+        193,-67: AU14AreaGarrisonHospital
         190,-75: AU14AreaGarrisonHospital
         190,-74: AU14AreaGarrisonHospital
         190,-73: AU14AreaGarrisonHospital
@@ -55746,6 +55746,876 @@ entities:
         295,-156: AU14AreaStableGarrisonAmbassadorRoof
         295,-157: AU14AreaStableGarrisonAmbassadorRoof
         296,-157: AU14AreaStableGarrisonAmbassadorRoof
+        206,-59: AU14AreaGarrisonOpenSky
+        206,-58: AU14AreaGarrisonOpenSky
+        206,-60: AU14AreaGarrisonOpenSky
+        207,-57: AU14AreaGarrisonOpenSky
+        206,-56: AU14AreaGarrisonOpenSky
+        206,-57: AU14AreaGarrisonOpenSky
+        207,-58: AU14AreaGarrisonOpenSky
+        207,-59: AU14AreaGarrisonOpenSky
+        207,-60: AU14AreaGarrisonOpenSky
+        208,-56: AU14AreaGarrisonOpenSky
+        207,-56: AU14AreaGarrisonOpenSky
+        208,-57: AU14AreaGarrisonOpenSky
+        208,-58: AU14AreaGarrisonOpenSky
+        208,-60: AU14AreaGarrisonOpenSky
+        209,-56: AU14AreaGarrisonOpenSky
+        209,-57: AU14AreaGarrisonOpenSky
+        209,-58: AU14AreaGarrisonOpenSky
+        209,-59: AU14AreaGarrisonOpenSky
+        209,-60: AU14AreaGarrisonOpenSky
+        208,-59: AU14AreaGarrisonOpenSky
+        207,-61: AU14AreaGarrisonOpenSky
+        207,-63: AU14AreaGarrisonOpenSky
+        208,-61: AU14AreaGarrisonOpenSky
+        208,-62: AU14AreaGarrisonOpenSky
+        208,-63: AU14AreaGarrisonOpenSky
+        209,-61: AU14AreaGarrisonOpenSky
+        209,-62: AU14AreaGarrisonOpenSky
+        209,-63: AU14AreaGarrisonOpenSky
+        207,-62: AU14AreaGarrisonOpenSky
+        206,-63: AU14AreaGarrisonOpenSky
+        210,-56: AU14AreaGarrisonOpenSky
+        210,-57: AU14AreaGarrisonOpenSky
+        210,-58: AU14AreaGarrisonOpenSky
+        210,-59: AU14AreaGarrisonOpenSky
+        210,-60: AU14AreaGarrisonOpenSky
+        210,-61: AU14AreaGarrisonOpenSky
+        211,-56: AU14AreaGarrisonOpenSky
+        211,-58: AU14AreaGarrisonOpenSky
+        211,-59: AU14AreaGarrisonOpenSky
+        211,-57: AU14AreaGarrisonOpenSky
+        211,-61: AU14AreaGarrisonOpenSky
+        212,-56: AU14AreaGarrisonOpenSky
+        213,-56: AU14AreaGarrisonOpenSky
+        213,-57: AU14AreaGarrisonOpenSky
+        213,-58: AU14AreaGarrisonOpenSky
+        213,-59: AU14AreaGarrisonOpenSky
+        213,-60: AU14AreaGarrisonOpenSky
+        213,-61: AU14AreaGarrisonOpenSky
+        214,-56: AU14AreaGarrisonOpenSky
+        214,-57: AU14AreaGarrisonOpenSky
+        211,-60: AU14AreaGarrisonOpenSky
+        214,-59: AU14AreaGarrisonOpenSky
+        214,-58: AU14AreaGarrisonOpenSky
+        214,-61: AU14AreaGarrisonOpenSky
+        215,-56: AU14AreaGarrisonOpenSky
+        215,-57: AU14AreaGarrisonOpenSky
+        215,-58: AU14AreaGarrisonOpenSky
+        215,-59: AU14AreaGarrisonOpenSky
+        215,-60: AU14AreaGarrisonOpenSky
+        215,-61: AU14AreaGarrisonOpenSky
+        216,-56: AU14AreaGarrisonOpenSky
+        216,-57: AU14AreaGarrisonOpenSky
+        216,-58: AU14AreaGarrisonOpenSky
+        216,-59: AU14AreaGarrisonOpenSky
+        216,-60: AU14AreaGarrisonOpenSky
+        216,-61: AU14AreaGarrisonOpenSky
+        217,-56: AU14AreaGarrisonOpenSky
+        214,-60: AU14AreaGarrisonOpenSky
+        217,-57: AU14AreaGarrisonOpenSky
+        217,-58: AU14AreaGarrisonOpenSky
+        217,-59: AU14AreaGarrisonOpenSky
+        217,-60: AU14AreaGarrisonOpenSky
+        217,-61: AU14AreaGarrisonOpenSky
+        218,-56: AU14AreaGarrisonOpenSky
+        218,-58: AU14AreaGarrisonOpenSky
+        218,-59: AU14AreaGarrisonOpenSky
+        218,-60: AU14AreaGarrisonOpenSky
+        212,-59: AU14AreaGarrisonOpenSky
+        218,-57: AU14AreaGarrisonOpenSky
+        219,-56: AU14AreaGarrisonOpenSky
+        219,-57: AU14AreaGarrisonOpenSky
+        219,-58: AU14AreaGarrisonOpenSky
+        219,-59: AU14AreaGarrisonOpenSky
+        219,-60: AU14AreaGarrisonOpenSky
+        219,-61: AU14AreaGarrisonOpenSky
+        220,-56: AU14AreaGarrisonOpenSky
+        220,-57: AU14AreaGarrisonOpenSky
+        220,-58: AU14AreaGarrisonOpenSky
+        220,-59: AU14AreaGarrisonOpenSky
+        218,-61: AU14AreaGarrisonOpenSky
+        212,-57: AU14AreaGarrisonOpenSky
+        212,-58: AU14AreaGarrisonOpenSky
+        220,-60: AU14AreaGarrisonOpenSky
+        220,-61: AU14AreaGarrisonOpenSky
+        221,-56: AU14AreaGarrisonOpenSky
+        221,-57: AU14AreaGarrisonOpenSky
+        221,-58: AU14AreaGarrisonOpenSky
+        221,-59: AU14AreaGarrisonOpenSky
+        221,-61: AU14AreaGarrisonOpenSky
+        222,-56: AU14AreaGarrisonOpenSky
+        222,-58: AU14AreaGarrisonOpenSky
+        222,-59: AU14AreaGarrisonOpenSky
+        222,-60: AU14AreaGarrisonOpenSky
+        222,-61: AU14AreaGarrisonOpenSky
+        221,-60: AU14AreaGarrisonOpenSky
+        223,-56: AU14AreaGarrisonOpenSky
+        223,-57: AU14AreaGarrisonOpenSky
+        223,-58: AU14AreaGarrisonOpenSky
+        223,-59: AU14AreaGarrisonOpenSky
+        223,-61: AU14AreaGarrisonOpenSky
+        224,-56: AU14AreaGarrisonOpenSky
+        224,-57: AU14AreaGarrisonOpenSky
+        224,-58: AU14AreaGarrisonOpenSky
+        224,-59: AU14AreaGarrisonOpenSky
+        224,-60: AU14AreaGarrisonOpenSky
+        224,-61: AU14AreaGarrisonOpenSky
+        223,-60: AU14AreaGarrisonOpenSky
+        225,-56: AU14AreaGarrisonOpenSky
+        225,-57: AU14AreaGarrisonOpenSky
+        225,-58: AU14AreaGarrisonOpenSky
+        225,-59: AU14AreaGarrisonOpenSky
+        225,-60: AU14AreaGarrisonOpenSky
+        222,-57: AU14AreaGarrisonOpenSky
+        225,-61: AU14AreaGarrisonOpenSky
+        226,-56: AU14AreaGarrisonOpenSky
+        226,-57: AU14AreaGarrisonOpenSky
+        226,-58: AU14AreaGarrisonOpenSky
+        226,-59: AU14AreaGarrisonOpenSky
+        226,-61: AU14AreaGarrisonOpenSky
+        227,-56: AU14AreaGarrisonOpenSky
+        227,-57: AU14AreaGarrisonOpenSky
+        227,-58: AU14AreaGarrisonOpenSky
+        227,-60: AU14AreaGarrisonOpenSky
+        227,-59: AU14AreaGarrisonOpenSky
+        227,-61: AU14AreaGarrisonOpenSky
+        228,-56: AU14AreaGarrisonOpenSky
+        228,-57: AU14AreaGarrisonOpenSky
+        228,-58: AU14AreaGarrisonOpenSky
+        228,-59: AU14AreaGarrisonOpenSky
+        228,-60: AU14AreaGarrisonOpenSky
+        228,-61: AU14AreaGarrisonOpenSky
+        229,-56: AU14AreaGarrisonOpenSky
+        229,-57: AU14AreaGarrisonOpenSky
+        229,-58: AU14AreaGarrisonOpenSky
+        229,-59: AU14AreaGarrisonOpenSky
+        229,-60: AU14AreaGarrisonOpenSky
+        229,-61: AU14AreaGarrisonOpenSky
+        226,-60: AU14AreaGarrisonOpenSky
+        212,-61: AU14AreaGarrisonOpenSky
+        212,-60: AU14AreaGarrisonOpenSky
+        228,-62: AU14AreaGarrisonOpenSky
+        228,-63: AU14AreaGarrisonOpenSky
+        228,-64: AU14AreaGarrisonOpenSky
+        228,-65: AU14AreaGarrisonOpenSky
+        228,-67: AU14AreaGarrisonOpenSky
+        228,-68: AU14AreaGarrisonOpenSky
+        228,-69: AU14AreaGarrisonOpenSky
+        228,-70: AU14AreaGarrisonOpenSky
+        228,-71: AU14AreaGarrisonOpenSky
+        227,-62: AU14AreaGarrisonOpenSky
+        227,-63: AU14AreaGarrisonOpenSky
+        227,-64: AU14AreaGarrisonOpenSky
+        228,-66: AU14AreaGarrisonOpenSky
+        227,-66: AU14AreaGarrisonOpenSky
+        227,-67: AU14AreaGarrisonOpenSky
+        227,-68: AU14AreaGarrisonOpenSky
+        227,-65: AU14AreaGarrisonOpenSky
+        227,-69: AU14AreaGarrisonOpenSky
+        227,-70: AU14AreaGarrisonOpenSky
+        226,-62: AU14AreaGarrisonOpenSky
+        226,-63: AU14AreaGarrisonOpenSky
+        226,-64: AU14AreaGarrisonOpenSky
+        226,-65: AU14AreaGarrisonOpenSky
+        227,-71: AU14AreaGarrisonOpenSky
+        226,-68: AU14AreaGarrisonOpenSky
+        226,-67: AU14AreaGarrisonOpenSky
+        226,-66: AU14AreaGarrisonOpenSky
+        226,-69: AU14AreaGarrisonOpenSky
+        226,-70: AU14AreaGarrisonOpenSky
+        226,-71: AU14AreaGarrisonOpenSky
+        225,-62: AU14AreaGarrisonOpenSky
+        225,-63: AU14AreaGarrisonOpenSky
+        225,-64: AU14AreaGarrisonOpenSky
+        225,-65: AU14AreaGarrisonOpenSky
+        225,-66: AU14AreaGarrisonOpenSky
+        225,-67: AU14AreaGarrisonOpenSky
+        225,-68: AU14AreaGarrisonOpenSky
+        225,-69: AU14AreaGarrisonOpenSky
+        225,-70: AU14AreaGarrisonOpenSky
+        225,-71: AU14AreaGarrisonOpenSky
+        224,-62: AU14AreaGarrisonOpenSky
+        224,-63: AU14AreaGarrisonOpenSky
+        224,-64: AU14AreaGarrisonOpenSky
+        224,-65: AU14AreaGarrisonOpenSky
+        224,-66: AU14AreaGarrisonOpenSky
+        224,-67: AU14AreaGarrisonOpenSky
+        224,-68: AU14AreaGarrisonOpenSky
+        224,-69: AU14AreaGarrisonOpenSky
+        224,-70: AU14AreaGarrisonOpenSky
+        224,-71: AU14AreaGarrisonOpenSky
+        223,-62: AU14AreaGarrisonOpenSky
+        223,-63: AU14AreaGarrisonOpenSky
+        223,-64: AU14AreaGarrisonOpenSky
+        223,-65: AU14AreaGarrisonOpenSky
+        223,-66: AU14AreaGarrisonOpenSky
+        223,-67: AU14AreaGarrisonOpenSky
+        223,-68: AU14AreaGarrisonOpenSky
+        223,-69: AU14AreaGarrisonOpenSky
+        223,-70: AU14AreaGarrisonOpenSky
+        223,-71: AU14AreaGarrisonOpenSky
+        222,-62: AU14AreaGarrisonOpenSky
+        222,-63: AU14AreaGarrisonOpenSky
+        222,-64: AU14AreaGarrisonOpenSky
+        222,-65: AU14AreaGarrisonOpenSky
+        222,-66: AU14AreaGarrisonOpenSky
+        222,-67: AU14AreaGarrisonOpenSky
+        222,-68: AU14AreaGarrisonOpenSky
+        222,-69: AU14AreaGarrisonOpenSky
+        222,-70: AU14AreaGarrisonOpenSky
+        222,-71: AU14AreaGarrisonOpenSky
+        221,-62: AU14AreaGarrisonOpenSky
+        221,-63: AU14AreaGarrisonOpenSky
+        221,-64: AU14AreaGarrisonOpenSky
+        221,-65: AU14AreaGarrisonOpenSky
+        221,-66: AU14AreaGarrisonOpenSky
+        221,-67: AU14AreaGarrisonOpenSky
+        221,-68: AU14AreaGarrisonOpenSky
+        221,-69: AU14AreaGarrisonOpenSky
+        221,-70: AU14AreaGarrisonOpenSky
+        221,-71: AU14AreaGarrisonOpenSky
+        220,-62: AU14AreaGarrisonOpenSky
+        220,-63: AU14AreaGarrisonOpenSky
+        220,-64: AU14AreaGarrisonOpenSky
+        220,-65: AU14AreaGarrisonOpenSky
+        220,-66: AU14AreaGarrisonOpenSky
+        220,-67: AU14AreaGarrisonOpenSky
+        220,-68: AU14AreaGarrisonOpenSky
+        220,-69: AU14AreaGarrisonOpenSky
+        220,-70: AU14AreaGarrisonOpenSky
+        220,-71: AU14AreaGarrisonOpenSky
+        219,-62: AU14AreaGarrisonOpenSky
+        219,-63: AU14AreaGarrisonOpenSky
+        219,-64: AU14AreaGarrisonOpenSky
+        219,-65: AU14AreaGarrisonOpenSky
+        219,-66: AU14AreaGarrisonOpenSky
+        219,-67: AU14AreaGarrisonOpenSky
+        219,-68: AU14AreaGarrisonOpenSky
+        219,-69: AU14AreaGarrisonOpenSky
+        219,-70: AU14AreaGarrisonOpenSky
+        219,-71: AU14AreaGarrisonOpenSky
+        218,-62: AU14AreaGarrisonOpenSky
+        218,-63: AU14AreaGarrisonOpenSky
+        218,-64: AU14AreaGarrisonOpenSky
+        218,-65: AU14AreaGarrisonOpenSky
+        218,-66: AU14AreaGarrisonOpenSky
+        218,-67: AU14AreaGarrisonOpenSky
+        218,-68: AU14AreaGarrisonOpenSky
+        218,-69: AU14AreaGarrisonOpenSky
+        218,-70: AU14AreaGarrisonOpenSky
+        218,-71: AU14AreaGarrisonOpenSky
+        217,-62: AU14AreaGarrisonOpenSky
+        217,-63: AU14AreaGarrisonOpenSky
+        217,-64: AU14AreaGarrisonOpenSky
+        217,-65: AU14AreaGarrisonOpenSky
+        217,-66: AU14AreaGarrisonOpenSky
+        217,-67: AU14AreaGarrisonOpenSky
+        217,-68: AU14AreaGarrisonOpenSky
+        217,-69: AU14AreaGarrisonOpenSky
+        217,-70: AU14AreaGarrisonOpenSky
+        217,-71: AU14AreaGarrisonOpenSky
+        216,-62: AU14AreaGarrisonOpenSky
+        216,-63: AU14AreaGarrisonOpenSky
+        216,-64: AU14AreaGarrisonOpenSky
+        216,-65: AU14AreaGarrisonOpenSky
+        216,-66: AU14AreaGarrisonOpenSky
+        216,-67: AU14AreaGarrisonOpenSky
+        216,-68: AU14AreaGarrisonOpenSky
+        216,-69: AU14AreaGarrisonOpenSky
+        216,-70: AU14AreaGarrisonOpenSky
+        215,-62: AU14AreaGarrisonOpenSky
+        216,-71: AU14AreaGarrisonOpenSky
+        215,-63: AU14AreaGarrisonOpenSky
+        215,-64: AU14AreaGarrisonOpenSky
+        215,-65: AU14AreaGarrisonOpenSky
+        215,-66: AU14AreaGarrisonOpenSky
+        215,-67: AU14AreaGarrisonOpenSky
+        215,-68: AU14AreaGarrisonOpenSky
+        215,-69: AU14AreaGarrisonOpenSky
+        215,-70: AU14AreaGarrisonOpenSky
+        215,-71: AU14AreaGarrisonOpenSky
+        214,-62: AU14AreaGarrisonOpenSky
+        214,-63: AU14AreaGarrisonOpenSky
+        214,-64: AU14AreaGarrisonOpenSky
+        214,-65: AU14AreaGarrisonOpenSky
+        214,-66: AU14AreaGarrisonOpenSky
+        214,-67: AU14AreaGarrisonOpenSky
+        214,-68: AU14AreaGarrisonOpenSky
+        214,-69: AU14AreaGarrisonOpenSky
+        214,-70: AU14AreaGarrisonOpenSky
+        214,-71: AU14AreaGarrisonOpenSky
+        213,-62: AU14AreaGarrisonOpenSky
+        213,-63: AU14AreaGarrisonOpenSky
+        213,-64: AU14AreaGarrisonOpenSky
+        213,-65: AU14AreaGarrisonOpenSky
+        213,-66: AU14AreaGarrisonOpenSky
+        213,-67: AU14AreaGarrisonOpenSky
+        213,-68: AU14AreaGarrisonOpenSky
+        213,-69: AU14AreaGarrisonOpenSky
+        213,-70: AU14AreaGarrisonOpenSky
+        213,-71: AU14AreaGarrisonOpenSky
+        212,-62: AU14AreaGarrisonOpenSky
+        212,-63: AU14AreaGarrisonOpenSky
+        212,-64: AU14AreaGarrisonOpenSky
+        212,-65: AU14AreaGarrisonOpenSky
+        212,-66: AU14AreaGarrisonOpenSky
+        212,-67: AU14AreaGarrisonOpenSky
+        212,-68: AU14AreaGarrisonOpenSky
+        212,-69: AU14AreaGarrisonOpenSky
+        212,-70: AU14AreaGarrisonOpenSky
+        212,-71: AU14AreaGarrisonOpenSky
+        211,-62: AU14AreaGarrisonOpenSky
+        211,-63: AU14AreaGarrisonOpenSky
+        211,-64: AU14AreaGarrisonOpenSky
+        211,-65: AU14AreaGarrisonOpenSky
+        211,-66: AU14AreaGarrisonOpenSky
+        211,-67: AU14AreaGarrisonOpenSky
+        211,-68: AU14AreaGarrisonOpenSky
+        211,-69: AU14AreaGarrisonOpenSky
+        211,-70: AU14AreaGarrisonOpenSky
+        211,-71: AU14AreaGarrisonOpenSky
+        210,-62: AU14AreaGarrisonOpenSky
+        210,-63: AU14AreaGarrisonOpenSky
+        210,-64: AU14AreaGarrisonOpenSky
+        210,-65: AU14AreaGarrisonOpenSky
+        210,-66: AU14AreaGarrisonOpenSky
+        210,-67: AU14AreaGarrisonOpenSky
+        210,-68: AU14AreaGarrisonOpenSky
+        210,-69: AU14AreaGarrisonOpenSky
+        210,-70: AU14AreaGarrisonOpenSky
+        210,-71: AU14AreaGarrisonOpenSky
+        209,-64: AU14AreaGarrisonOpenSky
+        209,-65: AU14AreaGarrisonOpenSky
+        209,-66: AU14AreaGarrisonOpenSky
+        209,-67: AU14AreaGarrisonOpenSky
+        209,-69: AU14AreaGarrisonOpenSky
+        209,-70: AU14AreaGarrisonOpenSky
+        209,-68: AU14AreaGarrisonOpenSky
+        209,-71: AU14AreaGarrisonOpenSky
+        208,-72: AU14AreaGarrisonOpenSky
+        208,-73: AU14AreaGarrisonOpenSky
+        208,-74: AU14AreaGarrisonOpenSky
+        208,-75: AU14AreaGarrisonOpenSky
+        208,-76: AU14AreaGarrisonOpenSky
+        209,-72: AU14AreaGarrisonOpenSky
+        209,-73: AU14AreaGarrisonOpenSky
+        209,-75: AU14AreaGarrisonOpenSky
+        209,-76: AU14AreaGarrisonOpenSky
+        209,-74: AU14AreaGarrisonOpenSky
+        210,-73: AU14AreaGarrisonOpenSky
+        210,-74: AU14AreaGarrisonOpenSky
+        210,-72: AU14AreaGarrisonOpenSky
+        210,-75: AU14AreaGarrisonOpenSky
+        210,-76: AU14AreaGarrisonOpenSky
+        211,-73: AU14AreaGarrisonOpenSky
+        211,-74: AU14AreaGarrisonOpenSky
+        211,-72: AU14AreaGarrisonOpenSky
+        211,-75: AU14AreaGarrisonOpenSky
+        212,-72: AU14AreaGarrisonOpenSky
+        212,-74: AU14AreaGarrisonOpenSky
+        212,-76: AU14AreaGarrisonOpenSky
+        211,-76: AU14AreaGarrisonOpenSky
+        213,-72: AU14AreaGarrisonOpenSky
+        212,-75: AU14AreaGarrisonOpenSky
+        212,-73: AU14AreaGarrisonOpenSky
+        214,-72: AU14AreaGarrisonOpenSky
+        214,-73: AU14AreaGarrisonOpenSky
+        213,-76: AU14AreaGarrisonOpenSky
+        213,-74: AU14AreaGarrisonOpenSky
+        215,-72: AU14AreaGarrisonOpenSky
+        214,-74: AU14AreaGarrisonOpenSky
+        214,-76: AU14AreaGarrisonOpenSky
+        215,-74: AU14AreaGarrisonOpenSky
+        214,-75: AU14AreaGarrisonOpenSky
+        213,-73: AU14AreaGarrisonOpenSky
+        215,-73: AU14AreaGarrisonOpenSky
+        215,-75: AU14AreaGarrisonOpenSky
+        216,-72: AU14AreaGarrisonOpenSky
+        215,-76: AU14AreaGarrisonOpenSky
+        216,-73: AU14AreaGarrisonOpenSky
+        216,-74: AU14AreaGarrisonOpenSky
+        216,-75: AU14AreaGarrisonOpenSky
+        216,-76: AU14AreaGarrisonOpenSky
+        217,-72: AU14AreaGarrisonOpenSky
+        217,-73: AU14AreaGarrisonOpenSky
+        217,-74: AU14AreaGarrisonOpenSky
+        217,-75: AU14AreaGarrisonOpenSky
+        217,-76: AU14AreaGarrisonOpenSky
+        218,-72: AU14AreaGarrisonOpenSky
+        218,-73: AU14AreaGarrisonOpenSky
+        218,-74: AU14AreaGarrisonOpenSky
+        218,-75: AU14AreaGarrisonOpenSky
+        218,-76: AU14AreaGarrisonOpenSky
+        219,-72: AU14AreaGarrisonOpenSky
+        219,-73: AU14AreaGarrisonOpenSky
+        219,-74: AU14AreaGarrisonOpenSky
+        219,-75: AU14AreaGarrisonOpenSky
+        219,-76: AU14AreaGarrisonOpenSky
+        220,-72: AU14AreaGarrisonOpenSky
+        220,-73: AU14AreaGarrisonOpenSky
+        220,-74: AU14AreaGarrisonOpenSky
+        220,-75: AU14AreaGarrisonOpenSky
+        220,-76: AU14AreaGarrisonOpenSky
+        221,-72: AU14AreaGarrisonOpenSky
+        221,-73: AU14AreaGarrisonOpenSky
+        221,-74: AU14AreaGarrisonOpenSky
+        221,-75: AU14AreaGarrisonOpenSky
+        221,-76: AU14AreaGarrisonOpenSky
+        222,-72: AU14AreaGarrisonOpenSky
+        222,-73: AU14AreaGarrisonOpenSky
+        222,-74: AU14AreaGarrisonOpenSky
+        222,-75: AU14AreaGarrisonOpenSky
+        222,-76: AU14AreaGarrisonOpenSky
+        223,-72: AU14AreaGarrisonOpenSky
+        223,-73: AU14AreaGarrisonOpenSky
+        223,-74: AU14AreaGarrisonOpenSky
+        223,-75: AU14AreaGarrisonOpenSky
+        223,-76: AU14AreaGarrisonOpenSky
+        224,-72: AU14AreaGarrisonOpenSky
+        224,-73: AU14AreaGarrisonOpenSky
+        224,-74: AU14AreaGarrisonOpenSky
+        224,-75: AU14AreaGarrisonOpenSky
+        224,-76: AU14AreaGarrisonOpenSky
+        225,-72: AU14AreaGarrisonOpenSky
+        225,-73: AU14AreaGarrisonOpenSky
+        225,-74: AU14AreaGarrisonOpenSky
+        225,-75: AU14AreaGarrisonOpenSky
+        225,-76: AU14AreaGarrisonOpenSky
+        226,-72: AU14AreaGarrisonOpenSky
+        226,-73: AU14AreaGarrisonOpenSky
+        226,-74: AU14AreaGarrisonOpenSky
+        226,-75: AU14AreaGarrisonOpenSky
+        226,-76: AU14AreaGarrisonOpenSky
+        227,-72: AU14AreaGarrisonOpenSky
+        227,-73: AU14AreaGarrisonOpenSky
+        227,-74: AU14AreaGarrisonOpenSky
+        227,-75: AU14AreaGarrisonOpenSky
+        227,-76: AU14AreaGarrisonOpenSky
+        228,-72: AU14AreaGarrisonOpenSky
+        228,-73: AU14AreaGarrisonOpenSky
+        228,-74: AU14AreaGarrisonOpenSky
+        228,-75: AU14AreaGarrisonOpenSky
+        228,-76: AU14AreaGarrisonOpenSky
+        213,-75: AU14AreaGarrisonOpenSky
+        230,-73: AU14AreaGarrisonOpenSky
+        230,-74: AU14AreaGarrisonOpenSky
+        230,-75: AU14AreaGarrisonOpenSky
+        230,-76: AU14AreaGarrisonOpenSky
+        229,-73: AU14AreaGarrisonOpenSky
+        229,-74: AU14AreaGarrisonOpenSky
+        229,-75: AU14AreaGarrisonOpenSky
+        229,-76: AU14AreaGarrisonOpenSky
+        230,-77: AU14AreaGarrisonOpenSky
+        230,-78: AU14AreaGarrisonOpenSky
+        230,-79: AU14AreaGarrisonOpenSky
+        230,-80: AU14AreaGarrisonOpenSky
+        230,-81: AU14AreaGarrisonOpenSky
+        230,-82: AU14AreaGarrisonOpenSky
+        230,-83: AU14AreaGarrisonOpenSky
+        230,-84: AU14AreaGarrisonOpenSky
+        230,-85: AU14AreaGarrisonOpenSky
+        229,-77: AU14AreaGarrisonOpenSky
+        229,-78: AU14AreaGarrisonOpenSky
+        229,-79: AU14AreaGarrisonOpenSky
+        229,-80: AU14AreaGarrisonOpenSky
+        229,-81: AU14AreaGarrisonOpenSky
+        229,-83: AU14AreaGarrisonOpenSky
+        229,-82: AU14AreaGarrisonOpenSky
+        229,-85: AU14AreaGarrisonOpenSky
+        229,-84: AU14AreaGarrisonOpenSky
+        228,-78: AU14AreaGarrisonOpenSky
+        228,-79: AU14AreaGarrisonOpenSky
+        228,-80: AU14AreaGarrisonOpenSky
+        228,-81: AU14AreaGarrisonOpenSky
+        228,-77: AU14AreaGarrisonOpenSky
+        228,-82: AU14AreaGarrisonOpenSky
+        228,-84: AU14AreaGarrisonOpenSky
+        228,-83: AU14AreaGarrisonOpenSky
+        228,-85: AU14AreaGarrisonOpenSky
+        227,-77: AU14AreaGarrisonOpenSky
+        227,-78: AU14AreaGarrisonOpenSky
+        227,-79: AU14AreaGarrisonOpenSky
+        227,-80: AU14AreaGarrisonOpenSky
+        227,-81: AU14AreaGarrisonOpenSky
+        227,-82: AU14AreaGarrisonOpenSky
+        227,-83: AU14AreaGarrisonOpenSky
+        227,-84: AU14AreaGarrisonOpenSky
+        227,-85: AU14AreaGarrisonOpenSky
+        226,-77: AU14AreaGarrisonOpenSky
+        226,-78: AU14AreaGarrisonOpenSky
+        226,-79: AU14AreaGarrisonOpenSky
+        226,-81: AU14AreaGarrisonOpenSky
+        226,-80: AU14AreaGarrisonOpenSky
+        226,-82: AU14AreaGarrisonOpenSky
+        226,-83: AU14AreaGarrisonOpenSky
+        226,-84: AU14AreaGarrisonOpenSky
+        226,-85: AU14AreaGarrisonOpenSky
+        225,-77: AU14AreaGarrisonOpenSky
+        225,-78: AU14AreaGarrisonOpenSky
+        225,-79: AU14AreaGarrisonOpenSky
+        225,-80: AU14AreaGarrisonOpenSky
+        225,-81: AU14AreaGarrisonOpenSky
+        225,-82: AU14AreaGarrisonOpenSky
+        225,-83: AU14AreaGarrisonOpenSky
+        225,-84: AU14AreaGarrisonOpenSky
+        225,-85: AU14AreaGarrisonOpenSky
+        224,-77: AU14AreaGarrisonOpenSky
+        224,-78: AU14AreaGarrisonOpenSky
+        224,-79: AU14AreaGarrisonOpenSky
+        224,-80: AU14AreaGarrisonOpenSky
+        224,-81: AU14AreaGarrisonOpenSky
+        224,-82: AU14AreaGarrisonOpenSky
+        224,-83: AU14AreaGarrisonOpenSky
+        224,-84: AU14AreaGarrisonOpenSky
+        224,-85: AU14AreaGarrisonOpenSky
+        223,-77: AU14AreaGarrisonOpenSky
+        223,-78: AU14AreaGarrisonOpenSky
+        223,-79: AU14AreaGarrisonOpenSky
+        223,-80: AU14AreaGarrisonOpenSky
+        223,-81: AU14AreaGarrisonOpenSky
+        223,-82: AU14AreaGarrisonOpenSky
+        223,-83: AU14AreaGarrisonOpenSky
+        223,-84: AU14AreaGarrisonOpenSky
+        223,-85: AU14AreaGarrisonOpenSky
+        222,-77: AU14AreaGarrisonOpenSky
+        222,-78: AU14AreaGarrisonOpenSky
+        222,-79: AU14AreaGarrisonOpenSky
+        222,-80: AU14AreaGarrisonOpenSky
+        222,-81: AU14AreaGarrisonOpenSky
+        222,-82: AU14AreaGarrisonOpenSky
+        222,-83: AU14AreaGarrisonOpenSky
+        222,-84: AU14AreaGarrisonOpenSky
+        222,-85: AU14AreaGarrisonOpenSky
+        221,-77: AU14AreaGarrisonOpenSky
+        221,-78: AU14AreaGarrisonOpenSky
+        221,-79: AU14AreaGarrisonOpenSky
+        221,-80: AU14AreaGarrisonOpenSky
+        221,-81: AU14AreaGarrisonOpenSky
+        221,-82: AU14AreaGarrisonOpenSky
+        221,-83: AU14AreaGarrisonOpenSky
+        221,-84: AU14AreaGarrisonOpenSky
+        221,-85: AU14AreaGarrisonOpenSky
+        220,-77: AU14AreaGarrisonOpenSky
+        220,-78: AU14AreaGarrisonOpenSky
+        220,-79: AU14AreaGarrisonOpenSky
+        220,-80: AU14AreaGarrisonOpenSky
+        220,-81: AU14AreaGarrisonOpenSky
+        220,-82: AU14AreaGarrisonOpenSky
+        220,-83: AU14AreaGarrisonOpenSky
+        220,-84: AU14AreaGarrisonOpenSky
+        220,-85: AU14AreaGarrisonOpenSky
+        219,-77: AU14AreaGarrisonOpenSky
+        219,-78: AU14AreaGarrisonOpenSky
+        219,-79: AU14AreaGarrisonOpenSky
+        219,-80: AU14AreaGarrisonOpenSky
+        219,-81: AU14AreaGarrisonOpenSky
+        219,-82: AU14AreaGarrisonOpenSky
+        219,-83: AU14AreaGarrisonOpenSky
+        219,-84: AU14AreaGarrisonOpenSky
+        219,-85: AU14AreaGarrisonOpenSky
+        218,-77: AU14AreaGarrisonOpenSky
+        218,-78: AU14AreaGarrisonOpenSky
+        218,-79: AU14AreaGarrisonOpenSky
+        218,-80: AU14AreaGarrisonOpenSky
+        218,-81: AU14AreaGarrisonOpenSky
+        218,-82: AU14AreaGarrisonOpenSky
+        218,-83: AU14AreaGarrisonOpenSky
+        218,-84: AU14AreaGarrisonOpenSky
+        218,-85: AU14AreaGarrisonOpenSky
+        217,-77: AU14AreaGarrisonOpenSky
+        217,-78: AU14AreaGarrisonOpenSky
+        217,-79: AU14AreaGarrisonOpenSky
+        217,-80: AU14AreaGarrisonOpenSky
+        217,-81: AU14AreaGarrisonOpenSky
+        217,-82: AU14AreaGarrisonOpenSky
+        217,-83: AU14AreaGarrisonOpenSky
+        217,-84: AU14AreaGarrisonOpenSky
+        217,-85: AU14AreaGarrisonOpenSky
+        216,-77: AU14AreaGarrisonOpenSky
+        216,-78: AU14AreaGarrisonOpenSky
+        216,-79: AU14AreaGarrisonOpenSky
+        216,-80: AU14AreaGarrisonOpenSky
+        216,-81: AU14AreaGarrisonOpenSky
+        216,-82: AU14AreaGarrisonOpenSky
+        216,-83: AU14AreaGarrisonOpenSky
+        216,-84: AU14AreaGarrisonOpenSky
+        216,-85: AU14AreaGarrisonOpenSky
+        215,-77: AU14AreaGarrisonOpenSky
+        215,-78: AU14AreaGarrisonOpenSky
+        215,-79: AU14AreaGarrisonOpenSky
+        215,-80: AU14AreaGarrisonOpenSky
+        215,-81: AU14AreaGarrisonOpenSky
+        215,-82: AU14AreaGarrisonOpenSky
+        215,-83: AU14AreaGarrisonOpenSky
+        215,-84: AU14AreaGarrisonOpenSky
+        215,-85: AU14AreaGarrisonOpenSky
+        214,-77: AU14AreaGarrisonOpenSky
+        214,-78: AU14AreaGarrisonOpenSky
+        214,-79: AU14AreaGarrisonOpenSky
+        214,-80: AU14AreaGarrisonOpenSky
+        214,-81: AU14AreaGarrisonOpenSky
+        214,-82: AU14AreaGarrisonOpenSky
+        214,-83: AU14AreaGarrisonOpenSky
+        214,-84: AU14AreaGarrisonOpenSky
+        214,-85: AU14AreaGarrisonOpenSky
+        213,-77: AU14AreaGarrisonOpenSky
+        213,-78: AU14AreaGarrisonOpenSky
+        213,-79: AU14AreaGarrisonOpenSky
+        213,-80: AU14AreaGarrisonOpenSky
+        213,-81: AU14AreaGarrisonOpenSky
+        213,-82: AU14AreaGarrisonOpenSky
+        213,-83: AU14AreaGarrisonOpenSky
+        213,-84: AU14AreaGarrisonOpenSky
+        213,-85: AU14AreaGarrisonOpenSky
+        212,-77: AU14AreaGarrisonOpenSky
+        212,-78: AU14AreaGarrisonOpenSky
+        212,-79: AU14AreaGarrisonOpenSky
+        212,-80: AU14AreaGarrisonOpenSky
+        212,-81: AU14AreaGarrisonOpenSky
+        212,-82: AU14AreaGarrisonOpenSky
+        212,-83: AU14AreaGarrisonOpenSky
+        212,-84: AU14AreaGarrisonOpenSky
+        212,-85: AU14AreaGarrisonOpenSky
+        210,-53: AU14AreaGarrisonSpaceport
+        211,-53: AU14AreaGarrisonSpaceport
+        212,-53: AU14AreaGarrisonSpaceport
+        213,-53: AU14AreaGarrisonSpaceport
+        214,-53: AU14AreaGarrisonSpaceport
+        229,-50: AU14AreaGarrisonSpaceport
+        222,-53: AU14AreaGarrisonSpaceport
+        228,-50: AU14AreaGarrisonSpaceport
+        228,-51: AU14AreaGarrisonSpaceport
+        228,-52: AU14AreaGarrisonSpaceport
+        228,-53: AU14AreaGarrisonSpaceport
+        229,-53: AU14AreaGarrisonSpaceport
+        229,-52: AU14AreaGarrisonSpaceport
+        227,-53: AU14AreaGarrisonSpaceport
+        226,-53: AU14AreaGarrisonSpaceport
+        223,-53: AU14AreaGarrisonSpaceport
+        229,-51: AU14AreaGarrisonSpaceport
+        225,-53: AU14AreaGarrisonSpaceport
+        224,-53: AU14AreaGarrisonSpaceport
+        216,-52: AU14AreaGarrisonSpaceportATC
+        217,-52: AU14AreaGarrisonSpaceportATC
+        218,-52: AU14AreaGarrisonSpaceportATC
+        219,-52: AU14AreaGarrisonSpaceportATC
+        220,-52: AU14AreaGarrisonSpaceportATC
+        210,-51: AU14AreaGarrisonSpaceportATC
+        210,-50: AU14AreaGarrisonSpaceportATC
+        211,-51: AU14AreaGarrisonSpaceportATC
+        211,-50: AU14AreaGarrisonSpaceportATC
+        212,-51: AU14AreaGarrisonSpaceportATC
+        212,-50: AU14AreaGarrisonSpaceportATC
+        232,-53: AU14AreaGarrisonSpaceport
+        213,-51: AU14AreaGarrisonSpaceportATC
+        232,-55: AU14AreaGarrisonSpaceport
+        212,-48: AU14AreaGarrisonSpaceportATC
+        214,-50: AU14AreaGarrisonSpaceportATC
+        213,-48: AU14AreaGarrisonSpaceportATC
+        215,-51: AU14AreaGarrisonSpaceportATC
+        213,-49: AU14AreaGarrisonSpaceportATC
+        214,-48: AU14AreaGarrisonSpaceportATC
+        214,-51: AU14AreaGarrisonSpaceportATC
+        216,-51: AU14AreaGarrisonSpaceportATC
+        215,-50: AU14AreaGarrisonSpaceportATC
+        223,-50: AU14AreaGarrisonSpaceportATC
+        217,-51: AU14AreaGarrisonSpaceportATC
+        215,-49: AU14AreaGarrisonSpaceportATC
+        223,-48: AU14AreaGarrisonSpaceportATC
+        224,-50: AU14AreaGarrisonSpaceportATC
+        224,-49: AU14AreaGarrisonSpaceportATC
+        218,-51: AU14AreaGarrisonSpaceportATC
+        219,-51: AU14AreaGarrisonSpaceportATC
+        218,-49: AU14AreaGarrisonSpaceportATC
+        219,-48: AU14AreaGarrisonSpaceportATC
+        220,-51: AU14AreaGarrisonSpaceportATC
+        218,-48: AU14AreaGarrisonSpaceportATC
+        221,-51: AU14AreaGarrisonSpaceportATC
+        221,-50: AU14AreaGarrisonSpaceportATC
+        221,-49: AU14AreaGarrisonSpaceportATC
+        222,-51: AU14AreaGarrisonSpaceportATC
+        221,-48: AU14AreaGarrisonSpaceportATC
+        219,-50: AU14AreaGarrisonSpaceportATC
+        223,-51: AU14AreaGarrisonSpaceportATC
+        232,-51: AU14AreaGarrisonSpaceport
+        234,-53: AU14AreaGarrisonSpaceportAdmin
+        224,-51: AU14AreaGarrisonSpaceportATC
+        232,-50: AU14AreaGarrisonSpaceport
+        234,-55: AU14AreaGarrisonSpaceportAdmin
+        225,-51: AU14AreaGarrisonSpaceportATC
+        225,-50: AU14AreaGarrisonSpaceportATC
+        226,-51: AU14AreaGarrisonSpaceportATC
+        226,-50: AU14AreaGarrisonSpaceportATC
+        217,-49: AU14AreaGarrisonSpaceportATC
+        234,-54: AU14AreaGarrisonSpaceportAdmin
+        234,-56: AU14AreaGarrisonSpaceportAdmin
+        224,-47: AU14AreaGarrisonSpaceportATC
+        224,-46: AU14AreaGarrisonSpaceportATC
+        224,-45: AU14AreaGarrisonSpaceportATC
+        234,-52: AU14AreaGarrisonSpaceportAdmin
+        223,-47: AU14AreaGarrisonSpaceportATC
+        223,-46: AU14AreaGarrisonSpaceportATC
+        223,-45: AU14AreaGarrisonSpaceportATC
+        234,-51: AU14AreaGarrisonSpaceportAdmin
+        220,-49: AU14AreaGarrisonSpaceportATC
+        220,-48: AU14AreaGarrisonSpaceportATC
+        222,-47: AU14AreaGarrisonSpaceportATC
+        222,-45: AU14AreaGarrisonSpaceportATC
+        222,-46: AU14AreaGarrisonSpaceportATC
+        220,-50: AU14AreaGarrisonSpaceportATC
+        221,-47: AU14AreaGarrisonSpaceportATC
+        221,-46: AU14AreaGarrisonSpaceportATC
+        221,-45: AU14AreaGarrisonSpaceportATC
+        217,-50: AU14AreaGarrisonSpaceportATC
+        220,-47: AU14AreaGarrisonSpaceportATC
+        218,-50: AU14AreaGarrisonSpaceportATC
+        219,-49: AU14AreaGarrisonSpaceportATC
+        220,-45: AU14AreaGarrisonSpaceportATC
+        217,-48: AU14AreaGarrisonSpaceportATC
+        216,-50: AU14AreaGarrisonSpaceportATC
+        219,-47: AU14AreaGarrisonSpaceportATC
+        219,-46: AU14AreaGarrisonSpaceportATC
+        219,-45: AU14AreaGarrisonSpaceportATC
+        220,-46: AU14AreaGarrisonSpaceportATC
+        224,-48: AU14AreaGarrisonSpaceportATC
+        216,-49: AU14AreaGarrisonSpaceportATC
+        218,-47: AU14AreaGarrisonSpaceportATC
+        218,-46: AU14AreaGarrisonSpaceportATC
+        218,-45: AU14AreaGarrisonSpaceportATC
+        222,-50: AU14AreaGarrisonSpaceportATC
+        216,-48: AU14AreaGarrisonSpaceportATC
+        217,-47: AU14AreaGarrisonSpaceportATC
+        217,-46: AU14AreaGarrisonSpaceportATC
+        217,-45: AU14AreaGarrisonSpaceportATC
+        223,-49: AU14AreaGarrisonSpaceportATC
+        222,-49: AU14AreaGarrisonSpaceportATC
+        216,-47: AU14AreaGarrisonSpaceportATC
+        216,-46: AU14AreaGarrisonSpaceportATC
+        216,-45: AU14AreaGarrisonSpaceportATC
+        213,-50: AU14AreaGarrisonSpaceportATC
+        222,-48: AU14AreaGarrisonSpaceportATC
+        215,-47: AU14AreaGarrisonSpaceportATC
+        215,-46: AU14AreaGarrisonSpaceportATC
+        215,-45: AU14AreaGarrisonSpaceportATC
+        214,-49: AU14AreaGarrisonSpaceportATC
+        215,-48: AU14AreaGarrisonSpaceportATC
+        214,-46: AU14AreaGarrisonSpaceportATC
+        214,-45: AU14AreaGarrisonSpaceportATC
+        214,-47: AU14AreaGarrisonSpaceportATC
+        232,-54: AU14AreaGarrisonSpaceport
+        212,-49: AU14AreaGarrisonSpaceportATC
+        213,-47: AU14AreaGarrisonSpaceportATC
+        213,-46: AU14AreaGarrisonSpaceportATC
+        213,-45: AU14AreaGarrisonSpaceportATC
+        232,-52: AU14AreaGarrisonSpaceport
+        232,-56: AU14AreaGarrisonSpaceport
+        212,-46: AU14AreaGarrisonSpaceportATC
+        212,-45: AU14AreaGarrisonSpaceportATC
+        212,-47: AU14AreaGarrisonSpaceportATC
+        234,-50: AU14AreaGarrisonSpaceportAdmin
+        235,-55: AU14AreaGarrisonSpaceportAdmin
+        235,-54: AU14AreaGarrisonSpaceportAdmin
+        235,-53: AU14AreaGarrisonSpaceportAdmin
+        235,-56: AU14AreaGarrisonSpaceportAdmin
+        235,-51: AU14AreaGarrisonSpaceportAdmin
+        235,-50: AU14AreaGarrisonSpaceportAdmin
+        236,-56: AU14AreaGarrisonSpaceportAdmin
+        235,-52: AU14AreaGarrisonSpaceportAdmin
+        236,-54: AU14AreaGarrisonSpaceportAdmin
+        236,-55: AU14AreaGarrisonSpaceportAdmin
+        236,-53: AU14AreaGarrisonSpaceportAdmin
+        236,-52: AU14AreaGarrisonSpaceportAdmin
+        236,-51: AU14AreaGarrisonSpaceportAdmin
+        237,-56: AU14AreaGarrisonSpaceportAdmin
+        237,-55: AU14AreaGarrisonSpaceportAdmin
+        236,-50: AU14AreaGarrisonSpaceportAdmin
+        237,-54: AU14AreaGarrisonSpaceportAdmin
+        237,-53: AU14AreaGarrisonSpaceportAdmin
+        237,-52: AU14AreaGarrisonSpaceportAdmin
+        237,-51: AU14AreaGarrisonSpaceportAdmin
+        237,-50: AU14AreaGarrisonSpaceportAdmin
+        238,-56: AU14AreaGarrisonSpaceportAdmin
+        238,-55: AU14AreaGarrisonSpaceportAdmin
+        238,-54: AU14AreaGarrisonSpaceportAdmin
+        238,-53: AU14AreaGarrisonSpaceportAdmin
+        238,-52: AU14AreaGarrisonSpaceportAdmin
+        238,-51: AU14AreaGarrisonSpaceportAdmin
+        238,-50: AU14AreaGarrisonSpaceportAdmin
+        238,-49: AU14AreaGarrisonSpaceportAdmin
+        238,-48: AU14AreaGarrisonSpaceportAdmin
+        238,-47: AU14AreaGarrisonSpaceportAdmin
+        238,-46: AU14AreaGarrisonSpaceportAdmin
+        237,-49: AU14AreaGarrisonSpaceportAdmin
+        237,-48: AU14AreaGarrisonSpaceportAdmin
+        237,-47: AU14AreaGarrisonSpaceportAdmin
+        237,-46: AU14AreaGarrisonSpaceportAdmin
+        237,-45: AU14AreaGarrisonSpaceportAdmin
+        236,-49: AU14AreaGarrisonSpaceportAdmin
+        236,-48: AU14AreaGarrisonSpaceportAdmin
+        238,-45: AU14AreaGarrisonSpaceportAdmin
+        236,-47: AU14AreaGarrisonSpaceportAdmin
+        236,-46: AU14AreaGarrisonSpaceportAdmin
+        236,-45: AU14AreaGarrisonSpaceportAdmin
+        235,-49: AU14AreaGarrisonSpaceportAdmin
+        235,-48: AU14AreaGarrisonSpaceportAdmin
+        235,-46: AU14AreaGarrisonSpaceportAdmin
+        235,-45: AU14AreaGarrisonSpaceportAdmin
+        235,-47: AU14AreaGarrisonSpaceportAdmin
+        239,-45: AU14AreaGarrisonSpaceportAdmin
+        239,-46: AU14AreaGarrisonSpaceportAdmin
+        239,-47: AU14AreaGarrisonSpaceportAdmin
+        240,-45: AU14AreaGarrisonSpaceportAdmin
+        240,-46: AU14AreaGarrisonSpaceportAdmin
+        240,-47: AU14AreaGarrisonSpaceportAdmin
+        241,-45: AU14AreaGarrisonSpaceportAdmin
+        241,-46: AU14AreaGarrisonSpaceportAdmin
+        241,-47: AU14AreaGarrisonSpaceportAdmin
+        242,-45: AU14AreaGarrisonSpaceportAdmin
+        242,-46: AU14AreaGarrisonSpaceportAdmin
+        242,-47: AU14AreaGarrisonSpaceportAdmin
+        225,-92: AU14AreaGarrisonBiologySchool
+        225,-93: AU14AreaGarrisonBiologySchool
+        225,-94: AU14AreaGarrisonBiologySchool
+        224,-92: AU14AreaGarrisonBiologySchool
+        224,-93: AU14AreaGarrisonBiologySchool
+        224,-94: AU14AreaGarrisonBiologySchool
+        223,-92: AU14AreaGarrisonBiologySchool
+        223,-93: AU14AreaGarrisonBiologySchool
+        223,-94: AU14AreaGarrisonBiologySchool
+        222,-92: AU14AreaGarrisonBiologySchool
+        222,-93: AU14AreaGarrisonBiologySchool
+        222,-94: AU14AreaGarrisonBiologySchool
+        221,-92: AU14AreaGarrisonBiologySchool
+        221,-93: AU14AreaGarrisonBiologySchool
+        221,-94: AU14AreaGarrisonBiologySchool
+        167,-81: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        167,-82: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        168,-81: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        169,-81: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        169,-82: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        170,-81: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        170,-82: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        168,-82: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        182,-112: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        169,-80: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        170,-80: AU14AreaStableGarrisonMedicalCenter2ndFloor
+        182,-113: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        182,-114: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        182,-115: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        181,-112: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        181,-113: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        181,-114: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        181,-115: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        180,-112: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        180,-113: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        180,-114: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        180,-115: AU14AreaStableGarrisonLewistonApartments2ndFloor
+        230,-128: AU14AreaGarrisonBiologySchool
+        229,-128: AU14AreaGarrisonBiologySchool
+        229,-129: AU14AreaGarrisonBiologySchool
+        230,-129: AU14AreaGarrisonBiologySchool
     - type: BecomesStation
       id: StableGarrisonRedux
     - type: SpreaderGrid
@@ -58509,6 +59379,12 @@ entities:
     - type: Transform
       pos: 97.5,-140.5
       parent: 1
+  - uid: 57732
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 100.5,-142.5
+      parent: 1
 - proto: CMApcConstructed
   entities:
   - uid: 174
@@ -61038,7 +61914,8 @@ entities:
   - uid: 643
     components:
     - type: Transform
-      pos: 99.44784,-142.2722
+      rot: 1.5707963267948966 rad
+      pos: 97.772804,-143.38678
       parent: 1
   - uid: 644
     components:
@@ -61091,7 +61968,7 @@ entities:
   - uid: 652
     components:
     - type: Transform
-      pos: 98.645706,-142.29033
+      pos: 98.49937,-142.49615
       parent: 1
   - uid: 653
     components:
@@ -61347,6 +62224,11 @@ entities:
     - type: Transform
       pos: 289.5,-114.5
       parent: 1
+  - uid: 58493
+    components:
+    - type: Transform
+      pos: 185.5,-67.5
+      parent: 1
 - proto: CMDoubleDoorColonySecurityGlassLocked
   entities:
   - uid: 697
@@ -61550,18 +62432,26 @@ entities:
     - type: Transform
       pos: 170.5,-57.5
       parent: 1
+    - type: FaxMachine
+      name: UoA Chief Medical Officer
   - uid: 731
     components:
+    - type: MetaData
+      name: Colonial Marshals Bureau
     - type: Transform
       pos: 271.5,-113.5
       parent: 1
+    - type: FaxMachine
+      name: Colonial Marshals Bureau Prep
   - uid: 732
     components:
+    - type: MetaData
+      name: Colonial Marshals Bureau ATC
     - type: Transform
       pos: 292.5,-122.5
       parent: 1
     - type: FaxMachine
-      name: CMB Air Traffic Control
+      name: Colonial Marshals Bureau ATC
 - proto: CMFilingCabinet
   entities:
   - uid: 733
@@ -61726,6 +62616,36 @@ entities:
     components:
     - type: Transform
       pos: 71.5,-31.5
+      parent: 1
+  - uid: 58496
+    components:
+    - type: Transform
+      pos: 188.21043,-66.45109
+      parent: 1
+  - uid: 58497
+    components:
+    - type: Transform
+      pos: 188.25731,-64.48234
+      parent: 1
+  - uid: 58498
+    components:
+    - type: Transform
+      pos: 176.2415,-66.48234
+      parent: 1
+  - uid: 58500
+    components:
+    - type: Transform
+      pos: 176.22588,-64.51359
+      parent: 1
+  - uid: 58502
+    components:
+    - type: Transform
+      pos: 174.22588,-66.51359
+      parent: 1
+  - uid: 58503
+    components:
+    - type: Transform
+      pos: 174.25713,-64.41984
       parent: 1
 - proto: CMLinenBin
   entities:
@@ -64435,6 +65355,14 @@ entities:
       parent: 1
     - type: Fixtures
       fixtures: {}
+  - uid: 58529
+    components:
+    - type: Transform
+      anchored: False
+      pos: 127.5,-149.5
+      parent: 1
+    - type: Fixtures
+      fixtures: {}
 - proto: CMUZLevelLadderThroughDown
   entities:
   - uid: 1239
@@ -64536,6 +65464,13 @@ entities:
     components:
     - type: Transform
       pos: 171.5,-143.5
+      parent: 1
+    - type: Fixtures
+      fixtures: {}
+  - uid: 58524
+    components:
+    - type: Transform
+      pos: 222.5,-144.5
       parent: 1
     - type: Fixtures
       fixtures: {}
@@ -71642,6 +72577,36 @@ entities:
       rot: 3.141592653589793 rad
       pos: 277.5,-120.5
       parent: 1
+  - uid: 58435
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 168.5,-68.5
+      parent: 1
+  - uid: 58436
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 168.5,-68.5
+      parent: 1
+  - uid: 58437
+    components:
+    - type: Transform
+      rot: 1.5707963267948966 rad
+      pos: 164.5,-68.5
+      parent: 1
+  - uid: 58438
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 164.5,-70.5
+      parent: 1
+  - uid: 58439
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-70.5
+      parent: 1
 - proto: DisposalJunction
   entities:
   - uid: 2549
@@ -72107,6 +73072,324 @@ entities:
       rot: 1.5707963267948966 rad
       pos: 105.5,-40.5
       parent: 1
+  - uid: 58434
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 164.5,-69.5
+      parent: 1
+  - uid: 58440
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-62.5
+      parent: 1
+  - uid: 58441
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-57.5
+      parent: 1
+  - uid: 58442
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-58.5
+      parent: 1
+  - uid: 58443
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-59.5
+      parent: 1
+  - uid: 58444
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-60.5
+      parent: 1
+  - uid: 58445
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-61.5
+      parent: 1
+  - uid: 58446
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-63.5
+      parent: 1
+  - uid: 58447
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-64.5
+      parent: 1
+  - uid: 58448
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-65.5
+      parent: 1
+  - uid: 58449
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-66.5
+      parent: 1
+  - uid: 58450
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-67.5
+      parent: 1
+  - uid: 58451
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-68.5
+      parent: 1
+  - uid: 58452
+    components:
+    - type: Transform
+      rot: 3.141592653589793 rad
+      pos: 143.5,-69.5
+      parent: 1
+  - uid: 58453
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 144.5,-70.5
+      parent: 1
+  - uid: 58454
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 145.5,-70.5
+      parent: 1
+  - uid: 58455
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 146.5,-70.5
+      parent: 1
+  - uid: 58456
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 149.5,-70.5
+      parent: 1
+  - uid: 58457
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 147.5,-70.5
+      parent: 1
+  - uid: 58458
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 148.5,-70.5
+      parent: 1
+  - uid: 58459
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 150.5,-70.5
+      parent: 1
+  - uid: 58460
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 151.5,-70.5
+      parent: 1
+  - uid: 58461
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 152.5,-70.5
+      parent: 1
+  - uid: 58462
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 153.5,-70.5
+      parent: 1
+  - uid: 58463
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 155.5,-70.5
+      parent: 1
+  - uid: 58464
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 154.5,-70.5
+      parent: 1
+  - uid: 58465
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 156.5,-70.5
+      parent: 1
+  - uid: 58466
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 157.5,-70.5
+      parent: 1
+  - uid: 58467
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 158.5,-70.5
+      parent: 1
+  - uid: 58468
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 159.5,-70.5
+      parent: 1
+  - uid: 58469
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 160.5,-70.5
+      parent: 1
+  - uid: 58470
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 161.5,-70.5
+      parent: 1
+  - uid: 58471
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 162.5,-70.5
+      parent: 1
+  - uid: 58472
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 163.5,-70.5
+      parent: 1
+  - uid: 58473
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 165.5,-68.5
+      parent: 1
+  - uid: 58474
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 166.5,-68.5
+      parent: 1
+  - uid: 58475
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 167.5,-68.5
+      parent: 1
+  - uid: 58476
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 170.5,-67.5
+      parent: 1
+  - uid: 58477
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 169.5,-67.5
+      parent: 1
+  - uid: 58478
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 171.5,-67.5
+      parent: 1
+  - uid: 58479
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 181.5,-67.5
+      parent: 1
+  - uid: 58480
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 172.5,-67.5
+      parent: 1
+  - uid: 58481
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 173.5,-67.5
+      parent: 1
+  - uid: 58482
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 174.5,-67.5
+      parent: 1
+  - uid: 58483
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 175.5,-67.5
+      parent: 1
+  - uid: 58484
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 176.5,-67.5
+      parent: 1
+  - uid: 58485
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 177.5,-67.5
+      parent: 1
+  - uid: 58486
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 178.5,-67.5
+      parent: 1
+  - uid: 58487
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 179.5,-67.5
+      parent: 1
+  - uid: 58488
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 180.5,-67.5
+      parent: 1
+  - uid: 58489
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 182.5,-67.5
+      parent: 1
+  - uid: 58490
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 183.5,-67.5
+      parent: 1
+  - uid: 58491
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 184.5,-67.5
+      parent: 1
 - proto: DisposalRouter
   entities:
   - uid: 2629
@@ -72114,6 +73397,14 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 108.5,-79.5
+      parent: 1
+- proto: DisposalTrunk
+  entities:
+  - uid: 58492
+    components:
+    - type: Transform
+      rot: -1.5707963267948966 rad
+      pos: 185.5,-67.5
       parent: 1
 - proto: Dresser
   entities:
@@ -72222,6 +73513,28 @@ entities:
     components:
     - type: Transform
       pos: 51.675194,-42.835056
+      parent: 1
+- proto: FloorChasmEntity
+  entities:
+  - uid: 34399
+    components:
+    - type: Transform
+      pos: 143.5,-56.5
+      parent: 1
+  - uid: 34407
+    components:
+    - type: Transform
+      pos: 143.5,-57.5
+      parent: 1
+  - uid: 36355
+    components:
+    - type: Transform
+      pos: 142.5,-57.5
+      parent: 1
+  - uid: 36356
+    components:
+    - type: Transform
+      pos: 142.5,-56.5
       parent: 1
 - proto: FloraTree
   entities:
@@ -75719,6 +77032,13 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 204.5,-49.5
       parent: 1
+  - uid: 4722
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-132.5
+      parent: 1
   - uid: 58285
     components:
     - type: Transform
@@ -75742,6 +77062,738 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 98.5,-39.5
+      parent: 1
+  - uid: 58303
+    components:
+    - type: Transform
+      anchored: False
+      pos: 192.5,-63.5
+      parent: 1
+  - uid: 58304
+    components:
+    - type: Transform
+      anchored: False
+      pos: 194.5,-63.5
+      parent: 1
+  - uid: 58305
+    components:
+    - type: Transform
+      anchored: False
+      pos: 195.5,-63.5
+      parent: 1
+  - uid: 58306
+    components:
+    - type: Transform
+      anchored: False
+      pos: 196.5,-63.5
+      parent: 1
+  - uid: 58307
+    components:
+    - type: Transform
+      anchored: False
+      pos: 193.5,-63.5
+      parent: 1
+  - uid: 58308
+    components:
+    - type: Transform
+      anchored: False
+      pos: 197.5,-63.5
+      parent: 1
+  - uid: 58428
+    components:
+    - type: Transform
+      anchored: False
+      pos: 190.5,-95.5
+      parent: 1
+  - uid: 58429
+    components:
+    - type: Transform
+      anchored: False
+      pos: 191.5,-95.5
+      parent: 1
+  - uid: 58430
+    components:
+    - type: Transform
+      anchored: False
+      pos: 193.5,-95.5
+      parent: 1
+  - uid: 58431
+    components:
+    - type: Transform
+      anchored: False
+      pos: 194.5,-95.5
+      parent: 1
+  - uid: 58432
+    components:
+    - type: Transform
+      anchored: False
+      pos: 195.5,-95.5
+      parent: 1
+  - uid: 58433
+    components:
+    - type: Transform
+      anchored: False
+      pos: 192.5,-95.5
+      parent: 1
+  - uid: 58514
+    components:
+    - type: Transform
+      anchored: False
+      pos: 258.5,-122.5
+      parent: 1
+  - uid: 58515
+    components:
+    - type: Transform
+      anchored: False
+      pos: 257.5,-122.5
+      parent: 1
+  - uid: 58516
+    components:
+    - type: Transform
+      anchored: False
+      pos: 256.5,-122.5
+      parent: 1
+  - uid: 58517
+    components:
+    - type: Transform
+      anchored: False
+      pos: 255.5,-122.5
+      parent: 1
+  - uid: 58518
+    components:
+    - type: Transform
+      anchored: False
+      pos: 254.5,-122.5
+      parent: 1
+  - uid: 58519
+    components:
+    - type: Transform
+      anchored: False
+      pos: 253.5,-122.5
+      parent: 1
+  - uid: 58520
+    components:
+    - type: Transform
+      anchored: False
+      pos: 252.5,-122.5
+      parent: 1
+  - uid: 58521
+    components:
+    - type: Transform
+      anchored: False
+      pos: 251.5,-122.5
+      parent: 1
+  - uid: 58522
+    components:
+    - type: Transform
+      anchored: False
+      pos: 250.5,-122.5
+      parent: 1
+  - uid: 58523
+    components:
+    - type: Transform
+      anchored: False
+      pos: 249.5,-122.5
+      parent: 1
+  - uid: 58580
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-133.5
+      parent: 1
+  - uid: 58581
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-134.5
+      parent: 1
+  - uid: 58582
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-135.5
+      parent: 1
+  - uid: 58583
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-136.5
+      parent: 1
+  - uid: 58584
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-137.5
+      parent: 1
+  - uid: 58585
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-138.5
+      parent: 1
+  - uid: 58586
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-139.5
+      parent: 1
+  - uid: 58587
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-132.5
+      parent: 1
+  - uid: 58588
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-133.5
+      parent: 1
+  - uid: 58589
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-134.5
+      parent: 1
+  - uid: 58590
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-135.5
+      parent: 1
+  - uid: 58591
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-137.5
+      parent: 1
+  - uid: 58592
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-138.5
+      parent: 1
+  - uid: 58593
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-139.5
+      parent: 1
+  - uid: 58594
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-136.5
+      parent: 1
+  - uid: 58595
+    components:
+    - type: Transform
+      anchored: False
+      pos: 99.5,-137.5
+      parent: 1
+  - uid: 58596
+    components:
+    - type: Transform
+      anchored: False
+      pos: 98.5,-137.5
+      parent: 1
+  - uid: 58597
+    components:
+    - type: Transform
+      anchored: False
+      pos: 97.5,-137.5
+      parent: 1
+  - uid: 58598
+    components:
+    - type: Transform
+      anchored: False
+      pos: 96.5,-137.5
+      parent: 1
+  - uid: 58599
+    components:
+    - type: Transform
+      anchored: False
+      pos: 95.5,-137.5
+      parent: 1
+  - uid: 58608
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-55.5
+      parent: 1
+  - uid: 58609
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-56.5
+      parent: 1
+  - uid: 58610
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-57.5
+      parent: 1
+  - uid: 58611
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-58.5
+      parent: 1
+  - uid: 58612
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-59.5
+      parent: 1
+  - uid: 58613
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-60.5
+      parent: 1
+  - uid: 58614
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-60.5
+      parent: 1
+  - uid: 58615
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-61.5
+      parent: 1
+  - uid: 58616
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-62.5
+      parent: 1
+  - uid: 58617
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-63.5
+      parent: 1
+  - uid: 58618
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-64.5
+      parent: 1
+  - uid: 58619
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-65.5
+      parent: 1
+  - uid: 58620
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-66.5
+      parent: 1
+  - uid: 58621
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-67.5
+      parent: 1
+  - uid: 58622
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-69.5
+      parent: 1
+  - uid: 58623
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-70.5
+      parent: 1
+  - uid: 58624
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-71.5
+      parent: 1
+  - uid: 58625
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-68.5
+      parent: 1
+  - uid: 58626
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-72.5
+      parent: 1
+  - uid: 58627
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-73.5
+      parent: 1
+  - uid: 58628
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-74.5
+      parent: 1
+  - uid: 58629
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-75.5
+      parent: 1
+  - uid: 58630
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-76.5
+      parent: 1
+  - uid: 58631
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-77.5
+      parent: 1
+  - uid: 58632
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-78.5
+      parent: 1
+  - uid: 58633
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-79.5
+      parent: 1
+  - uid: 58634
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-80.5
+      parent: 1
+  - uid: 58635
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-81.5
+      parent: 1
+  - uid: 58636
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-82.5
+      parent: 1
+  - uid: 58637
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-83.5
+      parent: 1
+  - uid: 58638
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-84.5
+      parent: 1
+  - uid: 58639
+    components:
+    - type: Transform
+      anchored: False
+      pos: 230.5,-84.5
+      parent: 1
+  - uid: 58640
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-84.5
+      parent: 1
+  - uid: 58641
+    components:
+    - type: Transform
+      anchored: False
+      pos: 228.5,-84.5
+      parent: 1
+  - uid: 58642
+    components:
+    - type: Transform
+      anchored: False
+      pos: 227.5,-84.5
+      parent: 1
+  - uid: 58643
+    components:
+    - type: Transform
+      anchored: False
+      pos: 226.5,-84.5
+      parent: 1
+  - uid: 58644
+    components:
+    - type: Transform
+      anchored: False
+      pos: 225.5,-84.5
+      parent: 1
+  - uid: 58645
+    components:
+    - type: Transform
+      anchored: False
+      pos: 224.5,-84.5
+      parent: 1
+  - uid: 58646
+    components:
+    - type: Transform
+      anchored: False
+      pos: 223.5,-84.5
+      parent: 1
+  - uid: 58647
+    components:
+    - type: Transform
+      anchored: False
+      pos: 222.5,-84.5
+      parent: 1
+  - uid: 58648
+    components:
+    - type: Transform
+      anchored: False
+      pos: 221.5,-84.5
+      parent: 1
+  - uid: 58649
+    components:
+    - type: Transform
+      anchored: False
+      pos: 220.5,-84.5
+      parent: 1
+  - uid: 58650
+    components:
+    - type: Transform
+      anchored: False
+      pos: 219.5,-84.5
+      parent: 1
+  - uid: 58651
+    components:
+    - type: Transform
+      anchored: False
+      pos: 218.5,-84.5
+      parent: 1
+  - uid: 58652
+    components:
+    - type: Transform
+      anchored: False
+      pos: 217.5,-84.5
+      parent: 1
+  - uid: 58653
+    components:
+    - type: Transform
+      anchored: False
+      pos: 216.5,-84.5
+      parent: 1
+  - uid: 58654
+    components:
+    - type: Transform
+      anchored: False
+      pos: 215.5,-84.5
+      parent: 1
+  - uid: 58655
+    components:
+    - type: Transform
+      anchored: False
+      pos: 214.5,-84.5
+      parent: 1
+  - uid: 58656
+    components:
+    - type: Transform
+      anchored: False
+      pos: 212.5,-84.5
+      parent: 1
+  - uid: 58657
+    components:
+    - type: Transform
+      anchored: False
+      pos: 213.5,-84.5
+      parent: 1
+  - uid: 58658
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-84.5
+      parent: 1
+  - uid: 58659
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-82.5
+      parent: 1
+  - uid: 58660
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-81.5
+      parent: 1
+  - uid: 58661
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-80.5
+      parent: 1
+  - uid: 58662
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-79.5
+      parent: 1
+  - uid: 58663
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-78.5
+      parent: 1
+  - uid: 58664
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-77.5
+      parent: 1
+  - uid: 58665
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-76.5
+      parent: 1
+  - uid: 58666
+    components:
+    - type: Transform
+      anchored: False
+      pos: 233.5,-44.5
+      parent: 1
+  - uid: 58667
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-83.5
+      parent: 1
+  - uid: 58668
+    components:
+    - type: Transform
+      anchored: False
+      pos: 211.5,-75.5
+      parent: 1
+  - uid: 58669
+    components:
+    - type: Transform
+      anchored: False
+      pos: 210.5,-75.5
+      parent: 1
+  - uid: 58670
+    components:
+    - type: Transform
+      anchored: False
+      pos: 209.5,-75.5
+      parent: 1
+  - uid: 58671
+    components:
+    - type: Transform
+      anchored: False
+      pos: 208.5,-75.5
+      parent: 1
+  - uid: 58672
+    components:
+    - type: Transform
+      anchored: False
+      pos: 232.5,-44.5
+      parent: 1
+  - uid: 58673
+    components:
+    - type: Transform
+      anchored: False
+      pos: 230.5,-44.5
+      parent: 1
+  - uid: 58674
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-44.5
+      parent: 1
+  - uid: 58675
+    components:
+    - type: Transform
+      anchored: False
+      pos: 228.5,-44.5
+      parent: 1
+  - uid: 58676
+    components:
+    - type: Transform
+      anchored: False
+      pos: 227.5,-44.5
+      parent: 1
+  - uid: 58677
+    components:
+    - type: Transform
+      anchored: False
+      pos: 226.5,-44.5
+      parent: 1
+  - uid: 58678
+    components:
+    - type: Transform
+      anchored: False
+      pos: 231.5,-44.5
       parent: 1
 - proto: RMCBlackMappingComputer
   entities:
@@ -79351,6 +81403,138 @@ entities:
     components:
     - type: Transform
       pos: 153.5,-121.5
+      parent: 1
+  - uid: 58525
+    components:
+    - type: Transform
+      anchored: False
+      pos: 127.5,-149.5
+      parent: 1
+  - uid: 58526
+    components:
+    - type: Transform
+      anchored: False
+      pos: 127.5,-148.5
+      parent: 1
+  - uid: 58527
+    components:
+    - type: Transform
+      anchored: False
+      pos: 126.5,-149.5
+      parent: 1
+  - uid: 58528
+    components:
+    - type: Transform
+      anchored: False
+      pos: 126.5,-148.5
+      parent: 1
+  - uid: 58530
+    components:
+    - type: Transform
+      anchored: False
+      pos: 110.5,-141.5
+      parent: 1
+  - uid: 58531
+    components:
+    - type: Transform
+      anchored: False
+      pos: 110.5,-142.5
+      parent: 1
+  - uid: 58532
+    components:
+    - type: Transform
+      anchored: False
+      pos: 109.5,-141.5
+      parent: 1
+  - uid: 58533
+    components:
+    - type: Transform
+      anchored: False
+      pos: 109.5,-142.5
+      parent: 1
+  - uid: 58534
+    components:
+    - type: Transform
+      anchored: False
+      pos: 107.5,-141.5
+      parent: 1
+  - uid: 58535
+    components:
+    - type: Transform
+      anchored: False
+      pos: 107.5,-142.5
+      parent: 1
+  - uid: 58536
+    components:
+    - type: Transform
+      anchored: False
+      pos: 106.5,-141.5
+      parent: 1
+  - uid: 58537
+    components:
+    - type: Transform
+      anchored: False
+      pos: 106.5,-142.5
+      parent: 1
+  - uid: 58538
+    components:
+    - type: Transform
+      anchored: False
+      pos: 105.5,-141.5
+      parent: 1
+  - uid: 58539
+    components:
+    - type: Transform
+      anchored: False
+      pos: 104.5,-141.5
+      parent: 1
+  - uid: 58540
+    components:
+    - type: Transform
+      anchored: False
+      pos: 104.5,-142.5
+      parent: 1
+  - uid: 58541
+    components:
+    - type: Transform
+      anchored: False
+      pos: 103.5,-141.5
+      parent: 1
+  - uid: 58542
+    components:
+    - type: Transform
+      anchored: False
+      pos: 103.5,-142.5
+      parent: 1
+  - uid: 58543
+    components:
+    - type: Transform
+      anchored: False
+      pos: 102.5,-141.5
+      parent: 1
+  - uid: 58544
+    components:
+    - type: Transform
+      anchored: False
+      pos: 105.5,-142.5
+      parent: 1
+  - uid: 58545
+    components:
+    - type: Transform
+      anchored: False
+      pos: 101.5,-141.5
+      parent: 1
+  - uid: 58546
+    components:
+    - type: Transform
+      anchored: False
+      pos: 101.5,-142.5
+      parent: 1
+  - uid: 58547
+    components:
+    - type: Transform
+      anchored: False
+      pos: 102.5,-142.5
       parent: 1
 - proto: RMCCatwalkHybrisaLattice
   entities:
@@ -83795,6 +85979,1177 @@ entities:
       rot: 3.141592653589793 rad
       pos: 142.5,-75.5
       parent: 1
+  - uid: 58289
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 191.5,-68.5
+      parent: 1
+  - uid: 58290
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 192.5,-68.5
+      parent: 1
+  - uid: 58291
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 193.5,-68.5
+      parent: 1
+  - uid: 58292
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 194.5,-68.5
+      parent: 1
+  - uid: 58293
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 196.5,-68.5
+      parent: 1
+  - uid: 58294
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 197.5,-68.5
+      parent: 1
+  - uid: 58295
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 195.5,-68.5
+      parent: 1
+  - uid: 58296
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 198.5,-68.5
+      parent: 1
+  - uid: 58297
+    components:
+    - type: Transform
+      anchored: False
+      pos: 197.5,-63.5
+      parent: 1
+  - uid: 58298
+    components:
+    - type: Transform
+      anchored: False
+      pos: 196.5,-63.5
+      parent: 1
+  - uid: 58299
+    components:
+    - type: Transform
+      anchored: False
+      pos: 195.5,-63.5
+      parent: 1
+  - uid: 58300
+    components:
+    - type: Transform
+      anchored: False
+      pos: 194.5,-63.5
+      parent: 1
+  - uid: 58301
+    components:
+    - type: Transform
+      anchored: False
+      pos: 193.5,-63.5
+      parent: 1
+  - uid: 58302
+    components:
+    - type: Transform
+      anchored: False
+      pos: 192.5,-63.5
+      parent: 1
+  - uid: 58309
+    components:
+    - type: Transform
+      anchored: False
+      pos: 208.5,-75.5
+      parent: 1
+  - uid: 58310
+    components:
+    - type: Transform
+      anchored: False
+      pos: 209.5,-75.5
+      parent: 1
+  - uid: 58311
+    components:
+    - type: Transform
+      anchored: False
+      pos: 210.5,-75.5
+      parent: 1
+  - uid: 58312
+    components:
+    - type: Transform
+      anchored: False
+      pos: 211.5,-75.5
+      parent: 1
+  - uid: 58313
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-76.5
+      parent: 1
+  - uid: 58314
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-77.5
+      parent: 1
+  - uid: 58315
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-78.5
+      parent: 1
+  - uid: 58316
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-80.5
+      parent: 1
+  - uid: 58317
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-79.5
+      parent: 1
+  - uid: 58318
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-81.5
+      parent: 1
+  - uid: 58319
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-82.5
+      parent: 1
+  - uid: 58320
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-83.5
+      parent: 1
+  - uid: 58321
+    components:
+    - type: Transform
+      anchored: False
+      pos: 213.5,-84.5
+      parent: 1
+  - uid: 58322
+    components:
+    - type: Transform
+      anchored: False
+      pos: 214.5,-84.5
+      parent: 1
+  - uid: 58323
+    components:
+    - type: Transform
+      anchored: False
+      pos: 215.5,-84.5
+      parent: 1
+  - uid: 58324
+    components:
+    - type: Transform
+      anchored: False
+      pos: 216.5,-84.5
+      parent: 1
+  - uid: 58325
+    components:
+    - type: Transform
+      anchored: False
+      pos: 217.5,-84.5
+      parent: 1
+  - uid: 58326
+    components:
+    - type: Transform
+      anchored: False
+      pos: 218.5,-84.5
+      parent: 1
+  - uid: 58327
+    components:
+    - type: Transform
+      anchored: False
+      pos: 219.5,-84.5
+      parent: 1
+  - uid: 58328
+    components:
+    - type: Transform
+      anchored: False
+      pos: 220.5,-84.5
+      parent: 1
+  - uid: 58329
+    components:
+    - type: Transform
+      anchored: False
+      pos: 221.5,-84.5
+      parent: 1
+  - uid: 58330
+    components:
+    - type: Transform
+      anchored: False
+      pos: 222.5,-84.5
+      parent: 1
+  - uid: 58331
+    components:
+    - type: Transform
+      anchored: False
+      pos: 224.5,-84.5
+      parent: 1
+  - uid: 58332
+    components:
+    - type: Transform
+      anchored: False
+      pos: 225.5,-84.5
+      parent: 1
+  - uid: 58333
+    components:
+    - type: Transform
+      anchored: False
+      pos: 223.5,-84.5
+      parent: 1
+  - uid: 58334
+    components:
+    - type: Transform
+      anchored: False
+      pos: 226.5,-84.5
+      parent: 1
+  - uid: 58335
+    components:
+    - type: Transform
+      anchored: False
+      pos: 227.5,-84.5
+      parent: 1
+  - uid: 58336
+    components:
+    - type: Transform
+      anchored: False
+      pos: 228.5,-84.5
+      parent: 1
+  - uid: 58337
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-84.5
+      parent: 1
+  - uid: 58338
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-83.5
+      parent: 1
+  - uid: 58339
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-82.5
+      parent: 1
+  - uid: 58340
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-81.5
+      parent: 1
+  - uid: 58341
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-80.5
+      parent: 1
+  - uid: 58342
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-79.5
+      parent: 1
+  - uid: 58343
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-78.5
+      parent: 1
+  - uid: 58344
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-76.5
+      parent: 1
+  - uid: 58345
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-75.5
+      parent: 1
+  - uid: 58346
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-74.5
+      parent: 1
+  - uid: 58347
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-77.5
+      parent: 1
+  - uid: 58348
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-73.5
+      parent: 1
+  - uid: 58350
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 229.5,-72.5
+      parent: 1
+  - uid: 58351
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-71.5
+      parent: 1
+  - uid: 58352
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-70.5
+      parent: 1
+  - uid: 58353
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-69.5
+      parent: 1
+  - uid: 58354
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-68.5
+      parent: 1
+  - uid: 58355
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-67.5
+      parent: 1
+  - uid: 58356
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-66.5
+      parent: 1
+  - uid: 58357
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-65.5
+      parent: 1
+  - uid: 58358
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-64.5
+      parent: 1
+  - uid: 58359
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-62.5
+      parent: 1
+  - uid: 58360
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-61.5
+      parent: 1
+  - uid: 58361
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 228.5,-63.5
+      parent: 1
+  - uid: 58362
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-59.5
+      parent: 1
+  - uid: 58363
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-58.5
+      parent: 1
+  - uid: 58364
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-57.5
+      parent: 1
+  - uid: 58365
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-56.5
+      parent: 1
+  - uid: 58366
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 228.5,-55.5
+      parent: 1
+  - uid: 58367
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 227.5,-55.5
+      parent: 1
+  - uid: 58368
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 226.5,-55.5
+      parent: 1
+  - uid: 58369
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 225.5,-55.5
+      parent: 1
+  - uid: 58370
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 224.5,-55.5
+      parent: 1
+  - uid: 58371
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 223.5,-55.5
+      parent: 1
+  - uid: 58372
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 221.5,-55.5
+      parent: 1
+  - uid: 58373
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 220.5,-55.5
+      parent: 1
+  - uid: 58374
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 219.5,-55.5
+      parent: 1
+  - uid: 58375
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 218.5,-55.5
+      parent: 1
+  - uid: 58376
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 217.5,-55.5
+      parent: 1
+  - uid: 58377
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 222.5,-55.5
+      parent: 1
+  - uid: 58378
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 215.5,-55.5
+      parent: 1
+  - uid: 58379
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 216.5,-55.5
+      parent: 1
+  - uid: 58380
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 213.5,-55.5
+      parent: 1
+  - uid: 58381
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 212.5,-55.5
+      parent: 1
+  - uid: 58382
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 214.5,-55.5
+      parent: 1
+  - uid: 58383
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 211.5,-55.5
+      parent: 1
+  - uid: 58384
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 210.5,-55.5
+      parent: 1
+  - uid: 58385
+    components:
+    - type: Transform
+      anchored: False
+      pos: 210.5,-52.5
+      parent: 1
+  - uid: 58386
+    components:
+    - type: Transform
+      anchored: False
+      pos: 211.5,-52.5
+      parent: 1
+  - uid: 58387
+    components:
+    - type: Transform
+      anchored: False
+      pos: 212.5,-52.5
+      parent: 1
+  - uid: 58388
+    components:
+    - type: Transform
+      anchored: False
+      pos: 213.5,-52.5
+      parent: 1
+  - uid: 58389
+    components:
+    - type: Transform
+      anchored: False
+      pos: 214.5,-52.5
+      parent: 1
+  - uid: 58390
+    components:
+    - type: Transform
+      anchored: False
+      pos: 222.5,-52.5
+      parent: 1
+  - uid: 58391
+    components:
+    - type: Transform
+      anchored: False
+      pos: 223.5,-52.5
+      parent: 1
+  - uid: 58392
+    components:
+    - type: Transform
+      anchored: False
+      pos: 224.5,-52.5
+      parent: 1
+  - uid: 58393
+    components:
+    - type: Transform
+      anchored: False
+      pos: 225.5,-52.5
+      parent: 1
+  - uid: 58394
+    components:
+    - type: Transform
+      anchored: False
+      pos: 226.5,-52.5
+      parent: 1
+  - uid: 58395
+    components:
+    - type: Transform
+      anchored: False
+      pos: 227.5,-52.5
+      parent: 1
+  - uid: 58396
+    components:
+    - type: Transform
+      anchored: False
+      pos: 228.5,-52.5
+      parent: 1
+  - uid: 58397
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-51.5
+      parent: 1
+  - uid: 58398
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-50.5
+      parent: 1
+  - uid: 58399
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-49.5
+      parent: 1
+  - uid: 58400
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-49.5
+      parent: 1
+  - uid: 58401
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-50.5
+      parent: 1
+  - uid: 58402
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-51.5
+      parent: 1
+  - uid: 58403
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-52.5
+      parent: 1
+  - uid: 58404
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-53.5
+      parent: 1
+  - uid: 58405
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-54.5
+      parent: 1
+  - uid: 58406
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 232.5,-55.5
+      parent: 1
+  - uid: 58414
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 190.5,-100.5
+      parent: 1
+  - uid: 58417
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 191.5,-100.5
+      parent: 1
+  - uid: 58418
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 192.5,-100.5
+      parent: 1
+  - uid: 58419
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 193.5,-100.5
+      parent: 1
+  - uid: 58420
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 194.5,-100.5
+      parent: 1
+  - uid: 58421
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 195.5,-100.5
+      parent: 1
+  - uid: 58422
+    components:
+    - type: Transform
+      anchored: False
+      pos: 195.5,-95.5
+      parent: 1
+  - uid: 58423
+    components:
+    - type: Transform
+      anchored: False
+      pos: 193.5,-95.5
+      parent: 1
+  - uid: 58424
+    components:
+    - type: Transform
+      anchored: False
+      pos: 192.5,-95.5
+      parent: 1
+  - uid: 58425
+    components:
+    - type: Transform
+      anchored: False
+      pos: 191.5,-95.5
+      parent: 1
+  - uid: 58426
+    components:
+    - type: Transform
+      anchored: False
+      pos: 190.5,-95.5
+      parent: 1
+  - uid: 58427
+    components:
+    - type: Transform
+      anchored: False
+      pos: 194.5,-95.5
+      parent: 1
+  - uid: 58504
+    components:
+    - type: Transform
+      anchored: False
+      pos: 249.5,-122.5
+      parent: 1
+  - uid: 58505
+    components:
+    - type: Transform
+      anchored: False
+      pos: 250.5,-122.5
+      parent: 1
+  - uid: 58506
+    components:
+    - type: Transform
+      anchored: False
+      pos: 251.5,-122.5
+      parent: 1
+  - uid: 58507
+    components:
+    - type: Transform
+      anchored: False
+      pos: 252.5,-122.5
+      parent: 1
+  - uid: 58508
+    components:
+    - type: Transform
+      anchored: False
+      pos: 253.5,-122.5
+      parent: 1
+  - uid: 58509
+    components:
+    - type: Transform
+      anchored: False
+      pos: 254.5,-122.5
+      parent: 1
+  - uid: 58510
+    components:
+    - type: Transform
+      anchored: False
+      pos: 255.5,-122.5
+      parent: 1
+  - uid: 58511
+    components:
+    - type: Transform
+      anchored: False
+      pos: 256.5,-122.5
+      parent: 1
+  - uid: 58512
+    components:
+    - type: Transform
+      anchored: False
+      pos: 257.5,-122.5
+      parent: 1
+  - uid: 58513
+    components:
+    - type: Transform
+      anchored: False
+      pos: 258.5,-122.5
+      parent: 1
+  - uid: 58552
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-139.5
+      parent: 1
+  - uid: 58553
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-138.5
+      parent: 1
+  - uid: 58554
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-137.5
+      parent: 1
+  - uid: 58555
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-136.5
+      parent: 1
+  - uid: 58556
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-135.5
+      parent: 1
+  - uid: 58557
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-134.5
+      parent: 1
+  - uid: 58558
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-133.5
+      parent: 1
+  - uid: 58559
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 92.5,-132.5
+      parent: 1
+  - uid: 58560
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-132.5
+      parent: 1
+  - uid: 58561
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-134.5
+      parent: 1
+  - uid: 58562
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-135.5
+      parent: 1
+  - uid: 58563
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-136.5
+      parent: 1
+  - uid: 58564
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-137.5
+      parent: 1
+  - uid: 58565
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-138.5
+      parent: 1
+  - uid: 58566
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-133.5
+      parent: 1
+  - uid: 58567
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 101.5,-139.5
+      parent: 1
+  - uid: 58568
+    components:
+    - type: Transform
+      anchored: False
+      pos: 98.5,-137.5
+      parent: 1
+  - uid: 58569
+    components:
+    - type: Transform
+      anchored: False
+      pos: 97.5,-137.5
+      parent: 1
+  - uid: 58570
+    components:
+    - type: Transform
+      anchored: False
+      pos: 96.5,-137.5
+      parent: 1
+  - uid: 58571
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 95.5,-136.5
+      parent: 1
+  - uid: 58572
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 95.5,-135.5
+      parent: 1
+  - uid: 58573
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 96.5,-134.5
+      parent: 1
+  - uid: 58574
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 97.5,-134.5
+      parent: 1
+  - uid: 58575
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 98.5,-134.5
+      parent: 1
+  - uid: 58576
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 99.5,-135.5
+      parent: 1
+  - uid: 58577
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 99.5,-136.5
+      parent: 1
+  - uid: 58600
+    components:
+    - type: Transform
+      anchored: False
+      pos: 233.5,-44.5
+      parent: 1
+  - uid: 58601
+    components:
+    - type: Transform
+      anchored: False
+      pos: 232.5,-44.5
+      parent: 1
+  - uid: 58602
+    components:
+    - type: Transform
+      anchored: False
+      pos: 231.5,-44.5
+      parent: 1
+  - uid: 58603
+    components:
+    - type: Transform
+      anchored: False
+      pos: 230.5,-44.5
+      parent: 1
+  - uid: 58604
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-44.5
+      parent: 1
+  - uid: 58605
+    components:
+    - type: Transform
+      anchored: False
+      pos: 228.5,-44.5
+      parent: 1
+  - uid: 58606
+    components:
+    - type: Transform
+      anchored: False
+      pos: 227.5,-44.5
+      parent: 1
+  - uid: 58607
+    components:
+    - type: Transform
+      anchored: False
+      pos: 226.5,-44.5
+      parent: 1
+- proto: RMCPlatformHybrisaThreeCorner
+  entities:
+  - uid: 58407
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-60.5
+      parent: 1
+  - uid: 58408
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 230.5,-72.5
+      parent: 1
+  - uid: 58409
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 229.5,-55.5
+      parent: 1
+  - uid: 58410
+    components:
+    - type: Transform
+      anchored: False
+      pos: 229.5,-52.5
+      parent: 1
+  - uid: 58411
+    components:
+    - type: Transform
+      anchored: False
+      pos: 230.5,-84.5
+      parent: 1
+  - uid: 58412
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 212.5,-84.5
+      parent: 1
+  - uid: 58548
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 95.5,-137.5
+      parent: 1
+  - uid: 58549
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 95.5,-134.5
+      parent: 1
+  - uid: 58550
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 99.5,-134.5
+      parent: 1
+  - uid: 58551
+    components:
+    - type: Transform
+      anchored: False
+      pos: 99.5,-137.5
+      parent: 1
 - proto: RMCPlatformHybrisaThreeCornerSmall
   entities:
   - uid: 4718
@@ -83820,13 +87175,6 @@ entities:
     - type: Transform
       pos: 225.5,-100.5
       parent: 1
-  - uid: 4722
-    components:
-    - type: Transform
-      anchored: False
-      rot: 1.5707963267948966 rad
-      pos: 101.5,-131.5
-      parent: 1
   - uid: 4723
     components:
     - type: Transform
@@ -83838,6 +87186,48 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 233.5,-50.5
+      parent: 1
+  - uid: 58349
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 228.5,-60.5
+      parent: 1
+  - uid: 58413
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 209.5,-55.5
+      parent: 1
+  - uid: 58415
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 228.5,-72.5
+      parent: 1
+  - uid: 58416
+    components:
+    - type: Transform
+      anchored: False
+      rot: 1.5707963267948966 rad
+      pos: 212.5,-75.5
+      parent: 1
+  - uid: 58578
+    components:
+    - type: Transform
+      anchored: False
+      rot: 3.141592653589793 rad
+      pos: 92.5,-131.5
+      parent: 1
+  - uid: 58579
+    components:
+    - type: Transform
+      anchored: False
+      rot: -1.5707963267948966 rad
+      pos: 92.5,-140.5
       parent: 1
 - proto: RMCPlayingCardDeck
   entities:
@@ -84119,6 +87509,11 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 266.5,-102.5
+      parent: 1
+  - uid: 58494
+    components:
+    - type: Transform
+      pos: 98.5,-143.5
       parent: 1
 - proto: RMCRollerBedHospital
   entities:
@@ -195321,7 +198716,7 @@ entities:
   - uid: 25151
     components:
     - type: Transform
-      pos: 159.5,-73.5
+      pos: 159.5,-72.5
       parent: 1
   - uid: 25152
     components:
@@ -195589,7 +198984,7 @@ entities:
   - uid: 25201
     components:
     - type: Transform
-      pos: 159.5,-72.5
+      pos: 159.5,-73.5
       parent: 1
   - uid: 25202
     components:
@@ -245289,12 +248684,6 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 142.5,-54.5
       parent: 1
-  - uid: 34399
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 142.5,-57.5
-      parent: 1
   - uid: 34400
     components:
     - type: Transform
@@ -245336,12 +248725,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 142.5,-52.5
-      parent: 1
-  - uid: 34407
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 142.5,-56.5
       parent: 1
   - uid: 34408
     components:
@@ -255725,18 +259108,6 @@ entities:
     - type: Transform
       rot: -1.5707963267948966 rad
       pos: 143.5,-55.5
-      parent: 1
-  - uid: 36355
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 143.5,-56.5
-      parent: 1
-  - uid: 36356
-    components:
-    - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 143.5,-57.5
       parent: 1
   - uid: 36357
     components:
@@ -361153,6 +364524,21 @@ entities:
       rot: -1.5707963267948966 rad
       pos: -30.5,-96.5
       parent: 1
+  - uid: 58495
+    components:
+    - type: Transform
+      pos: 157.5,-65.5
+      parent: 1
+  - uid: 58499
+    components:
+    - type: Transform
+      pos: 157.5,-67.5
+      parent: 1
+  - uid: 58501
+    components:
+    - type: Transform
+      pos: 157.5,-66.5
+      parent: 1
 - proto: RMCWallPrisonHull
   entities:
   - uid: 55700
@@ -367831,7 +371217,7 @@ entities:
   - uid: 56989
     components:
     - type: Transform
-      pos: 100.5,-145.5
+      pos: 100.5,-143.5
       parent: 1
   - uid: 56990
     components:
@@ -368419,8 +371805,7 @@ entities:
   - uid: 57098
     components:
     - type: Transform
-      rot: -1.5707963267948966 rad
-      pos: 100.5,-140.5
+      pos: 100.5,-141.5
       parent: 1
   - uid: 57099
     components:
@@ -368439,12 +371824,6 @@ entities:
     - type: Transform
       rot: 3.141592653589793 rad
       pos: 93.5,-140.5
-      parent: 1
-  - uid: 57102
-    components:
-    - type: Transform
-      rot: 3.141592653589793 rad
-      pos: 100.5,-144.5
       parent: 1
   - uid: 57103
     components:
@@ -368633,8 +372012,7 @@ entities:
   - uid: 57134
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 108.5,-141.5
+      pos: 107.5,-143.5
       parent: 1
   - uid: 57135
     components:
@@ -368645,8 +372023,7 @@ entities:
   - uid: 57136
     components:
     - type: Transform
-      rot: 1.5707963267948966 rad
-      pos: 108.5,-142.5
+      pos: 109.5,-143.5
       parent: 1
   - uid: 57137
     components:
@@ -369616,6 +372993,11 @@ entities:
     components:
     - type: Transform
       pos: 254.5,-50.5
+      parent: 1
+  - uid: 57733
+    components:
+    - type: Transform
+      pos: 100.5,-140.5
       parent: 1
 - proto: RMCWeaponLauncherM81
   entities:
@@ -371723,6 +375105,11 @@ entities:
       parent: 1
 - proto: RMCWindowStrata
   entities:
+  - uid: 57102
+    components:
+    - type: Transform
+      pos: 100.5,-145.5
+      parent: 1
   - uid: 57729
     components:
     - type: Transform
@@ -371738,20 +375125,10 @@ entities:
     - type: Transform
       pos: 94.5,-145.5
       parent: 1
-  - uid: 57732
-    components:
-    - type: Transform
-      pos: 100.5,-143.5
-      parent: 1
-  - uid: 57733
-    components:
-    - type: Transform
-      pos: 100.5,-141.5
-      parent: 1
   - uid: 57734
     components:
     - type: Transform
-      pos: 100.5,-142.5
+      pos: 100.5,-144.5
       parent: 1
 - proto: RMCWindowStrataReinforced
   entities:
