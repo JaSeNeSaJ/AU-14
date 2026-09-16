@@ -348,8 +348,9 @@ public sealed partial class ThirdPartySystem : EntitySystem
                         case PlatoonMarkerClass.DSPilot:
                             try
                             {
-                                _entityManager.SpawnEntity("CMComputerDropshipNavigationThirdParty",
-                                    markerXform.Coordinates);
+                                // SpawnEntity has no rotation parameter, so spawn attached to keep the marker's rotation
+                                _entityManager.SpawnAttachedTo("CMComputerDropshipNavigationThirdParty",
+                                    markerXform.Coordinates, rotation: markerXform.LocalRotation);
                                 consoleCount++;
                             }
                             catch (Exception ex)
@@ -361,7 +362,7 @@ public sealed partial class ThirdPartySystem : EntitySystem
                         case PlatoonMarkerClass.DSWeapons:
                             try
                             {
-                                _entityManager.SpawnEntity("CMComputerDropshipWeapons", markerXform.Coordinates);
+                                _entityManager.SpawnAttachedTo("CMComputerDropshipWeapons", markerXform.Coordinates, rotation: markerXform.LocalRotation);
                                 consoleCount++;
                             }
                             catch (Exception ex)
