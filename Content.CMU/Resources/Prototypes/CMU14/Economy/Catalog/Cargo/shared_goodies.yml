@@ -115,3 +115,17 @@
         crate: FrezonCanister
       - cost: 700
         crate: CMUCratePhoronSheets
+      - cost: 600
+        crate: AU14CrateBoxFirefighting
+      - cost: 1200
+        crate: CMUCrateFirefightingArmor
+      - cost: 800
+        crate: CMUCrateAtmosFireResponse
+      - cost: 400
+        crate: RMCAirPumpPortable
+      - cost: 300
+        crate: RMCRadiator
+      - cost: 250
+        crate: RMCDirectionalFan
+      - cost: 150
+        crate: RMCTinyFan

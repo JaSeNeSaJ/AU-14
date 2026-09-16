@@ -68,6 +68,7 @@
     - RMCCableCoil
     - CMAPCElectronics
     - ClothingOuterVestTank
+    - CMUFireHelmet
 
 - type: roleLoadout
   id: JobCMUJobCivilianAtmosian
