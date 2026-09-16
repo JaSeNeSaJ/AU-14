@@ -76260,7 +76260,7 @@ entities:
     - type: Transform
       pos: 55.354004,43.357403
       parent: 1
-- proto: GasThermoMachineFreezer
+- proto: RMCSpaceHeater
   entities:
   - uid: 7259
     components:

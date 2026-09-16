@@ -178130,7 +178130,7 @@ entities:
     - type: Transform
       pos: 111.5,-53.5
       parent: 1
-- proto: GasFilter
+- proto: CMUGasFilter
   entities:
   - uid: 24323
     components:
@@ -178138,7 +178138,7 @@ entities:
       rot: -1.5707963267948966 rad
       pos: 30.5,-170.5
       parent: 1
-- proto: GasValve
+- proto: CMUGasValve
   entities:
   - uid: 24324
     components:

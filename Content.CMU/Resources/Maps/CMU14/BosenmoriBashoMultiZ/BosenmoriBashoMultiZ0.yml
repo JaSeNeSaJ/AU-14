@@ -305041,7 +305041,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 147.5,54.5
-- proto: GasThermoMachineFreezer
+- proto: RMCSpaceHeater
   entities:
   - uid: 47432
     components:
