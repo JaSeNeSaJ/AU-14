@@ -200193,7 +200193,7 @@ entities:
     - type: Transform
       pos: 13.5,-22.5
       parent: 1
-- proto: RMCTacticalMapTableLarge
+- proto: CMUTacticalMapTableLargeGovfor
   entities:
   - uid: 22886
     components:
