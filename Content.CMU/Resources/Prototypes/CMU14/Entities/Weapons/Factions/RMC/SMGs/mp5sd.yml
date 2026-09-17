@@ -70,7 +70,6 @@
         whitelist:
           tags:
           - CMMagazineSMGMP5
-          - CMUMagazineSMGMP5AP
           - CMUMagazineSMGMP5HEAP
   - type: AttachableHolder
     randomAttachmentChance: 0.1
