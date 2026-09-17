@@ -73,8 +73,10 @@ public sealed partial class ThirdPartySystem : EntitySystem
     private float _signalIntervalMultiplier = 1f;
     private bool _spawningActive;
     private TimeSpan _spawnInterval = TimeSpan.FromMinutes(5);
+    private TimeSpan _arrivalInterval = TimeSpan.FromMinutes(5);
     private float _spawnTimer;
     private List<ThirdPartyPrototype>? _thirdPartyList;
+    private static readonly TimeSpan ArrivalJitter = TimeSpan.FromMinutes(10);
 
     private readonly Dictionary<int, uint> _scheduledForces = new();
     private readonly Dictionary<string, uint> _automaticForces = new();
@@ -116,11 +118,12 @@ public sealed partial class ThirdPartySystem : EntitySystem
             return;
         }
 
-        TimeSpan interval = TimeSpan.FromTicks((long)(_spawnInterval.Ticks * _signalIntervalMultiplier));
+        TimeSpan interval = TimeSpan.FromTicks((long)(_arrivalInterval.Ticks * _signalIntervalMultiplier));
         if (_spawnTimer < interval.TotalSeconds)
             return;
 
         _spawnTimer = 0f;
+        _arrivalInterval = RollArrivalInterval();
         int roll = _random.Next(1, 101);
         int chance = Math.Clamp(party.weight * 10, 5, 100); // Example: weight 1 = 10%, weight 10 = 100%
 
@@ -131,10 +134,21 @@ public sealed partial class ThirdPartySystem : EntitySystem
         }
 
         if (_scheduledForces.TryGetValue(_nextThirdPartyIndex, out var force))
+        {
             _forceInterest.SetReady(force);
+
+            // The ghost-menu entry alone never reaches players who do not open it.
+            if (!string.IsNullOrWhiteSpace(party.AnnounceInbound))
+                _chat.DispatchGlobalAnnouncement(party.AnnounceInbound, string.Empty, false,
+                    colorOverride: Color.DarkOrange);
+        }
 
         _nextThirdPartyIndex++;
     }
+
+    private TimeSpan RollArrivalInterval()
+        => TimeSpan.FromMinutes(Math.Max(1, (int) _spawnInterval.TotalMinutes
+            + _random.Next(-(int) ArrivalJitter.TotalMinutes, (int) ArrivalJitter.TotalMinutes + 1)));
 
     private static ThirdPartyAssignmentCounts CountThirdPartyAssignments(
         Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs)
@@ -897,7 +911,8 @@ public sealed partial class ThirdPartySystem : EntitySystem
     public void StartThirdPartySpawning(ThreatPrototype threat,
         Dictionary<NetUserId, (ProtoId<JobPrototype>?, EntityUid)>? assignedJobs = null)
     {
-        StartThirdPartySpawning(threat, threat.ThirdPartyInterval, $"threat={threat.ID}", assignedJobs);
+        var planetInterval = _auRoundSystem.GetSelectedPlanet()?.ThirdPartyInterval;
+        StartThirdPartySpawning(threat, planetInterval ?? threat.ThirdPartyInterval, $"threat={threat.ID}", assignedJobs);
     }
 
     public void StartThirdPartySpawning(GamePresetPrototype preset,
@@ -916,6 +931,7 @@ public sealed partial class ThirdPartySystem : EntitySystem
         _nextThirdPartyIndex = 0;
         _spawnTimer = 0f;
         _spawnInterval = TimeSpan.FromSeconds(Math.Max(1, intervalSeconds));
+        _arrivalInterval = RollArrivalInterval();
 
         var roundstartCount = 0;
         foreach (ThirdPartyPrototype party in _thirdPartyList)
