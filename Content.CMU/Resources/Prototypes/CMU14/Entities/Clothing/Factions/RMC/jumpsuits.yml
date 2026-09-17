@@ -90,6 +90,9 @@
     - CMU14SASPatch
     - AU14TWEPatch
   - type: CMArmor
-    melee: 30
+    melee: 15
     bullet: 15
-    explosionArmor: 20
+    explosionArmor: 15
+  - type: ClothingSpeedModifier
+    walkModifier: 0.94
+    sprintModifier: 0.94
