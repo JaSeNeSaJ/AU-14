@@ -85,10 +85,10 @@
         crate: LiquidCarbonDioxideCanister
       - cost: 500
         crate: CMUCanisterNitrousOxide
-      - cost: 800
+      - cost: 1600
         crate: CMUCanisterPlasma
-      - cost: 2000
-        crate: CMUCanisterPhoron
+      # - cost: 2000
+      #   crate: CMUCanisterPhoron
       - cost: 600
         crate: CMUGasCrystallizer
       - cost: 400
@@ -109,10 +109,10 @@
         crate: CMUGasMinerNitrogenPortable
         maxStock: 1
         stockReplenishDelay: 3600
-      - cost: 800
-        crate: TritiumCanister
-      - cost: 800
-        crate: FrezonCanister
+      # - cost: 800
+      #   crate: TritiumCanister
+      # - cost: 800
+      #   crate: FrezonCanister
       - cost: 700
         crate: CMUCratePhoronSheets
       - cost: 600
