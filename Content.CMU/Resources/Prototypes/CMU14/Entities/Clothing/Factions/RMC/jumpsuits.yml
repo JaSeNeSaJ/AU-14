@@ -89,3 +89,7 @@
     startingAccessories:
     - CMU14SASPatch
     - AU14TWEPatch
+  - type: CMArmor
+    melee: 30
+    bullet: 15
+    explosionArmor: 20

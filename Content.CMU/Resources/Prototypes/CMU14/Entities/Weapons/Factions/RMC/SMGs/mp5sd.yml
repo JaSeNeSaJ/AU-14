@@ -89,7 +89,6 @@
           - RMCAttachmentS6ReflexSight
           - RMCAttachmentS42xTelescopicMiniscope
       rmc-aslot-underbarrel:
-        startingAttachable: RMCAttachmentU7UnderbarrelShotgun
         whitelist:
           tags:
           - RMCAttachmentFlashlightGrip
@@ -101,6 +100,10 @@
           - RMCAttachmentU7UnderbarrelShotgun
         random:
         - RMCAttachmentM203GrenadeLauncher
+        - RMCAttachmentLaserSight
+        - RMCAttachmentU7UnderbarrelShotgun
+        - RMCAttachmentFlashlightGrip
+        - RMCAttachmentBipod
       rmc-aslot-stock:
         locked: true
         startingAttachable: RMCAttachmentM54CStockCollapsible

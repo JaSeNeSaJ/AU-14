@@ -34,7 +34,7 @@
 
 - type: entity
   parent: [CMBaseMask, CMUBaseGasMaskFilterSlot]
-  id: AU14MaskGasSAS
+  id: CMU14MaskGasSAS
   name: L22 pattern gasmask
   description: The standard issue gasmask utilized by the Special Air Service.
   components:
@@ -52,6 +52,7 @@
     melee: 20
     bio: 30
     explosionArmor: 10
+    bullet: 20
   - type: Item
     size: Small
   - type: Tag
