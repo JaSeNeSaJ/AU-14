@@ -167,10 +167,10 @@
     actionName: Switch to the M203A4 Grenade Launcher
     actionDesc: Switch to using the underbarrel grenade launcher.
     icon:
-      sprite: CMU14/Weapons/Guns/Attachments/hazops_under.rsi
+      sprite: CMU14/Objects/Weapons/Guns/Attachments/under.rsi
       state: grenade-m203
     iconActive:
-      sprite: CMU14/Weapons/Guns/Attachments/hazops_under.rsi
+      sprite: CMU14/Objects/Weapons/Guns/Attachments/under.rsi
       state: grenade-m203-on
   - type: AttachableVisuals
     redrawOnAppearanceChange: true
