@@ -71,16 +71,16 @@ public sealed class AuJobSelectionTest : ContentUnitTest
     public void ThreatJobEligibilityRequiresSelectedThreatPreference()
     {
         var threatMember = new ProtoId<JobPrototype>("AU14JobThreatMember");
-        var abomination = new ProtoId<ThreatPrototype>("AbominationsThreatCF");
+        var biomorph = new ProtoId<ThreatPrototype>("BiomorphsThreatCF");
         var xeno = new ProtoId<ThreatPrototype>("XenoThreat");
 
         var profile = HumanoidCharacterProfile.DefaultWithSpecies()
             .WithGamemodeJobPriority("DistressSignal", threatMember, JobPriority.High)
-            .WithGamemodeThreatPreference("DistressSignal", abomination, false)
+            .WithGamemodeThreatPreference("DistressSignal", biomorph, false)
             .WithGamemodeThreatPreference("DistressSignal", xeno, true);
 
         Assert.That(
-            AuJobSelectionSystem.CanAssignThreatJob(profile, "DistressSignal", threatMember, abomination),
+            AuJobSelectionSystem.CanAssignThreatJob(profile, "DistressSignal", threatMember, biomorph),
             Is.False);
 
         Assert.That(

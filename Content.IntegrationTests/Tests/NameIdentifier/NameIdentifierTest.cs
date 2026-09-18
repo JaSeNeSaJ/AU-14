@@ -20,7 +20,7 @@ public sealed class NameIdentifierTest : GameTest
     private const string PrefixTest = "PrefixTest";
     private const string ParenTestEnt = "ParenTestEnt";
     private const string LocTestEnt = "LocTestEnt";
-    private const string AbominationTestEnt = "AbominationIdentifierTest";
+    private const string BiomorphTestEnt = "BiomorphIdentifierTest";
 
     [TestPrototypes]
     private const string Prototypes =
@@ -74,11 +74,11 @@ public sealed class NameIdentifierTest : GameTest
             group: Localized
 
         - type: entity
-          name: {AbominationTestEnt}
-          id: {AbominationTestEnt}
+          name: {BiomorphTestEnt}
+          id: {BiomorphTestEnt}
           components:
           - type: NameIdentifier
-            group: Abomination
+            group: Biomorph
         """;
 
     [SidedDependency(Side.Server)] private NameIdentifierSystem _nameModifier = default!;
@@ -255,15 +255,15 @@ public sealed class NameIdentifierTest : GameTest
     }
 
     [Test]
-    [Description("Tests the migrated Abomination format preserves its historical text and suffix placement.")]
-    public async Task AbominationIdentifierFormat()
+    [Description("Tests the migrated Biomorph format preserves its historical text and suffix placement.")]
+    public async Task BiomorphIdentifierFormat()
     {
         await Server.WaitAssertion(() =>
         {
-            var entity = SSpawn(AbominationTestEnt);
+            var entity = SSpawn(BiomorphTestEnt);
             Assert.That(
                 SEntMan.GetComponent<MetaDataComponent>(entity).EntityName,
-                Does.Match($@"^{AbominationTestEnt} Abomination-\d+$"));
+                Does.Match($@"^{BiomorphTestEnt} Biomorph-\d+$"));
         });
     }
 }

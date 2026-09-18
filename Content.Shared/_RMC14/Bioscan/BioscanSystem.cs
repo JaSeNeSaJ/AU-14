@@ -18,8 +18,8 @@ using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Random;
 using Robust.Shared.Timing;
-using AbominationComponent = Content.Shared.CMU14.Threats.Mobs.Abomination.AbominationComponent;
-using AbominationMimicTransformedComponent = Content.Shared.CMU14.Threats.Mobs.Abomination.AbominationMimicTransformedComponent;
+using BiomorphComponent = Content.Shared.CMU14.Threats.Mobs.Biomorph.BiomorphComponent;
+using BiomorphMimicTransformedComponent = Content.Shared.CMU14.Threats.Mobs.Biomorph.BiomorphMimicTransformedComponent;
 using InsurgencyRuleComponent = Content.Shared.CMU14.Threats.InsurgencyRuleComponent;
 
 namespace Content.Shared._RMC14.Bioscan;
@@ -69,8 +69,8 @@ public sealed partial class BioscanSystem : EntitySystem
     private bool TargetIsThreat(EntityUid uid)
     {
         return HasComp<XenoComponent>(uid)
-            || HasComp<AbominationComponent>(uid)
-            || HasComp<AbominationMimicTransformedComponent>(uid)
+            || HasComp<BiomorphComponent>(uid)
+            || HasComp<BiomorphMimicTransformedComponent>(uid)
             || HasComp<YautjaComponent>(uid)
             || HasComp<YautjaAbominationComponent>(uid);
     }
