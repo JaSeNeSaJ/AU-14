@@ -20,7 +20,7 @@ public sealed class NameIdentifierTest : GameTest
     private const string PrefixTest = "PrefixTest";
     private const string ParenTestEnt = "ParenTestEnt";
     private const string LocTestEnt = "LocTestEnt";
-    private const string BiomorphTestEnt = "BiomorphIdentifierTest";
+    private const string BiomorphTestEnt = "BiomorphIdentifierTest"; // CMU14
 
     [TestPrototypes]
     private const string Prototypes =
@@ -73,7 +73,7 @@ public sealed class NameIdentifierTest : GameTest
           - type: NameIdentifier
             group: Localized
 
-        - type: entity
+        - type: entity // CMU14
           name: {BiomorphTestEnt}
           id: {BiomorphTestEnt}
           components:
@@ -255,8 +255,8 @@ public sealed class NameIdentifierTest : GameTest
     }
 
     [Test]
-    [Description("Tests the migrated Biomorph format preserves its historical text and suffix placement.")]
-    public async Task BiomorphIdentifierFormat()
+    [Description("Tests the migrated Biomorph format preserves its historical text and suffix placement.")] // CMU14
+    public async Task BiomorphIdentifierFormat() // CMU14
     {
         await Server.WaitAssertion(() =>
         {
