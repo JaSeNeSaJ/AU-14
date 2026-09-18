@@ -4,8 +4,8 @@
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationSkitter
-  name: skitter abomination
-  description: A four-legged crawling abomination, its underside trailing wet sinew.
+  name: skitter biomorph
+  description: A four-legged crawling biomorph, its underside trailing wet sinew.
   components:
   - type: Sprite
     sprite: CMU14/Mobs/Abominations/skitter.rsi
@@ -13,8 +13,8 @@
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: alive
   - type: GhostRole
-    name: Skitter Abomination
-    description: A support abomination. Spread kudzu and plant flesh nests to grow the threat.
+    name: Skitter Biomorph
+    description: A support biomorph. Spread kudzu and plant flesh nests to grow the threat.
   - type: MobThresholds
     thresholds:
       0: Alive

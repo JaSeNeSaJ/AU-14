@@ -913,7 +913,7 @@ namespace Content.Client.UserInterface.Systems.Ghost.Controls
                 GhostWarpGrouping.SectionLinePersonnel => "Line",
                 GhostWarpGrouping.SectionPersonnel => "Pers",
                 GhostWarpGrouping.SectionUnknownTier => "Unk",
-                GhostWarpGrouping.SectionAbominations => "Abom",
+                GhostWarpGrouping.SectionAbominations => "Bio", // CMU14
                 GhostWarpGrouping.SectionSummoners => "Summ",
                 GhostWarpGrouping.SectionWarpPoints => "Warp",
                 _ => GetDisplayName(section),

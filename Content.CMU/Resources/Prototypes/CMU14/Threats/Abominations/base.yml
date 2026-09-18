@@ -99,7 +99,7 @@
     - FactionAbomination
   - type: GhostTakeoverAvailable
   - type: GhostRole
-    name: Abomination
+    name: Biomorph
     description: A twisted mass of flesh hungry for prey.
     makeSentient: true
     allowSpeech: true
@@ -188,7 +188,7 @@
         - MobLayer
         - XenoProjectileImpassable
   - type: NameIdentifier
-    group: Abomination
+    group: Biomorph
   - type: Language
     spokenLanguages:
       - Primitive
@@ -198,9 +198,9 @@
     defaultLanguage: Primitive
 
 - type: nameIdentifierGroup
-  id: Abomination
+  id: Biomorph
   maxValue: 999
-  format: name-identifier-format-abomination
+  format: name-identifier-format-biomorph
 
 # Heat x3.5 = burns down 3.5x as fast. Fire is the hard counter to the
 # threat's area denial; flamers should melt them in seconds.

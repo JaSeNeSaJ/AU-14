@@ -257,7 +257,7 @@
   parent: ActionAbominationBase
   id: ActionAbominationOpenTacticalMap
   name: Open Tactical Map
-  description: See the positions of your fellow abominations.
+  description: See the positions of your fellow biomorphs.
   components:
   - type: Action
     itemIconStyle: NoItem

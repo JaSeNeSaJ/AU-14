@@ -38,7 +38,7 @@ public static class GhostWarpGrouping
     public const string SectionUnknownTier = "Unknown Tier";
     public const string SectionHunters = "Hunters";
     public const string SectionThralls = "Thralls";
-    public const string SectionAbominations = "Abominations";
+    public const string SectionAbominations = "Biomorphs"; // CMU14
     public const string SectionLeaders = "Leaders";
     public const string SectionMembers = "Members";
     public const string SectionSummoners = "Summoners";

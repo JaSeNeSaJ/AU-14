@@ -4,7 +4,7 @@
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationGrunt
-  name: grunt abomination
+  name: grunt biomorph
   description: A bloated, lumbering brute. Each fist is the size of a man's torso.
   components:
   - type: Sprite
@@ -13,8 +13,8 @@
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: alive
   - type: GhostRole
-    name: Grunt Abomination
-    description: A heavy slam-melee abomination. Crush colonists with overwhelming reach.
+    name: Grunt Biomorph
+    description: A heavy slam-melee biomorph. Crush colonists with overwhelming reach.
   - type: RMCSize
     size: Big
   - type: MobThresholds

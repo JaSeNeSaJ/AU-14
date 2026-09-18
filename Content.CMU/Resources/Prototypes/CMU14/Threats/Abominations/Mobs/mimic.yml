@@ -4,7 +4,7 @@
 - type: entity
   parent: AU14AbominationBase
   id: AU14AbominationMimic
-  name: mimic abomination
+  name: mimic biomorph
   description: A wet, vaguely humanoid silhouette. Its features won't stop sliding.
   components:
   - type: Sprite
@@ -13,7 +13,7 @@
     - map: ["enum.DamageStateVisualLayers.Base"]
       state: alive
   - type: GhostRole
-    name: Mimic Abomination
+    name: Mimic Biomorph
     description: Assimilate the downed and disappear into the colony wearing their faces.
   - type: MobThresholds
     thresholds:
