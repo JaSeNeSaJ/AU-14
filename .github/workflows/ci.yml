@@ -519,17 +519,53 @@ jobs:
               FullyQualifiedName~Content.IntegrationTests._RMC14
               | FullyQualifiedName~Content.IntegrationTests.Tests._RMC14.
           - name: cmu
+            # Both namespace spellings are in use. Medical and chemistry need their
+            # own processes; matching only _CMU14 leaves them all in this shard.
             filter: >-
-              (FullyQualifiedName~Content.IntegrationTests._CMU14
+              (FullyQualifiedName~Content.IntegrationTests._CMU14.
               | FullyQualifiedName~Content.IntegrationTests.CMU14.)
-              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Camera
-              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Medical
-              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Chemistry
-          - name: cmu_medical_cameras
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Camera.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Camera.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Medical.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Medical.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Chemistry.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Chemistry.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Yautja.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Yautja.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.ZLevels.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.ZLevels.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Diagnostics.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Diagnostics.
+          - name: cmu_2
             filter: >-
-              FullyQualifiedName~Content.IntegrationTests._CMU14.Camera
-              | FullyQualifiedName~Content.IntegrationTests._CMU14.Medical
-              | FullyQualifiedName~Content.IntegrationTests._CMU14.Chemistry
+              FullyQualifiedName~Content.IntegrationTests._CMU14.Camera.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Camera.
+              | FullyQualifiedName~Content.IntegrationTests._CMU14.Yautja.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Yautja.
+              | FullyQualifiedName~Content.IntegrationTests._CMU14.ZLevels.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.ZLevels.
+              | FullyQualifiedName~Content.IntegrationTests._CMU14.Diagnostics.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Diagnostics.
+          - name: cmu_chemistry
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests._CMU14.Chemistry.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Chemistry.
+          - name: cmu_medical_anatomy
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests._CMU14.Medical.Anatomy.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Medical.Anatomy.
+          - name: cmu_medical_treatment
+            filter: >-
+              FullyQualifiedName~Content.IntegrationTests._CMU14.Medical.Treatment.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Medical.Treatment.
+          - name: cmu_medical
+            filter: >-
+              (FullyQualifiedName~Content.IntegrationTests._CMU14.Medical.
+              | FullyQualifiedName~Content.IntegrationTests.CMU14.Medical.)
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Medical.Anatomy.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Medical.Anatomy.
+              & FullyQualifiedName!~Content.IntegrationTests._CMU14.Medical.Treatment.
+              & FullyQualifiedName!~Content.IntegrationTests.CMU14.Medical.Treatment.
           - name: au14
             filter: FullyQualifiedName~Content.IntegrationTests._AU14
     steps:
@@ -598,9 +634,8 @@ jobs:
           echo "--- $shard shard filter ---"
           echo "$FILTER"
           cd bin/Content.IntegrationTests || exit 1
-          # CMU14: upstream prototype variantization races on PLINQ parse threads, so any pair
-          # boot can die with ArgumentNullException during prototype load. One exit 1 without
-          # a retry is a coin flip. Genuine test failures stay red through all three attempts.
+          # Upstream prototype variantization races on PLINQ parse threads,
+          # so any pair boot can die with ArgumentNullException during prototype load.
           for attempt in 1 2 3; do
             echo "--- $shard attempt $attempt"
             # NUnit otherwise drops the execution filter when a shard exceeds 2,000 tests.
