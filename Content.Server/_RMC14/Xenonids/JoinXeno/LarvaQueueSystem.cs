@@ -705,13 +705,8 @@ public sealed partial class LarvaQueueSystem : EntitySystem
         if (!_player.TryGetSessionById(userId, out session!))
             return false;
 
-        if (session.AttachedEntity is not { } attached) // CMU14
-        {
-            RemoveFromAllQueues(userId);
-            return false;
-        }
-
-        if (_ghostQuery.HasComp(attached) || IsQueueRetainedRole(attached)) // CMU14
+        if (session.AttachedEntity is { } attached &&
+            (_ghostQuery.HasComp(attached) || IsQueueRetainedRole(attached))) // CMU14
             return true;
 
         RemoveFromAllQueues(userId);
