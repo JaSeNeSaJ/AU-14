@@ -23,7 +23,7 @@ public sealed class NameIdentifierTest : GameTest
     private const string BiomorphTestEnt = "BiomorphIdentifierTest"; // CMU14
 
     [TestPrototypes]
-    private const string Prototypes =
+    private const string Prototypes = // CMU14
         $"""
         - type: nameIdentifierGroup
           id: {NumberTestGroup}
@@ -73,7 +73,7 @@ public sealed class NameIdentifierTest : GameTest
           - type: NameIdentifier
             group: Localized
 
-        - type: entity // CMU14
+        - type: entity
           name: {BiomorphTestEnt}
           id: {BiomorphTestEnt}
           components:
