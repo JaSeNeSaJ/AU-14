@@ -5,7 +5,7 @@
 - type: threat
   id: BiomorphsThreatCF
   voteCooldownGroup: Biomorphs
-  lorePrimer: AU14PrimerThreatBiomorphs
+  lorePrimer: AU14PrimerThreatBiomorph
   roundstartspawns: biomorphsParty
   thirdpartyinterval: 9100
   whitelistedgamemodes:
@@ -115,7 +115,7 @@
 
 - type: thirdParty
   id: biomorphThirdParty
-  partyspawn: BiomorphSmallParty
+  partyspawn: biomorphSmallParty
   entrymethod: ground
   weight: 4
   minplayers: 0
