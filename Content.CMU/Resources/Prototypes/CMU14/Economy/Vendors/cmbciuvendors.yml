@@ -1088,6 +1088,7 @@
       - id: RMCWeaponMar50LMG
         amount: 1
       - id: RMCWeaponShotgunXM38
+        amount: 1
     - name: primary ammunition
       entries:
       - id: AU14MagazineRifleM20A
