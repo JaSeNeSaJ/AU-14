@@ -53,7 +53,7 @@ public sealed class ChatTabOverflowPopup : Popup
             var active = string.Equals(tab.Id, activeTabId, StringComparison.OrdinalIgnoreCase);
             var button = new Button
             {
-                Text = ChatUserSettings.GetDisplayTitle(tab), // RuMC edit
+                Text = ChatUserSettings.GetDisplayTitle(tab), 
                 ToggleMode = true,
                 Pressed = active,
                 HorizontalExpand = true,

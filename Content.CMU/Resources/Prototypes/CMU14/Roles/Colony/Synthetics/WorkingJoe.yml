@@ -146,7 +146,7 @@
   - type: Loadout
     prototypes: [ AU14GearColonyWorkingJoeHazmat ]
 
-  spawnMenuRoleName: cmu-spawn-role-working-joe-hazmat # RuMC edit
+  spawnMenuRoleName: cmu-spawn-role-working-joe-hazmat
   dummyStartingGear: AU14GearColonyWorkingJoeHazmat
 
 - type: startingGear

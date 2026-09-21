@@ -94,7 +94,7 @@ public sealed partial class HumanoidProfileEditor
         RefreshSynthetic();
 
         foreach (var value in Enum.GetValues<ArmorPreference>())
-            ArmorPreferenceButton.AddItem(Loc.GetString($"humanoid-profile-editor-preference-armor-{value.ToString().ToLowerInvariant()}"), (int)value); // RuMC edit
+            ArmorPreferenceButton.AddItem(Loc.GetString($"humanoid-profile-editor-preference-armor-{value.ToString().ToLowerInvariant()}"), (int)value);
 
         ArmorPreferenceButton.OnItemSelected += args =>
         {
@@ -863,7 +863,7 @@ public sealed partial class HumanoidProfileEditor
     {
         target.AddChild(new Label
         {
-            Text = Loc.GetString("humanoid-profile-editor-threats-label"), // RuMC edit
+            Text = Loc.GetString("humanoid-profile-editor-threats-label"), 
             Margin = new Thickness(6f, 4f, 0f, 6f),
             StyleClasses = { StyleNano.StyleClassCrtHeading },
         });
@@ -964,18 +964,17 @@ public sealed partial class HumanoidProfileEditor
         if (id.EndsWith("OnMarker", StringComparison.OrdinalIgnoreCase))
         {
             id = id[..^"OnMarker".Length];
-            suffix = " " + Loc.GetString("humanoid-profile-editor-threat-marker-suffix"); // RuMC edit
+            suffix = " " + Loc.GetString("humanoid-profile-editor-threat-marker-suffix"); 
         }
 
         if (id.EndsWith("CF", StringComparison.OrdinalIgnoreCase) ||
-            id.EndsWith("DS", StringComparison.OrdinalIgnoreCase)) // RuMC edit
+            id.EndsWith("DS", StringComparison.OrdinalIgnoreCase)) 
         {
             id = id[..^2];
         }
         if (id.EndsWith("Threat", StringComparison.OrdinalIgnoreCase))
             id = id[..^"Threat".Length];
 
-        // RuMC edit start
         var key = id.ToLowerInvariant() switch
         {
             "xeno" => "humanoid-profile-editor-threat-xeno",
@@ -990,7 +989,6 @@ public sealed partial class HumanoidProfileEditor
         };
 
         return (key != null ? Loc.GetString(key) : HumanizePrototypeId(id)) + suffix;
-        // RuMC edit end
     }
 
     private static string HumanizePrototypeId(string id)

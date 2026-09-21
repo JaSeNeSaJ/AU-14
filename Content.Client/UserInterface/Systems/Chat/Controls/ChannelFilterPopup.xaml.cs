@@ -260,7 +260,7 @@ public sealed partial class ChannelFilterPopup : Popup
             var isAll = string.Equals(tab.Id, ChatUserSettings.AllTabId, StringComparison.OrdinalIgnoreCase);
             var button = new ChatTabButton(tab.Id)
             {
-                Text = ChatUserSettings.GetDisplayTitle(tab), // RuMC edit
+                Text = ChatUserSettings.GetDisplayTitle(tab), 
                 ToggleMode = true,
                 Mode = BaseButton.ActionMode.Release,
                 Pressed = tab.Id == activeTabId,

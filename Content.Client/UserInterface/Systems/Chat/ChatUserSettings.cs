@@ -7,7 +7,7 @@ using Content.Client._CMU14.Interface;
 using Content.Client.Stylesheets;
 using Content.Shared.Chat;
 using Content.Shared.Radio;
-using Robust.Shared.Localization; // RuMC edit
+using Robust.Shared.Localization; 
 using Robust.Shared.Maths;
 
 namespace Content.Client.UserInterface.Systems.Chat;
@@ -351,7 +351,6 @@ public static class ChatUserSettings
         };
     }
 
-    // RuMC edit start
     public static string GetDisplayTitle(ChatTabSettings tab)
     {
         if (string.Equals(tab.Id, AllTabId, StringComparison.OrdinalIgnoreCase))
@@ -365,7 +364,6 @@ public static class ChatUserSettings
 
         return tab.Title;
     }
-    // RuMC edit end
 
     public static string CreateCustomTabId()
     {

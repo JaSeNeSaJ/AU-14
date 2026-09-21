@@ -426,11 +426,9 @@ public sealed partial class HumanoidProfileEditor
         if (!IsRoundStartThreatAssignmentJob(job))
             yield break;
 
-        // RuMC edit start
         var threatJobsTitle = Loc.GetString("humanoid-profile-editor-threat-jobs-section");
         yield return (ColonyThreatJobList, GamemodeColonyFall, "colony-threat", threatJobsTitle);
         yield return (DistressThreatJobList, GamemodeDistressSignal, "distress-threat", threatJobsTitle);
-        // RuMC edit end
     }
 
     private static int CompareDepartmentsForCharacterSetup(DepartmentPrototype? x, DepartmentPrototype? y)

@@ -64,7 +64,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
-  spawnMenuRoleName: cmu-spawn-role-nspa-constable-cmu # RuMC edit
+  spawnMenuRoleName: cmu-spawn-role-nspa-constable-cmu 
   accessGroups:
   - aucmb
   - Colonist

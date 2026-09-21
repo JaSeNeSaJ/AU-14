@@ -34,7 +34,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonyadministrator
-  spawnMenuRoleName: cmu-spawn-role-colony-engineer-cmu # RuMC edit
+  spawnMenuRoleName: cmu-spawn-role-colony-engineer-cmu 
   accessGroups:
   - Colonist
   - auengi

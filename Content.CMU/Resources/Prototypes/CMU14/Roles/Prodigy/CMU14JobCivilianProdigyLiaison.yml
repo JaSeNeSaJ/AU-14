@@ -69,7 +69,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
-  spawnMenuRoleName: cmu-spawn-role-prodigy-liaison-cmu # RuMC edit
+  spawnMenuRoleName: cmu-spawn-role-prodigy-liaison-cmu 
   accessGroups:
   - Colonist
   - auadmin
