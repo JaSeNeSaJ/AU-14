@@ -380,7 +380,7 @@ public partial class ChatBox : UIWidget
             {
                 ToggleMode = true,
                 Mode = BaseButton.ActionMode.Release,
-                MinWidth = Math.Max(58, ChatUserSettings.GetDisplayTitle(tab).Length * 9), 
+                MinWidth = Math.Max(58, ChatUserSettings.GetDisplayTitle(tab).Length * 9), // CMU14 hardcode Localization 
                 StyleClasses = { StyleNano.StyleClassChatChannelSelectorButton },
                 CanDrag = !isAll
             };
@@ -785,9 +785,11 @@ public partial class ChatBox : UIWidget
 
     private string GetTabTitle(string tabId)
     {
+        // CMU hardcode Localization Begin: fix hardcode localization for forks
         return _tabs.FirstOrDefault(tab => tab.Id == tabId) is { } found
             ? ChatUserSettings.GetDisplayTitle(found) 
             : "TAB";
+        // CMU hardcode Localization End
     }
 
     private void SyncFilterPopup()

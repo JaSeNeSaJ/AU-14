@@ -351,6 +351,7 @@ public static class ChatUserSettings
         };
     }
 
+    // CMU14 fix hardcode Localization Begin: fix hardcode localization for forks
     public static string GetDisplayTitle(ChatTabSettings tab)
     {
         if (string.Equals(tab.Id, AllTabId, StringComparison.OrdinalIgnoreCase))
@@ -364,7 +365,7 @@ public static class ChatUserSettings
 
         return tab.Title;
     }
-
+    // CMU14 fix hardcode Localization End
     public static string CreateCustomTabId()
     {
         return string.Concat("custom-", Guid.NewGuid().ToString("N").Substring(0, 8));
