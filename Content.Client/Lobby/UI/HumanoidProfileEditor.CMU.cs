@@ -94,7 +94,7 @@ public sealed partial class HumanoidProfileEditor
         RefreshSynthetic();
 
         foreach (var value in Enum.GetValues<ArmorPreference>())
-            ArmorPreferenceButton.AddItem(value.ToString(), (int)value);
+            ArmorPreferenceButton.AddItem(Loc.GetString($"humanoid-profile-editor-preference-armor-{value.ToString().ToLowerInvariant()}"), (int)value);
 
         ArmorPreferenceButton.OnItemSelected += args =>
         {
@@ -107,7 +107,10 @@ public sealed partial class HumanoidProfileEditor
         for (var i = 0; i < squad.SquadPrototypes.Length; i++)
         {
             var squadProto = squad.SquadPrototypes[i];
-            if (!squadProto.TryComp(out SquadTeamComponent? team, _componentFactory) || !team.RoundStart)
+            // Preference menu is GovFor-only; OpFor players get the mirrored squad at spawn.
+            if (!squadProto.TryComp(out SquadTeamComponent? team, _componentFactory)
+                || !team.RoundStart
+                || team.Group != "GOVFOR")
                 continue;
 
             SquadPreferenceButton.AddItem(squadProto.Name, i + 1);
@@ -631,10 +634,13 @@ public sealed partial class HumanoidProfileEditor
         var index = 0;
         if (Profile.SquadPreference is { } preference)
         {
-            var squads = new List<EntityPrototype>(_entManager.System<SquadSystem>().SquadPrototypes)
-                .Select(squad => squad.ID)
-                .ToList();
-            index = squads.IndexOf(preference.Id) + 1;
+            var squads = new List<EntityPrototype>(_entManager.System<SquadSystem>().SquadPrototypes);
+            var squadProto = squads.FirstOrDefault(s => s.ID == preference.Id);
+            if (squadProto != null
+                && squadProto.TryComp(out SquadTeamComponent? team, _componentFactory)
+                && team.RoundStart
+                && team.Group == "GOVFOR")
+                index = squads.IndexOf(squadProto) + 1;
         }
 
         SquadPreferenceButton.SelectId(index);
@@ -857,7 +863,7 @@ public sealed partial class HumanoidProfileEditor
     {
         target.AddChild(new Label
         {
-            Text = "THREATS",
+            Text = Loc.GetString("humanoid-profile-editor-threats-label"), 
             Margin = new Thickness(6f, 4f, 0f, 6f),
             StyleClasses = { StyleNano.StyleClassCrtHeading },
         });
@@ -915,6 +921,17 @@ public sealed partial class HumanoidProfileEditor
 
     private void SetThreatPreference(string gamemode, string threat, bool value)
     {
+        // An empty preference set means "open to all" server-side, so a first No press would be a
+        // no-op. Seed every visible threat so the press does what the buttons show.
+        if (Profile != null && Profile.GetThreatPreferencesForGamemode(gamemode).Count == 0)
+        {
+            foreach (var visible in _prototypeManager.EnumeratePrototypes<ThreatPrototype>()
+                         .Where(visible => IsThreatVisibleForGamemode(visible, gamemode)))
+            {
+                Profile = Profile.WithGamemodeThreatPreference(gamemode, visible.ID, true);
+            }
+        }
+
         Profile = Profile?.WithGamemodeThreatPreference(gamemode, new ProtoId<ThreatPrototype>(threat), value);
         SetDirty();
     }
@@ -923,7 +940,10 @@ public sealed partial class HumanoidProfileEditor
     {
         foreach (var (gamemode, threat, yes, no) in _threatPreferenceButtons)
         {
-            var selected = Profile?.GetThreatPreferencesForGamemode(gamemode).Any(id => id.Id == threat) == true;
+            // An empty preference set behaves as "open to all"; show that instead of a false No.
+            var preferences = Profile?.GetThreatPreferencesForGamemode(gamemode);
+            var selected = preferences is not { Count: > 0 }
+                || preferences.Any(id => id.Id == threat);
             yes.Pressed = selected;
             no.Pressed = !selected;
         }
@@ -944,22 +964,31 @@ public sealed partial class HumanoidProfileEditor
         if (id.EndsWith("OnMarker", StringComparison.OrdinalIgnoreCase))
         {
             id = id[..^"OnMarker".Length];
-            suffix = " (Marker)";
+            suffix = " " + Loc.GetString("humanoid-profile-editor-threat-marker-suffix"); 
         }
 
-        if (id.EndsWith("CF", StringComparison.OrdinalIgnoreCase))
+        if (id.EndsWith("CF", StringComparison.OrdinalIgnoreCase) ||
+            id.EndsWith("DS", StringComparison.OrdinalIgnoreCase)) 
+        {
             id = id[..^2];
+        }
         if (id.EndsWith("Threat", StringComparison.OrdinalIgnoreCase))
             id = id[..^"Threat".Length];
 
-        return id.ToLowerInvariant() switch
+        var key = id.ToLowerInvariant() switch
         {
-            "xeno" => "Xenomorph" + suffix,
-            "ape" => "Apes" + suffix,
-            "cultist" => "Cultists" + suffix,
-            "wendigo" => "Wendigo" + suffix,
-            _ => HumanizePrototypeId(id) + suffix,
+            "xeno" => "humanoid-profile-editor-threat-xeno",
+            "ape" => "humanoid-profile-editor-threat-ape",
+            "cultist" => "humanoid-profile-editor-threat-cultist",
+            "wendigo" => "humanoid-profile-editor-threat-wendigo",
+            "abominations" => "humanoid-profile-editor-threat-abomination",
+            "tribals" => "humanoid-profile-editor-threat-tribal",
+            "neomorphs" => "humanoid-profile-editor-threat-neomorph",
+            "badbloodclan" => "humanoid-profile-editor-threat-badbloodclan",
+            _ => null,
         };
+
+        return (key != null ? Loc.GetString(key) : HumanizePrototypeId(id)) + suffix;
     }
 
     private static string HumanizePrototypeId(string id)

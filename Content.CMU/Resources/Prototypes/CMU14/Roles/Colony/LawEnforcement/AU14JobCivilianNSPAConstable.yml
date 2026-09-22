@@ -1,5 +1,6 @@
 - type: job
   parent: AU14JobLEOBase
+  displayWeight: 14
   id: AU14JobCivilianNSPAConstable
   roundSide: Civilian
   roundForce: NSPA
@@ -63,7 +64,7 @@
   requireAdminNotify: false
   joinNotifyCrew: false
   supervisors: au14-job-supervisors-colonycivilian
-  spawnMenuRoleName: NSPA Constable (CMU)
+  spawnMenuRoleName: cmu-spawn-role-nspa-constable-cmu 
   accessGroups:
   - aucmb
   - Colonist
