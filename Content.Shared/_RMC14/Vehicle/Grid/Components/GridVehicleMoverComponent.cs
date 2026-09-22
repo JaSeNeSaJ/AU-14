@@ -322,13 +322,17 @@ public sealed partial class GridVehicleMoverComponent : Component
     [DataField]
     public float WallSmashDamage = 75f;
 
-    /// <summary>Wheel (or tread) damage dealt back to the vehicle per collision tick while ramming.</summary>
+    /// <summary>Wheel or tread damage dealt back to the vehicle once per damaging impact.</summary>
     [DataField]
     public float WallSmashWheelDamage = 0.25f;
 
-    /// <summary>Hull damage dealt back to the vehicle per collision tick while ramming.</summary>
+    /// <summary>Total hull damage shared across modules once per damaging impact.</summary>
     [DataField]
     public float WallSmashHullDamage = 5f;
+
+    /// <summary>Contacts below this speed cannot damage the vehicle.</summary>
+    [DataField]
+    public float CollisionDamageMinSpeed = 0.5f;
 
     /// <summary>
     /// Multiplier applied to the vehicle's own tread/hull damage when a plow is installed

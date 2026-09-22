@@ -22,6 +22,7 @@ using Robust.Shared.Audio.Systems;
 using Content.Shared.Popups;
 using Content.Shared.Interaction;
 using Content.Shared.Examine;
+using Content.Shared.Verbs;
 using Content.Shared.UserInterface;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Weapons.Ranged.Systems;
@@ -44,10 +45,6 @@ public sealed partial class HardpointSystem : EntitySystem
 {
     private static readonly EntProtoId<SkillDefinitionComponent> EngineerSkill = "RMCSkillEngineer";
     private static readonly ProtoId<DamageModifierSetPrototype> TankFrameDamageModifier = "VehicleFrameTank";
-    private const string FailureHeaderColor = "#ffb347";
-    private const string FailureNameColor = "#ffd27f";
-    private const string FailureEffectColor = "#c7b7ff";
-    private const string FailureRepairColor = "#9fd3ff";
 
     [Dependency] private ItemSlotsSystem _itemSlots = default!;
     [Dependency] private Content.Shared.Vehicle.Systems.VehicleSystem _vehicles = default!;
@@ -85,6 +82,7 @@ public sealed partial class HardpointSystem : EntitySystem
             OnHardpointRepair,
             before: new[] { typeof(ItemSlotsSystem) });
         SubscribeLocalEvent<HardpointIntegrityComponent, ExaminedEvent>(OnHardpointExamined);
+        SubscribeLocalEvent<HardpointIntegrityComponent, GetVerbsEvent<ExamineVerb>>(OnDamageExamineVerb);
         SubscribeLocalEvent<HardpointIntegrityComponent, HardpointRepairDoAfterEvent>(OnHardpointRepairDoAfter);
         SubscribeLocalEvent<VehicleHardpointFailureComponent, VehicleHardpointFailureRepairDoAfterEvent>(OnFailureRepairDoAfter);
     }
@@ -446,9 +444,10 @@ public sealed partial class HardpointSystem : EntitySystem
             return DamageHardpoint(vehicle, vehicle, amount);
 
         var changed = false;
+        var damagePerTarget = amount / targets.Count;
         foreach (var target in targets)
         {
-            if (DamageHardpoint(vehicle, target, amount))
+            if (DamageHardpoint(vehicle, target, damagePerTarget))
                 changed = true;
         }
 
@@ -582,14 +581,7 @@ public sealed partial class HardpointSystem : EntitySystem
         if (!TryComp(vehicle, out HardpointIntegrityComponent? frame) || frame.MaxIntegrity <= 0f)
             return;
 
-        var fraction = Math.Clamp(frame.Integrity / frame.MaxIntegrity, 0f, 1f);
-        var damageFraction = amount / frame.MaxIntegrity;
-
-        if (fraction > 0.75f && damageFraction < 0.03f)
-            return;
-
-        var chance = Math.Clamp(0.04f + damageFraction * 1.5f + (1f - fraction) * 0.25f, 0f, 0.45f);
-        if (!_random.Prob(chance))
+        if (!TryRollFailure(vehicle, frame, amount))
             return;
 
         var candidates = new List<VehicleHardpointFailure>
@@ -622,10 +614,7 @@ public sealed partial class HardpointSystem : EntitySystem
             return;
         }
 
-        var frameFraction = Math.Clamp(frame.Integrity / frame.MaxIntegrity, 0f, 1f);
-        var damageFraction = amount / frame.MaxIntegrity;
-        var chance = Math.Clamp(0.0125f + damageFraction * 0.2f + (1f - frameFraction) * 0.03f, 0.005f, 0.075f);
-        if (!_random.Prob(chance))
+        if (!TryRollFailure(vehicle, frame, amount))
             return;
 
         AddHardpointFailure(vehicle, vehicle, VehicleHardpointFailure.FuelLeak, failures);
@@ -635,24 +624,12 @@ public sealed partial class HardpointSystem : EntitySystem
         EntityUid vehicle,
         EntityUid hardpoint,
         float amount,
-        float previousIntegrity,
         HardpointIntegrityComponent integrity)
     {
-        if (integrity.MaxIntegrity <= 0f)
-            return;
-
-        var previousFraction = Math.Clamp(previousIntegrity / integrity.MaxIntegrity, 0f, 1f);
-        var currentFraction = Math.Clamp(integrity.Integrity / integrity.MaxIntegrity, 0f, 1f);
-        var damageFraction = amount / integrity.MaxIntegrity;
-
-        if (previousFraction > 0.75f && currentFraction > 0.75f && damageFraction < 0.08f)
-            return;
-
-        var chance = Math.Clamp(0.06f + damageFraction * 1.1f + (1f - currentFraction) * 0.22f, 0f, 0.5f);
-        if (!_random.Prob(chance))
-            return;
-
         var candidates = GetFailureCandidates(vehicle, hardpoint);
+        if (candidates.Count == 0 || !TryRollFailure(vehicle, integrity, amount))
+            return;
+
         TryAddRandomFailure(vehicle, hardpoint, candidates);
     }
 
@@ -1181,66 +1158,6 @@ public sealed partial class HardpointSystem : EntitySystem
         }
 
         return false;
-    }
-
-    private void PushVehicleFailureDiagnostics(
-        EntityUid vehicle,
-        HardpointSlotsComponent hardpoints,
-        ItemSlotsComponent itemSlots,
-        ExaminedEvent args)
-    {
-        var hasFailures = false;
-
-        void PushHeader()
-        {
-            if (hasFailures)
-                return;
-
-            hasFailures = true;
-            args.PushMarkup($"[color={FailureHeaderColor}][bold]Vehicle malfunctions[/bold][/color]");
-        }
-
-        void PushFailures(string? label, EntityUid uid, bool includeRepairSteps)
-        {
-            if (!TryComp(uid, out VehicleHardpointFailureComponent? failures) ||
-                failures.ActiveFailures.Count == 0)
-            {
-                return;
-            }
-
-            PushHeader();
-
-            foreach (var failure in failures.ActiveFailures)
-            {
-                var title = string.IsNullOrWhiteSpace(label)
-                    ? GetFailureAlertName(failure)
-                    : $"{GetFailureAlertName(failure)} on {label}";
-
-                args.PushMarkup($"[color={FailureNameColor}]- {title}[/color]");
-                args.PushMarkup($"[color={FailureEffectColor}]  Effect: {GetFailureEffect(failure)}[/color]");
-
-                if (!includeRepairSteps)
-                    continue;
-
-                var stepIndex = GetFailureRepairProgress(failures, failure);
-                if (!TryGetFailureRepairStep(failure, stepIndex, out var step))
-                    continue;
-
-                args.PushMarkup(
-                    $"[color={FailureRepairColor}]  Repair: step {stepIndex + 1}/{GetFailureRepairSteps(failure).Count} - " +
-                    $"{step.Instruction} Use {GetFailureRepairToolName(step)}.[/color]");
-            }
-        }
-
-        PushFailures(null, vehicle, includeRepairSteps: true);
-
-        foreach (var mountedSlot in _topology.GetMountedSlots(vehicle, hardpoints, itemSlots))
-        {
-            if (mountedSlot.Item is not { } item)
-                continue;
-
-            PushFailures(Name(item), item, includeRepairSteps: false);
-        }
     }
 
     private List<string> GetVehicleFailureSummaryLines(
@@ -1775,87 +1692,6 @@ public sealed partial class HardpointSystem : EntitySystem
         RaiseIntegrityChanged(ent.Owner);
     }
 
-    private void OnHardpointExamined(Entity<HardpointIntegrityComponent> ent, ref ExaminedEvent args)
-    {
-        var current = ent.Comp.Integrity;
-        var max = ent.Comp.MaxIntegrity;
-        if (TryComp(ent.Owner, out VehicleComponent? _) &&
-            TryComp(ent.Owner, out HardpointSlotsComponent? slots) &&
-            TryComp(ent.Owner, out ItemSlotsComponent? itemSlots) &&
-            TryGetVehicleEffectiveIntegrity(ent.Owner, ent.Comp, slots, itemSlots, out var effectiveCurrent, out var effectiveMax))
-        {
-            current = effectiveCurrent;
-            max = effectiveMax;
-        }
-
-        var percent = max > 0f ? current / max : 0f;
-
-        if (HasComp<XenoComponent>(args.Examiner))
-        {
-            args.PushMarkup(Loc.GetString(GetHardpointConditionString(percent)));
-            return;
-        }
-
-        using (args.PushGroup(nameof(HardpointIntegrityComponent)))
-        {
-            var color = GetHardpointIntegrityColor(percent);
-            args.PushMarkup(Loc.GetString("rmc-hardpoint-integrity-examine",
-                ("color", color),
-                ("current", (int)MathF.Ceiling(current)),
-                ("max", (int)MathF.Ceiling(max)),
-                ("percent", (int)MathF.Round(percent * 100f))));
-
-            var isFrame = IsVehicleFrame(ent.Owner);
-            if (isFrame &&
-                TryComp(ent.Owner, out HardpointSlotsComponent? hardpointSlots) &&
-                TryComp(ent.Owner, out ItemSlotsComponent? hardpointItemSlots))
-            {
-                PushVehicleFailureDiagnostics(ent.Owner, hardpointSlots, hardpointItemSlots, args);
-            }
-            else
-            {
-                PushHardpointFailureDiagnostics(ent.Owner, args);
-            }
-
-            if (TryGetArmorExamineModifiers(ent.Owner, out var acid, out var slash, out var bullet, out var explosive, out var blunt))
-            {
-                args.PushMarkup(Loc.GetString("rmc-hardpoint-armor-modifiers-examine",
-                    ("acid", FormatModifierValue(acid)),
-                    ("slash", FormatModifierValue(slash)),
-                    ("bullet", FormatModifierValue(bullet)),
-                    ("explosive", FormatModifierValue(explosive)),
-                    ("blunt", FormatModifierValue(blunt))));
-            }
-        }
-    }
-
-    private void PushHardpointFailureDiagnostics(EntityUid uid, ExaminedEvent args)
-    {
-        if (!TryComp(uid, out VehicleHardpointFailureComponent? failures) ||
-            failures.ActiveFailures.Count == 0)
-        {
-            return;
-        }
-
-        args.PushMarkup($"[color={FailureHeaderColor}][bold]Hardpoint malfunctions[/bold][/color]");
-
-        foreach (var failure in failures.ActiveFailures)
-        {
-            var steps = GetFailureRepairSteps(failure);
-            var stepIndex = Math.Clamp(GetFailureRepairProgress(failures, failure), 0, Math.Max(steps.Count - 1, 0));
-
-            args.PushMarkup($"[color={FailureNameColor}]- {GetFailureAlertName(failure)}[/color]");
-            args.PushMarkup($"[color={FailureEffectColor}]  Effect: {GetFailureEffect(failure)}[/color]");
-
-            if (!TryGetFailureRepairStep(failure, stepIndex, out var step))
-                continue;
-
-            args.PushMarkup(
-                $"[color={FailureRepairColor}]  Repair: step {stepIndex + 1}/{steps.Count} - " +
-                $"{step.Instruction} Use {GetFailureRepairToolName(step)}.[/color]");
-        }
-    }
-
     private bool TryGetArmorExamineModifiers(
         EntityUid uid,
         out float acid,
@@ -2049,7 +1885,7 @@ public sealed partial class HardpointSystem : EntitySystem
             RefreshCanRun(vehicle);
 
         UpdateHardpointUi(vehicle);
-        HandleHardpointDamageSideEffects(vehicle, hardpoint, amount, previous, integrity, wasFunctional);
+        HandleHardpointDamageSideEffects(vehicle, hardpoint, amount, integrity, wasFunctional);
         return true;
     }
 

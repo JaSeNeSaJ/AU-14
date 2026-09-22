@@ -10,6 +10,7 @@ using Robust.Shared.GameObjects;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
+using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
 namespace Content.Shared._RMC14.Vehicle;
 
@@ -116,7 +117,7 @@ public sealed partial class HardpointSlot
     public EntityWhitelist? Whitelist { get; set; }
 }
 
-[RegisterComponent, NetworkedComponent, AutoGenerateComponentState]
+[RegisterComponent, NetworkedComponent, AutoGenerateComponentState, AutoGenerateComponentPause]
 public sealed partial class HardpointIntegrityComponent : Component
 {
     [DataField, AutoNetworkedField]
@@ -124,6 +125,26 @@ public sealed partial class HardpointIntegrityComponent : Component
 
     [DataField, AutoNetworkedField]
     public float Integrity;
+
+    /// <summary>Only substantial hits to a seriously damaged part can cause a fault.</summary>
+    [DataField]
+    public float FailureIntegrityThreshold = 0.4f;
+
+    [DataField]
+    public float FailureMinimumDamageFraction = 0.08f;
+
+    [DataField]
+    public float FailureChance = 0.05f;
+
+    /// <summary>Shared by all parts when this integrity component belongs to a vehicle.</summary>
+    [DataField]
+    public TimeSpan FailureRollCooldown = TimeSpan.FromSeconds(60);
+
+    [DataField]
+    public int MaxVehicleFailures = 2;
+
+    [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoPausedField]
+    public TimeSpan NextFailureRoll;
 
     [DataField]
     public FixedPoint2 FuelPerSecond = FixedPoint2.New(1);

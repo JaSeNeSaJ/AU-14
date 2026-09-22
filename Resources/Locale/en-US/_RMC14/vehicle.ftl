@@ -15,6 +15,11 @@ rmc-hardpoint-remove-verb = Remove {$slot}
 rmc-hardpoint-repaired = Hardpoint repaired.
 rmc-hardpoint-intact = Hardpoint is already intact.
 rmc-hardpoint-integrity-examine = Integrity: [color={$color}]{$current}/{$max} ({$percent}%)[/color]
+rmc-vehicle-damage-examine-verb = Vehicle damage
+rmc-vehicle-damage-examine-description = Inspect condition and active faults.
+rmc-vehicle-damage-examine-no-faults = No active faults.
+rmc-vehicle-damage-examine-faults = [bold]Active faults[/bold]
+rmc-vehicle-damage-examine-fault = {$fault}: {$effect}
 rmc-hardpoint-armor-modifiers-examine = Damage modifiers: acid {$acid}, slash {$slash}, bullet {$bullet}, explosive {$explosive}, blunt {$blunt}
 rmc-hardpoint-condition-pristine = It is in pristine condition.
 rmc-hardpoint-condition-good = It is in good condition.
