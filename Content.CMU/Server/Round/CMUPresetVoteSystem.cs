@@ -1,11 +1,14 @@
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Presets;
+using Content.Shared.CCVar;
+using Robust.Shared.Configuration;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server.CMU14.Round;
 
 public sealed partial class CMUPresetVoteSystem : EntitySystem
 {
+    [Dependency] private IConfigurationManager _cfg = default!;
     [Dependency] private GameTicker _ticker = default!;
 
     private ProtoId<GamePresetPrototype>? _lastPlayedPreset;
@@ -27,10 +30,13 @@ public sealed partial class CMUPresetVoteSystem : EntitySystem
     }
 
     /// <summary>
-    /// Excludes the last mode played while retaining a sole eligible option.
+    /// Excludes the last mode played when enabled, while retaining a sole eligible option.
     /// </summary>
     public void RemoveLastPlayedPreset(Dictionary<string, string> presets)
     {
+        if (!_cfg.GetCVar(CCVars.VoteExcludeLastPlayed))
+            return;
+
         if (_lastPlayedPreset is { } previous && presets.Count > 1)
             presets.Remove(previous);
     }

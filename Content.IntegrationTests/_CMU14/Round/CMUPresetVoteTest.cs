@@ -88,6 +88,35 @@ public sealed class CMUPresetVoteTest : GameTest
         });
     }
 
+    [TestCase(true)]
+    [TestCase(false)]
+    public async Task ExclusionCanBeToggledBetweenBallots(bool initiallyEnabled)
+    {
+        await Server.WaitAssertion(() =>
+        {
+            Server.CfgMan.SetCVar(CCVars.VoteExcludeLastPlayed, initiallyEnabled);
+            var ticker = Server.System<GameTicker>();
+            ticker.SetGamePreset(PresetA);
+            ticker.StartRound();
+            Assert.That(ticker.CurrentPreset?.ID, Is.EqualTo(PresetA));
+            Assert.That(ticker.RunLevel, Is.EqualTo(GameRunLevel.InRound));
+
+            var vote = CreatePresetVote();
+            Assert.That(vote.VotesPerOption.ContainsKey(PresetA), Is.EqualTo(!initiallyEnabled));
+            Assert.That(vote.VotesPerOption.ContainsKey(PresetB), Is.True);
+            vote.Cancel();
+            Votes.Update();
+
+            // History is retained even when exclusion was disabled when the round started.
+            Server.CfgMan.SetCVar(CCVars.VoteExcludeLastPlayed, !initiallyEnabled);
+            vote = CreatePresetVote();
+            Assert.That(vote.VotesPerOption.ContainsKey(PresetA), Is.EqualTo(initiallyEnabled));
+            Assert.That(vote.VotesPerOption.ContainsKey(PresetB), Is.True);
+            vote.Cancel();
+            Votes.Update();
+        });
+    }
+
     [Test]
     public async Task UnplayedLobbyWinnerRemainsEligibleAfterRestart()
     {
