@@ -142,3 +142,7 @@ rmc-hardpoint-repair-tool-unsuitable = This tool cannot perform the selected rep
 rmc-hardpoint-maintenance-verb = Vehicle maintenance
 rmc-hardpoint-removal-tool = Hold a maintenance jack to remove this module.
 rmc-hardpoint-removal-prying-tool = Hold a crowbar or maintenance jack to remove this module.
+
+# CMU14
+cmu-vehicle-supply-unassigned = No platoon assigned to this depot.
+cmu-vehicle-supply-allowance = {$platoon} — Vehicles issued: {$used}/{$limit} (maximum one tank and one VTOL)
