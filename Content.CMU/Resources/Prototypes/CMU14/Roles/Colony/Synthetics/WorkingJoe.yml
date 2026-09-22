@@ -1,6 +1,6 @@
 - type: job
   abstract: true
-  parent: CMJobBase
+  parent: RMCJobRibbonBase
   id: AU14JobWorkingJoeBase
   name: au14-job-name-workingjoe
   description: au14-job-description-workingjoe
