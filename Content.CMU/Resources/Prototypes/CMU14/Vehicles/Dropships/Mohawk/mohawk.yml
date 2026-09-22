@@ -49,6 +49,8 @@
   - type: RadioSpeaker
     channels: [MarineCommon]
     enabled: true
+  - type: ActiveRadio
+    channels: [MarineCommon]
   - type: Sprite
     drawdepth: WallMountedItems
 

@@ -78,7 +78,7 @@
     shoes: CMBootsBlackFilled
     ears: CMU14HeadsetTWEThirdParty
     mask: CMU14MaskGasSAS
-    belt: RMCBeltL49
+    belt: CMUBeltL49SAS
     back: CMUSatchelRaider
     pocket1: RMCPouchToolsSocRCMPVEAssaultEngi
     pocket2: AU14PouchIFAKFill
@@ -89,7 +89,6 @@
     - CMUGasMaskFilterWY
     - CMUGasMaskFilterWY
     belt:
-    - RMCWeaponShotgunL49
     - RMCShellShotgunL49B
     - RMCShellShotgunL49B
     - RMCShellShotgunL49B
@@ -112,6 +111,24 @@
     - AU14MRETWERMC
     - AU14KeloDermAutoInjector
     - AU14MeraBicAutoInjector
+
+- type: entity
+  parent: RMCBeltL49
+  id: CMUBeltL49SAS
+  suffix: SAS, Filled
+  components:
+  - type: ItemSlots
+    slots:
+      item:
+        name: L49 assault shotgun
+        startingItem: RMCWeaponShotgunL49
+        insertVerbText: sheath-insert-verb
+        ejectVerbText: sheath-eject-verb
+        insertSound: /Audio/_RMC14/Weapons/Guns/gun_rifle_draw.ogg
+        ejectSound: /Audio/_RMC14/Weapons/Guns/gun_rifle_draw.ogg
+        whitelist:
+          tags:
+          - RMCWeaponShotgunL49
 
 - type: playTimeTracker
   id: CMUJobSASBreacher
