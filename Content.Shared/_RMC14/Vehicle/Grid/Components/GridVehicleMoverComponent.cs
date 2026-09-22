@@ -89,6 +89,21 @@ public sealed partial class GridVehicleMoverComponent : Component
     [DataField, AutoNetworkedField]
     public float MaxRotationSpeedDegrees = 22.5f;
 
+    [DataField, AutoNetworkedField]
+    public float AlignmentAssistDegrees; // CMU14: maximum near-cardinal correction angle.
+
+    [DataField, AutoNetworkedField]
+    public float AlignmentAssistMaxSpeed = 1.5f; // CMU14: only assist at parking speeds.
+
+    [DataField, AutoNetworkedField]
+    public float FullSpeedIntegrityFraction = 0.7f; // CMU14: minor wear does not reduce speed.
+
+    [DataField, AutoNetworkedField]
+    public float MinimumDamageSpeedMultiplier = 0.35f; // CMU14: floor for combined damage penalties.
+
+    [DataField, AutoNetworkedField]
+    public bool IgnoreLightObstacleDamage; // CMU14: harmless unreinforced smashable props.
+
     /// <summary>
     /// chassis angular acceleration while steering, in degrees per second squared
     /// </summary>

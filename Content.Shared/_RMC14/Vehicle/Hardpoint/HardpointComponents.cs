@@ -43,6 +43,12 @@ public sealed partial class HardpointItemComponent : Component
 
     [DataField]
     public float MinimumPerformanceMultiplier = 0.35f;
+
+    [DataField]
+    public float FullPerformanceIntegrityFraction = 0.7f; // CMU14
+
+    [DataField]
+    public VehicleDamageRegion DamageRegion = VehicleDamageRegion.Exterior; // CMU14
 }
 
 
@@ -58,6 +64,10 @@ public sealed partial class HardpointSlotsComponent : Component
 
     [DataField]
     public float FrameDamageFractionWhileIntact = 0.25f;
+
+    /// <summary>Fraction of a direct hit that can reach one additional module.</summary>
+    [DataField]
+    public float DamageSpilloverFraction = 0.1f; // CMU14
 
     [DataField]
     public ProtoId<ToolQualityPrototype> RemoveToolQuality = "VehicleServicing";

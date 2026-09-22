@@ -73,6 +73,9 @@ public sealed class VehicleDamageRegressionTest : GameTest
     [TestCase("CMBarricadeMetalDoor")]
     [TestCase("WallXenoResin")]
     [TestCase("DoorXenoResin")]
+    [TestCase("AU14TallFloodlight")]
+    [TestCase("AU14Streetlight")]
+    [TestCase("RMCTallFloodlight")]
     public async Task HeavyVehicleCrushesLightObstaclesWithoutDamagingModules(string obstaclePrototype)
     {
         var map = await Pair.CreateTestMap();
