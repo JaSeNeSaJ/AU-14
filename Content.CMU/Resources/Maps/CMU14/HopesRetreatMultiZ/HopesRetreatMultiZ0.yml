@@ -136639,6 +136639,8 @@ entities:
     components:
     - type: MetaData
       name: LZ BRAVO - South Pad
+    - type: DropshipDestination
+      multiDeckOffset: 1,6
     - type: Transform
       parent: 1
       pos: -82.5,23.5
@@ -183578,7 +183580,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 34.5,-26.5
-- proto: RMCGeneratorFusionColony
+- proto: CMUGeneratorThermo
   entities:
   - uid: 54155
     components:
@@ -183640,7 +183642,7 @@ entities:
         sprite: /Textures/_RMC14/Interface/map_blips.rsi
         state: generator
       color: '#FFFFFFFF'
-- proto: RMCGeneratorFusionColonyNoMapIcon
+- proto: CMUGeneratorThermoNoMapIcon
   entities:
   - uid: 60690
     components:
