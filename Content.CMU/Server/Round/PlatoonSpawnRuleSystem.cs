@@ -55,6 +55,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             // Reapply catalogs to any existing requisitions consoles
             var reqSys = EntityManager.EntitySysManager.GetEntitySystem<RequisitionsSystem>();
             reqSys?.ReapplyPlatoonCatalogs();
+            EntityManager.System<Content.Server._RMC14.Vehicle.VehicleSupplySystem>().ReapplySupplyCatalogs();
         }
     }
 
@@ -67,6 +68,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             _selectedOpforPlatoon = value;
             var reqSys = EntityManager.EntitySysManager.GetEntitySystem<RequisitionsSystem>();
             reqSys?.ReapplyPlatoonCatalogs();
+            EntityManager.System<Content.Server._RMC14.Vehicle.VehicleSupplySystem>().ReapplySupplyCatalogs();
         }
     }
 
