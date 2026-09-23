@@ -25,7 +25,9 @@
     govforinship: false
     opforinship: true
     daycycleenabled: false
+    thirdpartyinterval: 1800
     thirdparties:
+    - FreeCompanyRaiders
     - USArmy
     - USArmyAlt
     - USArmyAlt2
@@ -48,7 +50,7 @@
     - WYHT
     - WYPMCParty
     - WYPMCPartyAlt
-    - abominationThirdParty
+    - biomorphThirdParty
     - IASFSurvLarge
     - IASFSurvMedium
     - IASFSurvSmall
@@ -58,14 +60,12 @@
     threats:
     - XenoThreat
     - NeomorphsThreat
-    - AbominationsThreatDS
-    - ApeThreatDS
     # - BadBloodClanThreat
     - XenoThreatCF
     - NeomorphsThreatCF
     - CultistThreatCF
     - WendigoThreatCF
-    - AbominationsThreatCF
+    - BiomorphsThreatCF
     - TribalsThreatCF
     - ApeThreatCF
     joboverrides:

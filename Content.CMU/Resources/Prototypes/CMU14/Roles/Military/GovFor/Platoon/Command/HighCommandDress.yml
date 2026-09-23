@@ -1,5 +1,6 @@
 - type: job
   parent: AU14JobMilitaryBase
+  displayWeight: 9
   id: CMUJobGOVFORAdjutantDress
   roundRole: AdjutantDress
   roundProfiles:
@@ -34,7 +35,7 @@
   playTimeTracker: CMUJobGOVFORAdjutantDress
   startingGear: CMUGearGOVFORAdjutantDress
   icon: RMCJobIconUNMCAdjutant
-  spawnMenuRoleName: High Command Adjutant, Dress Uniform (GOVFOR)
+  spawnMenuRoleName: cmu-spawn-role-high-command-adjutant-dress-uniform-govfor 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: true
@@ -78,6 +79,7 @@
 
 - type: job
   parent: AU14JobMilitaryBase
+  displayWeight: 10
   id: CMUJobGOVFORBrigadierGeneral
   roundRole: BrigadierGeneral
   roundProfiles:
@@ -113,7 +115,7 @@
   playTimeTracker: CMUJobGOVFORBrigadierGeneral
   startingGear: CMUGearGOVFORBrigadierGeneral
   icon: RMCJobIconUNMCBrigadierGeneral
-  spawnMenuRoleName: Brigadier General (GOVFOR, event VIP)
+  spawnMenuRoleName: cmu-spawn-role-brigadier-general-govfor-event-vip 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: true
@@ -184,7 +186,7 @@
   playTimeTracker: CMUJobGOVFORVipEscort
   startingGear: CMUGearGOVFORVipEscort
   icon: AU14JobIconMP
-  spawnMenuRoleName: VIP Escort Detail (GOVFOR)
+  spawnMenuRoleName: cmu-spawn-role-vip-escort-detail-govfor 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: false
@@ -224,6 +226,7 @@
 
 - type: job
   parent: AU14JobMilitaryBase
+  displayWeight: 9
   id: CMUJobOPFORAdjutantDress
   roundSide: Opfor
   roundForce: OPFOR
@@ -260,7 +263,7 @@
   playTimeTracker: CMUJobGOVFORAdjutantDress
   startingGear: CMUGearOPFORAdjutantDress
   icon: RMCJobIconUNMCAdjutant
-  spawnMenuRoleName: High Command Adjutant, Dress Uniform (OPFOR)
+  spawnMenuRoleName: cmu-spawn-role-high-command-adjutant-dress-uniform-opfor 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: true
@@ -300,6 +303,7 @@
 
 - type: job
   parent: AU14JobMilitaryBase
+  displayWeight: 10
   id: CMUJobOPFORBrigadierGeneral
   roundSide: Opfor
   roundForce: OPFOR
@@ -337,7 +341,7 @@
   playTimeTracker: CMUJobGOVFORBrigadierGeneral
   startingGear: CMUGearOPFORBrigadierGeneral
   icon: RMCJobIconUNMCBrigadierGeneral
-  spawnMenuRoleName: Brigadier General (OPFOR, event VIP)
+  spawnMenuRoleName: cmu-spawn-role-brigadier-general-opfor-event-vip 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: true
@@ -406,7 +410,7 @@
   playTimeTracker: CMUJobGOVFORVipEscort
   startingGear: CMUGearOPFORVipEscort
   icon: AU14JobIconMP
-  spawnMenuRoleName: VIP Escort Detail (OPFOR)
+  spawnMenuRoleName: cmu-spawn-role-vip-escort-detail-opfor 
   ranks:
     RMCRankCivilian: []
   joinNotifyCrew: false

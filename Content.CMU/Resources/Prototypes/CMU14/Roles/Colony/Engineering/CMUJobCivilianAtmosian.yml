@@ -1,5 +1,6 @@
 - type: job
-  parent: CMJobBase
+  parent: RMCJobRibbonBase
+  displayWeight: 12
   id: CMUJobCivilianAtmosian
   name: cmu-colony-name-atmosian
   description: cmu-colony-description-atmosian
@@ -10,7 +11,7 @@
   startingGear: CMUGearCivilianAtmosian
   icon: "AU14JobIconColonyEngineer"
   supervisors: au14-job-supervisors-colonyadministrator
-  spawnMenuRoleName: Colony Atmospheric Technician
+  spawnMenuRoleName: cmu-spawn-role-colony-atmospheric-technician 
   playTimeTracker: CMUJobCivilianAtmosian
   ranks:
     RMCRankCivilian: []
@@ -68,6 +69,7 @@
     - RMCCableCoil
     - CMAPCElectronics
     - ClothingOuterVestTank
+    - CMUFireHelmet
 
 - type: roleLoadout
   id: JobCMUJobCivilianAtmosian
