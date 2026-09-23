@@ -72,7 +72,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private SharedXenoWeedsSystem _weeds = default!;
+    [Dependency] private QueenEyeSystem _queenEye = default!;
     [Dependency] private SharedXenoHiveSystem _xenoHive = default!;
     [Dependency] private XenoAnnounceSystem _xenoAnnounce = default!;
     [Dependency] private RMCUnrevivableSystem _unrevivableSystem = default!;
@@ -1029,41 +1029,11 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
 
     private void OnUserQueenEyeMoveMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenEyeMoveMsg args)
     {
-        var user = args.Actor;
-        HandleQueenEyeMove(user, args.Position);
-    }
-
-    private void HandleQueenEyeMove(EntityUid user, Vector2i position)
-    {
-        if (!TryComp<QueenEyeActionComponent>(user, out var queenEyeComp) ||
-            queenEyeComp.Eye == null)
+        // CMU14: use the grid displayed to this queen, not an arbitrary tactical map.
+        if (args.Actor != ent.Owner || !_ui.IsUiOpen(ent.Owner, TacticalMapUserUi.Key, args.Actor) ||
+            ent.Comp.Map is not { } map || !TryComp(map, out MapGridComponent? grid))
             return;
-
-        var eye = queenEyeComp.Eye.Value;
-
-        if (!TryGetTacticalMap(out var map) ||
-            !TryComp<MapGridComponent>(map.Owner, out var grid))
-            return;
-
-        var queenTransform = Transform(user);
-        var eyeTransform = Transform(eye);
-        var mapTransform = Transform(map.Owner);
-
-        if (queenTransform.MapID != mapTransform.MapID)
-            return;
-
-        var tileCoords = new Vector2(position.X, position.Y);
-        var targetCoords = new EntityCoordinates(map.Owner, tileCoords * grid.TileSize);
-
-        if (!_weeds.IsOnWeeds((map.Owner, grid), targetCoords))
-        {
-            _popup.PopupCursor(Loc.GetString("rmc-xeno-queen-eye-no-weeds"), user, PopupType.MediumCaution);
-            return;
-        }
-
-        var worldPos = _transform.ToMapCoordinates(targetCoords);
-
-        _transform.SetWorldPosition(eye, worldPos.Position);
+        _queenEye.TryTeleport(args.Actor, EntityManager.System<SharedMapSystem>().GridTileToLocal(map, grid, args.Position));
     }
 
     public new void OpenComputerMap(Entity<TacticalMapComputerComponent?> computer, EntityUid user)

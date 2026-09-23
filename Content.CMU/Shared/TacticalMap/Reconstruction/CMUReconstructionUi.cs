@@ -55,6 +55,14 @@ public sealed class CMUReconViewMessage(Vector2i offset) : BoundUserInterfaceMes
 [Serializable, NetSerializable]
 public sealed class CMUReconClassicMessage : BoundUserInterfaceMessage;
 
+[Serializable, NetSerializable]
+public sealed class CMUReconQueenEyeMoveMessage(int generation, int depth, Vector2 position) : BoundUserInterfaceMessage
+{
+    public int Generation = generation;
+    public int Depth = depth;
+    public Vector2 Position = position;
+}
+
 // Personal geometry only. The server resolves the actor, faction and destination from the session.
 [Serializable, NetSerializable]
 public sealed class CMUReconPreloadRequest(int requestId, bool preferPlanetOnShip, bool cancel = false) : EntityEventArgs

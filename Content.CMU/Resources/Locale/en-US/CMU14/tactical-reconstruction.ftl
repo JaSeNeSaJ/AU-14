@@ -79,3 +79,4 @@ cmu-options-tacmap-classic = Use the classic tactical map
 cmu-options-tacmap-classic-tooltip = Open the original 2D tactical map instead of the reconstruction. Applies the next time you open the map.
 cmu-options-tacmap-center = Center the 3D tactical map on me when it opens
 cmu-options-tacmap-center-tooltip = Start on your position and floor. When viewing a different map, keep that map's view instead.
+cmu-recon-queen-eye-click = Click weeds to move the queen eye. Drag to pan.

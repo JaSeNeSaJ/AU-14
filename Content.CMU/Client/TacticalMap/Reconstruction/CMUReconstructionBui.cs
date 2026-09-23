@@ -1,6 +1,7 @@
 using System.Threading;
 using System.Linq;
 using Content.Shared._RMC14.TacticalMap;
+using Content.Shared._RMC14.Xenonids.Eye;
 using Content.Client._RMC14.TacticalMap;
 using Content.Client._RMC14.UserInterface;
 using Content.Shared.CCVar;
@@ -89,6 +90,13 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
                 _layer = scene.Layer;
             }
             _window.OnRoute += SendMessage;
+            _window.SurveyView.QueenEyeActive = () => !_window.IsRefreshing &&
+                Owner == PlayerManager.LocalEntity && EntMan.System<QueenEyeSystem>().IsInQueenEye(Owner);
+            _window.SurveyView.OnQueenEyeMove += (point, depth) =>
+            {
+                if (!_window.IsRefreshing && _window.SurveyView.Scene is { } current)
+                    SendMessage(new CMUReconQueenEyeMoveMessage(current.Generation, depth, point));
+            };
             _window.SurveyView.OnCameraRequested += target =>
             {
                 if (!_window.IsRefreshing && _window.SurveyView.Scene is { } current)
