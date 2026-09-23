@@ -23,6 +23,21 @@ public enum CMUReconOrderKind : byte { Rally, Move, Route, Text }
 [Serializable, NetSerializable]
 public enum CMUReconInk : byte { Yellow, Red, Blue, Green, White, Purple }
 
+// A selection is one flag; AvailableLayers contains the server-authorized choices.
+[Flags, Serializable, NetSerializable]
+public enum CMUReconLayer : ushort
+{
+    Combined = 1, Platoon = 2, Squad = 4, Marines = 8, Govfor = 16, Opfor = 32,
+    Xenos = 64, Clf = 128, WeYu = 256, Abomination = 512, Yautja = 1024,
+}
+
+[Serializable, NetSerializable]
+public sealed class CMUReconLayerMessage(int generation, CMUReconLayer layer) : BoundUserInterfaceMessage
+{
+    public int Generation = generation;
+    public CMUReconLayer Layer = layer;
+}
+
 [Serializable, NetSerializable]
 public sealed class CMUReconViewMessage(Vector2i offset) : BoundUserInterfaceMessage
 {
@@ -34,6 +49,7 @@ public sealed class CMUReconViewMessage(Vector2i offset) : BoundUserInterfaceMes
     public int AtlasId;
     public int[] Revisions = [];
     public int SurfaceCount;
+    public CMUReconLayer Layer = CMUReconLayer.Combined;
 }
 
 [Serializable, NetSerializable]
@@ -117,6 +133,8 @@ public sealed class CMUReconSnapshotMessage(int generation, Vector2i origin, int
     public byte[] Cells = cells;
     public CMUReconOrder[] Orders = orders;
     public bool CanOrder = canOrder;
+    public CMUReconLayer Layer = CMUReconLayer.Combined;
+    public CMUReconLayer AvailableLayers = CMUReconLayer.Combined;
     public int Width = width;
     public int Height = height;
     public uint[] Appearance = [];
@@ -152,6 +170,8 @@ public sealed class CMUReconPatchMessage(int generation, CMUReconChunk[] chunks,
     public CMUReconOrder[] Orders = orders;
     public bool OrdersChanged = true;
     public bool CanOrder = canOrder;
+    public CMUReconLayer Layer = CMUReconLayer.Combined;
+    public CMUReconLayer AvailableLayers = CMUReconLayer.Combined;
     public CMUReconSurface[] Surfaces = [];
     public int LoadedChunks;
     public int TotalChunks;

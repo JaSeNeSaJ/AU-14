@@ -2,14 +2,15 @@ using System.Numerics;
 
 namespace Content.Shared.CMU14.TacticalMap.Reconstruction;
 
-/// <summary>The classic canvas stores coordinates at three pixels per tile with inverted Y.</summary>
+/// <summary>The classic canvas stores coordinates at three pixels per tile with inverted Y.
+/// Its top edge is one tile above the highest tile index.</summary>
 public static class CMUReconDrawingCoordinates
 {
     public static Vector2 ToWorld(Vector2 point, Vector2i min, Vector2i max) =>
-        new(point.X / 3 + min.X, max.Y - point.Y / 3);
+        new(point.X / 3 + min.X, max.Y + 1 - point.Y / 3);
 
     public static Vector2 ToCanvas(Vector2 point, Vector2i min, Vector2i max) =>
-        new((point.X - min.X) * 3, (max.Y - point.Y) * 3);
+        new((point.X - min.X) * 3, (max.Y + 1 - point.Y) * 3);
 
     public static Color InkColor(CMUReconInk ink) => Color.FromHex(ink switch
     {

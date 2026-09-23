@@ -219,7 +219,7 @@ public sealed partial class CMUReconstructionTest
             Assert.That(retained.Waypoints, Is.EqualTo(path));
             Assert.That(retained.Width, Is.EqualTo(5));
             var added = roundTrip.Single(o => o.Color == Color.Cyan);
-            Assert.That(added.Waypoints, Is.EqualTo(new Vector2[] { new(-2, -2), new(2, 4) }), "Canvas origin, scale and inverted Y must convert correctly.");
+            Assert.That(added.Waypoints, Is.EqualTo(new Vector2[] { new(-2, -1), new(2, 5) }), "Canvas origin, scale and the top edge of the highest tile must convert correctly.");
             Assert.That(added.Width, Is.EqualTo(4));
             Assert.That(roundTrip.Single(o => o.Text != null).Text, Is.EqualTo("Advance"));
         });

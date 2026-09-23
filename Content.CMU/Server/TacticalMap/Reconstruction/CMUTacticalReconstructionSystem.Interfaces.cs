@@ -13,6 +13,7 @@ public sealed partial class CMUTacticalReconstructionSystem
         Subs.BuiEvents<T>(key, subs =>
         {
             subs.Event<CMUReconViewMessage>((Entity<T> e, ref CMUReconViewMessage m) => OnView(e.Owner, ref m));
+            subs.Event<CMUReconLayerMessage>((Entity<T> e, ref CMUReconLayerMessage m) => OnLayer(e.Owner, ref m));
             subs.Event<CMUReconOrderMessage>((Entity<T> e, ref CMUReconOrderMessage m) => OnOrder(e.Owner, ref m));
             subs.Event<CMUReconRouteMessage>((Entity<T> e, ref CMUReconRouteMessage m) => OnRoute(e.Owner, ref m));
             subs.Event<CMUReconSendMessage>((Entity<T> e, ref CMUReconSendMessage m) => OnSend(e.Owner, ref m));
