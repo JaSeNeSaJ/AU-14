@@ -214614,7 +214614,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 147.5,54.5
-- proto: GasThermoMachineFreezer
+- proto: CMUGasThermoMachineFreezer
   entities:
   - uid: 47432
     components:
@@ -218710,7 +218710,7 @@ entities:
       parent: 1
       rot: 3.141592653589793 rad
       pos: 88.5,17.5
-- proto: RMCCanisterBlue
+- proto: CMUCanisterOxygen
   entities:
   - uid: 49004
     components:
