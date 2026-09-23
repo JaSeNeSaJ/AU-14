@@ -14,12 +14,14 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
     public Action? OnClear;
     public Action<CMUReconSendMessage>? OnSend;
     public Action<CMUReconMapChoice>? OnMapSelected;
+    public Action<CMUReconLayerMessage>? OnLayerSelected;
     public event Action? OnClosing;
     public bool CenterOnOpening { get; set; }
     private bool _centerPending;
     private int _requestId;
     private readonly Dictionary<CMUReconMapChoice, (CMUReconDraft Draft, CMUReconCamera Camera)> _views = new();
     private bool _canOrder;
+    private CMUReconLayer _availableLayers;
     private CMUReconSnapshotMessage? _incoming;
     private CMUReconContactsMessage? _incomingContacts;
     public bool IsRefreshing { get; private set; }
@@ -43,6 +45,11 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
         {
             var choice = (CMUReconMapChoice) args.Id;
             if (View.Scene?.MapChoice != choice && !View.Draft.Sending) OnMapSelected?.Invoke(choice);
+        };
+        LayerSelection.OnItemSelected += args =>
+        {
+            if (!IsRefreshing && View.Scene is { } scene && !View.Draft.Sending && scene.Layer != (CMUReconLayer) args.Id)
+                OnLayerSelected?.Invoke(new CMUReconLayerMessage(scene.Generation, (CMUReconLayer) args.Id));
         };
         LowWalls.OnToggled += args => View.SetLowWalls(args.Pressed);
         Isolate.OnToggled += args => View.SetIsolated(args.Pressed);
@@ -180,6 +187,7 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
                 ? Loc.GetString("cmu-recon-progress", ("percent", current.TotalChunks == 0 ? 0 : 100 * current.LoadedChunks / current.TotalChunks))
                 : "";
         UpdateDrawingControls();
+        ConfigureLayers(_incoming ?? View.Scene);
         CenterPlayer.Disabled = IsRefreshing || View.Scene?.OperatorPosition == null;
         MapSelection.Disabled = View.Scene == null || View.Draft.Sending;
     }
@@ -196,6 +204,7 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
         IsRefreshing = keepScene && View.Scene != null;
         _canOrder = false;
         MapSelection.Disabled = CenterPlayer.Disabled = true;
+        LayerSelection.Disabled = true;
         Status.Text = Loc.GetString(IsRefreshing ? "cmu-recon-refreshing" : "cmu-recon-loading");
         UpdateDrawingControls();
     }
@@ -212,6 +221,26 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
         if (scene.HasPlanet) MapSelection.AddItem(Loc.GetString("cmu-recon-planet"), (int) CMUReconMapChoice.Planet);
         if (scene.HasShip) MapSelection.AddItem(Loc.GetString("cmu-recon-ship"), (int) CMUReconMapChoice.Ship);
         if (scene.HasPlanet || scene.HasShip) MapSelection.SelectId((int) scene.MapChoice);
+    }
+
+    private void ConfigureLayers(CMUReconSnapshotMessage? scene)
+    {
+        var available = scene?.AvailableLayers ?? CMUReconLayer.Combined;
+        LayerSelector.Visible = available != CMUReconLayer.Combined;
+        LayerSelection.Disabled = scene == null || IsRefreshing || View.Draft.Sending;
+        if (_availableLayers != available)
+        {
+            _availableLayers = available;
+            LayerSelection.Clear();
+            foreach (var layer in Enum.GetValues<CMUReconLayer>())
+            {
+                if ((available & layer) == 0) continue;
+                var key = layer == CMUReconLayer.Combined && (available & CMUReconLayer.Squad) != 0
+                    ? "cmu-recon-layer-both" : $"cmu-recon-layer-{layer.ToString().ToLowerInvariant()}";
+                LayerSelection.AddItem(Loc.GetString(key), (int) layer);
+            }
+        }
+        LayerSelection.SelectId((int) (scene?.Layer ?? CMUReconLayer.Combined));
     }
 
     public override void Close()
@@ -234,6 +263,7 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
         Labels.Pressed = camera.Labels;
         IsRefreshing = true;
         _canOrder = false;
+        ConfigureLayers(scene);
         Status.Text = Loc.GetString("cmu-recon-refreshing");
         Feed.Text = Loc.GetString("cmu-recon-feed-saved");
         UpdateDrawingControls();

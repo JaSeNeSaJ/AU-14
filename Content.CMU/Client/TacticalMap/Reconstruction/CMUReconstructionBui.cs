@@ -25,6 +25,7 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
     private bool _remembered;
     private int _requestId;
     private CMUReconMapChoice _choice;
+    private CMUReconLayer _layer;
     private bool _explicitChoice;
     private bool _classic;
     private TacticalMapLine[] _classicLines = [];
@@ -68,6 +69,7 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
         base.Open();
         _remembered = false;
         _choice = CMUReconMapChoice.Automatic;
+        _layer = CMUReconLayer.Combined;
         _explicitChoice = false;
         _classic = _cfg.GetCVar(CCVars.CMUTacMapClassic);
         UsingReconstruction = !_classic;
@@ -81,7 +83,10 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
             _window.CenterOnOpening = _cfg.GetCVar(CCVars.CMUTacMapCenterOnOpen);
             if (_actor is { } actor && EntMan.System<CMUReconstructionCacheSystem>().TryTake(Owner, actor, out var scene, out var camera, out var render,
                     _cfg.GetCVar(CCVars.CMUTacMapPlanetOnShip)))
+            {
                 _window.RestoreCached(scene, camera, render);
+                _layer = scene.Layer;
+            }
             _window.OnRoute += SendMessage;
             _window.OnSend += SendMessage;
             _window.OnCancelOrder += SendMessage;
@@ -89,6 +94,11 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
             _window.OnClose += StopSurveyRetry;
             _window.OnClosing += Remember;
             _window.OnMapSelected += SelectMap;
+            _window.OnLayerSelected += message =>
+            {
+                _layer = message.Layer;
+                SendMessage(message);
+            };
             _requestId = EntMan.System<CMUReconstructionCacheSystem>().NextRequestId();
             _window.BeginViewRequest(_requestId, keepScene: true);
         }
@@ -118,6 +128,7 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
                 AtlasId = _window.SurveyView.Scene?.AtlasId ?? 0,
                 Revisions = _window.SurveyView.Scene?.Revisions ?? [],
                 SurfaceCount = _window.SurveyView.Scene?.Surfaces.Length ?? 0,
+                Layer = _layer,
             });
     }
 
@@ -153,6 +164,8 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
         if (message is CMUReconFeedbackMessage { LocalizationKey: "cmu-recon-no-map" } feedback && feedback.RequestId != _requestId)
             return;
         _window?.Receive(message);
+        if (message is CMUReconSnapshotMessage or CMUReconPatchMessage && _window?.SurveyView.Scene is { } current)
+            _layer = current.Layer;
         if (message is CMUReconSnapshotMessage or CMUReconFeedbackMessage { LocalizationKey: "cmu-recon-no-map" })
             StopSurveyRetry();
         if (message is CMUReconFeedbackMessage { LocalizationKey: "cmu-recon-no-map" } &&

@@ -82,6 +82,9 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
         public EntityUid Root;
         public EntityUid DrawingScope;
         public CMUReconMapChoice MapChoice;
+        public CMUReconLayer Layer = CMUReconLayer.Combined;
+        public CMUReconLayer SentLayer;
+        public CMUReconLayer SentLayers;
         public MapTargets Targets;
         public int RequestId;
         public TimeSpan NextSwitch;
@@ -203,6 +206,7 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             OperatorPosition = operatorLevel >= 0 ? pos : null,
             OperatorDepth = a.MinDepth + operatorLevel,
             MapChoice = survey.MapChoice, AboardShip = survey.Targets.AboardShip,
+            Layer = survey.Layer, AvailableLayers = AvailableLayers(survey),
             HasPlanet = survey.Targets.Planet != null, HasShip = survey.Targets.Ship != null,
             RequestId = survey.RequestId,
             AtlasId = a.Id, ReuseGeometry = survey.ReuseGeometry,
@@ -229,6 +233,8 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             result.Actor = request.Actor; result.Source = console; result.Root = root; result.MapChoice = choice;
             result.DrawingScope = EntityManager.System<Content.Server._RMC14.TacticalMap.TacticalMapSystem>().ReconstructionCanvasScope(console, root);
             result.Targets = targets; result.RequestId = request.RequestId;
+            result.Layer = request.Layer;
+            RefreshLayer(result);
             var focus = (_transform.GetWorldPosition(request.Actor) - (Vector2) source.Origin) / CMUReconGeometry.ChunkSize;
             var level = Math.Max(0, Array.IndexOf(source.Maps, Transform(request.Actor).MapUid));
             result.ChunkOrder = Enumerable.Range(0, source.Revisions.Length)
@@ -353,20 +359,22 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
 
     private List<CMUReconOrder> Orders(Survey survey)
     {
+        RefreshLayer(survey);
         if (HasComp<GhostComponent>(survey.Actor) && TryComp<TacticalMapUserComponent>(survey.Source, out var user))
         {
             var combined = new List<CMUReconOrder>();
-            if (user.Marines) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.MarinesFaction));
-            if (user.Govfor) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.GovforFaction));
-            if (user.Opfor) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.OpforFaction));
-            if (user.Xenos) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.XenosFaction));
-            if (user.Clf) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.ClfFaction));
-            if (user.WeYu) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.WeYuFaction));
+            if (user.Marines && IncludesLayer(survey, CMUReconLayer.Marines)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.MarinesFaction));
+            if (user.Govfor && IncludesLayer(survey, CMUReconLayer.Govfor)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.GovforFaction));
+            if (user.Opfor && IncludesLayer(survey, CMUReconLayer.Opfor)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.OpforFaction));
+            if (user.Xenos && IncludesLayer(survey, CMUReconLayer.Xenos)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.XenosFaction));
+            if (user.Clf && IncludesLayer(survey, CMUReconLayer.Clf)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.ClfFaction));
+            if (user.WeYu && IncludesLayer(survey, CMUReconLayer.WeYu)) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.WeYuFaction));
             return combined;
         }
         if (string.IsNullOrEmpty(survey.Faction)) return [];
-        var orders = FactionOrders(survey, survey.Faction);
-        if (EntityManager.System<Content.Server._RMC14.TacticalMap.TacticalMapSystem>().ReconstructionViewerSquad(survey.Source) is { } squad)
+        var orders = survey.Layer == CMUReconLayer.Squad ? new List<CMUReconOrder>() : FactionOrders(survey, survey.Faction);
+        if (IncludesLayer(survey, CMUReconLayer.Squad) &&
+            EntityManager.System<Content.Server._RMC14.TacticalMap.TacticalMapSystem>().ReconstructionViewerSquad(survey.Source) is { } squad)
             return orders.Concat(FactionOrders(survey, survey.Faction, squad)).ToList();
         return orders;
     }
@@ -528,13 +536,17 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
                 continue;
             }
             var patch = GeometryPatch(survey, 128, 44 * 1024);
+            var layers = RefreshLayer(survey);
+            var layersChanged = survey.SentLayer != survey.Layer || survey.SentLayers != layers;
             var orders = Orders(survey);
-            var ordersChanged = orders.Count != survey.SentOrders.Length ||
+            var ordersChanged = layersChanged || orders.Count != survey.SentOrders.Length ||
                 orders.Where((order, index) => order.Id != survey.SentOrders[index]).Any();
             if (ordersChanged) survey.SentOrders = orders.Select(order => order.Id).ToArray();
             var canOrder = CanOrder(key.Console, key.Actor);
             if (patch.Chunks.Length == 0 && patch.Surfaces.Length == 0 && !ordersChanged && survey.SentCanOrder == canOrder) continue;
             survey.SentCanOrder = canOrder;
+            survey.SentLayer = patch.Layer = survey.Layer;
+            survey.SentLayers = patch.AvailableLayers = layers;
             patch.Orders = ordersChanged ? orders.ToArray() : [];
             patch.OrdersChanged = ordersChanged;
             patch.CanOrder = canOrder;

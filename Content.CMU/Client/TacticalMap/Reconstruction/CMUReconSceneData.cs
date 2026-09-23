@@ -40,6 +40,8 @@ public static class CMUReconSceneData
         if (scene.Generation != patch.Generation) return;
         if (patch.OrdersChanged) scene.Orders = patch.Orders;
         scene.CanOrder = patch.CanOrder;
+        scene.Layer = patch.Layer;
+        scene.AvailableLayers = patch.AvailableLayers;
         scene.LoadedChunks = patch.LoadedChunks;
         scene.TotalChunks = patch.TotalChunks;
         if (patch.Surfaces.Length > 0)

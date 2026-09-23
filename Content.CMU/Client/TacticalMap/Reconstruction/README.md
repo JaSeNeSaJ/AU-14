@@ -50,6 +50,13 @@ Published planet drawings share the existing faction canvas with classic maps. F
 paths, colour, width and floor survive classic resubmission; classic canvas coordinates are converted
 using the map's actual origin and inverted Y axis. Text pins share tactical labels. Overwatch canvases
 remain scoped to their assigned squad and appear on that squad's personal 3D maps. Publication uses the classic faction/hive announcement and published-contact path, with announcement cooldowns. Ordinary human personal maps and ghosts remain read-only; consoles/tablets retain their normal access, range and leadership requirements. Fresh observers can request geometry and see their authorized faction drawings. A classic canvas refresh preserves unsent local edits.
+The **Map layer** selector on personal maps switches drawings, text markers and tracked icons together.
+Squad members can choose **Squad**, **Platoon**, or **Squad + platoon**. Ghosts can select each faction
+their normal tactical feed authorizes, or **All factions**. The server validates every selection;
+the selector grants no drawing permission. Switching layers keeps the same survey, loaded terrain
+and camera, and a cached reopen restores the selected layer. Losing squad access resets the view to
+the remaining authorized feed.
+
 Drawing waits for a refreshed baseline when
 reopening a cached map. Pencil sampling compacts long strokes to at most 512 points without stopping
 input or truncating the beginning of the stroke. Unchanged strokes are not resent with terrain patches.

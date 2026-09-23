@@ -40,6 +40,7 @@ public sealed partial class CMUTacticalReconstructionSystem
 
     private CMUReconContactsMessage Contacts(EntityUid source, EntityUid actor, Survey survey)
     {
+        RefreshLayer(survey);
         var contacts = new List<CMUReconContact>();
         var seen = new HashSet<int>();
         void Add(Dictionary<int, TacticalMapBlip> blips)
@@ -55,14 +56,15 @@ public sealed partial class CMUTacticalReconstructionSystem
         {
             // The classic squad tab has a separate authorized live feed (including SL and fireteam badges).
             // Prefer it over an older published faction snapshot; do not look up unfiltered tracked actors.
-            if (user.HasSquad) Add(user.SquadBlips);
-            if (user.Marines) Add(user.MarineBlips);
-            if (user.Xenos) { Add(user.XenoBlips); Add(user.XenoStructureBlips); }
-            if (user.Opfor) Add(user.OpforBlips);
-            if (user.Govfor) Add(user.GovforBlips);
-            if (user.Clf) Add(user.ClfBlips);
-            if (user.WeYu) Add(user.WeYuBlips);
-            if (user.Abomination) Add(user.AbominationBlips);
+            if (user.HasSquad && IncludesLayer(survey, CMUReconLayer.Squad)) Add(user.SquadBlips);
+            if (user.Marines && IncludesLayer(survey, CMUReconLayer.Marines)) Add(user.MarineBlips);
+            if (user.Xenos && IncludesLayer(survey, CMUReconLayer.Xenos)) { Add(user.XenoBlips); Add(user.XenoStructureBlips); }
+            if (user.Opfor && IncludesLayer(survey, CMUReconLayer.Opfor)) Add(user.OpforBlips);
+            if (user.Govfor && IncludesLayer(survey, CMUReconLayer.Govfor)) Add(user.GovforBlips);
+            if (user.Clf && IncludesLayer(survey, CMUReconLayer.Clf)) Add(user.ClfBlips);
+            if (user.WeYu && IncludesLayer(survey, CMUReconLayer.WeYu)) Add(user.WeYuBlips);
+            if (user.Abomination && IncludesLayer(survey, CMUReconLayer.Abomination)) Add(user.AbominationBlips);
+            if (user.Yautja && IncludesLayer(survey, CMUReconLayer.Yautja)) Add(user.YautjaBlips);
         }
         else if (TryComp<TacticalMapComputerComponent>(source, out var computer))
         {

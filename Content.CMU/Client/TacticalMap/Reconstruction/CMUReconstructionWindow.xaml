@@ -31,6 +31,10 @@
           <BoxContainer Orientation="Vertical" SeparationOverride="7" Margin="0,2,4,0">
             <Label Text="{Loc cmu-recon-map}" FontColorOverride="#77CABD" />
             <OptionButton Name="MapSelection" Disabled="True" />
+            <BoxContainer Name="LayerSelector" Orientation="Vertical" SeparationOverride="7" Visible="False">
+              <Label Text="{Loc cmu-recon-layer}" FontColorOverride="#77CABD" />
+              <OptionButton Name="LayerSelection" ToolTip="{Loc cmu-recon-layer-tooltip}" />
+            </BoxContainer>
             <Label Text="{Loc cmu-recon-floor}" FontColorOverride="#77CABD" />
             <OptionButton Name="Floor" />
             <CheckBox Name="LowWalls" Text="{Loc cmu-recon-low-walls}" Pressed="True" />
