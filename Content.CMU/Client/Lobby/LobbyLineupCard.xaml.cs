@@ -27,6 +27,10 @@ public sealed partial class LobbyLineupCard : Control
     [Dependency] private IResourceCache _resources = default!;
     [Dependency] private IEntityManager _entities = default!;
     private readonly PartyEffectsOverlay _effects;
+    // Reuse managed buffers because stackalloc is rejected by the content sandbox.
+    private readonly Vector2[] _quadVertices = new Vector2[4];
+    private readonly Vector2[] _tailVertices = new Vector2[3];
+    private readonly Vector2[] _ellipseVertices = new Vector2[25];
     private LobbyLineupEntry? _entry;
     private float _entrance;
     private float _bubbleRemaining;
@@ -332,21 +336,22 @@ public sealed partial class LobbyLineupCard : Control
         var floor = _groundY * UIScale;
         var unit = Math.Min(size.X / 164f, size.Y / 200f);
         var light = IsSelected ? 0.18f : _hovered ? 0.12f : 0.05f;
-        Span<Vector2> beam = stackalloc Vector2[]
-        {
-            new(center - 14 * unit, _bubbleHeight * UIScale), new(center + 14 * unit, _bubbleHeight * UIScale),
-            new(size.X - 8 * unit, floor), new(8 * unit, floor),
-        };
+        var beam = _quadVertices;
+        beam[0] = new(center - 14 * unit, _bubbleHeight * UIScale);
+        beam[1] = new(center + 14 * unit, _bubbleHeight * UIScale);
+        beam[2] = new(size.X - 8 * unit, floor);
+        beam[3] = new(8 * unit, floor);
         handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, beam, accent.WithAlpha(light));
         DrawEllipse(handle, new(center, floor), new(54 * unit, 9 * unit), Color.FromHex("#050A0EBB"));
         DrawEllipse(handle, new(center, floor), new(47 * unit, 5 * unit), accent.WithAlpha(IsSelected ? 0.3f : 0.12f));
         handle.DrawLine(new(center - 35 * unit, floor + 3 * unit), new(center + 35 * unit, floor + 3 * unit), accent.WithAlpha(0.65f));
 
         var plate = _plateY * UIScale;
-        Span<Vector2> nameplate = stackalloc Vector2[]
-        {
-            new(0, plate), new(size.X, plate - 4 * unit), new(size.X, size.Y), new(0, size.Y),
-        };
+        var nameplate = _quadVertices;
+        nameplate[0] = new(0, plate);
+        nameplate[1] = new(size.X, plate - 4 * unit);
+        nameplate[2] = new(size.X, size.Y);
+        nameplate[3] = new(0, size.Y);
         handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, nameplate, Color.FromHex("#080F13EF"));
         handle.DrawLine(new(0, plate), new(size.X, plate - 4 * unit), accent.WithAlpha(IsSelected ? 1 : 0.5f));
         if (IsSelected || _hovered)
@@ -354,11 +359,10 @@ public sealed partial class LobbyLineupCard : Control
 
         if (BubblePanel.Visible)
         {
-            Span<Vector2> tail = stackalloc Vector2[]
-            {
-                new(center - 5 * unit, _bubbleHeight * 0.88f * UIScale), new(center + 7 * unit, _bubbleHeight * 0.88f * UIScale),
-                new(center, _bubbleHeight * UIScale),
-            };
+            var tail = _tailVertices;
+            tail[0] = new(center - 5 * unit, _bubbleHeight * 0.88f * UIScale);
+            tail[1] = new(center + 7 * unit, _bubbleHeight * 0.88f * UIScale);
+            tail[2] = new(center, _bubbleHeight * UIScale);
             handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, tail, Color.FromHex("#D4E2DFF5").WithAlpha(BubblePanel.Modulate.A));
         }
         if (_gesture != null && _gestureDelay <= 0)
@@ -428,9 +432,9 @@ public sealed partial class LobbyLineupCard : Control
         }
     }
 
-    private static void DrawEllipse(DrawingHandleScreen handle, Vector2 center, Vector2 radius, Color color)
+    private void DrawEllipse(DrawingHandleScreen handle, Vector2 center, Vector2 radius, Color color)
     {
-        Span<Vector2> points = stackalloc Vector2[25];
+        var points = _ellipseVertices;
         points[0] = center;
         for (var i = 1; i < points.Length; i++)
         {
