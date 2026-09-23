@@ -160516,7 +160516,7 @@ entities:
     - type: Transform
       parent: 1
       pos: 186.5,157.5
-- proto: RMCCanisterGrey
+- proto: CMUCanisterAir
   entities:
   - uid: 123661
     components:
