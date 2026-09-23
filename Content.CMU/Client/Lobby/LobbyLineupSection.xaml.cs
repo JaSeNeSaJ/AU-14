@@ -90,16 +90,16 @@ public sealed partial class LobbyLineupSection : Control
             return;
         var reduced = _configuration.GetCVar(CCVars.ReducedMotion);
         var phase = reduced ? 0 : (_effectDuration - _effectRemaining) * 1.8f;
+        Span<Vector2> beam = stackalloc Vector2[4];
         for (var i = 0; i < 3; i++)
         {
             var color = !_disco ? _accent : i == 0 ? Color.Cyan : i == 1 ? Color.Magenta : Color.FromHex("#FFCE69");
             var top = size.X * (i + 1) / 4;
             var bottom = top + MathF.Sin(phase + i * 2) * size.X * 0.3f;
-            Span<Vector2> beam = stackalloc Vector2[]
-            {
-                new(top - 2 * UIScale, heading), new(top + 2 * UIScale, heading),
-                new(bottom + size.X * 0.16f, size.Y), new(bottom - size.X * 0.16f, size.Y),
-            };
+            beam[0] = new(top - 2 * UIScale, heading);
+            beam[1] = new(top + 2 * UIScale, heading);
+            beam[2] = new(bottom + size.X * 0.16f, size.Y);
+            beam[3] = new(bottom - size.X * 0.16f, size.Y);
             handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, beam, color.WithAlpha(0.11f * Math.Min(1, _effectRemaining)));
         }
     }

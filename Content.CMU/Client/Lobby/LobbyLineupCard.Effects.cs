@@ -90,6 +90,15 @@ public sealed partial class LobbyLineupCard
                 var muzzle = center + new Vector2(27, 2) * unit;
                 if (reduced)
                     break;
+                Span<Vector2> flash = stackalloc Vector2[]
+                {
+                    muzzle + new Vector2(-1, 0) * unit,
+                    muzzle + new Vector2(5, -3) * unit,
+                    muzzle + new Vector2(3, 0) * unit,
+                    muzzle + new Vector2(7, 1) * unit,
+                    muzzle + new Vector2(3, 2) * unit,
+                    muzzle + new Vector2(4, 4) * unit,
+                };
                 for (var shot = 0; shot < LobbyLineupChoreography.ShotCount(_gesture.Value); shot++)
                 {
                     var age = phase - LobbyLineupChoreography.ShotTime(_gesture.Value, shot);
@@ -98,15 +107,6 @@ public sealed partial class LobbyLineupCard
                     if (age < 0.055f)
                     {
                         var glow = 1 - age / 0.055f;
-                        Span<Vector2> flash = stackalloc Vector2[]
-                        {
-                            muzzle + new Vector2(-1, 0) * unit,
-                            muzzle + new Vector2(5, -3) * unit,
-                            muzzle + new Vector2(3, 0) * unit,
-                            muzzle + new Vector2(7, 1) * unit,
-                            muzzle + new Vector2(3, 2) * unit,
-                            muzzle + new Vector2(4, 4) * unit,
-                        };
                         handle.DrawPrimitives(DrawPrimitiveTopology.TriangleFan, flash, Color.FromHex("#FFCC67").WithAlpha(glow));
                         handle.DrawCircle(muzzle, 1.2f * unit, Color.FromHex("#FFF2CE").WithAlpha(glow));
                     }
