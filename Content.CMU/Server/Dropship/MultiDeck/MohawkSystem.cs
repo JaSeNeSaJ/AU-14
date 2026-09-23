@@ -322,7 +322,8 @@ public sealed partial class MohawkSystem : EntitySystem
                 continue;
 
             var coordinates = new EntityCoordinates(ship, position);
-            var deployed = segment.Stage < deployedStages;
+            var deployed = segment.Stage < deployedStages &&
+                !(mechanisms.KeepRampThreshold && segment.Stage == 3);
             if (deployed && !segment.Deployed)
             {
                 foreach (var rider in GetRampOccupants(marker))
@@ -378,6 +379,7 @@ public sealed partial class MohawkSystem : EntitySystem
                         support.HeightCurve = new(curve);
                         support.Stick = true;
                         support.AllowVehicles = false;
+                        support.PreviewGrid = mechanisms.RampPreviewFullDeck ? ship : null;
                         Dirty(uid, support);
                     }
                 }

@@ -51,6 +51,7 @@ public sealed partial class ScalingViewport
 
     private List<Entity<MapGridComponent>> _zLevelGrids = new();
     private List<Entity<MapGridComponent>> _stairPreviewGrids = new();
+    private EntityUid? _stairPreviewFullGrid;
     private readonly List<StairPreviewOrigin> _stairPreviewOrigins = new(CMUZLevelViewerComponent.MaxStairPreviewPositions);
     private readonly CMUZViewportRenderPlan _zRenderPlan = new();
     private readonly List<Box2> _stairPreviewTileBounds = new();
@@ -964,7 +965,8 @@ public sealed partial class ScalingViewport
                     Vector2.Transform(localBounds.TopRight, gridMatrix),
                     Vector2.Transform(localBounds.BottomRight, gridMatrix));
                 var bounds = visibleTile.Bounds;
-                if (!CanAnyStairPreviewOriginSeeTile(visibleTile, mapId, _stairPreviewEye.VisualZOffset))
+                if (grid.Owner != _stairPreviewFullGrid &&
+                    !CanAnyStairPreviewOriginSeeTile(visibleTile, mapId, _stairPreviewEye.VisualZOffset))
                     continue;
 
                 _zRenderPlan.StairTiles.Add(visibleTile);
@@ -996,6 +998,7 @@ public sealed partial class ScalingViewport
     private void SetStairPreviewOrigins(CMUZLevelViewerComponent viewer, Vector2 viewerPosition)
     {
         _stairPreviewOrigins.Clear();
+        _stairPreviewFullGrid = viewer.StairPreviewGrid;
 
         var count = Math.Clamp(
             viewer.StairPreviewPositionCount,

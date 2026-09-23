@@ -13,6 +13,14 @@ public sealed partial class MohawkMechanismsComponent : Component
 {
     public bool RampDeployed;
     public bool HatchDeployed;
+
+    /// <summary>Boarders near a deployed ramp can preview the whole cabin grid.</summary>
+    [DataField]
+    public bool RampPreviewFullDeck;
+
+    /// <summary>Keep the cabin end of the raised ramp as a fixed boarding threshold.</summary>
+    [DataField]
+    public bool KeepRampThreshold;
     public readonly Dictionary<EntityUid, Vector2> CabinRampMarkers = new();
     public readonly Dictionary<EntityUid, Vector2> CabinRampEdging = new();
 

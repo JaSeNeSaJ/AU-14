@@ -127,6 +127,11 @@
   name: starboard internal utility module mount
 
 - type: entity
+  parent: CMUMohawkInternalModule
+  id: CMUMohawkInternalModuleAft
+  name: aft internal utility module mount
+
+- type: entity
   abstract: true
   id: CMUMohawkDecoration
   name: Mohawk hull

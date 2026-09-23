@@ -384,7 +384,7 @@ public sealed class MohawkDropshipTest
                 var xform = entities.GetComponent<TransformComponent>(control.Owner);
                 controls.Add(control.Owner, (xform.GridUid!.Value, xform.LocalPosition));
             }
-            Assert.That(controls, Has.Count.EqualTo(variant.StartsWith("omaha") ? 5 : 3));
+            Assert.That(controls, Has.Count.EqualTo(5));
             var boardingTile = maps.GetAllTiles(lower, entities.GetComponent<MapGridComponent>(lower)).First();
             var rider = entities.SpawnEntity(null, new EntityCoordinates(ship, 0.5f, 0.5f));
             Assert.That(entities.GetComponent<TransformComponent>(rider).GridUid, Is.EqualTo(ship));
