@@ -14,6 +14,13 @@ public sealed partial class MohawkMechanismsComponent : Component
     public bool RampDeployed;
     public bool HatchDeployed;
 
+    /// <summary>Delay between the ramp's two movement steps.</summary>
+    [DataField]
+    public TimeSpan RampStepDelay = TimeSpan.FromSeconds(1);
+
+    /// <summary>People underneath when lowering began, removed after their first crush hit.</summary>
+    public readonly HashSet<EntityUid> RampCrushTargets = new();
+
     /// <summary>Boarders near a deployed ramp can preview the whole cabin grid.</summary>
     [DataField]
     public bool RampPreviewFullDeck;

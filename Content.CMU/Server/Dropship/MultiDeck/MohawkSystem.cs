@@ -259,12 +259,28 @@ public sealed partial class MohawkSystem : EntitySystem
             !TryComp<MultiDeckDropshipComponent>(ship, out var decks) || !decks.Initialized)
             return false;
 
+        if (deployed && !mechanisms.RampDeployed &&
+            (!TryComp<MohawkRampMovingComponent>(ship, out var previousMovement) || !previousMovement.Deploying))
+        {
+            // Only people already underneath the raised ramp can be crushed.
+            // Passengers may drop through its opening between lowering steps.
+            mechanisms.RampCrushTargets.Clear();
+            foreach (var uid in GetShipEntities(ship))
+            {
+                if (!TryComp<MohawkRampSegmentComponent>(uid, out var segment) || !segment.Lower || segment.Deployed)
+                    continue;
+
+                foreach (var victim in GetRampOccupants(uid))
+                    mechanisms.RampCrushTargets.Add(victim);
+            }
+        }
+
         if (!force)
         {
             var moving = EnsureComp<MohawkRampMovingComponent>(ship);
             moving.Deploying = deployed;
             moving.Step = 0;
-            moving.NextStep = _timing.CurTime + TimeSpan.FromSeconds(2.5);
+            moving.NextStep = _timing.CurTime + mechanisms.RampStepDelay;
             ApplyRampGeometry(ship, 2);
             _audio.PlayPvs(RampSound, ship);
             return true;
@@ -273,6 +289,7 @@ public sealed partial class MohawkSystem : EntitySystem
         RemComp<MohawkRampMovingComponent>(ship);
         ApplyRampGeometry(ship, deployed ? 5 : 0);
         mechanisms.RampDeployed = deployed;
+        mechanisms.RampCrushTargets.Clear();
         var changed = new DropshipBoardingChangedEvent();
         RaiseLocalEvent(ship, ref changed);
         return true;
@@ -292,7 +309,7 @@ public sealed partial class MohawkSystem : EntitySystem
                 continue;
             }
             ApplyRampGeometry(ship, moving.Deploying ? 3 : 1);
-            moving.NextStep += TimeSpan.FromSeconds(2.5);
+            moving.NextStep += Comp<MohawkMechanismsComponent>(ship).RampStepDelay;
         }
 
         var hatches = EntityQueryEnumerator<MohawkHatchMovingComponent>();
@@ -365,6 +382,9 @@ public sealed partial class MohawkSystem : EntitySystem
                     {
                         foreach (var victim in GetRampOccupants(uid))
                         {
+                            if (!mechanisms.RampCrushTargets.Remove(victim))
+                                continue;
+
                             _damage.TryChangeDamage(victim, new DamageSpecifier { DamageDict = { ["Blunt"] = 40 } }, origin: ship);
                             _stun.TryKnockdown(victim.Owner, TimeSpan.FromSeconds(5), false);
                             var angle = _random.NextFloat() * MathF.Tau;
