@@ -10118,5 +10118,53 @@
   id: 664
   time: '2026-09-22T22:31:19.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1990
+- author: TheHellFireo
+  changes:
+  - message: Xenomorphs can no longer evolve into Warlock.
+    type: Remove
+  id: 665
+  time: '2026-09-22T23:22:48.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1992
+- author: TheHellFireo
+  changes:
+  - message: Renamed the flesh abomination threat to biomorphs.
+    type: Tweak
+  id: 666
+  time: '2026-09-22T23:30:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1993
+- author: TheHellFireo
+  changes:
+  - message: Airborne objects and mobs no longer disappear when crossing overhead
+      z-levels.
+    type: Fix
+  id: 667
+  time: '2026-09-22T23:36:56.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1991
+- author: OverusedMeme
+  changes:
+  - message: M3VL flak vest as an option in the CIU aircrew vendor
+    type: Add
+  - message: added the missing Mk30 visor options to CIU aircrew vendor
+    type: Fix
+  id: 668
+  time: '2026-09-23T00:30:24.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1995
+- author: TheHellFireo
+  changes:
+  - message: Added a 3D tactical map with floor cutaways, tracked role icons and player
+      centering.
+    type: Add
+  - message: Added colored pencil drafts, adjustable stroke widths and text pins with
+      Send.
+    type: Add
+  - message: Standard tactical-map actions and computers open the new map, with a
+      classic-map option in CMU settings.
+    type: Tweak
+  - message: Synchronized published planet drawings between classic and 3D maps and
+      improved reopening after interrupted loads.
+    type: Fix
+  id: 669
+  time: '2026-09-23T00:43:11.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1996
 Name: CMU
 Order: -1
