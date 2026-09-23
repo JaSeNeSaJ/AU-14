@@ -20,6 +20,7 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
     protected virtual void OpenClassicWindow() { }
     [Dependency] private IConfigurationManager _cfg = default!;
     private CMUReconstructionWindow? _window;
+    private CMUReconCameraWindow? _cameraWindow;
     private CancellationTokenSource? _surveyRetry;
     private EntityUid? _actor;
     private bool _remembered;
@@ -88,10 +89,15 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
                 _layer = scene.Layer;
             }
             _window.OnRoute += SendMessage;
+            _window.SurveyView.OnCameraRequested += target =>
+            {
+                if (!_window.IsRefreshing && _window.SurveyView.Scene is { } current)
+                    SendMessage(new CMUReconCameraMessage(current.Generation, target));
+            };
             _window.OnSend += SendMessage;
             _window.OnCancelOrder += SendMessage;
             _window.OnClear += () => SendMessage(new CMUReconClearOrdersMessage());
-            _window.OnClose += StopSurveyRetry;
+            _window.OnClose += () => { StopSurveyRetry(); CloseCamera(); };
             _window.OnClosing += Remember;
             _window.OnMapSelected += SelectMap;
             _window.OnLayerSelected += message =>
@@ -134,6 +140,7 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
 
     private void SelectMap(CMUReconMapChoice choice)
     {
+        CloseCamera();
         _choice = choice;
         _explicitChoice = true;
         _requestId = EntMan.System<CMUReconstructionCacheSystem>().NextRequestId();
@@ -151,6 +158,20 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
     protected override void ReceiveMessage(BoundUserInterfaceMessage message)
     {
         base.ReceiveMessage(message);
+        if (message is CMUReconCameraViewMessage cameraView &&
+            _window?.SurveyView.Scene is { } currentScene && currentScene.Generation == cameraView.Generation)
+        {
+            CloseCamera();
+            if (cameraView.Camera is { } camera && _actor is { } viewer)
+            {
+                _cameraWindow = new CMUReconCameraWindow(viewer, camera, cameraView.Name ?? "");
+                _cameraWindow.OnClose += () =>
+                {
+                    if (IsOpened) SendMessage(new CMUReconCameraMessage(cameraView.Generation, null));
+                };
+                _cameraWindow.OpenCentered();
+            }
+        }
         if (message is CMUReconSnapshotMessage snapshot)
         {
             if (snapshot.RequestId != _requestId) return;
@@ -182,10 +203,17 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
     {
         if (disposing)
         {
+            CloseCamera();
             Remember();
             StopSurveyRetry();
         }
         base.Dispose(disposing);
+    }
+
+    private void CloseCamera()
+    {
+        _cameraWindow?.Dispose();
+        _cameraWindow = null;
     }
 
     private void Remember()

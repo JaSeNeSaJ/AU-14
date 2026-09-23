@@ -129,7 +129,7 @@ public sealed partial class CMUReconstructionControl
         _stroke.Clear();
     }
 
-    public void CancelStroke() { _drawing = false; _stroke.Clear(); }
+    public void CancelStroke() { _drawing = false; _stroke.Clear(); _pressedContact = null; }
 
     protected override void EnteredTree()
     {
@@ -149,6 +149,7 @@ public sealed partial class CMUReconstructionControl
         else if (type == KeyEventType.Down && !args.Handled && UserInterfaceManager.CurrentlyHovered == this)
         {
             FinishStroke();
+            _pressedContact = null;
             _panning = false;
             _rotating = true;
             _lastMouse = UserInterfaceManager.MousePositionScaled.Position - GlobalPosition;
@@ -161,6 +162,7 @@ public sealed partial class CMUReconstructionControl
         base.KeyBindDown(args);
         if (args.Function != EngineKeyFunctions.UIClick && args.Function != EngineKeyFunctions.UIRightClick) return;
         _lastMouse = args.RelativePosition;
+        _pressedContact = null;
         if (!_rotating && args.Function == EngineKeyFunctions.UIClick && TextEnabled && Scene is { } scene)
         {
             if (TryDrawingPoint(args.RelativePosition, out var point)) OnTextPoint?.Invoke(point, scene.MinDepth + _selectedLevel);
@@ -175,6 +177,11 @@ public sealed partial class CMUReconstructionControl
         {
             FinishStroke();
             _panning = true;
+            if (args.Function == EngineKeyFunctions.UIClick)
+            {
+                _pressedContact = CameraAt(args.RelativePosition);
+                _contactPress = args.RelativePosition;
+            }
         }
         args.Handle();
     }
@@ -185,16 +192,27 @@ public sealed partial class CMUReconstructionControl
         if (args.Function != EngineKeyFunctions.UIClick && args.Function != EngineKeyFunctions.UIRightClick) return;
         if (args.Function == EngineKeyFunctions.UIClick)
         {
+            if (_pressedContact is { } target && Vector2.DistanceSquared(_contactPress, args.RelativePosition) < 16 &&
+                CameraAt(args.RelativePosition) == target)
+                OnCameraRequested?.Invoke(target);
             SampleStroke(args.RelativePosition, true);
             FinishStroke();
         }
         _panning = false;
+        _pressedContact = null;
         args.Handle();
     }
 
     protected override void MouseMove(GUIMouseMoveEventArgs args)
     {
         base.MouseMove(args);
+        ToolTip = !DrawingEnabled && !TextEnabled && CameraAt(args.RelativePosition) != null
+            ? Loc.GetString("cmu-recon-camera-click") : null;
+        if (_pressedContact != null)
+        {
+            if (Vector2.DistanceSquared(_contactPress, args.RelativePosition) < 16) return;
+            _pressedContact = null;
+        }
         var delta = args.RelativePosition - _lastMouse;
         _lastMouse = args.RelativePosition;
         if (_drawing) SampleStroke(args.RelativePosition);
@@ -220,8 +238,10 @@ public sealed partial class CMUReconstructionControl
     protected override void MouseExited()
     {
         base.MouseExited();
+        ToolTip = null;
         FinishStroke();
         _panning = false;
         _rotating = false;
+        _pressedContact = null;
     }
 }

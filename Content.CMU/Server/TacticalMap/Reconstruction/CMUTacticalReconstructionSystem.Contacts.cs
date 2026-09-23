@@ -1,6 +1,9 @@
 using Content.Shared._RMC14.TacticalMap;
 using Content.Shared.CMU14.TacticalMap.Reconstruction;
 using System.Linq;
+using Content.Shared._RMC14.Marines;
+using Content.Shared._RMC14.Marines.Squads;
+using Content.Shared.IdentityManagement;
 
 namespace Content.Server.CMU14.TacticalMap.Reconstruction;
 
@@ -43,13 +46,22 @@ public sealed partial class CMUTacticalReconstructionSystem
         RefreshLayer(survey);
         var contacts = new List<CMUReconContact>();
         var seen = new HashSet<int>();
+        var canWatch = CanUseCamera(source, actor, out var console);
         void Add(Dictionary<int, TacticalMapBlip> blips)
         {
             foreach (var (id, blip) in blips)
             {
-                if (!seen.Add(id) || !TryComp<TransformComponent>(new EntityUid(id), out var transform)) continue;
+                var target = new EntityUid(id);
+                if (!seen.Add(id) || !TryComp<TransformComponent>(target, out var transform)) continue;
                 var level = Array.IndexOf(survey.Atlas.Maps, transform.MapUid);
-                if (level >= 0) contacts.Add(new CMUReconContact(survey.Atlas.MinDepth + level, blip));
+                if (level < 0) continue;
+                // Sensor intel deliberately hides enemy identity, even when the entity is a marine.
+                var named = blip.Image?.RsiState != "enemy_blip" &&
+                    (HasComp<MarineComponent>(target) || HasComp<SquadMemberComponent>(target));
+                string? name = named ? Identity.Name(target, EntityManager) : null;
+                NetEntity? cameraTarget = named && canWatch && _overwatch.TryGetWatchCamera(console!, target, out _)
+                    ? GetNetEntity(target) : null;
+                contacts.Add(new CMUReconContact(survey.Atlas.MinDepth + level, blip, name, cameraTarget));
             }
         }
         if (TryComp<TacticalMapUserComponent>(source, out var user))
@@ -72,6 +84,7 @@ public sealed partial class CMUTacticalReconstructionSystem
             Add(computer.Blips);
         }
         var operatorLevel = Array.IndexOf(survey.Atlas.Maps, Transform(actor).MapUid);
+        ValidateCamera(survey, contacts);
         return new CMUReconContactsMessage(survey.Generation, contacts.ToArray())
         {
             OperatorPosition = operatorLevel >= 0 ? _transform.GetWorldPosition(actor) : null,

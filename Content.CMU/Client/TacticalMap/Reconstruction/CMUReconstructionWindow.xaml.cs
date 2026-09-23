@@ -55,6 +55,7 @@ public sealed partial class CMUReconstructionWindow : DefaultWindow
         Isolate.OnToggled += args => View.SetIsolated(args.Pressed);
         Labels.OnToggled += args => View.ShowLabels = args.Pressed;
         Contacts.OnToggled += args => View.ShowContacts = args.Pressed;
+        MarineNames.OnToggled += args => View.ShowNames = args.Pressed;
     }
 
     public void Receive(BoundUserInterfaceMessage message)
