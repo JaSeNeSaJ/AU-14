@@ -4,25 +4,20 @@ using System.Numerics;
 using Content.Shared.Access.Systems;
 using Content.Shared.CMU14.TacticalMap.Reconstruction;
 using Content.Shared.CMU14.ZLevels.Core.Components;
-using Content.Shared.Doors;
-using Content.Shared.Doors.Components;
 using Content.Shared.Interaction;
 using Content.Shared.Maps;
-using Content.Shared.Physics;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Verbs;
-using Content.Shared.Wall;
 using Content.Shared._RMC14.Areas;
-using Content.Shared._RMC14.Entrenching;
 using Content.Shared._RMC14.Marines.Skills;
 using Content.Shared._RMC14.TacticalMap;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
-using Robust.Shared.Physics.Components;
 using Robust.Shared.Timing;
 
 namespace Content.Server.CMU14.TacticalMap.Reconstruction;
 
-/// <summary>Shared, incrementally built full-map structural atlas. No actors or inventories are exported.</summary>
+/// <summary>Shared initial structural survey, retained for the map's lifetime without live geometry updates.</summary>
 public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
 {
     [Dependency] private AccessReaderSystem _access = default!;
@@ -59,20 +54,16 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
         public required byte[] Directions;
         public required int[] Revisions;
         public required CMUReconChunk?[] Chunks;
-        public TimeSpan RetainUntil;
-        public bool BoundsDirty;
+        public required byte[] EmptyChunks;
         public required CMUReconLabel[] Labels;
         public readonly Queue<int> Pending = new();
-        public readonly HashSet<int> Dirty = new();
         public readonly Dictionary<(string Prototype, byte Variant, bool Entity), ushort> SurfaceIds = new();
         public readonly List<CMUReconSurface> Surfaces = new();
-        public int Sweep;
         public int Loaded;
         public int Version;
-        public TimeSpan NextSweep;
         public int WorkId = -1;
         public int WorkRow;
-        public bool WorkChanged;
+        public readonly Dictionary<Vector2i, List<EntityUid>> WorkScenery = new();
         public readonly byte[] WorkCells = new byte[CMUReconGeometry.ChunkSize * CMUReconGeometry.ChunkSize];
         public readonly uint[] WorkAppearance = new uint[CMUReconGeometry.ChunkSize * CMUReconGeometry.ChunkSize];
         public readonly byte[] WorkDirections = new byte[CMUReconGeometry.ChunkSize * CMUReconGeometry.ChunkSize];
@@ -87,6 +78,7 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
         public required int Generation;
         public required int[] Sent;
         public EntityUid Actor;
+        public EntityUid Source;
         public EntityUid Root;
         public EntityUid DrawingScope;
         public CMUReconMapChoice MapChoice;
@@ -120,9 +112,6 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
         });
         Subs.BuiEvents<TacticalMapComputerComponent>(TacticalMapComputerUi.Key, subs =>
             subs.Event<BoundUIClosedEvent>((Entity<TacticalMapComputerComponent> e, ref BoundUIClosedEvent m) => CloseSurvey(e.Owner, m.Actor)));
-        SubscribeLocalEvent<TileChangedEvent>(OnTilesChanged);
-        SubscribeLocalEvent<AnchorStateChangedEvent>(OnAnchorChanged);
-        SubscribeLocalEvent<DoorComponent, DoorStateChangedEvent>(OnDoorChanged);
     }
 
     private bool CanUse(EntityUid console, EntityUid actor) => !TerminatingOrDeleted(console) &&
@@ -130,10 +119,10 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             ? console == actor
             : _access.IsAllowed(actor, console) && _interaction.InRangeUnobstructed(actor, console));
 
-    private bool CanOrder(EntityUid console, EntityUid actor) => CanUse(console, actor) &&
+    private bool CanOrder(EntityUid console, EntityUid actor) => !HasComp<GhostComponent>(actor) && CanUse(console, actor) &&
         (TryComp<TacticalMapUserComponent>(console, out var user) ? user.CanDraw && (user.Marines || user.Xenos || user.Govfor || user.Opfor || user.Clf || user.WeYu) :
             TryComp<TacticalMapComputerComponent>(console, out var computer) &&
-            SharedTacticalMapSystem.NormalizeMapFaction(computer.Faction) != null &&
+            HasDrawingFaction(SharedTacticalMapSystem.NormalizeMapFaction(computer.Faction)) &&
             _skills.HasSkill(actor, computer.Skill, computer.SkillLevel));
 
     private bool IsCurrentSurvey(EntityUid console, Survey survey)
@@ -227,6 +216,7 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             RequestId = survey.RequestId,
             AtlasId = a.Id, ReuseGeometry = survey.ReuseGeometry,
             Revisions = includeCells ? a.Revisions.ToArray() : [],
+            EmptyChunks = a.EmptyChunks,
             LoadedChunks = includeCells ? a.Loaded : survey.Loaded,
             TotalChunks = a.Revisions.Length,
         };
@@ -245,7 +235,7 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
         Survey Create(Atlas source)
         {
             var result = CreateSurvey(source, faction);
-            result.Actor = request.Actor; result.Root = root; result.MapChoice = choice;
+            result.Actor = request.Actor; result.Source = console; result.Root = root; result.MapChoice = choice;
             result.DrawingScope = EntityManager.System<Content.Server._RMC14.TacticalMap.TacticalMapSystem>().ReconstructionCanvasScope(console, root);
             result.Targets = targets; result.RequestId = request.RequestId;
             var focus = (_transform.GetWorldPosition(request.Actor) - (Vector2) source.Origin) / CMUReconGeometry.ChunkSize;
@@ -264,12 +254,16 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
                     var revision = request.Revisions[i];
                     if (revision <= 0 || revision > source.Revisions[i]) continue;
                     result.Sent[i] = revision;
-                    result.Loaded++;
                 }
+            }
+            for (var i = 0; i < result.Sent.Length; i++)
+            {
+                if ((source.EmptyChunks[i / 8] & (1 << (i % 8))) != 0) result.Sent[i] = 1;
+                if (result.Sent[i] != 0) result.Loaded++;
             }
             return result;
         }
-        if (_atlases.TryGetValue(networkUid, out var retained) && !retained.BoundsDirty &&
+        if (_atlases.TryGetValue(networkUid, out var retained) &&
             retained.MinDepth == min && retained.Maps.SequenceEqual(maps))
         {
             survey = Create(retained);
@@ -313,6 +307,7 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
                 Cells = new byte[count], Appearance = new uint[count], Directions = new byte[count],
                 Revisions = new int[count / (chunk * chunk)], Labels = ReadLabels(maps, min),
                 Chunks = new CMUReconChunk?[count / (chunk * chunk)],
+                EmptyChunks = new byte[(count / (chunk * chunk) + 7) / 8],
             };
             var actorLevel = Array.IndexOf(maps, Transform(request.Actor).MapUid);
             var focus = (_transform.GetWorldPosition(request.Actor) - (Vector2) origin) / chunk;
@@ -320,17 +315,27 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
                 Math.Abs(i % atlas.Across - focus.X) + Math.Abs(i / atlas.Across - focus.Y)).ToArray();
             foreach (var level in Enumerable.Range(0, maps.Length).OrderBy(i => Math.Abs(i - Math.Max(0, actorLevel))))
                 foreach (var i in nearby)
-                    atlas.Pending.Enqueue(level * atlas.PerLevel + i);
+                {
+                    var id = level * atlas.PerLevel + i;
+                    var tile = origin + new Vector2i(i % atlas.Across * chunk, i / atlas.Across * chunk);
+                    if (maps[level] is { } map && TryComp<MapGridComponent>(map, out var grid) &&
+                        _maps.HasChunk(map, grid, _maps.GridTileToChunkIndices(grid, tile)))
+                        atlas.Pending.Enqueue(id);
+                    else
+                    {
+                        atlas.EmptyChunks[id / 8] |= (byte) (1 << (id % 8));
+                        atlas.Revisions[id] = 1;
+                        atlas.Loaded++;
+                    }
+                }
             _atlases[networkUid] = atlas;
         }
-        atlas.BoundsDirty = false;
         survey = Create(atlas);
         return true;
     }
 
     private Survey CreateSurvey(Atlas atlas, string faction)
     {
-        atlas.RetainUntil = _timing.CurTime + TimeSpan.FromMinutes(5);
         return new Survey
         {
             Atlas = atlas,
@@ -356,11 +361,31 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
 
     private List<CMUReconOrder> Orders(Survey survey)
     {
-        var key = (survey.DrawingScope, survey.Faction);
+        if (HasComp<GhostComponent>(survey.Actor) && TryComp<TacticalMapUserComponent>(survey.Source, out var user))
+        {
+            var combined = new List<CMUReconOrder>();
+            if (user.Marines) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.MarinesFaction));
+            if (user.Govfor) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.GovforFaction));
+            if (user.Opfor) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.OpforFaction));
+            if (user.Xenos) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.XenosFaction));
+            if (user.Clf) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.ClfFaction));
+            if (user.WeYu) combined.AddRange(FactionOrders(survey, SharedTacticalMapSystem.WeYuFaction));
+            return combined;
+        }
+        if (string.IsNullOrEmpty(survey.Faction)) return [];
+        var orders = FactionOrders(survey, survey.Faction);
+        if (EntityManager.System<Content.Server._RMC14.TacticalMap.TacticalMapSystem>().ReconstructionViewerSquad(survey.Source) is { } squad)
+            return orders.Concat(FactionOrders(survey, survey.Faction, squad)).ToList();
+        return orders;
+    }
+
+    private List<CMUReconOrder> FactionOrders(Survey survey, string faction, EntityUid? scope = null)
+    {
+        var key = (scope ?? survey.DrawingScope, faction);
         if (!_orders.TryGetValue(key, out var orders))
             _orders[key] = orders = new List<CMUReconOrder>();
 
-        ImportCanvas(survey, orders);
+        ImportCanvas(survey, key.Item1, faction, orders);
         return orders;
     }
 
@@ -408,51 +433,16 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
     private void Feedback(EntityUid console, EntityUid actor, string key) =>
         _ui.ServerSendUiMessage(console, UiKey(console), new CMUReconFeedbackMessage(key), actor);
 
-    private void OnTilesChanged(ref TileChangedEvent args)
-    {
-        foreach (var change in args.Changes) MarkDirty(args.Entity.Owner, change.GridIndices);
-    }
-
-    private void OnAnchorChanged(ref AnchorStateChangedEvent args)
-    {
-        if (args.Transform.GridUid is { } grid && TryComp<MapGridComponent>(grid, out var mapGrid))
-            MarkDirty(grid, _maps.WorldToTile(grid, mapGrid, _transform.GetWorldPosition(args.Entity)));
-    }
-
-    private void OnDoorChanged(Entity<DoorComponent> ent, ref DoorStateChangedEvent args)
-    {
-        var xform = Transform(ent);
-        if (xform.GridUid is { } grid && TryComp<MapGridComponent>(grid, out var mapGrid))
-            MarkDirty(grid, _maps.WorldToTile(grid, mapGrid, _transform.GetWorldPosition(ent)));
-    }
-
-    private void MarkDirty(EntityUid grid, Vector2i tile)
-    {
-        foreach (var atlas in _atlases.Values)
-        {
-            var level = Array.IndexOf(atlas.Maps, (EntityUid?) grid);
-            var local = tile - atlas.Origin;
-            if (level >= 0 && (local.X < 0 || local.Y < 0 || local.X >= atlas.Width || local.Y >= atlas.Height)) atlas.BoundsDirty = true;
-            if (level >= 0 && local.X >= 0 && local.Y >= 0 && local.X < atlas.Width && local.Y < atlas.Height)
-                atlas.Dirty.Add(level * atlas.PerLevel + local.Y / CMUReconGeometry.ChunkSize * atlas.Across + local.X / CMUReconGeometry.ChunkSize);
-        }
-    }
-
     private void Rebuild(Atlas atlas, int id, Stopwatch timer)
     {
+        // Once surveyed, a chunk must never reveal later construction, destruction or door changes.
+        if (atlas.Revisions[id] != 0) return;
         const int size = CMUReconGeometry.ChunkSize;
         var level = id / atlas.PerLevel;
         var x = id % atlas.PerLevel % atlas.Across * size;
         var y = id % atlas.PerLevel / atlas.Across * size;
-        if (atlas.WorkId != id)
-        {
-            atlas.WorkId = id;
-            atlas.WorkRow = 0;
-            atlas.WorkChanged = atlas.Revisions[id] == 0;
-        }
-        var absent = atlas.Maps[level] is not { } map || !TryComp<MapGridComponent>(map, out var grid) ||
-            !_maps.HasChunk(map, grid, _maps.GridTileToChunkIndices(grid, atlas.Origin + new Vector2i(x, y)));
-        if (absent && atlas.Revisions[id] == 0)
+        if (atlas.Maps[level] is not { } map || !TryComp<MapGridComponent>(map, out var grid) ||
+            !_maps.HasChunk(map, grid, _maps.GridTileToChunkIndices(grid, atlas.Origin + new Vector2i(x, y))))
         {
             // Untouched arrays are already zero. Sparse upper floors need no per-cell survey.
             atlas.Loaded++;
@@ -462,14 +452,18 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             atlas.WorkId = -1;
             return;
         }
+        if (atlas.WorkId != id)
+        {
+            atlas.WorkId = id;
+            atlas.WorkRow = 0;
+            ReadChunkScenery(atlas, map, atlas.Origin + new Vector2i(x, y));
+        }
         for (; atlas.WorkRow < size; atlas.WorkRow++)
         {
             if (timer.Elapsed.TotalMilliseconds >= 2) return;
             for (var dx = 0; dx < size; dx++)
             {
-                var index = CMUReconGeometry.Index(x + dx, y + atlas.WorkRow, level, atlas.Width, atlas.Height);
-                var cell = absent ? default : ReadDetails(atlas.Maps[level], atlas.Origin + new Vector2i(x + dx, y + atlas.WorkRow), atlas);
-                atlas.WorkChanged |= atlas.Cells[index] != cell.Material || atlas.Appearance[index] != cell.Appearance || atlas.Directions[index] != cell.Direction;
+                var cell = ReadDetails(map, atlas.Origin + new Vector2i(x + dx, y + atlas.WorkRow), atlas, grid);
                 var local = atlas.WorkRow * size + dx;
                 atlas.WorkCells[local] = cell.Material;
                 atlas.WorkAppearance[local] = cell.Appearance;
@@ -484,8 +478,9 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             Array.Copy(atlas.WorkAppearance, row * size, atlas.Appearance, index, size);
             Array.Copy(atlas.WorkDirections, row * size, atlas.Directions, index, size);
         }
-        if (atlas.Revisions[id] == 0) atlas.Loaded++;
-        if (atlas.WorkChanged) { atlas.Revisions[id]++; atlas.Version++; atlas.Chunks[id] = null; }
+        atlas.Loaded++;
+        atlas.Revisions[id] = 1;
+        atlas.Version++;
         atlas.WorkId = -1;
     }
 
@@ -516,31 +511,19 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
-        // One global work budget, shared fairly between open maps, rather than repeated per viewer.
-        var active = _surveys.Values.Select(s => s.Atlas).Distinct().ToArray();
-        foreach (var atlas in active) atlas.RetainUntil = _timing.CurTime + TimeSpan.FromMinutes(5);
+        // Finish each initial survey even if its window closes. Reopening must not trigger a rescan.
+        // Completed geometry remains available until the map is removed, independently of client caches.
+        var active = _atlases.Values.Where(a => !TerminatingOrDeleted(a.Network) &&
+            (a.Pending.Count > 0 || a.WorkId >= 0)).ToArray();
         var timer = Stopwatch.StartNew();
-        var workLimit = active.Any(a => a.Pending.Count > 0 || a.Dirty.Count > 0) ? 128 : 8;
-        for (var work = 0; active.Length > 0 && work < workLimit && timer.Elapsed.TotalMilliseconds < 2; work++)
+        for (var work = 0; active.Length > 0 && work < 128 && timer.Elapsed.TotalMilliseconds < 2; work++)
         {
             _workCursor %= active.Length;
             var atlas = active[_workCursor++];
             if (atlas.WorkId >= 0)
                 Rebuild(atlas, atlas.WorkId, timer);
-            else if (atlas.Dirty.Count > 0)
-            {
-                var id = atlas.Dirty.First();
-                atlas.Dirty.Remove(id);
-                Rebuild(atlas, id, timer);
-            }
             else if (atlas.Pending.TryDequeue(out var id))
                 Rebuild(atlas, id, timer);
-            else if (_timing.CurTime >= atlas.NextSweep)
-            {
-                atlas.NextSweep = _timing.CurTime + TimeSpan.FromSeconds(0.1);
-                atlas.Sweep %= atlas.Revisions.Length;
-                Rebuild(atlas, atlas.Sweep++, timer);
-            }
         }
         if (_timing.CurTime < _nextSend) return;
         _nextSend = _timing.CurTime + TimeSpan.FromSeconds(0.1);
@@ -587,7 +570,8 @@ public sealed partial class CMUTacticalReconstructionSystem : EntitySystem
             }, key.Actor);
         }
         SendContacts();
-        foreach (var key in _atlases.Keys.Where(k => TerminatingOrDeleted(k) || _atlases[k].RetainUntil <= _timing.CurTime).ToArray())
+        foreach (var key in _atlases.Keys.Where(k => TerminatingOrDeleted(k) ||
+                     !_atlases[k].Maps.Any(m => m is { } uid && !TerminatingOrDeleted(uid))).ToArray())
             _atlases.Remove(key);
         foreach (var key in _orders.Keys.Where(k => TerminatingOrDeleted(k.Network)).ToArray())
         {
