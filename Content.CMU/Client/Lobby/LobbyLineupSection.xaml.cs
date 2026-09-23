@@ -16,6 +16,7 @@ public sealed partial class LobbyLineupSection : Control
 {
     [Dependency] private IConfigurationManager _configuration = default!;
     [Dependency] private IResourceCache _resources = default!;
+    private readonly Vector2[] _beamVertices = new Vector2[4];
     private Color _accent = Color.White;
     private float _effectRemaining;
     private float _effectDuration;
@@ -90,7 +91,7 @@ public sealed partial class LobbyLineupSection : Control
             return;
         var reduced = _configuration.GetCVar(CCVars.ReducedMotion);
         var phase = reduced ? 0 : (_effectDuration - _effectRemaining) * 1.8f;
-        Span<Vector2> beam = stackalloc Vector2[4];
+        var beam = _beamVertices;
         for (var i = 0; i < 3; i++)
         {
             var color = !_disco ? _accent : i == 0 ? Color.Cyan : i == 1 ? Color.Magenta : Color.FromHex("#FFCE69");

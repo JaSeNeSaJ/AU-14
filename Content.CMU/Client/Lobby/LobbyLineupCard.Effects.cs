@@ -13,6 +13,7 @@ public sealed partial class LobbyLineupCard
 {
     // Reuse the game's directional/animated artwork without spawning gameplay entities.
     private readonly Dictionary<(string Path, string State), IRsiStateLike> _partyTextures = new();
+    private readonly Vector2[] _flashVertices = new Vector2[6];
 
     private sealed class PartyEffectsOverlay(LobbyLineupCard card) : Control
     {
@@ -90,15 +91,13 @@ public sealed partial class LobbyLineupCard
                 var muzzle = center + new Vector2(27, 2) * unit;
                 if (reduced)
                     break;
-                Span<Vector2> flash = stackalloc Vector2[]
-                {
-                    muzzle + new Vector2(-1, 0) * unit,
-                    muzzle + new Vector2(5, -3) * unit,
-                    muzzle + new Vector2(3, 0) * unit,
-                    muzzle + new Vector2(7, 1) * unit,
-                    muzzle + new Vector2(3, 2) * unit,
-                    muzzle + new Vector2(4, 4) * unit,
-                };
+                var flash = _flashVertices;
+                flash[0] = muzzle + new Vector2(-1, 0) * unit;
+                flash[1] = muzzle + new Vector2(5, -3) * unit;
+                flash[2] = muzzle + new Vector2(3, 0) * unit;
+                flash[3] = muzzle + new Vector2(7, 1) * unit;
+                flash[4] = muzzle + new Vector2(3, 2) * unit;
+                flash[5] = muzzle + new Vector2(4, 4) * unit;
                 for (var shot = 0; shot < LobbyLineupChoreography.ShotCount(_gesture.Value); shot++)
                 {
                     var age = phase - LobbyLineupChoreography.ShotTime(_gesture.Value, shot);

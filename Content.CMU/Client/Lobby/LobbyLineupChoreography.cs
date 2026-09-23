@@ -7,8 +7,9 @@ namespace Content.Client.CMU14.Lobby;
 /// <summary>Cosmetic poses and shared cue times, in seconds. Offsets are fractions of each preview.</summary>
 public static class LobbyLineupChoreography
 {
-    public static readonly ImmutableArray<LobbyLineupEmote> SoloMoves =
-    [
+    // Collection expressions for ImmutableArray emit marshal calls rejected by the content sandbox.
+    public static readonly ImmutableArray<LobbyLineupEmote> SoloMoves = ImmutableArray.CreateRange(new[]
+    {
         LobbyLineupEmote.Moonwalk, LobbyLineupEmote.Robot, LobbyLineupEmote.Shuffle,
         LobbyLineupEmote.Breakdance, LobbyLineupEmote.Headbang, LobbyLineupEmote.AirGuitar,
         LobbyLineupEmote.Backflip, LobbyLineupEmote.Shadowbox, LobbyLineupEmote.FakeFaint,
@@ -16,14 +17,14 @@ public static class LobbyLineupChoreography
         LobbyLineupEmote.BurstFire, LobbyLineupEmote.SprayAndPray, LobbyLineupEmote.XenoHug,
         LobbyLineupEmote.Facehugger, LobbyLineupEmote.Chestburst, LobbyLineupEmote.XenoMorph,
         LobbyLineupEmote.DodgeRoll, LobbyLineupEmote.GrenadeOops,
-    ];
+    });
 
-    public static readonly ImmutableArray<LobbyLineupEmote> TeamMoves =
-    [
+    public static readonly ImmutableArray<LobbyLineupEmote> TeamMoves = ImmutableArray.CreateRange(new[]
+    {
         LobbyLineupEmote.SquadDisco, LobbyLineupEmote.SquadConga, LobbyLineupEmote.SquadWave,
         LobbyLineupEmote.SquadWorkout, LobbyLineupEmote.SquadDanceOff, LobbyLineupEmote.SquadRally,
         LobbyLineupEmote.SquadVolley, LobbyLineupEmote.SquadXeno,
-    ];
+    });
 
     public static (LobbyLineupEmote Move, float Delay) TeamMember(LobbyLineupEmote emote, int index) => emote switch
     {
