@@ -1,4 +1,5 @@
 using System.Linq;
+using Content.Server.Shuttles.Systems;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared.Shuttles.Components;
 using Content.Shared.Shuttles.Systems;
@@ -60,6 +61,8 @@ public sealed class MohawkLandingAudioTest
             entities.AddComponent<DropshipDestinationComponent>(destination);
             var nav = entities.EntityQuery<DropshipNavigationComputerComponent>()
                 .Single(c => entities.GetComponent<TransformComponent>(c.Owner).GridUid == ship);
+            // Other flight fixtures shorten this mutable system setting on pooled pairs.
+            entities.System<ShuttleSystem>().DefaultArrivalTime = 10f;
             Assert.That(entities.System<SharedDropshipSystem>().FlyTo((nav.Owner, nav), destination, null,
                 startupTime: 0.5f, hyperspaceTime: 12f), Is.True);
             var startup = entities.GetComponent<AudioComponent>(entities.GetComponent<FTLComponent>(ship).StartupStream!.Value);

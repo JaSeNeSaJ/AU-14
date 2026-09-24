@@ -827,8 +827,7 @@ public sealed partial class VehicleSupplySystem : EntitySystem
 
             // CMU14: fighter supply storage and faction ownership.
             var item = SpawnAtPosition(proto.Id, origin.Offset(offsets[i % offsets.Length]));
-            // CMU14: fighter supply storage and faction ownership.
-        var delivered = new VehicleSupplyDeliveredEvent(lift, lift.Comp.PendingRequester);
+            var delivered = new VehicleSupplyDeliveredEvent(lift, lift.Comp.PendingRequester);
             RaiseLocalEvent(item, ref delivered);
         }
     }

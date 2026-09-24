@@ -1,8 +1,10 @@
 #pragma warning disable RA0002 // Regression setup and assertions inspect vehicle and console state.
 
 using Content.IntegrationTests.Fixtures;
+using Content.Server.CMU14.Round;
 using Content.Shared.CMU14;
 using Content.Shared.CMU14.Callsigns;
+using Content.Shared.CMU14.util;
 using Content.Shared._RMC14.Marines.Announce;
 using Content.Shared._RMC14.Overwatch;
 using Content.Shared._RMC14.TacticalMap;
@@ -60,17 +62,28 @@ public sealed class VehicleInteriorFactionTest : GameTest
     {
         var ship = await Pair.CreateTestMap();
         EntityUid lift = default;
+        EntityUid console = default;
         EntityUid vehicle = default;
+        PlatoonPrototype? previousPlatoon = null;
         try
         {
             await Server.WaitPost(() =>
             {
                 SEntMan.EnsureComponent<ShipFactionComponent>(ship.GridCoords.EntityId).Faction = "opfor";
+                var platoons = Server.System<PlatoonSpawnRuleSystem>();
+                previousPlatoon = platoons.SelectedOpforPlatoon;
+                platoons.SelectedOpforPlatoon = SProtoMan.Index<PlatoonPrototype>("USCM");
                 lift = SEntMan.SpawnEntity("VehicleLift", ship.GridCoords);
+                console = SEntMan.SpawnEntity("VehicleSupplyConsole", ship.GridCoords);
+                SEntMan.GetComponent<VehicleSupplyConsoleComponent>(console).Faction = "opfor";
                 var supply = SEntMan.GetComponent<VehicleSupplyLiftComponent>(lift);
                 supply.PendingVehicle = "VehicleAPCCommand";
+                // Delivery revalidates the ordering console, side and selected platoon's catalog.
+                supply.PendingSupplyConsole = console;
+                supply.PendingSupplySide = "opfor";
                 supply.Mode = VehicleSupplyLiftMode.Raising;
                 supply.RaiseDelay = TimeSpan.Zero;
+                supply.LowerDelay = TimeSpan.Zero;
                 supply.ToggledAt = SGameTiming.CurTime - TimeSpan.FromSeconds(1);
             });
             await Pair.RunTicksSync(2);
@@ -90,6 +103,9 @@ public sealed class VehicleInteriorFactionTest : GameTest
                     SEntMan.DeleteEntity(vehicle);
                 if (lift.Valid && !SEntMan.Deleted(lift))
                     SEntMan.DeleteEntity(lift);
+                if (console.Valid && !SEntMan.Deleted(console))
+                    SEntMan.DeleteEntity(console);
+                Server.System<PlatoonSpawnRuleSystem>().SelectedOpforPlatoon = previousPlatoon;
             });
         }
     }
