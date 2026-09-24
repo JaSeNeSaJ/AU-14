@@ -15,6 +15,8 @@ public sealed partial class CMUReconstructionControl
     public bool ShowNames = true;
     public CMUReconContact[] TrackedContacts = [];
     public Action<NetEntity>? OnCameraRequested;
+    public Action<NetEntity>? OnXenoWatchRequested;
+    private NetEntity? _pressedXeno;
     private NetEntity? _pressedContact;
     private Vector2 _contactPress;
     private static readonly ResPath BlipRsi = new("/Textures/_RMC14/Interface/map_blips.rsi");
@@ -34,7 +36,7 @@ public sealed partial class CMUReconstructionControl
             var point = ContactPosition(contact, scene);
             if (!PixelSizeBox.Contains(new Vector2i((int) point.X, (int) point.Y))) continue;
             var rect = UIBox2.FromDimensions(point - new Vector2(10 * UIScale), new Vector2(20 * UIScale));
-            if (contact.CameraTarget != null)
+            if (contact.CameraTarget != null || contact.XenoWatchTarget != null)
                 handle.DrawRect(UIBox2.FromDimensions(point - new Vector2(12 * UIScale), new Vector2(24 * UIScale)),
                     Color.FromHex("#75C8BA"), false);
             if (blip.Background is { } background) handle.DrawTextureRect(sprites.GetFrame(background, _timing.CurTime), rect, blip.Color);
@@ -71,6 +73,12 @@ public sealed partial class CMUReconstructionControl
             _selectedLevel * CMUReconGeometry.LevelHeight + 0.4f));
 
     public NetEntity? CameraAt(Vector2 relativePosition)
+        => ContactAt(relativePosition)?.CameraTarget;
+
+    public NetEntity? XenoAt(Vector2 relativePosition)
+        => ContactAt(relativePosition)?.XenoWatchTarget;
+
+    private CMUReconContact? ContactAt(Vector2 relativePosition)
     {
         if (!ShowContacts || Scene is not { } scene) return null;
         var pixel = relativePosition * UIScale;
@@ -82,7 +90,7 @@ public sealed partial class CMUReconstructionControl
             if (contact.Depth != scene.MinDepth + _selectedLevel) continue;
             var point = ContactPosition(contact, scene);
             if (UIBox2.FromDimensions(point - new Vector2(10 * UIScale), new Vector2(20 * UIScale)).Contains(pixel))
-                return contact.CameraTarget;
+                return contact;
         }
         return null;
     }

@@ -193,7 +193,15 @@ public sealed class CMUReconFeedbackMessage(string localizationKey) : BoundUserI
 }
 
 [Serializable, NetSerializable]
-public readonly record struct CMUReconContact(int Depth, TacticalMapBlip Blip, string? Name = null, NetEntity? CameraTarget = null);
+public readonly record struct CMUReconContact(int Depth, TacticalMapBlip Blip, string? Name = null,
+    NetEntity? CameraTarget = null, NetEntity? XenoWatchTarget = null);
+
+[Serializable, NetSerializable]
+public sealed class CMUReconXenoWatchMessage(int generation, NetEntity target) : BoundUserInterfaceMessage
+{
+    public int Generation = generation;
+    public NetEntity Target = target;
+}
 
 [Serializable, NetSerializable]
 public sealed class CMUReconCameraMessage(int generation, NetEntity? target) : BoundUserInterfaceMessage

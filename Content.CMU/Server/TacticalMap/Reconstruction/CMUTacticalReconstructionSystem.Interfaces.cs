@@ -2,6 +2,7 @@ using Content.Shared._RMC14.TacticalMap;
 using Content.Shared.CMU14.TacticalMap.Reconstruction;
 using Content.Shared._RMC14.Xenonids.Eye;
 using Robust.Shared.Map;
+using System.Linq;
 
 namespace Content.Server.CMU14.TacticalMap.Reconstruction;
 
@@ -18,12 +19,26 @@ public sealed partial class CMUTacticalReconstructionSystem
             subs.Event<CMUReconLayerMessage>((Entity<T> e, ref CMUReconLayerMessage m) => OnLayer(e.Owner, ref m));
             subs.Event<CMUReconCameraMessage>((Entity<T> e, ref CMUReconCameraMessage m) => OnCamera(e.Owner, ref m));
             subs.Event<CMUReconQueenEyeMoveMessage>((Entity<T> e, ref CMUReconQueenEyeMoveMessage m) => OnQueenEyeMove(e.Owner, ref m));
+            subs.Event<CMUReconXenoWatchMessage>((Entity<T> e, ref CMUReconXenoWatchMessage m) => OnXenoWatch(e.Owner, ref m));
             subs.Event<CMUReconOrderMessage>((Entity<T> e, ref CMUReconOrderMessage m) => OnOrder(e.Owner, ref m));
             subs.Event<CMUReconRouteMessage>((Entity<T> e, ref CMUReconRouteMessage m) => OnRoute(e.Owner, ref m));
             subs.Event<CMUReconSendMessage>((Entity<T> e, ref CMUReconSendMessage m) => OnSend(e.Owner, ref m));
             subs.Event<CMUReconCancelOrderMessage>((Entity<T> e, ref CMUReconCancelOrderMessage m) => OnCancelOrder(e.Owner, ref m));
             subs.Event<CMUReconClearOrdersMessage>((Entity<T> e, ref CMUReconClearOrdersMessage m) => OnClear(e.Owner, ref m));
         });
+    }
+
+    private void OnXenoWatch(EntityUid source, ref CMUReconXenoWatchMessage args)
+    {
+        var requestedTarget = args.Target;
+        if (source != args.Actor || !HasComp<TacticalMapUserComponent>(source) ||
+            !_ui.IsUiOpen(source, UiKey(source), args.Actor) || !CanUse(source, args.Actor) ||
+            !_surveys.TryGetValue((source, args.Actor), out var survey) || survey.Generation != args.Generation ||
+            !IsCurrentSurvey(source, survey) ||
+            !Contacts(source, args.Actor, survey).Contacts.Any(c => c.XenoWatchTarget == requestedTarget) ||
+            !TryGetEntity(requestedTarget, out var target))
+            return;
+        _xenoWatch.WatchFromTacticalMap(args.Actor, target.Value);
     }
 
     private void OnQueenEyeMove(EntityUid source, ref CMUReconQueenEyeMoveMessage args)

@@ -4,11 +4,13 @@ using System.Linq;
 using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Marines.Squads;
 using Content.Shared.IdentityManagement;
+using Content.Server._RMC14.Xenonids.Watch;
 
 namespace Content.Server.CMU14.TacticalMap.Reconstruction;
 
 public sealed partial class CMUTacticalReconstructionSystem
 {
+    [Dependency] private XenoWatchSystem _xenoWatch = default!;
     private TimeSpan _nextContacts;
     private TimeSpan _nextPrototypeContacts;
 
@@ -61,7 +63,9 @@ public sealed partial class CMUTacticalReconstructionSystem
                 string? name = named ? Identity.Name(target, EntityManager) : null;
                 NetEntity? cameraTarget = named && canWatch && _overwatch.TryGetWatchCamera(console!, target, out _)
                     ? GetNetEntity(target) : null;
-                contacts.Add(new CMUReconContact(survey.Atlas.MinDepth + level, blip, name, cameraTarget));
+                NetEntity? xenoWatchTarget = source == actor && blip.Image?.RsiState != "enemy_blip" &&
+                    _xenoWatch.CanQueenWatch(actor, target) ? GetNetEntity(target) : null;
+                contacts.Add(new CMUReconContact(survey.Atlas.MinDepth + level, blip, name, cameraTarget, xenoWatchTarget));
             }
         }
         if (TryComp<TacticalMapUserComponent>(source, out var user))

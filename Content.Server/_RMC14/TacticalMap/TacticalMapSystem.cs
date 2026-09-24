@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server._RMC14.Announce;
 using Content.Server._RMC14.Marines;
 using Content.Server._RMC14.Rules;
+using Content.Server._RMC14.Xenonids.Watch;
 using Content.Server.Administration.Logs;
 using Content.Server.GameTicking.Events;
 using Content.Shared._RMC14.Announce;
@@ -177,6 +178,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                 subs.Event<BoundUIClosedEvent>(OnUserBUIClosed);
                 subs.Event<TacticalMapUpdateCanvasMsg>(OnUserUpdateCanvasMsg);
                 subs.Event<TacticalMapQueenEyeMoveMsg>(OnUserQueenEyeMoveMsg);
+                subs.Event<TacticalMapQueenWatchMsg>(OnUserQueenWatchMsg);
             });
 
         Subs.BuiEvents<TacticalMapComputerComponent>(TacticalMapComputerUi.Key,
@@ -1025,6 +1027,15 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         Create,
         Edit,
         Delete
+    }
+
+    private void OnUserQueenWatchMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenWatchMsg args)
+    {
+        if (args.Actor != ent.Owner || !_ui.IsUiOpen(ent.Owner, TacticalMapUserUi.Key, args.Actor) ||
+            !ent.Comp.Xenos || !ent.Comp.XenoBlips.TryGetValue(args.TargetId, out var blip) ||
+            blip.Image?.RsiState == "enemy_blip")
+            return;
+        EntityManager.System<XenoWatchSystem>().WatchFromTacticalMap(args.Actor, new EntityUid(args.TargetId));
     }
 
     private void OnUserQueenEyeMoveMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenEyeMoveMsg args)

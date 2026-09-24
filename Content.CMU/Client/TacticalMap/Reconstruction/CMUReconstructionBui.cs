@@ -90,6 +90,11 @@ public class CMUReconstructionBui(EntityUid owner, Enum uiKey) : RMCPopOutBui<Ta
                 _layer = scene.Layer;
             }
             _window.OnRoute += SendMessage;
+            _window.SurveyView.OnXenoWatchRequested += target =>
+            {
+                if (!_window.IsRefreshing && _window.SurveyView.Scene is { } current)
+                    SendMessage(new CMUReconXenoWatchMessage(current.Generation, target));
+            };
             _window.SurveyView.QueenEyeActive = () => !_window.IsRefreshing &&
                 Owner == PlayerManager.LocalEntity && EntMan.System<QueenEyeSystem>().IsInQueenEye(Owner);
             _window.SurveyView.OnQueenEyeMove += (point, depth) =>
