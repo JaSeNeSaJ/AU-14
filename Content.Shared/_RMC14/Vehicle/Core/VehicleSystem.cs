@@ -308,6 +308,7 @@ public sealed partial class VehicleSystem : EntitySystem
         var link = EnsureComp<VehicleInteriorLinkComponent>(mapUid);
         link.Vehicle = ent.Owner;
 
+        ConfigureInteriorFaction(ent, mapId); // CMU14
         ProtectInteriorEntities(mapId);
         SpawnVehicleInteriorKey(ent.Owner, mapId);
 

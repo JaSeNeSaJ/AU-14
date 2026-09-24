@@ -3,6 +3,7 @@ using System.Numerics;
 using Content.Server._RMC14.Announce;
 using Content.Server._RMC14.Marines;
 using Content.Server._RMC14.Rules;
+using Content.Server._RMC14.Xenonids.Watch;
 using Content.Server.Administration.Logs;
 using Content.Server.GameTicking.Events;
 using Content.Shared._RMC14.Announce;
@@ -72,7 +73,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedUserInterfaceSystem _ui = default!;
-    [Dependency] private SharedXenoWeedsSystem _weeds = default!;
+    [Dependency] private QueenEyeSystem _queenEye = default!;
     [Dependency] private SharedXenoHiveSystem _xenoHive = default!;
     [Dependency] private XenoAnnounceSystem _xenoAnnounce = default!;
     [Dependency] private RMCUnrevivableSystem _unrevivableSystem = default!;
@@ -177,6 +178,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
                 subs.Event<BoundUIClosedEvent>(OnUserBUIClosed);
                 subs.Event<TacticalMapUpdateCanvasMsg>(OnUserUpdateCanvasMsg);
                 subs.Event<TacticalMapQueenEyeMoveMsg>(OnUserQueenEyeMoveMsg);
+                subs.Event<TacticalMapQueenWatchMsg>(OnUserQueenWatchMsg);
             });
 
         Subs.BuiEvents<TacticalMapComputerComponent>(TacticalMapComputerUi.Key,
@@ -1027,43 +1029,22 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         Delete
     }
 
-    private void OnUserQueenEyeMoveMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenEyeMoveMsg args)
+    private void OnUserQueenWatchMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenWatchMsg args)
     {
-        var user = args.Actor;
-        HandleQueenEyeMove(user, args.Position);
+        if (args.Actor != ent.Owner || !_ui.IsUiOpen(ent.Owner, TacticalMapUserUi.Key, args.Actor) ||
+            !ent.Comp.Xenos || !ent.Comp.XenoBlips.TryGetValue(args.TargetId, out var blip) ||
+            blip.Image?.RsiState == "enemy_blip")
+            return;
+        EntityManager.System<XenoWatchSystem>().WatchFromTacticalMap(args.Actor, new EntityUid(args.TargetId));
     }
 
-    private void HandleQueenEyeMove(EntityUid user, Vector2i position)
+    private void OnUserQueenEyeMoveMsg(Entity<TacticalMapUserComponent> ent, ref TacticalMapQueenEyeMoveMsg args)
     {
-        if (!TryComp<QueenEyeActionComponent>(user, out var queenEyeComp) ||
-            queenEyeComp.Eye == null)
+        // CMU14: use the grid displayed to this queen, not an arbitrary tactical map.
+        if (args.Actor != ent.Owner || !_ui.IsUiOpen(ent.Owner, TacticalMapUserUi.Key, args.Actor) ||
+            ent.Comp.Map is not { } map || !TryComp(map, out MapGridComponent? grid))
             return;
-
-        var eye = queenEyeComp.Eye.Value;
-
-        if (!TryGetTacticalMap(out var map) ||
-            !TryComp<MapGridComponent>(map.Owner, out var grid))
-            return;
-
-        var queenTransform = Transform(user);
-        var eyeTransform = Transform(eye);
-        var mapTransform = Transform(map.Owner);
-
-        if (queenTransform.MapID != mapTransform.MapID)
-            return;
-
-        var tileCoords = new Vector2(position.X, position.Y);
-        var targetCoords = new EntityCoordinates(map.Owner, tileCoords * grid.TileSize);
-
-        if (!_weeds.IsOnWeeds((map.Owner, grid), targetCoords))
-        {
-            _popup.PopupCursor(Loc.GetString("rmc-xeno-queen-eye-no-weeds"), user, PopupType.MediumCaution);
-            return;
-        }
-
-        var worldPos = _transform.ToMapCoordinates(targetCoords);
-
-        _transform.SetWorldPosition(eye, worldPos.Position);
+        _queenEye.TryTeleport(args.Actor, EntityManager.System<SharedMapSystem>().GridTileToLocal(map, grid, args.Position));
     }
 
     public new void OpenComputerMap(Entity<TacticalMapComputerComponent?> computer, EntityUid user)

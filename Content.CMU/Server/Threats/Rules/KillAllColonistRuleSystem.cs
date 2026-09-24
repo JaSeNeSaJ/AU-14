@@ -62,7 +62,7 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
             return;
 
         int requiredPercent = Math.Clamp(ruleComp.Percent, 1, 100);
-        bool crashedDropship = _threatRuleHelper.HasCrashedDropship();
+        bool hijackLanded = _threatRuleHelper.HasLandedDropshipHijack();
         int eliminated = 0, total = 0;
 
         EntityQueryEnumerator<MobStateComponent, NpcFactionMemberComponent> query = _entMan
@@ -84,7 +84,7 @@ public sealed partial class KillAllColonistRuleSystem : GameRuleSystem<KillAllCo
                 continue;
             }
 
-            if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && !_threatRuleHelper.IsEliminated(uid, mobState))
+            if (hijackLanded && _rmcPlanet.IsOnPlanet(Transform(uid)) && !_threatRuleHelper.IsEliminated(uid, mobState))
                 continue;
 
             if (_threatRuleHelper.IsEliminated(uid, mobState))
