@@ -76,6 +76,10 @@ cmu-fighter-console-flight-help = W/S · speed
     A/D · correction within pass
 cmu-fighter-pilot-controls = PILOT
 cmu-fighter-observer-controls = WEAPONS OFFICER
+cmu-fighter-spectating-pilot = SPECTATING PILOT
+cmu-fighter-spectating-wso = SPECTATING WEAPONS OFFICER
+cmu-fighter-spectating-help = Read-only crew view
+    Plan route / Targeting · switch display
 cmu-fighter-lock = Lock
 cmu-fighter-unlock = Unlock
 cmu-fighter-lock-help = Hold the selected ground point. Unlock releases the target without moving the view. WASD pans the unlocked camera; selecting a flare moves the view to it.
@@ -114,13 +118,14 @@ cmu-fighter-fire-empty = NO AMMUNITION
 cmu-fighter-fire-pilotonly = PILOT ONLY
 cmu-fighter-fire-notarget = SELECT A FLARE OR LASER
 cmu-fighter-fire-outofrange = OUT OF RANGE
+cmu-fighter-fire-outsideao = WEAPONS SAFE · ENTER THE AO ON A RUN
 cmu-fighter-fire-clouds = CLOUD OBSCURED
 cmu-fighter-fire-protected = COVERED / NO CAS
 cmu-fighter-fire-needrun = APPROACH OR PASS REQUIRED
 cmu-fighter-fire-offcourse = TURN APPROACH TOWARD FLARE
 cmu-fighter-fire-cooldown = WEAPON CYCLING
 cmu-fighter-target-map = Target map
-cmu-fighter-flare-help = Missiles: either crew · holding or run
+cmu-fighter-flare-help = Missiles: either crew · inside AO on a run
     Rockets / GAU: pilot · run only
 cmu-fighter-flare-list-help = Select a target · green means ready
 cmu-fighter-no-flares = Waiting for deployed signal flares
@@ -227,6 +232,33 @@ cmu-manpad-examine-safe = [color=gray]Lowered. Wield it and use Aim at airspace 
 cmu-manpad-examine-aimed = [color=orange]Aimed at the sky. Covering the operator's current sector.[/color]
 cmu-manpad-iff-unknown = Cannot authenticate your faction. MANPAD remains safe.
 cmu-manpad-empty = MANPAD empty. Load an EMBLR 70mm rocket before aiming.
+ent-CMUFighterManpadNoIFF = EMBLR MANPAD
+    .suffix = No IFF, targets all aircraft
+    .desc = A shoulder-fired anti-air launcher with its IFF interlock bypassed. It automatically engages ANY crewed aircraft crossing your sector while wielded and aimed, including friendly aircraft. Uses EMBLR 70mm ammunition.
+cmu-manpad-aiming-all = MANPAD raised. IFF OFF: engaging any aircraft in your sector, including friendlies.
+cmu-manpad-examine-no-iff = [color=red]IFF bypassed. This launcher can fire at friendly aircraft.[/color]
+cmu-manpad-radar-title = MANPAD / AIRSPACE
+cmu-manpad-radar-iff = IFF ON · HOSTILES ONLY
+cmu-manpad-radar-no-iff = IFF OFF · ALL AIRCRAFT
+cmu-manpad-radar-sector = YOUR SECTOR { $sector } · { $count } contacts
+cmu-manpad-radar-outside = OUTSIDE AO · { $count } contacts
+cmu-manpad-radar-empty = EMPTY · load an EMBLR 70mm rocket
+cmu-manpad-radar-cycling = LAUNCHER CYCLING · { $seconds }s
+cmu-manpad-radar-lowered = LOWERED · use Aim at airspace to engage
+cmu-manpad-radar-lock = ACQUIRING · launch in { $seconds }s
+cmu-manpad-radar-scanning = AIMED · watching your sector
+cmu-manpad-radar-legend = Green: friendly · red: target · yellow: unknown
+    Cyan: you / your sector · ring: acquiring
+cmu-manpad-radar-height = { $height } m
+ent-CMUActionBoilerWatchAirspace = Look at airspace
+    .desc = Watch your current sector and automatically launch plasma at passing aircraft. Stay still under open sky for two seconds to acquire a target. Each shot costs 200 plasma and has a fifteen-second cooldown. Toggle again to stop.
+cmu-boiler-air-watching = You watch the sky, ready to spit plasma at aircraft crossing your sector.
+cmu-boiler-air-lowered = You lower your gaze. Airspace acquisition cancelled.
+cmu-boiler-air-title = BOILER / AIRSPACE
+cmu-boiler-air-cost = AUTO PLASMA · 200 per shot · open sky required
+cmu-boiler-air-empty = INSUFFICIENT PLASMA · need 200 to fire
+cmu-boiler-air-cycling = PLASMA RECOVERING · { $seconds }s
+cmu-fighter-plasma-incoming = INCOMING PLASMA
 cmu-fighter-iff-owner = [color=cyan]IFF ownership: { $faction }.[/color]
 cmu-fighter-iff-unassigned = [color=yellow]IFF ownership unassigned.[/color]
 cmu-fighter-iff-denied = Your faction is not authorized to crew this fighter.

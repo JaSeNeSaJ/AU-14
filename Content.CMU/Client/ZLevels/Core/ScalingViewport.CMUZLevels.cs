@@ -379,29 +379,24 @@ public sealed partial class ScalingViewport
             {
                 if (depth == 0)
                 {
-                    if (zLevelViewer.LookUp)
-                    {
-                        _zEye.LowestDepth = lowestDepth;
-                        _zEye.Depth = 0;
-                        _zEye.HighestDepth = lookUp;
-                        _zEye.BaseMapId = viewXform.MapID;
-                        _zEye.WeatherSourceMapId = viewXform.MapID;
-                        _zEye.Position = fallbackEye.Position;
-                        _zEye.DrawFov = fallbackEye.DrawFov;
-                        _zEye.DrawLight = fallbackEye.DrawLight;
-                        _zEye.Offset = fallbackEye.Offset;
-                        _zEye.Rotation = fallbackEye.Rotation;
-                        _zEye.Scale = fallbackEye.Scale;
-                        _zEye.VisualZOffset = Vector2.Zero;
-                        _zEye.BlurCurrentLevel = true;
-                        _zEye.ConfigureVisibleEntityIndicators(false, _zOpeningBounds);
-
-                        viewport.Eye = _zEye;
-                    }
-                    else
-                    {
-                        viewport.Eye = fallbackEye;
-                    }
+                    // The base pass must describe the passes actually rendered too.
+                    // Inferring them from the existence of a lower map suppressed
+                    // parallax when the opening gate skipped that lower level.
+                    _zEye.LowestDepth = lowestDepth;
+                    _zEye.Depth = 0;
+                    _zEye.HighestDepth = lookUp;
+                    _zEye.BaseMapId = viewXform.MapID;
+                    _zEye.WeatherSourceMapId = viewXform.MapID;
+                    _zEye.Position = fallbackEye.Position;
+                    _zEye.DrawFov = fallbackEye.DrawFov;
+                    _zEye.DrawLight = fallbackEye.DrawLight;
+                    _zEye.Offset = fallbackEye.Offset;
+                    _zEye.Rotation = fallbackEye.Rotation;
+                    _zEye.Scale = fallbackEye.Scale;
+                    _zEye.VisualZOffset = Vector2.Zero;
+                    _zEye.BlurCurrentLevel = zLevelViewer.LookUp;
+                    _zEye.ConfigureVisibleEntityIndicators(false, _zOpeningBounds);
+                    viewport.Eye = _zEye;
                 }
                 else
                 {

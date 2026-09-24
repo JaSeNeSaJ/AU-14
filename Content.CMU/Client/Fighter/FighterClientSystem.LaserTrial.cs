@@ -28,14 +28,15 @@ public sealed partial class FighterClientSystem
         if (_trialStep == 1 && elapsed >= 10)
         {
             CaptureTrial("laser-" + role + "-clear-camera");
-            if (seat.Pilot) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Laser));
+            if (seat.Pilot) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.PrepareRun));
             _laserTrialNextAction = _timing.RealTime + TimeSpan.FromSeconds(2);
             _trialStep = 2;
         }
         if (_trialStep == 2 && seat.Pilot && _timing.RealTime >= _laserTrialNextAction)
         {
             _laserTrialNextAction = _timing.RealTime + TimeSpan.FromSeconds(2);
-            RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Laser));
+            if (!aircraft.Flying) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Launch));
+            else if (FighterFlight.InAttackRun(aircraft)) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Laser));
         }
         if (_trialStep == 2 && weapons.Targets.FirstOrDefault(target => target.Laser) is { } laser)
         {

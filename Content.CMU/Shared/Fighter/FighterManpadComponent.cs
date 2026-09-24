@@ -15,6 +15,7 @@ public sealed partial class FighterManpadComponent : Component
     [DataField, AutoNetworkedField] public EntityUid? AimingUser;
     // The current operator's side, authenticated when the launcher is aimed.
     [DataField, AutoNetworkedField] public string? Faction;
+    [DataField, AutoNetworkedField] public bool IgnoreIFF;
     [DataField] public TimeSpan AcquisitionTime = TimeSpan.FromSeconds(1.2);
     [DataField] public TimeSpan ReloadTime = TimeSpan.FromSeconds(15);
     [DataField] public TimeSpan MissileFlightTime = TimeSpan.FromSeconds(5);

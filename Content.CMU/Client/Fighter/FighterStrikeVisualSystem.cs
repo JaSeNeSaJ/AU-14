@@ -52,6 +52,7 @@ public sealed partial class FighterStrikeOverlay(IEntityManager entities) : Over
             }
         }
         DrawManpadLaunches(in args, now);
+        DrawBoilerPlasma(in args, now);
         DrawVtol(in args, now);
         DrawAirBursts(in args, now);
         args.WorldHandle.SetTransform(Matrix3x2.Identity);

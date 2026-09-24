@@ -19,6 +19,7 @@ public sealed class FighterEffectsControl : Control
     private static readonly Color Hot = Color.FromHex("#FFF1AD");
     private static readonly Color Flame = Color.FromHex("#FF8236");
     private static readonly Color Smoke = Color.FromHex("#A6ADA8");
+    private static readonly Color PlasmaColor = Color.FromHex("#93FF42");
 
     public FighterEffectsControl()
     {
@@ -103,7 +104,10 @@ public sealed class FighterEffectsControl : Control
                     case FighterEffectKind.Evaded:
                         var start = Point(.65f, .62f);
                         var end = start + new Vector2(160 * age, 110 * age + 85 * age * age) * scale;
-                        Missile(end, Vector2.Normalize(new Vector2(1, .7f + age)), Math.Max(0, 1 - age / 2), scale);
+                        var evadedDirection = Vector2.Normalize(new Vector2(1, .7f + age));
+                        var evadedAlpha = Math.Max(0, 1 - age / 2);
+                        if (_combat is { IncomingPlasma: true }) Plasma(end, evadedDirection, evadedAlpha, scale);
+                        else Missile(end, evadedDirection, evadedAlpha, scale);
                         break;
                 }
             }
@@ -115,7 +119,7 @@ public sealed class FighterEffectsControl : Control
             var target = Point(.65f, .62f);
             var distance = Math.Max(PixelSize.X, PixelSize.Y) * .85f * (1 - progress);
             var position = target + direction * distance;
-            if (combat.IncomingFromGround)
+            if (combat.IncomingFromGround && !combat.IncomingPlasma)
             {
                 var side = new Vector2(-direction.Y, direction.X);
                 position += side * MathF.Sin(progress * 18) * 24 * (1 - progress) * scale;
@@ -127,10 +131,14 @@ public sealed class FighterEffectsControl : Control
                 }
                 _particles.Mote(position, new Vector2(18) * scale, Flame.WithAlpha(.4f));
             }
-            Missile(position, -direction, 1, scale * (combat.IncomingFromGround ? .45f + progress * 1.2f : 1));
+            if (combat.IncomingPlasma)
+                Plasma(position, -direction, 1, scale * (.45f + progress * 1.2f));
+            else
+                Missile(position, -direction, 1, scale * (combat.IncomingFromGround ? .45f + progress * 1.2f : 1));
             var pulse = .08f + .08f * (.5f + .5f * MathF.Sin(time * 8));
-            handle.DrawRect(new UIBox2(0, 0, PixelSize.X, 4 * scale), Flame.WithAlpha(pulse * 3));
-            handle.DrawRect(new UIBox2(0, 0, 4 * scale, PixelSize.Y), Flame.WithAlpha(pulse * 3));
+            var warning = combat.IncomingPlasma ? PlasmaColor : Flame;
+            handle.DrawRect(new UIBox2(0, 0, PixelSize.X, 4 * scale), warning.WithAlpha(pulse * 3));
+            handle.DrawRect(new UIBox2(0, 0, 4 * scale, PixelSize.Y), warning.WithAlpha(pulse * 3));
         }
         _particles.Draw(handle, time);
     }
@@ -182,6 +190,15 @@ public sealed class FighterEffectsControl : Control
         _particles.Trail(tail, position, 6 * scale, Flame.WithAlpha(alpha * .8f));
         _particles.Trail(position - direction * 12 * scale, position, 2.4f * scale, Color.White.WithAlpha(alpha));
         _particles.Mote(tail, new Vector2(9) * scale, Flame.WithAlpha(alpha * .6f));
+    }
+
+    private void Plasma(Vector2 position, Vector2 direction, float alpha, float scale)
+    {
+        for (var i = 1; i <= 14; i++)
+            _particles.Mote(position - direction * i * 5 * scale, new Vector2(12 - i * .6f) * scale,
+                PlasmaColor.WithAlpha(alpha * (1 - i / 15f) * .65f));
+        _particles.Mote(position, new Vector2(22) * scale, PlasmaColor.WithAlpha(alpha * .75f));
+        _particles.Mote(position, new Vector2(8) * scale, Color.White.WithAlpha(alpha));
     }
 
     private void DrawFlares(FighterEffectCue cue, float age, float scale)

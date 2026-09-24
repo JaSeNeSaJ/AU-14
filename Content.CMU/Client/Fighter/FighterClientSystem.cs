@@ -21,11 +21,13 @@ public sealed partial class FighterClientSystem : EntitySystem
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
+    [Dependency] private FighterViewSystem _fighterView = default!;
     private FighterSensorOverlay? _sensorOverlay;
     private FighterCockpitControl? _display;
     private LayoutContainer? _parent;
     private FighterInput _input;
     private bool _lastCameraControl;
+    private bool _spectating;
     private EntityUid? _currentSeat;
     private TimeSpan _nextInput;
     private readonly FighterViewportCover _worldCover = new();
@@ -60,7 +62,7 @@ public sealed partial class FighterClientSystem : EntitySystem
     {
         seat = default;
         if (_player.LocalEntity is not { } user || !TryComp(user, out BuckleComponent? buckle) || buckle.BuckledTo is not { } uid ||
-            !TryComp(uid, out FighterSeatComponent? component))
+            !TryComp(uid, out FighterSeatComponent? component) || component.Occupant != user)
             return false;
         seat = (uid, component);
         return true;
@@ -68,7 +70,8 @@ public sealed partial class FighterClientSystem : EntitySystem
 
     public override void FrameUpdate(float frameTime)
     {
-        if (!TryGetSeat(out var seat) || seat.Comp.Aircraft is not { } uid || !TryComp(uid, out FighterAircraftComponent? aircraft) ||
+        if (!_fighterView.TryGetView(_player.LocalEntity, out var seat, out var spectating) ||
+            seat.Comp.Aircraft is not { } uid || !TryComp(uid, out FighterAircraftComponent? aircraft) ||
             seat.Comp.Camera is not { } camera || !TryComp(camera, out EyeComponent? eye) ||
             seat.Comp.ExteriorCamera is not { } exterior || !TryComp(exterior, out EyeComponent? exteriorEye) ||
             _ui.ActiveScreen?.GetWidget<MainViewport>() is not { } viewport)
@@ -76,6 +79,8 @@ public sealed partial class FighterClientSystem : EntitySystem
             Hide();
             return;
         }
+        if (_spectating != spectating) Hide();
+        _spectating = spectating;
         var parent = _ui.WindowRoot;
         if (_parent != parent)
         {
@@ -89,12 +94,12 @@ public sealed partial class FighterClientSystem : EntitySystem
         }
         if (_display == null)
         {
-            _display = new FighterCockpitControl(command => RaiseNetworkEvent(new FighterCommandEvent(command)),
-                (entry, exit) => RaiseNetworkEvent(new FighterPlanEvent(entry, exit)),
-                (height, speed) => RaiseNetworkEvent(new FighterSettingsEvent(height, speed)),
-                slot => RaiseNetworkEvent(new FighterSelectWeaponEvent(slot)),
-                flare => RaiseNetworkEvent(new FighterSelectTargetEvent(flare)),
-                sector => RaiseNetworkEvent(new FighterCoverSectorEvent(sector)));
+            _display = new FighterCockpitControl(command => SendCrewEvent(new FighterCommandEvent(command)),
+                (entry, exit) => SendCrewEvent(new FighterPlanEvent(entry, exit)),
+                (height, speed) => SendCrewEvent(new FighterSettingsEvent(height, speed)),
+                slot => SendCrewEvent(new FighterSelectWeaponEvent(slot)),
+                flare => SendCrewEvent(new FighterSelectTargetEvent(flare)),
+                sector => SendCrewEvent(new FighterCoverSectorEvent(sector)), spectating);
             parent.AddChild(_display);
         }
         // The cockpit belongs inside the game view. WindowRoot also contains
@@ -120,6 +125,7 @@ public sealed partial class FighterClientSystem : EntitySystem
         }
         _sensorOverlay.Viewport = _display.SensorViewport;
         _sensorOverlay.Mode = FighterOptics.Mode(aircraft, _timing.CurTime);
+        if (_spectating) return;
         UpdateTrial(aircraft, seat.Comp);
         var cameraControl = _display.CameraControl;
         if (_timing.CurTime >= _nextInput || cameraControl != _lastCameraControl)
@@ -131,18 +137,15 @@ public sealed partial class FighterClientSystem : EntitySystem
 
     private void SendInput()
     {
+        if (_spectating || !TryGetSeat(out _)) return;
         var cameraControl = _display?.CameraControl == true;
-        if (TryGetSeat(out var seat))
-        {
-            // Consume seated movement before the normal mover can unbuckle us,
-            // then feed it directly to the vehicle controller on both sides.
-            seat.Comp.CameraControl = cameraControl;
-            if (seat.Comp.Pilot && TryComp(seat.Comp.Aircraft, out FighterAircraftComponent? aircraft) &&
-                TryComp(aircraft.GroundEntity, out FighterGroundComponent? ground))
-                ground.TaxiInput = ground.State == FighterGroundState.Grounded ? _input : FighterInput.None;
-        }
         _lastCameraControl = cameraControl;
-        RaiseNetworkEvent(new FighterInputEvent(_input, cameraControl));
+        RaisePredictiveEvent(new FighterInputEvent(_input, cameraControl));
+    }
+
+    private void SendCrewEvent(EntityEventArgs ev)
+    {
+        if (!_spectating && TryGetSeat(out _)) RaiseNetworkEvent(ev);
     }
 
     private void Hide()

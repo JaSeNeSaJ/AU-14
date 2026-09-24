@@ -105,7 +105,7 @@ public sealed partial class FighterSystem
         foreach (var source in _combatAircraft)
         {
             var (sourceAircraft, sourceCombat, sourceWeapons) = (source.Comp1, source.Comp2, source.Comp3);
-            if (sourceAircraft.ForcedRetreat || sourceAircraft.GroundState != FighterGroundState.Airborne || !HasCombatPilot(sourceAircraft) || sourceCombat.CoveredSectors.Count == 0 ||
+            if (sourceAircraft.ForcedRetreat || !FighterFlight.InAttackRun(sourceAircraft) || !HasCombatPilot(sourceAircraft) || sourceCombat.CoveredSectors.Count == 0 ||
                 now < sourceCombat.CoverageReadyAt || now < sourceCombat.InterceptReadyAt) continue;
             foreach (var target in _combatAircraft)
             {
@@ -129,11 +129,12 @@ public sealed partial class FighterSystem
     }
 
     private void BeginInterception(Entity<FighterAircraftComponent, FighterAirCombatComponent, FighterWeaponsComponent> target,
-        Vector2 source, TimeSpan flightTime, bool fromGround = false)
+        Vector2 source, TimeSpan flightTime, bool fromGround = false, bool plasma = false)
     {
         var combat = target.Comp2;
         combat.Incoming = true;
         combat.IncomingFromGround = fromGround;
+        combat.IncomingPlasma = plasma;
         combat.FlaresUsed = false;
         combat.IncomingAt = _timing.CurTime + flightTime;
         combat.IncomingStartedAt = _timing.CurTime;

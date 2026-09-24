@@ -1,7 +1,7 @@
 // Crop full-size ground crew to their seat's opening, in the current viewport.
 light_mode unshaded;
 
-uniform bool clip_enabled = false;
+uniform bool clip_enabled;
 uniform highp vec2 window_origin;
 uniform highp vec2 window_x;
 uniform highp vec2 window_y;

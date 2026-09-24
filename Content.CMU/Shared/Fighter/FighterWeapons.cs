@@ -47,7 +47,7 @@ public sealed partial class FighterHardpointComponent : Component
 public enum FighterWeaponKind : byte { Empty, Missile, Rockets, Gau }
 
 [Serializable, NetSerializable]
-public enum FighterFireStatus : byte { Ready, NoWeapon, Empty, PilotOnly, NoTarget, OutOfRange, Clouds, Protected, NeedRun, OffCourse, Cooldown, MissilesOnly, Locking, TargetExpiring, Retreat, Grounded }
+public enum FighterFireStatus : byte { Ready, NoWeapon, Empty, PilotOnly, NoTarget, OutOfRange, Clouds, Protected, NeedRun, OffCourse, Cooldown, MissilesOnly, Locking, TargetExpiring, Retreat, Grounded, OutsideAO }
 
 [Serializable, NetSerializable]
 public sealed record FighterWeaponStatus(int Slot, FighterWeaponKind Kind, string Name, int Rounds, int PerShot, TimeSpan ReadyAt);
@@ -101,11 +101,11 @@ public static class FighterWeapons
         if (flare == null || flare.Laser && now >= flare.ExpiresAt) return FighterFireStatus.NoTarget;
         if (flare.Laser && weapon.Kind != FighterWeaponKind.Missile) return FighterFireStatus.MissilesOnly;
         if (!flare.CanStrike) return FighterFireStatus.Protected;
+        if (!FighterFlight.InAttackRun(a)) return FighterFireStatus.OutsideAO;
         if (!FighterFlight.DesignationInRange(a, flare.Position)) return FighterFireStatus.OutOfRange;
         if (FighterOptics.CloudsBlock(a, flare.Position, now)) return FighterFireStatus.Clouds;
         if (weapon.Kind != FighterWeaponKind.Missile)
         {
-            if (!a.Flying || a.Phase is not (FighterPhase.Approach or FighterPhase.Pass)) return FighterFireStatus.NeedRun;
             var delta = flare.Position - a.Position;
             var distance = delta.Length();
             if (distance > weapons.RunRange) return FighterFireStatus.OutOfRange;

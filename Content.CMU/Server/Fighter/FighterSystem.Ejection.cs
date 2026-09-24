@@ -1,15 +1,19 @@
 using System.Numerics;
+using Content.Shared._RMC14.CrashLand;
 using Content.Shared.CMU14.Fighter;
 using Content.Shared.ParaDrop;
 using Content.Shared.Popups;
 using Robust.Shared.Map;
+using Robust.Shared.Map.Components;
 using Robust.Shared.Audio;
+using Robust.Shared.Random;
 
 namespace Content.Server.CMU14.Fighter;
 
 public sealed partial class FighterSystem
 {
     [Dependency] private SharedParaDropSystem _paraDrop = default!;
+    [Dependency] private SharedCrashLandSystem _ejectionLanding = default!;
 
     public bool TryRequestEjection(EntityUid? user)
     {
@@ -27,9 +31,22 @@ public sealed partial class FighterSystem
         var a = aircraft.Comp;
         var point = a.Position;
         var map = a.TerrainMap;
+        if (a.Phase == FighterPhase.Holding)
+        {
+            // Holding has no physical ground track. Choose a fresh drop area in
+            // the AO instead of always clamping crew to the same map corner.
+            for (var attempt = 0; attempt < 256; attempt++)
+            {
+                var candidate = a.Battlefield.BottomLeft + a.Battlefield.Size *
+                    new Vector2(_combatRandom.NextFloat(), _combatRandom.NextFloat());
+                if (!CanEjectTo(map, candidate)) continue;
+                point = candidate;
+                break;
+            }
+        }
         // Off-map holding points have no ground beneath them. Recover over the
         // nearest valid battlefield tile, or the launch site on a carrier map.
-        if (!HasGroundTile(map, point))
+        if (!CanEjectTo(map, point))
         {
             point = Vector2.Clamp(point, a.Battlefield.BottomLeft + Vector2.One, a.Battlefield.TopRight - Vector2.One);
             var found = false;
@@ -37,7 +54,7 @@ public sealed partial class FighterSystem
             for (var side = 0; side < 16 && !found; side++)
             {
                 var candidate = point + new Angle(side * Math.PI / 8).RotateVec(new Vector2(radius, 0));
-                if (!HasGroundTile(map, candidate)) continue;
+                if (!a.Battlefield.Contains(candidate) || !CanEjectTo(map, candidate)) continue;
                 point = candidate;
                 found = true;
             }
@@ -67,5 +84,15 @@ public sealed partial class FighterSystem
         }
         if (seat.Comp.Pilot && a.GroundState == FighterGroundState.Airborne) ReturnToGround(aircraft);
         return true;
+    }
+
+    private bool CanEjectTo(EntityUid map, Vector2 point)
+    {
+        var coordinates = new MapCoordinates(point, Transform(map).MapID);
+        if (TryComp(map, out MapGridComponent? mapGrid) &&
+            _ejectionLanding.IsLandableTile((map, mapGrid), _map.GetTileRef((map, mapGrid), coordinates))) return true;
+        foreach (var grid in _map.GetAllGrids(coordinates.MapId))
+            if (_ejectionLanding.IsLandableTile(grid, _map.GetTileRef(grid, coordinates))) return true;
+        return false;
     }
 }

@@ -25,6 +25,7 @@ public sealed class FighterRouteControl : Control
     public Action<NetEntity>? SelectTarget;
     public Action<int>? SelectSector;
     public bool CoverageMode;
+    public bool ReadOnly;
     public bool EditEntry = true;
     public Vector2 Entry;
     public Vector2 Exit;
@@ -69,7 +70,7 @@ public sealed class FighterRouteControl : Control
     protected override void KeyBindDown(GUIBoundKeyEventArgs args)
     {
         base.KeyBindDown(args);
-        if (args.Function != EngineKeyFunctions.UIClick || _aircraft == null)
+        if (ReadOnly || args.Function != EngineKeyFunctions.UIClick || _aircraft == null)
             return;
         if (CoverageMode)
         {

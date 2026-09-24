@@ -17,6 +17,7 @@ public sealed partial class FighterAirCombatComponent : Component
     [DataField, AutoNetworkedField] public float FlareEvasionChance = .65f;
     [DataField, AutoNetworkedField] public bool Incoming;
     [DataField, AutoNetworkedField] public bool IncomingFromGround;
+    [DataField, AutoNetworkedField] public bool IncomingPlasma;
     public EntityUid? IncomingAudio;
     [DataField, AutoNetworkedField] public bool FlaresUsed;
     [DataField, AutoNetworkedField] public int IncomingSector = -1;

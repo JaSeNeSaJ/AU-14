@@ -53,6 +53,16 @@
     faction: opfor
 
 - type: entity
+  parent: CMUFighterManpad
+  id: CMUFighterManpadNoIFF
+  name: EMBLR MANPAD
+  suffix: No IFF, targets all aircraft
+  description: A shoulder-fired anti-air launcher with its IFF interlock bypassed. It automatically engages ANY crewed aircraft crossing your sector while wielded and aimed, including friendly aircraft. Uses EMBLR 70mm ammunition.
+  components:
+  - type: FighterManpad
+    ignoreIFF: true
+
+- type: entity
   parent: ActionMarineToggleable
   id: CMUActionManpadAim
   name: Aim at airspace
