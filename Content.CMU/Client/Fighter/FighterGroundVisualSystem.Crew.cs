@@ -45,9 +45,10 @@ public sealed partial class FighterGroundVisualSystem
     {
         if (args.Id != CrewMaskId) return;
         args.Shader.SetParameter("clip_enabled", false);
-        if (crew.Comp.BuckledTo is not { } seatUid || !TryComp(seatUid, out FighterSeatComponent? seat) ||
-            !TryComp(seat.Aircraft, out FighterAircraftComponent? aircraft) || aircraft.Canopy is not { } canopy ||
-            !TryComp(canopy, out SpriteComponent? sprite)) return;
+        if (crew.Comp.BuckledTo is not { } seatUid || !TryComp(seatUid, out FighterSeatComponent? seat)) return;
+        var canopyUid = TryComp(Transform(seatUid).ParentUid, out FighterGroundComponent? ground)
+            ? ground.Canopy : CompOrNull<FighterAircraftComponent>(seat.Aircraft)?.Canopy;
+        if (canopyUid is not { } canopy || !TryComp(canopy, out SpriteComponent? sprite)) return;
 
         // Apertures in the 266 x 335 airframe art, also used by cockpit-frame.swsl.
         // Clip the actual character, including equipment, rather than shrinking it.

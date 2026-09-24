@@ -32,9 +32,11 @@
     rotationDecelerationDegrees: 120
     canSmashWalls: false
   - type: CMUZPhysics
+    applySpriteElevation: false
   - type: CMUVehicleZTraversal
   - type: CMUZLevelViewer
   - type: RequireProjectileTarget
+  - type: InteractionOutline
   - type: Fixtures
     fixtures:
       fuselage:

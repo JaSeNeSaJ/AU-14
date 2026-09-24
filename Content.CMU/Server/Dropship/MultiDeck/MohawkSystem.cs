@@ -10,6 +10,7 @@ using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Weeds;
 using Content.Shared.CMU14.ZLevels.Core.Components;
 using Content.Shared._RMC14.Dropship;
+using Content.Shared.Buckle.Components;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Doors.Components;
@@ -492,6 +493,11 @@ public sealed partial class MohawkSystem : EntitySystem
         var inverse = _transform.GetInvWorldMatrix(segment);
         foreach (var occupant in _lookup.GetEntitiesInRange<MobStateComponent>(Transform(segment).Coordinates, 0.8f))
         {
+            // Mounted crew travel with their seat and vehicle. Moving them as
+            // loose ramp passengers first would tear them out of the buckle.
+            if (TryComp(occupant, out BuckleComponent? buckle) && buckle.Buckled)
+                continue;
+
             var local = Vector2.Transform(_transform.GetWorldPosition(occupant), inverse);
             // Query whole tiles, including corners, without hitting someone in
             // the next row merely because their collision shape overlaps it.

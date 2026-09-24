@@ -21,6 +21,10 @@ public sealed partial class FighterGroundComponent : Component
     public const float AttachmentScale = .25f * SizeMultiplier;
 
     [DataField, AutoNetworkedField] public EntityUid? Aircraft;
+    // Ground viewers may not receive the separate airborne cockpit map.
+    [DataField, AutoNetworkedField] public EntityUid? FrontSeat;
+    [DataField, AutoNetworkedField] public EntityUid? RearSeat;
+    [DataField, AutoNetworkedField] public EntityUid? Canopy;
     [DataField, AutoNetworkedField] public FighterGroundState State = FighterGroundState.Grounded;
     /// <summary>Missiles installed on successive pylons when this airframe first creates its cockpit.</summary>
     [DataField] public List<EntProtoId> StartingMissiles = [];

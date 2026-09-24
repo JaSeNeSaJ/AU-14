@@ -1,8 +1,12 @@
 using System.Numerics;
 using Content.Shared.CMU14.Fighter;
+using Content.Shared.CMU14.ZLevels;
+using Content.Shared.CMU14.ZLevels.Core.Components;
+using Content.Shared.CMU14.ZLevels.Core.EntitySystems;
 using Content.Shared.ParaDrop;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
+using Robust.Shared.Configuration;
 using Robust.Shared.Graphics;
 using Robust.Shared.Timing;
 
@@ -10,11 +14,12 @@ namespace Content.Client.CMU14.Fighter;
 
 public sealed partial class FighterGroundVisualSystem : EntitySystem
 {
+    [Dependency] private IConfigurationManager _config = default!;
+    [Dependency] private IEyeManager _eye = default!;
+    [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private SpriteSystem _sprites = default!;
     [Dependency] private IGameTiming _timing = default!;
-    [Dependency] private IOverlayManager _overlays = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
-    [Dependency] private IEyeManager _eye = default!;
     private readonly Dictionary<EntityUid, CrewSpriteState> _crewSprites = [];
     private readonly HashSet<EntityUid> _visibleCrew = [];
     private readonly List<EntityUid> _restoreCrew = [];
@@ -51,17 +56,17 @@ public sealed partial class FighterGroundVisualSystem : EntitySystem
         {
             _sprites.LayerSetRsiState(uid, 0, ground.State == FighterGroundState.Grounded ? "folded" : "vtolmode");
             FighterVtolPresentation.Hull(ground, _timing.CurTime, out var offset, out var scale, out var opacity);
+            offset += GroundElevationOffset(uid);
             _sprites.SetOffset(uid, offset);
             _sprites.SetScale(uid, new Vector2(FighterGroundComponent.SpriteScale * scale));
             _sprites.SetColor(uid, Color.White.WithAlpha(opacity));
-            if (ground.Aircraft is not { } aircraft || !TryComp(aircraft, out FighterAircraftComponent? flight)) continue;
-            foreach (var part in new[] { flight.FrontSeat, flight.RearSeat, flight.Canopy })
+            foreach (var part in new[] { ground.FrontSeat, ground.RearSeat, ground.Canopy })
             {
                 if (part is not { } entity || !TryComp(entity, out SpriteComponent? partSprite) || Transform(entity).ParentUid != uid) continue;
                 _sprites.SetOffset(entity, AttachmentOffset(uid, (entity, partSprite), offset, scale));
                 _sprites.SetScale(entity, new Vector2(FighterGroundComponent.SpriteScale * scale));
                 _sprites.SetColor(entity, Color.White.WithAlpha(opacity));
-                if (part == flight.Canopy)
+                if (part == ground.Canopy)
                     _sprites.LayerSetRsiState(entity, 0, ground.State == FighterGroundState.Grounded ? "folded" : "vtolmode");
                 if (TryComp(entity, out FighterSeatComponent? seat) && seat.Occupant is { } crew && TryComp(crew, out SpriteComponent? sprite))
                 {
@@ -103,12 +108,25 @@ public sealed partial class FighterGroundVisualSystem : EntitySystem
             if (onGround)
             {
                 FighterVtolPresentation.Hull(ground!, _timing.CurTime, out offset, out scale, out opacity);
+                offset += GroundElevationOffset(xform.ParentUid);
                 offset = AttachmentOffset(xform.ParentUid, (uid, sprite), offset, scale);
             }
             _sprites.SetScale(uid, new Vector2((onGround ? .6f * FighterGroundComponent.AttachmentScale : .6f) * scale));
             _sprites.SetOffset(uid, offset);
             _sprites.SetColor(uid, Color.White.WithAlpha(opacity));
         }
+    }
+
+    private Vector2 GroundElevationOffset(EntityUid hull)
+    {
+        if (!_config.GetCVar(CMUZLevelsCVars.Enabled) || !TryComp(hull, out CMUZPhysicsComponent? physics))
+            return Vector2.Zero;
+
+        // Keep the hull, canopy, seats and click map on the same presentation.
+        // The generic Z pass temporarily forces NoRotation and moves only the
+        // hull, which separates a turning aircraft from its attached cockpit.
+        return (-_transform.GetWorldRotation(hull)).RotateVec(
+            new Vector2(0, physics.LocalPosition * CMUSharedZLevelsSystem.ZLevelVisualOffset));
     }
 
     private void RestoreCrewSprites()

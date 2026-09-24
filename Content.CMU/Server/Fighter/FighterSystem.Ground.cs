@@ -60,6 +60,9 @@ public sealed partial class FighterSystem
         var aircraft = CreateAircraft(terrain, _transform.GetWorldPosition(ground));
         aircraft.Comp.GroundEntity = ground;
         ground.Comp.Aircraft = aircraft;
+        ground.Comp.FrontSeat = aircraft.Comp.FrontSeat;
+        ground.Comp.RearSeat = aircraft.Comp.RearSeat;
+        ground.Comp.Canopy = aircraft.Comp.Canopy;
         if (TryComp(ground, out FighterIFFComponent? iff))
             SetEquipmentFaction((ground, iff), iff.Faction ?? _iff.GetSiteFaction(ground));
         ground.Comp.LaunchCoordinates = Transform(ground).Coordinates;
@@ -131,6 +134,11 @@ public sealed partial class FighterSystem
         _groundPhysics.ResetDynamics(crew, body);
         _groundPhysics.SetCanCollide(crew, false, body: body);
         _groundPhysics.SetBodyType(crew, BodyType.Static, body: body);
+        if (TryComp(crew, out CMUZPhysicsComponent? zPhysics))
+        {
+            _zLevels.SetZLocalPosition((crew, zPhysics), 0);
+            _zLevels.SetZVelocity((crew, zPhysics), 0);
+        }
     }
 
     private void RestoreCrewPhysics(Entity<FighterSeatComponent> seat)
@@ -139,8 +147,16 @@ public sealed partial class FighterSystem
         seat.Comp.OccupantBodyType = null;
         if (seat.Comp.Occupant is not { } crew || TerminatingOrDeleted(crew) ||
             !TryComp(crew, out PhysicsComponent? body)) return;
+        _groundPhysics.ResetDynamics(crew, body);
         _groundPhysics.SetBodyType(crew, type, body: body);
-        _groundPhysics.SetCanCollide(crew, seat.Comp.OccupantCanCollide, body: body);
+        // Restoring CanCollide alone leaves a previously static body asleep.
+        // Wake it after detaching so ordinary movement and contacts resume.
+        if (seat.Comp.OccupantCanCollide)
+            _groundPhysics.WakeBody(crew, body: body);
+        else
+            _groundPhysics.SetCanCollide(crew, false, body: body);
+        if (TryComp(crew, out CMUZPhysicsComponent? zPhysics))
+            _zLevels.WakeZPhysics((crew, zPhysics));
     }
 
     private void MoveFighterCrew(Entity<FighterGroundComponent> ground, Entity<FighterAircraftComponent> aircraft, bool toGround)
