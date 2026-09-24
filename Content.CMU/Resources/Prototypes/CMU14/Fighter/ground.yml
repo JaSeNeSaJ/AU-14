@@ -105,6 +105,21 @@
         acts: [ Destruction ]
 
 - type: entity
+  parent: CMUFighterGround
+  id: CMUFighterGroundLoaded
+  suffix: Fully equipped, mixed missiles
+  components:
+  - type: FighterGround
+    startingMissiles:
+    - RMCDropshipAttachmentAmmoRocketWidowmaker
+    - RMCDropshipAttachmentAmmoRocketKeeper
+    - RMCDropshipAttachmentAmmoRocketHarpoon
+    - RMCDropshipAttachmentAmmoRocketNapalm
+    - RMCDropshipAttachmentAmmoRocketBanshee
+    - RMCDropshipAttachmentAmmoRocketThermobaric
+    startingGauAmmo: RMCDropshipAttachmentAmmoGAU
+
+- type: entity
   id: CMUFighterVtolWash
   name: VTOL downwash
   categories: [ HideSpawnMenu, DoNotMap ]

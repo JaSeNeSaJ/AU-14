@@ -47,6 +47,13 @@ Service the grounded fighter with a power loader: click a mount with ammunition
 or a rocket pod in the claw. Activate a mount with an empty claw to remove its
 ammunition, then its removable pod. The internal cannon stays installed.
 
+Spawn `CMUFighterGroundLoaded` for the **Fully equipped, mixed missiles** variant.
+Its six pylons carry one Widowmaker, Keeper II, Harpoon II, Napalm, Banshee and
+Dragon's Breath, with 400 PGU-100 rounds in the internal GAU. These are ordinary,
+finite ammunition items that can be unloaded and replaced with a power loader.
+The loadout is applied only when the aircraft is first created; landing or storing
+it does not replenish ammunition. The standard supply-lift fighter starts empty.
+
 Friendly signal flares appear in the target list; green marks are strikeable.
 The camera can also create a visible red ground laser for ten seconds. Missile
 release requires a two-second designation lock and warns the impact site.

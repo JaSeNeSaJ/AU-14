@@ -7,6 +7,7 @@ using Content.Shared.Light.Components;
 using Robust.Shared.Containers;
 using Robust.Shared.Map;
 using Robust.Shared.Player;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server.CMU14.Fighter;
 
@@ -41,6 +42,30 @@ public sealed partial class FighterSystem
             Dirty(point, component);
         }
         RefreshWeapons(aircraft, weapons);
+    }
+
+    private void LoadStartingAmmo(FighterGroundComponent ground, Entity<FighterAircraftComponent> aircraft)
+    {
+        if (ground.StartingMissiles.Count == 0 && ground.StartingGauAmmo == null)
+            return;
+
+        var weapons = Comp<FighterWeaponsComponent>(aircraft);
+        for (var i = 0; i < Math.Min(ground.StartingMissiles.Count, FighterWeaponsComponent.ExternalPoints); i++)
+            MountStartingAmmo(weapons.Hardpoints[i], ground.StartingMissiles[i]);
+        if (ground.StartingGauAmmo is { } gauAmmo)
+            MountStartingAmmo(weapons.Hardpoints[FighterWeaponsComponent.GauSlot], gauAmmo);
+        RefreshWeapons(aircraft, weapons);
+    }
+
+    private void MountStartingAmmo(EntityUid pointUid, EntProtoId prototype)
+    {
+        var point = new Entity<FighterHardpointComponent>(pointUid, Comp<FighterHardpointComponent>(pointUid));
+        var ammo = Spawn(prototype, Transform(point).Coordinates);
+        if (_hardpoints.TryMount(point, ammo))
+            return;
+
+        Log.Error($"Could not mount starting ammunition {prototype} on {ToPrettyString(pointUid)}.");
+        QueueDel(ammo);
     }
 
     private FighterWeaponStatus GetWeaponStatus(Entity<FighterHardpointComponent> point)

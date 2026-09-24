@@ -1,6 +1,7 @@
 using System.Numerics;
 using Robust.Shared.GameStates;
 using Robust.Shared.Map;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Serialization;
 using Robust.Shared.Serialization.TypeSerializers.Implementations.Custom;
 
@@ -21,6 +22,9 @@ public sealed partial class FighterGroundComponent : Component
 
     [DataField, AutoNetworkedField] public EntityUid? Aircraft;
     [DataField, AutoNetworkedField] public FighterGroundState State = FighterGroundState.Grounded;
+    /// <summary>Missiles installed on successive pylons when this airframe first creates its cockpit.</summary>
+    [DataField] public List<EntProtoId> StartingMissiles = [];
+    [DataField] public EntProtoId? StartingGauAmmo;
     [DataField] public TimeSpan TakeoffTime = TimeSpan.FromSeconds(8);
     [DataField] public TimeSpan LandingTime = TimeSpan.FromSeconds(6);
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]

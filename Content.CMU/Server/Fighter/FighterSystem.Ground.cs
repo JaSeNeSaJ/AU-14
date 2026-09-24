@@ -67,6 +67,7 @@ public sealed partial class FighterSystem
         SetGroundState(ground, aircraft, FighterGroundState.Grounded);
         aircraft.Comp.Height = aircraft.Comp.Speed = 0;
         MoveFighterMounts(ground, aircraft, true);
+        LoadStartingAmmo(ground.Comp, aircraft);
         MoveFighterCrew(ground, aircraft, true);
     }
 

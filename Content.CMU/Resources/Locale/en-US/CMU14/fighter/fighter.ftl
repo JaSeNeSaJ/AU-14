@@ -280,3 +280,6 @@ cmu-fighter-weapon-brief = { $name }
     { $rounds } rounds
 cmu-fighter-flares-short = Flares
 cmu-fighter-flares-idle = Countermeasures become available when a missile is approaching.
+ent-CMUFighterGroundLoaded = two-seat VTOL fighter
+    .desc = A strike and reconnaissance fighter supplied with six different missiles and a full internal GAU ammunition feed. Service its weapons on the ground with a power loader.
+    .suffix = Fully equipped, mixed missiles
