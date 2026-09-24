@@ -1111,6 +1111,8 @@ public sealed class CMUReconHandshakeTestSystem : EntitySystem
     public int Requests;
     public int Chunks;
     public int ChunkBytes;
+    public int CameraRequests;
+    public int CameraViews;
     public CMUReconSnapshotMessage Snapshot;
 
     public override void Initialize()
@@ -1123,6 +1125,8 @@ public sealed class CMUReconHandshakeTestSystem : EntitySystem
     {
         if (args.Target != Target)
             return;
+        if (args.Message is CMUReconCameraMessage) CameraRequests++;
+        if (args.Message is CMUReconCameraViewMessage) CameraViews++;
         if (args.Message is CMUReconContactsMessage && DropContacts)
             args.Cancel();
         if (args.Message is CMUReconPatchMessage patch)
