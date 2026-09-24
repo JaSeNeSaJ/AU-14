@@ -119,7 +119,7 @@ public sealed class VehicleInteriorFactionTest : GameTest
             var vehicle = SEntMan.SpawnEntity("VehicleAPCCommand", map.GridCoords);
             try
             {
-                AssertInterior(vehicle, "govfor");
+                AssertInterior(vehicle, "govfor", mappedDefaults: true);
                 Assert.That(SEntMan.GetComponent<VehicleEnterComponent>(vehicle).InteriorFaction, Is.Null);
             }
             finally
@@ -129,7 +129,7 @@ public sealed class VehicleInteriorFactionTest : GameTest
         });
     }
 
-    private void AssertInterior(EntityUid vehicle, string faction, bool expectCommandAccess = true)
+    private void AssertInterior(EntityUid vehicle, string faction, bool expectCommandAccess = true, bool mappedDefaults = false)
     {
         var vehicles = Server.System<VehicleSystem>();
         var access = Server.System<AccessReaderSystem>();
@@ -166,13 +166,25 @@ public sealed class VehicleInteriorFactionTest : GameTest
                 {
                     Assert.That(access.AreAccessTagsAllowed(new List<ProtoId<AccessLevelPrototype>> { prefix + "Command" }, reader),
                         Is.True, "The supplying faction's command staff must be allowed to use the console.");
-                    Assert.That(access.AreAccessTagsAllowed(new List<ProtoId<AccessLevelPrototype>> { enemyPrefix + "Command" }, reader),
-                        Is.False, "Enemy command access must not work.");
                     Assert.That(access.AreAccessTagsAllowed(new List<ProtoId<AccessLevelPrototype>> { prefix }, reader),
                         Is.False, "Ordinary faction access must not bypass command restrictions.");
                     Assert.That(reader.AccessListsOriginal!.SelectMany(group => group).Select(id => id.Id),
                         Does.Contain(prefix + "Command"), "Inspect must show the assigned faction's command access.");
-                    Assert.That(reader.AccessListsOriginal.SelectMany(group => group).Any(id => id.Id.StartsWith(enemyPrefix)), Is.False);
+                    if (mappedDefaults)
+                    {
+                        // This map has no access overrides. Unowned vehicles retain each console's
+                        // prototype access, including consoles that accept command staff from both sides.
+                        var prototype = SEntMan.GetComponent<MetaDataComponent>(uid).EntityPrototype!;
+                        var defaults = (AccessReaderComponent) prototype.Components["AccessReader"].Component;
+                        Assert.That(reader.AccessLists, Is.EquivalentTo(defaults.AccessLists));
+                        Assert.That(reader.AccessListsOriginal, Is.EquivalentTo(defaults.AccessLists));
+                    }
+                    else
+                    {
+                        Assert.That(access.AreAccessTagsAllowed(new List<ProtoId<AccessLevelPrototype>> { enemyPrefix + "Command" }, reader),
+                            Is.False, "Enemy command access must not work.");
+                        Assert.That(reader.AccessListsOriginal.SelectMany(group => group).Any(id => id.Id.StartsWith(enemyPrefix)), Is.False);
+                    }
                 });
             }
 
