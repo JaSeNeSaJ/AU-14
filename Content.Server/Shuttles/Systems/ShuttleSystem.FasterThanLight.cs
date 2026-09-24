@@ -371,7 +371,14 @@ public sealed partial class ShuttleSystem
 
         component = AddComp<FTLComponent>(uid);
         component.State = FTLState.Starting;
-        var audio = _audio.PlayPvs(_startupSound, uid);
+        var startupSound = _startupSound;
+        if (TryComp<DropshipComponent>(uid, out var dropship))
+        {
+            startupSound = dropship.StartupSound ?? startupSound;
+            component.TravelSound = dropship.TravelSound ?? component.TravelSound;
+        }
+
+        var audio = _audio.PlayPvs(startupSound, uid);
         _audio.SetGridAudio(audio);
         component.StartupStream = audio?.Entity;
 
@@ -421,7 +428,7 @@ public sealed partial class ShuttleSystem
         // Just so we don't clip
         if (fromMapUid != null && TryComp(comp.StartupStream, out AudioComponent? startupAudio))
         {
-            var clippedAudio = _audio.PlayStatic(_startupSound, Filter.Broadcast(),
+            var clippedAudio = _audio.PlayStatic(new SoundPathSpecifier(startupAudio.FileName), Filter.Broadcast(),
                 new EntityCoordinates(fromMapUid.Value, _mapSystem.GetGridPosition(entity.Owner)), true, startupAudio.Params);
 
             _audio.SetPlaybackPosition(clippedAudio, entity.Comp1.StartupTime);

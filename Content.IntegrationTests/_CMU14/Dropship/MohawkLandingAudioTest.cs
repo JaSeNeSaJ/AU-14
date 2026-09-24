@@ -16,18 +16,25 @@ public sealed class MohawkLandingAudioTest
 {
     private const string Landing = "/Audio/CMU14/Dropships/Mohawk/landing.ogg";
     private const string OriginalLanding = "/Audio/_RMC14/Machines/Shuttle/engine_landing.ogg";
+    private const string Takeoff = "/Audio/CMU14/Dropships/Mohawk/takeoff.ogg";
+    private const string Flight = "/Audio/CMU14/Dropships/Mohawk/flight.ogg";
+    private const string OriginalTakeoff = "/Audio/_RMC14/Machines/Shuttle/engine_startup.ogg";
+    private const string OriginalFlight = "/Audio/Effects/Shuttle/hyperspace_progress.ogg";
 
     [TestCase("omaha", true)]
     [TestCase("midway", true)]
     [TestCase("midway", false)]
-    public async Task ArrivalCueStartsAtLandingForPassengersAndLandingZone(string variant, bool customCue)
+    public async Task FlightCuesFollowPhasesForPassengersAndLandingZone(string variant, bool customCue)
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true, Connected = true });
         EntityUid ship = default;
         EntityUid destination = default;
         EntityUid onboardStream = default;
         EntityUid exteriorStream = default;
+        EntityUid travelStream = default;
         var expected = customCue ? Landing : OriginalLanding;
+        var expectedTakeoff = customCue ? Takeoff : OriginalTakeoff;
+        var expectedFlight = customCue ? Flight : OriginalFlight;
         await pair.Server.WaitAssertion(() =>
         {
             var entities = pair.Server.EntMan;
@@ -38,10 +45,14 @@ public sealed class MohawkLandingAudioTest
             ship = loaded!.Value.Owner;
             var dropship = entities.GetComponent<DropshipComponent>(ship);
             Assert.That(((SoundPathSpecifier) dropship.ArrivalSound).Path.ToString(), Is.EqualTo(Landing));
+            Assert.That(((SoundPathSpecifier) dropship.StartupSound!).Path.ToString(), Is.EqualTo(Takeoff));
+            Assert.That(((SoundPathSpecifier) dropship.TravelSound!).Path.ToString(), Is.EqualTo(Flight));
             if (!customCue)
             {
 #pragma warning disable RA0002 // Check the unchanged stock dropship cue through the same real flight.
                 dropship.ArrivalSound = new DropshipComponent().ArrivalSound;
+                dropship.StartupSound = null;
+                dropship.TravelSound = null;
 #pragma warning restore RA0002
             }
             var ground = maps.CreateMap();
@@ -51,12 +62,29 @@ public sealed class MohawkLandingAudioTest
                 .Single(c => entities.GetComponent<TransformComponent>(c.Owner).GridUid == ship);
             Assert.That(entities.System<SharedDropshipSystem>().FlyTo((nav.Owner, nav), destination, null,
                 startupTime: 0.5f, hyperspaceTime: 12f), Is.True);
+            var startup = entities.GetComponent<AudioComponent>(entities.GetComponent<FTLComponent>(ship).StartupStream!.Value);
+            Assert.That(startup.FileName, Is.EqualTo(expectedTakeoff));
+            Assert.That(startup.Params.Volume, Is.EqualTo(6));
+            Assert.That(startup.Flags.HasFlag(AudioFlags.GridAudio), Is.True);
         });
         await pair.RunSeconds(1);
         await pair.Server.WaitAssertion(() =>
         {
             var entities = pair.Server.EntMan;
             Assert.That(entities.GetComponent<FTLComponent>(ship).State, Is.EqualTo(FTLState.Travelling));
+            travelStream = entities.GetComponent<FTLComponent>(ship).TravelStream!.Value;
+            var travel = entities.GetComponent<AudioComponent>(travelStream);
+            Assert.That(travel.FileName, Is.EqualTo(expectedFlight));
+            Assert.That(travel.Params.Loop, Is.True);
+            Assert.That(travel.Params.Volume, Is.EqualTo(-3));
+            Assert.That(travel.Flags.HasFlag(AudioFlags.GridAudio), Is.True);
+            var tail = entities.EntityQuery<AudioComponent>().Single(a => a.FileName == expectedTakeoff &&
+                entities.GetComponent<TransformComponent>(a.Owner).ParentUid != ship);
+            Assert.That(tail.Flags.HasFlag(AudioFlags.NoOcclusion), Is.True,
+                "The departure point must keep the chosen takeoff tail, not switch to the stock cue.");
+            if (customCue)
+                Assert.That(entities.EntityQuery<AudioComponent>().Any(a =>
+                    a.FileName == OriginalTakeoff || a.FileName == OriginalFlight), Is.False);
             Assert.That(entities.EntityQuery<AudioComponent>().Any(a => a.FileName == expected), Is.False,
                 "Landing audio must wait for the ten-second arrival phase.");
         });
@@ -89,6 +117,8 @@ public sealed class MohawkLandingAudioTest
             Assert.That(entities.EntityExists(onboardStream), Is.EqualTo(!customCue),
                 "The ten-second Mohawk cue ends at touchdown; the longer stock cue keeps its original tail.");
             Assert.That(entities.EntityExists(exteriorStream), Is.False);
+            Assert.That(entities.EntityExists(travelStream), Is.False,
+                "The flight loop must stop at touchdown.");
             entities.DeleteEntity(ship);
         });
         await pair.CleanReturnAsync();
