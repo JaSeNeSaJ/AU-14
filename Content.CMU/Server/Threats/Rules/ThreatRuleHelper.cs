@@ -6,6 +6,7 @@ using Content.Shared._RMC14.Synth;
 using Content.Shared._RMC14.Xenonids;
 using Content.Shared._RMC14.Xenonids.Construction.Nest;
 using Content.Shared.CMU14.Threats.Mobs.Biomorph;
+using Content.Shared.GameTicking;
 using Content.Shared.GameTicking.Components;
 using Content.Shared.Mobs;
 using Content.Shared.Mobs.Components;
@@ -27,11 +28,14 @@ internal enum EvacuatedMobPolicy
 internal sealed class ThreatRuleHelper : EntitySystem
 {
     private EntityQuery<EvacuatedGridComponent> _evacuatedQuery;
+    private bool _dropshipHijackLanded;
 
     public override void Initialize()
     {
         base.Initialize();
         _evacuatedQuery = GetEntityQuery<EvacuatedGridComponent>();
+        SubscribeLocalEvent<DropshipHijackLandedEvent>(OnDropshipHijackLanded);
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(OnRoundRestartCleanup);
     }
 
     internal static bool MeetsRequiredPercent(int eliminated, int total, int requiredPercent)
@@ -43,17 +47,18 @@ internal sealed class ThreatRuleHelper : EntitySystem
     internal bool IsEvacuated(EntityUid uid)
         => Transform(uid).GridUid is { } grid && _evacuatedQuery.HasComp(grid);
 
-    internal bool HasCrashedDropship()
+    private void OnDropshipHijackLanded(ref DropshipHijackLandedEvent args)
     {
-        EntityQueryEnumerator<DropshipComponent> query = EntityQueryEnumerator<DropshipComponent>();
-        while (query.MoveNext(out _, out DropshipComponent? dropship))
-        {
-            if (dropship.Crashed)
-                return true;
-        }
-
-        return false;
+        if (!args.IsHumanHijack)
+            _dropshipHijackLanded = true;
     }
+
+    private void OnRoundRestartCleanup(RoundRestartCleanupEvent args)
+        => _dropshipHijackLanded = false;
+
+    // Crashed also marks ordinary hull-integrity wrecks and flights that have only
+    // started hijacking. Neither abandons the living factions on the planet.
+    internal bool HasLandedDropshipHijack() => _dropshipHijackLanded;
 
     internal static bool TryGetActiveRule<TRule>(
         ref EntityQueryEnumerator<ActiveGameRuleComponent, TRule, GameRuleComponent> query,

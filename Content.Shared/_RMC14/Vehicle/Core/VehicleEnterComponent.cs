@@ -29,6 +29,13 @@ public sealed partial class VehicleEnterComponent : Component
     [DataField(required: true)]
     public ResPath InteriorPath;
 
+    /// <summary>
+    /// CMU14: The supplying faction, retained when the vehicle leaves its ship.
+    /// Null keeps the interior's mapped configuration until a supplying faction is known.
+    /// </summary>
+    [DataField]
+    public string? InteriorFaction;
+
     [DataField]
     public int MaxPassengers = 0;
 
