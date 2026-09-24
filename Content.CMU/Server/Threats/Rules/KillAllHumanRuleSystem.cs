@@ -111,10 +111,10 @@ public sealed partial class KillAllHumanRuleSystem : GameRuleSystem<KillAllHuman
                 continue;
             }
 
-            if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && mobState.CurrentState != MobState.Dead)
+            if (crashedDropship && _rmcPlanet.IsOnPlanet(Transform(uid)) && !_threatRuleHelper.IsEliminated(uid, mobState))
                 continue;
 
-            if (mobState.CurrentState == MobState.Dead)
+            if (_threatRuleHelper.IsEliminated(uid, mobState))
                 eliminated++;
 
             else if (HasPrisonJumpsuit(uid)
