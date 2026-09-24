@@ -1196,7 +1196,7 @@ public sealed partial class DropshipSystem : SharedDropshipSystem
         var enumerator = Transform(dropship).ChildEnumerator;
         while (enumerator.MoveNext(out var child))
         {
-            if (!_dockingQuery.HasComp(child) ||
+            if (!_dockingQuery.TryComp(child, out var dock) || !dock.BoltOnFTL ||
                 !_doorBoltQuery.HasComp(child))
             {
                 continue;

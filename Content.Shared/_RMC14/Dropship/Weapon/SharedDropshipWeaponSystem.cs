@@ -1037,6 +1037,8 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
             var paraDrop = EnsureComp<ActiveParaDropComponent>(dropship);
             paraDrop.DropTarget = ent.Comp.Target;
             Dirty(dropship, paraDrop);
+            var changed = new DropshipParadropChangedEvent(true);
+            RaiseLocalEvent(dropship, ref changed);
         }
         else
         {

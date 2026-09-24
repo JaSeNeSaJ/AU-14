@@ -149,3 +149,7 @@ public readonly record struct DropshipBoardingChangedEvent;
 /// <summary>A hijack flight has been accepted and is about to enter its launch sequence.</summary>
 [ByRefEvent]
 public readonly record struct DropshipHijackFlightEvent;
+
+/// <summary>The paradrop targeting system has enabled or disabled the ship's exits.</summary>
+[ByRefEvent]
+public readonly record struct DropshipParadropChangedEvent(bool Enabled);
