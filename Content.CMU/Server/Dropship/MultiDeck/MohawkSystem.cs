@@ -1,6 +1,7 @@
 using System.Numerics;
 using Content.Server.Shuttles.Events;
 using Content.Server._RMC14.Shuttles;
+using Content.Server._RMC14.Dropship;
 using Content.Server.CMU14.ZLevels.Core;
 using Content.Shared.CMU14.Dropship.MultiDeck;
 using Content.Shared.CMU14.ZLevelBuilding;
@@ -37,7 +38,7 @@ public sealed partial class MohawkSystem : EntitySystem
     [Dependency] private SharedAudioSystem _audio = default!;
     [Dependency] private DamageableSystem _damage = default!;
     [Dependency] private SharedDoorSystem _doors = default!;
-    [Dependency] private SharedDropshipSystem _dropships = default!;
+    [Dependency] private DropshipSystem _dropships = default!;
     [Dependency] private EntityLookupSystem _lookup = default!;
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedPopupSystem _popup = default!;
@@ -63,6 +64,7 @@ public sealed partial class MohawkSystem : EntitySystem
         SubscribeLocalEvent<MohawkMechanismsComponent, FTLCompletedEvent>(OnLanded);
         SubscribeLocalEvent<MohawkMechanismsComponent, DropshipDoorControlEvent>(OnDoorControl);
         SubscribeLocalEvent<MohawkMechanismsComponent, DropshipHijackFlightEvent>(OnHijackFlight);
+        SubscribeLocalEvent<MohawkMechanismsComponent, DropshipParadropChangedEvent>(OnParadropChanged);
         InitializeControls();
     }
 
@@ -104,6 +106,27 @@ public sealed partial class MohawkSystem : EntitySystem
     {
         if (args.Location is DoorLocation.None or DoorLocation.Aft)
             SetRampDeployed(ship, args.Locked is { } locked ? !locked : !ship.Comp.RampDeployed);
+    }
+
+    private void OnParadropChanged(Entity<MohawkMechanismsComponent> ship, ref DropshipParadropChangedEvent args)
+    {
+        // The ground ramp lowers onto a separate servicing deck. Use the side
+        // exits for airborne jumps so leaving the cabin reaches the FTL map and
+        // the existing parachute/crash-landing system, not the undercarriage.
+        foreach (var uid in GetShipEntities(ship))
+        {
+            if (!TryComp<DoorComponent>(uid, out var door) ||
+                door.Location is not (DoorLocation.Port or DoorLocation.Starboard) ||
+                !TryComp<DoorBoltComponent>(uid, out var bolts))
+                continue;
+
+            _doors.SetBoltsDown((uid, bolts), false);
+            if (args.Enabled)
+                _doors.StartOpening(uid);
+            else
+                _dropships.LockDoor(uid);
+            _doors.SetBoltsDown((uid, bolts), true);
+        }
     }
 
     private void OnControl(Entity<MohawkControlComponent> control, ref InteractHandEvent args)
@@ -324,6 +347,7 @@ public sealed partial class MohawkSystem : EntitySystem
     {
         var mechanisms = Comp<MohawkMechanismsComponent>(ship);
         var parts = GetShipEntities(ship);
+        var vehicles = CollectRampVehicles(ship, mechanisms, parts, deployedStages);
         var descending = new List<(EntityUid Rider, Vector2 Position)>();
         foreach (var marker in mechanisms.CabinRampMarkers.Keys)
         {
@@ -453,6 +477,7 @@ public sealed partial class MohawkSystem : EntitySystem
                 }
             }
         }
+        MoveRampVehicles(ship, vehicles, deployedStages != 0);
     }
 
     private IEnumerable<Entity<MobStateComponent>> GetRampOccupants(EntityUid segment)

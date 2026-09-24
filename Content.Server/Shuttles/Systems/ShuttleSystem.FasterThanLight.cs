@@ -6,6 +6,7 @@ using Content.Server.Shuttles.Components;
 using Content.Server.Shuttles.Events;
 using Content.Server.Station.Events;
 using Content.Shared._RMC14.Areas;
+using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Water;
 using Content.Shared.Body;
 using Content.Shared.CCVar;
@@ -488,7 +489,16 @@ public sealed partial class ShuttleSystem
         _dropship.RaiseUpdate(entity);
 
         // RMC14
-        var audio = _audio.PlayPvs(_arrivalSound, entity.Owner);
+        // Use the same authored landing cue aboard the dropship and at its LZ.
+        // Preserve the existing five-decibel boost for passengers.
+        var arrivalSound = _arrivalSound;
+        var arrivalParams = arrivalSound.Params;
+        if (TryComp<DropshipComponent>(entity.Owner, out var dropship))
+        {
+            arrivalSound = dropship.ArrivalSound;
+            arrivalParams = arrivalSound.Params.AddVolume(5f);
+        }
+        var audio = _audio.PlayPvs(arrivalSound, entity.Owner, arrivalParams);
         _audio.SetGridAudio(audio);
     }
 

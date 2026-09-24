@@ -1,4 +1,15 @@
 - files:
+  - landing.ogg
+  license: Custom
+  copyright: >-
+    Edited ten-second landing mix. Starts at 6 seconds of "super specific landing"
+    by Vospi (CC0-1.0, https://freesound.org/people/Vospi/sounds/439546/),
+    crossfading into "Creaky Thunderous SciFi SpaceShip Landing" by Kalpesh Ajugia
+    (kalsstockmedia), used under the Pixabay Content License
+    (https://pixabay.com/service/terms/). Downmixed to mono; fades and gain adjusted.
+    See Tools/mohawk/landing_audio.json for the source hashes and edit timings.
+  source: https://pixabay.com/sound-effects/film-special-effects-creaky-thunderous-scifi-spaceship-landing-341621/
+- files:
   - freesoundstock_step_ladder.ogg
   license: CC-BY-SA-3.0
   copyright: CM-SS13 contributors; freesoundstock, mountain852, nightcustard; see

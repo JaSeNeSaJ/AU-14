@@ -8,6 +8,7 @@ using Content.Server.Shuttles.Components;
 using Content.Shared.CMU14.Dropship.MultiDeck;
 using Content.Shared.CMU14.ZLevels.Core.Components;
 using Content.Shared.CMU14.ZLevels.Vehicles;
+using Content.Shared.Doors.Components;
 using Content.Shared._RMC14.Dropship;
 using Content.Shared._RMC14.Dropship.Weapon;
 using Content.Shared._RMC14.Dropship.AttachmentPoint;
@@ -491,6 +492,18 @@ public sealed class MohawkDropshipTest
                 new EntityCoordinates(finalGround, finalCabin.Position + new Vector2(-0.5f, 0.5f)));
             transform.SetWorldRotation(marker, Angle.FromDegrees(180));
             Assert.That(dropships.FlyTo((nav.Owner, nav), marker, null, startupTime: 0.5f, hyperspaceTime: 2f), Is.True);
+        });
+        await pair.RunSeconds(1);
+        await server.WaitAssertion(() =>
+        {
+            var entities = server.EntMan;
+            foreach (var door in entities.EntityQuery<DoorComponent>()
+                         .Where(d => entities.GetComponent<TransformComponent>(d.Owner).GridUid == travellingShip))
+            {
+                Assert.That(entities.GetComponent<DoorBoltComponent>(door.Owner).BoltsDown,
+                    Is.EqualTo(door.Location != DoorLocation.Cockpit),
+                    "Takeoff must secure exterior hatches while leaving cockpit access usable.");
+            }
         });
         await pair.RunSeconds(8);
         await server.WaitAssertion(() =>

@@ -138,6 +138,8 @@ entities:
     - type: Shuttle
     - type: Dropship
       tacticalLandFootprint: 17,24
+      arrivalSound:
+        path: /Audio/CMU14/Dropships/Mohawk/landing.ogg
     - type: MultiDeckDropship
       landingOffset: 1
       exteriorDecks:
