@@ -12,7 +12,7 @@ public sealed partial class CMUReconstructionControl
 {
     [Dependency] private IGameTiming _timing = default!;
     public bool ShowContacts = true;
-    public bool ShowNames = true;
+    public bool ShowNames;
     public CMUReconContact[] TrackedContacts = [];
     public Action<NetEntity>? OnCameraRequested;
     public Action<NetEntity>? OnXenoWatchRequested;
