@@ -33,10 +33,20 @@
   copyright: "Missile firing fl.mp3 by NHMWretched. Selected via Pixabay sound 106655. CMU edits: mono, filtering, level and edge fades at original pitch and duration. Public HQ preview from the original CC0 upload used."
   source: https://freesound.org/people/NHMWretched/sounds/151858/
 
+- files: [vtol-touchdown.wav]
+  license: CC0-1.0
+  copyright: "Jet Turbine Noise by Iwan 'qubodup' Gabovitch, sourced from US Government footage. Layered into the CMU touchdown mix with the sources credited below. Mono excerpts, pitch changes, filtering and fades from the public HQ preview. Rebuild with Tools/fighter/generate-fighter-audio.py."
+  source: https://freesound.org/people/qubodup/sounds/205581/
+
 - files: [vtol-touchdown.wav, countermeasures.ogg]
   license: CC0-1.0
-  copyright: "CMU mix of Jet Turbine Noise and Fire Explosion by Iwan 'qubodup' Gabovitch, and Missile by Jacco18. Mono excerpts, pitch changes, filtering, layering and fades from public HQ previews. Rebuild with Tools/fighter/generate-fighter-audio.py."
-  source: "https://freesound.org/people/qubodup/sounds/205581/ ; https://freesound.org/people/qubodup/sounds/855898/ ; https://freesound.org/people/Jacco18/sounds/428360/"
+  copyright: "Fire Explosion by Iwan 'qubodup' Gabovitch, from EOD Broll package by Seaman Kelly Meyer / AFN Okinawa (18 November 2020). Layered into the CMU mixes with the other credited sources. Mono excerpts, pitch changes, filtering and fades from the public HQ preview. Rebuild with Tools/fighter/generate-fighter-audio.py."
+  source: https://freesound.org/people/qubodup/sounds/855898/
+
+- files: [vtol-touchdown.wav, countermeasures.ogg]
+  license: CC0-1.0
+  copyright: "Missile by Jacco18. Layered into the CMU mixes with the other credited sources. Mono excerpts, pitch changes, filtering and fades from the public HQ preview. Rebuild with Tools/fighter/generate-fighter-audio.py."
+  source: https://freesound.org/people/Jacco18/sounds/428360/
 
 - files: [gau-ground.ogg, gau-cockpit.ogg, gau-impact.ogg]
   license: CC-BY-SA-3.0
@@ -51,4 +61,9 @@
 - files: [airframe-hit.ogg]
   license: CC-BY-SA-3.0
   copyright: "CMU mix of CM13 Blackfoot mechanical (CC-BY-SA-3.0) and Fire Explosion by Iwan 'qubodup' Gabovitch (CC0). Excerpted, filtered, layered and normalized."
-  source: "https://github.com/cmss13-devs/cmss13/tree/040a7c240f53d077c67edc92e2e57a927a477a4a/sound/vehicles/vtol ; https://freesound.org/people/qubodup/sounds/855898/"
+  source: https://github.com/cmss13-devs/cmss13/tree/040a7c240f53d077c67edc92e2e57a927a477a4a/sound/vehicles/vtol
+
+- files: [airframe-hit.ogg]
+  license: CC-BY-SA-3.0
+  copyright: "Fire Explosion by Iwan 'qubodup' Gabovitch (CC0), from EOD Broll package by Seaman Kelly Meyer / AFN Okinawa (18 November 2020). Excerpted, filtered, layered and normalized with CM13 Blackfoot mechanical into the CC-BY-SA-3.0 CMU mix credited above."
+  source: https://freesound.org/people/qubodup/sounds/855898/

@@ -34,7 +34,7 @@ public sealed partial class FighterHardpointComponent : Component
 {
     public const string EquipmentContainer = "fighter-equipment";
     public const string AmmoContainer = "fighter-ammo";
-    [DataField, AutoNetworkedField] public EntityUid Aircraft;
+    [DataField, AutoNetworkedField] public EntityUid? Aircraft;
     [DataField, AutoNetworkedField] public int Index;
     [DataField, AutoNetworkedField] public bool Internal;
     [DataField, AutoNetworkedField] public EntityUid? Equipment;

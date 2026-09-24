@@ -175,8 +175,8 @@ public sealed partial class FighterSystem
         FinishVtolEffects(ground, FighterVtolOutcome.Aborted);
         if (ground.Comp.Aircraft is not { } uid || TerminatingOrDeleted(uid)) return;
         var cockpitMap = Transform(uid).MapUid;
-        var destination = Transform(ground).MapUid != null ? Transform(ground).Coordinates : ground.Comp.LaunchCoordinates;
-        if (!TerminatingOrDeleted(destination.EntityId) && _transform.GetMap(destination) != null)
+        var recovery = Transform(ground).MapUid != null ? Transform(ground).Coordinates : ground.Comp.LaunchCoordinates;
+        if (recovery is { } destination && !TerminatingOrDeleted(destination.EntityId) && _transform.GetMap(destination) != null)
         {
             ground.Comp.SwappingSeat = true;
             if (TryComp(uid, out FighterAircraftComponent? aircraft))
@@ -313,7 +313,7 @@ public sealed partial class FighterSystem
         }
         if (a.GroundState == FighterGroundState.Returning && a.Phase == FighterPhase.Holding && now >= component.EndsAt)
         {
-            if (!GroundSiteClear(hull, component.LaunchCoordinates))
+            if (component.LaunchCoordinates is not { } launchCoordinates || !GroundSiteClear(hull, launchCoordinates))
             { a.RecoveryHandoff = false; component.EndsAt = now + TimeSpan.FromSeconds(2); return; }
             if (!a.RecoveryHandoff)
             {
@@ -322,7 +322,7 @@ public sealed partial class FighterSystem
                 Dirty(aircraft);
                 return;
             }
-            _transform.SetCoordinates(hull, component.LaunchCoordinates);
+            _transform.SetCoordinates(hull, launchCoordinates);
             _transform.SetWorldRotation(hull, component.LaunchRotation);
             MoveFighterCrew(ground, aircraft, true);
             MoveFighterMounts(ground, aircraft, true);
@@ -357,7 +357,7 @@ public sealed partial class FighterSystem
             a.Speed = a.TargetSpeed;
             SetGroundState(ground, aircraft, FighterGroundState.Airborne);
         }
-        else if (GroundSiteClear(hull, component.LaunchCoordinates))
+        else if (component.LaunchCoordinates is { } landingCoordinates && GroundSiteClear(hull, landingCoordinates))
         {
             FinishVtolEffects(ground, FighterVtolOutcome.Touchdown);
             a.Height = a.Speed = 0;

@@ -29,7 +29,7 @@ public sealed partial class FighterGroundComponent : Component
     public TimeSpan EndsAt;
     [DataField(customTypeSerializer: typeof(TimeOffsetSerializer)), AutoNetworkedField, AutoPausedField]
     public TimeSpan TouchdownAt;
-    [DataField] public EntityCoordinates LaunchCoordinates;
+    [DataField] public EntityCoordinates? LaunchCoordinates;
     [DataField] public Angle LaunchRotation;
     [DataField, AutoNetworkedField] public EntityUid? TaxiPad;
     [DataField, AutoNetworkedField] public FighterInput TaxiInput;

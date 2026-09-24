@@ -16,6 +16,12 @@
     slots: [ Back, suitStorage ]
   - type: Wieldable
   - type: Appearance
+  - type: ContainerContainer
+    containers:
+      ballistic-ammo: !type:Container
+        ents: []
+        showEnts: False
+        occludes: True
   - type: BallisticAmmoProvider
     whitelist:
       tags:

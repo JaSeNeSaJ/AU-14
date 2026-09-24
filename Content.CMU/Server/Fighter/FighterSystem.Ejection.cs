@@ -42,10 +42,10 @@ public sealed partial class FighterSystem
                 found = true;
             }
             if (!found && a.GroundEntity is { } hull && TryComp(hull, out FighterGroundComponent? ground) &&
-                _transform.GetMap(ground.LaunchCoordinates) is { } launchMap)
+                ground.LaunchCoordinates is { } launchCoordinates && _transform.GetMap(launchCoordinates) is { } launchMap)
             {
                 map = launchMap;
-                point = _transform.ToMapCoordinates(ground.LaunchCoordinates).Position + new Vector2(3, 0);
+                point = _transform.ToMapCoordinates(launchCoordinates).Position + new Vector2(3, 0);
             }
             else if (!found) return false;
         }
