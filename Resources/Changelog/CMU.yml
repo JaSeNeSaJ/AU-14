@@ -10343,5 +10343,36 @@
   id: 677
   time: '2026-09-24T00:40:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2009
+- author: TheHellFireo
+  changes:
+  - message: Tactical maps now remember your top-down view, selected floor and display
+      settings when reopened.
+    type: Fix
+  - message: Xenos can travel through hive tunnels between floors of the same battlefield.
+    type: Fix
+  - message: Boiler bombard retains its normal range when aimed upstairs, and its
+      gas spreads through open air as well as across floors.
+    type: Fix
+  id: 678
+  time: '2026-09-24T17:01:41.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2012
+- author: TheHellFireo
+  changes:
+  - message: Added two-seat VTOL fighters with custom attack passes, reconnaissance
+      optics, six weapon mounts and sector air combat.
+    type: Add
+  - message: Added reloadable, IFF-aware MANPAD kits to both sides' requisitions,
+      restocking every 15 minutes.
+    type: Add
+  - message: Added separate Party Time combat flyby and parade variants.
+    type: Add
+  - message: Added fighter and MANPAD launch, flight and ground-impact effects with
+      new sounds.
+    type: Tweak
+  - message: Removed Mohawk landing-clearance restrictions.
+    type: Remove
+  id: 679
+  time: '2026-09-24T17:56:50.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2011
 Name: CMU
 Order: -1
