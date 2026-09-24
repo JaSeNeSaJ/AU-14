@@ -513,7 +513,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             !_transformQuery.TryComp(vehicle.Owner, out var xform) ||
             xform.GridUid is not { } gridId ||
             !_mapGridQuery.TryComp(gridId, out var gridComp) ||
-            !_tacticalMapQuery.TryComp(gridId, out var tacticalMap) ||
+            !TryGetTrackingMap(gridId, out var trackingMap) || // CMU14: keep contacts across linked floors.
             !_transform.TryGetGridTilePosition((vehicle.Owner, xform), out var indices, gridComp))
         {
             var maps = EntityQueryEnumerator<TacticalMapComponent>();
@@ -525,10 +525,11 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             return;
         }
 
-        if (_activeTacticalMapTrackedQuery.TryComp(vehicle.Owner, out var active) && active.Map != gridId)
+        var tacticalMap = trackingMap.Comp;
+        if (_activeTacticalMapTrackedQuery.TryComp(vehicle.Owner, out var active) && active.Map != trackingMap.Owner)
         {
             BreakTracking((vehicle.Owner, active));
-            active.Map = gridId;
+            active.Map = trackingMap.Owner;
         }
 
         var status = hasOccupants && totalLive == 0 ? TacticalMapBlipStatus.Defibabble : TacticalMapBlipStatus.Alive;
@@ -1440,7 +1441,7 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
         if (!_transformQuery.TryComp(ent.Owner, out var xform) ||
             xform.GridUid is not { } gridId ||
             !_mapGridQuery.TryComp(gridId, out var gridComp) ||
-            !_tacticalMapQuery.TryComp(gridId, out var tacticalMap) ||
+            !TryGetTrackingMap(gridId, out var trackingMap) || // CMU14: keep contacts across linked floors.
             !_transform.TryGetGridTilePosition((ent.Owner, xform), out var indices, gridComp))
         {
             BreakTracking(ent);
@@ -1456,10 +1457,11 @@ public sealed partial class TacticalMapSystem : SharedTacticalMapSystem
             return;
         }
 
-        if (ent.Comp.Map != xform.GridUid)
+        var tacticalMap = trackingMap.Comp;
+        if (ent.Comp.Map != trackingMap.Owner)
         {
             BreakTracking(ent);
-            ent.Comp.Map = xform.GridUid;
+            ent.Comp.Map = trackingMap.Owner;
         }
 
         var status = TacticalMapBlipStatus.Alive;
