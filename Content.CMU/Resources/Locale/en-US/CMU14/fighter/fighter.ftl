@@ -80,6 +80,9 @@ cmu-fighter-spectating-pilot = SPECTATING PILOT
 cmu-fighter-spectating-wso = SPECTATING WEAPONS OFFICER
 cmu-fighter-spectating-help = Read-only crew view
     Plan route / Targeting · switch display
+cmu-fighter-spectating-exit-help = Read-only crew view
+    Move or Stop observing to leave
+cmu-fighter-stop-observing = Stop observing
 cmu-fighter-lock = Lock
 cmu-fighter-unlock = Unlock
 cmu-fighter-lock-help = Hold the selected ground point. Unlock releases the target without moving the view. WASD pans the unlocked camera; selecting a flare moves the view to it.

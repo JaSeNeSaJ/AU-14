@@ -1,6 +1,7 @@
 using Content.Client.UserInterface.Controls;
 using Content.Shared.Buckle.Components;
 using Content.Shared.CMU14.Fighter;
+using Content.Shared.Ghost.Components;
 using Content.Shared.Movement.Systems;
 using Robust.Client.GameObjects;
 using Robust.Client.Graphics;
@@ -99,7 +100,8 @@ public sealed partial class FighterClientSystem : EntitySystem
                 (height, speed) => SendCrewEvent(new FighterSettingsEvent(height, speed)),
                 slot => SendCrewEvent(new FighterSelectWeaponEvent(slot)),
                 flare => SendCrewEvent(new FighterSelectTargetEvent(flare)),
-                sector => SendCrewEvent(new FighterCoverSectorEvent(sector)), spectating);
+                sector => SendCrewEvent(new FighterCoverSectorEvent(sector)), spectating,
+                _player.LocalEntity is { } viewer && HasComp<GhostComponent>(viewer) ? StopObserving : null);
             parent.AddChild(_display);
         }
         // The cockpit belongs inside the game view. WindowRoot also contains
@@ -146,6 +148,12 @@ public sealed partial class FighterClientSystem : EntitySystem
     private void SendCrewEvent(EntityEventArgs ev)
     {
         if (!_spectating && TryGetSeat(out _)) RaiseNetworkEvent(ev);
+    }
+
+    private void StopObserving()
+    {
+        if (_spectating)
+            RaiseNetworkEvent(new FighterStopSpectatingEvent());
     }
 
     private void Hide()

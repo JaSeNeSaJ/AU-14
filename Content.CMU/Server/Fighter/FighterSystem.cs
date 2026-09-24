@@ -50,6 +50,7 @@ public sealed partial class FighterSystem : EntitySystem
         InitializeWeapons();
         InitializeIFF();
         InitializeGround();
+        InitializeSpectators();
         UpdatesBefore.Add(typeof(Content.Shared.Vehicle.GridVehicleMoverSystem));
         SubscribeLocalEvent<FighterManpadComponent, ComponentShutdown>(OnManpadShutdown);
         SubscribeLocalEvent<FighterManpadComponent, FighterManpadAimStoppedEvent>(OnManpadAimStopped);

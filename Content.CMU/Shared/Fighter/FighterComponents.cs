@@ -150,6 +150,9 @@ public sealed class FighterCommandEvent(FighterCommand command) : EntityEventArg
 }
 
 [Serializable, NetSerializable]
+public sealed class FighterStopSpectatingEvent : EntityEventArgs;
+
+[Serializable, NetSerializable]
 public sealed class FighterPlanEvent(Vector2 entry, Vector2 exit) : EntityEventArgs
 {
     public Vector2 Entry = entry;

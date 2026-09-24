@@ -1,7 +1,12 @@
 using System.Linq;
+using System.Numerics;
 using Content.Shared.CMU14.Fighter;
+using Content.Shared.Follower;
+using Content.Shared.Follower.Components;
 using Content.Shared.GameTicking;
+using Content.Shared.Ghost.Components;
 using Robust.Server.Player;
+using Robust.Shared.Map;
 using Robust.Shared.Player;
 
 namespace Content.Server.CMU14.Fighter;
@@ -9,6 +14,7 @@ namespace Content.Server.CMU14.Fighter;
 public sealed partial class FighterSystem
 {
     [Dependency] private FighterViewSystem _fighterView = default!;
+    [Dependency] private FollowerSystem _spectatorFollowers = default!;
     [Dependency] private IPlayerManager _spectatorPlayers = default!;
     private readonly Dictionary<ICommonSession, SpectatorViews> _spectatorViews = [];
     private readonly HashSet<ICommonSession> _activeSpectators = [];
@@ -17,6 +23,40 @@ public sealed partial class FighterSystem
     private readonly record struct SpectatorViews(EntityUid Aircraft, EntityUid Camera, EntityUid Exterior)
     {
         public bool Contains(EntityUid uid) => Aircraft == uid || Camera == uid || Exterior == uid;
+    }
+
+    private void InitializeSpectators()
+    {
+        SubscribeNetworkEvent<FighterStopSpectatingEvent>(OnStopSpectating);
+        SubscribeLocalEvent<GhostComponent, StoppedFollowingEntityEvent>(OnGhostStoppedFollowing);
+    }
+
+    private void OnStopSpectating(FighterStopSpectatingEvent ev, EntitySessionEventArgs args)
+    {
+        if (args.SenderSession.AttachedEntity is not { } user || !HasComp<GhostComponent>(user) ||
+            !_fighterView.TryGetView(user, out _, out var spectator) || !spectator ||
+            !TryComp(user, out FollowerComponent? follower)) return;
+
+        _spectatorFollowers.StopFollowingEntity(user, follower.Following);
+    }
+
+    private void OnGhostStoppedFollowing(Entity<GhostComponent> ghost, ref StoppedFollowingEntityEvent args)
+    {
+        // Switching follow targets retains the component. Leave that transfer
+        // alone; only an actual stop should close subscriptions and return us.
+        if (TerminatingOrDeleted(ghost) || HasComp<FollowerComponent>(ghost)) return;
+        if (TryComp(ghost, out ActorComponent? actor))
+            RemoveSpectatorViews(actor.PlayerSession);
+
+        // The airborne cockpit is a separate map with no way to walk back to
+        // the colony. Ground observers already occupy the real map and stay put.
+        if (!TryComp(Transform(ghost).GridUid, out FighterAircraftComponent? aircraft) ||
+            TerminatingOrDeleted(aircraft.TerrainMap)) return;
+
+        var position = aircraft.Phase == FighterPhase.Holding ? aircraft.Home :
+            Vector2.Clamp(aircraft.Position, aircraft.Battlefield.BottomLeft, aircraft.Battlefield.TopRight);
+        _transform.SetCoordinates(ghost, new EntityCoordinates(aircraft.TerrainMap, position));
+        _transform.AttachToGridOrMap(ghost);
     }
 
     private void OnFighterRoundCleanup(RoundRestartCleanupEvent ev)

@@ -40,10 +40,13 @@ public sealed partial class FighterCockpitControl : LayoutContainer
     public bool CameraControl => _airspace && _targeting;
 
     public FighterCockpitControl(Action<FighterCommand> send, Action<Vector2, Vector2> plan, Action<float, float> settings,
-        Action<int> selectWeapon, Action<NetEntity> selectTarget, Action<int> selectSector, bool spectating = false)
+        Action<int> selectWeapon, Action<NetEntity> selectTarget, Action<int> selectSector, bool spectating = false,
+        Action? stopObserving = null)
     {
         RobustXamlLoader.Load(this);
         _spectating = spectating;
+        StopObserving.Visible = spectating && stopObserving != null;
+        StopObserving.OnPressed += _ => stopObserving?.Invoke();
         _settings = settings;
         _selectTarget = selectTarget;
         Ground.ViewportSize = Exterior.ViewportSize = new Vector2i(960, 540);
@@ -341,7 +344,8 @@ public sealed partial class FighterCockpitControl : LayoutContainer
         {
             FlightSettings.Visible = MissionActions.Visible = Swap.Visible = EjectPanel.Visible = false;
             RunAssist.Visible = FireControls.Visible = IncomingFlares.Visible = false;
-            FlightHelp.Text = Loc.GetString("cmu-fighter-spectating-help");
+            FlightHelp.Text = Loc.GetString(StopObserving.Visible
+                ? "cmu-fighter-spectating-exit-help" : "cmu-fighter-spectating-help");
             RouteStatus.Text = Loc.GetString("cmu-fighter-spectating-help");
             DisableCrewControls(this);
         }
@@ -349,8 +353,9 @@ public sealed partial class FighterCockpitControl : LayoutContainer
 
     private void DisableCrewControls(Control control)
     {
-        // Tabs and the coverage chart only change the spectator's own view.
-        if (control is BaseButton button && button != FlightTab && button != TargetingTab && button != AirCover)
+        // Spectators can change their own display and stop following the crew.
+        if (control is BaseButton button && button != FlightTab && button != TargetingTab && button != AirCover &&
+            button != StopObserving)
             button.Disabled = true;
         foreach (var child in control.Children) DisableCrewControls(child);
     }

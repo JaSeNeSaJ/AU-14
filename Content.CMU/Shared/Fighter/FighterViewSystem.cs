@@ -1,5 +1,6 @@
 using Content.Shared.Buckle.Components;
 using Content.Shared.Follower.Components;
+using Content.Shared.Ghost.Components;
 
 namespace Content.Shared.CMU14.Fighter;
 
@@ -17,7 +18,12 @@ public sealed class FighterViewSystem : EntitySystem
             return true;
         }
 
-        // Following nests through players, seats and hulls; walking observers can
+        // Stopping follow leaves a ghost on the cockpit grid until the server
+        // returns it to the battlefield. That location must not reopen the view.
+        if (HasComp<GhostComponent>(user) && !HasComp<FollowerComponent>(user))
+            return false;
+
+        // Following nests through players, seats and hulls. Other passengers can
         // also see the presentation while physically inside the cockpit grid.
         var current = user;
         for (var depth = 0; depth < 16 && !TerminatingOrDeleted(current); depth++)
