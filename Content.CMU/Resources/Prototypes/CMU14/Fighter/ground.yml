@@ -31,7 +31,6 @@
     rotationAccelerationDegrees: 90
     rotationDecelerationDegrees: 120
     canSmashWalls: false
-    useCompositeFootprint: true
   - type: CMUZPhysics
   - type: CMUVehicleZTraversal
   - type: CMUZLevelViewer
