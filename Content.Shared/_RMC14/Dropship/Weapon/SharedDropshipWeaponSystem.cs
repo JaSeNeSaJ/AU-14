@@ -1822,6 +1822,9 @@ public abstract partial class SharedDropshipWeaponSystem : EntitySystem
                 var landing = flight.Target.Offset(spread);
 
                 var targetMap = _transform.ToMapCoordinates(landing.SnapToGrid(EntityManager));
+        // CMU14: publish the actual dispersed payload impact for fighter effects.
+        var impact = new DropshipWeaponImpactEvent(targetMap);
+        RaiseLocalEvent(uid, ref impact);
 
                 foreach (var effect in flight.ImpactEffects)
                 {
@@ -2621,3 +2624,8 @@ public record struct DropshipWeaponShotEvent(
     RMCFire? Fire,
     int SoundEveryShots
 );
+
+// CMU14 event
+/// <summary>Raised at an actual dropship payload impact for world presentation.</summary>
+[ByRefEvent]
+public record struct DropshipWeaponImpactEvent(MapCoordinates Coordinates);

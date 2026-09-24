@@ -84,7 +84,7 @@ public sealed class MohawkDropshipTest
     }
 
     [Test]
-    public async Task AdjacentOmahaAndMidwayPadsMayTouchWithoutOverlapping()
+    public async Task MohawkPadsAlignWithoutRejectingOverlappingReservations()
     {
         await using var pair = await PoolManager.GetServerClient(new PoolSettings { Dirty = true });
         await pair.Server.WaitAssertion(() =>
@@ -106,8 +106,8 @@ public sealed class MohawkDropshipTest
                 "An ordinary ship must keep its existing landing coordinates.");
             Assert.That(assembly.IsLandingClear(midway!.Value.Owner, new EntityCoordinates(ground, 7f, 15f), Angle.Zero), Is.True,
                 "The two USS Bush pads are 16 tiles apart; the cabin envelopes meet at their edges.");
-            Assert.That(assembly.IsLandingClear(midway.Value.Owner, new EntityCoordinates(ground, 6.9f, 15f), Angle.Zero), Is.False,
-                "Moving inside the other ship's reserved envelope must still fail.");
+            Assert.That(assembly.IsLandingClear(midway.Value.Owner, new EntityCoordinates(ground, 6.9f, 15f), Angle.Zero), Is.True,
+                "Mohawks no longer reject sites inside another ship's reserved envelope.");
             entities.DeleteEntity(omaha.Value.Owner);
             entities.DeleteEntity(midway.Value.Owner);
         });
@@ -440,14 +440,14 @@ public sealed class MohawkDropshipTest
                 "A wall must not reject a Mohawk landing.");
             entities.DeleteEntity(cabinObstruction);
             Assert.That(multiDeck.IsLandingClear(ship, groundTarget, Angle.FromDegrees(90)), Is.True);
-            // A ship still in transit must reserve its destination volume too.
+            // Mohawks also bypass reservations from ships still in transit.
             var transitMap = maps.CreateMap(out var transitId);
             var inbound = maps.CreateGridEntity(transitId);
             maps.SetTile(inbound, inbound.Comp, Vector2i.Zero, roofTile.Tile);
             var reservation = entities.SpawnEntity(null, groundTarget);
             entities.AddComponent<DropshipDestinationComponent>(reservation);
             dropships.SetDestinationShip(reservation, inbound.Owner);
-            Assert.That(multiDeck.IsLandingClear(ship, groundTarget, Angle.FromDegrees(90)), Is.False);
+            Assert.That(multiDeck.IsLandingClear(ship, groundTarget, Angle.FromDegrees(90)), Is.True);
             entities.DeleteEntity(reservation);
             entities.DeleteEntity(transitMap);
             transform.SetCoordinates((ship, entities.GetComponent<TransformComponent>(ship), entities.GetComponent<MetaDataComponent>(ship)), target, rotation: Angle.FromDegrees(90));
