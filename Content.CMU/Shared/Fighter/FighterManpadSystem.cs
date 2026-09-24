@@ -65,7 +65,7 @@ public sealed partial class FighterManpadSystem : EntitySystem
         }
 
         var faction = _iff.GetOperatorFaction(args.Performer);
-        if (faction == null)
+        if (faction == null && !ent.Comp.IgnoreIFF)
         {
             _popup.PopupEntity(Loc.GetString("cmu-manpad-iff-unknown"), args.Performer, args.Performer);
             return;
@@ -74,7 +74,7 @@ public sealed partial class FighterManpadSystem : EntitySystem
         ent.Comp.AimingUser = args.Performer;
         _actions.SetToggled(ent.Comp.AimAction, true);
         Dirty(ent);
-        _popup.PopupEntity(Loc.GetString("cmu-manpad-aiming"), args.Performer, args.Performer);
+        _popup.PopupEntity(Loc.GetString(ent.Comp.IgnoreIFF ? "cmu-manpad-aiming-all" : "cmu-manpad-aiming"), args.Performer, args.Performer);
     }
 
     public bool CanAim(Entity<FighterManpadComponent> ent, EntityUid user)
@@ -88,7 +88,7 @@ public sealed partial class FighterManpadSystem : EntitySystem
 
     public bool IsAiming(Entity<FighterManpadComponent> ent) =>
         ent.Comp.AimingUser is { } user && CanAim(ent, user) && HasAmmo(ent) &&
-        FighterIFFSystem.Same(ent.Comp.Faction, _iff.GetOperatorFaction(user));
+        (ent.Comp.IgnoreIFF || FighterIFFSystem.Same(ent.Comp.Faction, _iff.GetOperatorFaction(user)));
 
     public bool HasAmmo(EntityUid launcher)
     {
@@ -115,6 +115,8 @@ public sealed partial class FighterManpadSystem : EntitySystem
 
     private void OnExamined(Entity<FighterManpadComponent> ent, ref ExaminedEvent args)
     {
+        if (ent.Comp.IgnoreIFF)
+            args.PushMarkup(Loc.GetString("cmu-manpad-examine-no-iff"));
         args.PushMarkup(Loc.GetString(ent.Comp.AimingUser == null ? "cmu-manpad-examine-safe" : "cmu-manpad-examine-aimed"));
     }
 }

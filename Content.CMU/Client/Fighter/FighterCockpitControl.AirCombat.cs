@@ -37,6 +37,7 @@ public sealed partial class FighterCockpitControl
         {
             var status = aircraft.ForcedRetreat ? Loc.GetString("cmu-fighter-fire-retreat")
                 : string.IsNullOrWhiteSpace(weapons?.Faction) ? Loc.GetString("cmu-fighter-cover-no-faction")
+                : !FighterFlight.InAttackRun(aircraft) ? Loc.GetString("cmu-fighter-fire-outsideao")
                 : now < combat.CoverageReadyAt ? Loc.GetString("cmu-fighter-cover-arming", ("seconds", Seconds(combat.CoverageReadyAt - now)))
                 : now < combat.InterceptReadyAt ? Loc.GetString("cmu-fighter-cover-reloading", ("seconds", Seconds(combat.InterceptReadyAt - now)))
                 : Loc.GetString("cmu-fighter-cover-ready");
@@ -47,7 +48,8 @@ public sealed partial class FighterCockpitControl
         IncomingFlares.Text = Loc.GetString(combat.FlaresUsed ? "cmu-fighter-flares-used" : seat.Pilot ? "cmu-fighter-flares" : "cmu-fighter-flares-pilot");
         if (combat.Incoming)
         {
-            IncomingTitle.Text = Loc.GetString(combat.IncomingFromGround ? "cmu-fighter-ground-incoming" : "cmu-fighter-air-incoming");
+            IncomingTitle.Text = Loc.GetString(combat.IncomingPlasma ? "cmu-fighter-plasma-incoming"
+                : combat.IncomingFromGround ? "cmu-fighter-ground-incoming" : "cmu-fighter-air-incoming");
             IncomingStatus.Text = Loc.GetString("cmu-fighter-air-countdown",
                 ("seconds", Math.Max(0, (combat.IncomingAt - now).TotalSeconds).ToString("0.0")));
         }

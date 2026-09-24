@@ -34,14 +34,16 @@ public sealed partial class FighterCockpitControl : LayoutContainer
     private readonly List<FighterCockpitButton> _weapons = [];
     private readonly Dictionary<NetEntity, FighterCockpitButton> _targets = [];
     private readonly Action<NetEntity> _selectTarget;
+    private readonly bool _spectating;
 
     public ScalingViewport SensorViewport => Ground;
     public bool CameraControl => _airspace && _targeting;
 
     public FighterCockpitControl(Action<FighterCommand> send, Action<Vector2, Vector2> plan, Action<float, float> settings,
-        Action<int> selectWeapon, Action<NetEntity> selectTarget, Action<int> selectSector)
+        Action<int> selectWeapon, Action<NetEntity> selectTarget, Action<int> selectSector, bool spectating = false)
     {
         RobustXamlLoader.Load(this);
+        _spectating = spectating;
         _settings = settings;
         _selectTarget = selectTarget;
         Ground.ViewportSize = Exterior.ViewportSize = new Vector2i(960, 540);
@@ -52,7 +54,7 @@ public sealed partial class FighterCockpitControl : LayoutContainer
         _sight = new FighterSightControl(Ground);
         Scene.AddChild(_sight);
         ExteriorScene.AddChild(_exteriorClouds);
-        _chart = new FighterRouteControl();
+        _chart = new FighterRouteControl { ReadOnly = spectating };
         ChartHost.AddChild(_chart);
         SetAnchorAndMarginPreset(_chart, LayoutPreset.Wide);
         SetAnchorAndMarginPreset(_clouds, LayoutPreset.Wide);
@@ -152,9 +154,9 @@ public sealed partial class FighterCockpitControl : LayoutContainer
         TargetingTab.ToolTip = Loc.GetString(_airspace ? "cmu-fighter-shared-sight" : "cmu-fighter-targeting-ground");
         Scene.Visible = CameraControl;
         ExteriorScene.Visible = _airspace;
-        RouteEditing.Visible = !_chart.CoverageMode && _pilotRole == true;
-        Launch.Visible = !_chart.CoverageMode && _pilotRole == true;
-        CoverageHelp.Visible = _chart.CoverageMode;
+        RouteEditing.Visible = !_spectating && !_chart.CoverageMode && _pilotRole == true;
+        Launch.Visible = !_spectating && !_chart.CoverageMode && _pilotRole == true;
+        CoverageHelp.Visible = !_spectating && _chart.CoverageMode;
         RouteTitle.Text = Loc.GetString(_chart.CoverageMode ? "cmu-fighter-cover-title" : "cmu-fighter-airspace");
         InvalidateMeasure();
     }
@@ -225,9 +227,11 @@ public sealed partial class FighterCockpitControl : LayoutContainer
             _pilotRole = seat.Pilot;
             _airspace = inAirspace;
             _nextReadouts = TimeSpan.Zero;
-            RoleTitle.Text = Loc.GetString(seat.Pilot ? "cmu-fighter-pilot-controls" : "cmu-fighter-observer-controls");
+            RoleTitle.Text = Loc.GetString(_spectating
+                ? seat.Pilot ? "cmu-fighter-spectating-pilot" : "cmu-fighter-spectating-wso"
+                : seat.Pilot ? "cmu-fighter-pilot-controls" : "cmu-fighter-observer-controls");
             _chart.CoverageMode = false;
-            ShowOptics(!seat.Pilot && _airspace);
+            ShowOptics((_spectating || !seat.Pilot) && _airspace);
         }
         FillViewport(Ground);
         FillViewport(Exterior);
@@ -256,7 +260,7 @@ public sealed partial class FighterCockpitControl : LayoutContainer
         Exterior.Visible = _airspace && outsideAvailable;
         _clouds.SetFlight(aircraft, point, available);
         _exteriorClouds.SetFlight(aircraft, outsidePoint, outsideAvailable);
-        _chart.SetFlight(aircraft, chart, seat.Pilot);
+        _chart.SetFlight(aircraft, chart, seat.Pilot && !_spectating);
         _chart.SetWeapons(weapons, seat, combat, now);
         _chart.SetEffects(effects);
         Ship.Visible = Effects.Visible = _airspace;
@@ -333,6 +337,22 @@ public sealed partial class FighterCockpitControl : LayoutContainer
             : seat.Pilot ? "cmu-fighter-console-flight-help" : "cmu-fighter-officer-route-hint");
         UpdateAirCombat(aircraft, weapons, seat, combat, now);
         UpdatePresets(aircraft, seat.Pilot);
+        if (_spectating)
+        {
+            FlightSettings.Visible = MissionActions.Visible = Swap.Visible = EjectPanel.Visible = false;
+            RunAssist.Visible = FireControls.Visible = IncomingFlares.Visible = false;
+            FlightHelp.Text = Loc.GetString("cmu-fighter-spectating-help");
+            RouteStatus.Text = Loc.GetString("cmu-fighter-spectating-help");
+            DisableCrewControls(this);
+        }
+    }
+
+    private void DisableCrewControls(Control control)
+    {
+        // Tabs and the coverage chart only change the spectator's own view.
+        if (control is BaseButton button && button != FlightTab && button != TargetingTab && button != AirCover)
+            button.Disabled = true;
+        foreach (var child in control.Children) DisableCrewControls(child);
     }
 
     private void UpdateWeapons(FighterAircraftComponent aircraft, FighterWeaponsComponent? weapons, FighterSeatComponent seat, TimeSpan now)

@@ -57,6 +57,7 @@ public sealed partial class MohawkSystem : EntitySystem
     public override void Initialize()
     {
         SubscribeLocalEvent<MohawkControlComponent, InteractHandEvent>(OnControl);
+        SubscribeLocalEvent<MohawkMechanismsComponent, MapInitEvent>(OnRadioInit);
         SubscribeLocalEvent<MohawkRampSegmentComponent, MapInitEvent>(OnRampMarkerInit);
         SubscribeLocalEvent<MohawkRampEdgingComponent, MapInitEvent>(OnRampEdgingInit);
         SubscribeLocalEvent<MohawkMechanismsComponent, ComponentShutdown>(OnShutdown);
@@ -66,6 +67,12 @@ public sealed partial class MohawkSystem : EntitySystem
         SubscribeLocalEvent<MohawkMechanismsComponent, DropshipHijackFlightEvent>(OnHijackFlight);
         SubscribeLocalEvent<MohawkMechanismsComponent, DropshipParadropChangedEvent>(OnParadropChanged);
         InitializeControls();
+    }
+
+    private void OnRadioInit(Entity<MohawkMechanismsComponent> ship, ref MapInitEvent args)
+    {
+        if (ship.Comp.Radio == null || TerminatingOrDeleted(ship.Comp.Radio.Value))
+            ship.Comp.Radio = SpawnAttachedTo("AU14VehicleRadioSet", new EntityCoordinates(ship, new Vector2(.5f, .5f)));
     }
 
     private void OnRampMarkerInit(Entity<MohawkRampSegmentComponent> marker, ref MapInitEvent args)

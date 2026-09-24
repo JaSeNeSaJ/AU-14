@@ -65,12 +65,16 @@ public sealed partial class MohawkSystem
             !assembly.Decks.TryGetValue(-1, out var lower))
             return;
 
-        var offset = Comp<MohawkMechanismsComponent>(ship).LoweredRampOffset;
+        var mechanisms = Comp<MohawkMechanismsComponent>(ship);
+        var offset = mechanisms.LoweredRampOffset;
         foreach (var (vehicle, (position, rotation)) in riders)
         {
             var target = descending ? lower : ship;
-            _transform.SetCoordinates(vehicle, new EntityCoordinates(target, position + (descending ? offset : -offset)));
+            var displacement = descending ? offset + mechanisms.VehicleUnloadOffset : -offset;
+            _transform.SetCoordinates(vehicle, new EntityCoordinates(target, position + displacement));
             _transform.SetWorldRotation(vehicle, rotation);
+            if (descending)
+                _transform.AttachToGridOrMap(vehicle);
             if (TryComp<CMUZPhysicsComponent>(vehicle, out var physics))
             {
                 _zLevels.SetZLocalPosition((vehicle, physics), 0f);

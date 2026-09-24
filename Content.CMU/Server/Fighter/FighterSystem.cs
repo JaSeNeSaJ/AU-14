@@ -1,4 +1,5 @@
 using System.Numerics;
+using Content.Shared._RMC14.Pulling;
 using Content.Server.Atmos.EntitySystems;
 using Content.Server.CMU14.ZLevels.Core;
 using Content.Shared.Atmos;
@@ -7,6 +8,7 @@ using Content.Shared.Buckle;
 using Content.Shared.Buckle.Components;
 using Content.Shared.CMU14.Fighter;
 using Content.Shared.CMU14.ZLevels.Core.Components;
+using Content.Shared.GameTicking;
 using Content.Shared.Popups;
 using Content.Shared.Parallax;
 using Robust.Server.GameObjects;
@@ -22,6 +24,7 @@ public sealed partial class FighterSystem : EntitySystem
     [Dependency] private SharedMapSystem _map = default!;
     [Dependency] private SharedTransformSystem _transform = default!;
     [Dependency] private SharedBuckleSystem _buckle = default!;
+    [Dependency] private RMCPullingSystem _crewPulling = default!;
     [Dependency] private ViewSubscriberSystem _views = default!;
     [Dependency] private SharedEyeSystem _eye = default!;
     [Dependency] private CMUZLevelsSystem _zLevels = default!;
@@ -38,7 +41,7 @@ public sealed partial class FighterSystem : EntitySystem
         SubscribeLocalEvent<FighterSeatComponent, ComponentShutdown>(OnSeatShutdown);
         SubscribeLocalEvent<PlayerAttachedEvent>(OnPlayerAttached);
         SubscribeLocalEvent<PlayerDetachedEvent>(OnPlayerDetached);
-        SubscribeNetworkEvent<FighterInputEvent>(OnInput);
+        SubscribeLocalEvent<RoundRestartCleanupEvent>(OnFighterRoundCleanup);
         SubscribeNetworkEvent<FighterCommandEvent>(OnCommand);
         SubscribeNetworkEvent<FighterPlanEvent>(OnPlan);
         SubscribeNetworkEvent<FighterSettingsEvent>(OnSettings);
@@ -50,6 +53,7 @@ public sealed partial class FighterSystem : EntitySystem
         UpdatesBefore.Add(typeof(Content.Shared.Vehicle.GridVehicleMoverSystem));
         SubscribeLocalEvent<FighterManpadComponent, ComponentShutdown>(OnManpadShutdown);
         SubscribeLocalEvent<FighterManpadComponent, FighterManpadAimStoppedEvent>(OnManpadAimStopped);
+        SubscribeLocalEvent<FighterBoilerAirDefenseComponent, FighterBoilerAirDefenseStoppedEvent>(OnBoilerStopped);
         SubscribeLocalEvent<FighterAircraftComponent, ComponentShutdown>(OnAircraftShutdown);
     }
 
@@ -85,6 +89,7 @@ public sealed partial class FighterSystem : EntitySystem
         var forward = new Angle(Math.PI);
         aircraft.Hull = SpawnAttachedTo("CMUFighterHull", new EntityCoordinates(grid, new Vector2(.5f, 0)), rotation: forward);
         aircraft.Canopy = SpawnAttachedTo("CMUFighterCanopy", new EntityCoordinates(grid, new Vector2(.5f, 0)), rotation: forward);
+        SpawnAttachedTo("AU14VehicleRadioSet", new EntityCoordinates(grid, new Vector2(1.5f, 3.5f)));
         // Scale the narrow canopy and its seats together to fit ordinary crew,
         // without changing the players' own sprite scale.
         aircraft.FrontSeat = SpawnAttachedTo("CMUFighterPilotSeat", new EntityCoordinates(grid, new Vector2(.5f, 4.2f)), rotation: forward);
@@ -111,6 +116,7 @@ public sealed partial class FighterSystem : EntitySystem
             return false;
         var original = Transform(player).Coordinates;
         var rotation = Transform(player).LocalRotation;
+        _crewPulling.TryStopAllPullsFromAndOn(player);
         _transform.SetCoordinates(player, Transform(seat).Coordinates);
         if (!_buckle.TryBuckle(player, player, seat, popup: false))
         {
@@ -176,6 +182,7 @@ public sealed partial class FighterSystem : EntitySystem
 
     private void OnPlayerDetached(PlayerDetachedEvent ev)
     {
+        RemoveSpectatorViews(ev.Player);
         if (!TryGetSeat(ev.Entity, out var seat, out _))
             return;
         seat.Comp.Input = FighterInput.None;
@@ -239,21 +246,6 @@ public sealed partial class FighterSystem : EntitySystem
         seat = (seatUid, component);
         aircraft = (aircraftUid, flight);
         return true;
-    }
-
-    private void OnInput(FighterInputEvent ev, EntitySessionEventArgs args)
-    {
-        if (!TryGetSeat(args.SenderSession.AttachedEntity, out var seat, out var aircraft))
-            return;
-        seat.Comp.Input = ev.Input & (FighterInput.Forward | FighterInput.Back | FighterInput.Left | FighterInput.Right);
-        seat.Comp.LastInput = _timing.CurTime;
-        seat.Comp.CameraControl = ev.CameraControl && FighterFlight.InAirspace(aircraft.Comp);
-        if (seat.Comp.Pilot && aircraft.Comp.GroundEntity is { } ground && TryComp(ground, out FighterGroundComponent? taxi))
-        {
-            taxi.TaxiInput = taxi.State == FighterGroundState.Grounded ? seat.Comp.Input : FighterInput.None;
-            Dirty(ground, taxi);
-        }
-        Dirty(seat);
     }
 
     private void OnCommand(FighterCommandEvent ev, EntitySessionEventArgs args)
@@ -422,11 +414,15 @@ public sealed partial class FighterSystem : EntitySystem
                         aircraft.Mark = null;
                 }
             }
-            // Move the exterior eyes with every simulation update so normal entity
-            // interpolation can carry the terrain smoothly between snapshots.
+            // Move both camera transforms every simulation tick. Sending sensor
+            // movement at the slower UI refresh rate made panning stop and jump
+            // between updates, instead of using normal transform interpolation.
             foreach (var seatUid in new[] { aircraft.FrontSeat, aircraft.RearSeat })
                 if (seatUid is { } seat && TryComp(seat, out FighterSeatComponent? component))
+                {
+                    UpdateCamera((seat, component), aircraft);
                     UpdateExteriorCamera(component, aircraft);
+                }
             aircraft.NetworkAccumulator += frameTime;
             if (aircraft.NetworkAccumulator < .1f)
                 continue;
@@ -443,12 +439,13 @@ public sealed partial class FighterSystem : EntitySystem
                         UpdateLaser((seat, component), (uid, aircraft), weapons);
                         UpdateQueuedFire((seat, component), (uid, aircraft), weapons);
                     }
-                    UpdateCamera((seat, component), aircraft);
+                    Dirty(seat, component);
                 }
             }
             Dirty(uid, aircraft);
         }
         UpdateAirCombat();
+        UpdateFighterSpectators();
     }
 
     private FighterInput ActiveInput(FighterSeatComponent seat) =>
@@ -470,7 +467,6 @@ public sealed partial class FighterSystem : EntitySystem
                 _eye.SetZoom(view, new Vector2(1.4f));
                 _eye.SetPvsScale(view, 3);
             }
-            Dirty(seat);
             return;
         }
         // Each operator can investigate independently. Out-of-range locks keep their
@@ -488,7 +484,6 @@ public sealed partial class FighterSystem : EntitySystem
         var zoom = (1.2f + aircraft.Height / 1000f) * (zoomed ? .5f : 1f);
         _eye.SetZoom(camera, new Vector2(zoom));
         _eye.SetPvsScale(camera, zoom + .5f);
-        Dirty(seat);
     }
 
     private void UpdateExteriorCamera(FighterSeatComponent seat, FighterAircraftComponent aircraft)

@@ -45,6 +45,10 @@ public sealed class MohawkRampVehicleTest
         });
         for (var cycle = 0; cycle < 3; cycle++)
         {
+            // Unloading deliberately clears the ramp. Drive back onto it before
+            // the next loading cycle instead of treating the landing site as a lift.
+            await pair.Server.WaitAssertion(() => pair.Server.EntMan.System<SharedTransformSystem>()
+                .SetCoordinates(vehicle, new EntityCoordinates(lowerMap, 0.5f, -4.5f)));
             await pair.Server.WaitAssertion(() => Assert.That(pair.Server.EntMan.System<MohawkSystem>()
                 .SetRampDeployed(ship, false), Is.True));
             await pair.RunSeconds(6);
@@ -107,11 +111,14 @@ public sealed class MohawkRampVehicleTest
             // the vehicle's origin is well outside every platform tile.
             var position = new Vector2(0.5f, -6f - footprint.Top + 0.02f);
             var world = transform.ToMapCoordinates(new EntityCoordinates(lower, position)).Position;
+            var unloadOffset = entities.GetComponent<MohawkMechanismsComponent>(ship).VehicleUnloadOffset;
+            var unloadedWorld = transform.ToMapCoordinates(new EntityCoordinates(lower, position + unloadOffset)).Position;
             transform.SetCoordinates(vehicle, new EntityCoordinates(lowerMap, world));
             transform.SetWorldRotation(vehicle, rotation);
 
             for (var cycle = 0; cycle < 3; cycle++)
             {
+                transform.SetCoordinates(vehicle, new EntityCoordinates(lowerMap, world));
                 Assert.That(mechanisms.SetRampDeployed(ship, false, true), Is.True);
                 Assert.That(entities.GetComponent<TransformComponent>(vehicle).GridUid, Is.EqualTo(ship));
                 Assert.That(Vector2.Distance(transform.GetWorldPosition(vehicle),
@@ -122,8 +129,8 @@ public sealed class MohawkRampVehicleTest
 
                 Assert.That(mechanisms.SetRampDeployed(ship, true, true), Is.True);
                 Assert.That(entities.GetComponent<TransformComponent>(vehicle).MapUid, Is.EqualTo(lowerMap));
-                Assert.That(Vector2.Distance(transform.GetWorldPosition(vehicle), world), Is.LessThan(0.001f),
-                    "A footprint spanning several tiles must move once per lift, with no accumulated offset.");
+                Assert.That(Vector2.Distance(transform.GetWorldPosition(vehicle), unloadedWorld), Is.LessThan(0.001f),
+                    "A footprint spanning several tiles must move once per lift and unload clear of the ramp.");
             }
 
             // A nearby vehicle with a clear gap must not be collected.

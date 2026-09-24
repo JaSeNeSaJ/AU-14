@@ -27,16 +27,21 @@ public sealed partial class FighterClientSystem
         if (_trialStep == 1 && elapsed >= 10)
         {
             CaptureTrial(seat.Pilot ? "weapons-pilot-holding" : "weapons-officer-holding");
-            if (!seat.Pilot) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Fire));
-            else RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.QueueFire));
+            if (seat.Pilot) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.QueueFire));
             _trialStep = 2;
         }
         if (_trialStep == 2 && elapsed >= 18)
         {
-            CaptureTrial(seat.Pilot ? "weapons-pilot-launch" : "weapons-missile-impact");
+            CaptureTrial(seat.Pilot ? "weapons-pilot-launch" : "weapons-officer-ready");
             if (seat.Pilot) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Launch));
-            else RaiseNetworkEvent(new FighterSelectTargetEvent(weapons.Targets.Last().Id));
             _trialStep = 3;
+        }
+        if (_trialStep == 3 && !seat.Pilot && FighterWeapons.Status(aircraft, weapons, seat,
+                weapons.Loadout.FirstOrDefault(slot => slot.Slot == seat.WeaponSlot),
+                weapons.Targets.FirstOrDefault(target => target.Id == seat.Target), _timing.CurTime) == FighterFireStatus.Ready)
+        {
+            RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Fire));
+            _trialStep = 7;
         }
         if (_trialStep == 3 && seat.Pilot)
         {

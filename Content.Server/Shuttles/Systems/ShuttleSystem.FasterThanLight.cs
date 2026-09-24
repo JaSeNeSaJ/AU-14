@@ -121,8 +121,9 @@ public sealed partial class ShuttleSystem
     {
         var query = AllEntityQuery<FTLMapComponent>();
 
-        while (query.MoveNext(out var uid, out _))
+        while (query.MoveNext(out var uid, out var existing))
         {
+            SetFtlParallax(uid, existing); // CMU
             return uid;
         }
 
@@ -132,10 +133,21 @@ public sealed partial class ShuttleSystem
         _metadata.SetEntityName(mapUid, "FTL");
         Log.Debug($"Setup hyperspace map at {mapUid}");
         DebugTools.Assert(!_mapSystem.IsPaused(mapId));
-        var parallax = EnsureComp<ParallaxComponent>(mapUid);
-        parallax.Parallax = ftlMap.Parallax;
+        SetFtlParallax(mapUid, ftlMap); // CMU
 
         return mapUid;
+    }
+
+    // CMU: visual travel must not depend on grid interpolation or a deck's
+    // replicated position. Those can stall or jump while changing Z levels.
+    private void SetFtlParallax(EntityUid map, FTLMapComponent ftl)
+    {
+        var parallax = EnsureComp<ParallaxComponent>(map);
+        var velocity = new Vector2(0, FTLMapComponent.TravelSpeed);
+        if (parallax.Parallax == ftl.Parallax && parallax.TravelVelocity == velocity) return;
+        parallax.Parallax = ftl.Parallax;
+        parallax.TravelVelocity = velocity;
+        Dirty(map, parallax);
     }
 
     public StartEndTime GetStateTime(FTLComponent component)
@@ -452,7 +464,7 @@ public sealed partial class ShuttleSystem
         comp.StateTime = StartEndTime.FromCurTime(_gameTiming, comp.TravelTime - DefaultArrivalTime);
 
         Enable(uid, component: body);
-        _physics.SetLinearVelocity(uid, new Vector2(0f, 20f), body: body);
+        _physics.SetLinearVelocity(uid, new Vector2(0f, FTLMapComponent.TravelSpeed), body: body);
         _physics.SetAngularVelocity(uid, 0f, body: body);
 
         _dockSystem.SetDockBolts(uid, true);

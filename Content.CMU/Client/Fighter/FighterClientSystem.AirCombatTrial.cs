@@ -31,7 +31,7 @@ public sealed partial class FighterClientSystem
         if (_trialStep == 1 && elapsed >= 15)
         {
             CaptureTrial(name + "-coverage");
-            if (!defender) RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Launch));
+            RaiseNetworkEvent(new FighterCommandEvent(FighterCommand.Launch));
             _trialStep = 2;
         }
         if (combat.Incoming)

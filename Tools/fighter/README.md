@@ -19,6 +19,11 @@ Takeoff lasts eight seconds and descent six seconds, with dust, downwash, lights
 heat shimmer and recorded engine sounds. Crew remain attached to the airframe
 through the transition. An empty grounded fighter can be stored and retrieved on
 the vehicle supply lift without losing its equipment or ammunition.
+Vehicles unloading from the Mohawk's lowered ramp are placed three tiles farther
+out, clear of the ramp center.
+The airborne cockpit and Mohawk cabin each contain an `AU14VehicleRadioSet`.
+FTL backgrounds share a steady scrolling phase across decks; their motion no longer
+depends on replicated grid movement or which lower deck is visible.
 
 ## Flight and weapons
 
@@ -32,8 +37,10 @@ and its heading, independently of the north-up targeting lock; a cloud bank reve
 the AO continuously during approach and departure.
 
 Six external pylons accept missiles directly. Rockets require a rocket pod, and
-the internal GAU is fixed. Both crew can fire missiles from hold or a pass; the
-pilot fires GAU and rockets during an aligned run. Selecting a flare offers an
+the internal GAU is fixed. Both crew can fire missiles, but all weapon release
+requires an approach/pass inside the AO. Holding, outside-AO approaches and returns
+keep weapons safe, including sector interceptors. The pilot fires GAU and rockets
+during an aligned run. Selecting a flare offers an
 editable approach assist and a queue for one shot or burst when lined up.
 
 Service the grounded fighter with a power loader: click a mount with ammunition
@@ -49,6 +56,13 @@ trigger an interceptor. The pilot gets a central flare response prompt; one hit
 forces a retreat. Ejection requires confirmation. Pilot ejection launches both
 crew seats, while WSO ejection launches only that seat. The existing parachute
 system handles descent to the ground.
+Ejecting at a holding point chooses a random valid landing area inside that AO.
+Both crew share the selected area with normal parachute scatter; drops never
+scatter onto a different planet map.
+
+Observers following the pilot, weapons officer or aircraft see the exterior,
+cockpit effects and that seat's targeting camera. The presentation is read-only;
+switching Plan route / Targeting changes only the observer's display.
 
 ## MANPAD requisitions
 
@@ -65,6 +79,28 @@ faction supplies its IFF. Unwielding, dropping, changing hands or becoming unabl
 to act cancels acquisition. Each committed launch consumes one round, lowers the
 empty launcher, and requires another physical reload; the existing 15-second
 launch interval also remains. There is no manual fire control.
+
+Wielding a MANPAD also shows a compact map of the AO, the operator's sector and
+airborne contacts with headings and altitudes. A ring identifies the current
+acquisition. The terrain chart is transmitted once when the display is acquired;
+contact updates go only to the wielding operator.
+
+The separate spawn prototype `CMUFighterManpadNoIFF` bypasses IFF and engages any
+crewed aircraft, including friendlies. It retains the same aiming and reloading
+requirements. Requisition kits continue to supply the normal IFF-protected launcher.
+
+## Boiler air defense
+
+Boilers have a **Look at airspace** toggle. While active, the airspace map shows
+aircraft and the boiler automatically covers its current sector. A passing jet
+requires two seconds of stationary acquisition under open sky, then receives an
+ascending plasma shot. Moving, losing the target, becoming unable to act or
+turning the ability off cancels acquisition. Each launch spends 200 plasma and
+starts a fifteen-second cooldown.
+
+Charging and launching have green ground effects and organic sounds; the pilot
+sees an incoming-plasma warning and bolt. The existing countermeasure window and
+one-hit forced retreat also apply to plasma.
 
 See [AUDIO.md](AUDIO.md) for selected recordings and reproducible sound edits.
 Original fighter and pilot-seat artwork: **nzzy on Discord**, credited by the

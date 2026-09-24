@@ -147,6 +147,8 @@ public sealed partial class FighterSystem
         foreach (var uid in new[] { aircraft.Comp.FrontSeat, aircraft.Comp.RearSeat, aircraft.Comp.Canopy })
         {
             if (uid is not { } part || TerminatingOrDeleted(part)) continue;
+            if (TryComp(part, out FighterSeatComponent? seat) && seat.Occupant is { } crew)
+                _crewPulling.TryStopAllPullsFromAndOn(crew);
             var position = part == aircraft.Comp.FrontSeat ? new Vector2(.5f, 4.2f) :
                 part == aircraft.Comp.RearSeat ? new Vector2(.5f, 2.1f) : new Vector2(.5f, 0);
             if (toGround) position = -(position - new Vector2(.5f, 0)) * FighterGroundComponent.AttachmentScale;

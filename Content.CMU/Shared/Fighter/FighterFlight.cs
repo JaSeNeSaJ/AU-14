@@ -17,6 +17,8 @@ public static class FighterFlight
     public static Vector2 Forward(float heading) => new(MathF.Sin(heading), MathF.Cos(heading));
     public static bool InAirspace(FighterAircraftComponent a) => a.GroundState is FighterGroundState.Airborne or FighterGroundState.Returning;
     public static bool GroundScene(FighterAircraftComponent a) => a.GroundEntity != null && !InAirspace(a);
+    public static bool InAttackRun(FighterAircraftComponent a) => a.GroundState == FighterGroundState.Airborne &&
+        a.Flying && a.Phase is FighterPhase.Approach or FighterPhase.Pass && a.Battlefield.Contains(a.Position);
     public static Vector2 HoldingPoint(FighterAircraftComponent a) => a.Home + new Vector2(.65f, -.65f) * a.AirspaceRadius;
     public static bool Finite(Vector2 p) => float.IsFinite(p.X) && float.IsFinite(p.Y);
     public static bool CanControl(bool pilot, FighterCommand command) => command switch

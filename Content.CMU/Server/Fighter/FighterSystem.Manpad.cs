@@ -37,11 +37,15 @@ public sealed partial class FighterSystem
 
     private bool CanAcquireManpad(FighterManpadComponent launcher, EntityUid terrain, Vector2 position,
         Entity<FighterAircraftComponent, FighterAirCombatComponent, FighterWeaponsComponent> target)
+        => (launcher.IgnoreIFF || _iff.Hostile(launcher.Faction, target.Comp3.Faction)) &&
+           InGroundWeaponSector(terrain, position, target);
+
+    private bool InGroundWeaponSector(EntityUid terrain, Vector2 position,
+        Entity<FighterAircraftComponent, FighterAirCombatComponent, FighterWeaponsComponent> target)
     {
         var aircraft = target.Comp1;
         if (aircraft.TerrainMap != terrain || !aircraft.Flying || aircraft.ForcedRetreat ||
-            target.Comp2.Incoming || !HasCombatPilot(aircraft) ||
-            !_iff.Hostile(launcher.Faction, target.Comp3.Faction)) return false;
+            target.Comp2.Incoming || !HasCombatPilot(aircraft)) return false;
         var sector = FighterAirCombat.SectorAt(aircraft.Battlefield, position);
         return sector >= 0 && sector == FighterAirCombat.SectorAt(aircraft.Battlefield, aircraft.Position);
     }
@@ -50,9 +54,16 @@ public sealed partial class FighterSystem
     private void UpdateManpads()
     {
         var now = _timing.CurTime;
+        var updateRadar = now >= _nextManpadRadarUpdate;
+        if (updateRadar)
+        {
+            _nextManpadRadarUpdate = now + TimeSpan.FromSeconds(.25);
+            _activeRadarUsers.Clear();
+        }
         var query = EntityQueryEnumerator<FighterManpadComponent, TransformComponent>();
         while (query.MoveNext(out var uid, out var launcher, out var xform))
         {
+            if (updateRadar) UpdateManpadRadar((uid, launcher), xform);
             // Revalidate the operator at acquisition and launch, including stun/death and container changes.
             // Being wielded alone never arms the launcher, and dropping it cannot leave a queued shot.
             if (!_manpads.IsAiming((uid, launcher)))
@@ -61,7 +72,7 @@ public sealed partial class FighterSystem
                 if (launcher.Target != null) CancelManpadWindup(launcher);
                 continue;
             }
-            if (now < launcher.ReadyAt || string.IsNullOrWhiteSpace(launcher.Faction) ||
+            if (now < launcher.ReadyAt || !launcher.IgnoreIFF && string.IsNullOrWhiteSpace(launcher.Faction) ||
                 xform.MapUid is not { } terrain)
             {
                 if (launcher.Target != null) CancelManpadWindup(launcher);
@@ -152,5 +163,7 @@ public sealed partial class FighterSystem
             }
             if (!retained && launcher.Target != null) CancelManpadWindup(launcher);
         }
+        UpdateBoilerAirDefense(updateRadar);
+        if (updateRadar) ClearInactiveManpadRadars();
     }
 }
