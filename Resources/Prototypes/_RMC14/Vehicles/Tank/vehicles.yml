@@ -10,6 +10,7 @@
     movementKind: Grid
     transferDamage: false
   - type: VehicleOperatorDamage
+  - type: VehicleMaintenance
   - type: Clickable
   - type: Tag
     tags:

@@ -89,7 +89,9 @@ public sealed partial class HardpointSystem : EntitySystem
         SubscribeLocalEvent<HardpointIntegrityComponent, ExaminedEvent>(OnHardpointExamined);
         SubscribeLocalEvent<HardpointIntegrityComponent, GetVerbsEvent<ExamineVerb>>(OnDamageExamineVerb);
         SubscribeLocalEvent<HardpointIntegrityComponent, HardpointRepairDoAfterEvent>(OnHardpointRepairDoAfter);
+        SubscribeLocalEvent<HardpointIntegrityComponent, DoAfterAttemptEvent<HardpointRepairDoAfterEvent>>(OnIntegrityRepairAttempt);
         SubscribeLocalEvent<VehicleHardpointFailureComponent, VehicleHardpointFailureRepairDoAfterEvent>(OnFailureRepairDoAfter);
+        SubscribeLocalEvent<VehicleHardpointFailureComponent, DoAfterAttemptEvent<VehicleHardpointFailureRepairDoAfterEvent>>(OnFailureRepairAttempt);
     }
 
     private void OnSlotsInit(Entity<HardpointSlotsComponent> ent, ref ComponentInit args)
@@ -1724,6 +1726,12 @@ public sealed partial class HardpointSystem : EntitySystem
             if (step.RequiresWelder && !HasComp<BlowtorchComponent>(args.Used))
                 continue;
 
+            if (!CanRepairInMaintenance(ent.Owner, args.User))
+            {
+                args.Handled = true;
+                return true;
+            }
+
             if (step.RequiresWelder &&
                 !_repairable.UseFuel(args.Used, args.User, GetFuelCostForSeconds(step.Time, ent.Comp.FuelPerSecond), true))
             {
@@ -1742,6 +1750,7 @@ public sealed partial class HardpointSystem : EntitySystem
                 GetRepairInteractionTarget(ent.Owner),
                 args.Used)
             {
+                AttemptFrequency = AttemptFrequency.EveryTick,
                 BreakOnMove = true,
                 BreakOnDamage = true,
                 NeedHand = true,
@@ -1801,6 +1810,9 @@ public sealed partial class HardpointSystem : EntitySystem
             return;
 
         args.Handled = true;
+
+        if (!CanRepairInMaintenance(ent.Owner, args.User))
+            return;
 
         var used = args.Used;
         var stepIndex = GetFailureRepairProgress(ent.Comp, args.Failure);
@@ -1970,6 +1982,12 @@ public sealed partial class HardpointSystem : EntitySystem
         if (!usedWelder && !usedWrench)
             return false;
 
+        if (!CanRepairInMaintenance(ent.Owner, args.User))
+        {
+            args.Handled = true;
+            return true;
+        }
+
         if (isFrame)
             RefreshVehicleFrameIntegrityFromHardpoints(ent.Owner);
 
@@ -2027,8 +2045,11 @@ public sealed partial class HardpointSystem : EntitySystem
 
         ent.Comp.Repairing = true;
 
-        var doAfter = new DoAfterArgs(EntityManager, args.User, repairTime, new HardpointRepairDoAfterEvent(), ent.Owner, GetRepairInteractionTarget(ent.Owner), used)
+        var doAfter = new DoAfterArgs(EntityManager, args.User, repairTime,
+            new HardpointRepairDoAfterEvent { RepairAmount = repairAmount }, ent.Owner,
+            GetRepairInteractionTarget(ent.Owner), used)
         {
+            AttemptFrequency = AttemptFrequency.EveryTick,
             BreakOnMove = true,
             BreakOnDamage = true,
             NeedHand = true,
@@ -2057,6 +2078,9 @@ public sealed partial class HardpointSystem : EntitySystem
 
         args.Handled = true;
 
+        if (!CanRepairInMaintenance(ent.Owner, args.User))
+            return;
+
         var used = args.Used;
         var isFrame = IsVehicleFrame(ent.Owner);
         var usedWelder = used != null && _tool.HasQuality(used.Value, ent.Comp.RepairToolQuality) && HasComp<BlowtorchComponent>(used);
@@ -2065,21 +2089,23 @@ public sealed partial class HardpointSystem : EntitySystem
         if (!usedWelder && !usedWrench)
             return;
 
+        // Damage taken during this cycle cannot turn a short finishing weld into a full repair chunk.
+        var repairAmount = MathF.Min(args.RepairAmount,
+            GetRepairAmountForCurrentStep(ent.Owner, ent.Comp, usedWelder, usedWrench, isFrame));
+        if (repairAmount <= 0f)
+            return;
+
         if (usedWelder)
         {
             var fuelCost = GetFuelCostForChunk(
                 ent.Owner,
                 ent.Comp,
-                GetRepairAmountForCurrentStep(ent.Owner, ent.Comp, usedWelder, usedWrench, isFrame),
+                repairAmount,
                 isFrame);
 
             if (used == null || !_repairable.UseFuel(used.Value, args.User, fuelCost))
                 return;
         }
-
-        var repairAmount = GetRepairAmountForCurrentStep(ent.Owner, ent.Comp, usedWelder, usedWrench, isFrame);
-        if (repairAmount <= 0f)
-            return;
 
         var previousIntegrity = ent.Comp.Integrity;
         ent.Comp.Integrity = MathF.Min(ent.Comp.MaxIntegrity, ent.Comp.Integrity + repairAmount);
@@ -2131,7 +2157,36 @@ public sealed partial class HardpointSystem : EntitySystem
         RaiseHardpointSlotsChanged(vehicle);
 
         if (ShouldRepeatRepair(ent.Owner, ent.Comp, usedWelder, usedWrench, isFrame))
+        {
+            args.RepairAmount = GetRepairAmountForCurrentStep(ent.Owner, ent.Comp, usedWelder, usedWrench, isFrame);
+            args.Args.Delay = TimeSpan.FromSeconds(GetRepairTimeForCurrentStep(ent.Owner, args.User, ent.Comp, args.RepairAmount, isFrame));
+            ent.Comp.Repairing = true;
             args.Repeat = true;
+        }
+    }
+
+    private void OnIntegrityRepairAttempt(Entity<HardpointIntegrityComponent> ent, ref DoAfterAttemptEvent<HardpointRepairDoAfterEvent> args)
+    {
+        if (!CanRepairInMaintenance(ent, args.Event.User, popup: false))
+            args.Cancel();
+    }
+
+    private void OnFailureRepairAttempt(Entity<VehicleHardpointFailureComponent> ent, ref DoAfterAttemptEvent<VehicleHardpointFailureRepairDoAfterEvent> args)
+    {
+        if (!CanRepairInMaintenance(ent, args.Event.User, popup: false))
+            args.Cancel();
+    }
+
+    private bool CanRepairInMaintenance(EntityUid target, EntityUid user, bool popup = true)
+    {
+        var vehicle = _topology.TryGetVehicle(target, out var owner) ? owner : target;
+        if (!TryComp<VehicleMaintenanceComponent>(vehicle, out var maintenance) ||
+            maintenance.Mode == VehicleMaintenanceMode.Maintenance)
+            return true;
+
+        if (popup)
+            _popup.PopupClient(Loc.GetString("rmc-vehicle-maintenance-repair-required"), vehicle, user);
+        return false;
     }
 
     private float GetRepairAmountForCurrentStep(

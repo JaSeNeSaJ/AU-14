@@ -265,7 +265,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             {
                 var gridMapId = _entityManager.GetComponent<TransformComponent>(grid).MapID;
                 _mapSystem.InitializeMap(gridMapId);
-                PrepareLoadedShuttleGrid(grid, faction, planetComp);
+                PrepareLoadedShuttleGrid(grid, faction, planetComp, DropshipDestinationComponent.DestinationType.Dropship);
                 SpawnShuttleConsoleMarkers(
                     grid,
                     faction,
@@ -298,7 +298,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             if (!_mapLoader.TryLoadGrid(fighterMap, out _, out var grid))
                 continue;
 
-            PrepareLoadedShuttleGrid(grid.Value, faction, planetComp);
+            PrepareLoadedShuttleGrid(grid.Value, faction, planetComp, DropshipDestinationComponent.DestinationType.Figher);
             SpawnShuttleConsoleMarkers(
                 grid.Value,
                 faction,
@@ -317,7 +317,8 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
     private void PrepareLoadedShuttleGrid(
         EntityUid grid,
         string faction,
-        RMCPlanetMapPrototypeComponent planetComp)
+        RMCPlanetMapPrototypeComponent planetComp,
+        DropshipDestinationComponent.DestinationType type)
     {
         SetPhonesFactionOnGrid(grid, faction);
 
@@ -329,32 +330,50 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
             var shipFaction = EnsureComp<ShipFactionComponent>(grid);
             shipFaction.Faction = faction;
             Dirty(grid, shipFaction);
-            var children = Transform(grid).ChildEnumerator;
-            while (children.MoveNext(out var child))
+        }
+
+        // Single-deck gunships also contain prebuilt controls and pilot seats. Reassign
+        // these before the initial flight, just like consoles created from markers.
+        var accessPrefix = faction == "opfor" ? "AU14AccessOpfor" : "AU14AccessGovfor";
+        var previousPrefix = faction == "opfor" ? "AU14AccessGovfor" : "AU14AccessOpfor";
+        var children = Transform(grid).ChildEnumerator;
+        while (children.MoveNext(out var child))
+        {
+            if (TryComp<AU14CallsignConsoleComponent>(child, out var callsigns))
             {
-                if (TryComp<AU14CallsignConsoleComponent>(child, out var callsigns))
-                {
-                    callsigns.Faction = faction;
-                    Dirty(child, callsigns);
-                }
-                if (TryComp<TacticalMapComputerComponent>(child, out var tactical))
-                    _tacticalMap.SetComputerFaction((child, tactical), faction);
-                if (TryComp<OverwatchConsoleComponent>(child, out var overwatch))
-                    _overwatch.SetGroup((child, overwatch), faction.ToUpperInvariant());
-                if (faction == "opfor" && TryComp<AccessReaderComponent>(child, out var access))
-                {
-                    var groups = access.AccessLists.Select(group => group.Select(id =>
-                        new ProtoId<AccessLevelPrototype>(id.Id.Replace("AU14AccessGovfor", "AU14AccessOpfor"))).ToHashSet()).ToList();
-                    _accessReader.TrySetAccesses((child, access), groups);
-                }
-                if (!HasComp<DropshipNavigationComputerComponent>(child) &&
-                    !HasComp<DropshipTerminalWeaponsComponent>(child))
-                    continue;
-                var whitelist = EnsureComp<WhitelistedShuttleComponent>(child);
-                whitelist.Faction = faction;
-                whitelist.ShuttleType = DropshipDestinationComponent.DestinationType.Dropship;
-                Dirty(child, whitelist);
+                callsigns.Faction = faction;
+                Dirty(child, callsigns);
             }
+            if (TryComp<TacticalMapComputerComponent>(child, out var tactical))
+                _tacticalMap.SetComputerFaction((child, tactical), faction);
+            if (TryComp<OverwatchConsoleComponent>(child, out var overwatch))
+                _overwatch.SetGroup((child, overwatch), faction.ToUpperInvariant());
+
+            var navigation = HasComp<DropshipNavigationComputerComponent>(child);
+            if (navigation)
+            {
+                var reader = EnsureComp<AccessReaderComponent>(child);
+                EnsureComp<ActivatableUIRequiresAccessComponent>(child);
+                _accessReader.TrySetAccesses((child, reader),
+                    new List<HashSet<ProtoId<AccessLevelPrototype>>>
+                    {
+                        new() { accessPrefix + "FTL" },
+                        new() { accessPrefix + "Pilot" },
+                    }, updateOriginal: true);
+            }
+            else if (TryComp<AccessReaderComponent>(child, out var access))
+            {
+                var groups = access.AccessLists.Select(group => group.Select(id =>
+                    new ProtoId<AccessLevelPrototype>(id.Id.Replace(previousPrefix, accessPrefix))).ToHashSet()).ToList();
+                _accessReader.TrySetAccesses((child, access), groups, updateOriginal: true);
+            }
+
+            if (!navigation && !HasComp<DropshipTerminalWeaponsComponent>(child))
+                continue;
+            var whitelist = EnsureComp<WhitelistedShuttleComponent>(child);
+            whitelist.Faction = faction;
+            whitelist.ShuttleType = type;
+            Dirty(child, whitelist);
         }
 
         if (faction == "opfor" && planetComp.OpforInShip)
@@ -525,6 +544,7 @@ public sealed partial class PlatoonSpawnRuleSystem : GameRuleSystem<PlatoonSpawn
         var whitelist = _entityManager.GetComponent<WhitelistedShuttleComponent>(console);
         whitelist.Faction = faction;
         whitelist.ShuttleType = type;
+        Dirty(console, whitelist);
     }
 
     private void SetPhonesFactionOnGrid(EntityUid grid, string faction)

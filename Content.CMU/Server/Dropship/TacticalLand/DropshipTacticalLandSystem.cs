@@ -130,6 +130,9 @@ public sealed partial class DropshipTacticalLandSystem : SharedDropshipTacticalL
     {
         var pilot = args.Actor;
 
+        if (!_dropship.CanUseNavigation(ent, pilot))
+            return;
+
         if (HasComp<DropshipTacticalLandSessionComponent>(ent))
         {
             _popup.PopupEntity(Loc.GetString("cmu-tactical-land-session-active"), ent, pilot, PopupType.MediumCaution);
