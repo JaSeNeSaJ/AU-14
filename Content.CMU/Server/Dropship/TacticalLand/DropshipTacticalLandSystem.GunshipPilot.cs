@@ -171,7 +171,7 @@ public sealed partial class DropshipTacticalLandSystem
             }
         }
 
-        if (navigationConsole is not { } console)
+        if (navigationConsole is not { } console || !_dropship.CanUseNavigation(console, pilot))
             return;
 
         var before = new BeforeActivatableUIOpenEvent(pilot);

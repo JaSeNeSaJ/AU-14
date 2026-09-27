@@ -73,14 +73,7 @@ public sealed partial class DamageOverlay : Overlay
         if (!_entityManager.TryGetComponent(_playerManager.LocalEntity, out DamageOverlayComponent? damageComp))
             return;
 
-        State = damageComp.CurrentState;
-        CritLevel = damageComp.CritLevel;
-        OxygenLevel = damageComp.OxygenLevel;
-        PainLevel = damageComp.PainLevel;
-        // CMU14: use effective pain severity.
-        // CMU body-part injuries use effective pain tiers, independently of aggregate damage.
-        if (_entityManager.TryGetComponent(_playerManager.LocalEntity, out PainShockComponent? pain))
-            PainLevel = (float) pain.Tier / (float) PainTier.Shock;
+        UpdateLevels(damageComp);
 
         /*
          * Here's the rundown:
@@ -261,6 +254,16 @@ public sealed partial class DamageOverlay : Overlay
         }
 
         handle.UseShader(null);
+    }
+
+    public void UpdateLevels(DamageOverlayComponent damage)
+    {
+        State = damage.CurrentState;
+        CritLevel = damage.CritLevel;
+        OxygenLevel = damage.OxygenLevel;
+        // Injury feedback must remain visible even before pain accumulates or while analgesics suppress it.
+        // Pain tiers retain their separate medical alerts and visual effects.
+        PainLevel = damage.PainLevel;
     }
 
     private float GetDiff(float value, float lastFrameTime)
