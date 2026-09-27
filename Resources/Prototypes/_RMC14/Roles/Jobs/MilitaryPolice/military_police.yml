@@ -5,10 +5,7 @@
   description: cm-job-description-militarypolice
   setPreference: false
   playTimeTracker: CMJobMilitaryPolice
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMSquad
-    time: 72000 # 20 hours
+  requirements: []
   ranks:
     RMCRankStaffSergeant:
     - !type:RoleTimeRequirement

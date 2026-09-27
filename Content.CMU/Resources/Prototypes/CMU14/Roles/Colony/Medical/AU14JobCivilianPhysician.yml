@@ -27,9 +27,6 @@
   setPreference: true
   playTimeTracker: AU14JobCivilianPhysician
   requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMedical
-    time: 18000 # 5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:

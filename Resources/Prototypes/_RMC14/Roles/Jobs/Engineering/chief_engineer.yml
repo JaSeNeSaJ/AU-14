@@ -5,10 +5,7 @@
   description: cm-job-description-chief-engineer
   setPreference: false
   playTimeTracker: CMJobChiefEngineer
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMJobsEngineering
-    time: 72000 # 20 hours
+  requirements: []
   ranks:
     RMCRankFirstLT:
     - !type:RoleTimeRequirement

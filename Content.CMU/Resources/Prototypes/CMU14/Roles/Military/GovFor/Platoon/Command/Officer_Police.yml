@@ -59,9 +59,6 @@
     # - type: JobPrefix
     #   prefix: au14-job-prefix-govforpolicechiefCMBCIU
   requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsSecurity
-    time: 36000 # 10 hours
   - !type:AgeRequirement
     requiredAge: 30
   - !type:TraitsRequirement
@@ -199,10 +196,7 @@
   parent: AU14JobOfficerMPBase
   id: AU14JobGOVFOROfficerMPUPP
   roundForce: UPP
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsSecurity
-    time: 36000 # 10 hours
+  requirements: []
   name: Chief MP
   spawnMenuRoleName: Chief MP (UPP)
   ranks:
@@ -216,10 +210,7 @@
   parent: AU14JobOfficerMPBase
   id: AU14JobGOVFOROfficerMPWYPMC
   roundForce: WYPMC
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsSecurity
-    time: 36000 # 10 hours
+  requirements: []
   name: PMC Chief of Security
   spawnMenuRoleName: Chief MP (WYPMC)
   ranks:

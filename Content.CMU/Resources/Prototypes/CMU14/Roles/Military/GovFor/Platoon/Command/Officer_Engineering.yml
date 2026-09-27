@@ -52,14 +52,6 @@
     # - type: JobPrefix
     #   prefix: au14-job-prefix-govforengineeringWYPMC
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryEngineering
-    time: 36000 # 10 hours
   - !type:AgeRequirement
     requiredAge: 30
   - !type:TraitsRequirement
@@ -196,15 +188,7 @@
   parent: AU14JobOfficerEngiBase
   id: AU14JobGOVFOROfficerEngiUPP
   roundForce: UPP
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryEngineering
-    time: 36000 # 10 hours
+  requirements: []
   name: Engineering Officer
   spawnMenuRoleName: Engineering Officer (UPP)
   ranks:
@@ -218,15 +202,7 @@
   parent: AU14JobOfficerEngiBase
   id: AU14JobGOVFOROfficerEngiWYPMC
   roundForce: WYPMC
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryEngineering
-    time: 36000 # 10 hours
+  requirements: []
   name: PMC Chief Engineer
   spawnMenuRoleName: Engineering Officer (WYPMC)
   ranks:

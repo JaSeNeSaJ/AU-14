@@ -66,10 +66,7 @@
     job: CMRoyalMarinesSGO
     raffle:
       settings: short
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobSmartGunOperator
-      time: 18000 # 5 Hours
+    requirements: []
   - type: GhostRoleApplySpecial
     squad: SquadRoyalMarines
 

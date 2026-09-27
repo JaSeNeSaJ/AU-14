@@ -5,10 +5,7 @@
   description: cm-job-description-dropship-pilot
   setPreference: false
   playTimeTracker: CMJobPilotDropship
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMJobsDropship
-    time: 18000 # 5 hours
+  requirements: []
   ranks:
     RMCRankSecondLT:
     - !type:RoleTimeRequirement

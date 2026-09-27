@@ -4,10 +4,7 @@
   name: rmc-job-name-spp-overwatch
   description: rmc-ghost-role-information-spp-pve-description
   playTimeTracker: RMCJobSPPPlatCoPVE
-  requirements:
-  - !type:RoleTimeRequirement
-    role: CMJobExecutiveOfficer
-    time: 10800 # 3 hours
+  requirements: []
   ranks:
     RMCRankSPPMladshiyLeytenant: []
   startingGear: RMCSPPPlatCoPVEGear

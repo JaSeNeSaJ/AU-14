@@ -2,7 +2,6 @@ using System.Linq;
 using Content.Shared.CMU14.Yautja;
 using Content.Shared._RMC14.CCVar;
 using Content.Shared._RMC14.Dropship; // CMU14
-using Content.Shared._RMC14.Roles;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids.Announce;
 using Content.Shared._RMC14.Xenonids.Egg;
@@ -31,7 +30,6 @@ using Content.Shared.Jittering;
 using Content.Shared.Mind;
 using Content.Shared.Mobs.Components;
 using Content.Shared.Mobs.Systems;
-using Content.Shared.Players.PlayTimeTracking;
 using Content.Shared.Popups;
 using Content.Shared.Prototypes;
 using Robust.Shared.Audio.Systems;
@@ -72,7 +70,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
     [Dependency] private SharedXenoHiveSystem _xenoHive = default!;
     [Dependency] private SharedHandsSystem _hands = default!;
     [Dependency] private SharedContainerSystem _container = default!;
-    [Dependency] private SharedXenoWeedsSystem _xenoWeeds = default!;    [Dependency] private ISharedPlaytimeManager _playtime = default!;
+    [Dependency] private SharedXenoWeedsSystem _xenoWeeds = default!;
     [Dependency] private FollowerSystem _follower = default!;
 
     private TimeSpan _evolutionPointsRequireOvipositorAfter;
@@ -84,8 +82,6 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
     private readonly HashSet<EntityUid> _climbable = new();
     private readonly HashSet<EntityUid> _doors = new();
     private readonly HashSet<EntityUid> _intersecting = new();
-
-    private static readonly TimeSpan CorruptedHiveQueenPlaytime = TimeSpan.FromHours(30);
 
     private EntityQuery<MobStateComponent> _mobStateQuery;
 
@@ -265,44 +261,6 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
 
         var afterEv = new AfterNewXenoEvolvedEvent();
         RaiseLocalEvent(newXeno, ref afterEv);
-    }
-
-    private bool CanCorruptedHiveEvolveToQueen(EntityUid xeno, bool doPopup)
-    {
-        if (_net.IsClient)
-            return true;
-
-        if (!TryComp(xeno, out ActorComponent? actor))
-            return false;
-
-        var requirement = new TotalJobsTimeRequirement
-        {
-            Group = "CMJobsXeno",
-            Time = CorruptedHiveQueenPlaytime,
-        };
-
-        var playTimes = _playtime.GetPlayTimes(actor.PlayerSession);
-
-        if (requirement.Check(
-                EntityManager,
-                _prototypes,
-                null,
-                playTimes,
-                out _))
-        {
-            return true;
-        }
-
-        if (doPopup)
-        {
-            _popup.PopupEntity(
-                Loc.GetString("rmc-xeno-corruptedevolution-failed-insufficient-hours"),
-                xeno,
-                xeno,
-                PopupType.MediumCaution);
-        }
-
-        return false;
     }
 
     private void OnXenoDevolveBui(Entity<XenoDevolveComponent> xeno, ref XenoDevolveBuiMsg args)
@@ -550,7 +508,7 @@ public sealed partial class XenoEvolutionSystem : EntitySystem
         if (newXeno == "CMXenoQueen" &&
             hive is { } corruptedHive &&
             corruptedHive.Comp.Corrupted &&
-            !CanCorruptedHiveEvolveToQueen(xeno.Owner, doPopup))
+            !_net.IsClient && !HasComp<ActorComponent>(xeno)) // CMU14: no account playtime requirement.
         {
             return false;
         }

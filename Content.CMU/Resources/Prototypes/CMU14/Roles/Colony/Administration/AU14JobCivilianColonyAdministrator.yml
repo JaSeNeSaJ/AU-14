@@ -33,8 +33,6 @@
   setPreference: true
   playTimeTracker: AU14JobCivilianColonyAdministrator
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 18000 # 5 hours
   - !type:AgeRequirement
     requiredAge: 21
   - !type:TraitsRequirement

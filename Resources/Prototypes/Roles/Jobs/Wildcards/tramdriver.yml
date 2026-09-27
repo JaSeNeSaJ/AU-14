@@ -6,9 +6,7 @@
   startingGear: TramDriverGear
   icon: "JobIconTramDriver"
   supervisors: job-supervisors-hop
-  requirements:
-    - !type:OverallPlaytimeRequirement # someone that's not doing this job will just be a pain for the station
-      time: 10h
+  requirements: []
   access:
   - Maintenance
   - Service # the tram has command + service access

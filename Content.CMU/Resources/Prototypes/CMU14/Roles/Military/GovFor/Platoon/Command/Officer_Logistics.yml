@@ -55,11 +55,6 @@
     # - type: JobPrefix
     #   prefix: au14-job-prefix-govforlogisticsCMBCIU
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 18000 # 5 hours
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement
@@ -207,12 +202,7 @@
   parent: AU14JobOfficerLogisticsBase
   id: AU14JobGOVFOROfficerLogisticsUPP
   roundForce: UPP
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 18000 # 5 hours
+  requirements: []
   name: Logistics Officer
   spawnMenuRoleName: Logistics Officer (UPP)
   ranks:
@@ -226,12 +216,7 @@
   parent: AU14JobOfficerLogisticsBase
   id: AU14JobGOVFOROfficerLogisticsWYPMC
   roundForce: WYPMC
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 43200 # 12 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 18000 # 5 hours
+  requirements: []
   name: PMC Logistics Adjutant
   spawnMenuRoleName: Logistics Officer (WYPMC)
   ranks:

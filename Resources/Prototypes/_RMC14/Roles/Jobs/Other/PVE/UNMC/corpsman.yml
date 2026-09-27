@@ -4,10 +4,7 @@
   name: cm-job-name-hospital-corpsman
   description: cm-job-description-hospital-corpsman
   playTimeTracker: CMJobPVEHospitalCorpsman
-  requirements:
-  - !type:TotalJobsTimeRequirement
-    group: CMJobsMedical
-    time: 10800 # 3 hours
+  requirements: []
   ranks:
     RMCRankLanceCorporal: []
   spawnMenuRoleName: Sun Rider Hospital Corpsman (PVE)

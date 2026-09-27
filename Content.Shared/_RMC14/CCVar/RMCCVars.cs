@@ -584,9 +584,6 @@ public sealed partial class RMCCVars : CVars
     public static readonly CVarDef<int> RMCBoonsLiveMarineRequirement =
         CVarDef.Create("rmc.boons_live_marine_requirement", 12, CVar.REPLICATED | CVar.SERVER);
 
-    public static readonly CVarDef<int> RMCKingVoteCandidateTimeRequirementHours =
-        CVarDef.Create("rmc.king_vote_candidate_time_requirement", 5, CVar.REPLICATED | CVar.SERVER);
-
     public static readonly CVarDef<int> RMCKingHatchingFirstWarningMinutes =
         CVarDef.Create("rmc.king_hatching_first_warning_minutes", 5, CVar.REPLICATED | CVar.SERVER);
 

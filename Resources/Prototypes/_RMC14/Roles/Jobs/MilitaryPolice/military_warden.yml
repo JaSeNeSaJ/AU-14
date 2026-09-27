@@ -5,10 +5,7 @@
   description: cm-job-description-militarywarden
   setPreference: false
   playTimeTracker: CMJobMilitaryWarden
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMMilitaryPolice
-    time: 36000 # 10 hours
+  requirements: []
   ranks:
     RMCRankGunnerySergeant:
     - !type:RoleTimeRequirement

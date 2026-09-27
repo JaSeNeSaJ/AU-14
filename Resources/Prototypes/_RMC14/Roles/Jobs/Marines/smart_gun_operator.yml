@@ -132,10 +132,7 @@
     raffle:
       settings: default
     job: CMSmartGunOperator
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobSmartGunOperator
-      time: 1
+    requirements: []
 
 # Guidebook
 - type: entity

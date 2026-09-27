@@ -63,14 +63,6 @@
     # - type: JobPrefix
     #   prefix: au14-job-prefix-govforadjutantCMBCIU
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 86400 # 24 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryCommand
-    time: 18000 # 5 hours
   - !type:AgeRequirement
     requiredAge: 30
   - !type:TraitsRequirement
@@ -217,15 +209,7 @@
   parent: AU14JobAdjutantBase
   id: AU14JobGOVFORAdjutantUPP
   roundForce: UPP
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 86400 # 24 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryCommand
-    time: 18000 # 5 hours
+  requirements: []
   name: Executive Officer
   spawnMenuRoleName: Executive Officer (UPP)
   ranks:
@@ -243,15 +227,7 @@
   parent: AU14JobAdjutantBase
   id: AU14JobGOVFORAdjutantWYPMC
   roundForce: WYPMC
-  requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 86400 # 24 hours
-  - !type:TotalDepartmentsTimeRequirement
-    group: CMUDepartmentsMilitary
-    time: 36000 # 10 hours
-  - !type:TotalJobsTimeRequirement
-    group: CMUJobsMilitaryCommand
-    time: 18000 # 5 hours
+  requirements: []
   name: PMC Deputy Director
   spawnMenuRoleName: Executive Officer (WYPMC)
   ranks:

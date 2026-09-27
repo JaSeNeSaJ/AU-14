@@ -134,10 +134,7 @@
     raffle:
       settings: default
     job: CMHospitalCorpsman
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobHospitalCorpsman
-      time: 1
+    requirements: []
 
 # Guidebook
 - type: entity

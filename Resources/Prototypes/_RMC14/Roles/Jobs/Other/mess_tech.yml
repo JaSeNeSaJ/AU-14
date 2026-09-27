@@ -4,10 +4,7 @@
   name: cm-job-name-messtech
   description: cm-job-description-messtech
   playTimeTracker: CMJobMessTech
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMSquad
-    time: 7200 # 2 hours
+  requirements: []
   ranks:
     RMCRankLanceCorporal:
     - !type:RoleTimeRequirement

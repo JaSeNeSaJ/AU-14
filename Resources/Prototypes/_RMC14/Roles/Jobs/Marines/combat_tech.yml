@@ -5,10 +5,7 @@
   description: cm-job-description-combat-tech
   setPreference: false
   playTimeTracker: CMJobCombatTech
-  requirements:
-  - !type:DepartmentTimeRequirement
-    department: CMSquad
-    time: 18000 # 5 hours
+  requirements: []
   ranks:
     RMCRankCorporal:
     - !type:RoleTimeRequirement
@@ -142,10 +139,7 @@
     raffle:
       settings: default
     job: CMCombatTech
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobCombatTech
-      time: 1
+    requirements: []
 
 # Guidebook
 - type: entity

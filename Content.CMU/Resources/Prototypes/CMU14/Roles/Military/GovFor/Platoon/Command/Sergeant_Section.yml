@@ -102,8 +102,6 @@
       prefix: au14-job-prefix-AU14JobGOVFORSectionSergeantCMBCIU
 
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 18000 # 5 hours
   - !type:TraitsRequirement
     inverted: true
     traits:

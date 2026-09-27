@@ -48,8 +48,6 @@
         sprite: /Textures/CMU14/Interface/au14opforjobicons.rsi
         state: advisor
   requirements:
-  - !type:OverallPlaytimeRequirement
-    time: 3600
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement

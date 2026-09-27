@@ -191,14 +191,12 @@ public abstract partial class SharedRMCFlammableSystem : EntitySystem
         patter.Last = time;
         Dirty(user, patter);
 
-        ent.Comp.CurrentPats++;
-        if (ent.Comp.CurrentPats >= ent.Comp.PatsToExtinguish)
+        // The pat counter is server-only; prediction replays must not advance it or delete networked fire.
+        if (_net.IsServer)
         {
-            QueueDel(ent);
-        }
-        else
-        {
-            Dirty(ent);
+            ent.Comp.CurrentPats++;
+            if (ent.Comp.CurrentPats >= ent.Comp.PatsToExtinguish)
+                QueueDel(ent);
         }
 
         _rmcMelee.DoLunge(user, ent);

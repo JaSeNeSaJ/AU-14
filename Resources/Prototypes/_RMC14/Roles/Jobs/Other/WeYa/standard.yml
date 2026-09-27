@@ -84,10 +84,7 @@
     job: RMCPMCStandardM63B2
     raffle:
       settings: short
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobRifleman
-      time: 18000 # 5 Hours
+    requirements: []
   - type: GhostRoleApplySpecial
     squad: SquadPMC
 
@@ -166,10 +163,7 @@
     job: RMCPMCStandardSSG45
     raffle:
       settings: short
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobRifleman
-      time: 18000 # 5 Hours
+    requirements: []
   - type: GhostRoleApplySpecial
     squad: SquadPMC
 
@@ -246,10 +240,7 @@
     job: RMCPMCStandardM54C2
     raffle:
       settings: short
-    requirements:
-    - !type:RoleTimeRequirement
-      role: CMJobRifleman
-      time: 18000 # 5 Hours
+    requirements: []
   - type: GhostRoleApplySpecial
     squad: SquadPMC
 
