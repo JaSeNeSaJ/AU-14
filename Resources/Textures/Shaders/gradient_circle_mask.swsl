@@ -12,7 +12,7 @@ uniform highp float innerCircleRadius;
 uniform highp float innerCircleMaxRadius;
 uniform highp float darknessAlphaOuter;
 // CMU14: screen-space callers supply their quad size; world-space callers retain framebuffer coordinates.
-uniform highp vec2 viewportSize = vec2(0.0);
+uniform highp vec2 viewportSize;
 
 const highp float darknessAlphaInner = 0.0;
 
