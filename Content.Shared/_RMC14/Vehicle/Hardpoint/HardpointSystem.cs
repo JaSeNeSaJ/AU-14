@@ -564,7 +564,8 @@ public sealed partial class HardpointSystem : EntitySystem
         var previous = frameIntegrity.Integrity;
         var previousMax = frameIntegrity.MaxIntegrity;
         frameIntegrity.MaxIntegrity = totalMaxIntegrity;
-        frameIntegrity.Integrity = Math.Clamp(totalIntegrity, 0f, totalMaxIntegrity);
+        // CMU14: fitting or refreshing hardpoints cannot restore a cooked-off hull.
+        frameIntegrity.Integrity = IsCookedOff(vehicle) ? 0 : Math.Clamp(totalIntegrity, 0f, totalMaxIntegrity);
 
         if (Math.Abs(previous - frameIntegrity.Integrity) < 0.01f &&
             Math.Abs(previousMax - frameIntegrity.MaxIntegrity) < 0.01f)
@@ -1324,6 +1325,13 @@ public sealed partial class HardpointSystem : EntitySystem
 
     private void OnVehicleCanRun(Entity<HardpointSlotsComponent> ent, ref VehicleCanRunEvent args)
     {
+        // CMU14: cook-off is an irreversible loss of the vehicle.
+        if (IsCookedOff(ent.Owner))
+        {
+            args.CanRun = false;
+            return;
+        }
+
         if (!args.CanRun || HasAllRequired(ent.Owner, ent.Comp))
             return;
 
@@ -1547,6 +1555,12 @@ public sealed partial class HardpointSystem : EntitySystem
     {
         current = frame.Integrity;
         max = frame.MaxIntegrity;
+        // CMU14: surviving parts do not count as a repairable hull.
+        if (IsCookedOff(vehicle))
+        {
+            current = 0;
+            return true;
+        }
         var maxTopLevelCurrent = 0f;
         var maxTopLevelMax = 0f;
         var intactTopLevelHardpoints = 0;
@@ -1726,7 +1740,9 @@ public sealed partial class HardpointSystem : EntitySystem
             if (step.RequiresWelder && !HasComp<BlowtorchComponent>(args.Used))
                 continue;
 
-            if (!CanRepairInMaintenance(ent.Owner, args.User))
+            // CMU14: irreversible ammunition destruction.
+            if (!CanRepairCookOff(ent.Owner, args.User)
+                || !CanRepairInMaintenance(ent.Owner, args.User))
             {
                 args.Handled = true;
                 return true;
@@ -1807,6 +1823,10 @@ public sealed partial class HardpointSystem : EntitySystem
             return;
 
         if (args.Cancelled || args.Handled)
+            return;
+
+        // CMU14: recheck repairs that started before ignition, before consuming fuel.
+        if (!CanRepairCookOff(ent.Owner, args.User))
             return;
 
         args.Handled = true;
@@ -1982,7 +2002,9 @@ public sealed partial class HardpointSystem : EntitySystem
         if (!usedWelder && !usedWrench)
             return false;
 
-        if (!CanRepairInMaintenance(ent.Owner, args.User))
+        // CMU14: irreversible ammunition destruction.
+        if (!CanRepairCookOff(ent.Owner, args.User)
+            || !CanRepairInMaintenance(ent.Owner, args.User))
         {
             args.Handled = true;
             return true;
@@ -2074,6 +2096,10 @@ public sealed partial class HardpointSystem : EntitySystem
             return;
 
         if (args.Cancelled || args.Handled)
+            return;
+
+        // CMU14: recheck repairs that started before ignition, before consuming fuel.
+        if (!CanRepairCookOff(ent.Owner, args.User))
             return;
 
         args.Handled = true;
@@ -2564,6 +2590,10 @@ public sealed partial class HardpointSystem : EntitySystem
     // Used to Rejuv (Content.Server/Blackfoot/VehicleRejuvenateSystem)
     public void ResetAllHardpointsToFullHealth(EntityUid vehicle)
     {
+        // CMU14: service/reset paths cannot revive a cooked-off tank.
+        if (IsCookedOff(vehicle))
+            return;
+
         if (!TryComp<HardpointSlotsComponent>(vehicle, out var hardpoints)
                 || !TryComp<ItemSlotsComponent>(vehicle, out var itemSlots))
             return;
