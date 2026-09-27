@@ -10702,6 +10702,74 @@
   id: 691
   time: '2026-09-27T00:45:51.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2033
+- author: TheHellFireo
+  changes:
+  - message: Gunship hover now has a hull-shaped shadow, maneuvering blue lift jets,
+      ground wash, blue lighting and quieter rocket audio.
+    type: Tweak
+  - message: Fixed the hover overlay drawing exception and reversed jet artwork.
+    type: Fix
+  - message: Updated Mohawk takeoff and landing sounds, with the landing cue beginning
+      at the selected recording's 15-second mark.
+    type: Tweak
+  id: 692
+  time: '2026-09-27T01:37:36.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2034
+- author: TheHellFireo
+  changes:
+  - message: Fixed dropship movement, vehicle ramp pickup, faction navigation access,
+      and initial gunship deployment.
+    type: Fix
+  - message: Added coordinated three-minute FoF dropship departures and opposing launch
+      warnings.
+    type: Add
+  - message: Disabled weedkiller canisters in FoF and enabled unfamiliar-uniform markers
+      by default.
+    type: Tweak
+  - message: Added tank maintenance mode with engine and weapon locks during repairs.
+    type: Add
+  - message: Increased explosion limb severance and corrected structural-heavy blast
+      damage against humans.
+    type: Tweak
+  - message: Fixed burst-fire hyperburst, drone IFF, and static gauss turret bullet
+      collisions.
+    type: Fix
+  - message: Restored injury overlays, animal night-vision visibility, specialist
+      vending, and colony police scanners.
+    type: Fix
+  - message: Fixed reported content exceptions, spawn/loadout problems, and missing
+      authored shuttle atmosphere.
+    type: Fix
+  id: 693
+  time: '2026-09-27T01:45:30.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2035
+- author: k44908942-gif
+  changes:
+  - message: 'Added a full synthetic K9 system: player dogs can restrain targets,
+      track and bond with a marine for access, and take handler orders (Sic ''Em,
+      Evacuate) from a trained K9 handler.'
+    type: Add
+  - message: Added a K9 handler instructional pamphlet (synth vendor handler kits).
+    type: Add
+  - message: GOVFOR intel S&R K9 Team is now a tier 1 call costing 6 intel.
+    type: Tweak
+  - message: K9 handler loadout now uses ASO cap, aviators, skull balaclava, and a
+      Glock 75 holster.
+    type: Tweak
+  id: 694
+  time: '2026-09-27T09:18:18.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2031
+- author: TheHellFireo
+  changes:
+  - message: Tanks now suffer spectacular ammunition cook-offs at zero integrity or
+      from critical anti-armor rocket and tank-shell hits.
+    type: Add
+  - message: Tank cook-offs throw the turret and remaining crew out, leaving an irreparable
+      burning wreck that cannot be entered.
+    type: Add
+  id: 695
+  time: '2026-09-27T10:30:53.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2036
 - author: Vencallium
   changes:
   - message: Reworked USS Bush across multiple decks.
@@ -10769,7 +10837,7 @@
   - message: Added integration tests covering gas miner prototypes, output settings,
       anchoring, power configuration, and air mixture configuration.
     type: Code
-  id: 692
+  id: 696
   time: '2026-09-27T11:54:19.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/1978
 - author: TheHellFireo
@@ -10782,7 +10850,7 @@
   - message: Added bounded server memory and client state-application diagnostics
       for lag investigations.
     type: Admin
-  id: 693
+  id: 697
   time: '2026-09-27T11:59:07.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2037
 - author: johnnny34y
@@ -10790,7 +10858,7 @@
   - message: HAZOPS M240A2 now has buffed range across all ammo types and an underbarrel
       extinguisher slot
     type: Tweak
-  id: 694
+  id: 698
   time: '2026-09-27T11:59:32.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2022
 - author: TheHellFireo
@@ -10808,8 +10876,18 @@
   - message: SLAW, SMAW, Mk86, and grenade launcher crates restock one crate every
       20 minutes.
     type: Tweak
-  id: 695
+  id: 699
   time: '2026-09-27T12:07:00.0000000+00:00'
   url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2038
+- author: TheHellFireo
+  changes:
+  - message: Restored missing tank cook-off fire, smoke, and debris effects.
+    type: Fix
+  - message: Restored the red injury vignette and its increasing intensity as health
+      falls.
+    type: Fix
+  id: 700
+  time: '2026-09-27T14:39:37.0000000+00:00'
+  url: https://github.com/AU-14/ColonialMarinesUniverse/pull/2039
 Name: CMU
 Order: -1

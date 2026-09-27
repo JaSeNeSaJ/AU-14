@@ -147,6 +147,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
         _config.OnValueChanged(CVars.ProfEnabled, OnProfilerEnabledChanged);
 
         InitializeMetrics();
+        _pvsMetrics = new(Prometheus.Metrics.DefaultFactory, _timing.RealTime);
 
         if (_enabled)
         {
@@ -635,6 +636,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
             $"baselineComponentsAdded={baseline.ComponentsAdded} currentComponentsAdded={current.ComponentsAdded}"));
 
         LogProfile(profile, top);
+        LogPvsStages();
         foreach (var phase in _phases.Drain().OrderByDescending(row => row.MaxMs))
         {
             _sawmill.Warning(Invariant(
@@ -949,6 +951,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
         _detector.Reset();
         _spikeCapture.Clear();
         _operations.Clear();
+        _pvsMetrics.Reset(now);
         _lastRuntimeSample = default;
         _churnBaseline = _churn.Snapshot();
         _lastMessageBandwidth = new(_netManager.MessageBandwidthUsage);
