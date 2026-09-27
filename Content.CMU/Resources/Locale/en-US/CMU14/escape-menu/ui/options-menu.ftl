@@ -57,3 +57,7 @@ cmu-ui-setup-introduction = Welcome to CMU! Choose how your interface looks and 
 cmu-ui-setup-later = Remind me next time
 cmu-ui-setup-save = Save and continue
 cmu-ui-setup-open = Open UI setup
+cmu-ui-options-chat-reset-to-local = Switch chat back to Local/Dead after sending
+cmu-ui-options-chat-reset-to-local-tooltip = After you send a message on any other channel, the chat box goes back to Local, or to Dead chat if you're a ghost.
+cmu-ui-options-chat-center-input = Center chat input while typing like in CM13
+cmu-ui-options-chat-center-input-tooltip = Pressing a chat key moves the text box to the middle of the screen. It goes back when you send or cancel the message.
