@@ -183,7 +183,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
             $"perfIncidentId={_activeIncidentId} serverTps={_lastObservation?.AchievedTps ?? 0:F2} ",
             $"serverTpsValid={_lastObservation?.TpsValid ?? false} perfSampleAgeSeconds={(_lastObservation == null ? -1 : (now - _lastObservation.RealTime).TotalSeconds):F2} ",
             $"lastStallTick={_lastStallTick} lastStallMs={_lastStallMs:F2} ",
-            $"lastStallAgeSeconds={(_lastStallTime == null ? -1 : (now - _lastStallTime.Value).TotalSeconds):F2}");
+            $"lastStallAgeSeconds={(_lastStallTime == null ? -1 : (now - _lastStallTime.Value).TotalSeconds):F2} ") + DescribeMemory();
     }
 
     public void Update()
@@ -234,6 +234,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
             SetProfilerCVar(false);
         _profilerEnabledByDiagnostics = false;
         _meter?.Dispose();
+        _memory.Dispose();
         _initialized = false;
     }
 
@@ -254,7 +255,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
             $"entities={observation.EntityCount} components={observation.ComponentCount} ",
             $"players={observation.Players} profiler={_profiler.IsEnabled} metrics={_config.GetCVar(CVars.MetricsEnabled)} ",
             $"profilerEventCapacity={_profiler.Buffer.LogBuffer.Length} profilerIndexCapacity={_profiler.Buffer.IndexBuffer.Length} ",
-            $"churnIncidents={_config.GetCVar(CCVars.CMUServerPerformanceChurnIncidents)} capturePhase=input-post-engine");
+            $"churnIncidents={_config.GetCVar(CCVars.CMUServerPerformanceChurnIncidents)} capturePhase=input-post-engine ") + DescribeMemory();
     }
 
     public bool CaptureManualReport()
@@ -591,6 +592,8 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
         using var reportScope = _profiler.Group("CMU Diagnostics Report");
         _detailPending = false;
         _lastDetailTime = observation.RealTime;
+        _memory.Sample(_timing.RealTime);
+        _sawmill.Warning(Invariant($"[CMU-PERF] memory incidentId={_activeIncidentId} source={source} ") + DescribeMemory());
         LogOperations();
         if (_spikeCapture.ShouldCapture(observation.RealTime, observation.FrameMilliseconds, observation.AllocatedBytes,
                 GetStallThreshold(), _config.GetCVar(CCVars.CMUServerPerformanceAllocationMiBPerFrame) * BytesPerMiB))
@@ -841,7 +844,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
             $"sentPacketsTotal={observation.SentPacketsTotal} receivedPacketsTotal={observation.ReceivedPacketsTotal} ",
             $"profileFrame={observation.ProfileFrame?.ToString(CultureInfo.InvariantCulture) ?? "unknown"} ",
             $"allocatedBytes={observation.AllocatedBytes} profiler={_profiler.IsEnabled} ",
-            $"metrics={_config.GetCVar(CVars.MetricsEnabled)}");
+            $"metrics={_config.GetCVar(CVars.MetricsEnabled)} ") + DescribeMemory();
     }
 
     private IReadOnlyList<CMUNetworkMessageRate> CaptureMessageRates(double elapsed)
@@ -1098,7 +1101,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
         {
             _sawmill.Warning(Invariant(
                 $"[CMU-PERF] runtime-metrics-disabled metrics={metrics} runtime={runtimeMetrics} ",
-                $"retainedHeapRssThreadPoolUnavailable=true gcPauseWindowAvailable=true action=enable-and-scrape-runtime-metrics"));
+                $"memoryLogSamplesAvailable=true gcPauseWindowAvailable=true action=enable-and-scrape-runtime-metrics-for-continuous-history"));
         }
     }
 
