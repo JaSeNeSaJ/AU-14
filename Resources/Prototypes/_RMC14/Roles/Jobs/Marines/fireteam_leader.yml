@@ -138,4 +138,7 @@
     raffle:
       settings: default
     job: CMFireteamLeader
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobFireteamLeader
+      time: 1

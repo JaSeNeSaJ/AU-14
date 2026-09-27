@@ -74,7 +74,10 @@
     job: CMMarineRaiderLeader
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobSquadLeader
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
     squad: SquadSOF
 

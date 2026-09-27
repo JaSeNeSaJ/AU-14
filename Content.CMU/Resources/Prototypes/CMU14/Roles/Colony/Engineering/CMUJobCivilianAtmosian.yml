@@ -31,7 +31,10 @@
     icon:
       sprite: /Textures/CMU14/Interface/au14colonyjobicons.rsi
       state: engineer
-  requirements: []
+  requirements:
+  - !type:DepartmentTimeRequirement
+    department: AU14DepartmentEngineering
+    time: 18000 # 5 hours
   accessGroups:
   - Colonist
   - auengi

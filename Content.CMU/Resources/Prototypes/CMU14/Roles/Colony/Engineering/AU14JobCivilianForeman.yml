@@ -30,6 +30,8 @@
   canBeAntag: false
   playTimeTracker: AU14JobCivilianForeman
   requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 43200 # 12 hours
   - !type:AgeRequirement
     requiredAge: 25
   - !type:TraitsRequirement

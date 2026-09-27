@@ -67,7 +67,10 @@
     job: CMMarineRaider
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobRifleman
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
     squad: SquadSOF
 

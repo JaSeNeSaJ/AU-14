@@ -5,7 +5,9 @@
   setPreference: true
   objective: roles-antag-changeling-objective
   guides: [ Changelings ]
-  requirements: []
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 5h
 
 - type: antagSpecifier
   parent: RestrictedAntag

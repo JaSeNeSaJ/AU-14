@@ -42,7 +42,9 @@
   playTimeTracker: AU14JobCLFGuerilla
   setPreference: true
   ignoreAllegiance: true
-  requirements: []
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 7200 # 2 hours
   ranks:
     RMCRankCivilian: []
   startingGear: CMU14GearCLFCommandoMedic

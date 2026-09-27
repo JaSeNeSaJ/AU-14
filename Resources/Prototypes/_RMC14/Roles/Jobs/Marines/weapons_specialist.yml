@@ -142,4 +142,7 @@
     raffle:
       settings: default
     job: CMWeaponsSpecialist
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobWeaponsSpecialist
+      time: 1

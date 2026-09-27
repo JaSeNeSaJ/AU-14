@@ -79,7 +79,10 @@
     rules: rmc-ghost-role-information-spp-rules
     reregister: false
     job: RMCSPPCommandoLeader
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobSquadLeader
+      time: 18000 # 5 Hours
     raffle:
       settings: short
   - type: GhostRoleApplySpecial

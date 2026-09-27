@@ -4,7 +4,10 @@
   name: rmc-job-name-forecon-marksman
   startingGear: RMCGearForeconMarksman
   icon: "CMJobIconWeaponsSpecialist"
-  requirements: []
+  requirements:
+  - !type:RoleTimeRequirement
+    role: CMJobWeaponsSpecialist
+    time: 3600 # 1 hour
   spawnMenuRoleName: FORECON Marksman (Survivor)
   special:
   - !type:AddComponentSpecial

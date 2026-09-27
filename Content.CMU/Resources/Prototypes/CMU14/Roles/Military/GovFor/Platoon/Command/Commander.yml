@@ -65,6 +65,8 @@
     - type: JobPrefix
       prefix: au14-job-prefix-AU14JobGOVFORPlatCoCMBCIU
   requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   - !type:AgeRequirement
     requiredAge: 30
   - !type:TraitsRequirement

@@ -5,7 +5,10 @@
   description: rmc-job-description-doctor
   setPreference: false
   playTimeTracker: CMJobDoctor
-  requirements: []
+  requirements:
+  - !type:TotalJobsTimeRequirement
+    group: CMJobsMedical
+    time: 3600 # 1 hour
   ranks:
     RMCRankSecondLT: []
   startingGear: CMGearDoctor

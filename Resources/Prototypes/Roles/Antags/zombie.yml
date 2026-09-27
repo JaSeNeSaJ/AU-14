@@ -5,7 +5,9 @@
   setPreference: true
   objective: roles-antag-initial-infected-objective
   guides: [ Zombies ]
-  requirements: []
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 1h
 
 - type: antagSpecifier
   parent: RestrictedAntag

@@ -78,7 +78,10 @@
     job: RMCPMCMedic
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobHospitalCorpsman
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
     squad: SquadPMC
 

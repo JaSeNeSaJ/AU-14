@@ -79,7 +79,10 @@
     job: CMFreelancerRifleman
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobRifleman
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
     squad: SquadFreelancer
 
@@ -95,7 +98,10 @@
     job: CMFreelancerRifleman
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobRifleman
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
     squad: SquadFreelancer
 

@@ -48,7 +48,9 @@
   setPreference: true
   ignoreAllegiance: true
   playTimeTracker: AU14JobCLFSapper
-  requirements: []
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   basePlaytimeTracker: true
   ranks:
     RMCRankCivilian: []

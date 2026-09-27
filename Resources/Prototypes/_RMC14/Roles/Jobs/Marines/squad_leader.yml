@@ -145,7 +145,10 @@
     raffle:
       settings: default
     job: CMSquadLeader
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobSquadLeader
+      time: 1
 
 # Guidebook
 - type: entity

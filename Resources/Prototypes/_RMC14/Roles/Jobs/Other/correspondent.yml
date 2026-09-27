@@ -4,7 +4,10 @@
   name: cm-job-name-correspondent
   description: cm-job-description-correspondent
   playTimeTracker: CMJobCorrespondent
-  requirements: []
+  requirements:
+  - !type:TotalDepartmentsTimeRequirement
+    group: CMDepartmentsHuman
+    time: 36000 # 10 hours
   ranks:
     RMCRankCivilian: []
   startingGear: CMGearCorrespondent

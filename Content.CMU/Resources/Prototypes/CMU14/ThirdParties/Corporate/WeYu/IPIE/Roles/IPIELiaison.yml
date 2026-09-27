@@ -94,7 +94,9 @@
     job: AU14JobIPIELawyer
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:OverallPlaytimeRequirement
+      time: 18000 # 5 hours
     rules: au14-lpie-lawyer-description
 
 - type: startingGear

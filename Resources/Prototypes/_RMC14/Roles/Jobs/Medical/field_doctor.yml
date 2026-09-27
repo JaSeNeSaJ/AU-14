@@ -4,7 +4,10 @@
   name: rmc-job-name-field-doctor
   description: rmc-job-description-field-doctor
   playTimeTracker: RMCJobFieldDoctor
-  requirements: []
+  requirements:
+  - !type:RoleTimeRequirement
+    role: CMJobDoctor
+    time: 36000 # 10 hours
   ranks:
     RMCRankSecondLT: []
   startingGear: CMGearFieldDoctor

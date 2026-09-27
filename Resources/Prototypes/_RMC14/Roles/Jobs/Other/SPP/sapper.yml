@@ -78,7 +78,10 @@
     job: RMCSPPEngineer
     raffle:
       settings: short
-    requirements: []
+    requirements:
+    - !type:RoleTimeRequirement
+      role: CMJobCombatTech
+      time: 18000 # 5 Hours
   - type: GhostRoleApplySpecial
 
 - type: randomHumanoidSettings

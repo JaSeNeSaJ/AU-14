@@ -5,7 +5,16 @@
   description: cm-job-description-intel
   setPreference: false
   playTimeTracker: CMJobIntelOfficer
-  requirements: []
+  requirements:
+  - !type:DepartmentTimeRequirement
+    department: CMSquad
+    time: 36000 # 10 hours
+  - !type:RoleTimeRequirement
+    role: CMJobCombatTech
+    time: 3600 # 1 hour
+  - !type:RoleTimeRequirement
+    role: CMJobFireteamLeader
+    time: 3600 # 1 hour
   ranks:
     RMCRankSecondLT: []
   startingGear: CMGearIntelOfficer

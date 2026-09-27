@@ -26,7 +26,9 @@
   name: cmu-weyuexec-name-goon
   description: cmu-weyuexec-description-goon
   playTimeTracker: CMUJobWeYuGoon
-  requirements: []
+  requirements:
+  - !type:OverallPlaytimeRequirement
+    time: 18000 # 5 hours
   ranks:
     RMCRankCivilian: []
   startingGear: CMUGearWeYuGoon

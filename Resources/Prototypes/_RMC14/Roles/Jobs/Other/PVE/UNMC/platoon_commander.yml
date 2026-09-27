@@ -4,7 +4,10 @@
   name: cm-job-name-platoon-commander
   description: cm-job-description-platoon-commander
   playTimeTracker: CMJobPVEPlatoonCommander
-  requirements: []
+  requirements:
+  - !type:RoleTimeRequirement
+    role: CMJobExecutiveOfficer
+    time: 10800 # 3 hours
   ranks:
     RMCRankSecondLT: []
   spawnMenuRoleName: Sun Rider Platoon Commander (PVE)

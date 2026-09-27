@@ -3,7 +3,16 @@
   name: job-name-ce
   description: job-description-ce
   playTimeTracker: JobChiefEngineer
-  requirements: []
+  requirements:
+    - !type:RoleTimeRequirement
+      role: JobAtmosphericTechnician
+      time: 2.5h
+    - !type:RoleTimeRequirement
+      role: JobStationEngineer
+      time: 5h
+    - !type:DepartmentTimeRequirement
+      department: Engineering
+      time: 10h
   startingGear: ChiefEngineerGear
   icon: "JobIconChiefEngineer"
   supervisors: job-supervisors-captain

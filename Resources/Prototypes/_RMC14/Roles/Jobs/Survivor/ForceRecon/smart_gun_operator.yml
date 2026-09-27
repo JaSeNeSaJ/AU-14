@@ -4,7 +4,10 @@
   name: cm-job-name-smart-gun-operator
   startingGear: RMCGearForeconSmartgunOperator
   icon: "CMJobIconSmartGunOperator"
-  requirements: []
+  requirements:
+  - !type:RoleTimeRequirement
+    role: CMJobSmartGunOperator
+    time: 3600 # 1 hour
   spawnMenuRoleName: FORECON Smart Gun Operator (Survivor)
   special:
   - !type:AddComponentSpecial

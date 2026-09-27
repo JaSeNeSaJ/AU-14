@@ -5,7 +5,10 @@
   description: rmc-job-description-nurse
   setPreference: false
   playTimeTracker: CMJobNurse
-  requirements: []
+  requirements:
+  - !type:TotalDepartmentsTimeRequirement
+    group: CMDepartmentsHuman
+    time: 3600 # 1 hour
   ranks:
     RMCRankSergeant:
     - !type:RoleTimeRequirement

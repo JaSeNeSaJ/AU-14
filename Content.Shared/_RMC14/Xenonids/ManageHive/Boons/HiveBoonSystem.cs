@@ -10,6 +10,7 @@ using Content.Shared._RMC14.GameTicking;
 using Content.Shared._RMC14.Map;
 using Content.Shared._RMC14.Marines;
 using Content.Shared._RMC14.Marines.Announce;
+using Content.Shared._RMC14.PlayTimeTracking;
 using Content.Shared._RMC14.Repairable;
 using Content.Shared._RMC14.Rules;
 using Content.Shared._RMC14.Xenonids.Announce;
@@ -57,6 +58,7 @@ public sealed partial class HiveBoonSystem : EntitySystem
     [Dependency] private SharedRMCGameTickerSystem _rmcGameTicker = default!;
     [Dependency] private RMCMapSystem _rmcMap = default!;
     [Dependency] private RMCPlanetSystem _rmcPlanet = default!;
+    [Dependency] private SharedRMCPlayTimeManager _rmcPlaytime = default!;
     [Dependency] private ISerializationManager _serialization = default!;
     [Dependency] private IGameTiming _timing = default!;
     [Dependency] private SharedXenoAnnounceSystem _xenoAnnounce = default!;
@@ -73,6 +75,7 @@ public sealed partial class HiveBoonSystem : EntitySystem
     private int _aliveMarineRequirement;
     private TimeSpan _royalResinEvery;
     public TimeSpan CommunicationTowerXenoTakeoverTime { get; private set; }
+    private TimeSpan _kingVoteCandidateTimeRequired;
     private TimeSpan _kingFirstWarningTime;
     private TimeSpan _kingVoteStartTime;
     private TimeSpan _kingVoteAskCandidatesTime;
@@ -124,6 +127,11 @@ public sealed partial class HiveBoonSystem : EntitySystem
         Subs.CVar(_config,
             RMCCVars.RMCCommunicationTowerXenoTakeoverMinutes,
             v => CommunicationTowerXenoTakeoverTime = TimeSpan.FromMinutes(v),
+            true);
+
+        Subs.CVar(_config,
+            RMCCVars.RMCKingVoteCandidateTimeRequirementHours,
+            v => _kingVoteCandidateTimeRequired = TimeSpan.FromHours(v),
             true);
 
         Subs.CVar(_config,
@@ -461,7 +469,16 @@ public sealed partial class HiveBoonSystem : EntitySystem
 
         canVote = true;
 
-        // CMU14: King candidacy has no account playtime requirement.
+        try
+        {
+            if (_rmcPlaytime.GetTotalXenoPlaytime(xeno.Comp.PlayerSession) < _kingVoteCandidateTimeRequired)
+                return;
+        }
+        catch
+        {
+            return;
+        }
+
         canBeKing = true;
     }
 
