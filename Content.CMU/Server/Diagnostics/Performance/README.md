@@ -47,7 +47,8 @@ The principal records are:
 | Record | Meaning |
 | --- | --- |
 | `startup` | Effective startup state, profiler state, metrics state, and main thresholds. |
-| `runtime-metrics-disabled` | Retained heap/RSS/thread-pool counters need external metrics; GC pause windows remain available. |
+| `runtime-metrics-disabled` | Continuous external metrics are disabled; bounded memory log samples and GC pause windows remain available. |
+| `memory` | Server process RSS/private bytes, estimated managed memory, heap/fragmentation at last GC, allocation rate, GC counts and thread-pool queue. |
 | `tracking-reset` / `epoch-reset` | Bounded ECS counters and rate windows were safely re-anchored. |
 | `heartbeat` | Healthy/warmup scalar snapshot. Absence is externally alertable. |
 | `baseline-refresh` | New healthy prototype/component churn comparison point. |
@@ -209,14 +210,16 @@ client_state_health_enabled = true
 
 The correct logging key is `cmu.server_performance.log_enabled`; the old
 `log.cmu.server_performance.log_enabled` key is invalid. These content changes must be deployed to both
-server and clients for application-progress reports. Runtime metrics below still need external scraping;
-the diagnostic logger measures process-wide GC pause windows but does not measure retained heap.
+server and clients for application-progress reports. Runtime metrics below need external scraping for
+continuous history; the diagnostic logger also includes bounded process-memory and GC samples.
 
 Increasing profiler rings preserves more pre-trigger history but consumes more fixed memory and makes a report scan larger. The automatic parser still caps frames and events.
 
 ## Runtime and process telemetry
 
-The diagnostics manager under `Content.CMU/Server` is compiled into `Content.Server`, which runs without the client sandbox and can read GC pause and allocation counters. Server gameplay code calls its bounded operation scopes through the diagnostics interface. Client and shared code keep using the sandbox-compatible engine profiler. The automatic logs do not report retained managed heap, process working set/private bytes, CPU, handles, thread count, or thread-pool starvation.
+The diagnostics manager under `Content.CMU/Server` is compiled into `Content.Server`, which runs without the client sandbox. It samples process working set/private bytes, estimated managed memory, GC heap/fragmentation/committed memory, allocation rate, collection counts and thread-pool counters at most once every five seconds. It never forces collection. Heartbeats, incident rows, sync context, `cmuperf status`, and detailed reports include these samples with their age. OS counters use `-1` when unavailable. Fields ending in `AtLastGc` describe the last completed GC, not the current frame; `gcIndex` identifies that GC. `managedBytes` is an estimate and can include collectible objects. These are server process measurements, not client RAM usage or proof of a leak.
+
+Server gameplay code calls bounded operation scopes through the diagnostics interface. Client and shared code keep using sandbox-compatible counters. CPU, handles and continuous memory history still require external telemetry.
 
 Use the existing engine metrics endpoint for that layer:
 
