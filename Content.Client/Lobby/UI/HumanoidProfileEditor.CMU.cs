@@ -1,5 +1,9 @@
 using System.Linq;
 using Content.Client._RMC14.NamedItems;
+// cmu edit start
+using Content.Client.Administration.UI.CustomControls;
+using Content.Client.Humanoid;
+// cmu edit end
 using Content.Client.Lobby.UI.Roles;
 using Content.Client.Message;
 using Content.Client.Stylesheets;
@@ -33,14 +37,18 @@ public sealed partial class HumanoidProfileEditor
     private const int InsurgencyTabIndex = 3;
     private const int ColonyFallTabIndex = 4;
     private const int DistressSignalTabIndex = 5;
-    private const int TraitsTabIndex = 6;
-    private const int MarkingsTabIndex = 7;
-    private const int NamedItemsTabIndex = 8;
+    // CMU14: Force on Force roles, hijacking, announcements and identification.
+    private const int ForceOnForceTabIndex = 6;
+    private const int TraitsTabIndex = 7;
+    private const int MarkingsTabIndex = 8;
+    private const int NamedItemsTabIndex = 9;
 
     private const float HighJobPreviewScrollDelay = 2.75f;
     private const string GamemodeInsurgency = "Insurgency";
     private const string GamemodeColonyFall = "ColonyFall";
     private const string GamemodeDistressSignal = "DistressSignal";
+    // CMU14: Force on Force roles, hijacking, announcements and identification.
+    private const string GamemodeForceOnForce = "ForceOnForce";
 
     private readonly List<AllegiancePrototype> _allegiances = new();
     private readonly List<OriginPrototype> _origins = new();
@@ -72,6 +80,8 @@ public sealed partial class HumanoidProfileEditor
         TabContainer.SetTabTitle(TraitsTabIndex, Loc.GetString("humanoid-profile-editor-traits-tab"));
         TabContainer.SetTabTitle(MarkingsTabIndex, Loc.GetString("humanoid-profile-editor-markings-tab"));
         SetupGamemodeTabTitles();
+        // CMU14: Force on Force roles, hijacking, announcements and identification.
+        InitializeForceOnForcePreferences();
         TabContainer.OnTabChanged += _ => ReloadPreview(false);
 
         RefreshAllegiances();
@@ -94,7 +104,7 @@ public sealed partial class HumanoidProfileEditor
         RefreshSynthetic();
 
         foreach (var value in Enum.GetValues<ArmorPreference>())
-            ArmorPreferenceButton.AddItem(value.ToString(), (int)value);
+            ArmorPreferenceButton.AddItem(Loc.GetString($"humanoid-profile-editor-preference-armor-{value.ToString().ToLowerInvariant()}"), (int)value);
 
         ArmorPreferenceButton.OnItemSelected += args =>
         {
@@ -134,19 +144,35 @@ public sealed partial class HumanoidProfileEditor
         XenoPostfix.OnTextChanged += args => SetXenoPostfix(args.Text);
 
         RefreshThreatPreferences();
+        // CMU14: Force on Force roles, hijacking, announcements and identification.
+        FoFSideButton.SelectId((int) (Profile?.FoFSide ?? ForceOnForceSide.Either));
+        FoFFallbackButton.SelectId((int) (Profile?.FoFFallback ?? ForceOnForceFallback.StayInLobby));
         InitializeNamedItems();
         CrtLobbyTheme.Apply(this);
     }
 
     private void InitializeCharacterDescription()
     {
+        // cmu edit start
         CharacterSkinColorPicker.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv;
-        CharacterHairColorPicker.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv;
         CharacterEyeColorPicker.SelectorType = ColorSelectorSliders.ColorSelectorType.Hsv;
 
         CharacterSkinColorPicker.OnColorChanged += OnCharacterSkinColorChanged;
-        CharacterHairColorPicker.OnColorChanged += OnCharacterHairColorChanged;
         CharacterEyeColorPicker.OnColorChanged += OnCharacterEyeColorChanged;
+
+        CharacterSkinSlider.OnValueChanged += _ => OnCharacterSkinSliderChanged();
+        Skin.OnValueChanged += _ => SyncCharacterSkinControls();
+        SpeciesButton.OnItemSelected += _ => SyncCharacterSkinControls();
+
+        _markingsModel.OrganDataChanged += RefreshCharacterHairPickers;
+        _markingsModel.EnforcementsChanged += RefreshCharacterHairPickers;
+        _markingsModel.OrganProfileDataChanged += refresh =>
+        {
+            if (refresh)
+                RefreshCharacterHairPickers();
+        };
+        RefreshCharacterHairPickers();
+        // cmu edit end
 
         ShortExamineEdit.OnTextChanged += args => SetShortExamine(args.Text);
 
@@ -275,6 +301,9 @@ public sealed partial class HumanoidProfileEditor
 
     private void UpdateCmuControls()
     {
+        // CMU14: Force on Force roles, hijacking, announcements and identification.
+        FoFSideButton.SelectId((int) (Profile?.FoFSide ?? ForceOnForceSide.Either));
+        FoFFallbackButton.SelectId((int) (Profile?.FoFFallback ?? ForceOnForceFallback.StayInLobby));
         MarkPreviewJobsDirty();
         UpdateRegulationHairPickers();
         UpdateAllegianceControls();
@@ -681,7 +710,6 @@ public sealed partial class HumanoidProfileEditor
         SkinToneNameLabel.Text = Profile is null
             ? string.Empty
             : NamedColorHelper.NearestColorName(Profile.Appearance.SkinColor);
-        HairColorNameLabel.Text = GetNormalHairColorName(Profile);
         EyeColorNameLabel.Text = Profile is null
             ? string.Empty
             : NamedColorHelper.NearestColorName(Profile.Appearance.EyeColor);
@@ -690,36 +718,80 @@ public sealed partial class HumanoidProfileEditor
             return;
 
         _loadingCharacterColorControls = true;
-        CharacterSkinColorPicker.Color = Profile.Appearance.SkinColor;
-        CharacterHairColorPicker.Color = GetNormalHairColor(Profile) ?? Color.White;
         CharacterEyeColorPicker.Color = Profile.Appearance.EyeColor;
         _loadingCharacterColorControls = false;
+
+        // cmu edit start
+        SyncCharacterSkinControls();
+        // cmu edit end
     }
 
-    private static string GetNormalHairColorName(HumanoidCharacterProfile? profile)
+    // cmu edit start
+    private void SyncCharacterSkinControls()
     {
-        return GetNormalHairColor(profile) is { } color
-            ? NamedColorHelper.NearestColorName(color)
-            : string.Empty;
+        if (Profile is null)
+            return;
+
+        var skin = _prototypeManager.Index<SpeciesPrototype>(Profile.Species).SkinColoration;
+        var strategy = _prototypeManager.Index(skin).Strategy;
+        var unary = strategy.InputType == SkinColorationStrategyInput.Unary;
+
+        _loadingCharacterColorControls = true;
+        CharacterSkinSlider.Visible = unary;
+        CharacterSkinColorPicker.Visible = !unary;
+        if (unary)
+            CharacterSkinSlider.Value = strategy.ToUnary(Profile.Appearance.SkinColor);
+        else
+            CharacterSkinColorPicker.Color = Profile.Appearance.SkinColor;
+        _loadingCharacterColorControls = false;
+
+        SkinToneNameLabel.Text = NamedColorHelper.NearestColorName(Profile.Appearance.SkinColor);
     }
 
-    private static Color? GetNormalHairColor(HumanoidCharacterProfile? profile)
+    private void OnCharacterSkinSliderChanged()
     {
-        if (profile is null)
-            return null;
+        if (_loadingCharacterColorControls || Profile is null)
+            return;
 
-        foreach (var layers in profile.Appearance.Markings.Values)
+        Skin.Value = CharacterSkinSlider.Value;
+        OnSkinColorOnValueChanged();
+        SyncCharacterSkinControls();
+    }
+
+    private void RefreshCharacterHairPickers()
+    {
+        CharacterHairPickers.RemoveAllChildren();
+
+        foreach (var layer in new[] { HumanoidVisualLayers.Hair, HumanoidVisualLayers.FacialHair })
         {
-            if (layers.TryGetValue(HumanoidVisualLayers.Hair, out var markings) &&
-                markings.Count > 0 &&
-                markings[0].MarkingColors.Count > 0)
+            foreach (var (organ, organData) in _markingsModel.OrganData)
             {
-                return markings[0].MarkingColors[0];
+                if (!organData.Layers.Contains(layer) ||
+                    !_markingsModel.OrganProfileData.TryGetValue(organ, out var profileData))
+                {
+                    continue;
+                }
+
+                var markings = _markingsModel.EnforceGroupAndSexRestrictions
+                    ? _markingManager.MarkingsByLayerAndGroupAndSex(layer, organData.Group, profileData.Sex)
+                    : _markingManager.MarkingsByLayer(layer);
+
+                if (markings.Count == 0)
+                    break;
+
+                CharacterHairPickers.AddChild(new HSeparator { Color = Color.FromHex("#16823E"), Margin = new Thickness(0, 5) });
+                CharacterHairPickers.AddChild(new Label { Text = Loc.GetString($"markings-layer-{layer}") });
+                CharacterHairPickers.AddChild(new LayerMarkingPicker(_markingsModel, organ, layer, markings)
+                {
+                    HorizontalExpand = true,
+                    MinHeight = 350,
+                    ShowFooter = false,
+                });
+                break;
             }
         }
-
-        return null;
     }
+    // cmu edit end
 
     private void OnCharacterSkinColorChanged(Color color)
     {
@@ -736,23 +808,9 @@ public sealed partial class HumanoidProfileEditor
         ReloadProfilePreview();
     }
 
-    private void OnCharacterHairColorChanged(Color color)
-    {
-        if (_loadingCharacterColorControls || Profile is null)
-            return;
-
-        foreach (var (organ, layers) in _markingsModel.Markings)
-        {
-            if (!layers.TryGetValue(HumanoidVisualLayers.Hair, out var markings))
-                continue;
-
-            foreach (var marking in markings)
-            {
-                for (var i = 0; i < marking.MarkingColors.Count; i++)
-                    _markingsModel.TrySetMarkingColor(organ, HumanoidVisualLayers.Hair, marking.MarkingId, i, color);
-            }
-        }
-    }
+    // cmu edit start
+    // hair color handler removed, hair is colored in the hair menu
+    // cmu edit end
 
     private void OnCharacterEyeColorChanged(Color color)
     {
@@ -863,7 +921,7 @@ public sealed partial class HumanoidProfileEditor
     {
         target.AddChild(new Label
         {
-            Text = "THREATS",
+            Text = Loc.GetString("humanoid-profile-editor-threats-label"), 
             Margin = new Thickness(6f, 4f, 0f, 6f),
             StyleClasses = { StyleNano.StyleClassCrtHeading },
         });
@@ -964,22 +1022,31 @@ public sealed partial class HumanoidProfileEditor
         if (id.EndsWith("OnMarker", StringComparison.OrdinalIgnoreCase))
         {
             id = id[..^"OnMarker".Length];
-            suffix = " (Marker)";
+            suffix = " " + Loc.GetString("humanoid-profile-editor-threat-marker-suffix"); 
         }
 
-        if (id.EndsWith("CF", StringComparison.OrdinalIgnoreCase))
+        if (id.EndsWith("CF", StringComparison.OrdinalIgnoreCase) ||
+            id.EndsWith("DS", StringComparison.OrdinalIgnoreCase)) 
+        {
             id = id[..^2];
+        }
         if (id.EndsWith("Threat", StringComparison.OrdinalIgnoreCase))
             id = id[..^"Threat".Length];
 
-        return id.ToLowerInvariant() switch
+        var key = id.ToLowerInvariant() switch
         {
-            "xeno" => "Xenomorph" + suffix,
-            "ape" => "Apes" + suffix,
-            "cultist" => "Cultists" + suffix,
-            "wendigo" => "Wendigo" + suffix,
-            _ => HumanizePrototypeId(id) + suffix,
+            "xeno" => "humanoid-profile-editor-threat-xeno",
+            "ape" => "humanoid-profile-editor-threat-ape",
+            "cultist" => "humanoid-profile-editor-threat-cultist",
+            "wendigo" => "humanoid-profile-editor-threat-wendigo",
+            "abominations" => "humanoid-profile-editor-threat-abomination",
+            "tribals" => "humanoid-profile-editor-threat-tribal",
+            "neomorphs" => "humanoid-profile-editor-threat-neomorph",
+            "badbloodclan" => "humanoid-profile-editor-threat-badbloodclan",
+            _ => null,
         };
+
+        return (key != null ? Loc.GetString(key) : HumanizePrototypeId(id)) + suffix;
     }
 
     private static string HumanizePrototypeId(string id)

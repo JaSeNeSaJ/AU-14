@@ -49,6 +49,7 @@ namespace Content.Server.Atmos.EntitySystems
                 if (!tile.AdjacentBits.IsFlagSet(direction)) continue;
                 var other = tile.AdjacentTiles[i];
                 if (other?.Air == null) continue;
+                if (other.AdjacentTiles[i.ToOppositeIndex()] != tile) continue;
                 var comparisonMoles = other.Air.TotalMoles;
                 if (!(MathF.Abs(comparisonMoles - startingMoles) > Atmospherics.MinimumMolesDeltaToMove)) continue;
                 runAtmos = true;
@@ -86,6 +87,7 @@ namespace Content.Server.Atmos.EntitySystems
                     if (!exploring.AdjacentBits.IsFlagSet(direction)) continue;
                     var adj = exploring.AdjacentTiles[j];
                     if (adj?.Air == null) continue;
+                    if (adj.AdjacentTiles[j.ToOppositeIndex()] != exploring) continue;
                     if(adj.MonstermosInfo.LastQueueCycle == queueCycle) continue;
                     adj.MonstermosInfo = new MonstermosInfo {LastQueueCycle = queueCycle};
 
@@ -156,7 +158,9 @@ namespace Content.Server.Atmos.EntitySystems
                     {
                         var direction = (AtmosDirection) (1 << j);
                         if (!otherTile.AdjacentBits.IsFlagSet(direction)) continue;
-                        var tile2 = otherTile.AdjacentTiles[j]!;
+                        var tile2 = otherTile.AdjacentTiles[j];
+                        if (tile2 == null || tile2.AdjacentTiles[j.ToOppositeIndex()] != otherTile)
+                            continue;
                         DebugTools.Assert(tile2.AdjacentBits.IsFlagSet(direction.GetOpposite()));
 
                         // skip anything that isn't part of our current processing block.
@@ -229,6 +233,7 @@ namespace Content.Server.Atmos.EntitySystems
 
                             var otherTile2 = otherTile.AdjacentTiles[k];
                             if (otherTile2 == null || otherTile2.MonstermosInfo.LastQueueCycle != queueCycle) continue;
+                            if (otherTile2.AdjacentTiles[k.ToOppositeIndex()] != otherTile) continue;
                             DebugTools.Assert(otherTile2.AdjacentBits.IsFlagSet(direction.GetOpposite()));
                             if (otherTile2.MonstermosInfo.LastSlowQueueCycle == queueCycleSlow) continue;
                             _equalizeQueue[queueLength++] = otherTile2;
@@ -295,6 +300,7 @@ namespace Content.Server.Atmos.EntitySystems
 
                             if (taker.MonstermosInfo.MoleDelta >= 0) break; // We're done here now. Let's not do more work than needed.
                             if (otherTile2 == null || otherTile2.AdjacentBits == 0 || otherTile2.MonstermosInfo.LastQueueCycle != queueCycle) continue;
+                            if (otherTile2.AdjacentTiles[k.ToOppositeIndex()] != otherTile) continue;
                             DebugTools.Assert(otherTile2.AdjacentBits.IsFlagSet(direction.GetOpposite()));
                             if (otherTile2.MonstermosInfo.LastSlowQueueCycle == queueCycleSlow) continue;
                             _equalizeQueue[queueLength++] = otherTile2;
@@ -353,8 +359,8 @@ namespace Content.Server.Atmos.EntitySystems
                     if (!otherTile.AdjacentBits.IsFlagSet(direction))
                         continue;
 
-                    var otherTile2 = otherTile.AdjacentTiles[j]!;
-                    if (otherTile2.AdjacentBits == 0)
+                    var otherTile2 = otherTile.AdjacentTiles[j];
+                    if (otherTile2 == null || otherTile2.AdjacentBits == 0 || otherTile2.AdjacentTiles[j.ToOppositeIndex()] != otherTile)
                         continue;
 
                     DebugTools.Assert(otherTile2.AdjacentBits.IsFlagSet(direction.GetOpposite()));
@@ -556,7 +562,9 @@ namespace Content.Server.Atmos.EntitySystems
                 HandleDecompressionFloorRip((owner, mapGrid), otherTile, otherTile.MonstermosInfo.CurrentTransferAmount);
             }
 
-            if (GridImpulse && tileCount > 0)
+            // CMU14: map grids cannot move, even when a saved map has dynamic shuttle physics.
+            // Impulses on the map accumulate invalid velocity that entities inherit when changing grids.
+            if (GridImpulse && tileCount > 0 && !HasComp<MapComponent>(owner))
             {
                 var direction = ((Vector2)_depressurizeTiles[tileCount - 1].GridIndices - tile.GridIndices).Normalized();
 

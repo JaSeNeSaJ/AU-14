@@ -1,5 +1,6 @@
 using System.Numerics;
 using Content.Shared.DamageOverlay;
+using Content.Shared.CMU14.Medical.Injuries.Pain;
 using Content.Shared.Mobs;
 using Robust.Client.Graphics;
 using Robust.Client.Player;
@@ -72,10 +73,7 @@ public sealed partial class DamageOverlay : Overlay
         if (!_entityManager.TryGetComponent(_playerManager.LocalEntity, out DamageOverlayComponent? damageComp))
             return;
 
-        State = damageComp.CurrentState;
-        CritLevel = damageComp.CritLevel;
-        OxygenLevel = damageComp.OxygenLevel;
-        PainLevel = damageComp.PainLevel;
+        UpdateLevels(damageComp);
 
         /*
          * Here's the rundown:
@@ -256,6 +254,16 @@ public sealed partial class DamageOverlay : Overlay
         }
 
         handle.UseShader(null);
+    }
+
+    public void UpdateLevels(DamageOverlayComponent damage)
+    {
+        State = damage.CurrentState;
+        CritLevel = damage.CritLevel;
+        OxygenLevel = damage.OxygenLevel;
+        // Injury feedback must remain visible even before pain accumulates or while analgesics suppress it.
+        // Pain tiers retain their separate medical alerts and visual effects.
+        PainLevel = damage.PainLevel;
     }
 
     private float GetDiff(float value, float lastFrameTime)

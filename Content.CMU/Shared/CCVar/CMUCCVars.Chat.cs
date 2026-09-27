@@ -18,4 +18,17 @@ public sealed partial class CCVars
     /// </summary>
     public static readonly CVarDef<bool> ExamineFullTextInChat =
         CVarDef.Create("cmu.examine_full_text_in_chat", false, CVar.CLIENT | CVar.REPLICATED | CVar.ARCHIVE);
+
+    /// <summary>
+    /// After sending a message on any channel other than Local, switch the chat input back to Local.
+    /// Does nothing if Local can't be selected, e.g. as a ghost.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatResetToLocal =
+        CVarDef.Create("cmu.chat_reset_to_local", false, CVar.CLIENTONLY | CVar.ARCHIVE);
+
+    /// <summary>
+    /// When the chat keybind is pressed, move the chat input to the middle of the screen until the message is sent.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatCenterInput =
+        CVarDef.Create("cmu.chat_center_input", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 }
