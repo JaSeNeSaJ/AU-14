@@ -221,7 +221,9 @@ public sealed class ASRSStockUpdateTest : GameTest
                 var secondUid = SEntMan.SpawnEntity("ASRSStockPlatoonComputer", map.GridCoords);
                 var first = SEntMan.GetComponent<RequisitionsComputerComponent>(firstUid);
                 var second = SEntMan.GetComponent<RequisitionsComputerComponent>(secondUid);
-                Assert.That(first.Categories.Single().Name, Is.EqualTo("Test"));
+                Assert.That(first.Categories[0].Name, Is.EqualTo("Test"));
+                Assert.That(first.Categories.Single(category => category.Name == "Research").Entries,
+                    Has.Count.EqualTo(1), "Faction research terminals remain in the live catalog.");
                 Assert.That(system.TryReserveStock((firstUid, first), 0, 0), Is.True);
 
                 system.AddEntryToCategory(firstUid, first, "Test", new RequisitionsEntry
@@ -233,27 +235,27 @@ public sealed class ASRSStockUpdateTest : GameTest
                 });
                 system.Update(0f);
 
-                Assert.That(first.Categories.Single().Entries, Has.Count.EqualTo(2));
+                Assert.That(first.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(2));
                 Assert.That(first.Stock, Has.Count.EqualTo(2));
                 Assert.That(first.Stock[(0, 0)].Current, Is.EqualTo(1));
-                Assert.That(second.Categories.Single().Entries, Has.Count.EqualTo(1),
+                Assert.That(second.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(1),
                     "appending to one console must not alter another console's catalog");
                 Assert.That(second.Stock, Has.Count.EqualTo(1));
                 Assert.That(second.Stock[(0, 0)].Current, Is.EqualTo(2));
-                Assert.That(catalog.Categories.Single().Entries, Has.Count.EqualTo(1),
+                Assert.That(catalog.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(1),
                     "runtime catalog additions must not mutate the prototype");
                 Assert.That(first.Categories[0].Entries[0], Is.Not.SameAs(second.Categories[0].Entries[0]));
                 Assert.That(first.Categories[0].Entries[0], Is.Not.SameAs(catalog.Categories[0].Entries[0]));
 
                 // Selection changes rebuild stock through the same public lifecycle used by the round.
                 platoons.SelectedGovforPlatoon = selected;
-                Assert.That(first.Categories.Single().Entries, Has.Count.EqualTo(1));
+                Assert.That(first.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(1));
                 Assert.That(first.Stock, Has.Count.EqualTo(1));
                 Assert.That(first.Stock[(0, 0)].Current, Is.EqualTo(2));
                 Assert.That(first.Stock[(0, 0)].NextReplenish,
                     Is.EqualTo(SGameTiming.CurTime + TimeSpan.FromSeconds(10)));
-                Assert.That(second.Categories.Single().Entries, Has.Count.EqualTo(1));
-                Assert.That(catalog.Categories.Single().Entries, Has.Count.EqualTo(1));
+                Assert.That(second.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(1));
+                Assert.That(catalog.Categories.Single(category => category.Name == "Test").Entries, Has.Count.EqualTo(1));
             }
             finally
             {
