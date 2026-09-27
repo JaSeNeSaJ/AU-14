@@ -143,9 +143,6 @@ namespace Content.Shared.Humanoid
             "HumanHairUndercutleft",
             "HumanHairUndercutright",
             "RMCHumanHairUndercutTop",
-            // cmu edit start
-            "HumanHairUneven",
-            // cmu edit end
             "RMCHumanHairWardaddy",
 
             "RMCHumanHairPonytail2",
