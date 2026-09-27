@@ -37,6 +37,10 @@ public sealed partial class CmuTab : Control
         Control.AddOptionCheckBox(CCVars.CMUTacMapCenterOnOpen, CenterTacMapCheckBox);
         Control.AddOptionCheckBox(CCVars.ExamineLogInChat, ExamineLogInChatCheckBox);
         Control.AddOptionCheckBox(CCVars.ExamineFullTextInChat, ExamineFullTextInChatCheckBox);
+        // cmu edit start
+        Control.AddOptionCheckBox(CCVars.ChatResetToLocal, ChatResetToLocalCheckBox);
+        Control.AddOptionCheckBox(CCVars.ChatCenterInput, ChatCenterInputCheckBox);
+        // cmu edit end
         Control.AddOptionCheckBox(CCVars.CMUAutoIngestEnabled, AutoIngestCheckBox);
         // CMU14: client temperature unit preference
         Control.AddOptionCheckBox(CCVars.CMUTemperatureFahrenheit, TemperatureFahrenheitCheckBox);

@@ -26,6 +26,14 @@
                 <Label Text="{Loc 'ui-options-cmu-chat'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
                 <CheckBox Name="ExamineLogInChatCheckBox" Text="{Loc 'cmu-ui-options-examine-log-in-chat'}" />
                 <CheckBox Name="ExamineFullTextInChatCheckBox" Text="{Loc 'cmu-ui-options-examine-full-text-in-chat'}" />
+                <!-- cmu edit start -->
+                <CheckBox Name="ChatResetToLocalCheckBox"
+                          Text="{Loc 'cmu-ui-options-chat-reset-to-local'}"
+                          ToolTip="{Loc 'cmu-ui-options-chat-reset-to-local-tooltip'}" />
+                <CheckBox Name="ChatCenterInputCheckBox"
+                          Text="{Loc 'cmu-ui-options-chat-center-input'}"
+                          ToolTip="{Loc 'cmu-ui-options-chat-center-input-tooltip'}" />
+                <!-- cmu edit end -->
 
                 <Label Text="{Loc 'cmu-ui-options-accessibility'}" Margin="0 10 0 0" StyleClasses="LabelKeyText" />
                 <CheckBox Name="ExplosionScreenShakeEnabledCheckBox" Text="{Loc 'ui-options-explosion-screen-shake-enabled'}" />
