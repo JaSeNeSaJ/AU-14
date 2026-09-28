@@ -8,11 +8,11 @@
   components:
   - type: Sprite
     sprite: _RuMC14/Objects/Weapons/Grenades/RG35F.rsi
-  - type: OnUseTimerTrigger
+  - type: TimerTrigger
     delay: 4
     initialBeepDelay: 0
     beepInterval: 10
-    doPopup: false
+    popup: null
   - type: Explosive
     maxIntensity: 10
     intensitySlope: 20
@@ -25,7 +25,8 @@
       path: /Audio/Effects/Smoke-grenade.ogg
   - type: SpawnOnTrigger
     proto: RuMCSmokeTermobaricMini
-  - type: SoundOnTrigger
+  - type: EmitSoundOnTrigger
+    positional: true
     sound: /Audio/Effects/smoke.ogg
 
 - type: entity
