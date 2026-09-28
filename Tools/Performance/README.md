@@ -26,6 +26,8 @@ The anchored-tile snapshot cache admits repeatedly queried occupied cells, retai
 
 ## Scope
 
-The experimental physics tick, pool, broadphase and solver adapters were removed. Ordinary content uses the original engine. The rejected bulk visibility experiment and changes requiring other uncommitted features are outside this performance commit.
+The experimental physics tick, pool, broadphase and solver adapters were removed. Ordinary content uses the original engine. The experimental bulk content PVS selector, its build switch, CVar and research fixtures were also removed. Multi-Z views use the normal engine probe path. Falling-entity visibility uses a bounded content hook before state generation.
 
 Synthetic timings and reduced work counts do not establish live-server TPS. Use comparable captures and inspect frame tails, allocations, retained memory and complete state-send costs before making a production speed claim.
+
+Overhead visibility pools retain at most 64 buffers of each kind, each with capacity at most 1024 members. Large active results remain complete. Round cleanup and shutdown release retained capacity; diagnostics report active counts, pooled capacity and dictionary capacity.

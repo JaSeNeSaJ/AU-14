@@ -617,7 +617,7 @@ public sealed partial class CMUServerPerformanceDiagnosticsManager : ICMUServerP
         _detailPending = false;
         _lastDetailTime = observation.RealTime;
         _memory.Sample(_timing.RealTime);
-        _sawmill.Warning(Invariant($"[CMU-PERF] memory incidentId={_activeIncidentId} source={source} ") + DescribeMemory());
+        _sawmill.Warning(Invariant($"[CMU-PERF] memory incidentId={_activeIncidentId} source={source} ") + DescribeMemory() + " " + DescribePvsRetention());
         LogOperations();
         if (_spikeCapture.ShouldCapture(observation.RealTime, observation.FrameMilliseconds, observation.AllocatedBytes,
                 GetStallThreshold(), _config.GetCVar(CCVars.CMUServerPerformanceAllocationMiBPerFrame) * BytesPerMiB))
