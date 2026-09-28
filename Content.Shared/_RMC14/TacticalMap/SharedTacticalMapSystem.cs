@@ -200,6 +200,14 @@ public abstract partial class SharedTacticalMapSystem : EntitySystem // CMU14 Cl
         // If the computer is tied to a faction, filter what we send accordingly.
         var faction = NormalizeMapFaction(computer.Comp.Faction);
 
+        // CMU14: use the same faction selection for blips, lines, and labels.
+        bool WantsMarines() => faction == null || faction == MarinesFaction;
+        bool WantsXenos() => faction == null || faction == XenosFaction;
+        bool WantsOpfor() => faction == null || faction == OpforFaction;
+        bool WantsGovfor() => faction == null || faction == GovforFaction;
+        bool WantsClf() => faction == null || faction == ClfFaction;
+        bool WantsWeYu() => faction == null || faction == WeYuFaction;
+
         var blips = _computerBlipBuffers.TryPop(out var buffer) ? buffer : new Dictionary<int, TacticalMapBlip>();
         try
         {
@@ -214,13 +222,6 @@ public abstract partial class SharedTacticalMapSystem : EntitySystem // CMU14 Cl
                 }
             }
 
-            // Helpers to check faction selection
-            bool WantsMarines() => faction == null || faction == MarinesFaction;
-            bool WantsXenos() => faction == null || faction == XenosFaction;
-            bool WantsOpfor() => faction == null || faction == OpforFaction;
-            bool WantsGovfor() => faction == null || faction == GovforFaction;
-            bool WantsClf() => faction == null || faction == ClfFaction;
-            bool WantsWeYu() => faction == null || faction == WeYuFaction;
             var sensorsOnline = faction != null && _sensorTowers.HasOnlineSensorForFaction(faction);
 
             // Add marine blips if desired

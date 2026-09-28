@@ -39,7 +39,8 @@ public sealed class AnchoredTileCacheSystem : EntitySystem
         SubscribeLocalEvent<TransformComponent, AnchorStateChangedEvent>(OnAnchor);
         SubscribeLocalEvent<TransformComponent, ReAnchorEvent>(OnReanchor);
         SubscribeLocalEvent<TransformComponent, ComponentShutdown>(OnShutdown);
-        SubscribeLocalEvent<TransformComponent, MapInitEvent>(OnMapInit);
+        // Transform startup raises AnchorStateChangedEvent for initially anchored entities too.
+        // MapInit does not need a second invalidation or an additional lifecycle subscription.
         SubscribeLocalEvent<TileChangedEvent>(OnTileChanged);
         SubscribeLocalEvent<GridRemovalEvent>(OnGridRemoved);
     }
@@ -112,11 +113,6 @@ public sealed class AnchoredTileCacheSystem : EntitySystem
     }
 
     private void OnShutdown(Entity<TransformComponent> ent, ref ComponentShutdown args)
-    {
-        if (ent.Comp.Anchored) InvalidatePosition(ent.Comp);
-    }
-
-    private void OnMapInit(Entity<TransformComponent> ent, ref MapInitEvent args)
     {
         if (ent.Comp.Anchored) InvalidatePosition(ent.Comp);
     }

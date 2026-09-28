@@ -62,7 +62,6 @@ public sealed partial class CMUZLevelsSystem
     private readonly List<int> _probeDepthsToRemove = new();
     private readonly List<(Vector2 Center, float Distance)> _probeOpeningCandidates = new();
     private readonly List<Entity<MapGridComponent>> _probeOpeningGrids = new();
-    private List<Entity<MapGridComponent>> _stairPreviewGrids = new();
     private readonly List<Vector2> _stairPreviewPositions = new(CMUZLevelViewerComponent.MaxStairPreviewPositions);
     private List<Entity<MapGridComponent>> _stairPreviewGrids = new();
     private int _profilePvsSkippedViewers;
