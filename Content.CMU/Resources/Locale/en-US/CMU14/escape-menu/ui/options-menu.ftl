@@ -61,3 +61,5 @@ cmu-ui-options-chat-reset-to-local = Switch chat back to Local/Dead after sendin
 cmu-ui-options-chat-reset-to-local-tooltip = After you send a message on any other channel, the chat box goes back to Local, or to Dead chat if you're a ghost.
 cmu-ui-options-chat-center-input = Center chat input while typing like in CM13
 cmu-ui-options-chat-center-input-tooltip = Pressing a chat key moves the text box to the middle of the screen. It goes back when you send or cancel the message.
+cmu-ui-options-chat-speech-sounds = Play speech sounds when people talk
+cmu-ui-options-chat-speech-sounds-tooltip = The short voice sounds that play when someone nearby speaks. Turning this off only affects what you hear.

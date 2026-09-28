@@ -23,6 +23,12 @@ public sealed partial class CCVars
     /// After sending a message on any channel other than Local, switch the chat input back to Local.
     /// Does nothing if Local can't be selected, e.g. as a ghost.
     /// </summary>
+    /// <summary>
+    /// Whether this player hears the talking blips when people speak nearby.
+    /// </summary>
+    public static readonly CVarDef<bool> ChatSpeechSounds =
+        CVarDef.Create("cmu.chat_speech_sounds", true, CVar.CLIENT | CVar.REPLICATED | CVar.ARCHIVE);
+
     public static readonly CVarDef<bool> ChatResetToLocal =
         CVarDef.Create("cmu.chat_reset_to_local", false, CVar.CLIENTONLY | CVar.ARCHIVE);
 
